@@ -2,60 +2,67 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B196B15D57
-	for <lists+linux-ide@lfdr.de>; Tue,  7 May 2019 08:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D59C515DDD
+	for <lists+linux-ide@lfdr.de>; Tue,  7 May 2019 09:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbfEGG2T (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 7 May 2019 02:28:19 -0400
-Received: from mga04.intel.com ([192.55.52.120]:3840 "EHLO mga04.intel.com"
+        id S1726733AbfEGHG0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 7 May 2019 03:06:26 -0400
+Received: from mga17.intel.com ([192.55.52.151]:21156 "EHLO mga17.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726085AbfEGG2T (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 7 May 2019 02:28:19 -0400
+        id S1726297AbfEGHG0 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 7 May 2019 03:06:26 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 May 2019 23:28:18 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 May 2019 00:01:24 -0700
 X-ExtLoop1: 1
-Received: from ning-debian.sh.intel.com ([10.239.16.122])
-  by FMSMGA003.fm.intel.com with ESMTP; 06 May 2019 23:28:17 -0700
-From:   ning.a.zhang@intel.com
-To:     axboe@kernel.dk, tj@kernel.org, linux-ide@vger.kernel.org
-Cc:     dpetigara@broadcom.com, f.fainelli@gmail.com,
-        ning.a.zhang@intel.com
-Subject: [PATCH] libata: skip link debounce on resume
-Date:   Tue,  7 May 2019 14:28:07 +0800
-Message-Id: <20190507062807.24259-1-ning.a.zhang@intel.com>
-X-Mailer: git-send-email 2.20.1
+X-IronPort-AV: E=Sophos;i="5.60,441,1549958400"; 
+   d="scan'208";a="168918218"
+Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
+  by fmsmga002.fm.intel.com with ESMTP; 07 May 2019 00:01:23 -0700
+Received: from shsmsx103.ccr.corp.intel.com (10.239.4.69) by
+ FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Tue, 7 May 2019 00:01:23 -0700
+Received: from shsmsx104.ccr.corp.intel.com ([169.254.5.33]) by
+ SHSMSX103.ccr.corp.intel.com ([169.254.4.70]) with mapi id 14.03.0415.000;
+ Tue, 7 May 2019 15:01:21 +0800
+From:   "Zhang, Ning A" <ning.a.zhang@intel.com>
+To:     "tj@kernel.org" <tj@kernel.org>,
+        "axboe@kernel.dk" <axboe@kernel.dk>
+CC:     "Zhang, Ning A" <ning.a.zhang@intel.com>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
+Subject: tuning ATA wait time
+Thread-Topic: tuning ATA wait time
+Thread-Index: AQHVBKKsc7aJwLwMO0mbKvcD7w3fcw==
+Date:   Tue, 7 May 2019 07:01:21 +0000
+Message-ID: <1557212480.30633.4.camel@intel.com>
+Accept-Language: zh-CN, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.239.16.122]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <B161DD63EB8DF74EAF505D8EB732266E@intel.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Zhang Ning <ning.a.zhang@intel.com>
-
-when link has flag: ATA_LFLAG_NO_DB_DELAY, skip link debounce.
-
-Change-Id: Ibcac689d7be97c1e139f87d416498a269ff2abf4
-Signed-off-by: Zhang Ning <ning.a.zhang@intel.com>
----
- drivers/ata/libata-core.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index adf28788cab5..1fcb3190491e 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -3838,6 +3838,8 @@ int sata_link_debounce(struct ata_link *link, const unsigned long *params,
- 
- 		/* DET stable? */
- 		if (cur == last) {
-+			if (link->flags & ATA_LFLAG_NO_DB_DELAY)
-+				return 0;
- 			if (cur == 1 && time_before(jiffies, deadline))
- 				continue;
- 			if (time_after(jiffies,
--- 
-2.20.1
-
+RGVhciBtYWludGFpbmVycyBhbmQgZGV2ZWxvcGVyczoNCg0KPiAJLyogU3BlYyBtYW5kYXRlcyB0
+byB3YWl0IGZvciAiPj0gMm1zIiBiZWZvcmUgY2hlY2tpbmcgc3RhdHVzDQo+IAkgKiBhZnRlciBy
+ZXNldC7CoMKgV2Ugd2FpdCAxNTBtcywgYmVjYXVzZSB0aGF0IHdhcyB0aGUgbWFnaWMNCj4gCSAq
+IGRlbGF5IHVzZWQgZm9yIEFUQVBJIGRldmljZXMgaW4gSGFsZSBMYW5kaXMncyBBVEFEUlZSLCBm
+b3INCj4gCSAqIHRoZSBwZXJpb2Qgb2YgdGltZSBiZXR3ZWVuIHdoZW4gdGhlIEFUQSBjb21tYW5k
+IHJlZ2lzdGVyIGlzDQo+IAkgKiB3cml0dGVuLCBhbmQgdGhlbiBzdGF0dXMgaXMgY2hlY2tlZC7C
+oMKgQmVjYXVzZSB3YWl0aW5nIGZvcg0KPiAJICogImEgd2hpbGUiIGJlZm9yZSBjaGVja2luZyBz
+dGF0dXMgaXMgZmluZSwgcG9zdCBTUlNULCB3ZQ0KPiAJICogcGVyZm9ybSB0aGlzIG1hZ2ljIGRl
+bGF5IGhlcmUgYXMgd2VsbC4NCj4gCSAqDQo+IAkgKiBPbGQgZHJpdmVycy9pZGUgdXNlcyB0aGUg
+Mm1TIHJ1bGUgYW5kIHRoZW4gd2FpdHMgZm9yIHJlYWR5Lg0KPiAJICovDQo+IAlBVEFfV0FJVF9B
+RlRFUl9SRVNFVAk9wqDCoDE1MCwNCg0KDQppZiB0aGUgc3BlYyBtYW5kYXRlcyB0byB3YWl0IGZv
+ciAiPj0ybXMiLCBzZXQgZGVmYXVsdCB3YWl0IHRpbWUgdG8NCjE1MG1zIGlzIHRvbyBtdWNoIGxv
+bmdlciB0aGFuIHNwZWMuIHRoaXMgY29tbWVudCB3YXMgYWRkZWQgMTEgeWVhcnMgYWdvDQoyMDA4
+LCBkb2VzIHRoZSBpc3N1ZSBzdGlsbCBleGlzdCBvbiBtb2Rlcm4gU0FUQSBjb250cm9sbGVyPw0K
+DQpjb3VsZCB3ZSB0dW5pbmcgdGhpcyBmb3IgYmV0dGVyIHBlcmZvcm1hbmNlIG9uIGRyaXZlciBs
+b2FkIHRpbWU/DQoNCkJSLg0KTmluZy4NCg0K

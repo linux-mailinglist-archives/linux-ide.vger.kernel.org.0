@@ -2,50 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70418148EF
-	for <lists+linux-ide@lfdr.de>; Mon,  6 May 2019 13:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B196B15D57
+	for <lists+linux-ide@lfdr.de>; Tue,  7 May 2019 08:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726037AbfEFLaH convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Mon, 6 May 2019 07:30:07 -0400
-Received: from static.customer-201-144-31-24.uninet-ide.com.mx ([201.144.31.24]:58645
-        "EHLO mail.sesesp.col.gob.mx" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725883AbfEFLaH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 6 May 2019 07:30:07 -0400
-X-Greylist: delayed 13524 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 May 2019 07:30:07 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sesesp.col.gob.mx (Postfix) with ESMTP id 00E0639B2EBD;
-        Sun,  5 May 2019 23:49:45 -0500 (CDT)
-Received: from mail.sesesp.col.gob.mx ([127.0.0.1])
-        by localhost (mail.sesesp.col.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Xf2h3T1IBf7U; Sun,  5 May 2019 23:49:39 -0500 (CDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.sesesp.col.gob.mx (Postfix) with ESMTP id DC26239B2FD8;
-        Sun,  5 May 2019 23:43:06 -0500 (CDT)
-X-Virus-Scanned: amavisd-new at sesesp.col.gob.mx
-Received: from mail.sesesp.col.gob.mx ([127.0.0.1])
-        by localhost (mail.sesesp.col.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id MHiS1j7Wv6VX; Sun,  5 May 2019 23:43:06 -0500 (CDT)
-Received: from [192.168.43.155] (unknown [41.203.78.129])
-        by mail.sesesp.col.gob.mx (Postfix) with ESMTPSA id F0EA639B2B9F;
-        Sun,  5 May 2019 23:36:16 -0500 (CDT)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726253AbfEGG2T (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 7 May 2019 02:28:19 -0400
+Received: from mga04.intel.com ([192.55.52.120]:3840 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726085AbfEGG2T (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 7 May 2019 02:28:19 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 May 2019 23:28:18 -0700
+X-ExtLoop1: 1
+Received: from ning-debian.sh.intel.com ([10.239.16.122])
+  by FMSMGA003.fm.intel.com with ESMTP; 06 May 2019 23:28:17 -0700
+From:   ning.a.zhang@intel.com
+To:     axboe@kernel.dk, tj@kernel.org, linux-ide@vger.kernel.org
+Cc:     dpetigara@broadcom.com, f.fainelli@gmail.com,
+        ning.a.zhang@intel.com
+Subject: [PATCH] libata: skip link debounce on resume
+Date:   Tue,  7 May 2019 14:28:07 +0800
+Message-Id: <20190507062807.24259-1-ning.a.zhang@intel.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: REQUEST
-To:     Recipients <eguevara@sesesp.col.gob.mx>
-From:   "Johann Reimann" <eguevara@sesesp.col.gob.mx>
-Date:   Mon, 06 May 2019 05:30:48 +0100
-Reply-To: johannreimann44@gmail.com
-Message-Id: <20190506043616.F0EA639B2B9F@mail.sesesp.col.gob.mx>
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Good day,
+From: Zhang Ning <ning.a.zhang@intel.com>
 
-My Name is Johann Reimann and i have something important to discuss with you but only with your permission i will proceed.
+when link has flag: ATA_LFLAG_NO_DB_DELAY, skip link debounce.
 
-Regards
-J. Reimann
+Change-Id: Ibcac689d7be97c1e139f87d416498a269ff2abf4
+Signed-off-by: Zhang Ning <ning.a.zhang@intel.com>
+---
+ drivers/ata/libata-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index adf28788cab5..1fcb3190491e 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3838,6 +3838,8 @@ int sata_link_debounce(struct ata_link *link, const unsigned long *params,
+ 
+ 		/* DET stable? */
+ 		if (cur == last) {
++			if (link->flags & ATA_LFLAG_NO_DB_DELAY)
++				return 0;
+ 			if (cur == 1 && time_before(jiffies, deadline))
+ 				continue;
+ 			if (time_after(jiffies,
+-- 
+2.20.1
+

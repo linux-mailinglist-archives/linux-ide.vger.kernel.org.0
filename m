@@ -2,71 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3CF617F73
-	for <lists+linux-ide@lfdr.de>; Wed,  8 May 2019 20:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E2617F85
+	for <lists+linux-ide@lfdr.de>; Wed,  8 May 2019 20:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727535AbfEHSCX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 May 2019 14:02:23 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:34144 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727515AbfEHSCW (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 May 2019 14:02:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Z175ufgHfKNpVPfjQ5KBrbanxr8MORY0umGXUAhhLNA=; b=uDRhoNuzBQQGvsYBHhUiWCGw6
-        PZjQtP2+4ZRKNW0b1dWOp3LkIjR9dc3tHQpBnu+Mryw23ZYpUyTvjRMRbQ2PFTXfMmA5gwAO3MImO
-        pw3YtmXiFlIZ10hufp/Tdn5LM+RuPl2RPJ41/PylmuC8wNU8lznNOd+S0T6B6/VepyI4ehSONIIwB
-        CR4RCUreuFC9rtpbHdqiC8qk2jO2QrhUMesNR7Ac7tFpldyyOT/85KNv8es9A5O8mQrizDX89vdoZ
-        i+AEQ54CzPbJHAzPhblPZ7jgOfcMSXcCh5VEfLGstJZiB+tMtq9AhUtyh/gO1vVF6p1EecJwMDq+O
-        mTi7ye5OQ==;
-Received: from 089144210233.atnat0019.highway.a1.net ([89.144.210.233] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hOQta-0000Jf-2R; Wed, 08 May 2019 18:02:22 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     davem@davemloft.net
+        id S1726836AbfEHSIx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 May 2019 14:08:53 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:37216 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726544AbfEHSIw (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 May 2019 14:08:52 -0400
+Received: by mail-pf1-f194.google.com with SMTP id g3so10891815pfi.4
+        for <linux-ide@vger.kernel.org>; Wed, 08 May 2019 11:08:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=SpJ2lO7Hf4iICB+8shwVOVK2JdSr+6WkoIZrngdYYfc=;
+        b=bi42Ip2KB/9QJqCJ/YywdUnb+eotERAzeKeK3YLtu1ohUfov8nW+o0etGa5bqPh6hh
+         Q1fQ+/yJFTaqIfh5FEOorb5R5m04I9qQ5cIUxLsjUUQmuOAop/HwItWzB1fS012irdy7
+         6/ir2T2oTgy2IiwVOmYA90AlS3T3qHlIt5yYxTooqaSxFgPA4UAJKkQ3VSyxeRzNgFyF
+         bYGAlJM2qpHImqCkCXgcEhj1E4M7kzi+tpyo3Dksp9C22I/m/qmZYu3cC/zVaZ729eZh
+         1J9RWW/V6yruYJQPhnIOjnTHrglHdNoBHFL+qqrnUY2Yz9U6R4Ylpn9UzcL9qaALW0pK
+         CNIQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=SpJ2lO7Hf4iICB+8shwVOVK2JdSr+6WkoIZrngdYYfc=;
+        b=IKIJDfuz1D9YvahBU2nV30hoW40c/4gM510tQuNjn/J7ozTAtDzKNOSQwpKKP6qc1q
+         vLtYx4cqPjrJX9hTwUt4XYRcUAKTyRhTqFS+Xa5OmZCwXLiMoGJT6But9WMlic0sK92x
+         PsFTssoQxx1mWKpG1yiQuUx83BN47h+vtsZo8tZju5Sj1IzTdlC9TqYTViSUNy5MzY2O
+         8Enkg76ZiFQIumaE5AgnRf4erPuti5KNrriczJ+i+tv6rvyQJ2N1gtrzzF9XASl2K+9d
+         Qe7q+FUo9aidqYv9jKC89ggxI3Lvh8xYDPEVr4aHV5pmMLhENeOqQFG1IybuqRfAsUWA
+         X9aA==
+X-Gm-Message-State: APjAAAUf1sLs4H7U9gIUZ9hBaPq64JvViGKO7mi1fLTlnaQ/s5YpjR4W
+        u+GwqnP8tsi7Dxr8+A3ee4Ke8w==
+X-Google-Smtp-Source: APXvYqyiWsv0c9g/811cwhhQ6P+9MZqtJz91kVqI15fyVl6DavQbYFkTph9ScT+pVpl9sjhjQLTzpA==
+X-Received: by 2002:aa7:8ec6:: with SMTP id b6mr22796874pfr.234.1557338932043;
+        Wed, 08 May 2019 11:08:52 -0700 (PDT)
+Received: from [192.168.1.121] (66.29.164.166.static.utbb.net. [66.29.164.166])
+        by smtp.gmail.com with ESMTPSA id 15sm21831988pfy.88.2019.05.08.11.08.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 May 2019 11:08:50 -0700 (PDT)
+Subject: Re: [PATCH] ide: officially deprecated the legacy IDE driver
+To:     Christoph Hellwig <hch@lst.de>, davem@davemloft.net
 Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ide: officially deprecated the legacy IDE driver
-Date:   Wed,  8 May 2019 20:01:40 +0200
-Message-Id: <20190508180140.12364-1-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
+References: <20190508180140.12364-1-hch@lst.de>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <c0332901-27ac-7d8c-7bee-a1d7616627f8@kernel.dk>
+Date:   Wed, 8 May 2019 12:08:49 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20190508180140.12364-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-After a recent chat with Dave we agreed to try to finally kill off the
-legacy IDE code base.  Set a two year grace period in which we try
-to move everyone over.  There are a few pieces of hardware not
-supported by libata yet, but for many of them we aren't even sure
-if there are any users.  For those that have users we have usually
-found a volunteer to add libata support.
+On 5/8/19 12:01 PM, Christoph Hellwig wrote:
+> After a recent chat with Dave we agreed to try to finally kill off the
+> legacy IDE code base.  Set a two year grace period in which we try
+> to move everyone over.  There are a few pieces of hardware not
+> supported by libata yet, but for many of them we aren't even sure
+> if there are any users.  For those that have users we have usually
+> found a volunteer to add libata support.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- drivers/ide/ide-probe.c | 3 +++
- 1 file changed, 3 insertions(+)
+I fully support this.
 
-diff --git a/drivers/ide/ide-probe.c b/drivers/ide/ide-probe.c
-index 5aeaca24a28f..4ad824984581 100644
---- a/drivers/ide/ide-probe.c
-+++ b/drivers/ide/ide-probe.c
-@@ -1437,6 +1437,9 @@ int ide_host_register(struct ide_host *host, const struct ide_port_info *d,
- 	ide_hwif_t *hwif, *mate = NULL;
- 	int i, j = 0;
- 
-+	pr_warn("legacy IDE will be removed in 2021, please switch to libata\n"
-+		"Report any missing HW support to linux-ide@vger.kernel.org\n");
-+
- 	ide_host_for_each_port(i, hwif, host) {
- 		if (hwif == NULL) {
- 			mate = NULL;
+Acked-by: Jens Axboe <axboe@kernel.dk>
+
 -- 
-2.20.1
+Jens Axboe
 

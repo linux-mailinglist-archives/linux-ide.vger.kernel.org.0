@@ -2,60 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CCAF182C7
-	for <lists+linux-ide@lfdr.de>; Thu,  9 May 2019 01:53:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD3411849D
+	for <lists+linux-ide@lfdr.de>; Thu,  9 May 2019 06:45:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbfEHXxV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 May 2019 19:53:21 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:54052 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726765AbfEHXxV (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 May 2019 19:53:21 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id F0C6F147866BF;
-        Wed,  8 May 2019 16:53:20 -0700 (PDT)
-Date:   Wed, 08 May 2019 16:53:20 -0700 (PDT)
-Message-Id: <20190508.165320.2267661705586017777.davem@davemloft.net>
-To:     torvalds@linux-foundation.org
-CC:     akpm@linux-foundation.org, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [GIT] IDE
-From:   David Miller <davem@davemloft.net>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 08 May 2019 16:53:21 -0700 (PDT)
+        id S1725936AbfEIEpM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 9 May 2019 00:45:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60920 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725908AbfEIEpM (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 9 May 2019 00:45:12 -0400
+Subject: Re: [GIT] IDE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1557377111;
+        bh=a7wKrk/+U9dYpikcCuxOvvoT8wtcA2tPgI+RJ3LIVzc=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=jFFNmVrI6pyZzZA+p1qB2RFNDbMh26iR85GLe74/KJSxsjDoUnOe25oARS0EuoRLP
+         q01PsHSOta0rZBb5kNTI+xarfOp7RIMLBCxLKekMpv3VpHi8OCfabRssxgBEVJE+kt
+         t53axMymmLOcm1IZanZBwjWimROVULSetqzsWT5Y=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <20190508.165320.2267661705586017777.davem@davemloft.net>
+References: <20190508.165320.2267661705586017777.davem@davemloft.net>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20190508.165320.2267661705586017777.davem@davemloft.net>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/davem/ide
+ refs/heads/master
+X-PR-Tracked-Commit-Id: 7ad19a99ad431b5cae005c30b09096517058e84e
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 89c3b37af87ec183b666d83428cb28cc421671a6
+Message-Id: <155737711172.32092.7824293216957147097.pr-tracker-bot@kernel.org>
+Date:   Thu, 09 May 2019 04:45:11 +0000
+To:     David Miller <davem@davemloft.net>
+Cc:     torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+The pull request you sent on Wed, 08 May 2019 16:53:20 -0700 (PDT):
 
-Finally deprecate the legacy IDE layer.
+> git://git.kernel.org/pub/scm/linux/kernel/git/davem/ide refs/heads/master
 
-Frankly this is long overdue.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/89c3b37af87ec183b666d83428cb28cc421671a6
 
-Please pull, thanks a lot!
+Thank you!
 
-The following changes since commit ef75bd71c5d31dc17ae41ff8bec92630a3037d69:
-
-  Merge tag 'gfs2-for-5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2 (2019-05-08 13:16:07 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/davem/ide 
-
-for you to fetch changes up to 7ad19a99ad431b5cae005c30b09096517058e84e:
-
-  ide: officially deprecated the legacy IDE driver (2019-05-08 16:47:23 -0700)
-
-----------------------------------------------------------------
-Christoph Hellwig (1):
-      ide: officially deprecated the legacy IDE driver
-
- drivers/ide/ide-probe.c | 3 +++
- 1 file changed, 3 insertions(+)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker

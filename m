@@ -2,152 +2,137 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA0F1B844
-	for <lists+linux-ide@lfdr.de>; Mon, 13 May 2019 16:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C466D1D04E
+	for <lists+linux-ide@lfdr.de>; Tue, 14 May 2019 22:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728778AbfEMOYo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 13 May 2019 10:24:44 -0400
-Received: from mutluit.com ([82.211.8.197]:46728 "EHLO mutluit.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727788AbfEMOYo (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 13 May 2019 10:24:44 -0400
-Received: from c22-local.mutluit.com (ip4d155212.dynamic.kabel-deutschland.de [77.21.82.18]:58476)
-        by mutluit.com (s2.mutluit.com [82.211.8.197]:25) with ESMTP ([XMail 1.27 ESMTP Server])
-        id <S16FAD6A> for <linux-ide@vger.kernel.org> from <um@mutluit.com>;
-        Mon, 13 May 2019 10:24:41 -0400
-From:   Uenal Mutlu <um@mutluit.com>
-To:     Jens Axboe <axboe@kernel.dk>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Chen-Yu Tsai <wens@csie.org>, linux-ide@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc:     Uenal Mutlu <um@mutluit.com>, linux-sunxi@googlegroups.com,
-        linux-amarula@amarulasolutions.com,
-        Jagan Teki <jagan@amarulasolutions.com>,
-        Pablo Greco <pgreco@centosproject.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Oliver Schinagl <oliver@schinagl.nl>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        FUKAUMI Naoki <naobsd@gmail.com>,
-        Andre Przywara <andre.przywara@arm.com>,
-        Stefan Monnier <monnier@iro.umontreal.ca>
-Subject: [PATCH v3] drivers: ata: ahci_sunxi: Increased SATA/AHCI DMA TX/RX FIFOs
-Date:   Mon, 13 May 2019 16:24:10 +0200
-Message-Id: <20190513142410.9299-1-um@mutluit.com>
-X-Mailer: git-send-email 2.11.0
-X-Patchwork-Bot: notify
+        id S1726107AbfENUIy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 14 May 2019 16:08:54 -0400
+Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:38672 "EHLO
+        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726089AbfENUIy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 14 May 2019 16:08:54 -0400
+X-Greylist: delayed 418 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 May 2019 16:08:51 EDT
+Received: from darkstar.musicnaut.iki.fi (85-76-80-127-nat.elisa-mobile.fi [85.76.80.127])
+        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id A386D20156;
+        Tue, 14 May 2019 23:01:51 +0300 (EEST)
+Date:   Tue, 14 May 2019 23:01:51 +0300
+From:   Aaro Koskinen <aaro.koskinen@iki.fi>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     linux-mips@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        linux-ide@vger.kernel.org
+Subject: Re: Loongson 2F IDE/ATA broken with lemote2f_defconfig
+Message-ID: <20190514200151.GA10985@darkstar.musicnaut.iki.fi>
+References: <20190106124607.GK27785@darkstar.musicnaut.iki.fi>
+ <CGME20190112152659epcas5p3953165de5118dba017c94b164dd725a2@epcas5p3.samsung.com>
+ <20190112152609.GE22416@darkstar.musicnaut.iki.fi>
+ <08c48218-2bc5-a100-4b01-edb08b4225c4@samsung.com>
+ <20190126184351.GE2792@darkstar.musicnaut.iki.fi>
+ <66a23e7c-2ba8-b505-8382-d13c1912ea88@samsung.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <66a23e7c-2ba8-b505-8382-d13c1912ea88@samsung.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Increasing the SATA/AHCI DMA TX/RX FIFOs (P0DMACR.TXTS and .RXTS, ie.
-TX_TRANSACTION_SIZE and RX_TRANSACTION_SIZE) from default 0x0 each
-to 0x3 each, gives a write performance boost of 120 MiB/s to 132 MiB/s
-from lame 36 MiB/s to 45 MiB/s previously.
-Read performance is above 200 MiB/s.
-[tested on SSD using dd bs=4K/8K/12K/16K/20K/24K/32K: peak-perf at 12K]
+Hi,
 
-Tested on the SBCs Banana Pi R1 (aka Lamobo R1) and Banana Pi M1 which
-are based on the Allwinner A20 32bit-SoC (ARMv7-a / arm-linux-gnueabihf).
-These devices are RaspberryPi-like small devices.
+On Thu, Feb 07, 2019 at 04:02:11PM +0100, Bartlomiej Zolnierkiewicz wrote:
+> On 01/26/2019 07:43 PM, Aaro Koskinen wrote:
+> > On Mon, Jan 14, 2019 at 02:16:42PM +0100, Bartlomiej Zolnierkiewicz wrote:
+> >> On 01/12/2019 04:26 PM, Aaro Koskinen wrote:
+> >>> Hi,
+> >>>
+> >>> On Sun, Jan 06, 2019 at 02:46:07PM +0200, Aaro Koskinen wrote:
+> >>>> Commit 7ff7a5b1bfff ("MIPS: lemote2f_defconfig: Convert to use libata
+> >>>> PATA drivers") switched from IDE to libata PATA on Loongson 2F, but
+> >>>> neither PATA_AMD or PATA_CS5536 work well on this platform compared
+> >>>> to the AMD74XX IDE driver.
+> >>
+> >> Sorry about that.
+> >>
+> >>>> During the ATA init/probe there is interrupt storm from irq 14, and
+> >>>> majority of system boots end up with "nobody cared... IRQ disabled".
+> >>>> So the result is a very slow disk access.
+> >>>>
+> >>>> It seems that the interrupt gets crazy after the port freeze done early
+> >>>> during the init, and for whatever reason it cannot be cleared.
+> >>>>
+> >>>> With the below workaround I was able to boot the system normally. I
+> >>>> guess that rather than going back to old IDE driver, we should just try
+> >>>> to make pata_cs5536 work (and forget PATA AMD on this board)...?
+> >>>
+> >>> Hmm, even with this hack I get ~500 spurious IRQs during the boot.
+> >>>
+> >>> Also compared to old IDE, there's 33 vs 100 speed difference:
+> >>>
+> >>> [    3.324000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4ce0 irq 14
+> >>> [    3.584000] ata1.00: ATA-8: WDC WD1600BEVS-00VAT0, 11.01A11, max UDMA/133
+> >>> [    3.588000] ata1.00: 312581808 sectors, multi 16: LBA48
+> >>> [    3.592000] ata1.00: limited to UDMA/33 due to 40-wire cable
+> >>>
+> >>> [    4.540000] Probing IDE interface ide0...
+> >>> [    4.992000] hda: WDC WD1600BEVS-00VAT0, ATA DISK drive
+> >>> [    5.716000] hda: host max PIO5 wanted PIO255(auto-tune) selected PIO4
+> >>> [    5.716000] hda: UDMA/100 mode selected
+> >>
+> >> Can you try booting with "libata.force=1:80c" (and if that doesn't work with
+> >> "libata.force=1:short40c")
+> > 
+> > (Sorry for delay, this machine is in use so I couldn't reboot it randomly...)
+> > 
+> > OK, the speed issue can be fixed with command line. So "libata.force=1:80c"
+> > works with cs5536 libata driver.
+> > 
+> >> and also provide full dmesg-s for working (ide) and not working
+> >> (libata) kernels.
+> > 
+> > Logs are below:
+> > 
+> > 1) working IDE (no spurious IRQs)
+> > 2) working PATA AMD (around ~90k spurious IRQs, so it's just a matter of luck)
+> > 3) failing PATA AMD (100k spurious IRQs reached)
+> > 4) working PATA CS5536 (same as with PATA AMD)
+> > 5) failing PATA CS5536 (same as with PATA AMD)
+> 
+> Thank you.
+> 
+> I've looked a bit more into the problem and came with two possible
+> approaches to investigate it further:
+> 
+> * The major difference between IDE and libata during probing is that
+>   IDE keeps the port's IRQ (if known) disabled during whole probe time.
+> 
+>   To replicate this behavior in libata it seems that we would need
+>   to cache IRQ number used in ap->irq, then call disable_irq(ap->irq)
+>   when ATA_PFLAG_LOADING flag is set and enable_irq(ap->irq) when
+>   ATA_PFLAG_LOADING is cleared.
 
-This problem of slow SATA write-speed with these small devices lasts
-for about 7 years now (beginning with the A10 SoC). Many commentators
-throughout the years wrongly assumed the slow write speed was a
-hardware limitation. This patch finally solves the problem, which
-in fact was just a hard-to-find software problem due to lack of
-SATA/AHCI documentation by the SoC-maker Allwinner Technology.
+Since IDE driver is now officially deprecated, I got some motivation to
+start trying to fix this. I tried the above approach, but it does not work
+very well - I still get around 50000 spurious IRQs.
 
-Lists of the affected sunxi and other boards and SoCs with SATA using
-the ahci_sunxi driver:
-  $ grep -i -e "^&ahci" arch/arm/boot/dts/sun*dts
-  and http://linux-sunxi.org/SATA#Devices_with_SATA_ports
-  See also http://linux-sunxi.org/Category:Devices_with_SATA_port
+If I move disable_irq() earlier (from __ata_port_probe() into
+ata_pci_sff_activate_host()), it works better with only 20 spurious IRQs.
 
-Acked-by: Maxime Ripard <maxime.ripard@bootlin.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Uenal Mutlu <um@mutluit.com>
----
+But, keeping the IRQ disabled during probe seems to result in the
+following:
 
-v3:
-  * Removed RFC from Subject line, and also the explicit call for RFC
-    in the text, thereby submitting the patch for official merging.
+[    4.956000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4ce0 irq 14
+[    4.960000] ata2: DUMMY
+[   10.328000] ata1.00: qc timeout (cmd 0x27)
+[   10.332000] ata1.00: failed to read native max address (err_mask=0x4)
+[   10.336000] ata1.00: HPA support seems broken, skipping HPA handling
 
-v2:
-  * Commented the patch in-place in ahci_sunxi.c
-  * With bs=12K and no conv=... passed to dd, the write performance
-    rises further to 132 MiB/s
-  * Changed MB/s to MiB/s
-  * Posted the story behind the patch:
-    http://lkml.iu.edu/hypermail/linux/kernel/1905.1/03506.html
-  * Posted a dd test script to find optimal bs, and some results:
-    https://bit.ly/2YoOzEM
+> * The other idea is to try to modify your workaround patch to implement
+>   dummy ->sff_set_devctl helper ("empty" one) instead of adding custom
+>   version of ->freeze one.
 
-v1:
-  * States bs=4K for dd and a write performance of 120 MiB/s
----
- drivers/ata/ahci_sunxi.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 2 deletions(-)
+This works, but also still results in around 50000 spurious IRQs... So
+the risk is that the 100000 limit is could be reached if the ATA probe
+gets delayed by other subsystems.
 
-diff --git a/drivers/ata/ahci_sunxi.c b/drivers/ata/ahci_sunxi.c
-index 911710643305..018186a39a69 100644
---- a/drivers/ata/ahci_sunxi.c
-+++ b/drivers/ata/ahci_sunxi.c
-@@ -157,8 +157,51 @@ static void ahci_sunxi_start_engine(struct ata_port *ap)
- 	void __iomem *port_mmio = ahci_port_base(ap);
- 	struct ahci_host_priv *hpriv = ap->host->private_data;
- 
--	/* Setup DMA before DMA start */
--	sunxi_clrsetbits(hpriv->mmio + AHCI_P0DMACR, 0x0000ff00, 0x00004400);
-+	/* Setup DMA before DMA start
-+	 *
-+	 * NOTE: A similar SoC with SATA/AHCI by Texas Instruments documents
-+	 *   this Vendor Specific Port (P0DMACR, aka PxDMACR) in its
-+	 *   User's Guide document (TMS320C674x/OMAP-L1x Processor
-+	 *   Serial ATA (SATA) Controller, Literature Number: SPRUGJ8C,
-+	 *   March 2011, Chapter 4.33 Port DMA Control Register (P0DMACR),
-+	 *   p.68, https://www.ti.com/lit/ug/sprugj8c/sprugj8c.pdf)
-+	 *   as equivalent to the following struct:
-+	 *
-+	 *   struct AHCI_P0DMACR_t
-+	 *   {
-+	 *     unsigned TXTS     : 4;
-+	 *     unsigned RXTS     : 4;
-+	 *     unsigned TXABL    : 4;
-+	 *     unsigned RXABL    : 4;
-+	 *     unsigned Reserved : 16;
-+	 *   };
-+	 *
-+	 *   TXTS: Transmit Transaction Size (TX_TRANSACTION_SIZE).
-+	 *     This field defines the DMA transaction size in DWORDs for
-+	 *     transmit (system bus read, device write) operation. [...]
-+	 *
-+	 *   RXTS: Receive Transaction Size (RX_TRANSACTION_SIZE).
-+	 *     This field defines the Port DMA transaction size in DWORDs
-+	 *     for receive (system bus write, device read) operation. [...]
-+	 *
-+	 *   TXABL: Transmit Burst Limit.
-+	 *     This field allows software to limit the VBUSP master read
-+	 *     burst size. [...]
-+	 *
-+	 *   RXABL: Receive Burst Limit.
-+	 *     Allows software to limit the VBUSP master write burst
-+	 *     size. [...]
-+	 *
-+	 *   Reserved: Reserved.
-+	 *
-+	 *
-+	 * NOTE: According to the above document, the following alternative
-+	 *   to the code below could perhaps be a better option
-+	 *   (or preparation) for possible further improvements later:
-+	 *     sunxi_clrsetbits(hpriv->mmio + AHCI_P0DMACR, 0x0000ffff,
-+	 *		0x00000033);
-+	 */
-+	sunxi_clrsetbits(hpriv->mmio + AHCI_P0DMACR, 0x0000ffff, 0x00004433);
- 
- 	/* Start DMA */
- 	sunxi_setbits(port_mmio + PORT_CMD, PORT_CMD_START);
--- 
-2.11.0
-
+A.

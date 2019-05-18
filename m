@@ -2,86 +2,79 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D58EE221BC
-	for <lists+linux-ide@lfdr.de>; Sat, 18 May 2019 07:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34B8F224A6
+	for <lists+linux-ide@lfdr.de>; Sat, 18 May 2019 21:21:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725783AbfERFpz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 18 May 2019 01:45:55 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:42783 "EHLO
+        id S1728088AbfERTVQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 18 May 2019 15:21:16 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:34771 "EHLO
         mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725468AbfERFpy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 18 May 2019 01:45:54 -0400
-Received: by mail-lj1-f194.google.com with SMTP id 188so8022275ljf.9
-        for <linux-ide@vger.kernel.org>; Fri, 17 May 2019 22:45:53 -0700 (PDT)
+        with ESMTP id S1727380AbfERTVQ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 18 May 2019 15:21:16 -0400
+Received: by mail-lj1-f194.google.com with SMTP id j24so9114761ljg.1
+        for <linux-ide@vger.kernel.org>; Sat, 18 May 2019 12:21:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
+        h=subject:to:references:from:cc:reply-to:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=J9r5a9oeFzDjxeIO91Hm1nVvX/skKoAWJVlxqU4Sf7k=;
-        b=ia8K85SOx+JythZAchUNSC7Zkcwi46z+UXxWOgDhfbZ0tyXDgmbCS2fE+rE54M9kgR
-         XzEOw1M4p+2NA/67TMQi9/D5xWeGfEbytbyXfyHHmrzBSRqt7ZBQTzTPA66uZy+cDOpw
-         GwlN8u3v8hT+35SF6+5gXZqpJGoJbYUWxEKgIu183N26CZiWB/MebauhmjZOLyu7XWE5
-         gt3IXZ5zp/AXklYdvyCsEf5pAY7N+fW7hRS4VjmuDYa/zSsMCw0wDRyfvZXF4IZF5lot
-         p7gXHlAOiAcm3x40/0RRhGHz2XiJjF4pkXVtQiuWUoTvaV4tmzpZclLjMfrXxN22iULX
-         U8IA==
+        bh=fJ+bTlmbOLcEEckMTVkdO6f7R/Xk9Z+Q4WKXAZCV+lk=;
+        b=ED1ndCP8CLMTnUfXtRW94dbo7NITdw+CE3+Rdw9ZXw9qZM/4NEyvxLtZ1xkOUMe+Xn
+         lykPQH/Zbw9BAEcHwp3sObgSdkI3DFnKoCYUCGdTa85ZqXrtIy30d+jGHyS4t0YpnvsS
+         oclLBKmfUfZhguCo265Ttw+EDHcWq6uvsssGE/EdaIj5CjZ8LYRzEGi0/FIEsDjilwPR
+         K+zNDmYXEKIyvZY0bp4gZnpT2Bea7280RHe05D1hAlEi61HCz03pqzi3G1Dbw1K685Mw
+         ZVpRTXEAlKUacN+IGI39NZ+HOP1WoTToXv96q7DYCGOC5qPfez6prVqT5P6wGk42gyCC
+         F5Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=J9r5a9oeFzDjxeIO91Hm1nVvX/skKoAWJVlxqU4Sf7k=;
-        b=E88dnbZdsjhcA4MrZvMOG3ENs+wU5wQvsII1gJwHCsSkmsdSlvoxOfPydJOn6Ql+aF
-         ScWPWyHT4J3BbcNLkOLEXyRr8f4FQYgowHTnA5Ac8WdTe7Ad1+O/cGwRUW5GBSWi/V0P
-         SEv3kFYplOf6THexCXvRyqOz29jjHvE/V8jXISeqRD3zSY1Vdgw+CrB7BUVhdvHB1dy6
-         jLIktPjLOX9Hlyjt5enmpQowRc6vNVziL9caX58PqeIG2/ZWD/63BH+dk6r84uwgaWPm
-         BUHe91+NPzc1CRTiTQbe/ncZOLNE6ukfRsuJhcOiNz6C5TgTSr0G+A+0FaGbP4FUJFLc
-         OH/Q==
-X-Gm-Message-State: APjAAAXpLWM1r26ENsE0XoCx7UeYIrVuiwo+QcCj0x9YYI8mjanXP3nz
-        Di6ZcAfGUj2deve6vxKBaOynHOxtUrA=
-X-Google-Smtp-Source: APXvYqyJiYeuqNELy/zPRHzrYQaveHoijJMfCtun6zxiGLg176nXVGZlsFZ5iRGCesDTBsPCxNsO2Q==
-X-Received: by 2002:a2e:9d85:: with SMTP id c5mr25378596ljj.183.1558158352853;
-        Fri, 17 May 2019 22:45:52 -0700 (PDT)
+        h=x-gm-message-state:subject:to:references:from:cc:reply-to
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=fJ+bTlmbOLcEEckMTVkdO6f7R/Xk9Z+Q4WKXAZCV+lk=;
+        b=DjVcR/b9yMaQ1hTFIqUxUBTzk/TUEAcKbUtams3+dLU5ogBYGNlHLkT+eIZuPZqO3h
+         xcWJEuR9E20GAM0whCfT9golqvDQOfIr+Y9Pnf1AJwPdqJXF/vaxZsmN7qLXut8fB3YN
+         vlbyfvv2SvLMW+Eua/UFCk0AZB5n+Ype05yNjkM5ER++9XEMdZrPUpt7M0ZUtlBGejBN
+         1xfoA4FS9Rdf1Bl5cHPPqKZtGqtyCZkFj1yu/8qHZWN8ZZiKB+tek5z3qwzc2YzrWt0n
+         4dgQj5OB0H/Wwf+l2jwt5bkkAlVMQYAp2dMf3T/a2UlcyvbTbxiXXXT4s7Fw8jXIcPiJ
+         50OA==
+X-Gm-Message-State: APjAAAXi9wVHkp5orDTUkA1K8VW0jTAdGWFk/qqZpUm3y5RXDeN0rHwb
+        SdsM0qtzvh15PeqEDV4cr1qlV2SQ2Vo=
+X-Google-Smtp-Source: APXvYqyZ1yXKq8hrAw1TtlHVc3GXoELyRjdXsaLWaiYSBDMwYAkpBthwW5vjbfEej9LI9nESsECsqg==
+X-Received: by 2002:a2e:9c0a:: with SMTP id s10mr4419078lji.162.1558207274202;
+        Sat, 18 May 2019 12:21:14 -0700 (PDT)
 Received: from [192.168.0.94] (31-178-116-31.dynamic.chello.pl. [31.178.116.31])
-        by smtp.googlemail.com with ESMTPSA id m18sm2257478lfj.91.2019.05.17.22.45.51
+        by smtp.googlemail.com with ESMTPSA id w26sm3041822lfl.0.2019.05.18.12.21.13
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 17 May 2019 22:45:51 -0700 (PDT)
+        Sat, 18 May 2019 12:21:13 -0700 (PDT)
 Subject: Re: Linux 4.15 and onwards fails to initialize some hard drives
 To:     linux-ide@vger.kernel.org
 References: <S1727300AbfEQXhy/20190517233755Z+6@vger.kernel.org>
-Cc:     wadosm@gmail.com
+ <5abd2a85-7cd9-f408-374f-55d9cd72f2f6@gmail.com>
 From:   =?UTF-8?Q?Micha=c5=82_Wadowski?= <wadosm@gmail.com>
-Message-ID: <5abd2a85-7cd9-f408-374f-55d9cd72f2f6@gmail.com>
-Date:   Sat, 18 May 2019 07:45:50 +0200
+Cc:     =?UTF-8?Q?Micha=c5=82_Wadowski?= <wadosm@gmail.com>
+Reply-To: S1727300AbfEQXhy/20190517233755Z+6@vger.kernel.org
+Message-ID: <fb9fc28f-550b-60dc-a7a9-5e9c1e1a4aa6@gmail.com>
+Date:   Sat, 18 May 2019 21:21:12 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <S1727300AbfEQXhy/20190517233755Z+6@vger.kernel.org>
+In-Reply-To: <5abd2a85-7cd9-f408-374f-55d9cd72f2f6@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: pl-PL
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-In some cases if sata drive can't work with default controller
-bandwidth, driver fails to initialize the device.
+Sorry, but I made some mistake with handle current SPD.
+There is fixed patch:
 
-libata-core: sata_link_hardreset - if after reset the device is
-offline, then driver should try again, with lower SPD.
-
-sata_down_spd_limit - function should handle corner case values,
-if device is not initialized yet.
-
-Bugzilla: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1783906
-
-Signed-off-by: Michał Wadowski <wadosm@gmail.com>
 ---
- drivers/ata/libata-core.c | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ drivers/ata/libata-core.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index adf28788cab5..c0b4c378ae14 100644
+index adf28788cab5..a37249c4ebeb 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
 @@ -3061,6 +3061,7 @@ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
@@ -92,7 +85,7 @@ index adf28788cab5..c0b4c378ae14 100644
  	 */
  	rc = sata_scr_read(link, SCR_STATUS, &sstatus);
  	if (rc == 0 && ata_sstatus_online(sstatus))
-@@ -3072,23 +3073,22 @@ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
+@@ -3072,23 +3073,23 @@ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
  	if (mask <= 1)
  		return -EINVAL;
  
@@ -115,17 +108,17 @@ index adf28788cab5..c0b4c378ae14 100644
 -	 * case.
 +	 * Mask off all speeds higher than or equal to the current one.
 +	 * If device is not initialized yet, value of SPD is 0, so
-+	 * we should ignore this.
++	 * we should ignore this. If spd is 1, then we can't speed down
++	 * any more.
  	 */
--	if (spd > 1)
-+	if (spd > 0)
+ 	if (spd > 1)
  		mask &= (1 << (spd - 1)) - 1;
 -	else
 -		return -EINVAL;
  
  	/* were we already at the bottom? */
  	if (!mask)
-@@ -4116,7 +4116,10 @@ int sata_link_hardreset(struct ata_link *link, const unsigned long *timing,
+@@ -4116,7 +4117,10 @@ int sata_link_hardreset(struct ata_link *link, const unsigned long *timing,
  		goto out;
  	/* if link is offline nothing more to do */
  	if (ata_phys_link_offline(link))
@@ -138,3 +131,4 @@ index adf28788cab5..c0b4c378ae14 100644
  	if (online)
 -- 
 2.7.4
+

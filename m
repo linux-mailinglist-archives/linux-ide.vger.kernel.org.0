@@ -2,137 +2,83 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C466D1D04E
-	for <lists+linux-ide@lfdr.de>; Tue, 14 May 2019 22:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74E4B221AB
+	for <lists+linux-ide@lfdr.de>; Sat, 18 May 2019 07:11:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726107AbfENUIy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 14 May 2019 16:08:54 -0400
-Received: from emh01.mail.saunalahti.fi ([62.142.5.107]:38672 "EHLO
-        emh01.mail.saunalahti.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfENUIy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 14 May 2019 16:08:54 -0400
-X-Greylist: delayed 418 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 May 2019 16:08:51 EDT
-Received: from darkstar.musicnaut.iki.fi (85-76-80-127-nat.elisa-mobile.fi [85.76.80.127])
-        by emh01.mail.saunalahti.fi (Postfix) with ESMTP id A386D20156;
-        Tue, 14 May 2019 23:01:51 +0300 (EEST)
-Date:   Tue, 14 May 2019 23:01:51 +0300
-From:   Aaro Koskinen <aaro.koskinen@iki.fi>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     linux-mips@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org
-Subject: Re: Loongson 2F IDE/ATA broken with lemote2f_defconfig
-Message-ID: <20190514200151.GA10985@darkstar.musicnaut.iki.fi>
-References: <20190106124607.GK27785@darkstar.musicnaut.iki.fi>
- <CGME20190112152659epcas5p3953165de5118dba017c94b164dd725a2@epcas5p3.samsung.com>
- <20190112152609.GE22416@darkstar.musicnaut.iki.fi>
- <08c48218-2bc5-a100-4b01-edb08b4225c4@samsung.com>
- <20190126184351.GE2792@darkstar.musicnaut.iki.fi>
- <66a23e7c-2ba8-b505-8382-d13c1912ea88@samsung.com>
+        id S1726017AbfERFLP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 18 May 2019 01:11:15 -0400
+Received: from mail-lj1-f173.google.com ([209.85.208.173]:42026 "EHLO
+        mail-lj1-f173.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725268AbfERFLP (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 18 May 2019 01:11:15 -0400
+Received: by mail-lj1-f173.google.com with SMTP id 188so7987226ljf.9
+        for <linux-ide@vger.kernel.org>; Fri, 17 May 2019 22:11:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=to:from:subject:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=N4x0KlBCOPphZofINc2cd2bDNqZj8Wp5OhDsnQXLXoo=;
+        b=H1KzDFlXAIzEYo3Yxsm9hLVT3Og3Yk3ZBuvVigb6tfCXQYmvds3xpQcZ6q252wNN2Y
+         0F/O2SViJw3otHtIuIWt6Rhvv9ApiEHauMndZRWAMxl1Igk2gL+Q3qGqolfe4YhtxLqi
+         oifEJDmrbT12DeUe+SOwwKSn8Gttla6rIyl/GW4pS1+744fl38pNw+KfCZK+HSP3cnQW
+         SPSQ6sPThgy/XUca6ftm1+kWA5b8D6oQOl4fzhjAD/7MS0h74Wpuwj7Zg9Ujx4YpdN0Z
+         lHyqn957bZVfjMY0Dlt8zmiYHR8HgE4ym/3c2WxVUeMAAA46SfraB8VPXiysDXbxmqBd
+         6qmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=N4x0KlBCOPphZofINc2cd2bDNqZj8Wp5OhDsnQXLXoo=;
+        b=NE7mgaTKO3tgut/4DrK3JuhYz9w8uc6yc1lxVfdpzpoMM7UYLD/yNQsZO7Sed6sbRo
+         OIyMh5tMLaBEEYgDD2f9UWC1lrpTMbw9WBRQGJ2v08Zj1AAkCNNGledTSlnouYdKHAzG
+         W+azO2FYZtOjZbm2cfdHTgId1d8tp9be1vPWpXBTUXcWFc2/C7jWwZ2MUM/hmXTZGKp5
+         mUM5Fm6kp8jfxwAG9g84Sdc3nWcmWgNFDO4laxxWV8NTw/XZ5MuPPpj2JF3JrXQp9sMs
+         hKIXcxsRuOIlejt+VUdGPNJbl8LU7VSwS2nWJy3CTBQ0rlWlqjMiJBs4a4mbklBLRiON
+         pLAg==
+X-Gm-Message-State: APjAAAUrSu4AlzTeR716N3xMqI+Qcz3v6n/vtrIR0YVzcpvl5rNLR3W3
+        FDL9H/EbFbsxXHcLsBZxzz9VzuIt
+X-Google-Smtp-Source: APXvYqzJFLpRcQYvkrJWYIPGJ6VeG8VS222Mgv00eL5z2uCBl1qBbEjGhq7spYB/SsLiHzy/dsCCYg==
+X-Received: by 2002:a2e:9692:: with SMTP id q18mr29050677lji.89.1558156273252;
+        Fri, 17 May 2019 22:11:13 -0700 (PDT)
+Received: from [192.168.0.94] (31-178-116-31.dynamic.chello.pl. [31.178.116.31])
+        by smtp.googlemail.com with ESMTPSA id d2sm974187ljc.84.2019.05.17.22.11.12
+        for <linux-ide@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 17 May 2019 22:11:12 -0700 (PDT)
+To:     linux-ide@vger.kernel.org
+From:   =?UTF-8?Q?Micha=c5=82_Wadowski?= <wadosm@gmail.com>
+Subject: Linux 4.15 and onwards fails to initialize some hard drives
+Message-ID: <235abe94-2c9a-7fd8-0a3e-b813bed50a9f@gmail.com>
+Date:   Sat, 18 May 2019 07:11:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66a23e7c-2ba8-b505-8382-d13c1912ea88@samsung.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset=utf-8
+Content-Language: pl-PL
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi,
+Hi there,
 
-On Thu, Feb 07, 2019 at 04:02:11PM +0100, Bartlomiej Zolnierkiewicz wrote:
-> On 01/26/2019 07:43 PM, Aaro Koskinen wrote:
-> > On Mon, Jan 14, 2019 at 02:16:42PM +0100, Bartlomiej Zolnierkiewicz wrote:
-> >> On 01/12/2019 04:26 PM, Aaro Koskinen wrote:
-> >>> Hi,
-> >>>
-> >>> On Sun, Jan 06, 2019 at 02:46:07PM +0200, Aaro Koskinen wrote:
-> >>>> Commit 7ff7a5b1bfff ("MIPS: lemote2f_defconfig: Convert to use libata
-> >>>> PATA drivers") switched from IDE to libata PATA on Loongson 2F, but
-> >>>> neither PATA_AMD or PATA_CS5536 work well on this platform compared
-> >>>> to the AMD74XX IDE driver.
-> >>
-> >> Sorry about that.
-> >>
-> >>>> During the ATA init/probe there is interrupt storm from irq 14, and
-> >>>> majority of system boots end up with "nobody cared... IRQ disabled".
-> >>>> So the result is a very slow disk access.
-> >>>>
-> >>>> It seems that the interrupt gets crazy after the port freeze done early
-> >>>> during the init, and for whatever reason it cannot be cleared.
-> >>>>
-> >>>> With the below workaround I was able to boot the system normally. I
-> >>>> guess that rather than going back to old IDE driver, we should just try
-> >>>> to make pata_cs5536 work (and forget PATA AMD on this board)...?
-> >>>
-> >>> Hmm, even with this hack I get ~500 spurious IRQs during the boot.
-> >>>
-> >>> Also compared to old IDE, there's 33 vs 100 speed difference:
-> >>>
-> >>> [    3.324000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4ce0 irq 14
-> >>> [    3.584000] ata1.00: ATA-8: WDC WD1600BEVS-00VAT0, 11.01A11, max UDMA/133
-> >>> [    3.588000] ata1.00: 312581808 sectors, multi 16: LBA48
-> >>> [    3.592000] ata1.00: limited to UDMA/33 due to 40-wire cable
-> >>>
-> >>> [    4.540000] Probing IDE interface ide0...
-> >>> [    4.992000] hda: WDC WD1600BEVS-00VAT0, ATA DISK drive
-> >>> [    5.716000] hda: host max PIO5 wanted PIO255(auto-tune) selected PIO4
-> >>> [    5.716000] hda: UDMA/100 mode selected
-> >>
-> >> Can you try booting with "libata.force=1:80c" (and if that doesn't work with
-> >> "libata.force=1:short40c")
-> > 
-> > (Sorry for delay, this machine is in use so I couldn't reboot it randomly...)
-> > 
-> > OK, the speed issue can be fixed with command line. So "libata.force=1:80c"
-> > works with cs5536 libata driver.
-> > 
-> >> and also provide full dmesg-s for working (ide) and not working
-> >> (libata) kernels.
-> > 
-> > Logs are below:
-> > 
-> > 1) working IDE (no spurious IRQs)
-> > 2) working PATA AMD (around ~90k spurious IRQs, so it's just a matter of luck)
-> > 3) failing PATA AMD (100k spurious IRQs reached)
-> > 4) working PATA CS5536 (same as with PATA AMD)
-> > 5) failing PATA CS5536 (same as with PATA AMD)
-> 
-> Thank you.
-> 
-> I've looked a bit more into the problem and came with two possible
-> approaches to investigate it further:
-> 
-> * The major difference between IDE and libata during probing is that
->   IDE keeps the port's IRQ (if known) disabled during whole probe time.
-> 
->   To replicate this behavior in libata it seems that we would need
->   to cache IRQ number used in ap->irq, then call disable_irq(ap->irq)
->   when ATA_PFLAG_LOADING flag is set and enable_irq(ap->irq) when
->   ATA_PFLAG_LOADING is cleared.
+I created patch to fix the regression, that Linux 4.15-rc4 (commit
+a83cb7e6ada140f8b932c223511f1063c4150870) was break my drive working.
 
-Since IDE driver is now officially deprecated, I got some motivation to
-start trying to fix this. I tried the above approach, but it does not work
-very well - I still get around 50000 spurious IRQs.
+I have two sata drives, one SSD and second HDD. Until Linux 4.15-rc4 my
+second HDD was working fine, but I had to manually reset drive (in
+booting scripts) several times to establish connection. I thought it was
+a hardware problem, but it was just working.
 
-If I move disable_irq() earlier (from __ata_port_probe() into
-ata_pci_sff_activate_host()), it works better with only 20 spurious IRQs.
+Since Linux 4.15-rc4, my second HDD doesn't working any more. I was
+investigate this issue and find out what was happend. I created patch
+to solve the regression. By the way, I fixed a weird behavior, the need
+to restart drive to establish connection.
 
-But, keeping the IRQ disabled during probe seems to result in the
-following:
+Before this patch, HDD drive was always working with 1.5Gbps. After
+this, HDD is connected with 3Gbps and no manually restart is needed.
 
-[    4.956000] ata1: PATA max UDMA/100 cmd 0x1f0 ctl 0x3f6 bmdma 0x4ce0 irq 14
-[    4.960000] ata2: DUMMY
-[   10.328000] ata1.00: qc timeout (cmd 0x27)
-[   10.332000] ata1.00: failed to read native max address (err_mask=0x4)
-[   10.336000] ata1.00: HPA support seems broken, skipping HPA handling
+Best regards,
 
-> * The other idea is to try to modify your workaround patch to implement
->   dummy ->sff_set_devctl helper ("empty" one) instead of adding custom
->   version of ->freeze one.
-
-This works, but also still results in around 50000 spurious IRQs... So
-the risk is that the 100000 limit is could be reached if the ATA probe
-gets delayed by other subsystems.
-
-A.
+Michał Wadowski

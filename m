@@ -2,20 +2,20 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EDB725210
-	for <lists+linux-ide@lfdr.de>; Tue, 21 May 2019 16:31:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57E6625213
+	for <lists+linux-ide@lfdr.de>; Tue, 21 May 2019 16:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728248AbfEUObV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 May 2019 10:31:21 -0400
-Received: from relay1-d.mail.gandi.net ([217.70.183.193]:39301 "EHLO
+        id S1728256AbfEUOb1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 May 2019 10:31:27 -0400
+Received: from relay1-d.mail.gandi.net ([217.70.183.193]:37345 "EHLO
         relay1-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726900AbfEUObV (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 May 2019 10:31:21 -0400
+        with ESMTP id S1726900AbfEUOb0 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 May 2019 10:31:26 -0400
 X-Originating-IP: 90.88.22.185
 Received: from localhost.localdomain (aaubervilliers-681-1-80-185.w90-88.abo.wanadoo.fr [90.88.22.185])
         (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 7F693240028;
-        Tue, 21 May 2019 14:31:15 +0000 (UTC)
+        by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 44638240012;
+        Tue, 21 May 2019 14:31:19 +0000 (UTC)
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Gregory Clement <gregory.clement@bootlin.com>,
         Jason Cooper <jason@lakedaemon.net>,
@@ -35,9 +35,9 @@ Cc:     <linux-arm-kernel@lists.infradead.org>,
         Nadav Haklai <nadavh@marvell.com>,
         Baruch Siach <baruch@tkos.co.il>,
         Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v4 05/10] ata: ahci: mvebu: Add a parameter to a platform data callback
-Date:   Tue, 21 May 2019 16:30:18 +0200
-Message-Id: <20190521143023.31810-6-miquel.raynal@bootlin.com>
+Subject: [PATCH v4 06/10] dt-bindings: ata: Update ahci_mvebu bindings
+Date:   Tue, 21 May 2019 16:30:19 +0200
+Message-Id: <20190521143023.31810-7-miquel.raynal@bootlin.com>
 X-Mailer: git-send-email 2.19.1
 In-Reply-To: <20190521143023.31810-1-miquel.raynal@bootlin.com>
 References: <20190521143023.31810-1-miquel.raynal@bootlin.com>
@@ -48,68 +48,26 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Before using the ahci_mvebu.c driver with Armada 8k hardware (right
-now it is using the ahci_platform.c generic driver), let's add a
-'struct device' pointer to the argument list of the
-->plat_config() callback. This parameter will be used by the A8k's
-callback.
+Update bindings with the already in use Armada 8k compatible.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- drivers/ata/ahci_mvebu.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ Documentation/devicetree/bindings/ata/ahci-platform.txt | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/ahci_mvebu.c b/drivers/ata/ahci_mvebu.c
-index 43bb2db59698..507ee7c5437c 100644
---- a/drivers/ata/ahci_mvebu.c
-+++ b/drivers/ata/ahci_mvebu.c
-@@ -29,7 +29,7 @@
- #define AHCI_WINDOW_SIZE(win)	(0x68 + ((win) << 4))
- 
- struct ahci_mvebu_plat_data {
--	int (*plat_config)(struct ahci_host_priv *hpriv);
-+	int (*plat_config)(struct ahci_host_priv *hpriv, struct device *dev);
- 	unsigned int host_flags;
- };
- 
-@@ -67,7 +67,8 @@ static void ahci_mvebu_regret_option(struct ahci_host_priv *hpriv)
- 	writel(0x80, hpriv->mmio + AHCI_VENDOR_SPECIFIC_0_DATA);
- }
- 
--static int ahci_mvebu_armada_380_config(struct ahci_host_priv *hpriv)
-+static int ahci_mvebu_armada_380_config(struct ahci_host_priv *hpriv,
-+					struct device *dev)
- {
- 	const struct mbus_dram_target_info *dram;
- 	int rc = 0;
-@@ -83,7 +84,8 @@ static int ahci_mvebu_armada_380_config(struct ahci_host_priv *hpriv)
- 	return rc;
- }
- 
--static int ahci_mvebu_armada_3700_config(struct ahci_host_priv *hpriv)
-+static int ahci_mvebu_armada_3700_config(struct ahci_host_priv *hpriv,
-+					 struct device *dev)
- {
- 	u32 reg;
- 
-@@ -162,7 +164,7 @@ static int ahci_mvebu_resume(struct platform_device *pdev)
- 	struct ahci_host_priv *hpriv = host->private_data;
- 	const struct ahci_mvebu_plat_data *pdata = hpriv->plat_data;
- 
--	pdata->plat_config(hpriv);
-+	pdata->plat_config(hpriv, &pdev->dev);
- 
- 	return ahci_platform_resume_host(&pdev->dev);
- }
-@@ -205,7 +207,7 @@ static int ahci_mvebu_probe(struct platform_device *pdev)
- 
- 	hpriv->stop_engine = ahci_mvebu_stop_engine;
- 
--	rc = pdata->plat_config(hpriv);
-+	rc = pdata->plat_config(hpriv, &pdev->dev);
- 	if (rc)
- 		goto disable_resources;
- 
+diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+index 80261e2845b0..a1e6a3a27ee3 100644
+--- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
++++ b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+@@ -17,6 +17,7 @@ Required properties:
+   - "ibm,476gtr-ahci"
+   - "marvell,armada-380-ahci"
+   - "marvell,armada-3700-ahci"
++  - "marvell,armada-8k-ahci"
+   - "snps,dwc-ahci"
+   - "snps,spear-ahci"
+   - "generic-ahci"
 -- 
 2.19.1
 

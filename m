@@ -2,23 +2,22 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B9B2547D
-	for <lists+linux-ide@lfdr.de>; Tue, 21 May 2019 17:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0864625FE8
+	for <lists+linux-ide@lfdr.de>; Wed, 22 May 2019 10:58:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728273AbfEUPvy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 May 2019 11:51:54 -0400
-Received: from foss.arm.com ([217.140.101.70]:37432 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727941AbfEUPvy (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 21 May 2019 11:51:54 -0400
+        id S1728610AbfEVI6p (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 22 May 2019 04:58:45 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:45332 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727796AbfEVI6o (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 22 May 2019 04:58:44 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B0B37374;
-        Tue, 21 May 2019 08:51:53 -0700 (PDT)
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3A999374;
+        Wed, 22 May 2019 01:58:44 -0700 (PDT)
 Received: from [10.1.197.61] (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD9323F575;
-        Tue, 21 May 2019 08:51:48 -0700 (PDT)
-Subject: Re: [PATCH v4 09/10] irqchip/irq-mvebu-icu: Remove the double SATA
- ports interrupt hack
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E9E33F718;
+        Wed, 22 May 2019 01:58:39 -0700 (PDT)
+Subject: Re: [PATCH v4 04/10] ata: ahci: mvebu: Rename a platform data flag
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
         Gregory Clement <gregory.clement@bootlin.com>,
         Jason Cooper <jason@lakedaemon.net>,
@@ -37,7 +36,7 @@ Cc:     linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
         Nadav Haklai <nadavh@marvell.com>,
         Baruch Siach <baruch@tkos.co.il>
 References: <20190521143023.31810-1-miquel.raynal@bootlin.com>
- <20190521143023.31810-10-miquel.raynal@bootlin.com>
+ <20190521143023.31810-5-miquel.raynal@bootlin.com>
 From:   Marc Zyngier <marc.zyngier@arm.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=marc.zyngier@arm.com; prefer-encrypt=mutual; keydata=
@@ -83,12 +82,12 @@ Autocrypt: addr=marc.zyngier@arm.com; prefer-encrypt=mutual; keydata=
  hApihi08gwvP5G9fNGKQyRETePEtEAWt0b7dOqMzYBYGRVr7uS4uT6WP7fzOwAJC4lU7ZYWZ
  yVshCa0IvTtp1085RtT3qhh9mobkcZ+7cQOY+Tx2RGXS9WeOh2jZjdoWUv6CevXNQyOUXMM=
 Organization: ARM Ltd
-Message-ID: <31d75a17-858f-e289-5542-be7e6a0a4e5e@arm.com>
-Date:   Tue, 21 May 2019 16:51:47 +0100
+Message-ID: <75a0a155-88cd-9392-1fb6-75ad4498aff5@arm.com>
+Date:   Wed, 22 May 2019 09:58:37 +0100
 User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190521143023.31810-10-miquel.raynal@bootlin.com>
+In-Reply-To: <20190521143023.31810-5-miquel.raynal@bootlin.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -98,15 +97,51 @@ List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
 On 21/05/2019 15:30, Miquel Raynal wrote:
-> When writing the driver, a hack was introduced to configure both SATA
-> interrupts regardless of the port in use to overcome a limitation in
-> the SATA core. Now that this limitation has been addressed and the
-> hack moved in the (historically) responsible SATA driver,
-> ahci_{platform,mvebu}.c, let's clean this driver section.
+> Before adding more entries in the platform data structure, rename the
+> flags entry to be more precise and name it host_flags.
 > 
 > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> ---
+>  drivers/ata/ahci_mvebu.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ata/ahci_mvebu.c b/drivers/ata/ahci_mvebu.c
+> index d4bba3ace45d..43bb2db59698 100644
+> --- a/drivers/ata/ahci_mvebu.c
+> +++ b/drivers/ata/ahci_mvebu.c
+> @@ -30,7 +30,7 @@
+>  
+>  struct ahci_mvebu_plat_data {
+>  	int (*plat_config)(struct ahci_host_priv *hpriv);
+> -	unsigned int flags;
+> +	unsigned int host_flags;
+>  };
+>  
+>  static void ahci_mvebu_mbus_config(struct ahci_host_priv *hpriv,
+> @@ -196,7 +196,7 @@ static int ahci_mvebu_probe(struct platform_device *pdev)
+>  	if (IS_ERR(hpriv))
+>  		return PTR_ERR(hpriv);
+>  
+> -	hpriv->flags |= pdata->flags;
+> +	hpriv->flags |= pdata->host_flags;
+>  	hpriv->plat_data = (void *)pdata;
+>  
+>  	rc = ahci_platform_enable_resources(hpriv);
+> @@ -227,7 +227,7 @@ static const struct ahci_mvebu_plat_data ahci_mvebu_armada_380_plat_data = {
+>  
+>  static const struct ahci_mvebu_plat_data ahci_mvebu_armada_3700_plat_data = {
+>  	.plat_config = ahci_mvebu_armada_3700_config,
+> -	.flags = AHCI_HFLAG_SUSPEND_PHYS,
+> +	.host_flags = AHCI_HFLAG_SUSPEND_PHYS,
+>  };
+>  
+>  static const struct of_device_id ahci_mvebu_of_match[] = {
+> 
 
-Acked-by: Marc Zyngier <marc.zyngier@arm.com>
+If, as I suspect, you don't need resource_flags in patch 8, then this
+patch becomes a bit pointless.
+
+Thanks,
 
 	M.
 -- 

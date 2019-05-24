@@ -2,92 +2,79 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E949C27962
-	for <lists+linux-ide@lfdr.de>; Thu, 23 May 2019 11:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98F28299D2
+	for <lists+linux-ide@lfdr.de>; Fri, 24 May 2019 16:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728184AbfEWJgn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 23 May 2019 05:36:43 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:44414 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727434AbfEWJgn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 23 May 2019 05:36:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=C9Fu8dUAF8smkFmbrTSjD2DqFNL9fQeYAFwJNoqCimY=; b=i42IvBJoHVjHYrfml/eNUNVwO
-        CeRVwgK8RHiihNoboaZhaXM42a00fqvNxuM2xuXUd4MbVaSHJJruiAwnRSztz+TVHKGo44IhBubMC
-        j73b87f0hkt3azyrtI7X0Oe1+rN7r3fDZ6g01xsFPkyXk3XWAjlS8fpF16HyjM2gFUSD2FmIFj+qQ
-        HuC7Uzt+7FtFZThm8KmSeTVv9iDb4/yhbdZhzcYnd08JU7yxDBNFFoBKT8jkkF3KEGLOMXd2OZotp
-        GO5rcFlh5d6TVF2SR6Mwin1fXYrqSUUw4GK2FlPmUF3Rgp8RMe8UXed6BOyP2RfkUDUJ/JMIqO2ko
-        yDRM15DaA==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hTk9B-0000my-7A; Thu, 23 May 2019 09:36:25 +0000
-Date:   Thu, 23 May 2019 02:36:25 -0700
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Miquel Raynal <miquel.raynal@bootlin.com>
-Cc:     Gregory Clement <gregory.clement@bootlin.com>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Marc Zyngier <marc.zyngier@arm.com>,
-        devicetree@vger.kernel.org, Baruch Siach <baruch@tkos.co.il>,
-        Antoine Tenart <antoine.tenart@bootlin.com>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Nadav Haklai <nadavh@marvell.com>, linux-ide@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 02/10] ata: ahci: Support per-port interrupts
-Message-ID: <20190523093625.GA26136@infradead.org>
-References: <20190521143023.31810-1-miquel.raynal@bootlin.com>
- <20190521143023.31810-3-miquel.raynal@bootlin.com>
+        id S2403895AbfEXOMz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 24 May 2019 10:12:55 -0400
+Received: from mail-ua1-f67.google.com ([209.85.222.67]:36081 "EHLO
+        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403917AbfEXOMy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 24 May 2019 10:12:54 -0400
+Received: by mail-ua1-f67.google.com with SMTP id 94so3591318uam.3
+        for <linux-ide@vger.kernel.org>; Fri, 24 May 2019 07:12:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=4/YtxnCSquVFbz3fvlJuTAiSBBdx7WOGxNsT8gEhluQ=;
+        b=hA5ECtsFLJ+qRa6QWRgUxGHHJ7DeZAvTld+FR33/NqBzBk7N3Dyjv8bzdd7wGc14Dn
+         k8KqwRDCjjw+3xyWrxdK85YNKkyzl8ZzniTfn6ZIhrdi0Umf6WdisaLLpBKDbWLW4Nhh
+         n0z8pbSg5d5sqtThTyNjBvpF0oFguo1kfo1Vqdud8YoQQ59v/XpGAzHCLRuDdINAH33/
+         g2FHmfGrxIVUgWe4ZKDT6rRJqgEGviT/FuWv9jiPWNM2zSdfXZ8qdq9K7IRP9ncaCqGg
+         CumOvtV248TqnWXQ844A37BwDZNXLaLOXWX/SS4fQIurd1e47qj3EpY+0myBJlwwB+tS
+         ktig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=4/YtxnCSquVFbz3fvlJuTAiSBBdx7WOGxNsT8gEhluQ=;
+        b=XgyUuv+c60/n1DAbNqKWutg+Lg9JpxF5O0h7Poe8JgxaWr/G/5rp/edx2eL3O607x2
+         vMkoWF39IxGbFrCDi8q31ZUpIQmWkQ2OBMFGqg9B9f5cqpjS6YnWrBfkxKRG8KHjlVu/
+         Q2AN1ifyyYSyIp+jHhwS/klgRLlNfeYW2oBvaFKm2w+mAlFxOrXxxE057PtSB7wkEfMu
+         D9cMxIWiQTKNIY+Ub31DA12hBz4KbybIJ+SISN8xdap0H5PywqHNFrKDSLgb27lKwrCk
+         L1/2+ZB8/2+1G1N166iYm/2eSGKoPoDSHqquT5vPOKr8h0lj7OB9HAVrJtu1r5T1s2BS
+         q0yw==
+X-Gm-Message-State: APjAAAW5ZdQ+PFaJo5NkOpZ4bv7QBaMzt0GtO3pFwV7F+S43CQw5kzo5
+        YJFSESCF3f+Y8GR9oRPtuXBvXB4+TbgMpUzIHio=
+X-Google-Smtp-Source: APXvYqzgmM0+QRVxZ++NbBQwfBXwtT6004OXkWnUTvpS+8BhsQC4rMweWFtb+Stfz+CeDvvbuinm30kOpd1q4N91oxo=
+X-Received: by 2002:ab0:2845:: with SMTP id c5mr49126710uaq.61.1558707173763;
+ Fri, 24 May 2019 07:12:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190521143023.31810-3-miquel.raynal@bootlin.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Received: by 2002:a67:3247:0:0:0:0:0 with HTTP; Fri, 24 May 2019 07:12:52
+ -0700 (PDT)
+Reply-To: mrsevelynw23@gmail.com
+From:   Mrs Evelyn Williams <mrse001williams01@gmail.com>
+Date:   Fri, 24 May 2019 14:12:52 +0000
+Message-ID: <CAGnOewngWwrGtpE-v__U1gFPLYBduVMhJM7SWhRN6CueDEW=8A@mail.gmail.com>
+Subject: Dearest in the Lord,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-> --- a/drivers/ata/acard-ahci.c
-> +++ b/drivers/ata/acard-ahci.c
-> @@ -434,7 +434,7 @@ static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id
->  	if (!hpriv)
->  		return -ENOMEM;
->  
-> -	hpriv->irq = pdev->irq;
-> +	hpriv->irqs[0] = pdev->irq;
->  	hpriv->flags |= (unsigned long)pi.private_data;
+-- 
+Greetings to you from Mrs. Evelyn Williams,
 
-Who allocates ->irqs for the non-ahci.c case?
 
-> @@ -95,6 +96,14 @@ static void ahci_platform_disable_phys(struct ahci_host_priv *hpriv)
->  	}
->  }
->  
-> +int ahci_get_per_port_irq_vector(struct ata_host *host, int port)
-> +{
-> +	struct ahci_host_priv *hpriv = host->private_data;
-> +
-> +	return hpriv->irqs[port];
-> +}
-> +EXPORT_SYMBOL_GPL(ahci_get_per_port_irq_vector);
+Dearest in the Lord,
 
-This function seems a little misnamed.  The only multi-irq support in
-the AHCI spec itself is PCIe MSI/MSI-X, which is not handled by this
-function, but instead in the PCI layer using pci_irq_vector and the
-ahci_get_irq_vector callback in ahci.c.
+With due Respect and Humanity I am willing to send you the sum of Five
+million five hundred thousand dollars as a volunteer projects to
+accomplish I and my late husband vow. I, Mrs Evelyn Williams, 63 years
+old without a child, married to late Engr. Ramsey Williams who was an
+ambassador before he died of a Cardiac Arteries Operation, Presently
+my doctor told me that I may not be able to last for a long period of
+time due to Cancer of the breast and Kidney including Pneumonia.
+Kindly reply me back as soon as possible together with your personal
+details to proceed further for the sending of the fund to you
+immediately.
 
-In fact it seems like this scheme particular to your device config,
-why don't we just add a specific libahci-using subdriver for it?  That
-would also get rid of the whole ->irq to ->irqs change.
+Please always remember me in your daily prayers.
+
+Thanks and waiting your quick response.
+
+God bless us,
+
+Mrs Evelyn Williams

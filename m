@@ -2,79 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98F28299D2
-	for <lists+linux-ide@lfdr.de>; Fri, 24 May 2019 16:12:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7252A28D
+	for <lists+linux-ide@lfdr.de>; Sat, 25 May 2019 05:24:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403895AbfEXOMz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 24 May 2019 10:12:55 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:36081 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403917AbfEXOMy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 24 May 2019 10:12:54 -0400
-Received: by mail-ua1-f67.google.com with SMTP id 94so3591318uam.3
-        for <linux-ide@vger.kernel.org>; Fri, 24 May 2019 07:12:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=4/YtxnCSquVFbz3fvlJuTAiSBBdx7WOGxNsT8gEhluQ=;
-        b=hA5ECtsFLJ+qRa6QWRgUxGHHJ7DeZAvTld+FR33/NqBzBk7N3Dyjv8bzdd7wGc14Dn
-         k8KqwRDCjjw+3xyWrxdK85YNKkyzl8ZzniTfn6ZIhrdi0Umf6WdisaLLpBKDbWLW4Nhh
-         n0z8pbSg5d5sqtThTyNjBvpF0oFguo1kfo1Vqdud8YoQQ59v/XpGAzHCLRuDdINAH33/
-         g2FHmfGrxIVUgWe4ZKDT6rRJqgEGviT/FuWv9jiPWNM2zSdfXZ8qdq9K7IRP9ncaCqGg
-         CumOvtV248TqnWXQ844A37BwDZNXLaLOXWX/SS4fQIurd1e47qj3EpY+0myBJlwwB+tS
-         ktig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=4/YtxnCSquVFbz3fvlJuTAiSBBdx7WOGxNsT8gEhluQ=;
-        b=XgyUuv+c60/n1DAbNqKWutg+Lg9JpxF5O0h7Poe8JgxaWr/G/5rp/edx2eL3O607x2
-         vMkoWF39IxGbFrCDi8q31ZUpIQmWkQ2OBMFGqg9B9f5cqpjS6YnWrBfkxKRG8KHjlVu/
-         Q2AN1ifyyYSyIp+jHhwS/klgRLlNfeYW2oBvaFKm2w+mAlFxOrXxxE057PtSB7wkEfMu
-         D9cMxIWiQTKNIY+Ub31DA12hBz4KbybIJ+SISN8xdap0H5PywqHNFrKDSLgb27lKwrCk
-         L1/2+ZB8/2+1G1N166iYm/2eSGKoPoDSHqquT5vPOKr8h0lj7OB9HAVrJtu1r5T1s2BS
-         q0yw==
-X-Gm-Message-State: APjAAAW5ZdQ+PFaJo5NkOpZ4bv7QBaMzt0GtO3pFwV7F+S43CQw5kzo5
-        YJFSESCF3f+Y8GR9oRPtuXBvXB4+TbgMpUzIHio=
-X-Google-Smtp-Source: APXvYqzgmM0+QRVxZ++NbBQwfBXwtT6004OXkWnUTvpS+8BhsQC4rMweWFtb+Stfz+CeDvvbuinm30kOpd1q4N91oxo=
-X-Received: by 2002:ab0:2845:: with SMTP id c5mr49126710uaq.61.1558707173763;
- Fri, 24 May 2019 07:12:53 -0700 (PDT)
+        id S1726425AbfEYDY0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 24 May 2019 23:24:26 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:56674 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726390AbfEYDY0 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 24 May 2019 23:24:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=deYuWwVEMDx9F2BngHYcJsyLMkvbKf//OE69QqYwX9Y=; b=I9KkUanwg6WfwkWup0o0Ly/SVM
+        Ao/p0qI1tVg/HmlWcLPVGHBbzPuAMDbb3yuQRJ57VeiyxYDI5Yh6rhMliNzK3hkNQyT4/Ct5mv/ez
+        KaOoEoyviE4WsMQxc4UiFckxLd+MMZP12HrD9C4MMrbtsO/G8dpu/++Mm1UAGs9aRjL2BsIj/hcnC
+        hpjLLfwyJUcCOxGgh43urhrzTuTussOdDRo6XP/oqw8AP+g1KymdcORY6bJtNrsTEy8j6glkJhSGA
+        vU2MhWV1/KzgSlHEO6S5vtaTMf+71s7IuWSc/uEK/c3yOFH0TR3fSU+og0uCnhhMHOC1OPcDaXjPi
+        Wwy7b+5g==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hUNIE-0001Fb-W2; Sat, 25 May 2019 03:24:23 +0000
+Subject: Re: `SATA_AHCI` not selected by default with `make olddefconfig`
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     linux-ide@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>
+References: <c2733e6e-2b45-9311-1a90-67c0b814a01b@molgen.mpg.de>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <91d3b405-1da0-fe89-14d3-f45043167822@infradead.org>
+Date:   Fri, 24 May 2019 20:24:19 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Received: by 2002:a67:3247:0:0:0:0:0 with HTTP; Fri, 24 May 2019 07:12:52
- -0700 (PDT)
-Reply-To: mrsevelynw23@gmail.com
-From:   Mrs Evelyn Williams <mrse001williams01@gmail.com>
-Date:   Fri, 24 May 2019 14:12:52 +0000
-Message-ID: <CAGnOewngWwrGtpE-v__U1gFPLYBduVMhJM7SWhRN6CueDEW=8A@mail.gmail.com>
-Subject: Dearest in the Lord,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <c2733e6e-2b45-9311-1a90-67c0b814a01b@molgen.mpg.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+On 1/10/19 6:43 AM, Paul Menzel wrote:
+> Dear Linux folks,
+> 
+> 
+> There were some PCI Kconfig changes, which seem to cause problems
+> with components depending on PCI. With the attached minimal config,
+> running `make olddefconfig` on Linux 4.20 and older caused
+> `SATA_AHCI` to be selected. But, with Linux 5.0-rc1 it is not
+> selected.
+> 
+> 
+> Kind regards,
+> 
+> Paul
+
+[adding linux-pci for posterity]
+
+Hi Paul,
+
+I guess this is called progress.  Anyway, it's good that you noticed and
+reported it.
+
+
+In 4.20 (and earlier), PCI defaults to y.
+As you hint, in 5.x, PCI does not default to y, so Kconfig symbols that
+depend on PCI will not be set/enabled by "make olddefconfig", including
+SATA_AHCI even though SATA_AHCI is set in your old .config file.
+
+
 -- 
-Greetings to you from Mrs. Evelyn Williams,
-
-
-Dearest in the Lord,
-
-With due Respect and Humanity I am willing to send you the sum of Five
-million five hundred thousand dollars as a volunteer projects to
-accomplish I and my late husband vow. I, Mrs Evelyn Williams, 63 years
-old without a child, married to late Engr. Ramsey Williams who was an
-ambassador before he died of a Cardiac Arteries Operation, Presently
-my doctor told me that I may not be able to last for a long period of
-time due to Cancer of the breast and Kidney including Pneumonia.
-Kindly reply me back as soon as possible together with your personal
-details to proceed further for the sending of the fund to you
-immediately.
-
-Please always remember me in your daily prayers.
-
-Thanks and waiting your quick response.
-
-God bless us,
-
-Mrs Evelyn Williams
+~Randy

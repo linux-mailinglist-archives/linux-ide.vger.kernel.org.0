@@ -2,80 +2,40 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE7252A28D
-	for <lists+linux-ide@lfdr.de>; Sat, 25 May 2019 05:24:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3896A2BB70
+	for <lists+linux-ide@lfdr.de>; Mon, 27 May 2019 22:36:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbfEYDY0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 24 May 2019 23:24:26 -0400
-Received: from merlin.infradead.org ([205.233.59.134]:56674 "EHLO
-        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726390AbfEYDY0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 24 May 2019 23:24:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=deYuWwVEMDx9F2BngHYcJsyLMkvbKf//OE69QqYwX9Y=; b=I9KkUanwg6WfwkWup0o0Ly/SVM
-        Ao/p0qI1tVg/HmlWcLPVGHBbzPuAMDbb3yuQRJ57VeiyxYDI5Yh6rhMliNzK3hkNQyT4/Ct5mv/ez
-        KaOoEoyviE4WsMQxc4UiFckxLd+MMZP12HrD9C4MMrbtsO/G8dpu/++Mm1UAGs9aRjL2BsIj/hcnC
-        hpjLLfwyJUcCOxGgh43urhrzTuTussOdDRo6XP/oqw8AP+g1KymdcORY6bJtNrsTEy8j6glkJhSGA
-        vU2MhWV1/KzgSlHEO6S5vtaTMf+71s7IuWSc/uEK/c3yOFH0TR3fSU+og0uCnhhMHOC1OPcDaXjPi
-        Wwy7b+5g==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
-        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hUNIE-0001Fb-W2; Sat, 25 May 2019 03:24:23 +0000
-Subject: Re: `SATA_AHCI` not selected by default with `make olddefconfig`
-To:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>
-Cc:     linux-ide@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>
-References: <c2733e6e-2b45-9311-1a90-67c0b814a01b@molgen.mpg.de>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <91d3b405-1da0-fe89-14d3-f45043167822@infradead.org>
-Date:   Fri, 24 May 2019 20:24:19 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726693AbfE0UgD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 27 May 2019 16:36:03 -0400
+Received: from dolcegabbana.com ([198.23.132.36]:58050 "EHLO petraband.com"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726346AbfE0UgD (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 27 May 2019 16:36:03 -0400
+To:     linux-ide@vger.kernel.org
+Subject: Need traffic for your website?
+Message-ID: <27bbd6bebb06c9636cd89a12f77bd6ca@walkeralextra.tech>
+Date:   Mon, 27 May 2019 11:38:28 +0200
+From:   "Alex Walker" <schutz@walkeralextra.tech>
+Reply-To: fanfenqi@sina.com
 MIME-Version: 1.0
-In-Reply-To: <c2733e6e-2b45-9311-1a90-67c0b814a01b@molgen.mpg.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/10/19 6:43 AM, Paul Menzel wrote:
-> Dear Linux folks,
-> 
-> 
-> There were some PCI Kconfig changes, which seem to cause problems
-> with components depending on PCI. With the attached minimal config,
-> running `make olddefconfig` on Linux 4.20 and older caused
-> `SATA_AHCI` to be selected. But, with Linux 5.0-rc1 it is not
-> selected.
-> 
-> 
-> Kind regards,
-> 
-> Paul
+Hi
 
-[adding linux-pci for posterity]
+Do you need traffic for your website, or ecommerce store?
+We can bring 1-2 thousands of visitors to your website daily.
 
-Hi Paul,
+No matter what you are selling, products or service. Getting more traffic
+is the key to your business.
 
-I guess this is called progress.  Anyway, it's good that you noticed and
-reported it.
+Please reply if interested, we will go options for you.
 
+Thanks,
+Alex Walker
+Whatsapp: +8617199402387
 
-In 4.20 (and earlier), PCI defaults to y.
-As you hint, in 5.x, PCI does not default to y, so Kconfig symbols that
-depend on PCI will not be set/enabled by "make olddefconfig", including
-SATA_AHCI even though SATA_AHCI is set in your old .config file.
-
-
--- 
-~Randy

@@ -2,82 +2,57 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1966535B60
-	for <lists+linux-ide@lfdr.de>; Wed,  5 Jun 2019 13:36:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8483835F90
+	for <lists+linux-ide@lfdr.de>; Wed,  5 Jun 2019 16:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbfFELge (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 5 Jun 2019 07:36:34 -0400
-Received: from mout.kundenserver.de ([212.227.17.24]:35923 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727183AbfFELgd (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Jun 2019 07:36:33 -0400
-Received: from orion.localdomain ([77.2.1.21]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MkYkC-1gqrir3234-00m7K2; Wed, 05 Jun 2019 13:36:31 +0200
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     axboe@kernel.dk, linux-ide@vger.kernel.org
-Subject: [PATCH v2 2/2] drivers: libata: add sysctl: 'libata.allow_tpm' for self-encrypted devices
-Date:   Wed,  5 Jun 2019 13:36:27 +0200
-Message-Id: <1559734587-32596-3-git-send-email-info@metux.net>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1559734587-32596-1-git-send-email-info@metux.net>
-References: <1559734587-32596-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:IwR76kfF8NbIVzb1DaC9Jlqo/olqobP2qAibfwDa5jwjKWCq6+7
- tAtY2Fg+oEXJOe+FK52GU8eKOGz6NV9N1lhv5JgAD6oEvoIiPqRtBDyONsaTzDbmfS/+Pkc
- riLq9/zMovQdd/nzhSDlVx3NegbL7vRNcHNRSPJ7mVFSYsBhnToy03SfhjDRe9/a91RCOAS
- VBB3T421x/TvR8UxJkRqQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kzEWbe+lIeA=:7MPQnCVidjtz8XBMgqA11q
- 06l4BsMnxYzmg647U3UqwvNwroUGuNX6XCc6qwrWO6xogshgAVjJ6RIm3roVlPewdK63hdYbJ
- Obnrw2J8aIsMoXq3t0RStAtwO/wqH9gUl1MVwkYBGssCL8p8Ve4kBaQEZ/Ixw40w4qsigssnt
- LAHYCFGJGT0pGNhNe9qmM4K8vTJTQUPUQWfDAJY4e97svDGxoMojGBRVNFjCZC9XiMYxy6jq8
- NeG+9ZNMfjW7gcB0rBjIHqsTgBiC4zC8NpZTBCmY8aygPPvwqnOEmzn4AVux+2LFAEwbiIeGz
- vxO/WXM2ojBUgU36gtFB9kG7rl50ZU6BYWMk+tmt33MQuv0LEsCnehYGtJfn8/dp5lc8Dt96Q
- HypFEISjE8jh5EBfzk/KYGu+ms6n8X6EHLp41OJS/RcNdKeO8LgKy7ZAeT24BrbHBqmgLQrMq
- D/eku2Po/OQhw+TwHcuNJpNj2HLGoXz1D7s/iNh+LlYhtzw7yCbA4q9srGkZ5y79aXCvKGGZ7
- FMxsEUhHDqv9uWLtVjxHDyeCVxLGNazE8Uabi/fA9ytEKKpX1/hSHU/QoL3lJEeJSO7stk2EA
- S3C3zRJICTDJJpmGvr2ZCCUHgUFq37KjILOFtVwESMHsYWqy9WdQ4k4wpiGzn1rZ1zPSrARDf
- S2MBhRiQ2PQ03lxg+YSevyiYb2bk6cuuHU/tfWIVo48Fk3XYe3Yre09vLLs7SEGa7piv3peC+
- DNyKPrxXiD7SuEK5QEuwfY/AQzhrLCaBduZ1mw==
+        id S1728353AbfFEOs6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 5 Jun 2019 10:48:58 -0400
+Received: from 313717.com ([176.126.78.19]:34336 "EHLO treehousetv.com"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726442AbfFEOs6 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 5 Jun 2019 10:48:58 -0400
+X-Greylist: delayed 3554 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Jun 2019 10:48:57 EDT
+To:     linux-ide@vger.kernel.org
+Subject: custom printed logo
+Message-ID: <178a5cc004b8a12111a4ec822d26b833@vecteezy.com>
+Date:   Wed, 05 Jun 2019 14:29:37 +0200
+From:   "Stacy" <schssereutz@aol.jp>
+Reply-To: halsyid@sina.com
+MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-libata tpm functionality, needed for self encrypted devices (OPAL, ...),
-is currently disabled per default and needs to be enabled via kernel
-command line.
+Hi,
 
-This patch allows enabling it via sysctl.
+I wanted to follow up from last week. Did you receive the email I sent you?
 
-The implementation might look a bit 'naive', as there aren't any locks
-or barriers, etc. As we're dealing just w/ a plain boolean value, that's
-only checked when an tpm-related ioctl is called, we're fine w/ that.
+Our company manufactures USB Flash Drives, printed with your logo.  They
+make the perfect marketing tool for your business or organization.
 
-Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
----
- drivers/ata/libata-core.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+We offer low minimum quantities, and all memory sizes. Over 150 Stock
+Models as well as 100 % custom shaped USB drives.  Memory sizes include up
+to 128GB !
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 2af2470..f241028 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -161,6 +161,13 @@ struct ata_force_ent {
- MODULE_VERSION(DRV_VERSION);
- 
- static struct ctl_table ctl_libata[] = {
-+	{
-+		.procname	= "allow_tpm",
-+		.data		= &libata_allow_tpm,
-+		.maxlen		= sizeof(libata_allow_tpm),
-+		.mode		= 0644,
-+		.proc_handler	= proc_dointvec,
-+	},
- 	{}
- };
- 
--- 
-1.9.1
+We can pre-load your media files, images, presentations and files onto the
+drives for you.  These are ideal handouts for trade shows, branding,
+corporate gifts and employees.
+Our USB Pricing is at an ALL TIME LOW - now is the time to get your USB
+drives.
+
+Let us send you a quote!   We will EARN your business!
+* Please reply back and let me know what quantity and memory size
+you need for a Fast Quote! *
+
+Are you a school or nonprofit?  Please let us know for even further
+discounts.
+
+Thanks!
+
+Stacy King
+National Account Rep
+Promo / Branded Flash Drives
 

@@ -2,70 +2,70 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0AC392A6
-	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 19:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE02339321
+	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 19:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729241AbfFGRAi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 7 Jun 2019 13:00:38 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:36310 "EHLO
+        id S1730101AbfFGR1I (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 7 Jun 2019 13:27:08 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:35332 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728974AbfFGRAi (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Jun 2019 13:00:38 -0400
+        with ESMTP id S1728876AbfFGR1I (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Jun 2019 13:27:08 -0400
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57GwwjZ153112;
-        Fri, 7 Jun 2019 17:00:34 GMT
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57HIhbF170100;
+        Fri, 7 Jun 2019 17:27:05 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
  from : references : date : in-reply-to : message-id : mime-version :
  content-type; s=corp-2018-07-02;
- bh=qJWNPqVnOuZdNUVs/8DblqBQeJjxerPcG8WYUK6blAg=;
- b=PZ7A+XLIaQ0oHDMUwYf9cYEejGBEg5xhO87mHVCWlC0HNRwi0vBgOFBUUYirNalwlLBh
- LlKYvgBxuRCxABAtZk+QqyJYrUPhSweiWaEB+sa5l/bE9A9PFGLeAB4Me7TJ7zDcvIGw
- 8l9xXAAsDRSr7q7aJNx0cguMh4O5dxhYFfCy8f1qB1UQd4T2RyCrYbrIBnnXsr1SK0Ya
- sLcTSl+UTojUPEm8zsk2mlloWASyYoBFcjoE+Hlk5XLF37rNHZkLNfz+lp0l9TWgatRC
- 2YjMBqJEsidL+FfGOgIiTyRqYQ/k+t2LjYgh3yZtNZlxGlNmaXroXQM31dJptzJt6x57 kg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2sugstyfn7-1
+ bh=sJ8louzcxQ+/SPIhPvWd1tKDp21eQEHrE1jVzge2LQE=;
+ b=166+1VM+mm6mrDqJiJxkRNV+jFY0kgNKrlXigCn0Z8P+u7eSFbncZzJqod4QrudvvsXL
+ 9j6QtE7aKpH6hEiC4CUsd/SQZP19AzOR3DV4ju1jqtxUuCNSoRY7J/wLQyo1uF3aDIbH
+ t7ocbrgBVh5zvhspPvEjnB+XmHtw5hKAWtWo12WtHbr8ROY9oiyy8kSaydBZhK96OnHl
+ wVG7PTO7cMWNB1CAjwFkJJ1P04LyDOpDQSLvVvGvNHchZoN4LKkK3m+SIausTO8KfnvL
+ QLCA0NH/NqlR46tdOSTPjum/NtAJakET+crL5dHttVFrPFIUd23xuhfD8L5E3PP94NIE Qw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2sugstymb0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 17:00:34 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57GvckQ021941;
-        Fri, 7 Jun 2019 16:58:34 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2swngn6abk-1
+        Fri, 07 Jun 2019 17:27:04 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57HQifN055246;
+        Fri, 7 Jun 2019 17:27:04 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2swnhdcn1s-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 16:58:34 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x57GwXiM032176;
-        Fri, 7 Jun 2019 16:58:33 GMT
+        Fri, 07 Jun 2019 17:27:03 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x57HR29p020389;
+        Fri, 7 Jun 2019 17:27:02 GMT
 Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 07 Jun 2019 09:58:32 -0700
+        with ESMTP ; Fri, 07 Jun 2019 10:27:02 -0700
 To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
 Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
-Subject: Re: [PATCH] drivers/ata: print trim features at device initialization
+Subject: Re: [PATCH] drivers/ata: remove flood "Enabling discard_zeroes_data"
 From:   "Martin K. Petersen" <martin.petersen@oracle.com>
 Organization: Oracle Corporation
-References: <155989287898.1506.14253954112551051148.stgit@buzz>
-Date:   Fri, 07 Jun 2019 12:58:30 -0400
-In-Reply-To: <155989287898.1506.14253954112551051148.stgit@buzz> (Konstantin
-        Khlebnikov's message of "Fri, 07 Jun 2019 10:34:39 +0300")
-Message-ID: <yq1wohxib7t.fsf@oracle.com>
+References: <155989286981.1471.16344793966539115439.stgit@buzz>
+Date:   Fri, 07 Jun 2019 13:26:54 -0400
+In-Reply-To: <155989286981.1471.16344793966539115439.stgit@buzz> (Konstantin
+        Khlebnikov's message of "Fri, 07 Jun 2019 10:34:29 +0300")
+Message-ID: <yq1sgsli9wh.fsf@oracle.com>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=681
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=756
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906070113
+ engine=8.0.1-1810050000 definitions=main-1906070116
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=727 adultscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=806 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906070113
+ definitions=main-1906070116
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
@@ -74,42 +74,17 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Konstantin,
 
-> +			if (dev->horkage & ATA_HORKAGE_NOTRIM)
-> +				trim_status = "backlisted";
+> Printing this at each SCSI READ_CAPACITY command is too verbose.
+>
+> Flag "discard_zeroes_data" is deprecated since commit 48920ff2a5a9
+> ("block: remove the discard_zeroes_data flag").
 
-blacklisted
+> -			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM) {
+> -				ata_dev_info(dev, "Enabling discard_zeroes_data\n");
+> +			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM)
+>  				rbuf[14] |= 0x40; /* LBPRZ */
 
-> +			else
-> +				trim_status = "supported";
-> +
-> +			if (!ata_fpdma_dsm_supported(dev))
-> +				trim_queued = "no";
-> +			else if (dev->horkage & ATA_HORKAGE_NO_NCQ_TRIM)
-> +				trim_queued = "backlisted";
-
-ditto
-
-> +			else
-> +				trim_queued = "yes";
-
-Why is trim_status "supported" and trim_queued/trim_zero "yes"?
-
-> +
-> +			if (!ata_id_has_zero_after_trim(id))
-> +				trim_zero = "no";
-> +			else if (dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM)
-> +				trim_zero = "yes";
-> +			else
-> +				trim_zero = "maybe";
-> +
-> +			ata_dev_info(dev, "trim: %s, queued: %s, zero_after_trim: %s\n",
-> +				     trim_status, trim_queued, trim_zero);
-> +		}
-> +
-
-Otherwise no particular objections. We were trying to limit noise during
-boot which is why this information originally went to sysfs instead of
-being printed during probe.
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
 
 -- 
 Martin K. Petersen	Oracle Linux Engineering

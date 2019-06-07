@@ -2,81 +2,91 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E8B337646
-	for <lists+linux-ide@lfdr.de>; Thu,  6 Jun 2019 16:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF1438589
+	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 09:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728677AbfFFOUz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 6 Jun 2019 10:20:55 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:38249 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727961AbfFFOUz (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 6 Jun 2019 10:20:55 -0400
-Received: from [192.168.1.110] ([77.9.2.22]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M91Tq-1hWAED47fi-006Aqa; Thu, 06 Jun 2019 16:20:48 +0200
-Subject: Re: libata: sysctl knob for enabling tpm/opal at runtime
-To:     Christoph Hellwig <hch@infradead.org>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, axboe@kernel.dk,
-        linux-ide@vger.kernel.org
-References: <1559734587-32596-1-git-send-email-info@metux.net>
- <20190605192320.GA16831@infradead.org>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <3720d2a4-c8e8-0024-bc39-2aed5c4bf0a3@metux.net>
-Date:   Thu, 6 Jun 2019 16:20:46 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        id S1725497AbfFGHqM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 7 Jun 2019 03:46:12 -0400
+Received: from smtp4.iitb.ac.in ([103.21.127.18]:49874 "EHLO smtp1.iitb.ac.in"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726668AbfFGHqM (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Fri, 7 Jun 2019 03:46:12 -0400
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+        by smtp1.iitb.ac.in (Postfix) with SMTP id 1915D1058AF9
+        for <linux-ide@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
+Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
+ Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
+        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
+X-Spam-Pyzor: Reported 1 times.
+X-Envelope-From: rws@aero.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
+        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
+        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
+Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
+From:   Martins Henry <rws@aero.iitb.ac.in>
+Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
+Subject: Thanks and I wait for your answer
 MIME-Version: 1.0
-In-Reply-To: <20190605192320.GA16831@infradead.org>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:/GS942zi5O5i4vgVfWA015f/miYS7gLEV1AIVPzcAU0rhaL3Gvy
- 3aaSJnmYcCRviX1XlstBl/SpOrplHBMcTD+Xx4XmkVRyVPj5zLdQtFB9r3b4xtknjjUhvgU
- vyfjgtWyRbgzyMJIiYzxXkX2+7ucABLPGDI1t0wlFxUCb2nneTkM61L84cZOG8W6lGabz9e
- RkTbmz/AueP+cMvyLA2ag==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8bLMwidkVXw=:4ARllqipmzLaR77mg2XFIF
- 6m1TxPNtdM3N+Ot6a2TUfLcF4K2v4i7u+wrcAOSuHanbQTOIU88Oo6bVDIeEuP+N97oxtMLp2
- hXhncvNPGVVOPSrPMfuMBWOOxOd2GPLDjR9Ww8uC1PA23pxDH7dopA25QvWDPl8NWCQGYnpjy
- HwlIQFV3t+kZFjR/wip/Q4Gk/eMeiGrdvfXs8bjaV9SLBgB8xUw9u2xg+x5H18ma3nEI/57+u
- sk13yt4t4cR0zY0C0Acv6hOcsgd3zN4q3uG/lxlbqBjqqzL131unLiqK6h5gyGZdZAqk99CJk
- WhhXV7y7hvJmfj2t9W+J6kp7UE86l1FDx2tZWsk0uHxGE/RQ3sg0aB88xTHPmn2Mn70Sak0G7
- u1AlFoPqWPiMEXJ2JDCg10+/2gXrOif0Fx2cSQyw2ERH+1sckJTnOzWXriOliN/GEpsjieMvs
- aeNglV8DYMbj8BZQQTJ+l2emRf9ItgzPRwrLlncRR81TBDrUgwrhYcPlgnhToZ9ciSZBv8X6A
- qklgqqNtTHhczzYWGh86widWA1iAv9ZSGhkF4R8RW5/bGATwg6imBxFfi3kInEzWBTfjUi3cn
- fOmppP3DqPv3n14iwcgVZGKx38XKejzovXKHgjt5G1RaP24sMdGA2J+gxp9pOuU/z8Mio3dmk
- bX6uU+O1z/+3+yibVPJiQTwuF/7Ij2Dn85naQ/71zYIzD+y+aidFmcSyYviP1VV4IsRU5r/9E
- fqkxQOXhwvLrdBFNZQ8ZDa8LcDzLATog2ol9+6mhtsyzGLJV6RYPAZjQwVI=
+X-Originating-IP: [10.101.1.5]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
+Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
+Thread-Topic: Thanks and I wait for your answer
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 05.06.19 21:23, Christoph Hellwig wrote:
-> On Wed, Jun 05, 2019 at 01:36:25PM +0200, Enrico Weigelt, metux IT consult wrote:
->> Hello folks,
->>
->>
->> here's a patchset that allows enabling libata's tpm features (opal)
->> at runtime. Until now we need to boot with special kernel parameter,
->> in order to use OPAL - this patch also adds a sysctl knob for that.
-> 
-> Or you can use the block/sed-opal.c code which doesn't require the
-> tweak, and really is the proper way forward to use OPAL.
+Hello,
 
-You're referring to the OPAL ioctl()s ?
+I am Martin Henry, An American Citizen; I am the personal secretary to
+Mr. Donald Railton, the controller of a Lottery Company. Please I am
+having big problem now, I have a 6yrs old daughter who has leukemia, a
+disease of the blood, and she needs a bone marrow transplant or she
+will die.
 
-hmm, it seems that sed-util doesn't use them at all, but directly
-sends raw ata commands.
+Please I am only asking for your help and you will benefit from it
+also. As an insider with Lottery Firm, working as the personal
+secretary to the controller, I want you to send me your name to play,
+I have some numbers that are going to win, stored in his secret data
+system in the office. The Lottery is an online entry with credit card
+anywhere with a name and address. All I want you to do is to send your
+name to play it and I will send confirmation to you.
 
-Shall I use a different userland tool ?
+I will play with my card on your name and the Prize will be shared
+equally between us. Immediately the results are released they will
+contact you for payment as the oversea winner. The lotto can be played
+with 9.00 dollars, or 50 dollars but the prize will be Millions.
+Remember that I am playing on your name with my card; I just want to
+front you for this, because I need this money to save the life of my
+little daughter.
 
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Thanks and I wait for your answer
+Martin Henry.

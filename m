@@ -2,91 +2,74 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADF1438589
-	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 09:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A380938530
+	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 09:42:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725497AbfFGHqM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 7 Jun 2019 03:46:12 -0400
-Received: from smtp4.iitb.ac.in ([103.21.127.18]:49874 "EHLO smtp1.iitb.ac.in"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726668AbfFGHqM (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 7 Jun 2019 03:46:12 -0400
-Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
-        by smtp1.iitb.ac.in (Postfix) with SMTP id 1915D1058AF9
-        for <linux-ide@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
-Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
-X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
- spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
- Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
-X-Spam-Level: *
-X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
-        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
-X-Spam-Pyzor: Reported 1 times.
-X-Envelope-From: rws@aero.iitb.ac.in
-X-Qmail-Scanner-Mime-Attachments: |
-X-Qmail-Scanner-Zip-Files: |
-Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
-  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
-        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
-        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
-        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
-X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
-Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
-        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
-Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
-        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
-        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
-Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
-From:   Martins Henry <rws@aero.iitb.ac.in>
-Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
-Subject: Thanks and I wait for your answer
+        id S1727695AbfFGHmJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 7 Jun 2019 03:42:09 -0400
+Received: from forwardcorp1p.mail.yandex.net ([77.88.29.217]:35842 "EHLO
+        forwardcorp1p.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727267AbfFGHmJ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Jun 2019 03:42:09 -0400
+X-Greylist: delayed 456 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 03:42:08 EDT
+Received: from mxbackcorp1j.mail.yandex.net (mxbackcorp1j.mail.yandex.net [IPv6:2a02:6b8:0:1619::162])
+        by forwardcorp1p.mail.yandex.net (Yandex) with ESMTP id E72182E0AF1;
+        Fri,  7 Jun 2019 10:34:30 +0300 (MSK)
+Received: from smtpcorp1j.mail.yandex.net (smtpcorp1j.mail.yandex.net [2a02:6b8:0:1619::137])
+        by mxbackcorp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id CrueRdWKQS-YUOexwmw;
+        Fri, 07 Jun 2019 10:34:30 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
+        t=1559892870; bh=hIxHkhsRKJhTFSv6sxT6gpvOPkCywFWid6mF4RBVF4w=;
+        h=Message-ID:Date:To:From:Subject:Cc;
+        b=bUaTQmhTO2YrwyoavpCCKH1bPQmaYbtkg//7Jl7wIDoilLXcD1o6XIX+VoGeO4q/G
+         pDz1CoXtN9aUwTpp1BKO0lNTxNozZWpzxJamUMY/q2daYvccLMRtskp5yZJbXctcEb
+         IeSQtt+CgUa5F7yoVv5nGKVQsuG8zSDX4mo1NTCo=
+Authentication-Results: mxbackcorp1j.mail.yandex.net; dkim=pass header.i=@yandex-team.ru
+Received: from dynamic-red.dhcp.yndx.net (dynamic-red.dhcp.yndx.net [2a02:6b8:0:40c:b19a:10ab:8629:85d9])
+        by smtpcorp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id YBLwBguXM6-YUeaTPmH;
+        Fri, 07 Jun 2019 10:34:30 +0300
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (Client certificate not present)
+Subject: [PATCH] drivers/ata: remove flood "Enabling discard_zeroes_data"
+From:   Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+To:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
+Date:   Fri, 07 Jun 2019 10:34:29 +0300
+Message-ID: <155989286981.1471.16344793966539115439.stgit@buzz>
+User-Agent: StGit/0.17.1-dirty
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.101.1.5]
-X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
-Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
-Thread-Topic: Thanks and I wait for your answer
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello,
+Printing this at each SCSI READ_CAPACITY command is too verbose.
 
-I am Martin Henry, An American Citizen; I am the personal secretary to
-Mr. Donald Railton, the controller of a Lottery Company. Please I am
-having big problem now, I have a 6yrs old daughter who has leukemia, a
-disease of the blood, and she needs a bone marrow transplant or she
-will die.
+Flag "discard_zeroes_data" is deprecated since commit 48920ff2a5a9
+("block: remove the discard_zeroes_data flag").
 
-Please I am only asking for your help and you will benefit from it
-also. As an insider with Lottery Firm, working as the personal
-secretary to the controller, I want you to send me your name to play,
-I have some numbers that are going to win, stored in his secret data
-system in the office. The Lottery is an online entry with credit card
-anywhere with a name and address. All I want you to do is to send your
-name to play it and I will send confirmation to you.
+Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+---
+ drivers/ata/libata-scsi.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-I will play with my card on your name and the Prize will be shared
-equally between us. Immediately the results are released they will
-contact you for payment as the oversea winner. The lotto can be played
-with 9.00 dollars, or 50 dollars but the prize will be Millions.
-Remember that I am playing on your name with my card; I just want to
-front you for this, because I need this money to save the life of my
-little daughter.
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 391ac0503dc0..a475e94944b7 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2735,10 +2735,8 @@ static unsigned int ata_scsiop_read_cap(struct ata_scsi_args *args, u8 *rbuf)
+ 			rbuf[14] |= 0x80; /* LBPME */
+ 
+ 			if (ata_id_has_zero_after_trim(args->id) &&
+-			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM) {
+-				ata_dev_info(dev, "Enabling discard_zeroes_data\n");
++			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM)
+ 				rbuf[14] |= 0x40; /* LBPRZ */
+-			}
+ 		}
+ 		if (ata_id_zoned_cap(args->id) ||
+ 		    args->dev->class == ATA_DEV_ZAC)
 
-Thanks and I wait for your answer
-Martin Henry.

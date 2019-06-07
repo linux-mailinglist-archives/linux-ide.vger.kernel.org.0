@@ -2,214 +2,114 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8A0838527
-	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 09:39:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0AC392A6
+	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 19:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727055AbfFGHjt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 7 Jun 2019 03:39:49 -0400
-Received: from forwardcorp1j.mail.yandex.net ([5.45.199.163]:49924 "EHLO
-        forwardcorp1j.mail.yandex.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725497AbfFGHjt (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Jun 2019 03:39:49 -0400
-X-Greylist: delayed 306 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 03:39:47 EDT
-Received: from mxbackcorp2j.mail.yandex.net (mxbackcorp2j.mail.yandex.net [IPv6:2a02:6b8:0:1619::119])
-        by forwardcorp1j.mail.yandex.net (Yandex) with ESMTP id 0152B2E0A38;
-        Fri,  7 Jun 2019 10:34:47 +0300 (MSK)
-Received: from smtpcorp1j.mail.yandex.net (smtpcorp1j.mail.yandex.net [2a02:6b8:0:1619::137])
-        by mxbackcorp2j.mail.yandex.net (nwsmtp/Yandex) with ESMTP id 8JAAoUYgLc-YkdiuvLg;
-        Fri, 07 Jun 2019 10:34:46 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru; s=default;
-        t=1559892886; bh=r+qlnKIT9LjEAJ34rfGoxUwRHjeBCfPpjBRNJlcp6/g=;
-        h=Message-ID:Date:To:From:Subject:Cc;
-        b=FmXfjmkCJJzAql6EAI5cd7CS1CCVLBuk5/8h7qf7SfvRqKj//nmZn8MJcWyGL4eaz
-         Xi74w/foIHK89Iy3MaMOWVzhd8qVC/roB/Yff+DNHXu3Agwmeyr09VxuC2Xc0MEeNm
-         /P6OQuhCuT+zSez3BFxMgGou8MgE1c0FtlYk9SZE=
-Authentication-Results: mxbackcorp2j.mail.yandex.net; dkim=pass header.i=@yandex-team.ru
-Received: from dynamic-red.dhcp.yndx.net (dynamic-red.dhcp.yndx.net [2a02:6b8:0:40c:b19a:10ab:8629:85d9])
-        by smtpcorp1j.mail.yandex.net (nwsmtp/Yandex) with ESMTPSA id opwduAb9ml-YkeCQSgV;
-        Fri, 07 Jun 2019 10:34:46 +0300
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (Client certificate not present)
-Subject: [PATCH] drivers/ata: cleanup creation of device sysfs attribute
-From:   Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-To:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
-Date:   Fri, 07 Jun 2019 10:34:46 +0300
-Message-ID: <155989288635.1536.11972713412534297217.stgit@buzz>
-User-Agent: StGit/0.17.1-dirty
+        id S1729241AbfFGRAi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 7 Jun 2019 13:00:38 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36310 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728974AbfFGRAi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Jun 2019 13:00:38 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57GwwjZ153112;
+        Fri, 7 Jun 2019 17:00:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=qJWNPqVnOuZdNUVs/8DblqBQeJjxerPcG8WYUK6blAg=;
+ b=PZ7A+XLIaQ0oHDMUwYf9cYEejGBEg5xhO87mHVCWlC0HNRwi0vBgOFBUUYirNalwlLBh
+ LlKYvgBxuRCxABAtZk+QqyJYrUPhSweiWaEB+sa5l/bE9A9PFGLeAB4Me7TJ7zDcvIGw
+ 8l9xXAAsDRSr7q7aJNx0cguMh4O5dxhYFfCy8f1qB1UQd4T2RyCrYbrIBnnXsr1SK0Ya
+ sLcTSl+UTojUPEm8zsk2mlloWASyYoBFcjoE+Hlk5XLF37rNHZkLNfz+lp0l9TWgatRC
+ 2YjMBqJEsidL+FfGOgIiTyRqYQ/k+t2LjYgh3yZtNZlxGlNmaXroXQM31dJptzJt6x57 kg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2sugstyfn7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 07 Jun 2019 17:00:34 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57GvckQ021941;
+        Fri, 7 Jun 2019 16:58:34 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2swngn6abk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 07 Jun 2019 16:58:34 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x57GwXiM032176;
+        Fri, 7 Jun 2019 16:58:33 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 07 Jun 2019 09:58:32 -0700
+To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
+Subject: Re: [PATCH] drivers/ata: print trim features at device initialization
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <155989287898.1506.14253954112551051148.stgit@buzz>
+Date:   Fri, 07 Jun 2019 12:58:30 -0400
+In-Reply-To: <155989287898.1506.14253954112551051148.stgit@buzz> (Konstantin
+        Khlebnikov's message of "Fri, 07 Jun 2019 10:34:39 +0300")
+Message-ID: <yq1wohxib7t.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=681
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906070113
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=727 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906070113
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-This patch merges common ATA and AHCI specific attribute "sw_activity"
-into one group with ->is_visible() method which hides attributes if
-feature is not supported by hardware.
 
-This allows to add all attributes in one place without exporting
-each piece for linking into another list in ahci module.
+Konstantin,
 
-Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
----
- drivers/ata/ahci.h        |    4 +---
- drivers/ata/libahci.c     |    8 --------
- drivers/ata/libata-scsi.c |   48 +++++++++++++++++++++++++++++++++------------
- include/linux/libata.h    |    7 ++-----
- 4 files changed, 38 insertions(+), 29 deletions(-)
+> +			if (dev->horkage & ATA_HORKAGE_NOTRIM)
+> +				trim_status = "backlisted";
 
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 0570629d719d..09b55161a107 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -371,7 +371,6 @@ struct ahci_host_priv {
- extern int ahci_ignore_sss;
- 
- extern struct device_attribute *ahci_shost_attrs[];
--extern struct device_attribute *ahci_sdev_attrs[];
- 
- /*
-  * This must be instantiated by the edge drivers.  Read the comments
-@@ -382,8 +381,7 @@ extern struct device_attribute *ahci_sdev_attrs[];
- 	.can_queue		= AHCI_MAX_CMDS,			\
- 	.sg_tablesize		= AHCI_MAX_SG,				\
- 	.dma_boundary		= AHCI_DMA_BOUNDARY,			\
--	.shost_attrs		= ahci_shost_attrs,			\
--	.sdev_attrs		= ahci_sdev_attrs
-+	.shost_attrs		= ahci_shost_attrs
- 
- extern struct ata_port_operations ahci_ops;
- extern struct ata_port_operations ahci_platform_ops;
-diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index 0984c4b76d7e..532f087e7dbf 100644
---- a/drivers/ata/libahci.c
-+++ b/drivers/ata/libahci.c
-@@ -122,14 +122,6 @@ struct device_attribute *ahci_shost_attrs[] = {
- };
- EXPORT_SYMBOL_GPL(ahci_shost_attrs);
- 
--struct device_attribute *ahci_sdev_attrs[] = {
--	&dev_attr_sw_activity,
--	&dev_attr_unload_heads,
--	&dev_attr_ncq_prio_enable,
--	NULL
--};
--EXPORT_SYMBOL_GPL(ahci_sdev_attrs);
--
- struct ata_port_operations ahci_ops = {
- 	.inherits		= &sata_pmp_port_ops,
- 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index a475e94944b7..810cc78814f5 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -253,9 +253,8 @@ static ssize_t ata_scsi_park_store(struct device *device,
- 
- 	return rc ? rc : len;
- }
--DEVICE_ATTR(unload_heads, S_IRUGO | S_IWUSR,
--	    ata_scsi_park_show, ata_scsi_park_store);
--EXPORT_SYMBOL_GPL(dev_attr_unload_heads);
-+static DEVICE_ATTR(unload_heads, S_IRUGO | S_IWUSR,
-+		   ata_scsi_park_show, ata_scsi_park_store);
- 
- static ssize_t ata_ncq_prio_enable_show(struct device *device,
- 					struct device_attribute *attr,
-@@ -330,9 +329,8 @@ static ssize_t ata_ncq_prio_enable_store(struct device *device,
- 	return rc ? rc : len;
- }
- 
--DEVICE_ATTR(ncq_prio_enable, S_IRUGO | S_IWUSR,
--	    ata_ncq_prio_enable_show, ata_ncq_prio_enable_store);
--EXPORT_SYMBOL_GPL(dev_attr_ncq_prio_enable);
-+static DEVICE_ATTR(ncq_prio_enable, S_IRUGO | S_IWUSR,
-+		   ata_ncq_prio_enable_show, ata_ncq_prio_enable_store);
- 
- void ata_scsi_set_sense(struct ata_device *dev, struct scsi_cmnd *cmd,
- 			u8 sk, u8 asc, u8 ascq)
-@@ -459,16 +457,40 @@ ata_scsi_activity_store(struct device *dev, struct device_attribute *attr,
- 	}
- 	return -EINVAL;
- }
--DEVICE_ATTR(sw_activity, S_IWUSR | S_IRUGO, ata_scsi_activity_show,
--			ata_scsi_activity_store);
--EXPORT_SYMBOL_GPL(dev_attr_sw_activity);
-+static DEVICE_ATTR(sw_activity, S_IWUSR | S_IRUGO,
-+		   ata_scsi_activity_show, ata_scsi_activity_store);
- 
--struct device_attribute *ata_common_sdev_attrs[] = {
--	&dev_attr_unload_heads,
--	&dev_attr_ncq_prio_enable,
-+static umode_t ata_common_attrs_are_visible(struct kobject *kobj,
-+		struct attribute *a, int n)
-+{
-+	struct scsi_device *sdev = to_scsi_device(kobj_to_dev(kobj));
-+	struct ata_port *ap = ata_shost_to_port(sdev->host);
-+
-+	if (a == &dev_attr_sw_activity.attr) {
-+		if (!(ap->flags & ATA_FLAG_SW_ACTIVITY))
-+			return 0;
-+	}
-+
-+	return a->mode;
-+}
-+
-+static struct attribute *ata_sdev_attrs[] = {
-+	&dev_attr_unload_heads.attr,
-+	&dev_attr_ncq_prio_enable.attr,
-+	&dev_attr_sw_activity.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group ata_sdev_attr_group = {
-+	.attrs = ata_sdev_attrs,
-+	.is_visible = ata_common_attrs_are_visible,
-+};
-+
-+const struct attribute_group *ata_sdev_attr_groups[] = {
-+	&ata_sdev_attr_group,
- 	NULL
- };
--EXPORT_SYMBOL_GPL(ata_common_sdev_attrs);
-+EXPORT_SYMBOL_GPL(ata_sdev_attr_groups);
- 
- /**
-  *	ata_std_bios_param - generic bios head/sector/cylinder calculator used by sd.
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 207e7ee764ce..c87a65dee8d2 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -531,11 +531,8 @@ typedef int (*ata_reset_fn_t)(struct ata_link *link, unsigned int *classes,
- typedef void (*ata_postreset_fn_t)(struct ata_link *link, unsigned int *classes);
- 
- extern struct device_attribute dev_attr_link_power_management_policy;
--extern struct device_attribute dev_attr_unload_heads;
--extern struct device_attribute dev_attr_ncq_prio_enable;
- extern struct device_attribute dev_attr_em_message_type;
- extern struct device_attribute dev_attr_em_message;
--extern struct device_attribute dev_attr_sw_activity;
- 
- enum sw_activity {
- 	OFF,
-@@ -1327,7 +1324,7 @@ extern int ata_link_nr_enabled(struct ata_link *link);
-  */
- extern const struct ata_port_operations ata_base_port_ops;
- extern const struct ata_port_operations sata_port_ops;
--extern struct device_attribute *ata_common_sdev_attrs[];
-+extern const struct attribute_group *ata_sdev_attr_groups[];
- 
- /*
-  * All sht initializers (BASE, PIO, BMDMA, NCQ) must be instantiated
-@@ -1349,7 +1346,7 @@ extern struct device_attribute *ata_common_sdev_attrs[];
- 	.slave_destroy		= ata_scsi_slave_destroy,	\
- 	.bios_param		= ata_std_bios_param,		\
- 	.unlock_native_capacity	= ata_scsi_unlock_native_capacity, \
--	.sdev_attrs		= ata_common_sdev_attrs
-+	.sdev_groups		= ata_sdev_attr_groups
- 
- #define ATA_NCQ_SHT(drv_name)					\
- 	ATA_BASE_SHT(drv_name),					\
+blacklisted
 
+> +			else
+> +				trim_status = "supported";
+> +
+> +			if (!ata_fpdma_dsm_supported(dev))
+> +				trim_queued = "no";
+> +			else if (dev->horkage & ATA_HORKAGE_NO_NCQ_TRIM)
+> +				trim_queued = "backlisted";
+
+ditto
+
+> +			else
+> +				trim_queued = "yes";
+
+Why is trim_status "supported" and trim_queued/trim_zero "yes"?
+
+> +
+> +			if (!ata_id_has_zero_after_trim(id))
+> +				trim_zero = "no";
+> +			else if (dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM)
+> +				trim_zero = "yes";
+> +			else
+> +				trim_zero = "maybe";
+> +
+> +			ata_dev_info(dev, "trim: %s, queued: %s, zero_after_trim: %s\n",
+> +				     trim_status, trim_queued, trim_zero);
+> +		}
+> +
+
+Otherwise no particular objections. We were trying to limit noise during
+boot which is why this information originally went to sysfs instead of
+being printed during probe.
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

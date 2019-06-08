@@ -2,89 +2,51 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE02339321
-	for <lists+linux-ide@lfdr.de>; Fri,  7 Jun 2019 19:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 860B339BD1
+	for <lists+linux-ide@lfdr.de>; Sat,  8 Jun 2019 10:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730101AbfFGR1I (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 7 Jun 2019 13:27:08 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:35332 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728876AbfFGR1I (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Jun 2019 13:27:08 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57HIhbF170100;
-        Fri, 7 Jun 2019 17:27:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=sJ8louzcxQ+/SPIhPvWd1tKDp21eQEHrE1jVzge2LQE=;
- b=166+1VM+mm6mrDqJiJxkRNV+jFY0kgNKrlXigCn0Z8P+u7eSFbncZzJqod4QrudvvsXL
- 9j6QtE7aKpH6hEiC4CUsd/SQZP19AzOR3DV4ju1jqtxUuCNSoRY7J/wLQyo1uF3aDIbH
- t7ocbrgBVh5zvhspPvEjnB+XmHtw5hKAWtWo12WtHbr8ROY9oiyy8kSaydBZhK96OnHl
- wVG7PTO7cMWNB1CAjwFkJJ1P04LyDOpDQSLvVvGvNHchZoN4LKkK3m+SIausTO8KfnvL
- QLCA0NH/NqlR46tdOSTPjum/NtAJakET+crL5dHttVFrPFIUd23xuhfD8L5E3PP94NIE Qw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2sugstymb0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 17:27:04 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57HQifN055246;
-        Fri, 7 Jun 2019 17:27:04 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2swnhdcn1s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 17:27:03 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x57HR29p020389;
-        Fri, 7 Jun 2019 17:27:02 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 07 Jun 2019 10:27:02 -0700
+        id S1726434AbfFHIZy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 8 Jun 2019 04:25:54 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:39552 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726373AbfFHIZy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 8 Jun 2019 04:25:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=6nq6f6kYdLzdHlUSUQ3ntvwOT7p4Y3Pp2/1uGKrk4ro=; b=Lzb019GLJEi7wmG3XhG93VmH8
+        i6fPgeDs5ArmU+zoH+EuWv492w7OT9y8Gi+s4Rz4MRIeUjHmUCI81G5nx0UVqI+RTDcyEsYkTajPi
+        NxZ8aV8CvZhcp9Fz7bN8btQPHhJU/9g1usaFGqNWEDDB2vsbZ6DWBvvD+X16aVEQdNNmnebIoRLL4
+        ipBETkU6EZdSz3n/DwKhLiulgEb45eocnD+9ufr6fWB34H3jhpj8dg6uCA8xEq3uecvRQpUA0MGIQ
+        gqWAx36QSvoYsI8Nz6fD3pYkekEVGbuYAFyMlATRCuzWeGuwEjn3OS7rRsxmybtfhSPP76rh47Tuy
+        GW0t5WZ2g==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hZWfg-0003lR-8q; Sat, 08 Jun 2019 08:25:52 +0000
+Date:   Sat, 8 Jun 2019 01:25:52 -0700
+From:   Christoph Hellwig <hch@infradead.org>
 To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
 Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
-Subject: Re: [PATCH] drivers/ata: remove flood "Enabling discard_zeroes_data"
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <155989286981.1471.16344793966539115439.stgit@buzz>
-Date:   Fri, 07 Jun 2019 13:26:54 -0400
-In-Reply-To: <155989286981.1471.16344793966539115439.stgit@buzz> (Konstantin
-        Khlebnikov's message of "Fri, 07 Jun 2019 10:34:29 +0300")
-Message-ID: <yq1sgsli9wh.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+Subject: Re: [PATCH] drivers/ata: print trim features at device initialization
+Message-ID: <20190608082552.GA9613@infradead.org>
+References: <155989287898.1506.14253954112551051148.stgit@buzz>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=756
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906070116
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=806 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906070116
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <155989287898.1506.14253954112551051148.stgit@buzz>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+On Fri, Jun 07, 2019 at 10:34:39AM +0300, Konstantin Khlebnikov wrote:
+> Print trim status once at ata device initialization in form:
 
-Konstantin,
-
-> Printing this at each SCSI READ_CAPACITY command is too verbose.
->
-> Flag "discard_zeroes_data" is deprecated since commit 48920ff2a5a9
-> ("block: remove the discard_zeroes_data flag").
-
-> -			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM) {
-> -				ata_dev_info(dev, "Enabling discard_zeroes_data\n");
-> +			    dev->horkage & ATA_HORKAGE_ZERO_AFTER_TRIM)
->  				rbuf[14] |= 0x40; /* LBPRZ */
-
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Do we really need to spam dmesg with even more ATA crap?  What about
+a sysfs file that can be read on demand instead?

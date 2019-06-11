@@ -2,177 +2,99 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A242D3BF95
-	for <lists+linux-ide@lfdr.de>; Tue, 11 Jun 2019 00:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1CE3C155
+	for <lists+linux-ide@lfdr.de>; Tue, 11 Jun 2019 04:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390364AbfFJWs4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 10 Jun 2019 18:48:56 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:33088 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2390340AbfFJWs4 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 10 Jun 2019 18:48:56 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id CE2758EE182;
-        Mon, 10 Jun 2019 15:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1560206935;
-        bh=mb6IzwM78BT/viG2YgEvk/s6gBgJO14fZN6QaNMTcf0=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=jrk/1QedcyxDoeH/nG3zibD+xvky2BjHsl77hFVLLkn8RtjNGKG+ui2IHJJiFOsAd
-         mrCUm9W/U0SZA9+ac9aDNJftoFL118Pk1K8N3fUWBj56jSOc2W9U+f3NP4SgzM5FuL
-         /48jgcNYp4iiQH+T4GgcAYd1ZlKL+h36987ETg1E=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id ASJhwJ4X_a3j; Mon, 10 Jun 2019 15:48:55 -0700 (PDT)
-Received: from jarvis.lan (unknown [50.35.68.20])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 3B0818EE105;
-        Mon, 10 Jun 2019 15:48:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1560206935;
-        bh=mb6IzwM78BT/viG2YgEvk/s6gBgJO14fZN6QaNMTcf0=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=jrk/1QedcyxDoeH/nG3zibD+xvky2BjHsl77hFVLLkn8RtjNGKG+ui2IHJJiFOsAd
-         mrCUm9W/U0SZA9+ac9aDNJftoFL118Pk1K8N3fUWBj56jSOc2W9U+f3NP4SgzM5FuL
-         /48jgcNYp4iiQH+T4GgcAYd1ZlKL+h36987ETg1E=
-Message-ID: <1560206933.3698.27.camel@HansenPartnership.com>
-Subject: Re: [PATCH] drivers/ata: print trim features at device
- initialization
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Christoph Hellwig <hch@infradead.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
-Date:   Mon, 10 Jun 2019 15:48:53 -0700
-In-Reply-To: <b554c428-417e-5fef-1776-87a4db1d674a@yandex-team.ru>
-References: <155989287898.1506.14253954112551051148.stgit@buzz>
-         <yq1wohxib7t.fsf@oracle.com>
-         <eebfb1cc-f6d0-580e-1d56-2af0f481a92f@yandex-team.ru>
-         <048ed77f-8faa-fb67-c6bc-10d953f52f89@yandex-team.ru>
-         <1560116241.3324.19.camel@HansenPartnership.com>
-         <b554c428-417e-5fef-1776-87a4db1d674a@yandex-team.ru>
+        id S2390670AbfFKCqp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 10 Jun 2019 22:46:45 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:37479 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390461AbfFKCqo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 10 Jun 2019 22:46:44 -0400
+Received: by mail-qt1-f194.google.com with SMTP id y57so12833589qtk.4
+        for <linux-ide@vger.kernel.org>; Mon, 10 Jun 2019 19:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0m35NGQgea2Dtho1tkMpAy982wOOgH1ICR+Vwx3GZeE=;
+        b=B7mV3IItGXU3TGMF4QJRflUaAgL4S43JkzhIxxw0iqm4+OLzf9fKB8j2JP2dVCDPil
+         sW384G7A11k2gPbEjKGTOv5X2Z3ryeV9M6ryiSLro3IxjT9OZyDo3pObjYM7A1rlex5o
+         JM/lbTbVKx0jeE+Hz8BQ5+xUiAB+RIJKjWpmOGWMVU2PHOUFA3YILO2buWSMwliLUQET
+         D1qvaiKdx5eSJQsH2Z8ksyja4hIH3EWjs1jAF4U61bv0JbaavY2pVTYjrZaqFU5vAwOY
+         NK/8qG5MN2Gn1DUikSm2ti8MCRGEJwUYBqBSQCGhBK+/QkiLzAuqnJRCDVqUQDsWMwXP
+         O3jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0m35NGQgea2Dtho1tkMpAy982wOOgH1ICR+Vwx3GZeE=;
+        b=UOwRhe1wNeEE63bHsIRFz49XY3KMDWV0ha0sszOMsGulEmePrw11fcndFBdk0KvkoA
+         JqWA68FetvrRDpf9/TEbJpqVyY/+6F8m2INi+dtWSQSjkrOSz4xJhuWONHdVQo1LWq6f
+         cXWJbwxD1zUGd1c7Ce5hE04Xb2a01hbQ0caC847zjJeAPoTVEakWamL7rfcXnecrfX7f
+         YUvVKbFxLbihINksc0YH5vtFXLCp3Uz2MKQbqeLlcWA6xEHR1F2+fiz7oIFM1GivVrrw
+         L27CHICPjvBRWBShxk1bvxiw7EC5RuYU+P8RVvaBEGJl0fXk+ov+rUbIMd2aTn1Nbag+
+         bOjw==
+X-Gm-Message-State: APjAAAWSrv3WVhcwCr18mKYby2ERkKB1jUJt+sUH8N1Iha4ov9SXQVvx
+        jxSjfyEheetyMdo1puGs648T1JlNw04+1gMXNWHRoQ==
+X-Google-Smtp-Source: APXvYqx/p8Wk437d+ei9zOMYRa2j+hTRwjg4+eaMD3R6/xZEyIIMKtLlMd2J9aaBFx62GGYjdo6hkJN+cGx/sK9kwI4=
+X-Received: by 2002:ac8:2ec3:: with SMTP id i3mr17155681qta.110.1560221203710;
+ Mon, 10 Jun 2019 19:46:43 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190610074456.2761-1-drake@endlessm.com> <CAOSXXT7OFzHeTxNqZ1sS6giRxhDcrUUnVjURWBiFUc5T_8p=MA@mail.gmail.com>
+In-Reply-To: <CAOSXXT7OFzHeTxNqZ1sS6giRxhDcrUUnVjURWBiFUc5T_8p=MA@mail.gmail.com>
+From:   Daniel Drake <drake@endlessm.com>
+Date:   Tue, 11 Jun 2019 10:46:32 +0800
+Message-ID: <CAD8Lp45djPU_Ur8uCO2Y5Sbek_5N9QKkxLXdKNVcvkr6rFPLUQ@mail.gmail.com>
+Subject: Re: [PATCH] PCI: Add Intel remapped NVMe device support
+To:     Keith Busch <keith.busch@gmail.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, Jens Axboe <axboe@kernel.dk>,
+        Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        linux-ide@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme <linux-nvme@lists.infradead.org>,
+        Linux Upstreaming Team <linux@endlessm.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, 2019-06-10 at 10:49 +0300, Konstantin Khlebnikov wrote:
-> On 10.06.2019 0:37, James Bottomley wrote:
-> > On Sat, 2019-06-08 at 17:13 +0300, Konstantin Khlebnikov wrote:
-> > > > On 08.06.2019 11:25, Christoph Hellwig wrote:> On Fri, Jun 07,
-> > > > 2019
-> > > > at 10:34:39AM +0300, Konstantin Khlebnikov wrote:
-> > > >   >
-> > > >   > Do we really need to spam dmesg with even more ATA
-> > > > crap?  What
-> > > > about
-> > > >   > a sysfs file that can be read on demand instead?
-> > > >   >
-> > > > 
-> > > > Makes sense.
-> > > > 
-> > > > Trim state is exposed for ata_device:
-> > > > /sys/class/ata_device/devX.Y/trim
-> > > > but there is no link from scsi device to ata device so they
-> > > > hard to match.
-> > > > 
-> > > > I'll think about it.
-> > > 
-> > > Nope. There is no obvious way to link scsi device with
-> > > ata_device. ata_device is built on top of "transport_class" and
-> > > "attribute_container". This some extremely over engineered sysfs
-> > > framework used only in ata/scsi. I don't want to touch this.
-> > 
-> > You don't need to know any of that.  The problem is actually when
-> > the ata transport classes were first created, the devices weren't
-> > properly parented.  What should have happened, like every other
-> > transport class, is that the devices should have descended down to
-> > the scsi device as the leaf in an integrated fashion.  Instead,
-> > what we seem to have is three completely separate trees.
-> > 
-> > So if you look at a SAS device, you see from the pci device:
-> > 
-> > host2/port-2:0/end_device-2:0/target2:0:0/2:0:0:0/block/sdb/sdb1
-> > 
-> > But if you look at a SATA device, you see three separate paths:
-> > 
-> > ata3/host3/target3\:0\:0/3\:0\:0\:0/block/sda/sda1
-> > ata3/link3/dev3.0/ata_device/dev3.0
-> > ata3/ata_port/ata3
-> > 
-> > Instead of an integrated tree
-> > 
-> > Unfortunately, this whole thing is unfixable now.  If I integrate
-> > the tree properly, the separate port and link directories will get
-> > subsumed and we won't be able to recover them with judicious
-> > linking so scripts relying on them will break.  The best we can
-> > probably do is add additional links with what we have.
-> > 
-> > To follow the way we usually do it, there should be a link from the
-> > ata device to the scsi target, but that wouldn't help you find the
-> > "trim" files, so it sounds like you want a link from the scsi
-> > device to the ata device, which would?
-> 
-> Yes, I'm talking about link from scsi device to leaf ata_device node.
-> 
-> In libata scsi_device has one to one relation with ata_device.
-> So making link like /sys/class/block/sda/device/ata_device should be
-> possible easy.
-> But I haven't found implicit reference from struct ata_device to
-> ata_device in sysfs.
+On Tue, Jun 11, 2019 at 12:00 AM Keith Busch <keith.busch@gmail.com> wrote:
+>
+> On Mon, Jun 10, 2019 at 1:45 AM Daniel Drake <drake@endlessm.com> wrote:
+> > +       /* We don't support sharing MSI interrupts between these devices */
+> > +       nrdev->bus->bus_flags |= PCI_BUS_FLAGS_NO_MSI;
+>
+> And this is a problem, isn't it? Since we don't have an option to open
+> the MSI implementation in RAID mode your experience will be much
+> better to disable this mode when using Linux as per the current
+> recommendation rather than limping along with legacy IRQ.
 
-If that's all you want, it is pretty simple modulo the fact we can only
-get at the tdev, not the lower transport device, which is what you
-want, but at least it's linear from the symlink.
+What's the specific problem that you see here? Is it that the
+interrupt delivery mechanism is legacy wire instead of MSI, or is the
+problem that the interrupt is shared over the whole set of storage
+devices?
 
-The attached patch should do this.
+I installed Windows 10 on this product in RAID mode and it is using
+the legacy interrupt too. Also, on Linux, MSI interrupts have already
+been disabled on the AHCI part of such setups for a good while now:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f723fa4e69920f6a5dd5fa0d10ce90e2f14d189c
 
-Now I see this for my non-sas device:
+The earlier patches from Dan Williams also had the design of sharing
+the legacy interrupt:
+https://marc.info/?l=linux-ide&m=147709610621480&w=2
 
-# ls -l /sys/class/scsi_device/3\:0\:0\:0/device/ata_device
-lrwxrwxrwx 1 root root 0 Jun 10 13:39 /sys/class/scsi_device/3:0:0:0/device/ata_device -> ../../../link3/dev3.0
+I think some kind of MSI support may be possible, perhaps something
+similar to what is done by drivers/pci/controller/vmd.c, but it needs
+a bit more thought, and I was hoping that we could get the base device
+support in place before investigating MSI as a separate step. However,
+if the concern you are raising is regarding the sharing of interrupts,
+I think that cannot change because the NVMe devices PCI config space
+is totally inaccessible when in this mode. That means there is no way
+we can configure a per-device MSI message, so the interrupt will
+continue to be shared regardless of delivery mechanism.
 
-James
-
----
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 391ac0503dc0..b644336a6d65 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -4576,7 +4576,20 @@ void ata_scsi_scan_host(struct ata_port *ap, int sync)
- 			sdev = __scsi_add_device(ap->scsi_host, channel, id, 0,
- 						 NULL);
- 			if (!IS_ERR(sdev)) {
-+				int r;
-+
- 				dev->sdev = sdev;
-+				/* this is a sysfs stupidity: we don't
-+				 * care if the link actually gets
-+				 * created: there's no error handling
-+				 * for failure and we continue on
-+				 * regardless, but we have to discard
-+				 * the return value like this to
-+				 * defeat unused result checking */
-+				r = sysfs_create_link(&sdev->sdev_gendev.kobj,
-+						      &dev->tdev.kobj,
-+						      "ata_device");
-+				(void)r;
- 				scsi_device_put(sdev);
- 			} else {
- 				dev->sdev = NULL;
-@@ -4703,6 +4716,7 @@ static void ata_scsi_remove_dev(struct ata_device *dev)
- 		ata_dev_info(dev, "detaching (SCSI %s)\n",
- 			     dev_name(&sdev->sdev_gendev));
- 
-+		sysfs_remove_link(&sdev->sdev_gendev.kobj, "ata_device");
- 		scsi_remove_device(sdev);
- 		scsi_device_put(sdev);
- 	}
+Thanks,
+Daniel

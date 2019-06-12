@@ -2,96 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9807641C03
-	for <lists+linux-ide@lfdr.de>; Wed, 12 Jun 2019 08:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CDC8427F6
+	for <lists+linux-ide@lfdr.de>; Wed, 12 Jun 2019 15:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726023AbfFLGKx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 12 Jun 2019 02:10:53 -0400
-Received: from mail-eopbgr60088.outbound.protection.outlook.com ([40.107.6.88]:30909
-        "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725902AbfFLGKx (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 12 Jun 2019 02:10:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xZ4B3yVpqWB95ARgIQBJOP1L5xDa2kSNl8zq6eo03zo=;
- b=QB256TFD8TvdqncBhSZW7r9WSCv9R/4x5k37LQZy/rx0JWVZYQL1NWUapzt+TvnYEVAfYxNt917gnH+2Jgj9lAyxNBnBqNwZHamRiOr2LwJ4iUOLqetbjwsAu4xAf2+3zJkn8tAgn4IrmvLV4MxCb11ddorZXaWGbgqoSkJPjgc=
-Received: from VI1PR04MB4640.eurprd04.prod.outlook.com (20.177.56.27) by
- VI1PR04MB6031.eurprd04.prod.outlook.com (20.179.24.83) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.11; Wed, 12 Jun 2019 06:10:49 +0000
-Received: from VI1PR04MB4640.eurprd04.prod.outlook.com
- ([fe80::9dfe:752d:9e88:fe86]) by VI1PR04MB4640.eurprd04.prod.outlook.com
- ([fe80::9dfe:752d:9e88:fe86%7]) with mapi id 15.20.1987.010; Wed, 12 Jun 2019
- 06:10:49 +0000
-From:   Udit Kumar <udit.kumar@nxp.com>
-To:     "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "axboe@kernel.dk" <axboe@kernel.dk>
-CC:     Varun Sethi <V.Sethi@nxp.com>, Leo Li <leoyang.li@nxp.com>,
-        Andy Tang <andy.tang@nxp.com>, Udit Kumar <udit.kumar@nxp.com>
-Subject: [PATCH] ahci_qoriq: bug fix for ecc_addr
-Thread-Topic: [PATCH] ahci_qoriq: bug fix for ecc_addr
-Thread-Index: AQHVIOWUmeLal8Pxn0+KvwDpDymBUw==
-Date:   Wed, 12 Jun 2019 06:10:48 +0000
-Message-ID: <1560319823-20418-1-git-send-email-udit.kumar@nxp.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: PN1PR0101CA0068.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:c00:d::30) To VI1PR04MB4640.eurprd04.prod.outlook.com
- (2603:10a6:803:70::27)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=udit.kumar@nxp.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: git-send-email 1.9.1
-x-originating-ip: [92.120.1.71]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f2c9f92a-7315-485b-662b-08d6eefcb621
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR04MB6031;
-x-ms-traffictypediagnostic: VI1PR04MB6031:
-x-microsoft-antispam-prvs: <VI1PR04MB60317FC18AB6C45ED9079C6791EC0@VI1PR04MB6031.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:2331;
-x-forefront-prvs: 0066D63CE6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(376002)(39860400002)(396003)(366004)(346002)(136003)(189003)(199004)(110136005)(478600001)(2906002)(305945005)(7736002)(54906003)(316002)(99286004)(102836004)(52116002)(81156014)(8676002)(81166006)(5660300002)(44832011)(6506007)(50226002)(386003)(8936002)(36756003)(256004)(53936002)(6512007)(6436002)(6486002)(2501003)(4744005)(25786009)(4326008)(6116002)(3846002)(66066001)(71190400001)(71200400001)(476003)(26005)(186003)(14454004)(2616005)(86362001)(68736007)(73956011)(486006)(66446008)(66946007)(64756008)(66556008)(66476007);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB6031;H:VI1PR04MB4640.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: G8+3Ctwzy8/l9ocT4arHFgVyxBNgwNppT2UGoB6ZezRF+AD4ifAGXmbOkW8K6OSVaT8t+s4tuJp0Fl0u5NjPUml9y4bcHEqPhSFCDSJD1oCsWDL9+pGnw7p5fhCc1UrMh6ytSE/3ce0175a5gSX0ATDRzd63iOnk+mfOpqNJEeRBSOmKSyOq/tCs2HFFncAnikT+bCTriOUH3CM+TGMqfECjelEHskbrhGPOdkbsrF2xnivn03gxOBfKtPBBrK23/X/7DyV44bphxxNhNqBdirRIptmaLHlWMXMEgFW2gp9m0AKlrGwmAAFp8raBJzTyHggO3bVv9yttPEuOZJ1E44CjX7cE4LpgPgmMYcuRHsmafHK53aXyT8kZIusJgBOHOKbKZbCGpnjY62Dew1f15HoPsNLxnjRiRfjjFlmoyQw=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S2436750AbfFLNt1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 12 Jun 2019 09:49:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58948 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2436722AbfFLNt1 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 12 Jun 2019 09:49:27 -0400
+Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3F9A3208CA;
+        Wed, 12 Jun 2019 13:49:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560347366;
+        bh=XxmYfcW64R7kQ/+LuOTWFbRjfanmeG4vLimtAoJAOpc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=e89zFSzf/8xvYW51g1/UatnItMta3xse8v/K0qRw1bvXcOM9C02qULISPJbuwNvp9
+         vx21Lx0SwpZjMsFqHJnSuznkoCL1FxWVSI/cSLboVq/G5C89u3IhxFKeiN1wwNWSFs
+         Se33l9/x64vRdLKELqgVlCc8uQQIrYC9Ojp12/IM=
+Date:   Wed, 12 Jun 2019 08:49:25 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Daniel Drake <drake@endlessm.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Linux PCI <linux-pci@vger.kernel.org>,
+        Linux Upstreaming Team <linux@endlessm.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme <linux-nvme@lists.infradead.org>,
+        linux-ide@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        mjg59@srcf.ucam.org
+Subject: Re: [PATCH] PCI: Add Intel remapped NVMe device support
+Message-ID: <20190612134925.GC13533@google.com>
+References: <20190610074456.2761-1-drake@endlessm.com>
+ <20190610211628.GA68572@google.com>
+ <CAD8Lp47BmOtEgFUDCMyLrDpoPZSxcWmbrXEbh4PXS0FSG8ukLA@mail.gmail.com>
+ <20190611195254.GB768@google.com>
+ <CAD8Lp479mY=dAhFvGT2ZiJP12KXszhWev=QpCcgfgoew0TxgWg@mail.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2c9f92a-7315-485b-662b-08d6eefcb621
-X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Jun 2019 06:10:49.7201
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: udit.kumar@nxp.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6031
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAD8Lp479mY=dAhFvGT2ZiJP12KXszhWev=QpCcgfgoew0TxgWg@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-T3JpZ2luYWwgZHJpdmVyIGV4cGVjdCBhIHJlZ2lzdGVyIG5vZGUgd2l0aCBuYW1lICJzYXRhLWVj
-YyINCnRoaXMgbm9kZSBpcyBvZiA2NCBiaXQgd2lkZS4NCkluIEFDUEkgc3VjaCBub2RlcyBjYW4g
-YmUgcHJvdmlkZWQgd2l0aCBRV29yZE1lbW9yeSwgYnV0DQpRV29yZE1lbW9yeSBjYW4gbm90IGhv
-bGQgRGVzY3JpcHRvck5hbWUgbW9yZSB0aGFuIDQgY2hhcmFjdGVycy4NCg0KVGhlcmVmb3JlIHRo
-aXMgcGF0Y2ggY2hhbmdlcyBwbGF0Zm9ybSBwcm9wZXJ0eSByZXRyaXZhbCBiYXNlZA0KdXBvbiBp
-bmRleCBpbnN0ZWFkIG9mIG5hbWVkLg0KDQpTaWduZWQtb2ZmLWJ5OiBVZGl0IEt1bWFyIDx1ZGl0
-Lmt1bWFyQG54cC5jb20+DQotLS0NCiBkcml2ZXJzL2F0YS9haGNpX3FvcmlxLmMgfCA0ICstLS0N
-CiAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDMgZGVsZXRpb25zKC0pDQoNCmRpZmYg
-LS1naXQgYS9kcml2ZXJzL2F0YS9haGNpX3FvcmlxLmMgYi9kcml2ZXJzL2F0YS9haGNpX3Fvcmlx
-LmMNCmluZGV4IGVhMTE3NWYuLmYxNzkxMzcgMTAwNjQ0DQotLS0gYS9kcml2ZXJzL2F0YS9haGNp
-X3FvcmlxLmMNCisrKyBiL2RyaXZlcnMvYXRhL2FoY2lfcW9yaXEuYw0KQEAgLTI4MSw5ICsyODEs
-NyBAQCBzdGF0aWMgaW50IGFoY2lfcW9yaXFfcHJvYmUoc3RydWN0IHBsYXRmb3JtX2RldmljZSAq
-cGRldikNCiAJcW9yaXFfcHJpdi0+dHlwZSA9IChlbnVtIGFoY2lfcW9yaXFfdHlwZSlvZl9pZC0+
-ZGF0YTsNCiANCiAJaWYgKHVubGlrZWx5KCFlY2NfaW5pdGlhbGl6ZWQpKSB7DQotCQlyZXMgPSBw
-bGF0Zm9ybV9nZXRfcmVzb3VyY2VfYnluYW1lKHBkZXYsDQotCQkJCQkJICAgSU9SRVNPVVJDRV9N
-RU0sDQotCQkJCQkJICAgInNhdGEtZWNjIik7DQorCQlyZXMgPSBwbGF0Zm9ybV9nZXRfcmVzb3Vy
-Y2UocGRldiwgSU9SRVNPVVJDRV9NRU0sIDEpOw0KIAkJaWYgKHJlcykgew0KIAkJCXFvcmlxX3By
-aXYtPmVjY19hZGRyID0NCiAJCQkJZGV2bV9pb3JlbWFwX3Jlc291cmNlKGRldiwgcmVzKTsNCi0t
-IA0KMS45LjENCg0K
+On Wed, Jun 12, 2019 at 11:16:03AM +0800, Daniel Drake wrote:
+> On Wed, Jun 12, 2019 at 3:52 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+
+> > Why do you need these to be PCI devices?
+> 
+> I don't have a particular preference, but was trying to explore the
+> suggestions from the last round of review:
+> 
+> https://marc.info/?l=linux-ide&m=147923593001525&w=2
+> "implementing a bridge driver like VMD"
+> http://lists.infradead.org/pipermail/linux-nvme/2017-October/013325.html
+> "The right way to do this would be to expose a fake PCIe root port
+> that both the AHCI and NVMe driver bind to."
+> 
+> > It looks like the main thing
+> > you get is a hook to bind the driver to.  Could you accomplish
+> > something similar by doing some coordination between the ahci and nvme
+> > drivers directly, without involving PCI?
+> 
+> That's basically what Dan Williams originally proposed, and Christoph
+> Hellwig was not particularly excited by it...
+> 
+> Can you take a quick at the original patches and see what you think?
+> https://marc.info/?l=linux-ide&m=147709611121482&w=2
+> https://marc.info/?l=linux-ide&m=147709611621483&w=2
+> https://marc.info/?l=linux-ide&m=147709612221484&w=2
+> https://marc.info/?l=linux-ide&m=147709612721485&w=2
+> https://marc.info/?l=linux-ide&m=147709613221487&w=2
+
+I see Christoph's objections starting at
+https://marc.info/?l=linux-ide&m=147711904724908&w=2
+and I agree that this AHCI/NVMe melding is ugly.
+
+But given the existence of this ugly hardware, my opinion is that
+Dan's original patch series (above) is actually a nice way to deal
+with it.  That's exactly the sort of thing I was proposing.
+
+Part of Christoph's objection was the issue of how reset works, and
+that objection absolutely makes sense to me.  But IMO adding a fake
+PCI host bridge and fake PCI devices that really don't work because
+they have read-only config space just smears the issue over
+PCI/VFIO/etc in addition to AHCI and NVMe.
+
+Bjorn

@@ -2,97 +2,71 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CDC8427F6
-	for <lists+linux-ide@lfdr.de>; Wed, 12 Jun 2019 15:49:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43E054294B
+	for <lists+linux-ide@lfdr.de>; Wed, 12 Jun 2019 16:33:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436750AbfFLNt1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 12 Jun 2019 09:49:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58948 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2436722AbfFLNt1 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 12 Jun 2019 09:49:27 -0400
-Received: from localhost (173-25-83-245.client.mchsi.com [173.25.83.245])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3F9A3208CA;
-        Wed, 12 Jun 2019 13:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560347366;
-        bh=XxmYfcW64R7kQ/+LuOTWFbRjfanmeG4vLimtAoJAOpc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=e89zFSzf/8xvYW51g1/UatnItMta3xse8v/K0qRw1bvXcOM9C02qULISPJbuwNvp9
-         vx21Lx0SwpZjMsFqHJnSuznkoCL1FxWVSI/cSLboVq/G5C89u3IhxFKeiN1wwNWSFs
-         Se33l9/x64vRdLKELqgVlCc8uQQIrYC9Ojp12/IM=
-Date:   Wed, 12 Jun 2019 08:49:25 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
+        id S1727189AbfFLOdA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 12 Jun 2019 10:33:00 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:43508 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726840AbfFLOc7 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 12 Jun 2019 10:32:59 -0400
+Received: by mail-wr1-f68.google.com with SMTP id p13so7074374wru.10;
+        Wed, 12 Jun 2019 07:32:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HUKqGe05Pb6zgw6RDjd1axpDapyL2aMPUaJVO2AtScM=;
+        b=bj6+TzQSyieda9nmrZY4Os4EedFMWvAOj6ovbGm7q1WpWQFZ1HeHCX2nwODrvwlxP6
+         5IQ522sEtOi3ICjg0+i/y8cKg75qr5K4jQi6qlRzHsYG/HYgK2oeXYj9tWOYZNGh70/l
+         Nt5x574vpGVY1Ql6YzzgLMjyz2XswYllUduLSkbjww9xLvuD+mc0GBDL/beotOHNi9WP
+         zKji8Z9S0k1Ehoi6hqWO2gOVedlLjJAwRQeysd9iODRo2NiQ4v2w4jxnb8N6WNwAADMx
+         KVswqRnyD/4x7DIldBtJfr5eKqzRnVAkTfrBlBvlB+y9kpXUWRtKrS8W8gd2G5tGS5tJ
+         KOyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HUKqGe05Pb6zgw6RDjd1axpDapyL2aMPUaJVO2AtScM=;
+        b=YXGRUSfKmW+O2mv0/u5vosMulKlQVA9Pjcl+4BaOlPWhRsuaM4JYYhBwEALwN5lS03
+         jmXM12185FrfJAl1Nu1Bxq0GT2sgEBNRVijZ5x4PP/2F25yGSmhI9L/U4hseAPWAm2VH
+         cnCLw6tWOnwdc6dCm2iNiKEVpaCthvtm6fA7R2A6fNgzLLQ6mGbuBqzrDhS8kVLWIMzG
+         w95bwv/idDR4dIvEA7DasfMT+j7P2KzPW/2l1c0VJcLe6ajlex/WB6um4Ccnsodxm9Gz
+         U+jmX3gLsH++aQxdZtfUWL9pgsUjFh09X0ABp4kPwlLMN5U/xBLKhmwh4B3mhR7Yfqwx
+         DRow==
+X-Gm-Message-State: APjAAAUxL4a5l1Mr1sS1nigyPk1j0JzwRgFQgN8UB9zIXO2ZUw2kPKRD
+        YpeL4KVtQ9oX6MvakhyJ7JpbGnQ9JkvRv0aSrcKXrOM4ntQ=
+X-Google-Smtp-Source: APXvYqwUKKVE25V0R6QySoA81QTCMxX2IWB6TzJCr4k/wQYSrpB32IZNfVDUYrZQwa+dGzVnnVKyF0vtLb/TF/Y9OBg=
+X-Received: by 2002:a5d:6b12:: with SMTP id v18mr55904909wrw.306.1560349978526;
+ Wed, 12 Jun 2019 07:32:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190610074456.2761-1-drake@endlessm.com> <CAOSXXT7OFzHeTxNqZ1sS6giRxhDcrUUnVjURWBiFUc5T_8p=MA@mail.gmail.com>
+ <CAD8Lp45djPU_Ur8uCO2Y5Sbek_5N9QKkxLXdKNVcvkr6rFPLUQ@mail.gmail.com>
+In-Reply-To: <CAD8Lp45djPU_Ur8uCO2Y5Sbek_5N9QKkxLXdKNVcvkr6rFPLUQ@mail.gmail.com>
+From:   Keith Busch <keith.busch@gmail.com>
+Date:   Wed, 12 Jun 2019 08:32:46 -0600
+Message-ID: <CAOSXXT7H6HxY-za66Tr9ybRQyHsTdwwAgk9O2F=xK42MT8HsuA@mail.gmail.com>
+Subject: Re: [PATCH] PCI: Add Intel remapped NVMe device support
 To:     Daniel Drake <drake@endlessm.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
+Cc:     Bjorn Helgaas <bhelgaas@google.com>, Jens Axboe <axboe@kernel.dk>,
+        Keith Busch <kbusch@kernel.org>,
         Christoph Hellwig <hch@lst.de>,
         Linux PCI <linux-pci@vger.kernel.org>,
-        Linux Upstreaming Team <linux@endlessm.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
+        linux-ide@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>,
         linux-nvme <linux-nvme@lists.infradead.org>,
-        linux-ide@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
-        mjg59@srcf.ucam.org
-Subject: Re: [PATCH] PCI: Add Intel remapped NVMe device support
-Message-ID: <20190612134925.GC13533@google.com>
-References: <20190610074456.2761-1-drake@endlessm.com>
- <20190610211628.GA68572@google.com>
- <CAD8Lp47BmOtEgFUDCMyLrDpoPZSxcWmbrXEbh4PXS0FSG8ukLA@mail.gmail.com>
- <20190611195254.GB768@google.com>
- <CAD8Lp479mY=dAhFvGT2ZiJP12KXszhWev=QpCcgfgoew0TxgWg@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAD8Lp479mY=dAhFvGT2ZiJP12KXszhWev=QpCcgfgoew0TxgWg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+        Linux Upstreaming Team <linux@endlessm.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 11:16:03AM +0800, Daniel Drake wrote:
-> On Wed, Jun 12, 2019 at 3:52 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Mon, Jun 10, 2019 at 8:46 PM Daniel Drake <drake@endlessm.com> wrote:
+> What's the specific problem that you see here?
 
-> > Why do you need these to be PCI devices?
-> 
-> I don't have a particular preference, but was trying to explore the
-> suggestions from the last round of review:
-> 
-> https://marc.info/?l=linux-ide&m=147923593001525&w=2
-> "implementing a bridge driver like VMD"
-> http://lists.infradead.org/pipermail/linux-nvme/2017-October/013325.html
-> "The right way to do this would be to expose a fake PCIe root port
-> that both the AHCI and NVMe driver bind to."
-> 
-> > It looks like the main thing
-> > you get is a hook to bind the driver to.  Could you accomplish
-> > something similar by doing some coordination between the ahci and nvme
-> > drivers directly, without involving PCI?
-> 
-> That's basically what Dan Williams originally proposed, and Christoph
-> Hellwig was not particularly excited by it...
-> 
-> Can you take a quick at the original patches and see what you think?
-> https://marc.info/?l=linux-ide&m=147709611121482&w=2
-> https://marc.info/?l=linux-ide&m=147709611621483&w=2
-> https://marc.info/?l=linux-ide&m=147709612221484&w=2
-> https://marc.info/?l=linux-ide&m=147709612721485&w=2
-> https://marc.info/?l=linux-ide&m=147709613221487&w=2
-
-I see Christoph's objections starting at
-https://marc.info/?l=linux-ide&m=147711904724908&w=2
-and I agree that this AHCI/NVMe melding is ugly.
-
-But given the existence of this ugly hardware, my opinion is that
-Dan's original patch series (above) is actually a nice way to deal
-with it.  That's exactly the sort of thing I was proposing.
-
-Part of Christoph's objection was the issue of how reset works, and
-that objection absolutely makes sense to me.  But IMO adding a fake
-PCI host bridge and fake PCI devices that really don't work because
-they have read-only config space just smears the issue over
-PCI/VFIO/etc in addition to AHCI and NVMe.
-
-Bjorn
+Performance. Have you had a chance to benchmark these storage devices
+comparing legacy vs MSI interrupts? I don't think anyone would chose
+the slower one on purpose. These platforms have an option to disable
+raid mode, so the kernel's current recommendation should be the user's
+best option.

@@ -2,152 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F23D451D5
-	for <lists+linux-ide@lfdr.de>; Fri, 14 Jun 2019 04:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D2414556C
+	for <lists+linux-ide@lfdr.de>; Fri, 14 Jun 2019 09:11:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbfFNC03 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 13 Jun 2019 22:26:29 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:33619 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726283AbfFNC03 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 13 Jun 2019 22:26:29 -0400
-Received: by mail-qt1-f195.google.com with SMTP id x2so849762qtr.0
-        for <linux-ide@vger.kernel.org>; Thu, 13 Jun 2019 19:26:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LiOoADs+Q5z91q0BFH/hfKvDUqqapbQTXU8ncMrf99M=;
-        b=uwiadcDhl26vPElVBSbZDabFb3ZE6S7BS3NtKXxz0gAL1w+mU3B7XGSP0TKRChf0QG
-         qLjNLOYx2KLU4BUePq77d6nrIgFcJseoHDifbiVYZs43K3eHQPof84CQE2INw+fom/Sk
-         AlZ7ILsFm4ODQYGhvDzyFyVfGVVtU3sQXtsHDzzNFSgX2xo4mskrrz9X5tBUXMVSwj2B
-         JNyD1EEUdegFKa+egn7rxCq/8vxTTN1KnDj757mUOZW/XqjcW3DWLhpKs7Uay6xJYdee
-         8XqL+l7Sm9kvlRNvI+HlZDyxmDjMwR2EQ3tje8e/zilP2LnIOZpuKaI1Lpq7EHo8WZjv
-         f+Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LiOoADs+Q5z91q0BFH/hfKvDUqqapbQTXU8ncMrf99M=;
-        b=VaQ9Eh0AbBeo8dXpCxlRklrk5aIQo+MxZ5EGP2/0s0aybKWTB5qYtFX+oYQR9uWm9n
-         JXCfxTivqW67F+y28l1c/hz2EFY9sZpYGK/l1ExRzvcNa5H5AGR0mliC6L79xxIXPeCA
-         obU7eg7WZD0Hw/lBvs+kCl66a2GI2Inr5Hd031CWkK3quJ6IU8LEQ4ZKtQAcmR6z4/xa
-         KY6Y4kDK1Ngk0E4NN53aq+r2npHUlTQWB5LapqOdzbtdvO4egfOGdvw6ecnJCSo5GGsT
-         KoVbBiod8k4/wdJkeBZC24LXEpFiXONT5zsgtaIz01SFrKSuZMEvBxLDCcA3xVglb6/F
-         2EcQ==
-X-Gm-Message-State: APjAAAULpscXKH6E9100rIgiJ728VDKuTxTU1irSQFk0I3YFuZ8CV8gY
-        gUAd7uvOt3yfYqlTW8hAr8+yiCOmKRj+s9AHT0GeRA==
-X-Google-Smtp-Source: APXvYqzqe1/DHk1BGLZnH3KdvGW6KQDBwyXvUptRc8CEGriCukr0xUjYBj6CZBI0TGOmAn3teIaCliw6A0KIzqukAz8=
-X-Received: by 2002:aed:21f0:: with SMTP id m45mr64329935qtc.391.1560479187623;
- Thu, 13 Jun 2019 19:26:27 -0700 (PDT)
+        id S1726177AbfFNHLm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 14 Jun 2019 03:11:42 -0400
+Received: from mx2.suse.de ([195.135.220.15]:58006 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725837AbfFNHLm (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Fri, 14 Jun 2019 03:11:42 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 76117B015;
+        Fri, 14 Jun 2019 07:11:41 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     axboe@kernel.dk
+Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
+        linux-ide@vger.kernel.org
+Subject: [RFC 1/3] ata: Documentation, fix function names
+Date:   Fri, 14 Jun 2019 09:11:38 +0200
+Message-Id: <20190614071140.6233-1-jslaby@suse.cz>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-References: <20190610074456.2761-1-drake@endlessm.com> <CAOSXXT7OFzHeTxNqZ1sS6giRxhDcrUUnVjURWBiFUc5T_8p=MA@mail.gmail.com>
- <CAD8Lp45djPU_Ur8uCO2Y5Sbek_5N9QKkxLXdKNVcvkr6rFPLUQ@mail.gmail.com>
- <CAOSXXT7H6HxY-za66Tr9ybRQyHsTdwwAgk9O2F=xK42MT8HsuA@mail.gmail.com> <20190613085402.GC13442@lst.de>
-In-Reply-To: <20190613085402.GC13442@lst.de>
-From:   Daniel Drake <drake@endlessm.com>
-Date:   Fri, 14 Jun 2019 10:26:15 +0800
-Message-ID: <CAD8Lp47Vu=w+Lj77_vL05JYV1WMog9WX3FHGE+TseFrhcLoTuA@mail.gmail.com>
-Subject: Re: [PATCH] PCI: Add Intel remapped NVMe device support
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Keith Busch <keith.busch@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jens Axboe <axboe@kernel.dk>, Keith Busch <kbusch@kernel.org>,
-        Linux PCI <linux-pci@vger.kernel.org>,
-        linux-ide@vger.kernel.org, Sagi Grimberg <sagi@grimberg.me>,
-        linux-nvme <linux-nvme@lists.infradead.org>,
-        Linux Upstreaming Team <linux@endlessm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 4:54 PM Christoph Hellwig <hch@lst.de> wrote:
-> So until we get very clear and good documentation from Intel on that
-> I don't think any form of upstream support will fly.  And given that
-> Dan who submitted the original patch can't even talk about this thing
-> any more and apparently got a gag order doesn't really give me confidence
-> any of this will ever work.
+ata_qc_prep no longer exists, there are ata_bmdma_qc_prep and
+ata_bmdma_dumb_qc_prep instead. And most drivers do not use them, so
+reword the paragraph.
 
-I realise the architecture here seems badly thought out, and the lack
-of a decent spec makes the situation worse, but I'd encourage you to
-reconsider this from the perspectives of:
- - Are the patches really more ugly than the underlying architecture?
- - We strive to make Linux work well on common platforms and sometimes
-have to accept that hardware vendors do questionable things & do not
-fully cooperate
- - It works out of the box on Windows
+ata_qc_issue_prot was renamed to ata_sff_qc_issue. ->tf_load is now
+->sff_tf_load. Fix them.
 
-As you said years ago:
-https://marc.info/?l=linux-ide&m=147923593001525&w=2
-"It seems devices supporting this "slow down the devices and make life
-hell for the OS" mode are getting more common, so we'll have to do
-something about it."
+And fix spelling supercede -> supersede.
 
-The frequency of apperance of this configuration appears poised to
-grow even more significantly at this point. There appears to be a
-significant increase in consumer laptops in development that have NVMe
-disk as the only storage device, and come with the BIOS option on by
-default. When these reach point of sale, expect to see a whole bunch
-more Linux users who struggle with this. We also have indication that
-vendors are unwilling to deal with the logistics headache of having
-different BIOS settings for Linux, so the lack of support here is
-potentially going to stop those vendors from shipping Linux at all.
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: linux-ide@vger.kernel.org
+---
+ Documentation/driver-api/libata.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Even with a spec I don't imagine that we can meet the feature parity
-of having the real NVMe PCI device available. Can we just accept the
-compromises & start by focusing on the simple case of a consumer
-home/family PC?
+diff --git a/Documentation/driver-api/libata.rst b/Documentation/driver-api/libata.rst
+index 70e180e6b93d..c2ee38098e85 100644
+--- a/Documentation/driver-api/libata.rst
++++ b/Documentation/driver-api/libata.rst
+@@ -254,19 +254,19 @@ High-level taskfile hooks
+     int (*qc_issue) (struct ata_queued_cmd *qc);
+ 
+ 
+-Higher-level hooks, these two hooks can potentially supercede several of
++Higher-level hooks, these two hooks can potentially supersede several of
+ the above taskfile/DMA engine hooks. ``->qc_prep`` is called after the
+ buffers have been DMA-mapped, and is typically used to populate the
+-hardware's DMA scatter-gather table. Most drivers use the standard
+-:c:func:`ata_qc_prep` helper function, but more advanced drivers roll their
+-own.
++hardware's DMA scatter-gather table. Some drivers use the standard
++:c:func:`ata_bmdma_qc_prep` and :c:func:`ata_bmdma_dumb_qc_prep` helper
++functions, but more advanced drivers roll their own.
+ 
+ ``->qc_issue`` is used to make a command active, once the hardware and S/G
+ tables have been prepared. IDE BMDMA drivers use the helper function
+-:c:func:`ata_qc_issue_prot` for taskfile protocol-based dispatch. More
++:c:func:`ata_sff_qc_issue` for taskfile protocol-based dispatch. More
+ advanced drivers implement their own ``->qc_issue``.
+ 
+-:c:func:`ata_qc_issue_prot` calls ``->tf_load()``, ``->bmdma_setup()``, and
++:c:func:`ata_sff_qc_issue` calls ``->sff_tf_load()``, ``->bmdma_setup()``, and
+ ``->bmdma_start()`` as necessary to initiate a transfer.
+ 
+ Exception and probe handling (EH)
+-- 
+2.22.0
 
->  a) quirks on the PCI ID
-
-Intel stated unequivocally that the PCI config space is not available.
-So this isn't going to happen, spec or not.
-https://marc.info/?l=linux-ide&m=147734288604783&w=2
-
-If we run into a case where we absolutely need quirks, we could
-examine doing that on the disk identification data available over the
-NVMe protocol (e.g. vendor & model name).
-
->  b) reset handling, including the PCI device removal as the last
->     escalation step
-
-Apparently can't be supported, but it's not clear that this actually
-matters for a home PC...
-
-https://marc.info/?l=linux-ide&m=147733119300691&w=2
-"The driver seems to already comprehend instances where the
-device does not support nvme_reset_subsystem() requests."
-
-https://marc.info/?l=linux-ide&m=147734288604783&w=2
-"Talking with Keith, subsystem-resets are a feature of enterprise-class
-NVMe devices.  I think those features are out of scope for the class
-of devices that will find themselves in a platform with this
-configuration, same for hot-plug."
-
->  c) SR-IOV VFs and their management
-
-This seems like a server/virtualization topic. I don't see any issues
-in not supporting this in the context of a consumer PC.
-It seems reasonable to expect people interested in this to be required
-to read the kernel logs (to see the message) and proceed with changing
-the BIOS setting.
-
->  d) power management
-
-If there is a way to control the NVMe device power separately from the
-AHCI device that would of course be nice, but this seems secondary to
-the larger problem of users not being able to access their storage
-device.
-
-I'm hopeful that after years of waiting for the situation to improve
-without any positive developments, we can find a way to go with the
-code we have now, and if we do get a spec from Intel at any point,
-make any relevant code improvments when that happens.
-
-I'll work on refreshing Dan's patches & clarifying the knowledge we
-have within there, plus the limitations.
-
-Thanks,
-Daniel

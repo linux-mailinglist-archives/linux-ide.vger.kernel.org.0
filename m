@@ -2,115 +2,125 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12EC74576A
-	for <lists+linux-ide@lfdr.de>; Fri, 14 Jun 2019 10:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E0C345791
+	for <lists+linux-ide@lfdr.de>; Fri, 14 Jun 2019 10:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbfFNIZB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 14 Jun 2019 04:25:01 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:36842 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726259AbfFNIZA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 14 Jun 2019 04:25:00 -0400
-Received: by mail-lf1-f68.google.com with SMTP id q26so1127635lfc.3
-        for <linux-ide@vger.kernel.org>; Fri, 14 Jun 2019 01:24:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Ui1gY2AP8chXdXn4wmlJQTa1agcsKtmFVHRK40WFU4U=;
-        b=HdUyjwMq0kBBGoMRXEpch9I9ao93cxtEIRbVgFkLWO81MCwFQdr2DIrPJj0FNeFPcm
-         acPkqkVYftUgC0vIt8Zp7FixT4eDYUZJpsFZFK0YF8Vl6VeEx6JsnY1ehgrd/8mM8Cr2
-         VqrkTt3Z4tLGu9b7BB9RauoMtmTHITL0yQXBIBqsmle7L4djMJKrHKyGgHXD73aTFKWw
-         /wRiGIkiGMiftqtBc6PYEPiUDkWujvPZM7PJ5RGsKLw9sMjBuHPeSWNFrgB8+amNQ8H6
-         UoY4phfPjhmeB0Bzy+5sCboHEMe0oSnHAChnE9iKHX4V565rMv5U9WY2mWOm4yTmlCHm
-         qoVw==
+        id S1726583AbfFNIdG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 14 Jun 2019 04:33:06 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:50851 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726435AbfFNIdF (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 14 Jun 2019 04:33:05 -0400
+Received: by mail-wm1-f65.google.com with SMTP id c66so1418200wmf.0;
+        Fri, 14 Jun 2019 01:33:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Ui1gY2AP8chXdXn4wmlJQTa1agcsKtmFVHRK40WFU4U=;
-        b=Fn9INbMIe1QaGRSMVXj3nvYNB4foxsOD/DeVsR569JwnleBzIAEtvqgLkzYgC3S16o
-         f4zTARV5H3MjPxcj2BgFcvGjOCUI5sEKHEld6MMIZ+EJJgH7ylF3V92IQaU2d7tfbYvB
-         PQnyaUTiU7exYLU5VOQ3Fx8HR5TMWmd9Ufq1TS5CRXnFnZVimFQRi6TDXYPRZMDDy7OT
-         WHfT0ZOiWWq6RzjfNko/Th2O2CxPrbHobQIkFDBg1rBltKR1uRxfqT1xY/WrgG9g490a
-         XIaboP+HYkKYOXWi10Rs4oHGWJ4Soi6ZiZ1VoiRdNvJrYZyN0yN2S8HEHdZqKmxKMI92
-         R3qw==
-X-Gm-Message-State: APjAAAWiKWLH/al8lmoCIQYW7qxxX0J6erC1pYIAi+7rHm7oEMK878h8
-        Y00mQm53/pP9fWcm3Jh5eOEQZNS5JyM=
-X-Google-Smtp-Source: APXvYqxqAzZa3TgvBcOszolL8TArMgvi7Ng31/rAXeYBcOf3R76pCykuiCkcuVwtNQ4QHwmGavmYeA==
-X-Received: by 2002:a19:e05c:: with SMTP id g28mr33170062lfj.167.1560500698732;
-        Fri, 14 Jun 2019 01:24:58 -0700 (PDT)
-Received: from [192.168.0.199] ([31.173.84.143])
-        by smtp.gmail.com with ESMTPSA id b11sm454239ljf.8.2019.06.14.01.24.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 14 Jun 2019 01:24:58 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=tMBYk/iki1NC0NM+/8I2xpo6ne6QbknqGB0Lfw93ZgE=;
+        b=Tw1k93fKT+Xl/gNTRof9WFxmc2HZXYE3rSdu0CA8iVFS5XKM/wVn8QperoygtVsHTM
+         s9qE6E8Xj4mYrWLj0cyoaRM7whHrE7vjI5YPT/ZwuYq5uudPp37lord5UMI6f6Ydaaqh
+         VahouYhSgNjsKxLvTa0IULvREDYOnoW0WMiptzb3gj0+yCH6Xqz92Jy0SfqzfoxEpMxx
+         NuV5L7thavYY8ruNFwudqd78ab6v098PwWLrnOZ2PhhdpYbFT6hNU8njn7aLQAHT9dGl
+         kTEVcAF7sf18ispbmb/Ti8wwqMB8qpKM44B+uefvX+QSKTEi3oqQnImOk2w6x6udYZbl
+         Z7IA==
+X-Gm-Message-State: APjAAAUBwThZ9DSh4UMbntfOZX22/6gaCLX3DjTLgrJ9yjjmVg6G26vs
+        i7JdN753tNbUgQviZcc0Mr5vTEyC
+X-Google-Smtp-Source: APXvYqwBz7/m51ixTsf7W4YcxNsZHdMARxusualqKjtASgioRFtQ858t6401aYvWhMHHoYFVpyH/nA==
+X-Received: by 2002:a1c:be12:: with SMTP id o18mr6801364wmf.21.1560501183455;
+        Fri, 14 Jun 2019 01:33:03 -0700 (PDT)
+Received: from ?IPv6:2a0b:e7c0:0:107::49? ([2a0b:e7c0:0:107::49])
+        by smtp.gmail.com with ESMTPSA id c5sm3153278wma.19.2019.06.14.01.33.02
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Fri, 14 Jun 2019 01:33:02 -0700 (PDT)
 Subject: Re: [RFC 3/3] ata: sata_mv, avoid trigerrable BUG_ON
-To:     Jiri Slaby <jslaby@suse.cz>, axboe@kernel.dk
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        axboe@kernel.dk
 Cc:     linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org
 References: <20190614071140.6233-1-jslaby@suse.cz>
  <20190614071140.6233-3-jslaby@suse.cz>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Message-ID: <0e9f8a3b-65b9-4d87-21f1-684f7e44b166@cogentembedded.com>
-Date:   Fri, 14 Jun 2019 11:24:46 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
+ <0e9f8a3b-65b9-4d87-21f1-684f7e44b166@cogentembedded.com>
+From:   Jiri Slaby <jslaby@suse.cz>
+Openpgp: preference=signencrypt
+Autocrypt: addr=jslaby@suse.cz; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <75a4a778-6862-a0d0-1033-cd5fe57d6dbf@suse.cz>
+Date:   Fri, 14 Jun 2019 10:33:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190614071140.6233-3-jslaby@suse.cz>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <0e9f8a3b-65b9-4d87-21f1-684f7e44b166@cogentembedded.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello!
-
-On 14.06.2019 10:11, Jiri Slaby wrote:
-
-> There are several reports that the BUG_ON on unsupported command in
-> mv_qc_prep can be triggered under some circumstances:
-> https://bugzilla.suse.com/show_bug.cgi?id=1110252
-> https://serverfault.com/questions/888897/raid-problems-after-power-outage
-> https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1652185
-> https://bugs.centos.org/view.php?id=14998
+On 14. 06. 19, 10:24, Sergei Shtylyov wrote:
+>> --- a/drivers/ata/sata_mv.c
+>> +++ b/drivers/ata/sata_mv.c
+>> @@ -2098,12 +2098,10 @@ static int mv_qc_prep(struct ata_queued_cmd *qc)
+>>            * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
+>>            * of which are defined/used by Linux.  If we get here, this
+>>            * driver needs work.
+>> -         *
+>> -         * FIXME: modify libata to give qc_prep a return value and
+>> -         * return error here.
+>>            */
+>> -        BUG_ON(tf->command);
+>> -        break;
+>> +        ata_port_err(ap, "%s: unsupported command: %d\n", __func__,
+>> +                tf->command);
 > 
-> Let sata_mv handle the failure gracefully: warn about that incl. the
-> failed command number and return an AC_ERR_INVALID error. We can do that
-> now thanks to the previous patch.
-> 
-> Remove also the long-standing FIXME.
-> 
-> Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: linux-ide@vger.kernel.org
-> ---
->   drivers/ata/sata_mv.c | 8 +++-----
->   1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-> index d6aac7b31c45..144fa0982168 100644
-> --- a/drivers/ata/sata_mv.c
-> +++ b/drivers/ata/sata_mv.c
-> @@ -2098,12 +2098,10 @@ static int mv_qc_prep(struct ata_queued_cmd *qc)
->   		 * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
->   		 * of which are defined/used by Linux.  If we get here, this
->   		 * driver needs work.
-> -		 *
-> -		 * FIXME: modify libata to give qc_prep a return value and
-> -		 * return error here.
->   		 */
-> -		BUG_ON(tf->command);
-> -		break;
-> +		ata_port_err(ap, "%s: unsupported command: %d\n", __func__,
-> +				tf->command);
+>    I'd use "%x" here instead of "%d".
 
-    I'd use "%x" here instead of "%d".
+Hi, that makes sense. Fixed locally to %.2x as the commands are defined
+as such. Waiting for more comments before [v2] :).
 
-> +		return AC_ERR_INVALID;
->   	}
->   	mv_crqb_pack_cmd(cw++, tf->nsect, ATA_REG_NSECT, 0);
->   	mv_crqb_pack_cmd(cw++, tf->hob_lbal, ATA_REG_LBAL, 0);
-
-MBR, Sergei
+thanks,
+-- 
+js
+suse labs

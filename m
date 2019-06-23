@@ -2,64 +2,118 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D69B4F6F3
-	for <lists+linux-ide@lfdr.de>; Sat, 22 Jun 2019 18:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E34864FADD
+	for <lists+linux-ide@lfdr.de>; Sun, 23 Jun 2019 11:07:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726419AbfFVQ3G (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 22 Jun 2019 12:29:06 -0400
-Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:35461 "EHLO
-        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726359AbfFVQ2u (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 22 Jun 2019 12:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
-X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
- lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
- 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
- b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
- lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
- 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
- 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
- O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
- RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
- 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
- q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
- P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
- BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
- ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
- FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
- ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
- 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
-Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
+        id S1726386AbfFWJHC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 23 Jun 2019 05:07:02 -0400
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:40779 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726050AbfFWJHB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 23 Jun 2019 05:07:01 -0400
+Received: by mail-lf1-f68.google.com with SMTP id a9so7889692lff.7
+        for <linux-ide@vger.kernel.org>; Sun, 23 Jun 2019 02:06:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=8uUFPYYsBjgmgqXtdG/aFORmD5gxcktbPqZxjSpl2DM=;
+        b=revNQguTInKk47Hr/SSfbkqetE70ACqSrOFnN5/4F1fVO+v7In4Y/VYEeuXSLTTsxi
+         Z/Rf5/9gepnAzaLe9Fgyt+LpXb8bv+Rh2zSaUTPG5F+/4V00/2RG+BBqjSoG00tcSvBo
+         X+wijkcxxu//pGwjDr9wMCw2zSyIviYWvhDVwcIN2Xi3/CCGOZNH5ah1d7WzakCFKHig
+         B/z3l39139cEjGNOOgzDv5rVKddOm7g5y1AiTx6zVq7beCU8uNz9Uwuovvsh9dsRlpCP
+         6kma+7w+6QhACIPtuWiklIfyhx9gClndWthHcYOWBf5QfD88tQgFheo9qTuH40CqelcU
+         z/1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=8uUFPYYsBjgmgqXtdG/aFORmD5gxcktbPqZxjSpl2DM=;
+        b=HRqYmKBeXqfmdVkIYw/nMzgXKZP2L/fcMQS4Gg90fQM8ruwrcA9PadU+RKVoIFHt0e
+         JdC6Qr1d/lD3oCyOUCISscaKfjXySv093xv422g7cwyYkeGZ17BOGKYxeoelVxyLwU3a
+         +QoCq36q6bxpemuU7kvse/sYbwq+PvaC7IqjiFndZkJLckDC6KT17cJu6/7ksCsAKoDR
+         PRFvXAZV1ZEaRVIpz9Ox5HJJ5Jy0eTMQNAko92S173IlZZRxO+Y+0vs8wKkbMzoYniDV
+         aqW1EDSxn28XV6BkS5G6dHtoPUM3NUwoPCjMht5hqQoLDduciftXOk5+ZWLAWPduxMvi
+         FpNQ==
+X-Gm-Message-State: APjAAAVoeQ6r7liN2CEtDdGV5WhFJowxhZplhDNtzNYKosP58byH88u0
+        qXQlvHty4WIWbG2mBdZjxqaDSw==
+X-Google-Smtp-Source: APXvYqwMEpcDhKinIMAI8pNExY/Z1k08sxwUpefe78j254IPjtPa7+2bk1XsdUiJjeTusIlLafUFJg==
+X-Received: by 2002:ac2:4202:: with SMTP id y2mr4980428lfh.178.1561280819089;
+        Sun, 23 Jun 2019 02:06:59 -0700 (PDT)
+Received: from [192.168.0.199] ([31.173.81.196])
+        by smtp.gmail.com with ESMTPSA id p5sm1200613ljb.91.2019.06.23.02.06.58
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 23 Jun 2019 02:06:58 -0700 (PDT)
+Subject: Re: [PATCH RFC 1/2] m68k/atari: add platform device for Falcon IDE
+ port
+To:     Michael Schmitz <schmitzmic@gmail.com>, linux-m68k@vger.kernel.org,
+        linux-ide@vger.kernel.org
+Cc:     geert@linux-m68k.org, b.zolnierkie@samsung.com
+References: <CAMuHMdUcUqWWGNngNV3EpEq5wSsf5qTVeZvTB9gX1e26Jrq1xA@mail.gmail.com>
+ <1561063642-13900-2-git-send-email-schmitzmic@gmail.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Message-ID: <f820e822-deae-87a3-cb05-0ca2ba4608f4@cogentembedded.com>
+Date:   Sun, 23 Jun 2019 12:06:55 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <1561063642-13900-2-git-send-email-schmitzmic@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hello!
 
+On 20.06.2019 23:47, Michael Schmitz wrote:
 
-From:Miss: Fatima Yusuf.
+> Autoloading of Falcon IDE driver modules requires converting
+> these drivers to platform drivers.
+> 
+> Add platform device for Falcon IDE interface in Atari platform
+> setup code in preparation for this.
+> 
+> Add Falcon IDE base address in Atari hardware address header.
+> 
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> ---
+>   arch/m68k/atari/config.c        |   20 ++++++++++++++++++++
+>   arch/m68k/include/asm/atarihw.h |    6 ++++++
+>   2 files changed, 26 insertions(+), 0 deletions(-)
+> 
+> diff --git a/arch/m68k/atari/config.c b/arch/m68k/atari/config.c
+> index ca8469e..2d7133a 100644
+> --- a/arch/m68k/atari/config.c
+> +++ b/arch/m68k/atari/config.c
+> @@ -896,6 +896,21 @@ static void isp1160_delay(struct device *dev, int delay)
+>   };
+>   #endif
+>   
+> +#if IS_ENABLED(CONFIG_PATA_FALCON)
+> +static const struct resource atari_falconide_rsrc[] __initconst = {
+> +	{
+> +		.flags = IORESOURCE_MEM,
+> +		.start = FALCON_IDE_BASE,
+> +		.end   = FALCON_IDE_BASE+0x40,
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
+    You probably forgot to subtract 1 here...
 
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
+> +	},
+> +	{
+> +		.flags = IORESOURCE_IRQ,
+> +		.start = IRQ_MFP_FSCSI,
+> +		.end   = IRQ_MFP_FSCSI,
+> +	},
+> +};
+> +#endif
+> +
+>   int __init atari_platform_init(void)
+>   {
+>   	int rv = 0;
+[...]
 
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
-
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
-
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
-
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
+MBR, Sergei

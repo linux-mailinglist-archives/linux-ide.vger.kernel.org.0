@@ -2,55 +2,49 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DE2556840
-	for <lists+linux-ide@lfdr.de>; Wed, 26 Jun 2019 14:07:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E9E569C3
+	for <lists+linux-ide@lfdr.de>; Wed, 26 Jun 2019 14:53:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfFZMHk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 26 Jun 2019 08:07:40 -0400
-Received: from mail.vodokanal.poltava.ua ([91.219.220.27]:57275 "EHLO
-        mail.vodokanal.poltava.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726339AbfFZMHk (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 26 Jun 2019 08:07:40 -0400
-Received: by mail.vodokanal.poltava.ua (Postfix, from userid 80)
-        id C871922C44D; Wed, 26 Jun 2019 14:19:01 +0300 (EEST)
-Received: from 192.168.0.119
-        (SquirrelMail authenticated user test@vodokanal.poltava.ua)
-        by mail.vodokanal.poltava.ua with HTTP;
-        Wed, 26 Jun 2019 12:19:01 +0100
-Message-ID: <be6afb8d68f3a6f3240e3c6a1756ccb8.squirrel@mail.vodokanal.poltava.ua>
-Date:   Wed, 26 Jun 2019 12:19:01 +0100
-Subject: LOANS !!!
-From:   "Dial Direct Loans" <dialdirect@info.org>
-Reply-To: infodialdirectloans@mail2consultant.com
-User-Agent: SquirrelMail/1.4.21
+        id S1726965AbfFZMx6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 26 Jun 2019 08:53:58 -0400
+Received: from verein.lst.de ([213.95.11.211]:42920 "EHLO newverein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726484AbfFZMx6 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 26 Jun 2019 08:53:58 -0400
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id 57FB268B05; Wed, 26 Jun 2019 14:53:25 +0200 (CEST)
+Date:   Wed, 26 Jun 2019 14:53:25 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Roger Quadros <rogerq@ti.com>
+Cc:     hch@lst.de, "hdegoede@redhat.com" <hdegoede@redhat.com>,
+        axboe@kernel.dk, iommu@lists.linux-foundation.org,
+        linux-ide@vger.kernel.org, linux-omap@vger.kernel.org,
+        jejb@linux.ibm.com, martin.petersen@oracle.com,
+        rmk+kernel@arm.linux.org.uk, "Nori, Sekhar" <nsekhar@ti.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Tony Lindgren <tony@atomide.com>
+Subject: Re: SATA broken with LPAE
+Message-ID: <20190626125325.GA4744@lst.de>
+References: <16f065ef-f4ac-46b4-de2a-6b5420ae873a@ti.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Priority: 3 (Normal)
-Importance: Normal
-To:     undisclosed-recipients:;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16f065ef-f4ac-46b4-de2a-6b5420ae873a@ti.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hi Roger,
 
-Dial Direct Loan SA
+it seems the arm dma direct mapping code isn't doing the right thing
+here.  On other platforms that have > 4G memory we always use swiotlb
+for bounce buffering in case a device that can't DMA to all the memory.
 
-
-Consolidate your debts with Dial Direct Loan SA for your peace of
-mind at a fixed interest rate of 4.75%,personal and business loans
-are also welcome.For details  and file in your applications by sending an
-email
-to:infodialdirectloans@mail2consultant.com
-
-
-
-Yours in Service,
-Susan Muller (Mrs.),
-Senior Consultant,
-Loan Application Team
-Dial Direct Loan SA
-Tel No: +27717231058
-
-
+Arm is the odd one out and uses its own dmabounce framework instead,
+but it seems like it doesn't get used in this case.  We need to make
+sure dmabounce (or swiotlb for that matter) is set up if > 32-bit
+addressing is supported.  I'm not really an arm platform expert,
+but some of those on the Cc list are and might chime in on how to
+do that.

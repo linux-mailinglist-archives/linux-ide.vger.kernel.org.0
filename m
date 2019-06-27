@@ -2,49 +2,33 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E9E569C3
-	for <lists+linux-ide@lfdr.de>; Wed, 26 Jun 2019 14:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35FFC57E6F
+	for <lists+linux-ide@lfdr.de>; Thu, 27 Jun 2019 10:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbfFZMx6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 26 Jun 2019 08:53:58 -0400
-Received: from verein.lst.de ([213.95.11.211]:42920 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726484AbfFZMx6 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 26 Jun 2019 08:53:58 -0400
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id 57FB268B05; Wed, 26 Jun 2019 14:53:25 +0200 (CEST)
-Date:   Wed, 26 Jun 2019 14:53:25 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Roger Quadros <rogerq@ti.com>
-Cc:     hch@lst.de, "hdegoede@redhat.com" <hdegoede@redhat.com>,
-        axboe@kernel.dk, iommu@lists.linux-foundation.org,
-        linux-ide@vger.kernel.org, linux-omap@vger.kernel.org,
-        jejb@linux.ibm.com, martin.petersen@oracle.com,
-        rmk+kernel@arm.linux.org.uk, "Nori, Sekhar" <nsekhar@ti.com>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tony Lindgren <tony@atomide.com>
-Subject: Re: SATA broken with LPAE
-Message-ID: <20190626125325.GA4744@lst.de>
-References: <16f065ef-f4ac-46b4-de2a-6b5420ae873a@ti.com>
+        id S1726420AbfF0IoJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 27 Jun 2019 04:44:09 -0400
+Received: from [163.204.246.42] ([163.204.246.42]:39730 "EHLO
+        localhost.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726408AbfF0IoI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 27 Jun 2019 04:44:08 -0400
+Received: from localhost (localhost [IPv6:::1])
+        by localhost.localdomain (Postfix) with SMTP id 2D90F120EFEE
+        for <linux-ide@vger.kernel.org>; Thu, 27 Jun 2019 08:49:21 +0800 (CST)
+From:   linux-ide@vger.kernel.org
+To:     xFRlinux-ide@vger.kernel.org
+Reply-To: demexinruslan+HeKzmLVa@gmail.com
+Subject: =?utf-8?B?0JrQu9C40LXQvdGC0YHQutC40LUg0LHQsNC30YshIEVt?=
+        =?utf-8?B?YWlsOiBwcm9kYXdlekBhcm15c3B5LmNvbSDQo9C30L3Q?=
+        =?utf-8?B?sNC50YLQtSDQv9C+0LTRgNC+0LHQvdC10LUh?=
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16f065ef-f4ac-46b4-de2a-6b5420ae873a@ti.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset="utf-8";
+Content-Transfer-Encoding: base64
+Message-Id: <20190627004921.2D90F120EFEE@localhost.localdomain>
+Date:   Thu, 27 Jun 2019 08:49:21 +0800 (CST)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Roger,
-
-it seems the arm dma direct mapping code isn't doing the right thing
-here.  On other platforms that have > 4G memory we always use swiotlb
-for bounce buffering in case a device that can't DMA to all the memory.
-
-Arm is the odd one out and uses its own dmabounce framework instead,
-but it seems like it doesn't get used in this case.  We need to make
-sure dmabounce (or swiotlb for that matter) is set up if > 32-bit
-addressing is supported.  I'm not really an arm platform expert,
-but some of those on the Cc list are and might chime in on how to
-do that.
+0JrQu9C40LXQvdGC0YHQutC40LUg0LHQsNC30YshIEVtYWlsOiBwcm9kYXdlekBhcm15c3B5LmNv
+bSDQo9C30L3QsNC50YLQtSDQv9C+0LTRgNC+0LHQvdC10LUhDQo=

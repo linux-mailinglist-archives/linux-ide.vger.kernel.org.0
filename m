@@ -2,65 +2,83 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 987505C18A
-	for <lists+linux-ide@lfdr.de>; Mon,  1 Jul 2019 18:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 102C15C520
+	for <lists+linux-ide@lfdr.de>; Mon,  1 Jul 2019 23:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729206AbfGAQ6V (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 1 Jul 2019 12:58:21 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:51802 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728501AbfGAQ6V (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 1 Jul 2019 12:58:21 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id A35EE30C31B8;
-        Mon,  1 Jul 2019 16:58:16 +0000 (UTC)
-Received: from shalem.localdomain.com (ovpn-116-56.ams2.redhat.com [10.36.116.56])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A98682CFB8;
-        Mon,  1 Jul 2019 16:58:15 +0000 (UTC)
-From:   Hans de Goede <hdegoede@redhat.com>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Hans de Goede <hdegoede@redhat.com>, linux-ide@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH] libata: Drop firmware version check from the ST1000LM024 quirk
-Date:   Mon,  1 Jul 2019 18:58:13 +0200
-Message-Id: <20190701165813.15607-1-hdegoede@redhat.com>
+        id S1726686AbfGAVoP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 1 Jul 2019 17:44:15 -0400
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:41105 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726586AbfGAVoP (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Jul 2019 17:44:15 -0400
+Received: by mail-oi1-f194.google.com with SMTP id g7so11246478oia.8
+        for <linux-ide@vger.kernel.org>; Mon, 01 Jul 2019 14:44:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=51738Kb2/QYKt+E/Z2/iQjgWGT06tBLjlpfqcB3W3fk=;
+        b=Njp1kQgM3kKaNFo5OHgOTyZqEWHO6K09y3PsEE16MgOJWD3AFWYBv4Sgn1GJz8ucsv
+         ntjS/LIiPEGy9Wf2+NOKhxpM+y79BA1v4tkA4y7X27Cm2hpizwhlakJKGLnx3x/rull9
+         KINrwSACibJPKa13g5o5Et05v3scndxjN8uBNTnmMl3dmJiYoz59uYcHxpQoXA96Znj6
+         MgKxB0qvO23L1+IEk+hKNlrJMTp4ZKNdIDIOuobQxGk4E7Fcan3Nr/P1Vcc4sH6aY8wm
+         cAaGEK2kjP+e0CFaAzc4vBnhaW5dzR6N+zgY0QF+x/sJ1bvJl6whGGIfXG+nIOLxcKR8
+         vRLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=51738Kb2/QYKt+E/Z2/iQjgWGT06tBLjlpfqcB3W3fk=;
+        b=JOxz5J1ForKfmMWPVzBMzsacamyaDg23fQsOzxOnq8JVP9r8YcuFNBjo7FK9UZawi/
+         VZdJfil75QdcoKpaPXXfwb4WXD5B/r74+qxJU42pOwS5rFfdwPJUGkifESW8VkZVI/hF
+         Aout0RsugZlXBGiH6i49iU2gwnauxwJQSPnVCNqpebm1gy750M1k/F3H0WK3Pom4W87F
+         CPmKGI9J52WM3UUL9QjtCxFLqEu8u4n4Nn00ftMuGO3oWU2PBmrew94+dnuDyOLH+JJ/
+         afTIKFZex+cMJo85jJkTK1sU1wVsy0pMksctFozTicFq3hl73jRJJRyk4KwrPKeV/px7
+         Hsow==
+X-Gm-Message-State: APjAAAUW8CLLiJNbNcLAcmpBtxAZmmKoUed6Irnkyu5/v2B7sBD9HwAx
+        ASR4thYquWB0oUpeGmArhYHlrloObpUcZnNqxuc=
+X-Google-Smtp-Source: APXvYqzy44V9BeaaIVfiPp57MG38v5g+9g/YNsbeXxgrpR0bUjFvHbeEpFVMKLAXwuazvt4aJPcWedNX3Rrs4Fn1yX0=
+X-Received: by 2002:aca:a954:: with SMTP id s81mr953288oie.45.1562017454161;
+ Mon, 01 Jul 2019 14:44:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Mon, 01 Jul 2019 16:58:21 +0000 (UTC)
+Received: by 2002:ac9:4a0f:0:0:0:0:0 with HTTP; Mon, 1 Jul 2019 14:44:13 -0700 (PDT)
+Reply-To: mrphilippine8@gmail.com
+From:   mr philip <mrs1alice35@gmail.com>
+Date:   Mon, 1 Jul 2019 14:44:13 -0700
+Message-ID: <CAABpscpBM099Xh2L0gv19Y6FnVMzw7WXaun6BgUDFBEPxPdXyA@mail.gmail.com>
+Subject: Compliment of the day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-There are several firmware versions between version 2AR10001 and
-2BA30001, presumably these also have broken FPDMA_AA activation, so
-lets play it safe and apply the quirk to all firmware versions.
+Compliment of the day,
 
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Suggested-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/ata/libata-core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+I am Mr.Philip.Kabore I Have a Business Proposal of $5.3 million For
+You. I am aware of the unsafe nature of the internet, and was
+compelled to use this medium due to the nature of this project.
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 4a2dff303865..28c492be0a57 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4462,9 +4462,7 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
- 
- 	/* drives which fail FPDMA_AA activation (some may freeze afterwards)
- 	   the ST disks also have LPM issues */
--	{ "ST1000LM024 HN-M101MBB", "2AR10001",	ATA_HORKAGE_BROKEN_FPDMA_AA |
--						ATA_HORKAGE_NOLPM, },
--	{ "ST1000LM024 HN-M101MBB", "2BA30001",	ATA_HORKAGE_BROKEN_FPDMA_AA |
-+	{ "ST1000LM024 HN-M101MBB", NULL,	ATA_HORKAGE_BROKEN_FPDMA_AA |
- 						ATA_HORKAGE_NOLPM, },
- 	{ "VB0250EAVER",	"HPG7",		ATA_HORKAGE_BROKEN_FPDMA_AA },
- 
--- 
-2.21.0
+I have access to very vital information that can be used to transfer
+this huge amount of money, which may culminate into the investment of
+the said funds into your company or any lucrative venture in your
+country.
 
+If you will like to assist me as a partner then indicate your
+interest, after which we shall both discuss the modalities and the
+sharing percentage.
+
+Upon receipt of your reply on your expression of Interest I will give
+you full details,
+on how the business will be executed I am open for negotiation. You
+should forward your reply to this private email id  Thanks for your
+anticipated cooperation.
+
+Note you might receive this message in your inbox or spam or junk
+folder, depends on your web host or server network.
+
+Thanks=E2=80=99
+Best Regards
+Mr.Philip.Kabore,

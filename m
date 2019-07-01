@@ -2,56 +2,56 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68BD75C574
-	for <lists+linux-ide@lfdr.de>; Tue,  2 Jul 2019 00:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B87B5C576
+	for <lists+linux-ide@lfdr.de>; Tue,  2 Jul 2019 00:02:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726468AbfGAWCn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 1 Jul 2019 18:02:43 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:43202 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726434AbfGAWCn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Jul 2019 18:02:43 -0400
-Received: by mail-pf1-f196.google.com with SMTP id i189so7194788pfg.10;
-        Mon, 01 Jul 2019 15:02:42 -0700 (PDT)
+        id S1726439AbfGAWCo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 1 Jul 2019 18:02:44 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:33514 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726678AbfGAWCo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Jul 2019 18:02:44 -0400
+Received: by mail-pl1-f196.google.com with SMTP id c14so8025457plo.0;
+        Mon, 01 Jul 2019 15:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=m/RGaWxbD3ervCUN5FYVhOmz0L/VzhJqQQ8iqyX/oHA=;
-        b=ZGQlQswf1RukQBL/Pjan9SIAPzVFm29rh3S4XfVsUMUqe3oqy4OFhs0TVqUf+g2dZj
-         nAC6NEr71OjKdjY3+8pKN2Vwm8hb4sSDooJAxpemOJNPT+aB2xyeAvmCd96bw3r1wvZe
-         FViui3uQnEtfQeWWU1t7Rh0T/3vaEUgJAtZfcSJ5eiiASHYSgRbSFvcLa6SgMYdqaz1X
-         pMuWxgklvSHvzSpJl8Y1Q/R8rhBxQrLvGFIbcynrzUr+uz0buOYUihIl9O87dKFO8Uhj
-         g0CuGM/gwh8Tz2ymBBB1SYrUfEYI2J70tMDcKcby3htXNbYpZC7sfKGTuwiNTMn8oRnK
-         4LIA==
+        bh=20zUOmhbr4c1dI/gFurcJdwsyxZCOaPC9d8sh21LLXA=;
+        b=ey5qcJAhZmTvBHxhSRIO195RuQZUE3igZXjyitLTsJwi+BhoUsYy6hJ6Hwnvq2iF6C
+         y958XwsuoTT44tp4bbAE3woOBnF5U0NXzO6xEE1iw0tA3oAnJqGuDvCoIMebS3NfwcBg
+         QMRy/kd2yOuH0LGjDmK4X2GW7f47enCI58hq30qnjb3a069VltQLPm9hR07Avjx+EeG8
+         VRpCJ86Ipwznh5Oa7iOK/rbJftIy/VzvvzdbIwcWZGv6RsT+aMAJwiQ8+Pf5u6685AEQ
+         sJuKqK2mvEUyk10g0O99AtUUbyWNeUYMHuxu7PWwv169q+cJJAb4ilDFRxwAmJ39sNXk
+         syPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=m/RGaWxbD3ervCUN5FYVhOmz0L/VzhJqQQ8iqyX/oHA=;
-        b=jVq2ssLiJIpDti4T1rs3LJeSa/Cf+UxqiYj4Wb2/dgnyXQUGVXyN7aJFxSmR/tWtZT
-         Xnmexr5HtH1iMjBVV6AhToBt2D1eZRFr9XAtkThqrV/tr/2F4LWZwoHPz+ktQojj/vty
-         7j6sUe9G7BB2x6b2Li4gGXviBxTW1qgVFScS7nQp7eh4mcIU6Aq/b7bxWeWebTt5jLq1
-         iv9dNSXnlbvIYuIxxn0bVJ9rMijlVWkLyprWN7b6m5N8CEni6WtcpZB0kvLkmiB0fS/G
-         kF2UfKebnqofg8x0nlKbcYG4UUIUvatM3Xhdob7V58xg7XfqHa2hvYWgP+D4nIVviECy
-         QrOA==
-X-Gm-Message-State: APjAAAVDYYVJzk8PJgtyWgblkPp8JwHrSSsLxlLXalQJ3A61lvL4nsFQ
-        HlM4cZ6q/JzPvKXyqbvY4Ps=
-X-Google-Smtp-Source: APXvYqyn/gwYB5FZo/4K9YLOpqBR8NGU4uk9OrVuvx/Lf+SrQxVYJBfrN0HiC0OMCVX7CMRoU4x7yw==
-X-Received: by 2002:a63:d410:: with SMTP id a16mr25946762pgh.122.1562018562603;
-        Mon, 01 Jul 2019 15:02:42 -0700 (PDT)
+        bh=20zUOmhbr4c1dI/gFurcJdwsyxZCOaPC9d8sh21LLXA=;
+        b=cOsQN0CGBjid82qoH6mli64XZZsL+7aFmlZmv/Prsicrq5uEc1BYWpJVYns1+vKhQY
+         CrzwAOT6VVilWuM3cjVoQEjA5p372BNro37pfcrHtnPdTczWHkzywHjZNFexYFzJO6Yr
+         fxMlK08Lb7EW6ciCIioa+trNIOxnvuVQY/xsqLGy7SaRSeSBlbvz2JzwmDEaAWcouwPQ
+         DI2e3QxrfkUHdeklJH/4Z8aGpUw6v0QGkMR96siBte1cSgyAPSgh/dgW9T8AUsKBOYSe
+         MY6TsN20C3OMlGHZ8ghJ/WlKuvfVzsYfR86POwwbgaNnBW6k9Vhl4Epb4CjlCoaIN9zM
+         Qqng==
+X-Gm-Message-State: APjAAAWTOz10OrseVnRq+FuGAxZYHWL/v7IW/GQigtWq7+mr5wKABS1S
+        VLcgrUDbsfqB5LzqG8YaIzw/emR1
+X-Google-Smtp-Source: APXvYqwB04ywn4OzrohjiwcCtd14t68a1NogIAvHm5MecZ5mlAKv7xBhc86l9OS8xEd02oHYJncutQ==
+X-Received: by 2002:a17:902:6ac6:: with SMTP id i6mr31384810plt.233.1562018563738;
+        Mon, 01 Jul 2019 15:02:43 -0700 (PDT)
 Received: from xplor.waratah.dyndns.org (122-58-182-39-adsl.sparkbb.co.nz. [122.58.182.39])
-        by smtp.gmail.com with ESMTPSA id q5sm11415998pgj.49.2019.07.01.15.02.41
+        by smtp.gmail.com with ESMTPSA id o15sm12100759pgj.18.2019.07.01.15.02.42
         (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Mon, 01 Jul 2019 15:02:41 -0700 (PDT)
+        Mon, 01 Jul 2019 15:02:43 -0700 (PDT)
 Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id AB92A360082; Tue,  2 Jul 2019 10:02:38 +1200 (NZST)
+        id 70EE5360084; Tue,  2 Jul 2019 10:02:39 +1200 (NZST)
 From:   Michael Schmitz <schmitzmic@gmail.com>
 To:     linux-m68k@vger.kernel.org, linux-ide@vger.kernel.org
 Cc:     geert@linux-m68k.org, b.zolnierkie@samsung.com,
         Michael Schmitz <schmitzmic@gmail.com>
-Subject: [PATCH 1/2] m68k/atari: add platform device for Falcon IDE port
-Date:   Tue,  2 Jul 2019 10:02:35 +1200
-Message-Id: <1562018556-15090-2-git-send-email-schmitzmic@gmail.com>
+Subject: [PATCH 2/2] drivers/ata: convert pata_falcon to arch platform device
+Date:   Tue,  2 Jul 2019 10:02:36 +1200
+Message-Id: <1562018556-15090-3-git-send-email-schmitzmic@gmail.com>
 X-Mailer: git-send-email 1.7.0.4
 In-Reply-To: <1562018556-15090-1-git-send-email-schmitzmic@gmail.com>
 References: <1562018556-15090-1-git-send-email-schmitzmic@gmail.com>
@@ -60,66 +60,88 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Autoloading of Falcon IDE driver modules requires converting
-these drivers to platform drivers.
-
-Add platform device for Falcon IDE interface in Atari platform
-setup code in preparation for this.
+The Atari platform device setup now provides a platform device
+for the Falcon IDE interface. Use this in place of the simple platform
+device set up in the old pata_falcon probe code.
 
 Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-
---
-
-Changes from RFC
-
-- fix region size (spotted by Szymon Bieganski <S.Bieganski@chello.nl>)
-- define IDE interface address in atari/config.c, create platform device
-  always (suggested by Geert Uytterhoeven <geert@linux-m68k.org>)
 ---
- arch/m68k/atari/config.c |   23 +++++++++++++++++++++++
- 1 files changed, 23 insertions(+), 0 deletions(-)
+ drivers/ata/pata_falcon.c |   39 +++++++++++++++++++++++++++------------
+ 1 files changed, 27 insertions(+), 12 deletions(-)
 
-diff --git a/arch/m68k/atari/config.c b/arch/m68k/atari/config.c
-index ca8469e..c10533c 100644
---- a/arch/m68k/atari/config.c
-+++ b/arch/m68k/atari/config.c
-@@ -896,6 +896,25 @@ static void isp1160_delay(struct device *dev, int delay)
+diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
+index 41e0d6a..1ff6fcb 100644
+--- a/drivers/ata/pata_falcon.c
++++ b/drivers/ata/pata_falcon.c
+@@ -120,23 +120,21 @@ static int pata_falcon_set_mode(struct ata_link *link,
+ 	.set_mode	= pata_falcon_set_mode,
  };
- #endif
  
-+/*
-+ * Falcon IDE interface
-+ */
+-static int pata_falcon_init_one(void)
++static int __init pata_falcon_init_one(struct platform_device *pdev)
+ {
++	struct resource *res;
+ 	struct ata_host *host;
+ 	struct ata_port *ap;
+-	struct platform_device *pdev;
+ 	void __iomem *base;
+ 
+-	if (!MACH_IS_ATARI || !ATARIHW_PRESENT(IDE))
+-		return -ENODEV;
+-
+-	pr_info(DRV_NAME ": Atari Falcon PATA controller\n");
++	dev_info(&pdev->dev, ": Atari Falcon PATA controller\n");
+ 
+-	pdev = platform_device_register_simple(DRV_NAME, 0, NULL, 0);
+-	if (IS_ERR(pdev))
+-		return PTR_ERR(pdev);
++	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if (!res)
++		return -ENODEV;
+ 
+-	if (!devm_request_mem_region(&pdev->dev, ATA_HD_BASE, 0x40, DRV_NAME)) {
++	if (!devm_request_mem_region(&pdev->dev, res->start,
++				     resource_size(res), DRV_NAME)) {
+ 		pr_err(DRV_NAME ": resources busy\n");
+ 		return -EBUSY;
+ 	}
+@@ -152,7 +150,7 @@ static int pata_falcon_init_one(void)
+ 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
+ 	ap->flags |= ATA_FLAG_PIO_POLLING;
+ 
+-	base = (void __iomem *)ATA_HD_BASE;
++	base = (void __iomem *)res->start;
+ 	ap->ioaddr.data_addr		= base;
+ 	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
+ 	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
+@@ -174,9 +172,26 @@ static int pata_falcon_init_one(void)
+ 	return ata_host_activate(host, 0, NULL, 0, &pata_falcon_sht);
+ }
+ 
+-module_init(pata_falcon_init_one);
++static int __exit pata_falcon_remove_one(struct platform_device *pdev)
++{
++	struct ata_host *host = platform_get_drvdata(pdev);
 +
-+#define FALCON_IDE_BASE	0xfff00000
++	ata_host_detach(host);
 +
-+static const struct resource atari_falconide_rsrc[] __initconst = {
-+	{
-+		.flags = IORESOURCE_MEM,
-+		.start = FALCON_IDE_BASE,
-+		.end   = FALCON_IDE_BASE+0x39,
-+	},
-+	{
-+		.flags = IORESOURCE_IRQ,
-+		.start = IRQ_MFP_FSCSI,
-+		.end   = IRQ_MFP_FSCSI,
++	return 0;
++}
++
++static struct platform_driver pata_falcon_driver = {
++	.remove = __exit_p(pata_falcon_remove_one),
++	.driver   = {
++		.name	= "atari-falcon-ide",
 +	},
 +};
 +
- int __init atari_platform_init(void)
- {
- 	int rv = 0;
-@@ -939,6 +958,10 @@ int __init atari_platform_init(void)
- 			atari_scsi_tt_rsrc, ARRAY_SIZE(atari_scsi_tt_rsrc));
- #endif
++module_platform_driver_probe(pata_falcon_driver, pata_falcon_init_one);
  
-+	if (ATARIHW_PRESENT(IDE))
-+		platform_device_register_simple("pata_falcon", -1,
-+			atari_falconide_rsrc, ARRAY_SIZE(atari_falconide_rsrc));
-+
- 	return rv;
- }
- 
+ MODULE_AUTHOR("Bartlomiej Zolnierkiewicz");
+ MODULE_DESCRIPTION("low-level driver for Atari Falcon PATA");
+ MODULE_LICENSE("GPL v2");
++MODULE_ALIAS("platform:atari-falcon-ide");
+ MODULE_VERSION(DRV_VERSION);
 -- 
 1.7.0.4
 

@@ -2,77 +2,69 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B443F5D96D
-	for <lists+linux-ide@lfdr.de>; Wed,  3 Jul 2019 02:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 206D45DB32
+	for <lists+linux-ide@lfdr.de>; Wed,  3 Jul 2019 03:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbfGCAnQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 2 Jul 2019 20:43:16 -0400
-Received: from mail-pf1-f170.google.com ([209.85.210.170]:34951 "EHLO
-        mail-pf1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726736AbfGCAnP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 2 Jul 2019 20:43:15 -0400
-Received: by mail-pf1-f170.google.com with SMTP id d126so298860pfd.2
-        for <linux-ide@vger.kernel.org>; Tue, 02 Jul 2019 17:43:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=vWKVyxqHmDEYPvZBOZ7UPxvEAgIFDSKgV7/fFiA+y4A=;
-        b=fxfGahkGIxoDTfhE1sJ+yImR2UPB1XhEFL3mwmfjlGXZnHphJoCYqAEMDHb5r07Q3w
-         OFuTcTtG9J7TRl8GgcK9eGS5qNlUZe4AJvLPOUi3vNMw8NtGV+CZdsG5VRtF+KC08EPd
-         ysNIzIyeKFRSYNhObq/b2cbriP0aSrxEx7EGrHdNjn6eRSwICCHukApXtZoGbyEeNLr8
-         MiuUl/SnwrpoS+A9E2kUelDfBGT9mCl8+Fum1nUEd+KqTUvLvQ3nn2guOrdJ09y+XBLd
-         F2K4Mm1OSAvykP+SH5WV4dtKYQsjrtmyU/oz2Knxbp8uZbn+SiqUNMvHaEbFzoeDVOxE
-         oXdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=vWKVyxqHmDEYPvZBOZ7UPxvEAgIFDSKgV7/fFiA+y4A=;
-        b=IVfD0J3AGySeK35EALEm5P0Bg2PeULn0FrEqdTx8sf1odjS0+SNM8iP0bVH7byufgu
-         emDrAYjYdgg72u8P7HxnBKuBx1JZgC/U8SWyLO0JEfllYg3B4FgDDWK0y8lF4/DTGe/v
-         A7ZQ2BVU4eAgeRRO4CjPm0y8fLvXZm79jwbHph83pksk5NL2Etyp751amT0vdJh0lI+w
-         dIMfKVJsPp6859f/QdTfWClAWBg7RGqJ2yPdFyabCosy4H51xWeMbSjUOnPmr3OWd3wR
-         u02EvcTNaFyPeS5FQdfo/1GAZviYVtJ6rRbB60N4D+SR7Qvif4ipwaIFd/xbeb4y2Fyd
-         OxdQ==
-X-Gm-Message-State: APjAAAWigohw9gBoW7uAzPMKdbyhgW7lFMHfhgeMTGeBgC1L1HfrlDQJ
-        Big3mKHe9DmhuXy8XehepoygMJUF2HY=
-X-Google-Smtp-Source: APXvYqwy4T+fCByg6refz29geB9T1xyWvzGcPP/tDtwjiiUWwGylDLV0/vtd2KvuUukQcGUYYmpWxg==
-X-Received: by 2002:a17:90a:8d0d:: with SMTP id c13mr7719511pjo.137.1562104418853;
-        Tue, 02 Jul 2019 14:53:38 -0700 (PDT)
-Received: from [192.168.1.121] (66.29.164.166.static.utbb.net. [66.29.164.166])
-        by smtp.gmail.com with ESMTPSA id g2sm54497pfb.95.2019.07.02.14.53.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 02 Jul 2019 14:53:37 -0700 (PDT)
-Subject: Re: [PATCH] libata: Drop firmware version check from the ST1000LM024
- quirk
-To:     Hans de Goede <hdegoede@redhat.com>
-Cc:     linux-ide@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-References: <20190701165813.15607-1-hdegoede@redhat.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <e466a134-765d-af21-1b28-d4743b58ecb5@kernel.dk>
-Date:   Tue, 2 Jul 2019 15:53:35 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1726821AbfGCB4T (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 2 Jul 2019 21:56:19 -0400
+Received: from walmailout09.yourhostingaccount.com ([65.254.253.73]:41717 "EHLO
+        walmailout09.yourhostingaccount.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726430AbfGCB4T (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 2 Jul 2019 21:56:19 -0400
+X-Greylist: delayed 2049 seconds by postgrey-1.27 at vger.kernel.org; Tue, 02 Jul 2019 21:56:18 EDT
+Received: from mailscan09.yourhostingaccount.com ([10.1.15.9] helo=walmailscan09.yourhostingaccount.com)
+        by walmailout09.yourhostingaccount.com with esmtp (Exim)
+        id 1hiTyJ-0003lS-KO
+        for linux-ide@vger.kernel.org; Tue, 02 Jul 2019 21:22:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gmail.com;
+         s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:MIME-Version:
+        Message-ID:Reply-To:From:Date:Subject:To:Cc:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=0VoEz0yq6sjTUQcCovJoBJxDCKjUBd/MDRtwU/idMnc=; b=DTVFF+JnCbktcx2z1+5AyY2Lve
+        WRzaw0TQu9HNeOO/mHCP9u0s3oQ7qJ/9Op8h9sPppqAQS7rFK6JoocNbgZvKLQ/e1q5GIb3FebKDz
+        eCT3ey0MUD3yWDbdQHOQaTcfFmIaIQph7eu0eWZco/FG/9gGGPjV0aPC//iwi/ftthLhIHKEtiqDS
+        7np+62e2PFamocQkJJQfL9DbpXavtiA5Zjklup+oM26a6+2AKCqcxSekvXMW3DTOt/GXS/DoGvxlY
+        w51IHot3c+1L1Pm+V29vURC/ItONgZSXpagaaK0d0GGXoZsw4CdBhgXrPAH2p51Z3KPPonW+PT1VN
+        Ydee7LAw==;
+Received: from [10.114.3.31] (helo=walimpout11)
+        by walmailscan09.yourhostingaccount.com with esmtp (Exim)
+        id 1hiTyJ-00087L-FG
+        for linux-ide@vger.kernel.org; Tue, 02 Jul 2019 21:22:07 -0400
+Received: from walcustweb1705.yourhostingaccount.com ([10.1.112.101])
+        by walimpout11 with 
+        id Y1N42000i2BJt5E011N7BV; Tue, 02 Jul 2019 21:22:07 -0400
+X-EN-SP-DIR: OUT
+X-EN-SP-SQ: 1
+Received: from as.nasaautocare by walcustweb1705.yourhostingaccount.com with local (Exim)
+        id 1hiTxQ-00078U-Ov
+        for linux-ide@vger.kernel.org; Tue, 02 Jul 2019 21:21:12 -0400
+X-EN-Info: U=as.nasaautocare P=/index.php
+X-EN-CGIUser: as.nasaautocare
+X-EN-CGIPath: /index.php
+X-EN-OrigIP: 134.90.149.150
+To:     linux-ide@vger.kernel.org
+Subject: Copy of: Single women want sex in your city
+X-PHP-Originating-Script: 5378462:class.phpmailer.php
+Date:   Tue, 2 Jul 2019 21:21:12 -0400
+From:   We Install Your Parts <jwt425@gmail.com>
+Reply-To: ClintonGef <linux-ide@vger.kernel.org>
+Message-ID: <a1417b6db274f08f60bf3abf5f23bd02@weinstallyourparts.com>
+X-Mailer: PHPMailer 5.2.14 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-In-Reply-To: <20190701165813.15607-1-hdegoede@redhat.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-EN-Timestamp: Tue, 02 Jul 2019 21:21:12 -0400
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 7/1/19 10:58 AM, Hans de Goede wrote:
-> There are several firmware versions between version 2AR10001 and
-> 2BA30001, presumably these also have broken FPDMA_AA activation, so
-> lets play it safe and apply the quirk to all firmware versions.
+This is a copy of the following message you sent to We Install Your Parts via We Install Your Parts
 
-Applied, thanks Hans.
+This is an enquiry email via http://weinstallyourparts.com/ from:
+ClintonGef <linux-ide@vger.kernel.org>
 
--- 
-Jens Axboe
+The best women for sex in your town: https://chogoon.com/srt/s37qb
 

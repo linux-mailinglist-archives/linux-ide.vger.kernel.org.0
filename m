@@ -2,54 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4CEC63472
-	for <lists+linux-ide@lfdr.de>; Tue,  9 Jul 2019 12:39:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5840633D8
+	for <lists+linux-ide@lfdr.de>; Tue,  9 Jul 2019 12:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726529AbfGIKjV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 9 Jul 2019 06:39:21 -0400
-Received: from mail.vodokanal.poltava.ua ([91.219.220.27]:50434 "EHLO
-        mail.vodokanal.poltava.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725947AbfGIKjU (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Jul 2019 06:39:20 -0400
-Received: by mail.vodokanal.poltava.ua (Postfix, from userid 80)
-        id 387A4229F21; Tue,  9 Jul 2019 10:12:36 +0300 (EEST)
-Received: from 192.168.0.119
-        (SquirrelMail authenticated user test@vodokanal.poltava.ua)
-        by mail.vodokanal.poltava.ua with HTTP;
-        Tue, 9 Jul 2019 08:12:36 +0100
-Message-ID: <1183c3c3678da75d6b7310e84949551a.squirrel@mail.vodokanal.poltava.ua>
-Date:   Tue, 9 Jul 2019 08:12:36 +0100
-Subject: LOANS !!!
-From:   "Dial Direct Loans" <dialdirect@info.org>
-Reply-To: infodialdirectloans@mail2consultant.com
-User-Agent: SquirrelMail/1.4.21
+        id S1726519AbfGIKCG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 9 Jul 2019 06:02:06 -0400
+Received: from mx2.suse.de ([195.135.220.15]:48546 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726623AbfGIKCG (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 9 Jul 2019 06:02:06 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 96B1CAC2D;
+        Tue,  9 Jul 2019 10:02:05 +0000 (UTC)
+From:   Jiri Slaby <jslaby@suse.cz>
+To:     axboe@kernel.dk
+Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
+        linux-ide@vger.kernel.org
+Subject: [PATCH v2 1/3] ata: Documentation, fix function names
+Date:   Tue,  9 Jul 2019 12:02:01 +0200
+Message-Id: <20190709100203.19049-1-jslaby@suse.cz>
+X-Mailer: git-send-email 2.22.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Priority: 3 (Normal)
-Importance: Normal
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+ata_qc_prep no longer exists, there are ata_bmdma_qc_prep and
+ata_bmdma_dumb_qc_prep instead. And most drivers do not use them, so
+reword the paragraph.
 
-Dial Direct Loan SA
+ata_qc_issue_prot was renamed to ata_sff_qc_issue. ->tf_load is now
+->sff_tf_load. Fix them.
 
+And fix spelling supercede -> supersede.
 
-Consolidate your debts with Dial Direct Loan SA for your peace of
-mind at a fixed interest rate of 4.75%,personal and business loans
-are also welcome.For details  file in your applications by sending an email
-to:infodialdirectloans@mail2consultant.com.
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: linux-ide@vger.kernel.org
+---
+ Documentation/driver-api/libata.rst | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-
-
-Yours in Service,
-Susan Muller (Mrs.),
-Senior Consultant,
-Loan Application Team
-Dial Direct Loan SA
-Tel No: +27717231058
-
+diff --git a/Documentation/driver-api/libata.rst b/Documentation/driver-api/libata.rst
+index 70e180e6b93d..c2ee38098e85 100644
+--- a/Documentation/driver-api/libata.rst
++++ b/Documentation/driver-api/libata.rst
+@@ -254,19 +254,19 @@ High-level taskfile hooks
+     int (*qc_issue) (struct ata_queued_cmd *qc);
+ 
+ 
+-Higher-level hooks, these two hooks can potentially supercede several of
++Higher-level hooks, these two hooks can potentially supersede several of
+ the above taskfile/DMA engine hooks. ``->qc_prep`` is called after the
+ buffers have been DMA-mapped, and is typically used to populate the
+-hardware's DMA scatter-gather table. Most drivers use the standard
+-:c:func:`ata_qc_prep` helper function, but more advanced drivers roll their
+-own.
++hardware's DMA scatter-gather table. Some drivers use the standard
++:c:func:`ata_bmdma_qc_prep` and :c:func:`ata_bmdma_dumb_qc_prep` helper
++functions, but more advanced drivers roll their own.
+ 
+ ``->qc_issue`` is used to make a command active, once the hardware and S/G
+ tables have been prepared. IDE BMDMA drivers use the helper function
+-:c:func:`ata_qc_issue_prot` for taskfile protocol-based dispatch. More
++:c:func:`ata_sff_qc_issue` for taskfile protocol-based dispatch. More
+ advanced drivers implement their own ``->qc_issue``.
+ 
+-:c:func:`ata_qc_issue_prot` calls ``->tf_load()``, ``->bmdma_setup()``, and
++:c:func:`ata_sff_qc_issue` calls ``->sff_tf_load()``, ``->bmdma_setup()``, and
+ ``->bmdma_start()`` as necessary to initiate a transfer.
+ 
+ Exception and probe handling (EH)
+-- 
+2.22.0
 

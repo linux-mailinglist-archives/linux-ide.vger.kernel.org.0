@@ -2,54 +2,49 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F14B63A74
-	for <lists+linux-ide@lfdr.de>; Tue,  9 Jul 2019 20:05:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE27863D8D
+	for <lists+linux-ide@lfdr.de>; Tue,  9 Jul 2019 23:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727463AbfGISFQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 9 Jul 2019 14:05:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36536 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727455AbfGISFQ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 9 Jul 2019 14:05:16 -0400
-Subject: Re: [GIT PULL] libata changes for 5.3-rc
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562695515;
-        bh=EHIkK3c8czgFLWumz3mFgk+I8hffhkW4OOQtrDs7jNM=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=oGBxPm33dtpPjq8fhDLGrDpf2GvpNDOdxWdDXZ2RJunKKI+qJYp82RYG6XVeIXa4A
-         b7EJCxNgNHEHubSnW7w2bhyii7j4UjWat3vtoRIN09LsVE+qkxtu4PZEsxedxa3Rbr
-         Asb0ravcg4BJeiqD49hEmtDmsDgLQMbbwEbAC1cw=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <ad0ffbb9-d38c-fc3a-1963-ed1bd12437db@kernel.dk>
-References: <ad0ffbb9-d38c-fc3a-1963-ed1bd12437db@kernel.dk>
-X-PR-Tracked-List-Id: <linux-block.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ad0ffbb9-d38c-fc3a-1963-ed1bd12437db@kernel.dk>
-X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git
- tags/for-5.3/libata-20190708
-X-PR-Tracked-Commit-Id: 120357ea176e420d313cf8cf2ff35fbe233d3bab
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: cdc5ffc4100549654e19e6f068cf1fc0871a85c2
-Message-Id: <156269551570.14383.1859456514082548713.pr-tracker-bot@kernel.org>
-Date:   Tue, 09 Jul 2019 18:05:15 +0000
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        IDE/ATA development list <linux-ide@vger.kernel.org>
+        id S1729093AbfGIVwn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 9 Jul 2019 17:52:43 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:46262 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727026AbfGIVwn (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Jul 2019 17:52:43 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 807CC1425B0FD;
+        Tue,  9 Jul 2019 14:52:42 -0700 (PDT)
+Date:   Tue, 09 Jul 2019 14:52:41 -0700 (PDT)
+Message-Id: <20190709.145241.634478641391763394.davem@davemloft.net>
+To:     suratiamol@gmail.com
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Subject: Re: [PATCH] ide: use BIT() macro for defining bit-flags
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190707085729.GA22964@arch>
+References: <20190707085729.GA22964@arch>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 09 Jul 2019 14:52:42 -0700 (PDT)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Mon, 8 Jul 2019 15:23:50 -0600:
+From: Amol Surati <suratiamol@gmail.com>
+Date: Sun, 7 Jul 2019 14:27:29 +0530
 
-> git://git.kernel.dk/linux-block.git tags/for-5.3/libata-20190708
+> The BIT() macro is available for defining the required bit-flags.
+> 
+> Since it operates on an unsigned value and expands to an unsigned result,
+> using it, instead of an expression like (1 << x), also fixes the problem
+> of shifting a signed 32-bit value by 31 bits (e.g. 1 << 31).
+> 
+> Signed-off-by: Amol Surati <suratiamol@gmail.com>
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/cdc5ffc4100549654e19e6f068cf1fc0871a85c2
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+Applied, thank you.

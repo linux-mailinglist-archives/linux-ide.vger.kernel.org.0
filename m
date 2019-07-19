@@ -2,71 +2,88 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 131926C092
-	for <lists+linux-ide@lfdr.de>; Wed, 17 Jul 2019 19:45:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D146D941
+	for <lists+linux-ide@lfdr.de>; Fri, 19 Jul 2019 05:01:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbfGQRoC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 17 Jul 2019 13:44:02 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:44499 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727286AbfGQRoC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 17 Jul 2019 13:44:02 -0400
-Received: by mail-lf1-f66.google.com with SMTP id r15so158018lfm.11
-        for <linux-ide@vger.kernel.org>; Wed, 17 Jul 2019 10:44:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=NaV4OprdbxivNTpiawHhRCYFlk4krlXNX6OLnGy6S0g=;
-        b=sMGXlhDB1yQOujsvRSmfs4LcdTiBzQLT3BRbOVb6fMRDsx+vjqA1S1z5k8DYZZn50d
-         KZACXruJOF/8MixAwn1IilmMcfq5GSGrdu2CQQPBMOKk4FjxvZEPuLZMt3manvl7cr1C
-         /tvez61E3E7cPdOK5axfyHSKK5Hf1QChg10UiPF12bOiAsAMFqja1acq+QiGMIZub012
-         zwWqeoRewE9OCv+xkTbEq0+Ezk/iXOPkUGe2G8ywvCIkf+sYzz/BDCoDIB81t0bX0Rvk
-         7oZLjihCQTTaSAghWFk1N0EjBiinYkCGd9bHFDue6gnmCWfkO9qLiMn8MgS/fSWlJRA2
-         kIPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=NaV4OprdbxivNTpiawHhRCYFlk4krlXNX6OLnGy6S0g=;
-        b=UKF/fa/2QobxLKqN1iIfuJ7iBRi4o4JXXC5PsWRSJrRZjVrHNCeEZZPzf/d05dkexo
-         RVW6o2Q+6VEdlJ3qNMeu10IT/J2xzrl1p5/p1qbae5FO0EyW1RVkCR02qIvRNxrt2Aoh
-         KUwkwx/h7KAJ9aPcoBZBNtuU0uBfAdg7Km2TGsrZCeKEz1z61hDRimROOD67LOjiREVY
-         f0i1xN5BABEeOWxocE2Yn4NpASm2mfIGf55dEIyHmE2HFEQgo9P8XxqB2yQeROHaKG/J
-         oIpIsE6Kp84T4+bTcxJNqHPgcft5vlAewqqk2OJ7oQiA3n44mu6WZawjE8dzN4arJXHT
-         4UUQ==
-X-Gm-Message-State: APjAAAVBB+sTgws1K0CKGo/nmoYy61SHyeZEL9T3vZ4lQG9Cs5hgDURc
-        Vl/T8JEFWcVN7D5K+szIS0ynb1ATgyo3FDbwQ6M=
-X-Google-Smtp-Source: APXvYqzlRxIaWummMkVoU8JGKepp5H3yEQQLusXNQewvZEhuS+oLd+990nAyQLIqJWCKYrq6JGEiCv/HgzhyOKGvkvA=
-X-Received: by 2002:a05:6512:48f:: with SMTP id v15mr14851798lfq.37.1563385440210;
- Wed, 17 Jul 2019 10:44:00 -0700 (PDT)
+        id S1726072AbfGSDAo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 18 Jul 2019 23:00:44 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:60188 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726055AbfGSDAo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Jul 2019 23:00:44 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6J2xREW116877;
+        Fri, 19 Jul 2019 03:00:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=TPmAbO2xfTXRlVOJn/FWTOSn9D/wh3ANJTPaokkj00U=;
+ b=4Lz/OvJVFIPHScBtB/jeeIaBRgLaoRLJxtq38wB7AgkVypLxCwtS69HALoCZdi5ySvGU
+ 9vxzuPAdNOjCt7R62O8MSX5u+KQBSjSJtsuENrlmcDpbt/dhb8mxXkdfOq70yoI5grYp
+ h3srv4v6k0nDDrqJ8clyt20fvxmWcyLJSsQJeCVThfzPMyStEq1HUlWA+CtoJ1BaGfeN
+ 7YqwL/Y2NI+K3yzIodR0bw0JW5f34vnDgPq+1eSBZrAo6TpaqQFoxhsh8rDeo7QsxjQ6
+ Uv7qRtA/2Pnl3hAD6l6H7Ra2Ganj85m6PscOVgv69voUJKCCThhF63nTyqSdRtB4/oDF Og== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2tq78q458f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jul 2019 03:00:37 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6J2vupA040625;
+        Fri, 19 Jul 2019 03:00:37 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2tsctyp04h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 19 Jul 2019 03:00:37 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x6J30XsH023949;
+        Fri, 19 Jul 2019 03:00:34 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 19 Jul 2019 03:00:33 +0000
+To:     Roman Mamedov <rm@romanrm.net>
+Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-ide@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] libata: Disable queued TRIM for Samsung 860 series SSDs
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190714224242.4689a874@natsu> <yq1y30z2ojx.fsf@oracle.com>
+        <20190715224215.2186bc8e@natsu>
+Date:   Thu, 18 Jul 2019 23:00:31 -0400
+In-Reply-To: <20190715224215.2186bc8e@natsu> (Roman Mamedov's message of "Mon,
+        15 Jul 2019 22:42:15 +0500")
+Message-ID: <yq1lfwuwwxc.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Reply-To: DrtracyWilliam1@gmail.com
-Received: by 2002:a2e:720c:0:0:0:0:0 with HTTP; Wed, 17 Jul 2019 10:43:59
- -0700 (PDT)
-From:   Dr Tracy William <ra6277708@gmail.com>
-Date:   Wed, 17 Jul 2019 10:43:59 -0700
-X-Google-Sender-Auth: IuhgWDkZewl4Z6bd6CUgL1bpdII
-Message-ID: <CAK4G6FMiNW+8bo2XuP3J7tBKKD-kmjzJQ==wBq48NJMMKvj9AQ@mail.gmail.com>
-Subject: From Dr tracy William
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9322 signatures=668688
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=948
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1907190032
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9322 signatures=668688
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1907190033
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello Dear Lovely Friend,
 
-How are you today, I hope you are doing great. It is my great pleasure
-to contact you, I want to make a new and special friend, I hope you
-don't mind. My name is Tracy Williams.
+Roman,
 
-from the United States, Am a french and English nationality. I will
-give you pictures and more details about my self as soon as i hear
-from you in my email account bellow, Here is my email address;
-DrtracyWilliam1@gmail.com,
+> I do not have other Samsung (m)SATA models to verify. On the bugreport
+> someone confirmed this to be an issue for them too. Let's try asking
+> if they have the mSATA model too, and what firmware revision. Mine is
+> RVT42B6Q and there were no updates available last time I checked.
 
-Please send your reply to my PRIVATE  mail box.
+I have tested two mSATA 860s on two different systems, both with Intel
+AHCI controllers, and queued trim works fine for me.
 
-Thanks,
-Dr. Tracy Williams.
+I'll try a few more things tomorrow.
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

@@ -2,54 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C9573263
-	for <lists+linux-ide@lfdr.de>; Wed, 24 Jul 2019 17:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6999C7412E
+	for <lists+linux-ide@lfdr.de>; Thu, 25 Jul 2019 00:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387544AbfGXPAz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 24 Jul 2019 11:00:55 -0400
-Received: from mail.vodokanal.poltava.ua ([91.219.220.27]:25243 "EHLO
-        mail.vodokanal.poltava.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfGXPAy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 24 Jul 2019 11:00:54 -0400
-Received: by mail.vodokanal.poltava.ua (Postfix, from userid 80)
-        id C4B5222AFB3; Wed, 24 Jul 2019 12:03:57 +0300 (EEST)
-Received: from 192.168.0.119
-        (SquirrelMail authenticated user test@vodokanal.poltava.ua)
-        by mail.vodokanal.poltava.ua with HTTP;
-        Wed, 24 Jul 2019 10:03:57 +0100
-Message-ID: <729c4d48ebb3b54501abbbd9b3f6e8a0.squirrel@mail.vodokanal.poltava.ua>
-Date:   Wed, 24 Jul 2019 10:03:57 +0100
-Subject: LOANS !!!
-From:   "DIAL DIRECT LOANS SA" <dialdirect@info.org>
-Reply-To: dialdirectloanssa@mail2consultant.com
-User-Agent: SquirrelMail/1.4.21
+        id S1729097AbfGXWB5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 24 Jul 2019 18:01:57 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:41742 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728744AbfGXWB5 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 24 Jul 2019 18:01:57 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d44 with ME
+        id gm1q2000P4n7eLC03m1rDF; Thu, 25 Jul 2019 00:01:55 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 25 Jul 2019 00:01:55 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ide: tx4939ide: Fix the name used in a 'devm_request_mem_region()' call
+Date:   Thu, 25 Jul 2019 00:01:45 +0200
+Message-Id: <20190724220145.17282-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Priority: 3 (Normal)
-Importance: Normal
-To:     undisclosed-recipients:;
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+This should be "tx4939ide" instead of "tx4938ide", but here MODNAME is even
+better.
 
-Dial Direct Loan SA
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/ide/tx4939ide.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Consolidate your debts with Dial Direct Loan SA for your peace of
-mind at a fixed interest rate of 4.75%,personal and business loans
-are also welcome.For details  file in your applications by sending an email
-to:dialdirectloanssa@mail2consultant.com.
-
-
-
-Yours in Service,
-Susan Muller (Mrs.),
-Senior Consultant,
-Loan Application Team
-Dial Direct Loan SA
-Tel No: +27717231058
-
+diff --git a/drivers/ide/tx4939ide.c b/drivers/ide/tx4939ide.c
+index 88d132edc4e3..079b271dd5a7 100644
+--- a/drivers/ide/tx4939ide.c
++++ b/drivers/ide/tx4939ide.c
+@@ -549,7 +549,7 @@ static int __init tx4939ide_probe(struct platform_device *pdev)
+ 		return -ENODEV;
+ 
+ 	if (!devm_request_mem_region(&pdev->dev, res->start,
+-				     resource_size(res), "tx4938ide"))
++				     resource_size(res), MODNAME))
+ 		return -EBUSY;
+ 	mapbase = (unsigned long)devm_ioremap(&pdev->dev, res->start,
+ 					      resource_size(res));
+-- 
+2.20.1
 

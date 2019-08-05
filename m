@@ -2,80 +2,111 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D449180F9E
-	for <lists+linux-ide@lfdr.de>; Mon,  5 Aug 2019 02:27:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A50D8241D
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Aug 2019 19:39:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbfHEA1s (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 4 Aug 2019 20:27:48 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:39275 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726621AbfHEA1r (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 4 Aug 2019 20:27:47 -0400
-Received: by mail-wr1-f66.google.com with SMTP id x4so29428458wrt.6
-        for <linux-ide@vger.kernel.org>; Sun, 04 Aug 2019 17:27:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y7cIzG0PVrRis126czyvwHkkalaXGhnWuRZIJrhxFOU=;
-        b=flOlt3yjpSud2yfClcBQJCakjyjj1uzUtPBOkv4zmakf7SyfxdzYznfT4o2iiol50y
-         tHfVnmRw/vaWwWBQD1a81Zp4WsWg/u6RK9fQMhgMATyp5avQkBWLQ8LdbZ61WxbrwTmO
-         yN6JYMoaf7UtSNc8A0y1L2RcCM8u2eQSIMCzS51Us97fq5eikVlsxX6YFx60LenZHc9M
-         BGEDERZupenoiRnG+qcvu1QRTEkWidSAAlB6oY+xssCFKfvGoO48XaoF8f5dC1lDOd83
-         yCvUetAL559XmHqNgGk587ikxfE8yhXosMYz7Hq0KOnypwMgRCRzDMHM/0bJfj9OyzUU
-         BxiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y7cIzG0PVrRis126czyvwHkkalaXGhnWuRZIJrhxFOU=;
-        b=i3+rmYcJfn2sJUb4x8nvan3bl5OZLq4CwAnJiuLj9OMzhIk4UOxrV8BdtSJxcdlJoN
-         PCsix0i1bh8CZ6++mCaSS1cmNU+mswj60chl3hlraEnc1P78bhK0GuGJBNmFvKzvNI2A
-         B/UKFlDAstFj39anLjF+w4CCUfaqfrtTY5d8W1NslhP6CsT9vSb+3EBfGD1KgTKcYuy9
-         vn+YrR9Mhkt4bRMhgv8qzZA02KxK5ZY/FAOzWP+6gxVNr2IYsf0swq4yU2UJT+Q3EHMA
-         t/R5IODj0f2j0dtJ/OW+SA9CsYXrt7OCH043WMfRTBuxFICWQ9cAEVQt9yIrxLx2jV+d
-         JZRw==
-X-Gm-Message-State: APjAAAXnif4aTDJ67atljS6lRQokRjLsd+KFQM7KfQyIR14qKJ/QFewV
-        xrshFASjET9K0mWC98QkNtjVi+ekM1unVCyg+Io=
-X-Google-Smtp-Source: APXvYqwibU7GLX3LOyVjPNYYbOeHmAkhulyBOtYbLmqYbgnIFKYhNdzGGY7pp27iQqxL780d4BkBKf+JI7d4OwaDbtM=
-X-Received: by 2002:a5d:5450:: with SMTP id w16mr11442339wrv.128.1564964865769;
- Sun, 04 Aug 2019 17:27:45 -0700 (PDT)
+        id S1726847AbfHERjJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 5 Aug 2019 13:39:09 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:51470 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726779AbfHERjI (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 5 Aug 2019 13:39:08 -0400
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 74DB8C056807;
+        Mon,  5 Aug 2019 17:39:06 +0000 (UTC)
+Received: from rt4.app.eng.rdu2.redhat.com (rt4.app.eng.rdu2.redhat.com [10.10.161.56])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id D7C3E5DA60;
+        Mon,  5 Aug 2019 17:39:01 +0000 (UTC)
+Received: from rt4.app.eng.rdu2.redhat.com (localhost [127.0.0.1])
+        by rt4.app.eng.rdu2.redhat.com (8.14.4/8.14.4) with ESMTP id x75Hd0BJ023399;
+        Mon, 5 Aug 2019 13:39:00 -0400
+Received: (from apache@localhost)
+        by rt4.app.eng.rdu2.redhat.com (8.14.4/8.14.4/Submit) id x75Hcnwa023396;
+        Mon, 5 Aug 2019 13:38:49 -0400
+From:   Red Hat Product Security <secalert@redhat.com>
+X-PGP-Public-Key: https://www.redhat.com/security/650d5882.txt
+Subject: [engineering.redhat.com #494100] Question on submitting patch for a security bug
+Reply-To: secalert@redhat.com
+In-Reply-To: <CAJ7L_Gp2HJoFOVxTgakCJw3LMuiPY0+60-giOtw3OwRD6zyNTQ@mail.gmail.com>
+References: <RT-Ticket-494100@engineering.redhat.com>
+ <CAJ7L_Gp2HJoFOVxTgakCJw3LMuiPY0+60-giOtw3OwRD6zyNTQ@mail.gmail.com>
+Message-ID: <rt-4.0.13-23214-1565026728-1358.494100-5-0@engineering.redhat.com>
+X-RT-Loop-Prevention: engineering.redhat.com
+RT-Ticket: engineering.redhat.com #494100
+Managed-BY: RT 4.0.13 (http://www.bestpractical.com/rt/)
+RT-Originator: pjp@redhat.com
+To:     b.zolnierkie@samsung.com, bob.liu@oracle.com,
+        chuck.lever@oracle.com, davem@davemloft.net, emamd001@umn.edu,
+        gregkh@linuxfoundation.org, kubakici@wp.pl, kvalo@codeaurora.org,
+        navid.emamdoost@gmail.com, sam@ravnborg.org
+CC:     airlied@linux.ie, alexandre.belloni@bootlin.com,
+        alexandre.torgue@st.com, allison@lohutok.net,
+        andriy.shevchenko@linux.intel.com, anna.schumaker@netapp.com,
+        axboe@kernel.dk, bfields@fieldses.org, colin.king@canonical.com,
+        daniel@ffwll.ch, devel@driverdev.osuosl.org,
+        dri-devel@lists.freedesktop.org, joabreu@synopsys.com,
+        johnfwhitmore@gmail.com, josef@toxicpanda.com, jslaby@suse.com,
+        kjlu@umn.edu, kstewart@linuxfoundation.org,
+        linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mediatek@lists.infradead.org, linux-nfs@vger.kernel.org,
+        linux-serial@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-wireless@vger.kernel.org, matthias.bgg@gmail.com,
+        matthias@redhat.com, mcoquelin.stm32@gmail.com,
+        nbd@other.debian.org, netdev@vger.kernel.org,
+        nishkadg.linux@gmail.com, peppe.cavallaro@st.com, smccaman@umn.edu,
+        tglx@linutronix.de, thierry.reding@gmail.com,
+        trond.myklebust@hammerspace.com, unglinuxdriver@microchip.com,
+        vishal@chelsio.com, vkoul@kernel.org
 MIME-Version: 1.0
-Received: by 2002:a5d:5142:0:0:0:0:0 with HTTP; Sun, 4 Aug 2019 17:27:45 -0700 (PDT)
-Reply-To: ayishagddafio@mail.com
-From:   Aisha Gddafi <aishagddafi68@gmail.com>
-Date:   Sun, 4 Aug 2019 17:27:45 -0700
-Message-ID: <CAKJgomGD=pDyW80i1R-=wVphbrWdErsuvoA+1P89UHP43Pe9kQ@mail.gmail.com>
-Subject: Dear Friend (Assalamu Alaikum),
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+X-RT-Original-Encoding: utf-8
+Date:   Mon, 5 Aug 2019 13:38:48 -0400
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Mon, 05 Aug 2019 17:39:08 +0000 (UTC)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Dear Friend (Assalamu Alaikum),
+Hello Navid,
 
-I came across your e-mail contact prior a private search while in need of
-your assistance. My name is Aisha  Al-Qaddafi a single Mother and a Widow
-with three Children. I am the only biological Daughter of late Libyan
-President (Late Colonel Muammar Gaddafi).
+On Thu, 18 Jul 2019 01:30:20 GMT, emamd001@umn.edu wrote:
+> I've found a null dereference bug in the Linux kernel source code. I was
+> wondering should I cc the patch to you as well (along with the
+> maintainers)?
 
-I have investment funds worth Twenty Seven Million Five Hundred Thousand
-United State Dollar ($27.500.000.00 ) and i need a trusted investment
-Manager/Partner because of my current refugee status, however, I am
-interested in you for investment project assistance in your country, may be
-from there, we can build business relationship in the nearest future.
+No. Please do not cc <secalert@redhat.com> on the upstream kernel patches.
+It is meant for reporting security issues only.
 
-I am willing to negotiate investment/business profit sharing ratio with you
-base on the future investment earning profits.
+Going through the patches here
 
-If you are willing to handle this project on my behalf kindly reply urgent
-to enable me provide you more information about the investment funds.
+1. Issues in ../staging/ drivers are not considered for CVE, they are not to be
+used
+in production environment.
 
-Your Urgent Reply Will Be Appreciated. write me at this email address(
-ayishagddafio@mail.com ) for further discussion.
+2. Many of the patches listed fix NULL pointer dereference when memory
+allocation
+fails and returns NULL.
 
-Best Regards
-Mrs Aisha Al-Qaddafi
-Reply to: ayishagddafio@mail.com
+3. Do you happen to have reproducers for these issues? Could an unprivileged
+user trigger them?
+
+> Also, I was wondering what are the steps to get CVE for the bug (this is
+> the first time I am reporting a bug)?
+
+Generally CVE is assigned after confirming that a given issue really is a
+security issue. And it may
+have impact ranging from information leakage, DoS to privilege escalation or
+maybe arbitrary code
+execution. Every NULL pointer dereference is not security issue.
+
+
+Hope it helps. Thank you.
+---
+Prasad J Pandit / Red Hat Product Security Team
+

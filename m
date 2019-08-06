@@ -2,81 +2,93 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 956B583336
-	for <lists+linux-ide@lfdr.de>; Tue,  6 Aug 2019 15:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEF1D83CC4
+	for <lists+linux-ide@lfdr.de>; Tue,  6 Aug 2019 23:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729535AbfHFNpU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 6 Aug 2019 09:45:20 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:45814 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726834AbfHFNpU (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 6 Aug 2019 09:45:20 -0400
-Received: by mail-pg1-f193.google.com with SMTP id o13so41610368pgp.12
-        for <linux-ide@vger.kernel.org>; Tue, 06 Aug 2019 06:45:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=oQh9z74ag+GmRjLxDeaQAgLw1V8J9pK1FZmm6doK+q0=;
-        b=tiSelzTk8mWTlpoVBYaXILHfHlswQ+XRiZj0Grsrvlq2dZ9vBXV6QYwMDfzYVxWxdX
-         T/sAQpQ6cK5tDefmfWEBYxAC/XqM2IHN8J6B3osQqPeIsIOSf1w0RDjhyB56jsKtkfoZ
-         Fdtm+r1y+/dlnUJI2I55JepBmMRpkBWhpSu2oyibbNLC88OAlXtrwqZMDwzlVnWxkQRa
-         V0AJnSAoOhb2vsOYj5ZpBaeMt0OfK8rJ2ohVGatcnnFvSHs+bpYWCHrtDGpBiAaMQ3+Q
-         dTjxOBFj8mJxSbAUSTePGKwVfocf9LonuuN0vZI0+HgsW1qTC4jBA7NDLadzOF74BHdF
-         g7aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=oQh9z74ag+GmRjLxDeaQAgLw1V8J9pK1FZmm6doK+q0=;
-        b=EpKc0gGgf4Y+UqlHhlE9BH1skcn2ejPRXFjHaRN8yuWjE57Iv1vavyurerc8hgTT9s
-         A07JvGP5qNM63BATNZ0GDUkSeIVz4zU5fJiAcOLYbXlEX+RP1s8g/usO6O88MFKWDRFT
-         LN5W/4jLVYiz8eH+2r6NO3go+kzyFp+6n6Ea8OjX7A//xWAHksZYVw4N7ogoVdlghVMm
-         nhoqP4FxnhJTUkDDDZXe41NwFYP4XmTavhvtOEm0kchQxkYzXMhaWxZY3UUd3amKKJJw
-         Qu0YSdWspuaFyZhN7kV9cUazl2BIJkJbPb25mBxZ7AAKseDIB2eXJ0cZV71ndXqYVVEF
-         /glw==
-X-Gm-Message-State: APjAAAXa/aItpVGQE3X1WpYEt37TOcVfBAVLk3Ll2R9zG72/inQgmr5d
-        AvMwG6NQwrWz44409bPPrZ/8PMCGLF272A==
-X-Google-Smtp-Source: APXvYqzq54EhLaujd1/sIZml45bFnQlidzBA9hT0AAdIzhGvcT8uYyfa+uY4esbkhztXp9A71Qs9fQ==
-X-Received: by 2002:a17:90a:cf0d:: with SMTP id h13mr3284927pju.63.1565099119117;
-        Tue, 06 Aug 2019 06:45:19 -0700 (PDT)
-Received: from ?IPv6:2605:e000:100e:83a1:5cfb:b4eb:1062:5bea? ([2605:e000:100e:83a1:5cfb:b4eb:1062:5bea])
-        by smtp.gmail.com with ESMTPSA id a3sm22023266pje.3.2019.08.06.06.45.17
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 06 Aug 2019 06:45:18 -0700 (PDT)
-Subject: Re: [PATCH] ata: rb532_cf: Fix unused variable warning in
- rb532_pata_driver_probe
-To:     "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190806080808.GA30026@embeddedor>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <a80a74ae-ab49-7f58-a4f3-8bd3b3012716@kernel.dk>
-Date:   Tue, 6 Aug 2019 06:45:16 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727324AbfHFVpn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 6 Aug 2019 17:45:43 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51768 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727357AbfHFVdy (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 6 Aug 2019 17:33:54 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A10FE217D7;
+        Tue,  6 Aug 2019 21:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565127233;
+        bh=Jk5erRwdW6Xn1aFjjqOIfAEDX4aSw+GfypMFT+zJTA4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=feHyXgTcy9GqrMhZxry1QlRp1GoyC86IVKzC3w4cKySDKWAyf/igLa2nOeNUW2x+L
+         ZgAxG+rTdaTGGH0KLspj7EJEUonaP0r1bvriEjqxU6K/ANp1h5l4PPK+uUNpYzHeUp
+         YxcWsgSWi1ZD8m9cEfbDaGmRrMN652J1pZqg1MdQ=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Kees Cook <keescook@chromium.org>,
+        Jeffrin Jose T <jeffrin@rajagiritech.edu.in>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
+        linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.2 20/59] libata: zpodd: Fix small read overflow in zpodd_get_mech_type()
+Date:   Tue,  6 Aug 2019 17:32:40 -0400
+Message-Id: <20190806213319.19203-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190806213319.19203-1-sashal@kernel.org>
+References: <20190806213319.19203-1-sashal@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20190806080808.GA30026@embeddedor>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 8/6/19 1:08 AM, Gustavo A. R. Silva wrote:
-> Fix the following warning (Building: rb532_defconfig mips):
-> 
-> drivers/ata/pata_rb532_cf.c: In function ‘rb532_pata_driver_remove’:
-> drivers/ata/pata_rb532_cf.c:161:24: warning: unused variable ‘info’ [-Wunused-variable]
->    struct rb532_cf_info *info = ah->private_data;
->                          ^~~~
+From: Kees Cook <keescook@chromium.org>
 
-Applied, thanks.
+[ Upstream commit 71d6c505b4d9e6f76586350450e785e3d452b346 ]
 
+Jeffrin reported a KASAN issue:
+
+  BUG: KASAN: global-out-of-bounds in ata_exec_internal_sg+0x50f/0xc70
+  Read of size 16 at addr ffffffff91f41f80 by task scsi_eh_1/149
+  ...
+  The buggy address belongs to the variable:
+    cdb.48319+0x0/0x40
+
+Much like commit 18c9a99bce2a ("libata: zpodd: small read overflow in
+eject_tray()"), this fixes a cdb[] buffer length, this time in
+zpodd_get_mech_type():
+
+We read from the cdb[] buffer in ata_exec_internal_sg(). It has to be
+ATAPI_CDB_LEN (16) bytes long, but this buffer is only 12 bytes.
+
+Reported-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+Fixes: afe759511808c ("libata: identify and init ZPODD devices")
+Link: https://lore.kernel.org/lkml/201907181423.E808958@keescook/
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/ata/libata-zpodd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/ata/libata-zpodd.c b/drivers/ata/libata-zpodd.c
+index 173e6f2dd9af0..eefda51f97d35 100644
+--- a/drivers/ata/libata-zpodd.c
++++ b/drivers/ata/libata-zpodd.c
+@@ -56,7 +56,7 @@ static enum odd_mech_type zpodd_get_mech_type(struct ata_device *dev)
+ 	unsigned int ret;
+ 	struct rm_feature_desc *desc;
+ 	struct ata_taskfile tf;
+-	static const char cdb[] = {  GPCMD_GET_CONFIGURATION,
++	static const char cdb[ATAPI_CDB_LEN] = {  GPCMD_GET_CONFIGURATION,
+ 			2,      /* only 1 feature descriptor requested */
+ 			0, 3,   /* 3, removable medium feature */
+ 			0, 0, 0,/* reserved */
 -- 
-Jens Axboe
+2.20.1
 

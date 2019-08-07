@@ -2,78 +2,105 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1888383BE4
-	for <lists+linux-ide@lfdr.de>; Tue,  6 Aug 2019 23:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86CB8429A
+	for <lists+linux-ide@lfdr.de>; Wed,  7 Aug 2019 04:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726964AbfHFVin (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 6 Aug 2019 17:38:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55796 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729624AbfHFViG (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 6 Aug 2019 17:38:06 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A05332189E;
-        Tue,  6 Aug 2019 21:38:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565127486;
-        bh=TVfTkcJ8KkVOiUsmcxKFMFDoP6IU3vPc4t5JMQzWKuQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sj4yVEHoRUVLcMpK4KEErnAf8wkPy0OL8zzCJXJXJ3ZyoSIkJl04jzLve+Orm1o/1
-         AxjsFQTbRxywpmmjZkodhaE9hWvOlicXG+U+vHuNBj6tZ/HyA1XoxhbMBW3Ug8amkO
-         GNCsF6hdtEjZYgj+AH8u93g4PqhLWMCylW9bXm5Y=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 09/14] ata: libahci: do not complain in case of deferred probe
-Date:   Tue,  6 Aug 2019 17:37:43 -0400
-Message-Id: <20190806213749.20689-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190806213749.20689-1-sashal@kernel.org>
-References: <20190806213749.20689-1-sashal@kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+        id S1727087AbfHGCqQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 6 Aug 2019 22:46:16 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:39401 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726542AbfHGCqQ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 6 Aug 2019 22:46:16 -0400
+Received: by mail-pf1-f195.google.com with SMTP id f17so38599198pfn.6;
+        Tue, 06 Aug 2019 19:46:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=PrH45PB9RsMA7pyDP1csKVYDAqtxvNcn8nWcn6FbNjc=;
+        b=siHGvn1Bj4sIEYw5q5Gg20BGgu8x4a1UDeEVboEey9CPp5bwN7qRSX9PdbaORdYhKH
+         YkFcM8TpUuQwt6hsamQhz5DuOUHd74woX/sCdc4OzwKeHi1BwamkrTwX4FC3mMx+K6I9
+         GliEblk6tNZKXY+o7iNGHFMB3sd2XRWkiqmJ0SnmEyGAcqAvus0fi+m5oOCcpSOQ66N3
+         dDkKgbCtk9CMy9Fjaw9c5bPyAztNXN3LxHZMZBCJh267HKxdXSUsjyFxJocebohzrZuV
+         Xh2L7rAAuVYsLieEQNwEDnk/pHbhPGilXJtGs8lQwOV8Bav46NWW9TJnRpsWxVrpnF0t
+         2xqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=PrH45PB9RsMA7pyDP1csKVYDAqtxvNcn8nWcn6FbNjc=;
+        b=EiKHvei5aAd4PhXThGlJZLcg3oR9jx4rl+7or2uE4dkNOLju7dI5JlGH0hINXoNXQP
+         al+X9cxBMLDr2lSUUPHtcWB4zpyl/vM94XlP3aeoOPy2cEnUUasm4kAYwL4DmPM7X9a9
+         ogl1KMC+u7u6D0EeMfsYS9B7VtXiJkkbQvaMGIIf7pxM4cAH6GOlWXWI/75UQrxHZUQ2
+         EsLP24LinWjJelZOUVgmwu11pOF7E+SAeJEkXkdb+PLre7ELCEehv0bmghf2kTjz8EOh
+         Ituf2s5IaTy7UGlmRJ5O234ncBMuuD7VumCRrVIbQghEtYAgZHMnq9u9R+J86lIE/RyF
+         BpqQ==
+X-Gm-Message-State: APjAAAXfNT65/t1EgFEsU8kT4S9QWzyBvHS1bSTnIIqEURNcrHcuLIjj
+        4pS/4dXNHG4ylMBR1YUw4iY=
+X-Google-Smtp-Source: APXvYqyzxmGpPw6yQPMJeAM+1VC/2whsZsEv9hdon9qas9R0gYs75IBP5NVy2m9R9E/19rHgJjBrwQ==
+X-Received: by 2002:a63:2026:: with SMTP id g38mr5668729pgg.172.1565145975883;
+        Tue, 06 Aug 2019 19:46:15 -0700 (PDT)
+Received: from hfq-skylake.ipads-lab.se.sjtu.edu.cn ([202.120.40.82])
+        by smtp.googlemail.com with ESMTPSA id q1sm104267950pfg.84.2019.08.06.19.46.13
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Aug 2019 19:46:14 -0700 (PDT)
+From:   Fuqian Huang <huangfq.daxian@gmail.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Fuqian Huang <huangfq.daxian@gmail.com>
+Subject: [PATCH] libata-sff: use spin_lock_irqsave instead of spin_lock_irq in IRQ context.
+Date:   Wed,  7 Aug 2019 10:45:55 +0800
+Message-Id: <20190807024555.13770-1-huangfq.daxian@gmail.com>
+X-Mailer: git-send-email 2.11.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+Function ata_sff_flush_pio_task use spin_lock_irq/spin_unlock_irq
+to protect shared data.
+spin_unlock_irq will enable interrupts.
 
-[ Upstream commit 090bb803708198e5ab6b0046398c7ed9f4d12d6b ]
+In the interrupt handler nv_swncq_interrupt (./drivers/ata/sata_nv.c),
+when ap->link.sactive is true, nv_swncq_host_interrupt was called.
+nv_swncq_hotplug is called when NV_SWNCQ_IRQ_HOTPLUG is set.
+Then it will follow this chain:
+nv_swncq_hotplug -> sata_scr_read (./dirvers/ata/libata-core.c)
+ -> sata_pmp_scr_read (./drivers/ata/libata-pmp.c)
+ -> sata_pmp_read -> ata_exec_internal 
+ -> ata_exec_internal_sg -> ata_sff_flush_pio_task
 
-Retrieving PHYs can defer the probe, do not spawn an error when
--EPROBE_DEFER is returned, it is normal behavior.
+Interrupts are enabled in interrupt handler.
+Use spin_lock_irqsave instead of spin_lock_irq to avoid this.
 
-Fixes: b1a9edbda040 ("ata: libahci: allow to use multiple PHYs")
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Fuqian Huang <huangfq.daxian@gmail.com>
 ---
- drivers/ata/libahci_platform.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ata/libata-sff.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform.c
-index cd2eab6aa92ea..65371e1befe8a 100644
---- a/drivers/ata/libahci_platform.c
-+++ b/drivers/ata/libahci_platform.c
-@@ -300,6 +300,9 @@ static int ahci_platform_get_phy(struct ahci_host_priv *hpriv, u32 port,
- 		hpriv->phys[port] = NULL;
- 		rc = 0;
- 		break;
-+	case -EPROBE_DEFER:
-+		/* Do not complain yet */
-+		break;
+diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
+index 10aa27882142..d3143e7e6ec0 100644
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -1241,6 +1241,7 @@ EXPORT_SYMBOL_GPL(ata_sff_queue_pio_task);
  
- 	default:
- 		dev_err(dev,
+ void ata_sff_flush_pio_task(struct ata_port *ap)
+ {
++	unsigned long flags;
+ 	DPRINTK("ENTER\n");
+ 
+ 	cancel_delayed_work_sync(&ap->sff_pio_task);
+@@ -1253,9 +1254,9 @@ void ata_sff_flush_pio_task(struct ata_port *ap)
+ 	 * __ata_sff_port_intr() checks for HSM_ST_IDLE and before it calls
+ 	 * ata_sff_hsm_move() causing ata_sff_hsm_move() to BUG().
+ 	 */
+-	spin_lock_irq(ap->lock);
++	spin_lock_irqsave(ap->lock, flags);
+ 	ap->hsm_task_state = HSM_ST_IDLE;
+-	spin_unlock_irq(ap->lock);
++	spin_unlock_irqrestore(ap->lock, flags);
+ 
+ 	ap->sff_pio_task_link = NULL;
+ 
 -- 
-2.20.1
+2.11.0
 

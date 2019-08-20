@@ -2,81 +2,72 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3CCF95ED5
-	for <lists+linux-ide@lfdr.de>; Tue, 20 Aug 2019 14:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1433595FDB
+	for <lists+linux-ide@lfdr.de>; Tue, 20 Aug 2019 15:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729981AbfHTMgH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 20 Aug 2019 08:36:07 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:44103 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730092AbfHTMgC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 20 Aug 2019 08:36:02 -0400
-Received: from orion.localdomain ([95.117.23.32]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N7hrw-1iLHVS2kkc-014oTr; Tue, 20 Aug 2019 14:35:52 +0200
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     axboe@kernel.dk, hdegoede@redhat.com, b.zolnierkie@samsung.com,
-        linus.walleij@linaro.org, linux-ide@vger.kernel.org,
-        linux-tegra@vger.kernel.org
-Subject: [PATCH 9/9] drivers: ata: sata_rcar: use devm_platform_ioremap_resource()
-Date:   Tue, 20 Aug 2019 14:35:48 +0200
-Message-Id: <1566304548-19972-9-git-send-email-info@metux.net>
-X-Mailer: git-send-email 1.9.1
-In-Reply-To: <1566304548-19972-1-git-send-email-info@metux.net>
-References: <1566304548-19972-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:GFgie2U970YyZGkG3noiek5XN2mWDBvFVquvcRyQ8cdHVlBoBTL
- k9/T/AQBNZXUzA6MeJD860+e9ts/WfgOEqwuJSP/lL6TrW8ud6bclphAPPQ6ALxxw6s2/1a
- 7TE4ulpn8yWXcc3fPix3RTIurmWWM9RTygD2PlIw13R5TmAAneXU4b6aY1TSml/ohkueKQI
- 6Lau3jZWQUiupvjs9fyZg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:vAo2nzR61+Q=:XbDBDurTSEjw+v7eLAAMbW
- p4odBvqVWzliFJU4ZG93L9zje7OXjQRMxuMnqfgtCSZpAUwEt0m556BjmdxMIGeM4Q9XWoXY3
- Y3n6bML24M4dyF6zXQ/H/P2chP3pwxQOGtDcUSszklqPo3zRdQd4EnbLXd9I+q2QXCRaEOksA
- MS2y3hk9v51qXlguUe/0VQ2wHlrb6IGj8bNZD2WvCiMUuKo6UH28H1apcpjHEh9JMacSOj36i
- zAKwcmgf7MHV+yvGfa4d+10yG8tpZEMbR0Q1X2ZVJLSIqovGYHV1ESUGeHiqnjXgSHPrNSGFB
- SiGIGko8VdYJ6SwdcRKp7JYwuwRo+MstsWRthb1aC8HK2dkVCRqcULxGozLJRXV9GbcZLckoM
- uqvbMoj9c9B6Hi/RtAsZnAvvP4WMF2efyC9v+IA4nuQjsY990O43BD41QRBZsFfhcKrT8Q6d6
- Ep0NesXEAzGnSiaNK1TZiwUNEc6LjTuXIjDuiTMOzIx0VI4jx4XyNTRGaEi3RUsj10iyhA5K+
- y4VkfTm8++CqQzxEYtL/BZphAiVTCHovZrtoChCct2xrsmhR4ixXchEBLTgOQKLP9uU69QSu2
- IbfMdE6Q/V4wAa0Y+PM3sKj2ZCTRRaer9qf1SbdBNEhyZfWiigHu3j2OTROeNlWI8gQRB3DsV
- cVuebIAXUWG65jcgh7t0IFgeAkJQG1oaJnZu/qYYF8spCvWgak29ba/64iJUicsOAQ3ndvyNj
- kn3FKToMnKoYuKhQzUQpGbupk68ZZ4N9kFoksg==
+        id S1729651AbfHTNVB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 20 Aug 2019 09:21:01 -0400
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:35559 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728770AbfHTNVB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 20 Aug 2019 09:21:01 -0400
+Received: by mail-lf1-f67.google.com with SMTP id p197so4112484lfa.2
+        for <linux-ide@vger.kernel.org>; Tue, 20 Aug 2019 06:20:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YK/0EF3gnBKgjuIY+ib7891ltM0NoVTD8m/vCrHPrxo=;
+        b=Xw2O7bfBzoVIA7uBjRF/yBzM0AX4s+fhD9m7A7xePAgPcMC5xWDuNHD+FP6DAAuoeg
+         f9l7jRFTFuEpgh0UV/MD2odc27Lfvs6S7Y9NZmIL6qSt0enZjTAYoNla+Cc2SquAV6Gv
+         qfeDs2eyeS+ah/jxCPXKYUHLIC7htmZzkRWIQB0OFE9sDvmMpRO1jOaH2zI1UjQeQFsU
+         kyUV+BPQ//NrjTXWbuDtXaQ5wF9XQFzs7MlRXVwXgiG+wW01WSCjJnxnz3ppb0iG9pVZ
+         bQovq3BQw/pK9eokOOnqRxxWZhyBmzDnjraJks80nLa1+IStdZCPGGVLOTgh2XfmkCm6
+         SPDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YK/0EF3gnBKgjuIY+ib7891ltM0NoVTD8m/vCrHPrxo=;
+        b=copwjvQXzoX/QceH8tggVylGBeVoV+FIzMS3cVZNetsuSAnCmYzgLFTKB+ZJiTqT5E
+         ZA8QjCFgW/l6FpSJcWGF0rD6IzNeCr30C3hJPgNqOe7ewgAfhmM1tKyXRU8pD5wtnXvP
+         nADNH/7NH2xbRf0epiE8HdmJfEEo0qr5Yj5qIr5aLYjufsXresijoXkPjyMT/fXBn78g
+         RS8NKguTxkaeR1aoaUQcMfytUhKePcGFnr/wB6jFsp3dowRBiZnsZn4ORCYN9UxX+fz6
+         KgSArRdjXkZKetxe9UObzWUmywl4wmNCleKsAG+U6LmEqH2eIMX/5j0YnEVx7YgIYUWy
+         0U4A==
+X-Gm-Message-State: APjAAAVbZeMSKeSwwoGD2P4OJhARSXFLfMK5rpUoeAwJRdABrKFiy7kB
+        QtNWVZ/UATx5bo84UfwkvKYtVyqStN29o21hxHw4oQ==
+X-Google-Smtp-Source: APXvYqwuY7Mwr36cEssEQwVCrvZ1pHs1jPtuHvPtqLhdRMG6LujyXVk8yUaiIMfQkBORVc3Kb+TBpHvENpfFd/iqASA=
+X-Received: by 2002:ac2:5939:: with SMTP id v25mr15606434lfi.115.1566307258940;
+ Tue, 20 Aug 2019 06:20:58 -0700 (PDT)
+MIME-Version: 1.0
+References: <1566304548-19972-1-git-send-email-info@metux.net> <1566304548-19972-8-git-send-email-info@metux.net>
+In-Reply-To: <1566304548-19972-8-git-send-email-info@metux.net>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Tue, 20 Aug 2019 15:20:47 +0200
+Message-ID: <CACRpkdazbH5pD6eqhM_PWyK1wcjrKzxY24AwEk-TmzpFtmnxqA@mail.gmail.com>
+Subject: Re: [PATCH 8/9] drivers: ata: sata_gemini: use devm_platform_ioremap_resource()
+To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-ide@vger.kernel.org, linux-tegra@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Use the new helper that wraps the calls to platform_get_resource()
-and devm_ioremap_resource() together.
+On Tue, Aug 20, 2019 at 2:35 PM Enrico Weigelt, metux IT consult
+<info@metux.net> wrote:
 
-Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
----
- drivers/ata/sata_rcar.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> Use the new helper that wraps the calls to platform_get_resource()
+> and devm_ioremap_resource() together.
+>
+> Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 
-diff --git a/drivers/ata/sata_rcar.c b/drivers/ata/sata_rcar.c
-index 3495e17..14ea1d6 100644
---- a/drivers/ata/sata_rcar.c
-+++ b/drivers/ata/sata_rcar.c
-@@ -886,7 +886,6 @@ static int sata_rcar_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct ata_host *host;
- 	struct sata_rcar_priv *priv;
--	struct resource *mem;
- 	int irq;
- 	int ret = 0;
- 
-@@ -915,8 +914,7 @@ static int sata_rcar_probe(struct platform_device *pdev)
- 
- 	host->private_data = priv;
- 
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	priv->base = devm_ioremap_resource(dev, mem);
-+	priv->base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base)) {
- 		ret = PTR_ERR(priv->base);
- 		goto err_pm_put;
--- 
-1.9.1
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
 
+Yours,
+Linus Walleij

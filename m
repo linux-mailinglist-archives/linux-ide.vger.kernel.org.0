@@ -2,18 +2,18 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46F38965C3
-	for <lists+linux-ide@lfdr.de>; Tue, 20 Aug 2019 17:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95526966A7
+	for <lists+linux-ide@lfdr.de>; Tue, 20 Aug 2019 18:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728185AbfHTP7v (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 20 Aug 2019 11:59:51 -0400
-Received: from enpas.org ([46.38.239.100]:40048 "EHLO mail.enpas.org"
+        id S1727077AbfHTQmr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 20 Aug 2019 12:42:47 -0400
+Received: from enpas.org ([46.38.239.100]:40102 "EHLO mail.enpas.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726663AbfHTP7v (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 20 Aug 2019 11:59:51 -0400
+        id S1726742AbfHTQmq (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 20 Aug 2019 12:42:46 -0400
 Received: from [127.0.0.1] (localhost [127.0.0.1])
-        by mail.enpas.org (Postfix) with ESMTPSA id CF42B100078;
-        Tue, 20 Aug 2019 15:59:47 +0000 (UTC)
+        by mail.enpas.org (Postfix) with ESMTPSA id B6D17100077;
+        Tue, 20 Aug 2019 16:42:43 +0000 (UTC)
 Subject: Re: [PATCH v5] ata/pata_buddha: Probe via modalias instead of
  initcall
 To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
@@ -97,8 +97,8 @@ Autocrypt: addr=max@enpas.org; prefer-encrypt=mutual; keydata=
  qowubYXvP+RW4E9h6/NwGzS3Sbw7dRC6HK7xeSjmnzgrbbdF3TbHa5WHGZ3MLFQqbMuSn1Gn
  a0dBnIpkQG5yGknQjCL7SGEun1siNzluV19nLu66YRJsZ1HE9RgbMhTe2Ca8bWH1985ra4GV
  urZIw0nz8zec+73Bv/qF4GHHftLYfA==
-Message-ID: <89894d50-0e3c-4d43-37b2-ff5be407e58c@enpas.org>
-Date:   Tue, 20 Aug 2019 17:59:47 +0200
+Message-ID: <b91ccdbd-c955-9ff2-502d-e8e80e181b52@enpas.org>
+Date:   Tue, 20 Aug 2019 18:42:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
  Thunderbird/52.9.1
 MIME-Version: 1.0
@@ -113,49 +113,12 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Hi Bartlomiej,
 
-Thank you very much for your review!
-
-Question below.
-
-
 On 08/20/2019 02:06 PM, Bartlomiej Zolnierkiewicz wrote:
->> +	/* Workaround for X-Surf: Save drvdata in case zorro8390 has set it */
->> +	old_drvdata = dev_get_drvdata(&z->dev);
-> 
-> This should be done only for type == BOARD_XSURF.
+> WARNING: line over 80 characters
+> #354: FILE: drivers/ata/pata_buddha.c:287:
+> +        while ((z = zorro_find_device(ZORRO_PROD_INDIVIDUAL_COMPUTERS_X_SURF, z))) {
 
-Agreed, as I want to keep unloading functional for Buddha/Catweasel - see below.
+I see no good way to shorten this one. I think it's obvious enough to allow overflowing by a few chars - do you agree?
 
-
->> +static struct zorro_driver pata_buddha_driver = {
->> +	.name           = "pata_buddha",
->> +	.id_table       = pata_buddha_zorro_tbl,
->> +	.probe          = pata_buddha_probe,
->> +	.remove         = pata_buddha_remove,
-> 
-> I think that we should also add:
-> 
-> 	.driver  = {
-> 		.suppress_bind_attrs = true,
-> 	},
-> 
-> to prevent the device from being unbinded (and thus ->remove called)
-> from the driver using sysfs interface.
-
-Interesting idea - here's my question now:
-
-My intention is to allow remove() for boards where we support IDE only (Buddha, Catweasel) - these are autoprobed via zorro_register_driver().
-This shouldn't affect the X-Surf case, as it's not autoprobed in this way anyway - and thus pata_buddha_driver isn't even used.
-
-Am I missing something? We want to inhibit module unloading (hence no module_exit()), but driver unbinding for Buddha/Catweasel should be fine to remain, right?
-
-
-> Please also always check your patches with scripts/checkpatch.pl and
-> fix the reported issues:
-
-Apologies, must've been something in my coffee. I will.
-
-
-Thanks for the review, I'll send a new patch once my question above is resolved.
 
 Max

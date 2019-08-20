@@ -2,46 +2,46 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C1495EE9
-	for <lists+linux-ide@lfdr.de>; Tue, 20 Aug 2019 14:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF3695ECF
+	for <lists+linux-ide@lfdr.de>; Tue, 20 Aug 2019 14:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730008AbfHTMgP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 20 Aug 2019 08:36:15 -0400
-Received: from mout.kundenserver.de ([217.72.192.75]:40927 "EHLO
+        id S1730093AbfHTMgC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 20 Aug 2019 08:36:02 -0400
+Received: from mout.kundenserver.de ([217.72.192.75]:36057 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729965AbfHTMgA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 20 Aug 2019 08:36:00 -0400
+        with ESMTP id S1730091AbfHTMgB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 20 Aug 2019 08:36:01 -0400
 Received: from orion.localdomain ([95.117.23.32]) by mrelayeu.kundenserver.de
  (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MZk5x-1hn3562KTn-00Wr6k; Tue, 20 Aug 2019 14:35:51 +0200
+ 1Mbj7g-1iXSht3wqc-00dBq3; Tue, 20 Aug 2019 14:35:52 +0200
 From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
 To:     linux-kernel@vger.kernel.org
 Cc:     axboe@kernel.dk, hdegoede@redhat.com, b.zolnierkie@samsung.com,
         linus.walleij@linaro.org, linux-ide@vger.kernel.org,
         linux-tegra@vger.kernel.org
-Subject: [PATCH 6/9] drivers: ata: pata_bk3710: use devm_platform_ioremap_resource()
-Date:   Tue, 20 Aug 2019 14:35:45 +0200
-Message-Id: <1566304548-19972-6-git-send-email-info@metux.net>
+Subject: [PATCH 7/9] drivers: ata: sata_dwc_460ex: use devm_platform_ioremap_resource()
+Date:   Tue, 20 Aug 2019 14:35:46 +0200
+Message-Id: <1566304548-19972-7-git-send-email-info@metux.net>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1566304548-19972-1-git-send-email-info@metux.net>
 References: <1566304548-19972-1-git-send-email-info@metux.net>
-X-Provags-ID: V03:K1:2hBSmJV62+8u86tNoFA272pxYClBqiHKGxotWvy/XhYayx1Y/OK
- saJTNeaWvrZH8a1EFkpQx8p4VUzxTAomxyK8/n3PecRs1dZGlXSdFjN+gElbNsVpg/Ja6Yk
- ZeAbca1JaNJHCorW5Nr+k4g1YXLzsYHpkDsyYOlLWF+z0BU6kroO3bURRxmZfEZYPBcNjgg
- mRqsrM4lcvh05JQW+FcZQ==
+X-Provags-ID: V03:K1:WhHDhrUh+A6TDsinQAj2garKIQ/Ta1t5vveiFsAMmbsXap4bHbM
+ AX3795s5AjHe5+h8t22FJw9hQgNXzcrXFm5XpJHaNr+A6VKyFFfMuMQ8V2WyV4w157e+4Wl
+ 6tBjD11lgCOW3LuVGCRTqkAtoNlSXktEmkKqpwHgaQHlAesgAIdQ4RgpBwWrMwB3nHy0ihC
+ iWIgFxib0J1CSHH4JwbBQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KMsYP2dbA/k=:XHmq4ec6/xJN39WmCgSXba
- eZ6aftXlVkctcroCRteJUeED3pplyY8SuNb3A3iL4M9GBTAaXJ0BJUj32JlqA+9I/3ZWKMPcn
- TFPI0sQ9ZrVhw6bh2RFdJf86xYtC+CSs+GAwMDMuCDOVTlRxufV6AYTNI95v5DaQGRdHhK+8B
- LxsXr/Zn2ZSI040f60PwPEnhzaf8IqfYj+ptvZxmjTdX4DagDid2ETEkNEzWldAvXPRPCSSXC
- RGB3TFNXmNvyi8VYTQRTjttLsoijREMldkw/wuiWjLBrun4pjLINS4wb/V/YJv2EL2g8qXQll
- z11w84cI2BRArthiJLpYWmCquvzmtr0PEXXK46Tw7bKcdUaCbYwa59jsC9zRlCUnQP6W0eTPd
- MrEBIb/SGkTiJGK5clBaM+0FAz66vbQ3RZP/wastoWoU/PJzdwOPwtGoUU+AhxWs/qZ9wR+3c
- oGEqynCQmwhQvgaK+GRsO9SNii65SDgPsHPFErHSFhjdVLryHht8WoQb/NCP8QkCswEVFjMgH
- PgtNC/fsC6qHWm/2vGcAWWE9ECkCdpR5dePLfcFdSvL3X6tD/b3WaAYh/DKIOgP5H9WBLCXtq
- KYG42QJiZ9RlxnSis75XopehvKPMRPh9ocvHXYOSi5wfUoTTSc/wBkcJOZLgHYM+O2i/R4VUa
- 13DByy+Pk/lUGE+mHGIhoTiJoWeVFFvpklxUhq26+InOs5gqO8xvzGN+bqcYiQxGBZYfyaRKd
- AWrJ6cdwgQiew7zj2/V8t7E5TYevNhoFZZZJng==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+Dn2jZWxmis=:M4QV+GCuPIdHv54b7IbCnw
+ d/n4WkFgpOiNg1OyG1Lzm1M0jQLQNGy1b/C42bP5GoVNj8Sf4haEDt4h1z8n5ONO4GjoiALfu
+ YqetGaJ1kttD9uIs/68DsvIqu0ll0eNYjW1PASPbCVs1mhFRGkXfjTLY8GBaH+7Ax+kO3akME
+ q7ZyyuPVLcQujUXqXEBwejF/39EsqtG9ltCOCtGQmpPDDBZNQ8IaDFo4He1V6PdOclKJlo0Kn
+ ivjSPLleBmCHsN7/CNO0c49t/xNwoaTbTAEvQuLCNsAkz68OTzFgwT6QctjOtLJOeWOPW9tYd
+ pY1M3pYFZnCLwokcQsigsRuQD3mYUM9fn5C/mrisNcFllTHp2XeDvDEjW/6/PoHvrsplfCXZ8
+ wV/tGHWjRAQfkqk9Yu1oanvKTYBXwE9U4Qv8ACAs+HtTmXzCnyExt4eJpWsAtPE4wmFWZO7np
+ AmxT3mVI/lnM0yoGUlK2V0Bu3MG3QB0IkPy2f/PJQlncaemrZcO99zykHsekx2r90cOsPGfO2
+ HahEc+eaDdoAFWPyX/Ig0W8bKnBDAmPyq5Pdi1Xfeq3PUdQKn8Iapy1jCp5Mnrq+Mr9wFvVyM
+ qYLtIIsLovPn/shZm1TaCCggxcm6AScNp3m02IsM5Soyf0OqkKcgl9tPBvPOu2i3UC0VkOgTF
+ kYgkO2CPVuiEtxS/tY520GlK4Ykl58+K+sXcQTj+nbJckFXvuPHWz/LFTqpi7iFs/g719cvDr
+ lpgN44KScm0F7IH5Z1GlMP0wVkskRPJwQhZBvg==
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
@@ -52,37 +52,30 @@ and devm_ioremap_resource() together.
 
 Signed-off-by: Enrico Weigelt, metux IT consult <info@metux.net>
 ---
- drivers/ata/pata_bk3710.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/ata/sata_dwc_460ex.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/ata/pata_bk3710.c b/drivers/ata/pata_bk3710.c
-index fad95cf..92b036d 100644
---- a/drivers/ata/pata_bk3710.c
-+++ b/drivers/ata/pata_bk3710.c
-@@ -291,7 +291,6 @@ static void pata_bk3710_chipinit(void __iomem *base)
- static int __init pata_bk3710_probe(struct platform_device *pdev)
+diff --git a/drivers/ata/sata_dwc_460ex.c b/drivers/ata/sata_dwc_460ex.c
+index 9dcef6a..de248fa 100644
+--- a/drivers/ata/sata_dwc_460ex.c
++++ b/drivers/ata/sata_dwc_460ex.c
+@@ -237,7 +237,6 @@ static int sata_dwc_dma_init_old(struct platform_device *pdev,
+ 				 struct sata_dwc_device *hsdev)
  {
- 	struct clk *clk;
--	struct resource *mem;
- 	struct ata_host *host;
- 	struct ata_port *ap;
- 	void __iomem *base;
-@@ -310,15 +309,13 @@ static int __init pata_bk3710_probe(struct platform_device *pdev)
- 	/* NOTE:  round *down* to meet minimum timings; we count in clocks */
- 	ideclk_period = 1000000000UL / rate;
+ 	struct device_node *np = pdev->dev.of_node;
+-	struct resource *res;
  
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		pr_err(DRV_NAME ": failed to get IRQ resource\n");
- 		return irq;
+ 	hsdev->dma = devm_kzalloc(&pdev->dev, sizeof(*hsdev->dma), GFP_KERNEL);
+ 	if (!hsdev->dma)
+@@ -254,8 +253,7 @@ static int sata_dwc_dma_init_old(struct platform_device *pdev,
  	}
  
--	base = devm_ioremap_resource(&pdev->dev, mem);
-+	base = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
+ 	/* Get physical SATA DMA register base address */
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+-	hsdev->dma->regs = devm_ioremap_resource(&pdev->dev, res);
++	hsdev->dma->regs = devm_platform_ioremap_resource(pdev, 1);
+ 	if (IS_ERR(hsdev->dma->regs))
+ 		return PTR_ERR(hsdev->dma->regs);
  
 -- 
 1.9.1

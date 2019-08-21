@@ -2,54 +2,74 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 87C7797544
-	for <lists+linux-ide@lfdr.de>; Wed, 21 Aug 2019 10:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 205E9986C0
+	for <lists+linux-ide@lfdr.de>; Wed, 21 Aug 2019 23:45:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727075AbfHUIqe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 21 Aug 2019 04:46:34 -0400
-Received: from mail.vodokanal.poltava.ua ([91.219.220.27]:52262 "EHLO
-        mail.vodokanal.poltava.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726669AbfHUIqe (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 21 Aug 2019 04:46:34 -0400
-Received: by mail.vodokanal.poltava.ua (Postfix, from userid 80)
-        id B610222CD43; Wed, 21 Aug 2019 08:43:59 +0300 (EEST)
-Received: from 192.168.0.119
-        (SquirrelMail authenticated user test@vodokanal.poltava.ua)
-        by mail.vodokanal.poltava.ua with HTTP;
-        Wed, 21 Aug 2019 06:43:59 +0100
-Message-ID: <2e5f25310f16453004a6bf5c851161eb.squirrel@mail.vodokanal.poltava.ua>
-Date:   Wed, 21 Aug 2019 06:43:59 +0100
-Subject: LOANS !!!
-From:   "DIAL DIRECT LOANS SA" <dialdirect@info.org>
-Reply-To: dialdirectloanssa@mail2consultant.com
-User-Agent: SquirrelMail/1.4.21
+        id S1727807AbfHUVp5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 21 Aug 2019 17:45:57 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:37822 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727255AbfHUVp5 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 21 Aug 2019 17:45:57 -0400
+Received: by mail-oi1-f196.google.com with SMTP id b25so2813347oib.4;
+        Wed, 21 Aug 2019 14:45:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=SlELz4WXoNyx1fC6jRJuCL/0KkGNNJXIdrw589z2kEo=;
+        b=fXsBkCPA80lIbwj1eNE5du2ySTXW/jKc55bvGLC/Ss1tDclkwAxRNH0PLbcxjx0bHZ
+         aADaUfGvv1sovBsq/8iqKLCpqYMUVjcwPooi4ZAcZnKJBB8AISTR2AlCv1L19m97pyGp
+         5hqfuUlv2vPM2XgkWEKrEahJvB3nFxh7yI1HvgdQML81/Pol+tZoaGQg9UinjZB203kl
+         WgeWTu5pwJ97/5Ouc39Gy3lKp07MilcERX4qWJthzKmneGSI/b/pll1OPbCRzgZ/EWG4
+         qcfCHdiWH0iibRJvOnjZTZxE9qtV+xzbcyieTFSPh14Y5ayW3QLWfxKWj2lWh9FyyeWp
+         JmYQ==
+X-Gm-Message-State: APjAAAWNsS/AK66j5p+VkaqCy+7eVJFjwslOu2ngPo3D3ilXy9svW3nE
+        d/TyyV9X035TC+SpDLcMUg==
+X-Google-Smtp-Source: APXvYqwrC7IpZwWire9CqKO08aGc9TxMXLjCkOrqCfjQjiZqfVwhI8DLA/qwjbfEUFW4XjHKtEP7lA==
+X-Received: by 2002:aca:f481:: with SMTP id s123mr1570648oih.109.1566423956094;
+        Wed, 21 Aug 2019 14:45:56 -0700 (PDT)
+Received: from localhost (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
+        by smtp.gmail.com with ESMTPSA id d5sm6679680oij.35.2019.08.21.14.45.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2019 14:45:55 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 16:45:54 -0500
+From:   Rob Herring <robh@kernel.org>
+To:     Simon Horman <horms+renesas@verge.net.au>
+Cc:     Jens Axboe <axboe@kernel.dk>, Mark Rutland <mark.rutland@arm.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-ide@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Simon Horman <horms+renesas@verge.net.au>
+Subject: Re: [PATCH] dt-bindings: ata: sata_rcar: Rename bindings
+ documentation file
+Message-ID: <20190821214554.GA8691@bogus>
+References: <20190809215131.877-1-horms+renesas@verge.net.au>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Priority: 3 (Normal)
-Importance: Normal
-To:     undisclosed-recipients:;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190809215131.877-1-horms+renesas@verge.net.au>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+On Fri,  9 Aug 2019 14:51:31 -0700, Simon Horman wrote:
+> Rename the bindings documentation file for Renesas SATA controller
+> from sata_rcar.txt to renesas,rcar-sata.txt
+> 
+> This is part of an ongoing effort to name bindings documentation files for
+> Renesas IP blocks consistently, in line with the compat strings they
+> document.
+> 
+> Signed-off-by: Simon Horman <horms+renesas@verge.net.au>
+> ---
+> Based on v5.3-rc1
+> ---
+>  .../devicetree/bindings/ata/{sata_rcar.txt => renesas,rcar-sata.txt}      | 0
+>  1 file changed, 0 insertions(+), 0 deletions(-)
+>  rename Documentation/devicetree/bindings/ata/{sata_rcar.txt => renesas,rcar-sata.txt} (100%)
+> 
 
-
-
-Dial Direct Loan SA
-
-
-Consolidate your debts with Dial Direct Loan SA for your peace of
-mind at a fixed interest rate of 4.75%,personal and business loans
-are also welcome.For details  file in your applications by sending an email
-to:dialdirectloanssa@mail2consultant.com.
-
-
-
-Yours in Service,
-Susan Muller (Mrs.),
-Senior Consultant,
-Loan Application Team
-Dial Direct Loan SA
-Tel No: +27717231058
+Reviewed-by: Rob Herring <robh@kernel.org>

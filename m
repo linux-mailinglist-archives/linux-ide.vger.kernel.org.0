@@ -2,51 +2,157 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 495729A43D
-	for <lists+linux-ide@lfdr.de>; Fri, 23 Aug 2019 02:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F03E9AD7E
+	for <lists+linux-ide@lfdr.de>; Fri, 23 Aug 2019 12:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729964AbfHWARl convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Thu, 22 Aug 2019 20:17:41 -0400
-Received: from mail.physics.pub.ro ([141.85.216.3]:46386 "EHLO
-        physics1.physics.pub.ro" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729762AbfHWARl (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 22 Aug 2019 20:17:41 -0400
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by physics1.physics.pub.ro (Postfix) with ESMTP id 69EBEE3B8CF;
-        Thu, 22 Aug 2019 13:34:05 +0300 (EEST)
-X-Virus-Scanned: amavisd-new at physics.pub.ro
-Received: from physics1.physics.pub.ro ([127.0.0.1])
-        by localhost (physics1.physics.pub.ro [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id DFRYvDlEP5J9; Thu, 22 Aug 2019 13:34:05 +0300 (EEST)
-Received: from [10.51.176.174] (unknown [105.4.6.61])
-        by physics1.physics.pub.ro (Postfix) with ESMTPSA id 2955FE3A523;
-        Thu, 22 Aug 2019 13:33:26 +0300 (EEST)
-Content-Type: text/plain; charset="utf-8"
+        id S2388655AbfHWKmd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 23 Aug 2019 06:42:33 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:35228 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389496AbfHWKmb (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 23 Aug 2019 06:42:31 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190823104229euoutp02fbd8eb64ca99791191de84590ab8e417~9hz7q4qz62158921589euoutp02U
+        for <linux-ide@vger.kernel.org>; Fri, 23 Aug 2019 10:42:29 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190823104229euoutp02fbd8eb64ca99791191de84590ab8e417~9hz7q4qz62158921589euoutp02U
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1566556949;
+        bh=/+8sX1IwLtd70Fz4kr7IaaRknglBZi+mCocggncPzmQ=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=T5sIc6ALwC9iPZFhwAFv/qdzKSKIHieA5RuGoO6sc8SqRkTDZ04EwMnISK4isuLF1
+         1+ZRNeel+AjN6YD9mD35qOPsEPz9u7HeabjMFlwcDdUNtMbNo8OrttcHZONSYxWeoZ
+         yQ/5RdGifp+pMCyOxz1SIEldQjTAQ58jTOus1sHc=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20190823104228eucas1p186ef5140430ad48c986e5e56202d7b43~9hz61FU-92136521365eucas1p1B;
+        Fri, 23 Aug 2019 10:42:28 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id E2.92.04469.413CF5D5; Fri, 23
+        Aug 2019 11:42:28 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20190823104228eucas1p2ce9162667a7fac65d3bf4abfa38253e7~9hz6GWqJR0355603556eucas1p2K;
+        Fri, 23 Aug 2019 10:42:28 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190823104227eusmtrp16ee00847a73b5142e0981d52aaf6f641~9hz52bcv90951109511eusmtrp1X;
+        Fri, 23 Aug 2019 10:42:27 +0000 (GMT)
+X-AuditID: cbfec7f2-569ff70000001175-68-5d5fc314047d
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 6E.EE.04166.313CF5D5; Fri, 23
+        Aug 2019 11:42:27 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190823104227eusmtip2e7c89f5bb809d018b40bbd2c3a1aea7b~9hz5f3nw20575205752eusmtip27;
+        Fri, 23 Aug 2019 10:42:27 +0000 (GMT)
+Subject: Re: [PATCH v6] ata/pata_buddha: Probe via modalias instead of
+ initcall
+To:     Max Staudt <max@enpas.org>
+Cc:     axboe@kernel.dk, linux-ide@vger.kernel.org,
+        linux-m68k@vger.kernel.org, linux-kernel@vger.kernel.org,
+        glaubitz@physik.fu-berlin.de, schmitzmic@gmail.com,
+        geert@linux-m68k.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <7d3c4379-23bd-ef3a-e725-86516097850a@samsung.com>
+Date:   Fri, 23 Aug 2019 12:42:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
-To:     Recipients <niculae-tiberiu.puscas@physics.pub.ro>
-From:   ''Tayeb Souami'' <niculae-tiberiu.puscas@physics.pub.ro>
-Date:   Thu, 22 Aug 2019 12:33:22 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20190822103327.2955FE3A523@physics1.physics.pub.ro>
+In-Reply-To: <20190820165715.15185-1-max@enpas.org>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrEKsWRmVeSWpSXmKPExsWy7djPc7oih+NjDVrmylusvtvPZvHs1l4m
+        i9nvlS2O7XjEZHF51xw2i93v7zNaPGz6wGQxt3U6uwOHx+Gvm9k8ds66y+5x+Wypx6HDHYwe
+        B8+dY/T4vEkugC2KyyYlNSezLLVI3y6BK2Pn3ymsBU28FatX32dvYJzP1cXIySEhYCIxde8l
+        ti5GLg4hgRWMEv83nWGCcL4wStxdcIkVwvnMKLH7x0d2mJa1Kz9BJZYzShzbsoQNJCEk8JZR
+        YusJERBbWCBQ4tenWYwgtoiAnMTH1quMIA3MAtsYJY6efgU2iU3ASmJi+yqwIl4BO4mWZxPA
+        bBYBVYmXTXuYQWxRgQiJ+8c2sELUCEqcnPmEBcTmFDCWeL1hDlgNs4C4xK0n85kgbHmJ7W8h
+        4hICh9glbq2Bsl0knu5cxARhC0u8Or4F6hsZidOTe1hAjpMQWMco8bfjBTOEs51RYvnkf2wQ
+        VdYSh49fBLqCA2iDpsT6XfogpoSAo8TFv7IQJp/EjbeCECfwSUzaNp0ZIswr0dEmBDFDTWLD
+        sg1sMFu7dq5knsCoNAvJY7OQPDMLyTOzENYuYGRZxSieWlqcm55abJiXWq5XnJhbXJqXrpec
+        n7uJEZiSTv87/mkH49dLSYcYBTgYlXh4T3TFxQqxJpYVV+YeYpTgYFYS4S2bCBTiTUmsrEot
+        yo8vKs1JLT7EKM3BoiTOW83wIFpIID2xJDU7NbUgtQgmy8TBKdXAqHLk8k6XdVd5u6JvVKv8
+        VCpKbd724cCsx7VqG3w2SCrr7hEye5ovl3jp+iRJM//2U2Juu+3+nZbRW8nkmCHbfCvrR23A
+        8m+OCt1N+TLSyqWr2Bb+NJ3s+iOB5eoB00N/TK6FKJpd3i3Bn9PatY9ryfkLLy8Kz1NVuN/+
+        VUK9vmWB779yO4P/SizFGYmGWsxFxYkAJawZ7kUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrGIsWRmVeSWpSXmKPExsVy+t/xe7rCh+NjDVZd07ZYfbefzeLZrb1M
+        FrPfK1sc2/GIyeLyrjlsFrvf32e0eNj0gclibut0dgcOj8NfN7N57Jx1l93j8tlSj0OHOxg9
+        Dp47x+jxeZNcAFuUnk1RfmlJqkJGfnGJrVK0oYWRnqGlhZ6RiaWeobF5rJWRqZK+nU1Kak5m
+        WWqRvl2CXsbOv1NYC5p4K1avvs/ewDifq4uRk0NCwERi7cpPrF2MXBxCAksZJQ5ve8LexcgB
+        lJCROL6+DKJGWOLPtS42iJrXjBL3PqxkB0kICwRK/Po0ixHEFhGQk/jYepURpIhZYBujxNdr
+        0xkhOtoYJe6snsIEUsUmYCUxsX0VWAevgJ1Ey7MJYDaLgKrEy6Y9zCC2qECExJn3K1ggagQl
+        Ts58AmZzChhLvN4wB6yGWUBd4s+8S1C2uMStJ/OZIGx5ie1v5zBPYBSahaR9FpKWWUhaZiFp
+        WcDIsopRJLW0ODc9t9hQrzgxt7g0L10vOT93EyMwDrcd+7l5B+OljcGHGAU4GJV4eE90xcUK
+        sSaWFVfmHmKU4GBWEuEtmwgU4k1JrKxKLcqPLyrNSS0+xGgK9NxEZinR5HxgisgriTc0NTS3
+        sDQ0NzY3NrNQEuftEDgYIySQnliSmp2aWpBaBNPHxMEp1cCY+XwmU21jUeuOpYt/LJuS4edX
+        9jDV/Nukg5EG6/3jexVY468e5T9c9Oj3/GmachqtDRMXT7xQJvSYpT7vaWbi//ubcpwN5oum
+        GHe0se9YbrPpmF7KQlvHmZdEtaWlU/52TBaf4CUMjOmJDzQezDzXFFHtdvtJZ4RH48J1zz88
+        e3heQ1Lz3iIlluKMREMt5qLiRAAiHiZD2QIAAA==
+X-CMS-MailID: 20190823104228eucas1p2ce9162667a7fac65d3bf4abfa38253e7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190820165731epcas2p340cc3421251987896b857da4ec42038e
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190820165731epcas2p340cc3421251987896b857da4ec42038e
+References: <CGME20190820165731epcas2p340cc3421251987896b857da4ec42038e@epcas2p3.samsung.com>
+        <20190820165715.15185-1-max@enpas.org>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Lieber Freund,
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+Hi,
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+On 8/20/19 6:57 PM, Max Staudt wrote:
+> Up until now, the pata_buddha driver would only check for cards on
+> initcall time. Now, the kernel will call its probe function as soon
+> as a compatible card is detected.
+> 
+> v6: Only do the drvdata workaround for X-Surf (remove breaks otherwise)
+>     Style
+> 
+> v5: Remove module_exit(): There's no good way to handle the X-Surf hack.
+>     Also include a workaround to save X-Surf's drvdata in case zorro8390
+>     is active.
+> 
+> v4: Clean up pata_buddha_probe() by using ent->driver_data.
+>     Support X-Surf via late_initcall()
+> 
+> v3: Clean up devm_*, implement device removal.
+> 
+> v2: Rename 'zdev' to 'z' to make the patch easy to analyse with
+>     git diff --ignore-space-change
+> 
+> Signed-off-by: Max Staudt <max@enpas.org>
+> ---
+>  drivers/ata/pata_buddha.c | 231 +++++++++++++++++++++++++++-------------------
+>  1 file changed, 138 insertions(+), 93 deletions(-)
+> 
+> diff --git a/drivers/ata/pata_buddha.c b/drivers/ata/pata_buddha.c
+> index 11a8044ff..9e1b57866 100644
+> --- a/drivers/ata/pata_buddha.c
+> +++ b/drivers/ata/pata_buddha.c
 
-Das ist dein Spendencode: [TS530342018]
+[...]
 
-Antworten Sie mit dem SPENDE-CODE an diese E-Mail:Tayebsouam.spende@gmail.com
+> +static struct zorro_driver pata_buddha_driver = {
+> +	.name           = "pata_buddha",
+> +	.id_table       = pata_buddha_zorro_tbl,
+> +	.probe          = pata_buddha_probe,
+> +	.remove         = pata_buddha_remove,
+> +	.driver  = {
+> +		.suppress_bind_attrs = true,
 
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+I thought that we had agreed that this is not needed?
 
-Grüße
-Herr Tayeb Souami
+With that fixed:
+
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics

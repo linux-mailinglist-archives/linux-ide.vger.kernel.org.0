@@ -2,52 +2,88 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31BEC9BF93
-	for <lists+linux-ide@lfdr.de>; Sat, 24 Aug 2019 21:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F06759C33C
+	for <lists+linux-ide@lfdr.de>; Sun, 25 Aug 2019 14:31:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727996AbfHXTAc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Sat, 24 Aug 2019 15:00:32 -0400
-Received: from smtp2.osep.mendoza.gov.ar ([200.16.135.145]:52908 "HELO
-        smtp2.osep.mendoza.gov.ar" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with SMTP id S1727979AbfHXTAc (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 24 Aug 2019 15:00:32 -0400
-Received: (qmail 402 invoked from network); 24 Aug 2019 14:14:38 -0000
-Received: from unknown (HELO zimbra.servers.dg.intranet) (10.10.195.224)
-  by smtp2.osep.mendoza.gov.ar with SMTP; 24 Aug 2019 14:14:38 -0000
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.servers.dg.intranet (Postfix) with ESMTP id DB8B3CF7CC66;
-        Sat, 24 Aug 2019 11:14:37 -0300 (ART)
-Received: from zimbra.servers.dg.intranet ([127.0.0.1])
-        by localhost (zimbra.servers.dg.intranet [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id RViPrJdL95bg; Sat, 24 Aug 2019 11:14:37 -0300 (ART)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.servers.dg.intranet (Postfix) with ESMTP id 877BBCF7CC58;
-        Sat, 24 Aug 2019 11:14:37 -0300 (ART)
-X-Virus-Scanned: amavisd-new at osep.mendoza.gov.ar
-Received: from zimbra.servers.dg.intranet ([127.0.0.1])
-        by localhost (zimbra.servers.dg.intranet [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 9n2-6F1Dy9XD; Sat, 24 Aug 2019 11:14:37 -0300 (ART)
-Received: from zimbra.servers.dg.intranet (zimbra.servers.dg.intranet [10.10.195.224])
-        by zimbra.servers.dg.intranet (Postfix) with ESMTP id BAAEBCF7CC40;
-        Sat, 24 Aug 2019 11:14:36 -0300 (ART)
-Date:   Sat, 24 Aug 2019 11:14:36 -0300 (ART)
-From:   "Herr.Robert Jackson" <liliana.marinero@osep.mendoza.gov.ar>
-Reply-To: SKY GROUP FINANCIAL <skygroupfinancial0@gmail.com>
-Message-ID: <1268244548.24999093.1566656076742.JavaMail.zimbra@osep.mendoza.gov.ar>
-Subject: 
+        id S1726744AbfHYMbV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 25 Aug 2019 08:31:21 -0400
+Received: from rere.qmqm.pl ([91.227.64.183]:54431 "EHLO rere.qmqm.pl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726182AbfHYMbV (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 25 Aug 2019 08:31:21 -0400
+Received: from remote.user (localhost [127.0.0.1])
+        by rere.qmqm.pl (Postfix) with ESMTPSA id 46GZFz2DnWz55;
+        Sun, 25 Aug 2019 14:29:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rere.qmqm.pl; s=1;
+        t=1566736183; bh=vZsP+gC6xjkhdwkU8RmUdpu99NTy+OKDeJJ+3qq5kYI=;
+        h=Date:From:Subject:To:Cc:From;
+        b=ZMZRHE1TUw+O6DnjyEJH55gwzmnFGtQock72ZLgmnL0kUwHZR+00TCEkDbTJ8IIXK
+         2RJO/iFKs0OsqsFTu1Oae6j2OEAmN2TKpzP5QMEPivRTT3R/x8qajRx+s2OE81r5Jl
+         N8gvx2iu3vHZRwUtmVL3UYeMjHXqRBKAtiiHOgJOyzmzugXIDVw5/9OjpXeYaPZdnb
+         Lrc7xuC1a4zlr4BiAnBQVFcTre+fV7KmPeXwArRrgVi03P+wvrPxsw4ieK6Ohf9tFB
+         pJ0atbODbU0EXW7LwnLvxG6IuTPWJYkYISzHsrbf908bku/iRj09ugVb1AdcruXo73
+         M1ToJmT36+SZg==
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 0.101.2 at mail
+Date:   Sun, 25 Aug 2019 14:31:18 +0200
+Message-Id: <af358d4136fda9d0d7eec95a54e9f880b704159b.1566736219.git.mirq-linux@rere.qmqm.pl>
+From:   =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
+Subject: [PATCH] ata_piix: remove open-coded dmi_match(DMI_OEM_STRING)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [172.16.3.2]
-X-Mailer: Zimbra 8.6.0_GA_1153 (zclient/8.6.0_GA_1153)
-Thread-Topic: 
-Thread-Index: 9gdTMQJ8JBu8cvpzdFVmtKjzn0qahQ==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+To:     linux-ide@vger.kernel.org
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Since de40614de99 ("firmware: dmi_scan: Add DMI_OEM_STRING support to
+dmi_matches") dmi_check_system() can match OEM_STRINGs itself.
+Use the feature.
 
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+---
+ drivers/ata/ata_piix.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-Wir sind zuverlässige, vertrauenswürdige Kreditgeber, leihen wir Unternehmen und Einzelpersonen zu einem niedrigen Zinssatz von 2%, Sind Sie auf der Suche nach einem Geschäftskredit, Privatkredite, Schuldenkonsolidierung, unbesicherte Kredite, Risikokapital, wenn ja Kontaktieren Sie uns jetzt für weitere Einzelheiten.
+diff --git a/drivers/ata/ata_piix.c b/drivers/ata/ata_piix.c
+index e4da725381d3..3ca7720e7d8f 100644
+--- a/drivers/ata/ata_piix.c
++++ b/drivers/ata/ata_piix.c
+@@ -840,6 +840,12 @@ static int piix_broken_suspend(void)
+ 				DMI_MATCH(DMI_PRODUCT_NAME, "Tecra M3"),
+ 			},
+ 		},
++		{
++			.ident = "TECRA M3",
++			.matches = {
++				DMI_MATCH(DMI_OEM_STRING, "Tecra M3,"),
++			},
++		},
+ 		{
+ 			.ident = "TECRA M4",
+ 			.matches = {
+@@ -955,18 +961,10 @@ static int piix_broken_suspend(void)
+ 
+ 		{ }	/* terminate list */
+ 	};
+-	static const char *oemstrs[] = {
+-		"Tecra M3,",
+-	};
+-	int i;
+ 
+ 	if (dmi_check_system(sysids))
+ 		return 1;
+ 
+-	for (i = 0; i < ARRAY_SIZE(oemstrs); i++)
+-		if (dmi_find_device(DMI_DEV_TYPE_OEM_STRING, oemstrs[i], NULL))
+-			return 1;
+-
+ 	/* TECRA M4 sometimes forgets its identify and reports bogus
+ 	 * DMI information.  As the bogus information is a bit
+ 	 * generic, match as many entries as possible.  This manual
+-- 
+2.20.1
+

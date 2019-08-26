@@ -2,79 +2,54 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58FC89D71E
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Aug 2019 21:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A2CC9DA25
+	for <lists+linux-ide@lfdr.de>; Tue, 27 Aug 2019 01:52:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387939AbfHZT7X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 26 Aug 2019 15:59:23 -0400
-Received: from mail-io1-f42.google.com ([209.85.166.42]:40008 "EHLO
-        mail-io1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387913AbfHZT7W (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Aug 2019 15:59:22 -0400
-Received: by mail-io1-f42.google.com with SMTP id t6so40371684ios.7
-        for <linux-ide@vger.kernel.org>; Mon, 26 Aug 2019 12:59:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yVQUZwCErKo1qRXVJkK0km2S1GcwweyUETWMbB/lSlY=;
-        b=a54pyK5YvrRocvkiebBbUcZfBqWm02yFcTXOCobDgmnPK8/nzQjqYRXmI9ld3BpeRn
-         yIdfEltGm38KF0MaPsf0+ptSaRqYNHoj75yi/F7L7ROitb5m8cjDLmWTC/pa5FpW4ctU
-         D1oUg7mMyf7yF5ioLAOLerC5ZjcaLizVqWPIpb6tRqQBh+jP4pTX5GtzqWhFqd+9dreM
-         2P277XsSOOKeaq7RGowhPxQmr64AXQRSGUyRitLr+SY2s42XfQ0KqFZo27EMdRLpmoUt
-         Kbr3/03ViGTOniEyxEZtB6lrhf1Ky4o9CSqiXwnTmXjX79vonxCdsiv+EUw2ceqQSe1T
-         r95A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=yVQUZwCErKo1qRXVJkK0km2S1GcwweyUETWMbB/lSlY=;
-        b=Pd4O+coifGVySQND7RyuwEWM+WxfqV5nyTlU79UsXKl3fnOuJAn1C42RuLhp4ThR1Z
-         oAc0oaK3nxaYWFdzs9vH+96wRusJcZfuVndRoEYq8GYl8k96fLtOA5r0VQwk1s8j8ug0
-         HNz5BOtlKuIV9P/fYN6P6+a0cjZukPZek4boWrjxWLp0r9YnT7+Zuair3dKbyAp897ql
-         i3NQW5W1nnRekadGeT3v45vOolEeaqyd/osFWK+EkZ+EnF3/ej91qvrw06iFhw5JNfc9
-         javtwkcd65ButZlnjUWfKv8J8blAqR9ghABkNqlqg7GheKEQ9W7sGgCfAwrpkv/9IwhR
-         jmhQ==
-X-Gm-Message-State: APjAAAULTIMZ/2AzZaVeG4wpxZ1zwp8+opSh1Y+O3f/CXD84ciLzrMOv
-        /xJ0D+3IwuRdIkELU7ejVrMp+CcEP/dzfA==
-X-Google-Smtp-Source: APXvYqy6F5qY4JuFBA8egT55bGQDwUvLXLX1QHf08dZ4x79elEcKXd5lw8h6wc/nY+tAk7/6bx21+A==
-X-Received: by 2002:a02:c992:: with SMTP id b18mr19286352jap.128.1566849561223;
-        Mon, 26 Aug 2019 12:59:21 -0700 (PDT)
-Received: from [192.168.1.50] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id d6sm17081845iod.17.2019.08.26.12.59.20
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 26 Aug 2019 12:59:20 -0700 (PDT)
-Subject: Re: libata dma_set_mask cleanups (resend)
-To:     Christoph Hellwig <hch@lst.de>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Mikael Pettersson <mikpelinux@gmail.com>
-Cc:     linux-ide@vger.kernel.org
-References: <20190826105725.19405-1-hch@lst.de>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <f69c23ad-942b-e535-b91b-960f95c7335a@kernel.dk>
-Date:   Mon, 26 Aug 2019 13:59:19 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726944AbfHZXwp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 26 Aug 2019 19:52:45 -0400
+Received: from host186.181-15-205.telecom.net.ar ([181.15.205.186]:52004 "EHLO
+        ulises.msaludjujuy.gov.ar" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726020AbfHZXwl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Aug 2019 19:52:41 -0400
+X-Greylist: delayed 347 seconds by postgrey-1.27 at vger.kernel.org; Mon, 26 Aug 2019 19:52:37 EDT
+Received: by ulises.msaludjujuy.gov.ar (Postfix, from userid 5001)
+        id 4064B600C4; Mon, 26 Aug 2019 20:46:47 -0300 (-03)
+X-Spam-Checker-Version: SpamAssassin 3.3.2 (2011-06-06) on ulises
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.7 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
+        ALL_TRUSTED,BAYES_00,DEAR_SOMETHING,HK_SCAM_S7,LOTS_OF_MONEY autolearn=no
+        version=3.3.2
+Received: from www.msaludjujuy.gov.ar (localhost [127.0.0.1])
+        by ulises.msaludjujuy.gov.ar (Postfix) with ESMTP id 6616660E35;
+        Mon, 26 Aug 2019 19:18:16 -0300 (-03)
 MIME-Version: 1.0
-In-Reply-To: <20190826105725.19405-1-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Mon, 26 Aug 2019 23:18:10 +0100
+From:   "Mr. Alfred Chow" <sunibrom@msaludjujuy.gov.ar>
+To:     undisclosed-recipients:;
+Subject: Business Proposal
+Reply-To: <cs7017640@gmail.com>
+Mail-Reply-To: <cs7017640@gmail.com>
+Message-ID: <8a1d4220812f714f2534b8b32954209e@msaludjujuy.gov.ar>
+X-Sender: sunibrom@msaludjujuy.gov.ar
+User-Agent: Roundcube Webmail/0.7.2
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 8/26/19 4:57 AM, Christoph Hellwig wrote:
-> Hi all,
-> 
-> this series makes use of the fact that dma_set_mask now never fails
-> for a larger than necessary DMA mask, and cleans up various other bits
-> around dma mask setting.
 
-Applied for 5.4, thanks.
 
 -- 
-Jens Axboe
+Dear Sir/Madam,
 
+I am Alfred Cheuk Yu Chow, the Director for Credit & Marketing Chong 
+Hing Bank, Hong Kong, I have a Business Proposal of USD$$38,980,369.00 
+(Thirty Eight Million, Nine Hundred and Eighty Thousand, Three Hundred 
+and Sixty Nine USD) for you to transact with me Contact me via my email 
+address if interested: cs7017640@gmail.com
+
+Yours Sincerely,
+Alfred Chow

@@ -2,48 +2,48 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E8FE6A30B8
-	for <lists+linux-ide@lfdr.de>; Fri, 30 Aug 2019 09:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36263A30AA
+	for <lists+linux-ide@lfdr.de>; Fri, 30 Aug 2019 09:18:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727960AbfH3HSL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 30 Aug 2019 03:18:11 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:43995 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727392AbfH3HRy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 30 Aug 2019 03:17:54 -0400
-Received: by mail-wr1-f65.google.com with SMTP id y8so5834096wrn.10
-        for <linux-ide@vger.kernel.org>; Fri, 30 Aug 2019 00:17:52 -0700 (PDT)
+        id S1728345AbfH3HRz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 30 Aug 2019 03:17:55 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:35934 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728255AbfH3HRz (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 30 Aug 2019 03:17:55 -0400
+Received: by mail-wr1-f66.google.com with SMTP id y19so5876175wrd.3
+        for <linux-ide@vger.kernel.org>; Fri, 30 Aug 2019 00:17:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=vb7GxMox8GW4icSo2qX00cFQWvHnLzZGW13vcUTShQE=;
-        b=WAQJlbmkmnmIuVhxCeqPrEzfqnlpYvSOrdixOe4Z9156CTPal3tG1hwcQWWy+Z21tL
-         mOiGmwjw5LfRU3lcXsunSl/jw76qkKc8yp1t1pSN/VD7DVAk4t5iQ9U8DBlJUmITUM9d
-         2IxSHXLkycIF4k4hvH7PpYZlk+hhcgYSq5dtVERzmteYgGQlVN4d42mVn2UycezdGQMY
-         sT9SipL7OZNffBIsqlS2BNojmLw2NFwsp6wHNFmpjYD5irxXIIEnoQ8PciwfpbL6F7SI
-         /+ST61Q9PN6QhC7fIe/EyYjna6ppzVFEAoOClugrYP3bXmY1AVjOMWPK8HviQt2kClP1
-         iDsg==
+        bh=/2VDCi/8Nc6XhM54Nc0WK1H6m9eTFCgJrShafTKplS8=;
+        b=QrSrtGf9FjbrWkItYR3Mc4CqOLVCYT1FVWbRgCBg2Pu/Fdf7C/4W6eYHgzOrrBrWbq
+         JHcZW2ZIjjrgIMQnvF7oziVkdb5dPpo+6eWCQ5nhUyt1Z9tP+vFcNiObTEgtx/nnWCJl
+         7iD8LMqU3plCtQh2fTh2ZZFznTJef7MGmH//2p0s3OE4tADTPh08wkNf1xINmnxfzwhs
+         ECTsBbUZW40ejM+T1jUx+/elyxT9b9iZnRpX3tYsx10etXTY/QLw2SW002oG3aNRq7F+
+         YvYG/vUCfOfN5mPEFl9doHPOtPUb8oeaEAJp0Q32nCKYuWSi+4Vl9qItEHDWCe18BsIe
+         Ox7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=vb7GxMox8GW4icSo2qX00cFQWvHnLzZGW13vcUTShQE=;
-        b=l0KXyQKntrfGE/omPKkDFkDRyEfRo74Uzqat0yM8dVjiSJ+qPJdFto7zjAClxPc7Te
-         uMzKWRAoGJ3fBGwyUhxtVKQfpQbiHRExbyNIfNaDFs60qj9oRH6bLhnBDGMpeJW5HpVg
-         eywp3JrV+BU2w7WmG/ijiIJAyWVXOTlCAl5pnlwRoKdQdTg3sZN36jw3PmlbA+PLNVNX
-         RRWSzc2Ijpo9W3Cv0FWDShmy/7V+Y/kQqxTjRg9hQSPrF2OFflt6pEgFEpq8XuspALuL
-         cTO/WysObNySdlSZgSCMSryqdHUrzdZBhNvxz6wcFtJqC//Hmx5MOBAFHeYM1hNavDAK
-         rXlw==
-X-Gm-Message-State: APjAAAXad458KrONG6/P3j+90Lyd4dJCtL5N04Q3UNwlnOkqJkk15wjW
-        5W5r6KT6o1IFj0vxVc302lCZFw==
-X-Google-Smtp-Source: APXvYqxIInMCzWNf34LxcyxSnQVs/J+xN1iNdetlgr35rdEBD2cxk1bJXmhlgRog97aovvym4oXZLQ==
-X-Received: by 2002:a5d:4950:: with SMTP id r16mr16210331wrs.347.1567149472173;
-        Fri, 30 Aug 2019 00:17:52 -0700 (PDT)
+        bh=/2VDCi/8Nc6XhM54Nc0WK1H6m9eTFCgJrShafTKplS8=;
+        b=JMTrT7tcgFAgy6xrBQPA4oeuNZjm2g1dRTl2X7F1uktJrnPMgm8xC2bfPsuu/iipt9
+         Xe3AWlGlFYasr6hnW7NChGovMz3QwC2xQR1r61o3GjuugIIOxM9VHnTA4FMe/Q2zNKgp
+         HXcxSdiezS652BXzAAuHAwVr8Si2p2gIowl3tbsrRkh+f3v9VwO+Gzdh/q3DYWVLZ5x0
+         I2ad9K5Db55pwTz10y6fGATg8pzMwWdN+kmuIfT7VUMm0Yl6oDAoWMPk4bXLRuFUGemk
+         N6pcgf9Edan33ObVIn9gpLNpIzCnclilh+Ytq7tR0jYpme5gYG/aayfzAZvrcm+cn9YV
+         8wUA==
+X-Gm-Message-State: APjAAAWumCT4uA/K5agzfpDp0ahsWUqNHtwUbCE2t9lHfCudvmVmt/Mc
+        Ue8UOo6GaWxutoSvlyD4iQ9Kmg==
+X-Google-Smtp-Source: APXvYqxQ+fhzAN12dqj8HcI+oZPcaqT6YamoO9mQejjXIJ1ON3y2eTjRph0jPHsEoE+jZMTi9k9wbg==
+X-Received: by 2002:adf:f0ce:: with SMTP id x14mr16642888wro.31.1567149473261;
+        Fri, 30 Aug 2019 00:17:53 -0700 (PDT)
 Received: from localhost.localdomain ([2a01:cb1d:af:5b00:6d6c:8493:1ab5:dad7])
-        by smtp.gmail.com with ESMTPSA id x6sm7637529wrt.63.2019.08.30.00.17.51
+        by smtp.gmail.com with ESMTPSA id x6sm7637529wrt.63.2019.08.30.00.17.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2019 00:17:51 -0700 (PDT)
+        Fri, 30 Aug 2019 00:17:52 -0700 (PDT)
 From:   Bartosz Golaszewski <brgl@bgdev.pl>
 To:     Jens Axboe <axboe@kernel.dk>,
         Thierry Reding <thierry.reding@gmail.com>,
@@ -57,9 +57,9 @@ To:     Jens Axboe <axboe@kernel.dk>,
 Cc:     linux-ide@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH 2/4] ahci: tegra: use regulator_bulk_set_supply_names()
-Date:   Fri, 30 Aug 2019 09:17:38 +0200
-Message-Id: <20190830071740.4267-3-brgl@bgdev.pl>
+Subject: [PATCH 3/4] phy: tegra: use regulator_bulk_set_supply_names()
+Date:   Fri, 30 Aug 2019 09:17:39 +0200
+Message-Id: <20190830071740.4267-4-brgl@bgdev.pl>
 X-Mailer: git-send-email 2.21.0
 In-Reply-To: <20190830071740.4267-1-brgl@bgdev.pl>
 References: <20190830071740.4267-1-brgl@bgdev.pl>
@@ -76,33 +76,33 @@ Use the new regulator helper instead of a for loop.
 
 Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 ---
- drivers/ata/ahci_tegra.c | 6 +++---
+ drivers/phy/tegra/xusb.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/ahci_tegra.c b/drivers/ata/ahci_tegra.c
-index e3163dae5e85..cb55ebc1725b 100644
---- a/drivers/ata/ahci_tegra.c
-+++ b/drivers/ata/ahci_tegra.c
-@@ -483,7 +483,6 @@ static int tegra_ahci_probe(struct platform_device *pdev)
- 	struct tegra_ahci_priv *tegra;
+diff --git a/drivers/phy/tegra/xusb.c b/drivers/phy/tegra/xusb.c
+index 2ea8497af82a..faf1137d1432 100644
+--- a/drivers/phy/tegra/xusb.c
++++ b/drivers/phy/tegra/xusb.c
+@@ -862,7 +862,6 @@ static int tegra_xusb_padctl_probe(struct platform_device *pdev)
+ 	struct tegra_xusb_padctl *padctl;
+ 	const struct of_device_id *match;
  	struct resource *res;
- 	int ret;
 -	unsigned int i;
+ 	int err;
  
- 	hpriv = ahci_platform_get_resources(pdev, 0);
- 	if (IS_ERR(hpriv))
-@@ -543,8 +542,9 @@ static int tegra_ahci_probe(struct platform_device *pdev)
- 	if (!tegra->supplies)
- 		return -ENOMEM;
+ 	/* for backwards compatibility with old device trees */
+@@ -907,8 +906,9 @@ static int tegra_xusb_padctl_probe(struct platform_device *pdev)
+ 		goto remove;
+ 	}
  
--	for (i = 0; i < tegra->soc->num_supplies; i++)
--		tegra->supplies[i].supply = tegra->soc->supply_names[i];
-+	regulator_bulk_set_supply_names(tegra->supplies,
-+					tegra->soc->supply_names,
-+					tegra->soc->num_supplies);
+-	for (i = 0; i < padctl->soc->num_supplies; i++)
+-		padctl->supplies[i].supply = padctl->soc->supply_names[i];
++	regulator_bulk_set_supply_names(padctl->supplies,
++					padctl->soc->supply_names,
++					padctl->soc->num_supplies);
  
- 	ret = devm_regulator_bulk_get(&pdev->dev,
- 				      tegra->soc->num_supplies,
+ 	err = devm_regulator_bulk_get(&pdev->dev, padctl->soc->num_supplies,
+ 				      padctl->supplies);
 -- 
 2.21.0
 

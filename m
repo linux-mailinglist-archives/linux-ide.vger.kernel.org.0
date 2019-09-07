@@ -2,51 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DB22AC3F3
-	for <lists+linux-ide@lfdr.de>; Sat,  7 Sep 2019 03:35:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC94CAC4D8
+	for <lists+linux-ide@lfdr.de>; Sat,  7 Sep 2019 08:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406433AbfIGBfy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 6 Sep 2019 21:35:54 -0400
-Received: from mail-vs1-f66.google.com ([209.85.217.66]:37398 "EHLO
-        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406423AbfIGBfx (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 6 Sep 2019 21:35:53 -0400
-Received: by mail-vs1-f66.google.com with SMTP id q9so5288436vsl.4
-        for <linux-ide@vger.kernel.org>; Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
+        id S1726231AbfIGGGJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 7 Sep 2019 02:06:09 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:37732 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389786AbfIGGGI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 7 Sep 2019 02:06:08 -0400
+Received: by mail-ot1-f68.google.com with SMTP id s28so7835661otd.4
+        for <linux-ide@vger.kernel.org>; Fri, 06 Sep 2019 23:06:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
-        b=aAqX8GF3NxJfYWTz+7NIDPLIjo0XP9/JZPono8ypSM0neNSMZHUmzdkq2Se7OJFOh9
-         PoY/oOktOwroaWpUhvkh/0lVCpOy0KJOLjA7Oi/nzaXZuFlZGZbL/4747zKBrwwhtzas
-         gG/MLSk0D7meYg6rv72yzT1Ye0iKhsbuA3x7qNKl17C/ShWvLceuPesYJRB24JI3yF/d
-         RlQ1pN3llWGMGktA9M5mcCV2mXYnONq4mktjFBILLKDKqhDlfm3tts6F97UbE+dOxwKG
-         stLn6T4VogMt45OE5RvOA2uSkgh1bK36Tx1Z5lO8sum/OTUS4kxFqGu49PNKiFyRTNrp
-         8fGg==
+        bh=zXK8wSxYeU6mTfAA+o9q9brcj/U7vzDk9wL4rKw+72U=;
+        b=FnfJhUM3D9VBhkpsE1XCGQC/ZG6KGcFBS5SAG+quCXBg4/jfRHUwA2L9EcE7sa3RFq
+         rt7YBraaFxeks9D/VpKU8NSQvOWp6Mt2WcnG0ipfM9c8Q6WBD5rYRL5xBmGtl/UVo99g
+         tzufV5jtshBqtC7ulmfSnCeHpd/axSVBox3bhXlyKf506LqxSg1oH3FfB7tjgsizVfLa
+         p0qbJYjz3oWTpV0NvU4tbF2aiFjGsEH9cU5/nYg00BtQa5xy+sr0K3HKRCpMUD7r3o4C
+         Rqdt1GBVsddxcrgcIDJOIkoHdv6q2hXmZqSK/npoyMn+tiJP1xNeWjckCcDhixnSlAcX
+         VKWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to:content-transfer-encoding;
-        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
-        b=Nx3J3g7Wxx5/itGQx7LSRCj0rOfl+DNTkdKOO810Vnc3zg34yCGf1wdpxqQHSw+/C3
-         TavErn3lJjgBOB+vRgZcXeLqT+OUaDLNCRHgvp/O9FRBUhl1Cnu6/yWQIrSq5QbozLHG
-         fa8QgvQHwzftPkp7GTQM8ZvgBt70fq933xqtcA6RAJiT2Kr6FBfLwmx6rD9UXJdgFgPx
-         gWdLdURURGWYu2+2m4b3PXw1mpPPWDR2Ph376NTyTTW/WUiWoFbDzaHq/erD1t3Niic8
-         CiiiQX3+1rEheemkacbIf6YgpNTrw2cEJqQ+MVh3hBG+RIHkdO+qLZeyvWTXrjF4fV4o
-         7rvg==
-X-Gm-Message-State: APjAAAV/V4gCnKsOfu2ykJ8NHLsMcifL+rUr1xgoKvPlqMvkXk4Sv9WU
-        0HV3IumZwcClEzyjl9YqvWt6XiM9bnKlDC8APRA=
-X-Google-Smtp-Source: APXvYqyTtP/aHSfYAfmSrs7MWIe/GTCmIy0j5/fOPaIGMbEKnvKQPW7B/2OIkBGdOM/ShGwFA2jh7u3jozMFI6xv0E8=
-X-Received: by 2002:a05:6102:15a:: with SMTP id a26mr6991278vsr.143.1567820152517;
- Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
+        bh=zXK8wSxYeU6mTfAA+o9q9brcj/U7vzDk9wL4rKw+72U=;
+        b=YbYV+M31pFG6SepyuJvDTfP8pBG594rNg4GgQv9LUvCCtQlfFTGIL5u3kdawjn79XF
+         loVE5cLget31+G/JnNc0QqRgzhrqjPnC5innn8hnuPr1cX8FqvQo8MN6yCwxoukFsJeX
+         t94ibXceVC6ZhXrMvRXzrSYLpbFkoslsGHznsFCCxOAarNyj4SRnCgR62iniYATgW84R
+         yHoJvX6CDM1MZmlriUnHe6cl/Bd/rXlL9uhyQQfTSkC9XxS+D/limg3A6lA9BhP0K7Ba
+         cvUWQpLVokloJ+rJ/fZzQ9DNJKtCsDJPJd7sHmxOJ4SsrNRboPO3nZQ0lntoZStSHR56
+         Sh0g==
+X-Gm-Message-State: APjAAAUuOdOzKCBMhmE46DGd5Jn7mTHt4QB49gXpU2KTRqwJPN4hXADo
+        Gi5aIRcNvYO/jBPiVKN945Mbhqk2l6Kjqi/J9Eo=
+X-Google-Smtp-Source: APXvYqyfVPzdzScTmq6GCCD8PZQn4wbSVgr8CLR9fL3a6ud4veAm7XbGfvQXlvyUm/HozwJ0DeunrvoGwKt72EZWEhw=
+X-Received: by 2002:a9d:4003:: with SMTP id m3mr10434046ote.36.1567836367905;
+ Fri, 06 Sep 2019 23:06:07 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:35:52 -0700 (PDT)
-Reply-To: waltonalice41@gmail.com
-From:   Alice Walton <saraharmony501@gmail.com>
-Date:   Sat, 7 Sep 2019 02:35:52 +0100
-Message-ID: <CAHoQAbVi2eUJHHAx8-i6uv=tXXkdZbDQj+bGXrd4foXr+8goAQ@mail.gmail.com>
-Subject: Please forgive me
+Received: by 2002:a05:6808:115:0:0:0:0 with HTTP; Fri, 6 Sep 2019 23:06:07
+ -0700 (PDT)
+Reply-To: linelink008@gmail.com
+From:   AZIM HASHIM PREMJI <linelink001@gmail.com>
+Date:   Fri, 6 Sep 2019 23:06:07 -0700
+Message-ID: <CAPGJ4t6O05bG1TsMZ=9J3ce5ScZDoEY=B=8RoqC=hRgu1yeJbw@mail.gmail.com>
+Subject: =?UTF-8?Q?HERZLICHEN_GL=C3=9CCKWUNSCH_=E2=82=AC_1=2C000=2E000=2C00_wurde_an_Si?=
+        =?UTF-8?Q?e_gespendet?=
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -55,52 +57,11 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-My Dearest,
-
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as a big surprise.
-
-Actually, I came across your E-mail from my personal search afterward
-I decided to email you directly believing that you will be honest to
-fulfil my final wish before anything happens to me. Meanwhile, I am
-Madam Alice Walton, 71 years old childless widow from France but i
-reside and doing Gold mining business in Africa before i fall sick.
-
-I am suffering from Adenocarcinoma Cancer of the lungs for the past 8
-years and from all indication my condition is really deteriorating as
-my doctors have confirmed and courageously advised me that I may not
-live beyond 3 weeks from now for the reason that my tumor has reached
-a critical stage which has defiled all forms of medical treatment.
-
-Since my days are numbered, I=E2=80=99ve decided willingly to fulfil my
-long-time vow to donate to the less privileges the sum of($18.5
-million dollars) I deposited in my offshore account over 7 years now
-because I have tried to handle this project by myself but I have seen
-that my health could not allow me to do so anymore.
-
-My promise to God includes building of well-equipped charity
-foundation/hospital and a technical school for the orphans and less
-privileges.
-
-Since i am not capable to handle this again myself due to my critical
-health condition,please i need your consent to help me receive my
-money from the bank and use it to do this divine works of God in your
-country in my name so that my soul can be at rest if anything happens
-to me.
-
-If you will be honest, kind and willing to assist me handle this
-charity project as I=E2=80=99ve mentioned here, I will like you to provide =
-me
-your personal data like,
-
-(1) Your full name:
-(2) country:
-(3) Occupation:
-(4) phone number:
-(5) Age:
-
-Let me have this data so that i can link you up with my bank as my
-representative and receiver of the funds now that i am still alive.
-
-Warmest Regards!
-Mrs. Alice Walton
+Ich bin der Vorsitzende von Wipro Limited. Ich habe 25 Prozent meines
+pers=C3=B6nlichen Verm=C3=B6gens verschenkt
+f=C3=BCr die Wohlfahrt. Und ich habe zugesagt, den Rest von 25% dieses Jahr
+2019 an zu vergeben
+Privatpersonen .. Ich habe mich entschieden, Ihnen =E2=82=AC1.000.000,00 zu
+spenden. Wenn du bist
+Interesse an meiner Spende, kontaktieren Sie mich f=C3=BCr weitere Informat=
+ionen.

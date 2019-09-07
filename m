@@ -2,135 +2,105 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E16C8A68D0
-	for <lists+linux-ide@lfdr.de>; Tue,  3 Sep 2019 14:44:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB22AC3F3
+	for <lists+linux-ide@lfdr.de>; Sat,  7 Sep 2019 03:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728865AbfICMoY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 3 Sep 2019 08:44:24 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:46751 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728983AbfICMoY (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 3 Sep 2019 08:44:24 -0400
-Received: by mail-oi1-f195.google.com with SMTP id t24so12583554oij.13;
-        Tue, 03 Sep 2019 05:44:23 -0700 (PDT)
+        id S2406433AbfIGBfy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 6 Sep 2019 21:35:54 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:37398 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406423AbfIGBfx (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 6 Sep 2019 21:35:53 -0400
+Received: by mail-vs1-f66.google.com with SMTP id q9so5288436vsl.4
+        for <linux-ide@vger.kernel.org>; Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
+        b=aAqX8GF3NxJfYWTz+7NIDPLIjo0XP9/JZPono8ypSM0neNSMZHUmzdkq2Se7OJFOh9
+         PoY/oOktOwroaWpUhvkh/0lVCpOy0KJOLjA7Oi/nzaXZuFlZGZbL/4747zKBrwwhtzas
+         gG/MLSk0D7meYg6rv72yzT1Ye0iKhsbuA3x7qNKl17C/ShWvLceuPesYJRB24JI3yF/d
+         RlQ1pN3llWGMGktA9M5mcCV2mXYnONq4mktjFBILLKDKqhDlfm3tts6F97UbE+dOxwKG
+         stLn6T4VogMt45OE5RvOA2uSkgh1bK36Tx1Z5lO8sum/OTUS4kxFqGu49PNKiFyRTNrp
+         8fGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YIMNXxwLXbmr0qSldo8Vj3h5er3qrI7OSMrddj6hZmE=;
-        b=agf6jWWSSH3RKDq0sn6gg7AeNz90RJtyQra3XZmUI7zb34LJEvSkMH875CPdcH/bif
-         vL7QhHOUBI4+0sdBGaKf1t/dpg4HCDKFmD5KOhzVHqEJvOZMdAyJOoA7KiztPycglqLu
-         nLzZBhCJjgRJuRUNv5M5xNIAVFy+3G2enSE1x3urqS6f7FTxTX+3zm6tep6tiyBfcdxY
-         kiO/q6asn1hi+IQKAJ3XrHdWO28Er8p0NjHGJaF4+xa/1tpNNySFD0+TCLoNfqzI9Y7N
-         GaYQeurnWyOQVMEUMYv8RRyEKh2xI0qCjKzL5IJUs3EDdcRnYs7pbK2goZ4wALDtrn0T
-         2f3g==
-X-Gm-Message-State: APjAAAV4qFK3FdNgjh4oFGQ9K9ZXjAf2meNPvSowhi/ZEppPoWFpt48l
-        dOAxlMgBWQmR3lEX0FS+mBZ2LhsF/PXznZi+irk=
-X-Google-Smtp-Source: APXvYqz+a9nv4GrvvQ0moC6Y63nwVmY08nRiRklB+FY+3ztJSDGy6wAzmENurCcXPzOekkIFnEsvAFrqmUw+dSK99Qs=
-X-Received: by 2002:aca:ea82:: with SMTP id i124mr21756297oih.153.1567514663372;
- Tue, 03 Sep 2019 05:44:23 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
+        b=Nx3J3g7Wxx5/itGQx7LSRCj0rOfl+DNTkdKOO810Vnc3zg34yCGf1wdpxqQHSw+/C3
+         TavErn3lJjgBOB+vRgZcXeLqT+OUaDLNCRHgvp/O9FRBUhl1Cnu6/yWQIrSq5QbozLHG
+         fa8QgvQHwzftPkp7GTQM8ZvgBt70fq933xqtcA6RAJiT2Kr6FBfLwmx6rD9UXJdgFgPx
+         gWdLdURURGWYu2+2m4b3PXw1mpPPWDR2Ph376NTyTTW/WUiWoFbDzaHq/erD1t3Niic8
+         CiiiQX3+1rEheemkacbIf6YgpNTrw2cEJqQ+MVh3hBG+RIHkdO+qLZeyvWTXrjF4fV4o
+         7rvg==
+X-Gm-Message-State: APjAAAV/V4gCnKsOfu2ykJ8NHLsMcifL+rUr1xgoKvPlqMvkXk4Sv9WU
+        0HV3IumZwcClEzyjl9YqvWt6XiM9bnKlDC8APRA=
+X-Google-Smtp-Source: APXvYqyTtP/aHSfYAfmSrs7MWIe/GTCmIy0j5/fOPaIGMbEKnvKQPW7B/2OIkBGdOM/ShGwFA2jh7u3jozMFI6xv0E8=
+X-Received: by 2002:a05:6102:15a:: with SMTP id a26mr6991278vsr.143.1567820152517;
+ Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <1562018556-15090-1-git-send-email-schmitzmic@gmail.com> <1562018556-15090-3-git-send-email-schmitzmic@gmail.com>
-In-Reply-To: <1562018556-15090-3-git-send-email-schmitzmic@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 3 Sep 2019 14:44:12 +0200
-Message-ID: <CAMuHMdXeb2gUz92C-QqWmVLnpncArMkzgsJKNSz3F8J6ri89TQ@mail.gmail.com>
-Subject: Re: [PATCH 2/2] drivers/ata: convert pata_falcon to arch platform device
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     "Linux/m68k" <linux-m68k@vger.kernel.org>,
-        linux-ide@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:35:52 -0700 (PDT)
+Reply-To: waltonalice41@gmail.com
+From:   Alice Walton <saraharmony501@gmail.com>
+Date:   Sat, 7 Sep 2019 02:35:52 +0100
+Message-ID: <CAHoQAbVi2eUJHHAx8-i6uv=tXXkdZbDQj+bGXrd4foXr+8goAQ@mail.gmail.com>
+Subject: Please forgive me
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Michael,
+My Dearest,
 
-On Tue, Jul 2, 2019 at 12:02 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> The Atari platform device setup now provides a platform device
-> for the Falcon IDE interface. Use this in place of the simple platform
-> device set up in the old pata_falcon probe code.
->
-> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as a big surprise.
 
-Thanks for your patch!
+Actually, I came across your E-mail from my personal search afterward
+I decided to email you directly believing that you will be honest to
+fulfil my final wish before anything happens to me. Meanwhile, I am
+Madam Alice Walton, 71 years old childless widow from France but i
+reside and doing Gold mining business in Africa before i fall sick.
 
-> --- a/drivers/ata/pata_falcon.c
-> +++ b/drivers/ata/pata_falcon.c
-> @@ -120,23 +120,21 @@ static int pata_falcon_set_mode(struct ata_link *link,
->         .set_mode       = pata_falcon_set_mode,
->  };
->
-> -static int pata_falcon_init_one(void)
-> +static int __init pata_falcon_init_one(struct platform_device *pdev)
->  {
-> +       struct resource *res;
->         struct ata_host *host;
->         struct ata_port *ap;
-> -       struct platform_device *pdev;
->         void __iomem *base;
->
-> -       if (!MACH_IS_ATARI || !ATARIHW_PRESENT(IDE))
-> -               return -ENODEV;
-> -
-> -       pr_info(DRV_NAME ": Atari Falcon PATA controller\n");
-> +       dev_info(&pdev->dev, ": Atari Falcon PATA controller\n");
->
-> -       pdev = platform_device_register_simple(DRV_NAME, 0, NULL, 0);
-> -       if (IS_ERR(pdev))
-> -               return PTR_ERR(pdev);
-> +       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> +       if (!res)
-> +               return -ENODEV;
->
-> -       if (!devm_request_mem_region(&pdev->dev, ATA_HD_BASE, 0x40, DRV_NAME)) {
+I am suffering from Adenocarcinoma Cancer of the lungs for the past 8
+years and from all indication my condition is really deteriorating as
+my doctors have confirmed and courageously advised me that I may not
+live beyond 3 weeks from now for the reason that my tumor has reached
+a critical stage which has defiled all forms of medical treatment.
 
-ATA_HD_BASE is now unused, and can be removed.
+Since my days are numbered, I=E2=80=99ve decided willingly to fulfil my
+long-time vow to donate to the less privileges the sum of($18.5
+million dollars) I deposited in my offshore account over 7 years now
+because I have tried to handle this project by myself but I have seen
+that my health could not allow me to do so anymore.
 
-> +       if (!devm_request_mem_region(&pdev->dev, res->start,
-> +                                    resource_size(res), DRV_NAME)) {
->                 pr_err(DRV_NAME ": resources busy\n");
+My promise to God includes building of well-equipped charity
+foundation/hospital and a technical school for the orphans and less
+privileges.
 
-dev_err(&pdev->dev, "resources busy\n");
+Since i am not capable to handle this again myself due to my critical
+health condition,please i need your consent to help me receive my
+money from the bank and use it to do this divine works of God in your
+country in my name so that my soul can be at rest if anything happens
+to me.
 
->                 return -EBUSY;
->         }
+If you will be honest, kind and willing to assist me handle this
+charity project as I=E2=80=99ve mentioned here, I will like you to provide =
+me
+your personal data like,
 
-> @@ -174,9 +172,26 @@ static int pata_falcon_init_one(void)
->         return ata_host_activate(host, 0, NULL, 0, &pata_falcon_sht);
->  }
->
-> -module_init(pata_falcon_init_one);
-> +static int __exit pata_falcon_remove_one(struct platform_device *pdev)
-> +{
-> +       struct ata_host *host = platform_get_drvdata(pdev);
-> +
-> +       ata_host_detach(host);
-> +
-> +       return 0;
-> +}
-> +
-> +static struct platform_driver pata_falcon_driver = {
-> +       .remove = __exit_p(pata_falcon_remove_one),
-> +       .driver   = {
-> +               .name   = "atari-falcon-ide",
-> +       },
-> +};
-> +
-> +module_platform_driver_probe(pata_falcon_driver, pata_falcon_init_one);
+(1) Your full name:
+(2) country:
+(3) Occupation:
+(4) phone number:
+(5) Age:
 
-This doesn't seem to work in the builtin case (e.g. atari_defconfig with
-ide replaced by ata): no hard drives are detected.
+Let me have this data so that i can link you up with my bank as my
+representative and receiver of the funds now that i am still alive.
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Warmest Regards!
+Mrs. Alice Walton

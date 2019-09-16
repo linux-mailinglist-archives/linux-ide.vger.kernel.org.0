@@ -2,130 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47C1FB32BA
-	for <lists+linux-ide@lfdr.de>; Mon, 16 Sep 2019 01:59:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 806EDB425B
+	for <lists+linux-ide@lfdr.de>; Mon, 16 Sep 2019 22:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726222AbfIOX7N (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 15 Sep 2019 19:59:13 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:32990 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726944AbfIOX7N (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 15 Sep 2019 19:59:13 -0400
-Received: by mail-pg1-f195.google.com with SMTP id n190so18654836pgn.0
-        for <linux-ide@vger.kernel.org>; Sun, 15 Sep 2019 16:59:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=cXDDDu+PS8xkBbqEAA3e4lUFknC6KZMJH1Tbc0l3e/I=;
-        b=UPipIqYIibATGshI3RO/Gf/+7sdMFKCmXlS2VowLusS3C3/zFHXKfWLbH8hy6s8vXB
-         Bl+v0/Td46uC8/Ty49kU7u5zrGdELzwN8nngTryQi2uAcedTastQc0e+hNxgcF4I6CIy
-         i+SgweLvbpNEXL/UXwYquWhYtNEfQ65VcOmeU6P1dSwAU/amOwlSibDkV5l02xcjmR9R
-         k0r7VTEV2OpPTYIB+e/b24qjzEmMOSlsqysWD7plDYWf6FkZvAzfFaOTAfGM1UK4g6eu
-         EXKr6Z4QDnfhkVVB7n0LB6Gnl0UnyVanA5GI90wlDM1UTjCFFD+6m8hZVh2uVhZAagvg
-         Z9fQ==
+        id S2391573AbfIPUrg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 16 Sep 2019 16:47:36 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:39050 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391566AbfIPUrf (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 16 Sep 2019 16:47:35 -0400
+Received: by mail-wr1-f68.google.com with SMTP id r3so836397wrj.6;
+        Mon, 16 Sep 2019 13:47:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=cXDDDu+PS8xkBbqEAA3e4lUFknC6KZMJH1Tbc0l3e/I=;
-        b=Q4Adldd2CanGbFSdC5GSh1rxSDCXMDp5O1J6flFg4vSFAHkoddc1odMWjoFpcVe6Bj
-         4mX1DbH1APC73mLqoLVyMcaf1rmxEl5a4M2BS1uoCfXk3joS96KQtb/uyncQyYlGVw3h
-         o8Is2RsAEiVBvbr37ZumIwsDsOzYoS2vuSgUt7bafa43zp6hvaTKZYX8wT2Fu7FQy8j7
-         oHuC2X6AOxhCLYt0/GAx2E49N9qwD8943GKGhDjGms4s0XGHyMeVmB2qtitwIzY4wMVb
-         KVYLG6pOE/AaHi3QPMBhxu1XC2VDMYdfwqXFy+pO1xR5lHSY84kQWYP98kHxfO8DyyrS
-         Gl2w==
-X-Gm-Message-State: APjAAAW1aviwmQtC4PkI8XNSux73bl7ukA7WGMBP0YQx/AS3P69Ol4T7
-        gptrvvcJJQsFaVwqef/xJHSrepe47cM5TA==
-X-Google-Smtp-Source: APXvYqxQZTP5l1HRErpy3pdX83QTEjM3tyIh7FnJhavvmkrmxPpeByKeTiqb/fpUJTWOArK1eL4SLw==
-X-Received: by 2002:a63:4956:: with SMTP id y22mr4113695pgk.398.1568591950927;
-        Sun, 15 Sep 2019 16:59:10 -0700 (PDT)
-Received: from ?IPv6:2605:e000:100e:83a1:edde:3241:ce2f:af1c? ([2605:e000:100e:83a1:edde:3241:ce2f:af1c])
-        by smtp.gmail.com with ESMTPSA id d20sm51316522pfq.88.2019.09.15.16.59.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 15 Sep 2019 16:59:10 -0700 (PDT)
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        IDE/ATA development list <linux-ide@vger.kernel.org>
-From:   Jens Axboe <axboe@kernel.dk>
-Subject: [GIT PULL] libata changes for 5.4
-Message-ID: <565dc49a-4bd5-d25c-d859-1c3b103e1e22@kernel.dk>
-Date:   Sun, 15 Sep 2019 17:59:08 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=2FqysY5HATBDrBuyFDyYiBCyyYkjbnS9XQbtyyTHOy0=;
+        b=GhMsmFP1zvXpfnfVTo1EVsAoGnZ2fuNtYU2CusLxWV/znhtGb0RGeJBLQUyjD4i2TF
+         BmgUyCQj+6La8dwUAMQ6pULn6YG5ZLAuD8ZIXokTQ0BGRWxsPJBh61JsMznzwZPwnXP9
+         2jsHkumrBxsk8PkN81ZuGOxv39FuRSOS6Qgv9f/SZsjaEAbFDjP/v9vSJ0dYQZkVc42j
+         FY6Ew+jkMy/McFio618C6amtQ1hcvSuAD9+U9PR9rCCev3L8wHerF39frCg2ig9fiQo4
+         7nmUxfassNcaT8uoTzpxfHHF3FHMpq/Pozys1H6ojr93kHuGvWAbeF47hb/l2Z94dXg7
+         VGBQ==
+X-Gm-Message-State: APjAAAXkDxbAwnAUNkF9y1vb4uWVIE7pAauwk81xTsJK1wDLcyVPGssY
+        zoaJ1AViip+ESEhxibh7HVNcpIPW0zM=
+X-Google-Smtp-Source: APXvYqyImLLCgKryGD8YrkgXaU55B5YLepDP0MFlB8OxuTaSZRBDTlao8EoEJYIvZczQZHXYodK1qg==
+X-Received: by 2002:a5d:63c6:: with SMTP id c6mr204595wrw.117.1568666853795;
+        Mon, 16 Sep 2019 13:47:33 -0700 (PDT)
+Received: from black.home (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
+        by smtp.googlemail.com with ESMTPSA id x6sm231437wmf.38.2019.09.16.13.47.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2019 13:47:33 -0700 (PDT)
+From:   Denis Efremov <efremov@linux.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>
+Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
+        linux-pci@vger.kernel.org, Andrew Murray <andrew.murray@arm.com>,
+        linux-ide@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH v3 19/26] ata: sata_nv: Use PCI_STD_NUM_BARS
+Date:   Mon, 16 Sep 2019 23:41:51 +0300
+Message-Id: <20190916204158.6889-20-efremov@linux.com>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190916204158.6889-1-efremov@linux.com>
+References: <20190916204158.6889-1-efremov@linux.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Linus,
+Replace the magic constant (6) with define PCI_STD_NUM_BARS representing
+the number of PCI BARs.
 
-Here are the libata changes for 5.4. This pull request contains:
+Cc: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Denis Efremov <efremov@linux.com>
+---
+ drivers/ata/sata_nv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-- Kill unused export (Andy)
-
-- Use dma_set_mask_and_coherent() throughout (Christoph)
-
-- Drop PCS quirk on Denverton, which has different register layout (Dan)
-
-- Support non-boot time detection for pata_buddha (Max)
-
-Please pull!
-
-
-  git://git.kernel.dk/linux-block.git tags/for-5.4/libata-2019-09-15
-
-
-----------------------------------------------------------------
-Andy Shevchenko (1):
-      ahci: Do not export local variable ahci_em_messages
-
-Christoph Hellwig (8):
-      acard_ahci: use dma_set_mask_and_coherent
-      ahci: use dma_set_mask_and_coherent
-      pdc_adma: use dma_set_mask_and_coherent
-      sata_mv: use dma_set_mask_and_coherent
-      sata_nv: use dma_set_mask_and_coherent
-      sata_qstor: use dma_set_mask_and_coherent
-      sata_sil24: use dma_set_mask_and_coherent
-      libata: switch remaining drivers to use dma_set_mask_and_coherent
-
-Dan Williams (1):
-      libata/ahci: Drop PCS quirk for Denverton and beyond
-
-Max Staudt (1):
-      ata/pata_buddha: Probe via modalias instead of initcall
-
- drivers/ata/acard-ahci.c    |  38 +-------
- drivers/ata/ahci.c          | 149 +++++++++++++++--------------
- drivers/ata/ahci.h          |   2 +
- drivers/ata/libahci.c       |   1 -
- drivers/ata/libata-sff.c    |   8 +-
- drivers/ata/pata_atp867x.c  |   7 +-
- drivers/ata/pata_buddha.c   | 228 ++++++++++++++++++++++++++------------------
- drivers/ata/pata_cs5520.c   |   6 +-
- drivers/ata/pata_hpt3x3.c   |   5 +-
- drivers/ata/pata_ninja32.c  |   5 +-
- drivers/ata/pata_pdc2027x.c |   6 +-
- drivers/ata/pata_sil680.c   |   5 +-
- drivers/ata/pdc_adma.c      |  23 +----
- drivers/ata/sata_inic162x.c |   8 +-
- drivers/ata/sata_mv.c       |  38 +-------
- drivers/ata/sata_nv.c       |  10 +-
- drivers/ata/sata_promise.c  |   5 +-
- drivers/ata/sata_qstor.c    |  34 ++-----
- drivers/ata/sata_sil.c      |   5 +-
- drivers/ata/sata_sil24.c    |  26 +----
- drivers/ata/sata_svw.c      |   5 +-
- drivers/ata/sata_sx4.c      |   5 +-
- drivers/ata/sata_via.c      |   9 +-
- drivers/ata/sata_vsc.c      |   5 +-
- 24 files changed, 255 insertions(+), 378 deletions(-)
-
+diff --git a/drivers/ata/sata_nv.c b/drivers/ata/sata_nv.c
+index b44b4b64354c..31a32a4bb05b 100644
+--- a/drivers/ata/sata_nv.c
++++ b/drivers/ata/sata_nv.c
+@@ -2329,7 +2329,7 @@ static int nv_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+         // Make sure this is a SATA controller by counting the number of bars
+         // (NVIDIA SATA controllers will always have six bars).  Otherwise,
+         // it's an IDE controller and we ignore it.
+-	for (bar = 0; bar < 6; bar++)
++	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++)
+ 		if (pci_resource_start(pdev, bar) == 0)
+ 			return -ENODEV;
+ 
 -- 
-Jens Axboe
+2.21.0
 

@@ -2,80 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C906B4263
-	for <lists+linux-ide@lfdr.de>; Mon, 16 Sep 2019 22:49:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2AB0B478C
+	for <lists+linux-ide@lfdr.de>; Tue, 17 Sep 2019 08:34:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391648AbfIPUrn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 16 Sep 2019 16:47:43 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:36811 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727971AbfIPUrm (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 16 Sep 2019 16:47:42 -0400
-Received: by mail-wm1-f67.google.com with SMTP id t3so716328wmj.1;
-        Mon, 16 Sep 2019 13:47:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IOS2e0UepoELcBHR5ni67YDdvRavbzFfhcVGtDlKQTM=;
-        b=XuITJ9/tp8KJKAOzlxh+TZajIZPbu3WOS+0GYuDCdB1P6CCJwR427RVA3O7p30prmn
-         vfSAg7YXYnqaTnFS9wx3Rbybi4a7eLo7sXrxNwCS3JBzfq0nnCxZwtHaLLTgc6jLtgL9
-         eXOjlpkr45umzNYfnvSEcfh6jexgaKDZl+e7RsmIWSqX3RO8+YBZ48VtbF4MC5QaaM7L
-         XOdGvEynhthhfaDyewdsJyhguGFGTRwgPG5STf0db4sVmOdC1/t4Vkgg1GyjAVnvugIp
-         gP5CByKEyjlomYJ8eecNEuEBtxuJcmRx61QQ2Pjew0bCVX8Od/usrvizNu3e2wJopX+O
-         jlnQ==
-X-Gm-Message-State: APjAAAXJ3IeFtAZAFL1Red45Fi5S3r2Mg9weE48nqhXVvNIa1YlODHQF
-        waGsMAL19QQZO3hXIRv/tUU=
-X-Google-Smtp-Source: APXvYqyX7XAbGO/BUSR5X35Cw9AHSwDhRRkjMy4wE0zfriRWnFmzs7vmkDcxj9/qRp/WecFZalwX9Q==
-X-Received: by 2002:a1c:bcd6:: with SMTP id m205mr631830wmf.129.1568666860528;
-        Mon, 16 Sep 2019 13:47:40 -0700 (PDT)
-Received: from black.home (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.googlemail.com with ESMTPSA id x6sm231437wmf.38.2019.09.16.13.47.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2019 13:47:40 -0700 (PDT)
-From:   Denis Efremov <efremov@linux.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, Andrew Murray <andrew.murray@arm.com>,
-        linux-ide@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH v3 22/26] pata_atp867x: Use PCI_STD_NUM_BARS
-Date:   Mon, 16 Sep 2019 23:41:54 +0300
-Message-Id: <20190916204158.6889-23-efremov@linux.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190916204158.6889-1-efremov@linux.com>
-References: <20190916204158.6889-1-efremov@linux.com>
+        id S2387655AbfIQGeb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Tue, 17 Sep 2019 02:34:31 -0400
+Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:37362 "EHLO
+        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387513AbfIQGea (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 17 Sep 2019 02:34:30 -0400
+X-Greylist: delayed 7108 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 02:34:30 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 68EAE4052DE8B;
+        Mon, 16 Sep 2019 23:15:38 -0500 (-05)
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id U4qBImamLnwM; Mon, 16 Sep 2019 23:15:38 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id EEDBB40526C53;
+        Mon, 16 Sep 2019 23:15:37 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Z9nJX01FurNl; Mon, 16 Sep 2019 23:15:37 -0500 (-05)
+Received: from [10.33.79.142] (unknown [105.4.0.133])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id 8DA534052D456;
+        Mon, 16 Sep 2019 23:15:28 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
+From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
+Date:   Tue, 17 Sep 2019 06:15:13 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20190917041528.8DA534052D456@mail.11d03.mspz7.gob.ec>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Use define PCI_STD_NUM_BARS instead of PCI_ROM_RESOURCE for the number of
-PCI BARs.
+Lieber Freund,
 
-Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Denis Efremov <efremov@linux.com>
----
- drivers/ata/pata_atp867x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-diff --git a/drivers/ata/pata_atp867x.c b/drivers/ata/pata_atp867x.c
-index 2b9ed4ddef8d..019198eb7099 100644
---- a/drivers/ata/pata_atp867x.c
-+++ b/drivers/ata/pata_atp867x.c
-@@ -422,7 +422,7 @@ static int atp867x_ata_pci_sff_init_host(struct ata_host *host)
- #ifdef	ATP867X_DEBUG
- 	atp867x_check_res(pdev);
- 
--	for (i = 0; i < PCI_ROM_RESOURCE; i++)
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++)
- 		printk(KERN_DEBUG "ATP867X: iomap[%d]=0x%llx\n", i,
- 			(unsigned long long)(host->iomap[i]));
- #endif
--- 
-2.21.0
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
+Das ist dein Spendencode: [TS530342018]
+
+Antworten Sie mit dem SPENDE-CODE an diese 
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami

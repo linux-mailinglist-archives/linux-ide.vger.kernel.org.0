@@ -2,60 +2,54 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2AB0B478C
-	for <lists+linux-ide@lfdr.de>; Tue, 17 Sep 2019 08:34:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6EDB58FE
+	for <lists+linux-ide@lfdr.de>; Wed, 18 Sep 2019 02:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387655AbfIQGeb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Tue, 17 Sep 2019 02:34:31 -0400
-Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:37362 "EHLO
-        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387513AbfIQGea (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 17 Sep 2019 02:34:30 -0400
-X-Greylist: delayed 7108 seconds by postgrey-1.27 at vger.kernel.org; Tue, 17 Sep 2019 02:34:30 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 68EAE4052DE8B;
-        Mon, 16 Sep 2019 23:15:38 -0500 (-05)
-Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id U4qBImamLnwM; Mon, 16 Sep 2019 23:15:38 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id EEDBB40526C53;
-        Mon, 16 Sep 2019 23:15:37 -0500 (-05)
-X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
-Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Z9nJX01FurNl; Mon, 16 Sep 2019 23:15:37 -0500 (-05)
-Received: from [10.33.79.142] (unknown [105.4.0.133])
-        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id 8DA534052D456;
-        Mon, 16 Sep 2019 23:15:28 -0500 (-05)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
-To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
-From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
-Date:   Tue, 17 Sep 2019 06:15:13 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20190917041528.8DA534052D456@mail.11d03.mspz7.gob.ec>
+        id S1726721AbfIRAZ1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 17 Sep 2019 20:25:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34546 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726017AbfIRAZ0 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 17 Sep 2019 20:25:26 -0400
+Subject: Re: [GIT PULL] libata changes for 5.4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568766326;
+        bh=7NJgUFdmTK5f/WlT4VTsG27UfcB1jkmbeYnlzcdHrqc=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=dSdQxRNNxU9hnnhtW+KC7TvPjiVAqgHbRtmyChJDu9TT+H6+W4bt8Ivry8CSOfNAs
+         2hQ3MIQBYHezkhCTTyX/JDUmy15YyLFenOlVqJ9ARFwtBfObd4JGZTQG0CLL+/87im
+         /kKrO5RPR21QDpQfWreUtip3/5c27lmFkQfmE5V8=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <565dc49a-4bd5-d25c-d859-1c3b103e1e22@kernel.dk>
+References: <565dc49a-4bd5-d25c-d859-1c3b103e1e22@kernel.dk>
+X-PR-Tracked-List-Id: <linux-block.vger.kernel.org>
+X-PR-Tracked-Message-Id: <565dc49a-4bd5-d25c-d859-1c3b103e1e22@kernel.dk>
+X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git
+ tags/for-5.4/libata-2019-09-15
+X-PR-Tracked-Commit-Id: c312ef176399e04fc5f7f2809d9a589751fbf6d9
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 5260c2b863ef1152445ce93476c95d8c8a727eef
+Message-Id: <156876632641.801.10445823909731470810.pr-tracker-bot@kernel.org>
+Date:   Wed, 18 Sep 2019 00:25:26 +0000
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
+        IDE/ATA development list <linux-ide@vger.kernel.org>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Lieber Freund,
+The pull request you sent on Sun, 15 Sep 2019 17:59:08 -0600:
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+> git://git.kernel.dk/linux-block.git tags/for-5.4/libata-2019-09-15
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/5260c2b863ef1152445ce93476c95d8c8a727eef
 
-Das ist dein Spendencode: [TS530342018]
+Thank you!
 
-Antworten Sie mit dem SPENDE-CODE an diese 
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker

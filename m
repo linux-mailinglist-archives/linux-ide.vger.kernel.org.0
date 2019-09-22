@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A09DDBA456
-	for <lists+linux-ide@lfdr.de>; Sun, 22 Sep 2019 20:56:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38692BA6CD
+	for <lists+linux-ide@lfdr.de>; Sun, 22 Sep 2019 21:47:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391336AbfIVSsC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 22 Sep 2019 14:48:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44686 "EHLO mail.kernel.org"
+        id S2393640AbfIVSxO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 22 Sep 2019 14:53:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:52774 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391329AbfIVSsC (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:48:02 -0400
+        id S2393584AbfIVSxM (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:53:12 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 09F0D21479;
-        Sun, 22 Sep 2019 18:47:59 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3DAE521A4A;
+        Sun, 22 Sep 2019 18:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178081;
+        s=default; t=1569178391;
         bh=jL5wQ6eTQyWxcf7RX45gfmdeByKDlb/Cp7nHYsl2g88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ga4CXdMIedZ5XC3iPrt1/zNRP23+l8g2uiekn10EuwEChZ+Wu0ui4ZA6FxoRVr4g0
-         8jZM5BzSDNVd6qdSPw5PdMAyk2c54mBBvQMZd/lA3KDCxpyms9CTxzEwThi98JCebg
-         b6bmskT31KMauim13GL5P2lvJ5ak6IXKG+1+e7yw=
+        b=VsDPdyzlxO5emagXBokapu6EGNjiHTCLIoiDZJGj2CClUHmNDWhsj0w1y+KB0AV8M
+         9kx13rlnY+dx5w8XWu0sccfXVV/WmzFz6W6spe3QRAnuBhlqIsIRW8H7OYVAAuLzmL
+         QgnHuWnkEhFAogmFBZ91p1JLVHLQQMk9iah40Ces=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dan Williams <dan.j.williams@intel.com>,
@@ -30,12 +30,12 @@ Cc:     Dan Williams <dan.j.williams@intel.com>,
         Christoph Hellwig <hch@infradead.org>,
         Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
         linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 151/203] libata/ahci: Drop PCS quirk for Denverton and beyond
-Date:   Sun, 22 Sep 2019 14:42:57 -0400
-Message-Id: <20190922184350.30563-151-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 137/185] libata/ahci: Drop PCS quirk for Denverton and beyond
+Date:   Sun, 22 Sep 2019 14:48:35 -0400
+Message-Id: <20190922184924.32534-137-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
-References: <20190922184350.30563-1-sashal@kernel.org>
+In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
+References: <20190922184924.32534-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

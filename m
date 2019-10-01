@@ -2,97 +2,122 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69585C3583
-	for <lists+linux-ide@lfdr.de>; Tue,  1 Oct 2019 15:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60249C35EA
+	for <lists+linux-ide@lfdr.de>; Tue,  1 Oct 2019 15:38:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388372AbfJANXt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 1 Oct 2019 09:23:49 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:35022 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388354AbfJANXs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 1 Oct 2019 09:23:48 -0400
-Received: by mail-wr1-f65.google.com with SMTP id v8so15544314wrt.2
-        for <linux-ide@vger.kernel.org>; Tue, 01 Oct 2019 06:23:47 -0700 (PDT)
+        id S2388612AbfJANiN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 1 Oct 2019 09:38:13 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:44879 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387990AbfJANiM (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 1 Oct 2019 09:38:12 -0400
+Received: by mail-wr1-f66.google.com with SMTP id z9so2442322wrl.11;
+        Tue, 01 Oct 2019 06:38:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=enYbMbNI4tFIk7gfYa1OWesJ4PjjLcPO1FzeNFaXSzM=;
-        b=vTcmolbxld2vrR7GBYi0Xsk8M5+fVtDX3QP4tJzqLjwwbcqblsuf7qGLNAs9OwaRT4
-         fjS7a9OpIzlT/xfqgaDRyjf4V5Rit2/DWdoXokRzMW6dW4zsANFi49wKrnVssomj5g9R
-         nFysWpuZglqOsPWLlpJQvoJ243yFYclKXNMEw/ip1V2XbLgMUencpALJ5fcTinL2uWAe
-         ORXbD6zInbcK0k/JSvsshpClya/bFVAGR9cdsHcIvdaTPPcJkDw4gdHUfCYlnTzblJlj
-         3/yYxsTVd791qJ1nxdZ0+xCdNhd7LrRJVUi+mSxGEpJ7dNJIf4PtfzN/E/y4WRJo9q/I
-         ygDg==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=96r3CtWiSvcK9gJDc0tqchiSXL0mJ/YvvBtbDmkfaE0=;
+        b=SgD1WPZopI9T61+uSgIvK+P8Moz6ilypDWR5uZTEcSuXxgh1OVfRxm8IC4KUHqMmSX
+         hBpGb1wgoBnVtZU64ZhZhr+uvsnzRW/oNhSmvQvPcJiVn4Y+sszZSZ8iK4h2QVTZ/vD/
+         Din5OSrcToGMog98cihi9+QPhYXtbZdwZeVtyftm5g8+p0FRTR7IyBmjvhwKnugSiA9P
+         qSj65oMPYlvd5CfFm/4+9WBwPAqze/wV4n7HpSB5Kf92Y7gNEEPi1977PQ0qwg1bstoG
+         e/NcisDmyad+4UgxYGb9cCU4WroV+kg9wmeo7HYz9pCGEqNW64R7AEoAusLmSMVlDEAh
+         uImg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=enYbMbNI4tFIk7gfYa1OWesJ4PjjLcPO1FzeNFaXSzM=;
-        b=rlFt5Ek+3HP3Ow5CD1cCKOcjB/TjMz/WgETzs0cYakIqv42rj9JeQupIR6IY2iDbl1
-         6S7LFlkarhRD4kgoAAaK0j+tTPTyxpyRsDnDOr2fVf6/5uIwLRkZiTrRL+mMc8/RM1nk
-         AJv0cwSnWeY49QJtDC8Gdt4DgIH3CAV5k/92FmDRA3d1/gOGXorhrj0GsIC/t1CnLx0+
-         jQUtLQtW1ewxv5/gV3w1KzZkcGLZ0pN7RcbuSvgo+UcN8d6VNLKoqko7nE2HvyItZV9+
-         WWW9YsGglNp9+MgzvfBEkW16/RXi3XlXFK4YRmXB9hn1vhDsK9SjAJ+9ssh/W+RfC96X
-         tinQ==
-X-Gm-Message-State: APjAAAUtA6+VIlVkDWIQcDabZv6ik/5yWpTpgrQ38OhVdH02P9WWTIGT
-        i3HDSu0SNRJknzggPY4sE7ONIA==
-X-Google-Smtp-Source: APXvYqzXbDDpewlYhp+7ocQHLaIU5HkjVp7oImNZRVgIZgzhGcBONIajVjr8GuK3dQUIsg/AA4n5Kw==
-X-Received: by 2002:adf:d08b:: with SMTP id y11mr18624076wrh.50.1569936227104;
-        Tue, 01 Oct 2019 06:23:47 -0700 (PDT)
-Received: from localhost.localdomain (amontpellier-652-1-281-69.w109-210.abo.wanadoo.fr. [109.210.96.69])
-        by smtp.gmail.com with ESMTPSA id o22sm41847990wra.96.2019.10.01.06.23.46
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=96r3CtWiSvcK9gJDc0tqchiSXL0mJ/YvvBtbDmkfaE0=;
+        b=ig5y2A2iLA3S5LalM5yU4n1qZlbBUyBOyTrvGH8EyuLxwzOmQpzar/IhQi8wxY+Yjd
+         tysZ5gr6Nw1bPqEp/MgSkZJ51kX7mbOg415rNRrecXTiEhujaQNzaM1B+aCBoGIzk70k
+         XsAEgshAC0XFwX5/RnYfgTlXUjTC5BVQVyyMNmnVYJqJiYtZSGbthhjKbOYHGnwm1HmC
+         tB+jR6JKNcT38R9Kt3TA4NlaDTYqwV2V7coSgCINPLQIuGlnllMTHYSo3HbRY5hx+J/F
+         iqBT3WsjuTfz3PINuOuwN0FMlNeeeGhweuKZtdiGIjLVd5dRHQmEwnT8eYoLg/eWJP2e
+         qDHQ==
+X-Gm-Message-State: APjAAAW6ZjJFX5UJsKCkuourO5nC1tD970PJfwJaftsLi0oY3uOG5jIJ
+        SIaE0QH3mesLN+A1Y8UlGOdGhFuS
+X-Google-Smtp-Source: APXvYqx2MapoAoWxH36kAG/86QPnpHg5qum++6m/VlNMhipx4NA3i/ZbQOKuletj5kJHHrNYMRtLMg==
+X-Received: by 2002:a5d:52c5:: with SMTP id r5mr6086222wrv.160.1569937090036;
+        Tue, 01 Oct 2019 06:38:10 -0700 (PDT)
+Received: from localhost (p2E5BE2CE.dip0.t-ipconnect.de. [46.91.226.206])
+        by smtp.gmail.com with ESMTPSA id f20sm2844042wmb.6.2019.10.01.06.38.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2019 06:23:46 -0700 (PDT)
-From:   Bartosz Golaszewski <brgl@bgdev.pl>
-To:     Jens Axboe <axboe@kernel.dk>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        Tue, 01 Oct 2019 06:38:08 -0700 (PDT)
+Date:   Tue, 1 Oct 2019 15:38:07 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Jens Axboe <axboe@kernel.dk>,
         Jonathan Hunter <jonathanh@nvidia.com>,
         JC Kuo <jckuo@nvidia.com>,
         Kishon Vijay Abraham I <kishon@ti.com>,
         Mathias Nyman <mathias.nyman@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-ide@vger.kernel.org, linux-tegra@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ide@vger.kernel.org, linux-tegra@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Subject: [PATCH 3/3] usb: host: xhci-tegra: use regulator_bulk_set_supply_names()
-Date:   Tue,  1 Oct 2019 15:23:33 +0200
-Message-Id: <20191001132333.20146-4-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191001132333.20146-1-brgl@bgdev.pl>
+Subject: Re: [PATCH 0/3] tegra: use regulator_bulk_set_supply_names()
+Message-ID: <20191001133807.GB3563296@ulmo>
 References: <20191001132333.20146-1-brgl@bgdev.pl>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="rJwd6BRFiFCcLxzm"
+Content-Disposition: inline
+In-Reply-To: <20191001132333.20146-1-brgl@bgdev.pl>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
 
-Use the new regulator helper instead of a for loop.
+--rJwd6BRFiFCcLxzm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
----
- drivers/usb/host/xhci-tegra.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Tue, Oct 01, 2019 at 03:23:30PM +0200, Bartosz Golaszewski wrote:
+> From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+>=20
+> The regulator_bulk_set_supply_names() helper was merged upstream. Use it
+> in a couple tegra drivers.
+>=20
+> Bartosz Golaszewski (3):
+>   ahci: tegra: use regulator_bulk_set_supply_names()
+>   phy: tegra: use regulator_bulk_set_supply_names()
+>   usb: host: xhci-tegra: use regulator_bulk_set_supply_names()
+>=20
+>  drivers/ata/ahci_tegra.c      | 6 +++---
+>  drivers/phy/tegra/xusb.c      | 6 +++---
+>  drivers/usb/host/xhci-tegra.c | 5 +++--
+>  3 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-tegra.c b/drivers/usb/host/xhci-tegra.c
-index 2ff7c911fbd0..a3c4c9287f9e 100644
---- a/drivers/usb/host/xhci-tegra.c
-+++ b/drivers/usb/host/xhci-tegra.c
-@@ -1128,8 +1128,9 @@ static int tegra_xusb_probe(struct platform_device *pdev)
- 		goto put_powerdomains;
- 	}
- 
--	for (i = 0; i < tegra->soc->num_supplies; i++)
--		tegra->supplies[i].supply = tegra->soc->supply_names[i];
-+	regulator_bulk_set_supply_names(tegra->supplies,
-+					tegra->soc->supply_names,
-+					tegra->soc->num_supplies);
- 
- 	err = devm_regulator_bulk_get(&pdev->dev, tegra->soc->num_supplies,
- 				      tegra->supplies);
--- 
-2.23.0
+I really don't see the point here. You've got a positive diffstat here,
+which means all that churn is without benefit.
 
+Is there some subsequent work based on this that will actually improve
+things?
+
+Thierry
+
+--rJwd6BRFiFCcLxzm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl2TVr8ACgkQ3SOs138+
+s6Gmxw//XyHpBaZ6nH9r5G6qR4tc5ltdQB1dqjsetQiQ3GP40BUwO9mtMUUgcfI/
+rdgUFAuLtiTH5m5XHYyCmBIWHi38bwTStJ4x0f7zg7IAfabhlRrTDPsaUSJuN+tt
+JL5RYKy9LjGIt8B3FusJWBgMMhAhmLf4vTTBqMRaK1vAd7XFqz0LAz+weUs11aZ8
+gauUBP2qZ6n+lL5ahAStY/0GC9gos1iNzgsvG6tZD3JyWQe6xwKvrroSq+s/iQUL
+V00s28QIe+zsQMl9f47mkJoAY5d55heIehG7oaYWPYsJS83yeHlW7YRi+CseyZwa
+o8ZSi3FqILEuO+yjH+h2nD8bpKltfhBwi4VUzn0sFAzz4btFkt1J0JYClKpF+Fwx
+msvSehNfgZt0JDJaQ6ACCBEVkcfCXe0pXX8BwLYW83V9gKWnklf97DKvFKmg4HMd
+/2JeVHouwG20VkQcjnYBTOpBv+08DKG0D19ZgviHnibUeTTu6mlpbCD2T6DzkLUE
+mGInzNLfgLfflCSeOusBazYQGy9DrGNhqGpnREXDY8NwZEUyA1EkHSl6BCOc6RaI
+VexLVXa11R0fNZRNJk2H2/MU9H/MWUUC+jRJQ+4X/ScGYtWjkJSe8LJ0KmgA2/5/
+gmqCqriJyFLot6c/z1kmNoSo2q2iedr7i4XKaUKrnf28LTQlRxk=
+=aSWM
+-----END PGP SIGNATURE-----
+
+--rJwd6BRFiFCcLxzm--

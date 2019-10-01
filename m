@@ -2,152 +2,132 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 820B7C2873
-	for <lists+linux-ide@lfdr.de>; Mon, 30 Sep 2019 23:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C926C34C7
+	for <lists+linux-ide@lfdr.de>; Tue,  1 Oct 2019 14:51:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731865AbfI3VPz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 30 Sep 2019 17:15:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46020 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731050AbfI3VPy (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 30 Sep 2019 17:15:54 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 67EDD224D7;
-        Mon, 30 Sep 2019 19:58:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569873536;
-        bh=5YkIavbcZo/fLAlcbxRAjN/RrUGTMkGP8SzMSvE3lfY=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=eQ2EwAbhTnIoCao80RsHAjyuX0FiFTAlEN6giJaMJlAygtJFtLFebghluVb1IgARK
-         QJIQQXZWBQEH68It6VK2j2PAMzsVDbeK0hNpsI8f9l+BsiWY2zGIHPbIo8lDV07B5v
-         nuE1LfjWC+uyDHhdEx/TeJU/HbfFo2GBNRL7OTVo=
-Date:   Mon, 30 Sep 2019 14:58:55 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Denis Efremov <efremov@linux.com>
-Cc:     linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, x86@kernel.org,
-        linux-s390@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        netdev@vger.kernel.org, linux-fbdev@vger.kernel.org,
-        kvm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-usb@vger.kernel.org,
-        devel@driverdev.osuosl.org, linux-serial@vger.kernel.org,
-        linux-mmc@vger.kernel.org
-Subject: Re: [PATCH RESEND v3 00/26] Add definition for the number of
- standard PCI BARs
-Message-ID: <20190930195855.GA191519@google.com>
+        id S2388072AbfJAMuu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 1 Oct 2019 08:50:50 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:46400 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388070AbfJAMut (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 1 Oct 2019 08:50:49 -0400
+Received: by mail-io1-f66.google.com with SMTP id c6so47399756ioo.13
+        for <linux-ide@vger.kernel.org>; Tue, 01 Oct 2019 05:50:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=3Erpch3qvMfWitg1dQ+x79uLdGzxxJ9Huk+dPKgwCvk=;
+        b=gFLk13NmaQeetfrSOisQCC4V43oGaUnclKQnZ1pwazSg3cP+dUC7mKkgeqwCvDsN98
+         pWIwghwtzA/mBMnNcf/4pecpBsGRv58y2YoU6mWFOkSVER23mb2wiVUU/72v5EYrx0js
+         Qz4zL7PG/pJ7dfvFDoe/UZ0gXAxeyGbaIGlU3N2V7MXE9VFVjynO/9eZHNUtjJB3Edde
+         uq7B+T5S2frxKE15xxXGdmMx8/2PqSqAU2RpxfW5YeRCPIDrKzYqbBn2vR1T5M6KAb1l
+         CTpQQmLODwxx3TAQBc6D4vQ0n0qQajtUm6E8yHSs8/3h3DfWxv7ivHx8TA0Dx+KV03Uh
+         FIZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=3Erpch3qvMfWitg1dQ+x79uLdGzxxJ9Huk+dPKgwCvk=;
+        b=TXn9+nS3xcN/YBAzj/etQ+TiKCGmaNSJ+GzbQHWUj+7HdyRccHKd8Md34jXY1nFgYt
+         p5GMu1u+ftQfexleyJQW98/AUHU8BllYTjN6vQ5Xa5RT6GH6qhOqiybZaP8XCiRF/NqW
+         UPEKESY7pBSXmNy8qLzDhBrVY5SBX2ColcHTa/4e5VR7FtNNLLqzQF3jLB5MqLuwXt7b
+         y6GCpzIauHnfLxJQ6zL4bEeeDH6vQ7JmQmvWYbHrXKDdFBfaKNDHiYazQj0VIwkICYRM
+         BO51WJDTESbcJoj69PfXh9Rs/WLdPTGcy1FcuE7PqQ+xLjURB7BvpfPR+R74RkkzWrRs
+         uwOA==
+X-Gm-Message-State: APjAAAVDrAYhm+uE3oCJymhr1pwWqvITAAw8+rAEZ7a4RcexE16TOUHl
+        93cmXkkO56/BWnmFTwoLg6/l6YCyNB/Bq+G5MWo=
+X-Google-Smtp-Source: APXvYqw8k1KTeAOV5/EDj34sHpbbIBWkUzyfUV3eEoIE3isLPgghyefwYcFnOpHjYsoXC+PL/UHuXDOqYYVoYzA/eEY=
+X-Received: by 2002:a92:680d:: with SMTP id d13mr27080019ilc.223.1569934249291;
+ Tue, 01 Oct 2019 05:50:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190927234026.23342-1-efremov@linux.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Received: by 2002:a4f:a15b:0:0:0:0:0 with HTTP; Tue, 1 Oct 2019 05:50:48 -0700 (PDT)
+Reply-To: belamour1945@gmail.com
+From:   =?UTF-8?B?QsOpbsOpZGljdGUgTEFNT1U=?= <barr.bensongoma@gmail.com>
+Date:   Tue, 1 Oct 2019 12:50:48 +0000
+Message-ID: <CAEJ+p94NpxyRpdSBWj2NqaG+oSfMPR_m4ZygADCRtQQ=cZE9SA@mail.gmail.com>
+Subject: Cher Monsieur, madame
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Sat, Sep 28, 2019 at 02:40:26AM +0300, Denis Efremov wrote:
-> Code that iterates over all standard PCI BARs typically uses
-> PCI_STD_RESOURCE_END, but this is error-prone because it requires
-> "i <= PCI_STD_RESOURCE_END" rather than something like
-> "i < PCI_STD_NUM_BARS". We could add such a definition and use it the same
-> way PCI_SRIOV_NUM_BARS is used. The patchset also replaces constant (6)
-> with new define PCI_STD_NUM_BARS where appropriate and removes local
-> declarations for the number of PCI BARs.
-> 
-> Changes in v3:
->   - Updated commits description.
->   - Refactored "< PCI_ROM_RESOURCE" with "< PCI_STD_NUM_BARS" in loops.
->   - Refactored "<= BAR_5" with "< PCI_STD_NUM_BARS" in loops.
->   - Removed local define GASKET_NUM_BARS.
->   - Removed local define PCI_NUM_BAR_RESOURCES.
-> 
-> Changes in v2:
->   - Reversed checks in pci_iomap_range,pci_iomap_wc_range.
->   - Refactored loops in vfio_pci to keep PCI_STD_RESOURCES.
->   - Added 2 new patches to replace the magic constant with new define.
->   - Splitted net patch in v1 to separate stmmac and dwc-xlgmac patches.
-> 
-> Denis Efremov (26):
->   PCI: Add define for the number of standard PCI BARs
->   PCI: hv: Use PCI_STD_NUM_BARS
->   PCI: dwc: Use PCI_STD_NUM_BARS
->   PCI: endpoint: Use PCI_STD_NUM_BARS
->   misc: pci_endpoint_test: Use PCI_STD_NUM_BARS
->   s390/pci: Use PCI_STD_NUM_BARS
->   x86/PCI: Loop using PCI_STD_NUM_BARS
->   alpha/PCI: Use PCI_STD_NUM_BARS
->   ia64: Use PCI_STD_NUM_BARS
->   stmmac: pci: Loop using PCI_STD_NUM_BARS
->   net: dwc-xlgmac: Loop using PCI_STD_NUM_BARS
->   ixgb: use PCI_STD_NUM_BARS
->   e1000: Use PCI_STD_NUM_BARS
->   rapidio/tsi721: Loop using PCI_STD_NUM_BARS
->   efifb: Loop using PCI_STD_NUM_BARS
->   fbmem: use PCI_STD_NUM_BARS
->   vfio_pci: Loop using PCI_STD_NUM_BARS
->   scsi: pm80xx: Use PCI_STD_NUM_BARS
->   ata: sata_nv: Use PCI_STD_NUM_BARS
->   staging: gasket: Use PCI_STD_NUM_BARS
->   serial: 8250_pci: Use PCI_STD_NUM_BARS
->   pata_atp867x: Use PCI_STD_NUM_BARS
->   memstick: use PCI_STD_NUM_BARS
->   USB: core: Use PCI_STD_NUM_BARS
->   usb: pci-quirks: Use PCI_STD_NUM_BARS
->   devres: use PCI_STD_NUM_BARS
-> 
->  arch/alpha/kernel/pci-sysfs.c                 |  8 ++---
->  arch/ia64/sn/pci/pcibr/pcibr_dma.c            |  4 +--
->  arch/s390/include/asm/pci.h                   |  5 +--
->  arch/s390/include/asm/pci_clp.h               |  6 ++--
->  arch/s390/pci/pci.c                           | 16 +++++-----
->  arch/s390/pci/pci_clp.c                       |  6 ++--
->  arch/x86/pci/common.c                         |  2 +-
->  arch/x86/pci/intel_mid_pci.c                  |  2 +-
->  drivers/ata/pata_atp867x.c                    |  2 +-
->  drivers/ata/sata_nv.c                         |  2 +-
->  drivers/memstick/host/jmb38x_ms.c             |  2 +-
->  drivers/misc/pci_endpoint_test.c              |  8 ++---
->  drivers/net/ethernet/intel/e1000/e1000.h      |  1 -
->  drivers/net/ethernet/intel/e1000/e1000_main.c |  2 +-
->  drivers/net/ethernet/intel/ixgb/ixgb.h        |  1 -
->  drivers/net/ethernet/intel/ixgb/ixgb_main.c   |  2 +-
->  .../net/ethernet/stmicro/stmmac/stmmac_pci.c  |  4 +--
->  .../net/ethernet/synopsys/dwc-xlgmac-pci.c    |  2 +-
->  drivers/pci/controller/dwc/pci-dra7xx.c       |  2 +-
->  .../pci/controller/dwc/pci-layerscape-ep.c    |  2 +-
->  drivers/pci/controller/dwc/pcie-artpec6.c     |  2 +-
->  .../pci/controller/dwc/pcie-designware-plat.c |  2 +-
->  drivers/pci/controller/dwc/pcie-designware.h  |  2 +-
->  drivers/pci/controller/pci-hyperv.c           | 10 +++---
->  drivers/pci/endpoint/functions/pci-epf-test.c | 10 +++---
->  drivers/pci/pci-sysfs.c                       |  4 +--
->  drivers/pci/pci.c                             | 13 ++++----
->  drivers/pci/proc.c                            |  4 +--
->  drivers/pci/quirks.c                          |  4 +--
->  drivers/rapidio/devices/tsi721.c              |  2 +-
->  drivers/scsi/pm8001/pm8001_hwi.c              |  2 +-
->  drivers/scsi/pm8001/pm8001_init.c             |  2 +-
->  drivers/staging/gasket/gasket_constants.h     |  3 --
->  drivers/staging/gasket/gasket_core.c          | 12 +++----
->  drivers/staging/gasket/gasket_core.h          |  4 +--
->  drivers/tty/serial/8250/8250_pci.c            |  8 ++---
->  drivers/usb/core/hcd-pci.c                    |  2 +-
->  drivers/usb/host/pci-quirks.c                 |  2 +-
->  drivers/vfio/pci/vfio_pci.c                   | 11 ++++---
->  drivers/vfio/pci/vfio_pci_config.c            | 32 ++++++++++---------
->  drivers/vfio/pci/vfio_pci_private.h           |  4 +--
->  drivers/video/fbdev/core/fbmem.c              |  4 +--
->  drivers/video/fbdev/efifb.c                   |  2 +-
->  include/linux/pci-epc.h                       |  2 +-
->  include/linux/pci.h                           |  2 +-
->  include/uapi/linux/pci_regs.h                 |  1 +
->  lib/devres.c                                  |  2 +-
->  47 files changed, 112 insertions(+), 115 deletions(-)
+Cher Monsieur, madame,
 
-Applied to pci/resource for v5.5, thanks!
 
-I ended up squashing these all together because they're all related
-and tiny.
+Je n'ai pas un autre moyen de communiquer avec vous que de vous faire
+parvenir ce mail. Je suis dans le d=C3=A9sespoir et mon c=C5=93ur saigne au=
+ moment ou
+je vous fais ce message qui j'esp=C3=A8re retiendra votre attention.
+
+Je vous contacte aujourd'hui car bien vrai que l'on ne se connaisse pas
+cela n'emp=C3=AAche ce geste de ma part. Parmi tant de profile parcourus,vo=
+us
+m'inspirez plus de confiance et vous =C3=AAtes la seule personne en qui j=
+=E2=80=99ai
+confiance et j'ai port=C3=A9e mon choix.
+
+Je suis madame B=C3=A9n=C3=A9dicte LAMOU, veuve r=C3=A9sident =C3=A0 Londre=
+s pour des raisons
+sant=C3=A9 afin de continuer mes soins m=C3=A9dical. Je profite de cette oc=
+casion
+pour vous faire cette proposition tr=C3=A8s importante et confidentielle. J=
+e
+vous parle entant que veuve mari=C3=A9e avec feu Mr. David LAMOU, un ing=C3=
+=A9nieur
+t=C3=A9l=C3=A9communication qui malheureusement est d=C3=A9c=C3=A9d=C3=A9 d=
+ans un accident d=E2=80=99avion.
+Et depuis un certain temps, je ne me sens plus bien. Depuis la mort de mon
+mari, j=E2=80=99ai =C3=A9t=C3=A9 d=C3=A9pass=C3=A9e par les =C3=A9v=C3=A8ne=
+ments, jusqu=E2=80=99au point que je n=E2=80=99arrive
+pas =C3=A0 m'en sortir .
+
+Pr=C3=A9sentement je suis gravement malade et hospitalis=C3=A9e.
+
+La raison qui me pousse =C3=A0 vous est la suivante: Je voudrais passer par
+votre canal pour faire une =C5=93uvre de charit=C3=A9. C'est une donation e=
+n quelque
+sorte et elle s'=C3=A9l=C3=A8ve =C3=A0 la somme de 20Millions d'euros d=C3=
+=A9pos=C3=A9 par mon feu
+mari dans un institut financier en Afrique plus pr=C3=A9cis=C3=A9ment au To=
+go. Ma
+situation matrimoniale est telle que actuellement je suis veuve et encore
+moins d'enfants =C3=A0 qui je pourrais l=C3=A9guer cet h=C3=A9ritage, et je=
+ souffre
+pr=C3=A9sentement d'une tumeur =C3=A0 la gorge je suis donc condamn=C3=A9e =
+=C3=A0 une mort
+certaine selon les diagnostiques m=C3=A9dicale. C'est pour cela que, rapide=
+ment
+je voudrais de mani=C3=A8re gracieuse et dans le  souci d'aider les enfants
+d=C3=A9munis vous donner ces dits fonds pour que vous utilisiez 70% de la s=
+omme
+pour r=C3=A9aliser cette =C5=93uvre de charit=C3=A9 humanitaire et le reste=
+ pour vous,
+votre r=C3=A9compense.
+
+
+Je vous prie d'accorder une oreille attentive =C3=A0 ma proposition car je
+compte sur votre bonne foi et aussi le bon usage de ces fonds pour cette
+=C5=93uvre.
+
+Pour avoir une r=C3=A9ponse rapide, veuillez me r=C3=A9pondre directement v=
+ia mon
+e-mail priv=C3=A9:  belamour1945@gmail.com
+
+
+Je suis en attente de votre rapide et prompte r=C3=A9ponse pour plus de
+d=C3=A9tailles.
+
+
+Amicalement,
+
+
+Mme. B=C3=A9n=C3=A9dicte LAMOU
+E-mail contacte:  belamour1945@gmail.com
+Adresse :St Thomas' H=C3=B4pital, Westminster Bridge Rd, London SE1 7EH,
+Royaume-Uni
+T=C3=A9l=C3=A9phone : +44 20 7188 7188
+Londres (Royaume-Uni)

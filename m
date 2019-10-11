@@ -2,30 +2,29 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 916C0D53E1
-	for <lists+linux-ide@lfdr.de>; Sun, 13 Oct 2019 05:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BD80D54F4
+	for <lists+linux-ide@lfdr.de>; Sun, 13 Oct 2019 09:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727665AbfJMDDL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 12 Oct 2019 23:03:11 -0400
-Received: from cars-indonesia.com ([139.59.253.132]:60586 "EHLO
-        cars-indonesia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727184AbfJMDDL (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 12 Oct 2019 23:03:11 -0400
-X-Greylist: delayed 34003 seconds by postgrey-1.27 at vger.kernel.org; Sat, 12 Oct 2019 23:03:11 EDT
-Received: from Shop01 (CARs [127.0.0.1])
-        by cars-indonesia.com (Postfix) with SMTP id 136AB576A;
-        Sat, 12 Oct 2019 03:48:58 +0700 (WIB)
-Received: from [71.249.204.210] by Shop01 with ESMTP id EF71315DDF2; Sat, 12 Oct 2019 02:45:44 +0600
-Message-ID: <x3g-9k9pcm11--$dv7737@5smfi.o0>
-From:   "Amy Morton" <amymorton1074@gmail.com>
-Reply-To: "Amy Morton" <amymorton1074@gmail.com>
-To:     d566005b0705081426l4f51bad7u6df850322b51fe99@mail.gmail.com
-Subject: Your silence not golden
-Date:   Sat, 12 Oct 19 02:45:44 GMT
-X-Mailer: AOL 7.0 for Windows US sub 118
+        id S1728701AbfJMHgC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 13 Oct 2019 03:36:02 -0400
+Received: from [206.81.8.171] ([206.81.8.171]:56546 "EHLO varon.localdomain"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728198AbfJMHgB (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 13 Oct 2019 03:36:01 -0400
+Received: from 127.0.0.1 (varon [127.0.0.1])
+        by varon.localdomain (Postfix) with SMTP id 290C355D635;
+        Fri, 11 Oct 2019 10:21:17 +0000 (UTC)
+Received: from (HELO 1iqb) [176.71.184.19] by 127.0.0.1 for <linhao63@jlonline.com>; Fri, 11 Oct 2019 03:19:21 -0700
+Message-ID: <4-806$5o5$$r$as6q109r731c@hkg.so2qo8>
+From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
+To:     linhao63@jlonline.com
+Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA ??
+Date:   Fri, 11 Oct 19 03:19:21 GMT
+X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
 MIME-Version: 1.0
 Content-Type: multipart/alternative;
-        boundary="D178694B45C"
+        boundary="C.F387.BA..3D"
 X-Priority: 3
 X-MSMail-Priority: Normal
 Sender: linux-ide-owner@vger.kernel.org
@@ -34,19 +33,30 @@ List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
 
---D178694B45C
+--C.F387.BA..3D
 Content-Type: text/plain;
 Content-Transfer-Encoding: quoted-printable
 
-Hi, 
+Greetings
 
-Did you get my last email?? 
+My name is Barrister Hans Erich.
 
-Kindly reply.
+I have a client who is interested to invest in your country, she is a well=
+ known politician in her country and deserve a lucrative investment partne=
+rship with you outside her country without any delay   Please can you mana=
+ge such investment please Kindly reply for further details.
 
-Regards,
+Your full nameS -----------
 
-Amy.
 
---D178694B45C--
+Your urgent response will be appreciated
+
+Thank you and God bless you.
+
+Barrister Hans Erich
+
+Yours sincerely,
+Barrister Hans Erich
+
+--C.F387.BA..3D--
 

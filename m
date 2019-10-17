@@ -2,158 +2,37 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3974D99B7
-	for <lists+linux-ide@lfdr.de>; Wed, 16 Oct 2019 21:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64516DA517
+	for <lists+linux-ide@lfdr.de>; Thu, 17 Oct 2019 07:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403829AbfJPTJ6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 16 Oct 2019 15:09:58 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:39590 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732084AbfJPTJ6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 16 Oct 2019 15:09:58 -0400
-Received: by mail-pg1-f196.google.com with SMTP id p12so5507971pgn.6
-        for <linux-ide@vger.kernel.org>; Wed, 16 Oct 2019 12:09:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=cgVJjPJNYamw8C05i/NoGR/EfXejQ0fsqwOBU0L1tVc=;
-        b=mVmNBw1zzsT8UnD7F+zm4ue1nPrPLdoukhl9nz8Gx0oTIcLUPh7jc9mteqQBvLPcb5
-         O/kkzoQwEddeZ4PfA9y2coE4Wx6g7D0mCU9J+qMYphaJgKOmCoV0+cZP4Juu0IuJDJGg
-         Uuke6SwlVHgxjG6jOZMj59wL/GKXG6rwUYvdAiAibtkgyMtkev7TCVeCc7jy3HMfDhf2
-         thMt5tCDvp44R9BkONqdLApHQmpYZnpjo6VKiHYg+/9/vivgaPlYS5PE46rik62YYJPg
-         g9KhwqqBqo0z4FyLdWSqv4RpXHi6idpHE6AaeLN18OvB/PK6PGiZrrlAD9Uvc+jZLEIo
-         Kgwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=cgVJjPJNYamw8C05i/NoGR/EfXejQ0fsqwOBU0L1tVc=;
-        b=Aqirl+G3X4G0v2YhbzJbgqFau9/sWl4oy5YrwwYrOm/L/2tY8EfPTAu3uC3crf3lfN
-         Tfl2XlNtm1c3PNZx+Nn3f2PFz1EPqB0dpwGDaB3PEc+PkrBmvh/iNtMHYTQC0vDVQxgY
-         NfAgqioMmLgmvIHk2JXmIqFP5YEueYkdMKo4mKH37kh+0vB5OLnSpKWa3P0+a1tNXLuz
-         3FGom4TUEG5twts8URNqth3UO5y6aZ8fjLQXviJlT1pw6AFPsOy2ALPjw2B8l8r8PjUQ
-         Dngc14L16jJjcryj9BFnyvBdJAULocAJJTrKSJ/Pov3CNRtkQwLyFOIJRtJRNRNxkzvh
-         b5Tg==
-X-Gm-Message-State: APjAAAW+0cOnxWU+O09aooqmgsWxwY8+NdATUaQPtl7gr77xKL1sG4/s
-        LYrLtxSk7oFIRy2UtmxSDA92RMJNMMy4gg==
-X-Google-Smtp-Source: APXvYqyc3rngjXkrRXRu0+eBEmlpV8hlrbKQehn7+tzclq86yTJqEIH2ZANSmGBCkiWvVfqI7XD4rg==
-X-Received: by 2002:a17:90a:8c86:: with SMTP id b6mr7079207pjo.129.1571252997537;
-        Wed, 16 Oct 2019 12:09:57 -0700 (PDT)
-Received: from ?IPv6:2620:10d:c081:1132::116d? ([2620:10d:c090:180::88e5])
-        by smtp.gmail.com with ESMTPSA id s3sm3466094pjq.32.2019.10.16.12.09.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 16 Oct 2019 12:09:55 -0700 (PDT)
-Subject: Re: [PATCH] libata: Ensure ata_port probe has completed before detach
-To:     John Garry <john.garry@huawei.com>
-Cc:     linux-ide@vger.kernel.org, linuxarm@huawei.com,
-        linux-kernel@vger.kernel.org
-References: <1571221192-216909-1-git-send-email-john.garry@huawei.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <da5e9c14-a183-70b5-022d-7b107447b1fd@kernel.dk>
-Date:   Wed, 16 Oct 2019 13:09:54 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S2390712AbfJQFXi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 17 Oct 2019 01:23:38 -0400
+Received: from [67.229.103.114] ([67.229.103.114]:49940 "EHLO
+        SQ5606-6.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728999AbfJQFXi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 17 Oct 2019 01:23:38 -0400
+Received: from localhost (localhost [IPv6:::1])
+        by SQ5606-6.localdomain (Postfix) with SMTP id D12AA2A424F
+        for <linux-ide@vger.kernel.org>; Thu, 17 Oct 2019 12:40:37 +0800 (CST)
+From:   linux-ide@vger.kernel.org
+Reply-To: prodawez@teleworm.us
+To:     linux-ide@vger.kernel.org,
+        =?utf-8?Q?=D0=97=D0=B4=D1=80=D0=B0=D0=B2=D1=81=D1=82=D0?=@SQ5606-6.localdomain,
+        _=D0=92=D0=B0=D1=81?=@=?utf-8?Q?=B2=D1=83=D0=B9=D1=82=D0=B5.localdomain,
+        =?utf-8?Q?_=D0=B8=D0=BD=D1=82=D0=B5=D1=80=D0=B5=D1=81=D1?=@SQ5606-6.localdomain,
+        =?utf-8?Q?=83=D1=8E=D1=82_=D0=BA=D0=BB=D0=B8=D0=B5=D0=BD?=@SQ5606-6.localdomain,
+        =?utf-8?Q?=D1=82=D1=81=D0=BA=D0=B8=D0=B5_=D0=B1=D0=B0=D0?=@SQ5606-6.localdomain,
+        =?utf-8?Q?=B7=D1=8B_=D0=B4=D0=B0=D0=BD=D0=BD=D1=8B=D1=85?=@SQ5606-6.localdomain,
+        =?utf-8?Q?=3F?=@SQ5606-6.localdomain
 MIME-Version: 1.0
-In-Reply-To: <1571221192-216909-1-git-send-email-john.garry@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8";
+Content-Transfer-Encoding: 8bit
+Message-Id: <20191017044037.D12AA2A424F@SQ5606-6.localdomain>
+Date:   Thu, 17 Oct 2019 12:40:37 +0800 (CST)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 10/16/19 4:19 AM, John Garry wrote:
-> With CONFIG_DEBUG_TEST_DRIVER_REMOVE set, we may find the following WARN:
-> 
-> [   23.452574] ------------[ cut here ]------------
-> [   23.457190] WARNING: CPU: 59 PID: 1 at drivers/ata/libata-core.c:6676 ata_host_detach+0x15c/0x168
-> [   23.466047] Modules linked in:
-> [   23.469092] CPU: 59 PID: 1 Comm: swapper/0 Not tainted 5.4.0-rc1-00010-g5b83fd27752b-dirty #296
-> [   23.477776] Hardware name: Huawei D06 /D06, BIOS Hisilicon D06 UEFI RC0 - V1.16.01 03/15/2019
-> [   23.486286] pstate: a0c00009 (NzCv daif +PAN +UAO)
-> [   23.491065] pc : ata_host_detach+0x15c/0x168
-> [   23.495322] lr : ata_host_detach+0x88/0x168
-> [   23.499491] sp : ffff800011cabb50
-> [   23.502792] x29: ffff800011cabb50 x28: 0000000000000007
-> [   23.508091] x27: ffff80001137f068 x26: ffff8000112c0c28
-> [   23.513390] x25: 0000000000003848 x24: ffff0023ea185300
-> [   23.518689] x23: 0000000000000001 x22: 00000000000014c0
-> [   23.523987] x21: 0000000000013740 x20: ffff0023bdc20000
-> [   23.529286] x19: 0000000000000000 x18: 0000000000000004
-> [   23.534584] x17: 0000000000000001 x16: 00000000000000f0
-> [   23.539883] x15: ffff0023eac13790 x14: ffff0023eb76c408
-> [   23.545181] x13: 0000000000000000 x12: ffff0023eac13790
-> [   23.550480] x11: ffff0023eb76c228 x10: 0000000000000000
-> [   23.555779] x9 : ffff0023eac13798 x8 : 0000000040000000
-> [   23.561077] x7 : 0000000000000002 x6 : 0000000000000001
-> [   23.566376] x5 : 0000000000000002 x4 : 0000000000000000
-> [   23.571674] x3 : ffff0023bf08a0bc x2 : 0000000000000000
-> [   23.576972] x1 : 3099674201f72700 x0 : 0000000000400284
-> [   23.582272] Call trace:
-> [   23.584706]  ata_host_detach+0x15c/0x168
-> [   23.588616]  ata_pci_remove_one+0x10/0x18
-> [   23.592615]  ahci_remove_one+0x20/0x40
-> [   23.596356]  pci_device_remove+0x3c/0xe0
-> [   23.600267]  really_probe+0xdc/0x3e0
-> [   23.603830]  driver_probe_device+0x58/0x100
-> [   23.608000]  device_driver_attach+0x6c/0x90
-> [   23.612169]  __driver_attach+0x84/0xc8
-> [   23.615908]  bus_for_each_dev+0x74/0xc8
-> [   23.619730]  driver_attach+0x20/0x28
-> [   23.623292]  bus_add_driver+0x148/0x1f0
-> [   23.627115]  driver_register+0x60/0x110
-> [   23.630938]  __pci_register_driver+0x40/0x48
-> [   23.635199]  ahci_pci_driver_init+0x20/0x28
-> [   23.639372]  do_one_initcall+0x5c/0x1b0
-> [   23.643199]  kernel_init_freeable+0x1a4/0x24c
-> [   23.647546]  kernel_init+0x10/0x108
-> [   23.651023]  ret_from_fork+0x10/0x18
-> [   23.654590] ---[ end trace 634a14b675b71c13 ]---
-> 
-> With KASAN also enabled, we may also get many use-after-free reports.
-> 
-> The issue is that when CONFIG_DEBUG_TEST_DRIVER_REMOVE is set, we may
-> attempt to detach the ata_port before it has been probed.
-> 
-> This is because the ata_ports are async probed, meaning that there is no
-> guarantee that the ata_port has probed prior to detach. When the ata_port
-> does probe in this scenario, we get all sorts of issues as the detach may
-> have already happened.
-> 
-> Fix by ensuring synchronisation with async_synchronize_full(). We could
-> alternatively use the cookie returned from the ata_port probe
-> async_schedule() call, but that means managing the cookie, so more
-> complicated.
-> 
-> Signed-off-by: John Garry <john.garry@huawei.com>
-> ---
-> Note: This has only been boot tested and manual driver remove/add.
->           My system has no disk attached to the ahci host.
-> 
-> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-> index 28c492be0a57..74c9b3032d46 100644
-> --- a/drivers/ata/libata-core.c
-> +++ b/drivers/ata/libata-core.c
-> @@ -6708,6 +6708,9 @@ void ata_host_detach(struct ata_host *host)
->   {
->   	int i;
->   
-> +	/* Ensure ata_port probe has completed */
-> +	async_synchronize_full();
-> +
->   	for (i = 0; i < host->n_ports; i++)
->   		ata_port_detach(host->ports[i]);
->   
-> 
-
-Nice debugging, and the fix looks appropriate to me. I don't think
-there's any point in trying to individually synchronize cookies.
-I'll let this simmer on the list for a day or two to let other folks
-take a look at it, before queuing it up.
-
--- 
-Jens Axboe
+Здравствуйте! Вас интересуют клиентские базы данных?
 

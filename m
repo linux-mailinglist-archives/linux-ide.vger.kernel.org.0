@@ -2,42 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C549DE84B
-	for <lists+linux-ide@lfdr.de>; Mon, 21 Oct 2019 11:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB53FE08A3
+	for <lists+linux-ide@lfdr.de>; Tue, 22 Oct 2019 18:21:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726977AbfJUJj2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 21 Oct 2019 05:39:28 -0400
-Received: from [139.59.62.52] ([139.59.62.52]:59332 "EHLO mail.gatefjohn.tk"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1727049AbfJUJj2 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 21 Oct 2019 05:39:28 -0400
-Received: by mail.gatefjohn.tk (Postfix, from userid 48)
-        id 122C5334D37; Sun, 20 Oct 2019 20:03:38 +0000 (UTC)
-To:     linux-ide@vger.kernel.org
-Subject: Purchase Order
-X-PHP-Originating-Script: 0:ygehagea.php
-From:   Daniel Murray <sinara-group@bk.ru>
-Reply-To: sinara-group@list.ru
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Message-Id: <20191020223331.122C5334D37@mail.gatefjohn.tk>
-Date:   Sun, 20 Oct 2019 20:03:38 +0000 (UTC)
+        id S1732263AbfJVQVc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 22 Oct 2019 12:21:32 -0400
+Received: from relmlor1.renesas.com ([210.160.252.171]:44972 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1731132AbfJVQVc (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Oct 2019 12:21:32 -0400
+X-IronPort-AV: E=Sophos;i="5.68,216,1569250800"; 
+   d="scan'208";a="29712998"
+Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
+  by relmlie5.idc.renesas.com with ESMTP; 23 Oct 2019 01:21:30 +0900
+Received: from fabrizio-dev.ree.adwin.renesas.com (unknown [10.226.36.196])
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 665C74000FBD;
+        Wed, 23 Oct 2019 01:21:27 +0900 (JST)
+From:   Fabrizio Castro <fabrizio.castro@bp.renesas.com>
+To:     Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Cc:     Fabrizio Castro <fabrizio.castro@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Magnus Damm <magnus.damm@gmail.com>, linux-ide@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Simon Horman <horms@verge.net.au>,
+        Chris Paterson <Chris.Paterson2@renesas.com>,
+        Biju Das <biju.das@bp.renesas.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Jacopo Mondi <jacopo+renesas@jmondi.org>
+Subject: [PATCH 0/2] Add SATA support to RZ/G2N
+Date:   Tue, 22 Oct 2019 17:21:17 +0100
+Message-Id: <1571761279-17347-1-git-send-email-fabrizio.castro@bp.renesas.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi,friend,
+Dear All,
 
-This is Daniel Murray and i am purchasing manager from Sinara Group Co.,LTD in Russia.
-We are glad to know about your company from the web and we are interested in your products.
-Could you kindly send us your Latest catalog and price list for our trial order.
+this series adds SoC specific SATA support for the RZ/G2N.
 
-Thanks and Best Regards,
+Thanks,
+Fab
 
-Daniel Murray
-Purchasing Manager
-Sinara Group Co.,LTD
+Fabrizio Castro (2):
+  ata: sata_rcar: Add r8a774b1 support
+  arm64: dts: renesas: r8a774b1: Add SATA controller node
 
+ Documentation/devicetree/bindings/ata/sata_rcar.txt |  7 +++++--
+ arch/arm64/boot/dts/renesas/r8a774b1.dtsi           | 11 +++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
+
+-- 
+2.7.4
 

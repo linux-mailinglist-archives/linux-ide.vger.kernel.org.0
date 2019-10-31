@@ -2,80 +2,96 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B3ABEACF1
-	for <lists+linux-ide@lfdr.de>; Thu, 31 Oct 2019 10:59:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13784EADA4
+	for <lists+linux-ide@lfdr.de>; Thu, 31 Oct 2019 11:39:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727186AbfJaJ7v (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 31 Oct 2019 05:59:51 -0400
-Received: from mx2.suse.de ([195.135.220.15]:34214 "EHLO mx1.suse.de"
+        id S1727137AbfJaKjF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 31 Oct 2019 06:39:05 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2064 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727130AbfJaJ7u (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 31 Oct 2019 05:59:50 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 50999B181;
-        Thu, 31 Oct 2019 09:59:48 +0000 (UTC)
-From:   Jiri Slaby <jslaby@suse.cz>
-To:     axboe@kernel.dk
-Cc:     linux-kernel@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
-        linux-ide@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: [PATCH v2 -resend 4/4] ata: sata_mv, avoid trigerrable BUG_ON
-Date:   Thu, 31 Oct 2019 10:59:46 +0100
-Message-Id: <20191031095946.7070-4-jslaby@suse.cz>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191031095946.7070-1-jslaby@suse.cz>
-References: <20191031095946.7070-1-jslaby@suse.cz>
+        id S1726867AbfJaKjF (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 31 Oct 2019 06:39:05 -0400
+Received: from lhreml706-cah.china.huawei.com (unknown [172.18.7.107])
+        by Forcepoint Email with ESMTP id CC4AE98301AF2BA9018F;
+        Thu, 31 Oct 2019 10:39:02 +0000 (GMT)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ lhreml706-cah.china.huawei.com (10.201.108.47) with Microsoft SMTP Server
+ (TLS) id 14.3.408.0; Thu, 31 Oct 2019 10:39:02 +0000
+Received: from [127.0.0.1] (10.202.226.45) by lhreml724-chm.china.huawei.com
+ (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Thu, 31 Oct
+ 2019 10:39:01 +0000
+Subject: Re: [PATCH 5/5] libata/ahci: Apply non-standard BAR fix for Loongson
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>, <linux-mips@vger.kernel.org>
+CC:     <davem@davemloft.net>, <robh+dt@kernel.org>,
+        <mark.rutland@arm.com>, <axboe@kernel.dk>,
+        <peppe.cavallaro@st.com>, <alexandre.torgue@st.com>,
+        <joabreu@synopsys.com>, <bhelgaas@google.com>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20191030135347.3636-1-jiaxun.yang@flygoat.com>
+ <20191030135347.3636-6-jiaxun.yang@flygoat.com>
+From:   John Garry <john.garry@huawei.com>
+Message-ID: <4411becf-9321-cda4-872a-64fd22bbbc7f@huawei.com>
+Date:   Thu, 31 Oct 2019 10:39:01 +0000
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191030135347.3636-6-jiaxun.yang@flygoat.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.202.226.45]
+X-ClientProxiedBy: lhreml716-chm.china.huawei.com (10.201.108.67) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-There are several reports that the BUG_ON on unsupported command in
-mv_qc_prep can be triggered under some circumstances:
-https://bugzilla.suse.com/show_bug.cgi?id=1110252
-https://serverfault.com/questions/888897/raid-problems-after-power-outage
-https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1652185
-https://bugs.centos.org/view.php?id=14998
+On 30/10/2019 13:53, Jiaxun Yang wrote:
+> Loongson is using BAR0 as AHCI registers BAR.
+> 
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+>   drivers/ata/ahci.c | 7 +++++++
+>   1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index dd92faf197d5..db3d7b94ad53 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -42,6 +42,7 @@ enum {
+>   	AHCI_PCI_BAR_CAVIUM	= 0,
+>   	AHCI_PCI_BAR_ENMOTUS	= 2,
+>   	AHCI_PCI_BAR_CAVIUM_GEN5	= 4,
+> +	AHCI_PCI_BAR_LOONGSON	= 0,
 
-Let sata_mv handle the failure gracefully: warn about that incl. the
-failed command number and return an AC_ERR_INVALID error. We can do that
-now thanks to the previous patch.
+nit: these seem to be ordered by ascending BAR index
 
-Remove also the long-standing FIXME.
-
-[v2] use %.2x as commands are defined as hexa.
-
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-ide@vger.kernel.org
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
----
- drivers/ata/sata_mv.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index 5d5c8936a590..277f11909fc1 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -2098,12 +2098,10 @@ static enum ata_completion_errors mv_qc_prep(struct ata_queued_cmd *qc)
- 		 * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
- 		 * of which are defined/used by Linux.  If we get here, this
- 		 * driver needs work.
--		 *
--		 * FIXME: modify libata to give qc_prep a return value and
--		 * return error here.
- 		 */
--		BUG_ON(tf->command);
--		break;
-+		ata_port_err(ap, "%s: unsupported command: %.2x\n", __func__,
-+				tf->command);
-+		return AC_ERR_INVALID;
- 	}
- 	mv_crqb_pack_cmd(cw++, tf->nsect, ATA_REG_NSECT, 0);
- 	mv_crqb_pack_cmd(cw++, tf->hob_lbal, ATA_REG_LBAL, 0);
--- 
-2.23.0
+>   	AHCI_PCI_BAR_STANDARD	= 5,
+>   };
+>   
+> @@ -575,6 +576,9 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+>   	/* Enmotus */
+>   	{ PCI_DEVICE(0x1c44, 0x8000), board_ahci },
+>   
+> +	/* Loongson */
+> +	{ PCI_VDEVICE(LOONGSON, 0x7a08), board_ahci },
+> +
+>   	/* Generic, PCI class code for AHCI */
+>   	{ PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+>   	  PCI_CLASS_STORAGE_SATA_AHCI, 0xffffff, board_ahci },
+> @@ -1663,6 +1667,9 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>   			ahci_pci_bar = AHCI_PCI_BAR_CAVIUM;
+>   		if (pdev->device == 0xa084)
+>   			ahci_pci_bar = AHCI_PCI_BAR_CAVIUM_GEN5;
+> +	} else if (pdev->vendor == PCI_VENDOR_ID_LOONGSON) {
+> +		if (pdev->device == PCI_DEVICE_ID_LOONGSON_AHCI)
+> +			ahci_pci_bar = AHCI_PCI_BAR_LOONGSON;
+>   	}
+>   
+>   	/* acquire resources */
+> 
 

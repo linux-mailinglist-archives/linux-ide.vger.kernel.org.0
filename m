@@ -2,115 +2,62 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E4FCEE816
-	for <lists+linux-ide@lfdr.de>; Mon,  4 Nov 2019 20:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E485FEE84B
+	for <lists+linux-ide@lfdr.de>; Mon,  4 Nov 2019 20:27:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728409AbfKDTR6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 4 Nov 2019 14:17:58 -0500
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:37832 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728174AbfKDTR6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Nov 2019 14:17:58 -0500
-Received: by mail-pg1-f193.google.com with SMTP id z24so7469558pgu.4;
-        Mon, 04 Nov 2019 11:17:56 -0800 (PST)
+        id S1728510AbfKDT15 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 4 Nov 2019 14:27:57 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:41377 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728174AbfKDT15 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Nov 2019 14:27:57 -0500
+Received: by mail-ot1-f65.google.com with SMTP id 94so15401921oty.8
+        for <linux-ide@vger.kernel.org>; Mon, 04 Nov 2019 11:27:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=4O8YMN5ooZdkIVqxGyRMSpMDnc3iab7us+VWPOF5/XU=;
-        b=tw/rxGJkW3IviiAF2NtBDLFqS5V9t1Eoi11TRDrm8JziOTBQH7rwaeECkvdTHpYGvu
-         BGa934MH2zi7ZYpn2R6251TdVjTawjLRUquuiWggL4PWSIvaX3lP0w/+DEaRQiGS9Dwx
-         47YOvminm3OBIGuRkc6N78QAzetjgZm5NRjoDB9dBo8+qMhrYwhVFdwVVZ6GgaV2tXKP
-         Fdu239qVK6e89p7hsD5ZyjPqRvRMmjuzA0nfat/oDZsycL2k0dS4jITKWafI9v2eR2uX
-         YAh58P25WL8w8wRmCy4r7Sq5dQhB5viLukzq0sKNHocDQ/R04uO8a4FQ6UsbtDo3ELwm
-         KwQQ==
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=Y8B65fOpf13SzZJeqzGahDUtCJ8KAubW1DLRsIIyvPk=;
+        b=btJmaB9iovUhr8gW8+EEwaxkIBDTaKAIc3YXm+wV7QN/JpFdPi5YtnZBhc/tHOet1r
+         HS7DuXbP55ZXoolWv8pgH8seqcvkEGOflZoG67TJNwVXvn0VXsN0XymTQj3JtfUVkCz3
+         731E8mdG11Vk0Id5uBCQkRcWG6rrb3i0/0dgylvZ+xJWZ9O4pvN62gUubH8EPCsNq1VG
+         1lW95bb3/BVRh4xQ6xyuV2o5n6CEfijDZHXbBsIShmMyE0OmxwFwF5LXxhFhamiRxG63
+         3EPMeKzshZzMJ7wA/6lQ6TRsa1AFFB+7VBUCS65h/sAdTI38qCe2fDqKXrL5ZVuHUdyy
+         ssgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=4O8YMN5ooZdkIVqxGyRMSpMDnc3iab7us+VWPOF5/XU=;
-        b=LEIdhU9/x+pCd/MkiNQ1XO3ki0dAvqmb6rQm1DrJOSSTKqZjlUVsNFALe32ak18RYr
-         tMPr7bbEgbIvkvYFNMkUwYyKLeziUuUHbp7G+YLTnRhZs6w2S9T6HWL3eMUp/pBkuOe8
-         jbuv8ZFIjjP0lGhjMViOUboxl2TRUOHthka3ajrr+eEnDR0zstOOAyAYOOBpq71jO9Av
-         SxMff5HtkeT45YGZORY5IJpBV0BubBGwfBkYFq2nR5QWcIY3Ggy9XMTgH14E7fDvjmEs
-         X53vSMzn79o6aKHm0QCRlGNXRXDebBDWuqmz8i+Hh3o2xauYC1iG/wdHseySw6wg2L3j
-         xAcA==
-X-Gm-Message-State: APjAAAVZJKKh4jNuUCAlrABp+qX9Asnzo280Se02V9kd4IXKXxF17zRs
-        MquG9ROqRmyD6Z9PySLPcJy7HXsq
-X-Google-Smtp-Source: APXvYqzwBySsEAGPpM5tE7qz54eopZOT2nDtE7N4z+OXqEeOJFOakTtHivT7zU44xBKfROTvEA0NCQ==
-X-Received: by 2002:a63:6fca:: with SMTP id k193mr8806997pgc.363.1572895075827;
-        Mon, 04 Nov 2019 11:17:55 -0800 (PST)
-Received: from ?IPv6:2001:df0:0:200c:9888:8ef6:cb36:21e0? ([2001:df0:0:200c:9888:8ef6:cb36:21e0])
-        by smtp.gmail.com with ESMTPSA id w62sm18505851pfb.15.2019.11.04.11.17.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 04 Nov 2019 11:17:55 -0800 (PST)
-Subject: Re: [PATCH RESEND v2 0/2] Convert Atari Falcon IDE driver to platform
- device
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Linux/m68k <linux-m68k@vger.kernel.org>,
-        linux-ide@vger.kernel.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-References: <1569470064-3977-1-git-send-email-schmitzmic@gmail.com>
- <7bd80760-0d46-3b3d-16e7-41cbc9169822@kernel.dk>
- <CAMuHMdWFoC8YUbmW8J7tJSsq4b67WkjyRzhkW=yfrEEJJmsZKQ@mail.gmail.com>
- <edb1ab21-9b60-4a25-b18c-76173ae6b28f@gmail.com>
- <CAMuHMdU6mcW_EcmE3bCTRGVCdouFPDoawTVyyGJP50oGES=duA@mail.gmail.com>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <db487366-b0d7-d65d-70b5-261aa439298b@gmail.com>
-Date:   Tue, 5 Nov 2019 08:17:49 +1300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=Y8B65fOpf13SzZJeqzGahDUtCJ8KAubW1DLRsIIyvPk=;
+        b=VPjsLG3jC+sZNjFB/yAlfw9pD7XUcJhOFYXwKP0RYRNjAZE7GTN4WBhIaH6I+bsN91
+         8tIXonu4n5Oos+DVRnCRjLBUBBqJ3D/sHNIW2qXYDboXVmkTD+tUjj/GQHxoAW6yjVo/
+         y+SiNJNeN8LEm2e0wGF72hPBMT4FNMTJde7yUVMJ+xS5InwEN/50XhjgYHiYgeSwpxPs
+         3xwRwJ06AZJDSkAxD80feg9W9mjqJK4wQv/vxjfE8iJnF4aT4HGCH3Gr3I8z+ksyAb/t
+         ApjVyQihZV3rIc5UldHTCOPRZX4HqP5ADPcVRDlTbT00BE4qCA+Io2jzkxKhanSJmJp2
+         1qAg==
+X-Gm-Message-State: APjAAAXCeMh6qSpIsbOUKSBQS86/SjaGQ7xAFCqcHdZtdrL0TNxwwEhl
+        GX8tkmmQDzXRVGMFU4sxC6KatT+FLPvnDAMqQKg=
+X-Google-Smtp-Source: APXvYqyDKv2XXndV+ob3O4ZzI1QgFzMuTdBh+3WpAuDmBBrdyT7uyNm0b824jsrVuryXmzV8HQEgnztV1Ivnky/Zw9c=
+X-Received: by 2002:a9d:7441:: with SMTP id p1mr5091907otk.87.1572895676256;
+ Mon, 04 Nov 2019 11:27:56 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdU6mcW_EcmE3bCTRGVCdouFPDoawTVyyGJP50oGES=duA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Reply-To: akgazshak@gmail.com
+Received: by 2002:ac9:16c1:0:0:0:0:0 with HTTP; Mon, 4 Nov 2019 11:27:55 -0800 (PST)
+From:   =?UTF-8?Q?=C4=B0shak_BURAKGAZI?= <akgazishak@gmail.com>
+Date:   Mon, 4 Nov 2019 11:27:55 -0800
+X-Google-Sender-Auth: Z9PPN2zZFAZ4z5Hs_Ib7k_WzK9Y
+Message-ID: <CACCNnZbzB-NxE2L4HYUaQGf2G88c_-WWQbznGVDnvD=ymm+WXA@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Geert,
+Hi,
 
-On 5/11/19 12:04 AM, Geert Uytterhoeven wrote:
-> Hi Michael,
->
-> On Mon, Oct 28, 2019 at 8:03 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
->> Am 27.10.2019 um 07:17 schrieb Geert Uytterhoeven:
->>>> Who's going to pick this one up? I can do it, but it'd be nice to have
->>>> m68k on patch 1 first.
->>> Sorry for the late reply.  I'll have a closer look after ELC-E, and will apply
->>> to the m68k tree if it passes.
->>>
->>> BTW, I believe v1 of both patches has been acked by Bartlomiej?
->> Correct - on July 3rd. I totally forgot about that, and didn't add his
->> Acked-by in v2, sorry.
-> OK.
->
-> I was about to queue the combined patch, until I realized the defconfigs
-> default to falconide, which is broken by patch 1/2.
-> My proposed solution for that is:
->    1. Switch the defconfigs from falconide to pata_falcon,
+It's very important we speak and discuss my proposal to you about this
+deposit please, try and get back to me regards the letter I sent to
+you before.
 
-Ack.
-
->    2. Remove the legacy falconide driver.
-
-Nack - I still use that one (because pata_falcon has no support for 
-using interrupts with the Falcon IDE interface, and I'm unsure how much 
-more kernel bloat libata will add). Need to check the impact of 
-switching to pata_falcon first.
-
-Cheers,
-
-     Michael
-
->
-> Does that sound OK? Thanks!
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
+ishak.

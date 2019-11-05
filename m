@@ -2,53 +2,43 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE49AF0516
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Nov 2019 19:31:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A3E0F054C
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Nov 2019 19:46:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390520AbfKESbe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 Nov 2019 13:31:34 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:41454 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390482AbfKESbe (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Nov 2019 13:31:34 -0500
-Received: by mail-pl1-f193.google.com with SMTP id d29so3538452plj.8;
-        Tue, 05 Nov 2019 10:31:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3YoZQhBP3HIfluuLXPlaF9LqczYVSkwkePRkTZv8ugw=;
-        b=W0Qj1PNCxSSkcOdJj3Zq28X5xyJ/3PEEaPLAREukfWBdgI5kKAKaBKTezI1CqCzcF1
-         Al3DthymfSkv4dPf4V/2mGhttXohbaMBqUpi7+BKioCC6wtrCRklrZXU2M4jrPj7Smqt
-         Mmv6kqDWsA7Yw11Bi/oRiRPsOfbYVrxR91a+WAKwayNF1MCQMBjAZbvhtLxDpHMVPwmx
-         7FcFinU5XzZVV7J+8B5G2dHfKTpwfKy+9oHHV53KWaKswBoHO+v0vvFmhRJXTSH2wFFK
-         9Hzy+vhwL2Lbp0B1ieeCPzrzXcLhmjhxRPgHHYIRJi1ZYPSaINjRKuypQI57n3j82VYR
-         oJqA==
+        id S2390432AbfKESq4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Nov 2019 13:46:56 -0500
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:45872 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389861AbfKESq4 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Nov 2019 13:46:56 -0500
+Received: by mail-ot1-f67.google.com with SMTP id r24so2253237otk.12;
+        Tue, 05 Nov 2019 10:46:55 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=3YoZQhBP3HIfluuLXPlaF9LqczYVSkwkePRkTZv8ugw=;
-        b=m7a8wKlgaKdum5F2ikSjGVp8zf7fr4staZeI2W2BIif6bAMD/NtKlkQrAsAlpvFEPm
-         SNwNXWhQeX431XwT1vB6Gk4Vt72ahmjeFswXxHAr4osVbpLOqyMdymS8rekofr5hx3S4
-         viZ/bYIlZ4vstNcGFHcWJtMV7AicDoJMQNUIQmbKkPJC6usV+SZOqTjSh4BKAqWAK0BS
-         aENTsE/osZr/baUORehDosnhnZ8/BqAR70t48Nx08VtXfh9Xk2937Ie1/zULNaJIl6Nr
-         q8bvm3toCljB9EJzS+rwIba4YhqOiuio1XArVLceICSnu0jqtLCJNkoT+TFqh0UpGUv0
-         k9hg==
-X-Gm-Message-State: APjAAAX3zhLyO1Uy/ijiBGNKop3SsgdrJWKXHH3EI6Rd5gR5nsD5mHqa
-        GXXJzoFHMoYlDGwRt553qCYlEbzyvG6s//UHiCg=
-X-Google-Smtp-Source: APXvYqwwuQLwkXMMofgqIXmwHQapHSmF2ttoN6z42y9XvPFdassSxAno8+A+9Bobed/y2QBnqMhhwgyPiWcSdqCx1Rs=
-X-Received: by 2002:a17:902:6909:: with SMTP id j9mr32309658plk.276.1572978692618;
- Tue, 05 Nov 2019 10:31:32 -0800 (PST)
+        bh=UDXQ4NYDhbvIkO2N9a0H6kkv8JZAqw2a9q8F98PkJQk=;
+        b=bHBd26uUGzd/0J5Nt4kkoafHYR8WSqu2nvfVAN61+QL3Ct5mC6/Mb6R8HN20Egtf1X
+         GzpbdjAxgAQpWQEKWUdPaOUsCoyaemPwJtWjZRXWX143ZB3dV9Rb9ZKevfZ1YU1DkkHW
+         FvulXMhxkDrmJ1NjTZHVOg6sfFl7v/ry11wV39jJAWbmLZEzsylpEghsWvgZpYDKBaij
+         4eO6VcYRzIphpVuJWsFTchWR6ILJb5s9Yxc9vGfQdUesYMOLrnG9hufHGOci8Z2sOGTd
+         Wq0xn45m9oBL3KjiR6LSh+7XC2UZOr5RWxKf0pq3FfrHLis/oqMPjEhXlI/eCsKLqQLg
+         Hmdw==
+X-Gm-Message-State: APjAAAXTd5I9PDIJXjm6Jt1ULGoojcMOkjsuXJDcNrsyp2ehV7DJGz7p
+        RtJchLhF3knacf4J9BqD5pSLupRuEEtGoh3TrEE=
+X-Google-Smtp-Source: APXvYqwYXAg4wK7+3+l1QrZyjm7KHJEkcUuk6KmcZkp24sSWkstIFrIu46Nj2hjpOMC5h4zkKMQ1M/LrN/280l8MzF4=
+X-Received: by 2002:a05:6830:2363:: with SMTP id r3mr20773978oth.39.1572979615110;
+ Tue, 05 Nov 2019 10:46:55 -0800 (PST)
 MIME-Version: 1.0
 References: <4cb95fe6-c2ea-0195-9124-fc2e1223ab38@gmail.com>
  <1572935872-28394-1-git-send-email-schmitzmic@gmail.com> <CAMuHMdXM+h_GsbkSvyfpLJ0DJixmr-wOS_d5qQrZ8e7VY_bbPg@mail.gmail.com>
-In-Reply-To: <CAMuHMdXM+h_GsbkSvyfpLJ0DJixmr-wOS_d5qQrZ8e7VY_bbPg@mail.gmail.com>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Date:   Wed, 6 Nov 2019 07:31:21 +1300
-Message-ID: <CAOmrzkKLosq7LdXS6BuvHSARPXCXPiasW1zGywY3+hoys4NxoA@mail.gmail.com>
+ <CAOmrzkKLosq7LdXS6BuvHSARPXCXPiasW1zGywY3+hoys4NxoA@mail.gmail.com>
+In-Reply-To: <CAOmrzkKLosq7LdXS6BuvHSARPXCXPiasW1zGywY3+hoys4NxoA@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 5 Nov 2019 19:46:44 +0100
+Message-ID: <CAMuHMdVBpMJ6E9N1=YG6VPNJifexdbM9=PWAkjyLwdz9b5n0YQ@mail.gmail.com>
 Subject: Re: [PATCH] ide: falconide: convert to platform driver
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
+To:     Michael Schmitz <schmitzmic@gmail.com>
 Cc:     "Linux/m68k" <linux-m68k@vger.kernel.org>,
         linux-ide@vger.kernel.org,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
@@ -59,114 +49,101 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Geert,
+Hi Michael,
 
-thanks for the review!
+On Tue, Nov 5, 2019 at 7:31 PM Michael Schmitz <schmitzmic@gmail.com> wrote:
+> On Tue, Nov 5, 2019 at 9:11 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Tue, Nov 5, 2019 at 7:38 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+> > > With the introduction of a platform device for the Atari Falcon IDE
+> > > interface, the old Falcon IDE driver no longer loads (resource already
+> > > claimed by the platform device).
+> > >
+> > > Convert falconide driver to use the same platform device that is used
+> > > by pata_falcon also.
+> > >
+> > > Tested (as built-in driver) on my Atari Falcon.
+> > >
+> > > Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
 
-On Tue, Nov 5, 2019 at 9:11 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->
-> Hi Michael,
->
-> On Tue, Nov 5, 2019 at 7:38 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> > With the introduction of a platform device for the Atari Falcon IDE
-> > interface, the old Falcon IDE driver no longer loads (resource already
-> > claimed by the platform device).
+> > > --- a/drivers/ide/falconide.c
+> > > +++ b/drivers/ide/falconide.c
+
+> > > @@ -23,6 +24,7 @@
+> > >  #include <asm/ide.h>
+> > >
+> > >  #define DRV_NAME "falconide"
+> > > +#define DRV_VERSION "0.1.0"
 > >
-> > Convert falconide driver to use the same platform device that is used
-> > by pata_falcon also.
+> > Does anyone care about that version?
+>
+> Not likely.
+>
+> > Will it ever be updated?
+>
+> You ask me? You're still listed as driver author!
+
+Yeah, I wrote a "it compiles, so it must work" driver in the IDE framework,
+based on a driver in an even older framework. I never ran it on hardware ;-)
+
+> > > @@ -169,10 +177,21 @@ static int __init falconide_init(void)
+>
+> Should I remove the __init here? Doesn't hurt in the built-in use
+> case, what about use as a module?
+
+Should be fine.
+
+>
+> > >  err_free:
+> > >         ide_host_free(host);
+> > >  err:
+> > > -       release_mem_region(ATA_HD_BASE, 0x40);
+> > > +       release_mem_region(res->start, resource_size(res));
+> > >         return rc;
+> > >  }
+> > >
+> > > -module_init(falconide_init);
+> > > +static struct platform_driver ide_falcon_driver = {
+> > > +       .driver   = {
+> > > +               .name   = "atari-falcon-ide",
+> > > +       },
+> > > +};
 > >
-> > Tested (as built-in driver) on my Atari Falcon.
+> > Missing .remove() callback.
+>
+> Can't easily test driver remove, but I can certainly add a callback for that.
+>
+> ide_unregister does the Right Thing (i.e. leaves the ST-DMA interrupt
+> registered) so no reason why it shouldn't work.
+
+gayle.c uses ide_host_remove().
+
+> > > +
+> > > +module_platform_driver_probe(ide_falcon_driver, falconide_init);
+> > > +
+> > >
+> > > +MODULE_AUTHOR("Geert Uytterhoeven");
+> > > +MODULE_DESCRIPTION("low-level driver for Atari Falcon IDE");
+> > >  MODULE_LICENSE("GPL");
+> > > +MODULE_ALIAS("platform:atari-falcon-ide");
+> > > +MODULE_VERSION(DRV_VERSION);
 > >
-> > Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-> > CC: Geert Uytterhoeven <geert@linux-m68k.org>
+> > I'd drop the MODULE_VERSION().
 >
-> Thanks for your patch!
+> Done.
 >
-> > --- a/drivers/ide/falconide.c
-> > +++ b/drivers/ide/falconide.c
-> > @@ -15,6 +15,7 @@
-> >  #include <linux/blkdev.h>
-> >  #include <linux/ide.h>
-> >  #include <linux/init.h>
-> > +#include <linux/platform_device.h>
-> >
-> >  #include <asm/setup.h>
-> >  #include <asm/atarihw.h>
-> > @@ -23,6 +24,7 @@
-> >  #include <asm/ide.h>
-> >
-> >  #define DRV_NAME "falconide"
-> > +#define DRV_VERSION "0.1.0"
->
-> Does anyone care about that version?
+> Shall I merge this one with part one of the old series so there's no
+> chance of a bisection going wrong?
 
-Not likely.
+Yes please.
+Thanks!
 
-> Will it ever be updated?
+Gr{oetje,eeting}s,
 
-You ask me? You're still listed as driver author!
+                        Geert
 
-I'll remove the version.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
->
-> > @@ -169,10 +177,21 @@ static int __init falconide_init(void)
-
-Should I remove the __init here? Doesn't hurt in the built-in use
-case, what about use as a module?
-
-> >  err_free:
-> >         ide_host_free(host);
-> >  err:
-> > -       release_mem_region(ATA_HD_BASE, 0x40);
-> > +       release_mem_region(res->start, resource_size(res));
-> >         return rc;
-> >  }
-> >
-> > -module_init(falconide_init);
-> > +static struct platform_driver ide_falcon_driver = {
-> > +       .driver   = {
-> > +               .name   = "atari-falcon-ide",
-> > +       },
-> > +};
->
-> Missing .remove() callback.
-
-Can't easily test driver remove, but I can certainly add a callback for that.
-
-ide_unregister does the Right Thing (i.e. leaves the ST-DMA interrupt
-registered) so no reason why it shouldn't work.
-
->
-> > +
-> > +module_platform_driver_probe(ide_falcon_driver, falconide_init);
-> > +
-> >
-> > +MODULE_AUTHOR("Geert Uytterhoeven");
-> > +MODULE_DESCRIPTION("low-level driver for Atari Falcon IDE");
-> >  MODULE_LICENSE("GPL");
-> > +MODULE_ALIAS("platform:atari-falcon-ide");
-> > +MODULE_VERSION(DRV_VERSION);
->
-> I'd drop the MODULE_VERSION().
-
-Done.
-
-Shall I merge this one with part one of the old series so there's no
-chance of a bisection going wrong?
-
-Cheers,
-
-    Michael
-
-
->
-> Gr{oetje,eeting}s,
->
->                         Geert
->
-> --
-> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
->
-> In personal conversations with technical people, I call myself a hacker. But
-> when I'm talking to journalists I just say "programmer" or something like that.
->                                 -- Linus Torvalds
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

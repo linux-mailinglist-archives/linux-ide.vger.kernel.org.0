@@ -2,35 +2,36 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40B68FA360
-	for <lists+linux-ide@lfdr.de>; Wed, 13 Nov 2019 03:12:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03772FA31A
+	for <lists+linux-ide@lfdr.de>; Wed, 13 Nov 2019 03:08:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728320AbfKMCJC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 12 Nov 2019 21:09:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54604 "EHLO mail.kernel.org"
+        id S1727590AbfKMCH6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 12 Nov 2019 21:07:58 -0500
+Received: from mail.kernel.org ([198.145.29.99]:55318 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729407AbfKMB7s (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 12 Nov 2019 20:59:48 -0500
+        id S1730443AbfKMCAO (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 12 Nov 2019 21:00:14 -0500
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0E453222CF;
-        Wed, 13 Nov 2019 01:59:46 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5622922469;
+        Wed, 13 Nov 2019 02:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573610387;
-        bh=JZdrSf66McTwmVPyGVXRXf/zpqf72r7V9/3MkaYOAbA=;
+        s=default; t=1573610413;
+        bh=l51evxqU8zJCOrGtKLHrLz9etFFXDJe12qIraGCuN0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TxR/OFpCDoy53maRjsUukBnMd8txkRj6hZ4aOBqhKKVD01D28y/Y0M4hsuIpjfLl7
-         BCjK/dLsIfZdpCj/8wIF7rbiXeAge5SdTjbI3KC11QqxfIPThvFHnDvYr7uHMCw1nT
-         LHguDND+MhR/V1OySLNRVDNqB+ZkEaqBfpnFQYIo=
+        b=IP+6Ya2xSANg9jwqiCf6aqA3hhx0PuT3m8Guk3vMx+FxNjovIsB2fDY5X9wsIRPUc
+         v9euERtQYlXKhBxjvG0uNcH3trZ1ZsA5c8RsfYdhdQj3bnGgeESU9Ln3vTvHKP2Rma
+         xXhFkKWjWplJ+DzIIEUPqokGOA21XMnIi1JaFWR0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+Cc:     Nathan Chancellor <natechancellor@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 10/68] ata: ahci_brcm: Allow using driver or DSL SoCs
-Date:   Tue, 12 Nov 2019 20:58:34 -0500
-Message-Id: <20191113015932.12655-10-sashal@kernel.org>
+        linux-ide@vger.kernel.org, clang-built-linux@googlegroups.com
+Subject: [PATCH AUTOSEL 4.9 26/68] ata: ep93xx: Use proper enums for directions
+Date:   Tue, 12 Nov 2019 20:58:50 -0500
+Message-Id: <20191113015932.12655-26-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20191113015932.12655-1-sashal@kernel.org>
 References: <20191113015932.12655-1-sashal@kernel.org>
@@ -43,34 +44,87 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Florian Fainelli <f.fainelli@gmail.com>
+From: Nathan Chancellor <natechancellor@gmail.com>
 
-[ Upstream commit 7fb44929cb0e5cdcde143e1ca3ca57b5b8247db0 ]
+[ Upstream commit 6adde4a36f1b6a562a1057fbb1065007851050e7 ]
 
-The Broadcom STB AHCI controller is the same as the one found on DSL
-SoCs, so we will utilize the same driver on these systems as well.
+Clang warns when one enumerated type is implicitly converted to another.
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+drivers/ata/pata_ep93xx.c:662:36: warning: implicit conversion from
+enumeration type 'enum dma_data_direction' to different enumeration type
+'enum dma_transfer_direction' [-Wenum-conversion]
+        drv_data->dma_rx_data.direction = DMA_FROM_DEVICE;
+                                        ~ ^~~~~~~~~~~~~~~
+drivers/ata/pata_ep93xx.c:670:36: warning: implicit conversion from
+enumeration type 'enum dma_data_direction' to different enumeration type
+'enum dma_transfer_direction' [-Wenum-conversion]
+        drv_data->dma_tx_data.direction = DMA_TO_DEVICE;
+                                        ~ ^~~~~~~~~~~~~
+drivers/ata/pata_ep93xx.c:681:19: warning: implicit conversion from
+enumeration type 'enum dma_data_direction' to different enumeration type
+'enum dma_transfer_direction' [-Wenum-conversion]
+        conf.direction = DMA_FROM_DEVICE;
+                       ~ ^~~~~~~~~~~~~~~
+drivers/ata/pata_ep93xx.c:692:19: warning: implicit conversion from
+enumeration type 'enum dma_data_direction' to different enumeration type
+'enum dma_transfer_direction' [-Wenum-conversion]
+        conf.direction = DMA_TO_DEVICE;
+                       ~ ^~~~~~~~~~~~~
+
+Use the equivalent valued enums from the expected type so that Clang no
+longer warns about a conversion.
+
+DMA_TO_DEVICE = DMA_MEM_TO_DEV = 1
+DMA_FROM_DEVICE = DMA_DEV_TO_MEM = 2
+
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Signed-off-by: Nathan Chancellor <natechancellor@gmail.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/pata_ep93xx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 5d16fc4fa46c7..a8d4f4b5a77eb 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -100,7 +100,8 @@ config SATA_AHCI_PLATFORM
+diff --git a/drivers/ata/pata_ep93xx.c b/drivers/ata/pata_ep93xx.c
+index bd6b089c67a3a..634c814cbeda4 100644
+--- a/drivers/ata/pata_ep93xx.c
++++ b/drivers/ata/pata_ep93xx.c
+@@ -659,7 +659,7 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
+ 	 * start of new transfer.
+ 	 */
+ 	drv_data->dma_rx_data.port = EP93XX_DMA_IDE;
+-	drv_data->dma_rx_data.direction = DMA_FROM_DEVICE;
++	drv_data->dma_rx_data.direction = DMA_DEV_TO_MEM;
+ 	drv_data->dma_rx_data.name = "ep93xx-pata-rx";
+ 	drv_data->dma_rx_channel = dma_request_channel(mask,
+ 		ep93xx_pata_dma_filter, &drv_data->dma_rx_data);
+@@ -667,7 +667,7 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
+ 		return;
  
- config AHCI_BRCM
- 	tristate "Broadcom AHCI SATA support"
--	depends on ARCH_BRCMSTB || BMIPS_GENERIC || ARCH_BCM_NSP
-+	depends on ARCH_BRCMSTB || BMIPS_GENERIC || ARCH_BCM_NSP || \
-+		   ARCH_BCM_63XX
- 	help
- 	  This option enables support for the AHCI SATA3 controller found on
- 	  Broadcom SoC's.
+ 	drv_data->dma_tx_data.port = EP93XX_DMA_IDE;
+-	drv_data->dma_tx_data.direction = DMA_TO_DEVICE;
++	drv_data->dma_tx_data.direction = DMA_MEM_TO_DEV;
+ 	drv_data->dma_tx_data.name = "ep93xx-pata-tx";
+ 	drv_data->dma_tx_channel = dma_request_channel(mask,
+ 		ep93xx_pata_dma_filter, &drv_data->dma_tx_data);
+@@ -678,7 +678,7 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
+ 
+ 	/* Configure receive channel direction and source address */
+ 	memset(&conf, 0, sizeof(conf));
+-	conf.direction = DMA_FROM_DEVICE;
++	conf.direction = DMA_DEV_TO_MEM;
+ 	conf.src_addr = drv_data->udma_in_phys;
+ 	conf.src_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	if (dmaengine_slave_config(drv_data->dma_rx_channel, &conf)) {
+@@ -689,7 +689,7 @@ static void ep93xx_pata_dma_init(struct ep93xx_pata_data *drv_data)
+ 
+ 	/* Configure transmit channel direction and destination address */
+ 	memset(&conf, 0, sizeof(conf));
+-	conf.direction = DMA_TO_DEVICE;
++	conf.direction = DMA_MEM_TO_DEV;
+ 	conf.dst_addr = drv_data->udma_out_phys;
+ 	conf.dst_addr_width = DMA_SLAVE_BUSWIDTH_4_BYTES;
+ 	if (dmaengine_slave_config(drv_data->dma_tx_channel, &conf)) {
 -- 
 2.20.1
 

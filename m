@@ -2,63 +2,81 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9AE4FF88C
-	for <lists+linux-ide@lfdr.de>; Sun, 17 Nov 2019 09:54:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F308100111
+	for <lists+linux-ide@lfdr.de>; Mon, 18 Nov 2019 10:21:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726047AbfKQIyz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 17 Nov 2019 03:54:55 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:40326 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfKQIyz (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 17 Nov 2019 03:54:55 -0500
-Received: by mail-oi1-f195.google.com with SMTP id d22so5615156oic.7
-        for <linux-ide@vger.kernel.org>; Sun, 17 Nov 2019 00:54:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=J+4i9mZoCL1GCd56Hjin1Hm5nAxN8vwHz8ReT6VBzAU=;
-        b=AYbaZMhAlU/qUWDqBZ/S112ivMreTWhvDbb+xvLmmfeMTXjUCvKiLfknN+PSIp0tlf
-         DAxsOzxHB+Kh5l1Y3/3nENur8/UjL3+QIGuC/WVGrge8HhPz0N/I9DjkiHOe6Zc4UjT3
-         s8bcgYnmLO833VpXX2FqtesPIlQSeY2GVkpq4wqFqqiRZnBGCUelDcEmN04hKIap9zIU
-         XDt112qz2eauezK85d3zDhPiRxnYTVa5nSMoTXXVBqB6gt1XzDhswiQPs4C0EiJpUtMY
-         jxFeEuO3f2d+j5ELeV5EHKrQ4JyF9Xdo6XlTSyvy+GjtJpb37Q/cZaiGiEiXR9gH55EA
-         ARdQ==
+        id S1726595AbfKRJU7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 18 Nov 2019 04:20:59 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:45362 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726460AbfKRJU6 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 18 Nov 2019 04:20:58 -0500
+Received: by mail-ot1-f66.google.com with SMTP id r24so13869706otk.12;
+        Mon, 18 Nov 2019 01:20:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=J+4i9mZoCL1GCd56Hjin1Hm5nAxN8vwHz8ReT6VBzAU=;
-        b=iSKp8lpITOHaacYGYc0hMmorq7sUCkwT6ow06YeFCDGiE/KVp4tD5d4MKdJH3leyX0
-         JOvvc3bxfLZUY+Ip9+OfXY2qVobbNuWOjj3poGnQhWGdII55/YlyuQqJ1QXtuSOZY1y0
-         2y6HMh7ZaRKufKSIWwGG3zG+8ZPs5bcm4X6yjGhpdPCYX9yUGDkT69JR9EQ01+HsdShe
-         p2QjU8VXdqF/CZrDRWxC+r2pbsRt3eVyXjiX7++sQIrlY9AuBN1f0wJnZAqqI39BN15j
-         Y9Sw1oiClKOdmBvRnuaOrnPDNGbPLXAEaFQQm8l6LrCoJkxhXAIveFhJLrodoExcSPLV
-         BBmA==
-X-Gm-Message-State: APjAAAWUi1p/AIssoygeXI/6TZ5NmlizTB/K7ne4iXwNfWBFLrXpe09q
-        c14l0KCFO8oVRgDVtWz4kmH4eHHsCPmFRGyon2E=
-X-Google-Smtp-Source: APXvYqxnqoPF7tQgReClmTD74XuGu2MSSyNrgADEBxQH4YnCGdgfMK9Nd/cT/9LQVPiEdkvUJy1MQWeB2fm7jqibezg=
-X-Received: by 2002:aca:f408:: with SMTP id s8mr15789902oih.69.1573980894823;
- Sun, 17 Nov 2019 00:54:54 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qtAKsWPBlYnhv+xK55aiSn/N1rFNErdKd7pO8efpmpA=;
+        b=iAF5HFsv9JXdeRg/Q9QbPlWoozmK3MVflMSwxhqq/LacsKgKwgYhABDyWs2hQHl166
+         ah/mX9FrlWTJ3LvSIS7vpZUlyChbOMVV9fm5wRTqqdBwV+t2eOCh6cRTiUm8ERaZPxcI
+         T2xlYE3pJYi4+0W92PQ9ndrXezOUNqPXR8uMemHuAnQWMtm/piw3XENPfgZ2Z4uuSiGm
+         Kpmqw905Idp7q6L4OtxPZw+tnPNyHmhsTQzcNImxdA/NI1cv/8PqRYLZzdbIND9M//c1
+         nwbdlC8J91JPFOZiLPc8TCVZwDlUjv8bqAfaGTKz3dke5bypIDsdRPw9GOdAOZTcIsRc
+         uvMQ==
+X-Gm-Message-State: APjAAAV6fOpgOxt4kOPOxpm73GzLKdiuZMx6oIskMh2ErQ9oSM0IbYLN
+        pwfmy+3O+/XKs+mwrfz1jeBYFbaNJsUCqlzNF9wTwD6O
+X-Google-Smtp-Source: APXvYqyvWtR9apLRYit6Bnvfc+ieSGeODh9jXLMv+77Lpop91UHEppp5TOf9eieGeZgEG2xUWfn0n3eejy/S7qG4/9Q=
+X-Received: by 2002:a9d:17ca:: with SMTP id j68mr21120807otj.250.1574068857754;
+ Mon, 18 Nov 2019 01:20:57 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a8a:505:0:0:0:0:0 with HTTP; Sun, 17 Nov 2019 00:54:54 -0800 (PST)
-Reply-To: mark.bill@planetmail.net
-From:   "Mr. Mark Bill" <francisuwah2015@gmail.com>
-Date:   Sun, 17 Nov 2019 09:54:54 +0100
-Message-ID: <CACNoC9t+tprwK+gAuyKqDba69WBDAqXokXocwefaVWjuHoza=Q@mail.gmail.com>
-Subject: Greetings
-To:     undisclosed-recipients:;
+References: <1569470064-3977-1-git-send-email-schmitzmic@gmail.com> <1573008449-8226-1-git-send-email-schmitzmic@gmail.com>
+In-Reply-To: <1573008449-8226-1-git-send-email-schmitzmic@gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 18 Nov 2019 10:20:46 +0100
+Message-ID: <CAMuHMdU0QvQELB27tZ4LG-X5sAGD1aAoqRHQ310PYO9FCDnUUw@mail.gmail.com>
+Subject: Re: [PATCH v3] m68k/atari: convert legacy Falcon IDE driver to
+ platform driver
+To:     Michael Schmitz <schmitzmic@gmail.com>
+Cc:     linux-ide@vger.kernel.org,
+        "Linux/m68k" <linux-m68k@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Greetings
+On Wed, Nov 6, 2019 at 3:47 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
+> Autoloading of Falcon IDE driver modules requires converting these
+> drivers to platform drivers.
+>
+> Add platform device for Falcon IDE interface in Atari platform setup
+> code. Use this in the pata_falcon driver in place of the simple
+> platform device set up on the fly.
+>
+> Convert falconide driver to use the same platform device that is used
+> by pata_falcon also. (With the introduction of a platform device for
+> the Atari Falcon IDE interface, the old Falcon IDE driver no longer
+> loads (resource already claimed by the platform device)).
+>
+> Tested (as built-in driver) on my Atari Falcon.
+>
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+> CC: Geert Uytterhoeven <geert@linux-m68k.org>
 
-I wonder why you continue neglecting my emails. Please, acknowledge the
-receipt of this message in reference to the subject above as I intend to send
-to you the details of the project.
-Sometimes, try to check your spam box because most of these correspondences
-fall out sometimes in SPAM folder.
-Best regards.
-Mr.Mark Bil
+Thanks, applied as "m68k/atari: Convert Falcon IDE drivers to platform
+drivers", and queued for v5.5.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

@@ -2,72 +2,93 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8E13102C61
-	for <lists+linux-ide@lfdr.de>; Tue, 19 Nov 2019 20:13:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E71A103C5C
+	for <lists+linux-ide@lfdr.de>; Wed, 20 Nov 2019 14:43:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727173AbfKSTNR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 19 Nov 2019 14:13:17 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:32860 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727118AbfKSTNQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 19 Nov 2019 14:13:16 -0500
-Received: by mail-oi1-f193.google.com with SMTP id m193so20067372oig.0
-        for <linux-ide@vger.kernel.org>; Tue, 19 Nov 2019 11:13:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mz5OqrqUSeG2Ec9nRC63vaTt1tA0ak8NabEWxjjWQY4=;
-        b=r2y8UZlKfSZBvIt9U1H6SOEQ2Puxbk8SQ8i30HScOjdAB4i7fJPhvShmxhV8Ovt7ci
-         VEIV54hZp9HdlEa6kKa3JEyyq1yFeGzqAYTstIPXbUroFIq72ibOWR26OEyelxdFCs15
-         28oZBmr1LW1PVzcaxuAFV0ik9y/ORBIx186sGue9ut6ZfD12E95axen0sTCX10MCFFeX
-         N9GroJW3bx3jK4Y/k9ov2+9zHiIaJg6yBCngHDgPQN0ufjqwD6mvlk4QhgJdEl9cflWc
-         PLG5JU5foIS7tf0VBWatGTsJiVKj2Zohql4Ih9QvBcW8gMnIKvIkuanFZA3yN/w7kptd
-         7KnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mz5OqrqUSeG2Ec9nRC63vaTt1tA0ak8NabEWxjjWQY4=;
-        b=sJiNosirmeDWdMXm2GO97aaT3qLksAezx18Wxoqz0IvSu4/a31GfKGH7WSSnFFQBfm
-         fKrMe6X+yH3CNDMGeP0PtjSckoW5NWWs1WTrJ9cYmj2cBQdMuQsqQrTRwHZh1tPieU6f
-         EV9nSw5k8fzYgDm2BNa2dZQqu1+zbEDJ+na+6ZlQeDkkIFfiX8vi5y6xp1pysl/cRSYA
-         1pLb1VxxXmCpgoLmZGRgc4hKuS1CuzuSsRxNxdeZ2a7GacQopsRt5VIaZ8THM0XHOiyu
-         ZTwdtbCZBfclWRCiiX7BQMmMP7PCPjC6/+ljwbueeRgMK2T3FFoPQRPEDWlJHlFv1wJF
-         StwQ==
-X-Gm-Message-State: APjAAAUMhWuR4HxjeHPpHYLrcMkEZyZb1Qnmi+xpJnLj0O4gHRsiuhXF
-        oSH/JznH4Loj1X3wuXhheLzpi1jC1zLN9B0YPP8=
-X-Google-Smtp-Source: APXvYqy2d/ahACWh9oS1tOagc3XXxFRsfAjowhcXqSOtSZtG9hVFrhknItA2WqGf69hahJB54t/ZvC5E5urJzGIcVMw=
-X-Received: by 2002:a54:481a:: with SMTP id j26mr5771644oij.20.1574190796226;
- Tue, 19 Nov 2019 11:13:16 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a4a:97ec:0:0:0:0:0 with HTTP; Tue, 19 Nov 2019 11:13:15
- -0800 (PST)
-Reply-To: pauwilliams37@gmail.com
-From:   Williams Paul <williamsetemba@gmail.com>
-Date:   Tue, 19 Nov 2019 19:13:15 +0000
-Message-ID: <CACPABGpJOP4mfQx95Z7mBZK9sEfg4Ydtw6q1wpVsP1QKmxE-iQ@mail.gmail.com>
-Subject: SUPPLY!!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S1730467AbfKTNnK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 20 Nov 2019 08:43:10 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51052 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730110AbfKTNnJ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 20 Nov 2019 08:43:09 -0500
+Received: from localhost.localdomain (unknown [118.189.143.39])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 3B75B22529;
+        Wed, 20 Nov 2019 13:43:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574257389;
+        bh=7efHtyV3wEVueAoQzTQPrJ546M7CEJGuZVDmGQSNb+o=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PVGjH7jlB4Ho1DZupPty70X8WqPuLHRp3TLuTnQlWBR9/5d7AyHWQK/G1aBpitwwN
+         1nuWvb2puhk3RJjzv/YgENIdSzUKT/5WkJE0YE7LfRCYNFEAl6pNn0p7Qc6M4LShkn
+         /k+wh27QakrkQ0znpP912zXTcNHtdmScI6Faf78w=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
+Subject: [PATCH] ata: Fix Kconfig indentation
+Date:   Wed, 20 Nov 2019 21:43:05 +0800
+Message-Id: <20191120134305.16300-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Adjust indentation from spaces to tab (+optional two spaces) as in
+coding style with command like:
+	$ sed -e 's/^        /\t/' -i */Kconfig
+
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ drivers/ata/Kconfig | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index a6beb2c5a692..86e35c9a9ac6 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -695,7 +695,7 @@ config PATA_IMX
+ 	depends on ARCH_MXC
+ 	help
+ 	  This option enables support for the PATA host available on Freescale
+-          iMX SoCs.
++	  iMX SoCs.
+ 
+ 	  If unsure, say N.
+ 
+@@ -704,7 +704,7 @@ config PATA_IT8213
+ 	depends on PCI
+ 	help
+ 	  This option enables support for the ITE 821 PATA
+-          controllers via the new ATA layer.
++	  controllers via the new ATA layer.
+ 
+ 	  If unsure, say N.
+ 
+@@ -732,9 +732,9 @@ config PATA_MACIO
+ 	depends on PPC_PMAC
+ 	help
+ 	  Most IDE capable PowerMacs have IDE busses driven by a variant
+-          of this controller which is part of the Apple chipset used on
+-          most PowerMac models. Some models have multiple busses using
+-          different chipsets, though generally, MacIO is one of them.
++	  of this controller which is part of the Apple chipset used on
++	  most PowerMac models. Some models have multiple busses using
++	  different chipsets, though generally, MacIO is one of them.
+ 
+ config PATA_MARVELL
+ 	tristate "Marvell PATA support via legacy mode"
+@@ -915,7 +915,7 @@ config PATA_PXA
+ 	  This option enables support for harddrive attached to PXA CPU's bus.
+ 
+ 	  NOTE: This driver utilizes PXA DMA controller, in case your hardware
+-	        is not capable of doing MWDMA, use pata_platform instead.
++	  is not capable of doing MWDMA, use pata_platform instead.
+ 
+ 	  If unsure, say N.
+ 
 -- 
+2.17.1
 
-
-Greetings,
-I have a very profitable business I would like your company to handle
-on partnership basis.
-There is this wealthy cattle farmer who needs a very important cattle
-vaccine being sold in Europe.
-We will get the vaccine at a price of USD 575 per carton and sell to
-the farmer at USD 1250 per carton.
-He needs more than 3500 cartons now.
-
-Can you get back to me for details.
-
-regards.
-
-Mr.  Williams

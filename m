@@ -2,68 +2,74 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83BF6105869
-	for <lists+linux-ide@lfdr.de>; Thu, 21 Nov 2019 18:17:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A08D105F02
+	for <lists+linux-ide@lfdr.de>; Fri, 22 Nov 2019 04:29:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726784AbfKURRR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 21 Nov 2019 12:17:17 -0500
-Received: from verein.lst.de ([213.95.11.211]:47378 "EHLO verein.lst.de"
+        id S1726408AbfKVD3V (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 21 Nov 2019 22:29:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40202 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726279AbfKURRR (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 21 Nov 2019 12:17:17 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id A77C768BFE; Thu, 21 Nov 2019 18:17:13 +0100 (CET)
-Date:   Thu, 21 Nov 2019 18:17:13 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Robin Murphy <robin.murphy@arm.com>
-Cc:     Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Hanjun Guo <guohanjun@huawei.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-pci@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ide@vger.kernel.org,
-        iommu@lists.linux-foundation.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2] dma-mapping: treat dev->bus_dma_mask as a DMA limit
-Message-ID: <20191121171713.GB2932@lst.de>
-References: <20191121092646.8449-1-nsaenzjulienne@suse.de> <c407877d-a812-de85-5e8f-e0915f5a517f@arm.com>
+        id S1726335AbfKVD3V (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 21 Nov 2019 22:29:21 -0500
+Received: from localhost (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A2614206CB;
+        Fri, 22 Nov 2019 03:29:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574393360;
+        bh=tuguamdkg+W41T8uuu4hkC6O1BUxUqTIXTvs3BXizwM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UQagMN7ilwhhxpb97RiwQGmyUqQtoUjzy4c3A9Qf+fmixWO85Gn26FGYlx55XE354
+         KtV6pkyohDixOl0sg89s0ipDOM6ygCrR9mZslKXbnkaUMZQjfDMXVJAyyjp9jE6xjl
+         jC02CtHCoBsi7xIejrUUBliF2fy9wuZ7MLVXtP+4=
+Date:   Thu, 21 Nov 2019 22:29:19 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Florian Fainelli <f.fainelli@gmail.com>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.14 014/115] ata: ahci_brcm: Match BCM63138
+ compatible strings
+Message-ID: <20191122032919.GL16867@sasha-vm>
+References: <20191113015622.11592-1-sashal@kernel.org>
+ <20191113015622.11592-14-sashal@kernel.org>
+ <bcd8f736-34a7-b0bb-adc1-1f7a092fc1f5@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <c407877d-a812-de85-5e8f-e0915f5a517f@arm.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <bcd8f736-34a7-b0bb-adc1-1f7a092fc1f5@gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Nov 21, 2019 at 05:07:54PM +0000, Robin Murphy wrote:
-> ^^ super-nit only because I can't not see my editor currently highlighting 
-> the typo: "accessible"
+On Wed, Nov 13, 2019 at 12:07:25PM -0800, Florian Fainelli wrote:
+>On 11/12/19 5:54 PM, Sasha Levin wrote:
+>> From: Florian Fainelli <f.fainelli@gmail.com>
+>>
+>> [ Upstream commit fb8506f15f2e394f5f648575cf48a26e8744390c ]
+>>
+>> Match the "brcm,bcm63138-ahci" compatible string in order to allow this
+>> driver to probe on such platforms.
+>>
+>> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
 >
-> Regardless of that though,
+>This is a feature and not really a bug fix, is someone specifically
+>asking for this to be back ported? Also without the matching SATA PHY
+>driver changes:
 >
-> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+>7b69fa1c5c930886f8a916cc47096dd4044c007a ("phy: brcm-sata: Add BCM63138
+>(DSL) PHY init sequence")
+>
+>this is pretty useless on its own. Same applies to all automatic
+>selections, not just this kernel obviously.
 
-Applied for real now with that typo fixed and on top of the pulled in
-arm64 branch.
+Ah, I got it from a distro tree but I see the backported the driver too.
+I'll drop it, thanks!
+
+-- 
+Thanks,
+Sasha

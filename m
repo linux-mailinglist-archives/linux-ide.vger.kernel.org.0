@@ -2,197 +2,78 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EC041064DC
-	for <lists+linux-ide@lfdr.de>; Fri, 22 Nov 2019 07:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2A3107554
+	for <lists+linux-ide@lfdr.de>; Fri, 22 Nov 2019 17:01:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727336AbfKVFwb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 22 Nov 2019 00:52:31 -0500
-Received: from mail.kernel.org ([198.145.29.99]:58228 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728544AbfKVFwa (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 22 Nov 2019 00:52:30 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5CFAA20721;
-        Fri, 22 Nov 2019 05:52:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574401949;
-        bh=EXOHNontjrs9tf8tmpw/5AGqGwMHf8WFi3vd8JcVRN8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FoPFMTOPdcjjv8tPpgucS8zUEWZKeNV0ejjePYEsJh7bWx6g/OLqv8PbMLOzNbWHq
-         8iG0vWKda0khozFirNubLO7unQ9Gz6sHnSXUUSw4jkRif4K13AfXXREbsfSqobd8et
-         wh8xNaFIM+GhDhlwxPqUbTOrvSs4/POLXKUUC9EI=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 172/219] ata: ahci: mvebu: do Armada 38x configuration only on relevant SoCs
-Date:   Fri, 22 Nov 2019 00:48:24 -0500
-Message-Id: <20191122054911.1750-165-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191122054911.1750-1-sashal@kernel.org>
-References: <20191122054911.1750-1-sashal@kernel.org>
+        id S1726784AbfKVQBV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 22 Nov 2019 11:01:21 -0500
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:37606 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726760AbfKVQBV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 22 Nov 2019 11:01:21 -0500
+Received: by mail-qt1-f196.google.com with SMTP id w47so4251469qtk.4;
+        Fri, 22 Nov 2019 08:01:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:subject:to:cc:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=CdX7ZQEUe/cRH9WC2wubBDri/lMHrSGbYedbb2yw4Hc=;
+        b=VBSZIm/NitEgFgAiYMVXY43lq5XjFUUTjaYCUvPZMFM3pP+4Wn/Ra81LvNCG2B/dqJ
+         O6+C4i5V5lsX27m/EGX/IIARNSgTmUZiXI5PQoF97enNrvv6/mJebzS5Yj5OAR21DDoX
+         s4zlKfGVcczc06smz2ulDrS/Zl297SC6dcC64rH1OZ+gai2JvhSrKRBitBBnrTvQMaQg
+         H+pzisp2xLarzHpVCLA2fOqxxjrKKkgP66m1mHkoy0m5a431z/fWNSOG/vzQ15Hs2ESN
+         fXgp914i6/lDpaaL4j27zwbYHltwdJIRFp1dKQkcR6jleKZgd7L9hxRDjngn325S4xzk
+         woCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:cc:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=CdX7ZQEUe/cRH9WC2wubBDri/lMHrSGbYedbb2yw4Hc=;
+        b=mRzhnBuqbjcrG48mEUpz1t54cXbTGjjIFQsr9kYhRRHL99DUNvn67LNFWNvKwayxav
+         +U1eXMv3C9Kh4g4hDiMB1ZrveUf9lf/oQb1alZbE4AEJTF4WcNnQ/KqkK01GVL05GgRG
+         Jj4Br20wVbYM2LgiOd4GevD8xXexUY+nll3LPBmBx3ImxBr5Qr4lD1WNWo8Tes/4EOos
+         CBWhdQ1oDQm+SMFH7wDBF/ukBf2+9MBShwRwiZflzsw12ihRK7j5TOn0/0IsxMEim/0k
+         9pKuhHUVotOxWm1Sfkrtxw9ZCSC5b5SB3em8ZGacPkYNyaENvvc+gVlxMXPV7pGKXKFB
+         2vrQ==
+X-Gm-Message-State: APjAAAWwlBR/BYOStCtQ8RZuUENEeFZo14gbLanQSE3ZU7LbaF2RO03V
+        91zEx5pBQZsUzj1TaUPlMWNQJt2AgTJA4w==
+X-Google-Smtp-Source: APXvYqxWtITWMvEHpWI203D+raKApDrbUfvSAVn8EvwssACZseFHVbt5V5RSqvf9csq4q2LiWohHOQ==
+X-Received: by 2002:ac8:1415:: with SMTP id k21mr4959630qtj.80.1574438477243;
+        Fri, 22 Nov 2019 08:01:17 -0800 (PST)
+Received: from [192.168.1.164] (pool-108-20-37-130.bstnma.fios.verizon.net. [108.20.37.130])
+        by smtp.gmail.com with ESMTPSA id m27sm2196315qta.21.2019.11.22.08.01.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Nov 2019 08:01:15 -0800 (PST)
+From:   Ric Wheeler <ricwheeler@gmail.com>
+Subject: USENIX Vault - open source storage call for talks - CFP deadline
+ extended
+To:     Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-block@vger.kernel.org
+Cc:     Vault '20 Program Co-Chairs <vault20chairs@usenix.org>
+Message-ID: <727e2a7a-eab7-9ba7-e1b8-d75eb853245a@gmail.com>
+Date:   Fri, 22 Nov 2019 11:01:14 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+Hi all,
 
-[ Upstream commit 96dbcb40e4b1a387cdb9b21f43638c759aebb5a4 ]
+We decided to push the CFP deadline for USENIX Vault back until Dec 3rd given 
+the holiday and some slowness we had in opening the CFP site. We already have a 
+good set of submissions, so please do submit any talk ideas as soon as possible.
 
-At the beginning, only Armada 38x SoCs where supported by the
-ahci_mvebu.c driver. Commit 15d3ce7b63bd ("ata: ahci_mvebu: add
-support for Armada 3700 variant") introduced Armada 3700 support. As
-opposed to Armada 38x SoCs, the 3700 variants do not have to configure
-mbus and the regret option. This patch took care of avoiding such
-configuration when not needed in the probe function, but failed to do
-the same in the resume path. While doing so looks harmless by
-experience, let's clean the driver logic and avoid doing this useless
-configuration with Armada 3700 SoCs.
+See here for more information on how to submit your talk proposals:
 
-Because the logic is very similar between these two places, it has
-been decided to factorize this code and put it in a "Armada 38x
-configuration function". This function is part of a new
-(per-compatible) platform data structure, so that the addition of such
-configuration function for Armada 3700 will be eased.
+https://www.usenix.org/conference/vault20
 
-Fixes: 15d3ce7b63bd ("ata: ahci_mvebu: add support for Armada 3700 variant")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ata/ahci_mvebu.c | 68 ++++++++++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 17 deletions(-)
+Hope to see you all there!
 
-diff --git a/drivers/ata/ahci_mvebu.c b/drivers/ata/ahci_mvebu.c
-index f9cb51be38ebf..a54214291481f 100644
---- a/drivers/ata/ahci_mvebu.c
-+++ b/drivers/ata/ahci_mvebu.c
-@@ -28,6 +28,10 @@
- #define AHCI_WINDOW_BASE(win)	(0x64 + ((win) << 4))
- #define AHCI_WINDOW_SIZE(win)	(0x68 + ((win) << 4))
- 
-+struct ahci_mvebu_plat_data {
-+	int (*plat_config)(struct ahci_host_priv *hpriv);
-+};
-+
- static void ahci_mvebu_mbus_config(struct ahci_host_priv *hpriv,
- 				   const struct mbus_dram_target_info *dram)
- {
-@@ -62,6 +66,22 @@ static void ahci_mvebu_regret_option(struct ahci_host_priv *hpriv)
- 	writel(0x80, hpriv->mmio + AHCI_VENDOR_SPECIFIC_0_DATA);
- }
- 
-+static int ahci_mvebu_armada_380_config(struct ahci_host_priv *hpriv)
-+{
-+	const struct mbus_dram_target_info *dram;
-+	int rc = 0;
-+
-+	dram = mv_mbus_dram_info();
-+	if (dram)
-+		ahci_mvebu_mbus_config(hpriv, dram);
-+	else
-+		rc = -ENODEV;
-+
-+	ahci_mvebu_regret_option(hpriv);
-+
-+	return rc;
-+}
-+
- /**
-  * ahci_mvebu_stop_engine
-  *
-@@ -126,13 +146,10 @@ static int ahci_mvebu_resume(struct platform_device *pdev)
- {
- 	struct ata_host *host = platform_get_drvdata(pdev);
- 	struct ahci_host_priv *hpriv = host->private_data;
--	const struct mbus_dram_target_info *dram;
-+	const struct ahci_mvebu_plat_data *pdata = hpriv->plat_data;
- 
--	dram = mv_mbus_dram_info();
--	if (dram)
--		ahci_mvebu_mbus_config(hpriv, dram);
--
--	ahci_mvebu_regret_option(hpriv);
-+	if (pdata->plat_config)
-+		pdata->plat_config(hpriv);
- 
- 	return ahci_platform_resume_host(&pdev->dev);
- }
-@@ -154,28 +171,31 @@ static struct scsi_host_template ahci_platform_sht = {
- 
- static int ahci_mvebu_probe(struct platform_device *pdev)
- {
-+	const struct ahci_mvebu_plat_data *pdata;
- 	struct ahci_host_priv *hpriv;
--	const struct mbus_dram_target_info *dram;
- 	int rc;
- 
-+	pdata = of_device_get_match_data(&pdev->dev);
-+	if (!pdata)
-+		return -EINVAL;
-+
- 	hpriv = ahci_platform_get_resources(pdev, 0);
- 	if (IS_ERR(hpriv))
- 		return PTR_ERR(hpriv);
- 
-+	hpriv->plat_data = (void *)pdata;
-+
- 	rc = ahci_platform_enable_resources(hpriv);
- 	if (rc)
- 		return rc;
- 
- 	hpriv->stop_engine = ahci_mvebu_stop_engine;
- 
--	if (of_device_is_compatible(pdev->dev.of_node,
--				    "marvell,armada-380-ahci")) {
--		dram = mv_mbus_dram_info();
--		if (!dram)
--			return -ENODEV;
--
--		ahci_mvebu_mbus_config(hpriv, dram);
--		ahci_mvebu_regret_option(hpriv);
-+	pdata = hpriv->plat_data;
-+	if (pdata->plat_config) {
-+		rc = pdata->plat_config(hpriv);
-+		if (rc)
-+			goto disable_resources;
- 	}
- 
- 	rc = ahci_platform_init_host(pdev, hpriv, &ahci_mvebu_port_info,
-@@ -190,9 +210,23 @@ static int ahci_mvebu_probe(struct platform_device *pdev)
- 	return rc;
- }
- 
-+static const struct ahci_mvebu_plat_data ahci_mvebu_armada_380_plat_data = {
-+	.plat_config = ahci_mvebu_armada_380_config,
-+};
-+
-+static const struct ahci_mvebu_plat_data ahci_mvebu_armada_3700_plat_data = {
-+	.plat_config = NULL,
-+};
-+
- static const struct of_device_id ahci_mvebu_of_match[] = {
--	{ .compatible = "marvell,armada-380-ahci", },
--	{ .compatible = "marvell,armada-3700-ahci", },
-+	{
-+		.compatible = "marvell,armada-380-ahci",
-+		.data = &ahci_mvebu_armada_380_plat_data,
-+	},
-+	{
-+		.compatible = "marvell,armada-3700-ahci",
-+		.data = &ahci_mvebu_armada_3700_plat_data,
-+	},
- 	{ },
- };
- MODULE_DEVICE_TABLE(of, ahci_mvebu_of_match);
--- 
-2.20.1
+
 

@@ -2,111 +2,142 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 168221171CF
-	for <lists+linux-ide@lfdr.de>; Mon,  9 Dec 2019 17:33:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AEC6117275
+	for <lists+linux-ide@lfdr.de>; Mon,  9 Dec 2019 18:08:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726991AbfLIQdT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 9 Dec 2019 11:33:19 -0500
-Received: from smtp-fw-9102.amazon.com ([207.171.184.29]:44980 "EHLO
-        smtp-fw-9102.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726908AbfLIQdH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 9 Dec 2019 11:33:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1575909187; x=1607445187;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version;
-  bh=zgQkIGuRvSxFLjIyYi7BTGpgi6pw2e+YCJP0jZaa6K8=;
-  b=tVZbsPnAC64eWTtdfR0q/d45/xuTnUCnOKGc9jOytNZNufcNHwqvAbby
-   VPD6LAkY1S4LVKSmHcA4MHrslr36HdDBITaYuRFhxalqRmin4RCWu4Lu3
-   GAsI5AdFTQnuPpDGcaGF1uh4/RIbJArxQPj6nLNU76/1sX5atAePi4K8d
-   E=;
-IronPort-SDR: 03SkaqT8v3qcZpz1V7xfKeW9iH/eqfQz5SDEFDn+XBMLJIABfeP4jEzmvRmIpLAPmnHaCulfNI
- VD8CkwcMIzGA==
-X-IronPort-AV: E=Sophos;i="5.69,296,1571702400"; 
-   d="scan'208";a="12467600"
-Received: from sea32-co-svc-lb4-vlan3.sea.corp.amazon.com (HELO email-inbound-relay-1e-303d0b0e.us-east-1.amazon.com) ([10.47.23.38])
-  by smtp-border-fw-out-9102.sea19.amazon.com with ESMTP; 09 Dec 2019 16:32:46 +0000
-Received: from EX13MTAUEA001.ant.amazon.com (iad55-ws-svc-p15-lb9-vlan3.iad.amazon.com [10.40.159.166])
-        by email-inbound-relay-1e-303d0b0e.us-east-1.amazon.com (Postfix) with ESMTPS id 4D581A24D0;
-        Mon,  9 Dec 2019 16:32:43 +0000 (UTC)
-Received: from EX13D19EUB003.ant.amazon.com (10.43.166.69) by
- EX13MTAUEA001.ant.amazon.com (10.43.61.82) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Mon, 9 Dec 2019 16:32:43 +0000
-Received: from ua9e4f3715fbc5f.ant.amazon.com (10.43.162.171) by
- EX13D19EUB003.ant.amazon.com (10.43.166.69) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Mon, 9 Dec 2019 16:32:37 +0000
-From:   Hanna Hawa <hhhawa@amazon.com>
-To:     <axboe@kernel.dk>, <hdegoede@redhat.com>
-CC:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <dwmw@amazon.co.uk>, <benh@amazon.com>, <ronenk@amazon.com>,
-        <talel@amazon.com>, <jonnyc@amazon.com>, <hanochu@amazon.com>,
-        <barakw@amazon.com>, <hhhawa@amazon.com>
-Subject: [PATCH 2/2] ata: ahci: Add shutdown handler
-Date:   Mon, 9 Dec 2019 16:32:09 +0000
-Message-ID: <20191209163209.26284-3-hhhawa@amazon.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191209163209.26284-1-hhhawa@amazon.com>
-References: <20191209163209.26284-1-hhhawa@amazon.com>
+        id S1726801AbfLIRIR convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Mon, 9 Dec 2019 12:08:17 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:42250 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726522AbfLIRIQ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 9 Dec 2019 12:08:16 -0500
+Received: by mail-pg1-f195.google.com with SMTP id s64so709651pgb.9;
+        Mon, 09 Dec 2019 09:08:15 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=pPjzbV+XoAtiNq1c5fnVV7Us4zipQoGWT7Qul1cJyng=;
+        b=ffaJjSqJSiRVtvv352eTQohYdXE+ft52Bfkez4Tjv8dNz5/VsuxocjJwBBZsMDnwp6
+         FffcmkHM4+TGDNtyE5MwkNi0KZ9Q5qeLhrAzbi4dKS0ZBUMrUQkJbANFoz++ikq7J18G
+         t69eSJsqtWvM9rtR/Auviw14ClMgUNgrdl3KQ5U3DAV5qgjnhFBZf2ZTKFk8im97Trj0
+         Szc3ztW4nxbzhXROF4ibtGSqUcjjlZoBIPEy29mfWBISUYlRa9XLFp+CevQua6xw4jvL
+         1N2b0BueTTVBpe82Yoms+UVtJCklOEsGdB+7Hn68AQLvId/iQzFwl2n75Kn4p+gTFbpk
+         0MAQ==
+X-Gm-Message-State: APjAAAXpZ8ENbsXXspHEb/tkWgVGjmotOD2GtvNPGaHYHUUZ+aYSKThK
+        EE07nzXskbWPyjRHmu7z5jQ=
+X-Google-Smtp-Source: APXvYqxLZEJRTdaKTvd+1D3aFVyOayeVhezMkQ+DuhC85xm2Fqahw6g5npYOtg5jcKeoWnsdtMVLpA==
+X-Received: by 2002:a65:6914:: with SMTP id s20mr19419027pgq.44.1575911295347;
+        Mon, 09 Dec 2019 09:08:15 -0800 (PST)
+Received: from [172.31.133.107] ([216.9.110.1])
+        by smtp.gmail.com with ESMTPSA id g191sm43969pfb.19.2019.12.09.09.08.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Dec 2019 09:08:14 -0800 (PST)
+Subject: Re: [PATCH 1/1] hwmon: Driver for temperature sensors on SATA drives
+To:     Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-ide@vger.kernel.org, Chris Healy <cphealy@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+References: <20191209052119.32072-1-linux@roeck-us.net>
+ <20191209052119.32072-2-linux@roeck-us.net>
+From:   Bart Van Assche <bvanassche@acm.org>
+X-Pep-Version: 2.0
+Message-ID: <c87ca545-d8f1-bf1e-2474-b98a6eb60422@acm.org>
+Date:   Mon, 9 Dec 2019 09:08:13 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.43.162.171]
-X-ClientProxiedBy: EX13D34UWA002.ant.amazon.com (10.43.160.245) To
- EX13D19EUB003.ant.amazon.com (10.43.166.69)
+In-Reply-To: <20191209052119.32072-2-linux@roeck-us.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8BIT
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-An issue found while doing kexec on Annapurna Labs SoC: an AXI read
-error occur due to an access from the interrupt handler of AHCI to the
-AHCI controller.
-This patch make sure that the interrupts are disabled for the controller
-while doing kexec.
+On 12/8/19 9:21 PM, Guenter Roeck wrote:
+> +static int satatemp_scsi_command(struct satatemp_data *st,
+> +				 u8 ata_command, u8 feature,
+> +				 u8 lba_low, u8 lba_mid, u8 lba_high)
+> +{
+> +	static u8 scsi_cmd[MAX_COMMAND_SIZE];
+> +	int data_dir;
 
-The shutdown handler is called during system shutdown to disable host
-controller DMA and interrupts in order to avoid potentially corrupting
-or otherwise interfering with a new kernel being started with kexec.
+Declaring scsi_cmd[] static makes an otherwise thread-safe function
+thread-unsafe. Has it been considered to allocate scsi_cmd[] on the stack?
 
-Signed-off-by: Hanna Hawa <hhhawa@amazon.com>
----
- drivers/ata/ahci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> +	/*
+> +	 * Inquiry data sanity checks (per SAT-5):
+> +	 * - peripheral qualifier must be 0
+> +	 * - peripheral device type must be 0x0 (Direct access block device)
+> +	 * - SCSI Vendor ID is "ATA     "
+> +	 */
+> +	if (sdev->inquiry[0] ||
+> +	    strncmp(&sdev->inquiry[8], "ATA     ", 8))
+> +		return -ENODEV;
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 05c2b32dcc4d..34ddc259343a 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -80,6 +80,7 @@ enum board_ids {
- 
- static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent);
- static void ahci_remove_one(struct pci_dev *dev);
-+static void ahci_shutdown(struct pci_dev *dev);
- static int ahci_vt8251_hardreset(struct ata_link *link, unsigned int *class,
- 				 unsigned long deadline);
- static int ahci_avn_hardreset(struct ata_link *link, unsigned int *class,
-@@ -593,6 +594,7 @@ static struct pci_driver ahci_pci_driver = {
- 	.id_table		= ahci_pci_tbl,
- 	.probe			= ahci_init_one,
- 	.remove			= ahci_remove_one,
-+	.shutdown		= ahci_shutdown,
- 	.driver = {
- 		.pm		= &ahci_pci_pm_ops,
- 	},
-@@ -1870,6 +1872,13 @@ static void ahci_remove_one(struct pci_dev *pdev)
- 	ata_pci_remove_one(pdev);
- }
- 
-+static void ahci_shutdown(struct pci_dev *pdev)
-+{
-+	struct ata_host *host = pci_get_drvdata(pdev);
-+
-+	ahci_common_shutdown(host);
-+}
-+
- module_pci_driver(ahci_pci_driver);
- 
- MODULE_AUTHOR("Jeff Garzik");
--- 
-2.17.1
+It's possible that we will need a quirk mechanism to disable temperature
+monitoring for certain ATA devices. Has it been considered to make
+scsi_add_lun() set a flag that indicates whether or not temperatures
+should be monitored and to check that flag from inside this function?
+I'm asking this because an identical strncmp() check exists in
+scsi_add_lun().
+
+> +static int satatemp_read(struct device *dev, enum hwmon_sensor_types type,
+> +			 u32 attr, int channel, long *val)
+> +{
+> +	struct satatemp_data *st = dev_get_drvdata(dev);
+
+Which device does 'dev' represent? What guarantees that the drvdata
+won't be used for another purpose, e.g. by the SCSI core?
+
+> +/*
+> + * The device argument points to sdev->sdev_dev. Its parent is
+> + * sdev->sdev_gendev, which we can use to get the scsi_device pointer.
+> + */
+> +static int satatemp_add(struct device *dev, struct class_interface *intf)
+> +{
+> +	struct scsi_device *sdev = to_scsi_device(dev->parent);
+> +	struct satatemp_data *st;
+> +	int err;
+> +
+> +	st = kzalloc(sizeof(*st), GFP_KERNEL);
+> +	if (!st)
+> +		return -ENOMEM;
+> +
+> +	st->sdev = sdev;
+> +	st->dev = dev;
+> +	mutex_init(&st->lock);
+> +
+> +	if (satatemp_identify(st)) {
+> +		err = -ENODEV;
+> +		goto abort;
+> +	}
+> +
+> +	st->hwdev = hwmon_device_register_with_info(dev->parent, "satatemp",
+> +						    st, &satatemp_chip_info,
+> +						    NULL);
+> +	if (IS_ERR(st->hwdev)) {
+> +		err = PTR_ERR(st->hwdev);
+> +		goto abort;
+> +	}
+> +
+> +	list_add(&st->list, &satatemp_devlist);
+> +	return 0;
+> +
+> +abort:
+> +	kfree(st);
+> +	return err;
+> +}
+
+How much does synchronously submitting SCSI commands from inside the
+device probing call back slow down SCSI device discovery? What is the
+impact of this code on systems with a large number of ATA devices?
+
+Thanks,
+
+Bart.
 

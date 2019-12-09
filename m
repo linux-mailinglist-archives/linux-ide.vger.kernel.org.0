@@ -2,110 +2,146 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 505C3112BB0
-	for <lists+linux-ide@lfdr.de>; Wed,  4 Dec 2019 13:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC96911661F
+	for <lists+linux-ide@lfdr.de>; Mon,  9 Dec 2019 06:21:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727752AbfLDMnB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 4 Dec 2019 07:43:01 -0500
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:36872 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727865AbfLDMnA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 4 Dec 2019 07:43:00 -0500
-Received: by mail-qt1-f196.google.com with SMTP id w47so7575313qtk.4
-        for <linux-ide@vger.kernel.org>; Wed, 04 Dec 2019 04:42:59 -0800 (PST)
+        id S1725842AbfLIFVY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 9 Dec 2019 00:21:24 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:35255 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725819AbfLIFVY (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 9 Dec 2019 00:21:24 -0500
+Received: by mail-pg1-f195.google.com with SMTP id l24so6507226pgk.2;
+        Sun, 08 Dec 2019 21:21:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=AkbuvF8WWOeGkFuNbpEiUPeHs0D9XYCrvYJnn3sJBPk0l/N+bAJ+lU7by52a8c0/XL
-         X5y/+uJVi5SRPzgKpD7LZp2RSO63H/dWhNB+Sgv8CnTmnW6HnNvEkrD3pvFKiHue+ji0
-         Cyct4Vs7hozR5hYKDh8cJJMkT72K9aPHj93bK1Ew++bIIM698i5hGwNXpwVN8RyOlTlg
-         ekVZP06isuUhwZwFxkLwU0Sye3HMnEDkq9yUmWZzxA1JTm8RzibEufZxYTJilauyHwzc
-         pKJFDkaXtzzvkeOyU7ajhljX9QykaA8Ur2FHYJunK1Sxosbxld4ODKAYs9j7AB06Aipc
-         jW5w==
+        h=sender:from:to:cc:subject:date:message-id;
+        bh=AW9VGumdZy3wyOIy/HTgLy8T6vfCGABBPNOsP0bKaQE=;
+        b=TsG72EKhhevQp6j8XWGxYjQUHFzVKmaJ+m6N3d0iIbPMuUY9MxkgA1+vjqDbRmFDeO
+         ghawKgXv6oFiwdG60kodv4PWWwf2+7SjkF/xi6rhUHjJOpkQpQtpYsKQvmIaAf/vr+BC
+         r3ovygDlMulStfAJC+J2FJfON43TXLO8IrfNuZZvvwtdulQqdItQBNmRP/9sCpBEUNUQ
+         /A4W2DZsA7wRKxgYBl7xwDVwE1xK9bkEsu4sMM0OLnLcN6UrfP0joLWUZcfrhEfZsklz
+         ktfOtxJJDO+Adp1o6Ul8WBQN0+Udjkits3w7hrH+/olZ69NId9+GyD5QYMdBdJBB50G8
+         ZGng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=pdmVTWPYDLGw3oAMhE0clEBSEsfigy+m0j3vW5eS72AZsT+H2H99SY7j8MkV9X4jMJ
-         Kf00sO+bwFXDAIBUisDahdJ9OBsUOV0i5vqTyc6hNouY38vvXEWosVFV6V9WFp8jCOEv
-         uhCby/1qv5SJt4o0wEWR9wVg+VCXFmguf9WyC+r5W3nLfbktIcgyIPp4kAV18+dxtAA/
-         RWf9zjYOcxJHaqduA+juH8PAwq3xN0cpmbKHLiFr+bfjsLyqF9HYhzxyCbp8YJxyoa3a
-         NyWZ9OwREbtxfpOS0h6dV+RhVHr+0xIHWovnDeZb/hsWZDBf4UxZyFwSfYmXMjKW+Bp/
-         EH8Q==
-X-Gm-Message-State: APjAAAUqUB+pJulSe98V4vYS0Zq1mIuEq0A5aFOUt+My71IsknTbeEgp
-        Nw/pi2xbhXXguT6swYolMRLcOsAjKe6jQhFKWVk=
-X-Google-Smtp-Source: APXvYqzw3gCG5cnmI6368TWfhjS/+LLSHd6b95oZCOsPTpsAjIN23auDStB1pQ1PTnMah1qk6gl8uYsnTPaZ7k01uH0=
-X-Received: by 2002:ac8:4a81:: with SMTP id l1mr2434940qtq.357.1575463377714;
- Wed, 04 Dec 2019 04:42:57 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:ac8:2f0c:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:42:57 -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Wed, 4 Dec 2019 13:42:57 +0100
-Message-ID: <CAP=nHBJXiPmPL21x=_0BHWRk_3N3Yax+tTxcFi=t=AhN7g==1Q@mail.gmail.com>
-Subject: God has remembered your prayers I have already sent you Money Gram
- payment of $5000.00 today, MG 1029-8096
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id;
+        bh=AW9VGumdZy3wyOIy/HTgLy8T6vfCGABBPNOsP0bKaQE=;
+        b=IdmRvHtBfQdKdWykFZURtgzXOuwrmw9rVFyVssh5/yCvDZ1+USioUA2+Gd3RHarnpo
+         YE30Cr3Oc4AQMXvvnD2IrxgJhvSaK0ggd0E7UJuSORtbk/AgERmmCgRBlnheeyoOscy/
+         CpCnOeYJnsrJLOkB7hwuK7DC9c3nQTQqn1Ewcm26pEjB/+fjnnwSGi4yckJnREhCvyp+
+         jR/i7XsQsh1JFec60+CKUzvjWfEKzCX6XlvvRJSkhnCFcJC1cYJjlAwFLBgG9upBe7Gj
+         uUgzi7O0cNaOsDsQTSFGU25Q5c4uOL0UyjmA6gBQQlZfQhbKY9AV+ZYL3Bewp8btHNMj
+         gBXQ==
+X-Gm-Message-State: APjAAAVXpfTgBYfOjsnMDcxif+ssJbkD4GmNCHhJh4B20N0N/3ohBKTr
+        2b6yHG9UXrDA5AXD7Kt3PLUTddFT
+X-Google-Smtp-Source: APXvYqxYDPRGsuZZfyTlwwznlYvBbns+TS2/nPhxae0oeWbWTkG1vruV0JtDqhcrduLGxraf//k3IQ==
+X-Received: by 2002:a63:4a50:: with SMTP id j16mr17333906pgl.308.1575868882682;
+        Sun, 08 Dec 2019 21:21:22 -0800 (PST)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id b7sm10752127pjo.3.2019.12.08.21.21.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Sun, 08 Dec 2019 21:21:21 -0800 (PST)
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     linux-hwmon@vger.kernel.org
+Cc:     Jean Delvare <jdelvare@suse.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-ide@vger.kernel.org, Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 0/1] Summary: hwmon driver for temperature sensors on SATA drives
+Date:   Sun,  8 Dec 2019 21:21:18 -0800
+Message-Id: <20191209052119.32072-1-linux@roeck-us.net>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Attn, dear Beneficiary.
+In the past, several attempts have been made to add support for reporting
+SCSI/[S]ATA drive temperatures to the Linux kernel. This is desirable to
+have a means to report drive temperatures to userspace without root
+privileges and in a standard format, but also to be able to tie reported
+temperatures with the thermal subsystem.
 
-God has remembered your prayers
-I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
-This is because we have finally concluded to effect your transfer
-funds of $4.8,000.000usd
-through MONEY GRAM International Fund transfer Service
-Each payment will be sending to you by $5000.00 daily until the
-($4.8,000.000usd) is completely transferred
-we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
-So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
+The most recent attempt was [1] by Linus Walleij. It went through a total
+of seven iterations. At the end, it was rejected for a number of reasons;
+see the provided link for details. This implementation resides in the
+SCSI core. It originally resided in libata but was moved to SCSI per
+maintainer request, where it was ultimately rejected.
 
-Contact person Mrs. Alan Ude
-Dir. MONEY GRAM Service,Benin
-Phone number: +229 98856728
-E-mail: moneygram.1820@outlook.fr
+The feedback on this approach suggests to use the SCSI Temperature log page
+[0x0d] as means to access drive temperature information. It is unknown
+if this is implemented in any real SCSI drive. The feedback also suggests to
+obtain temperature from ATA drives, convert it into the SCSI temperature log
+page in libata-scsi, and to use that information in a hardware monitoring
+driver. The format and method to do this is documented in [3]. This is not
+currently implemented in the Linux kernel.
 
-Ask him to give you the complete mtcn, sender name, question and
-answer to enable you
-pick up the $5000.00 sent today,
-Also you are instructed to re-confirm your information's
-to Mrs.Alan Ude as listed below to avoid wrong transactions.
+An earlier submission of a driver to report SCSI/SATA drive temperatures
+was made back in 2009 by Constantin Baranov [2]. This submission resides
+in the hardware monitoring subsystem. It does not rely on changes in the
+SCSI subsystem or in libata-scsi. Instead, it registers itself with the
+SCSI subsystem using scsi_register_interface(). It was rejected primarily
+because it executes ATA passthrough commands without verification that it
+is actually connected to an ATA drive.
 
-(1Your Full name:............................................
-(2 Phone number.....................................................
-(3 Contact address:.....................................
-(4 Age:..................................................................
-(5 Country..............................................
-(6) Sex .................................................................
-(7) your occupation...........................................
+Both submissions use SMART attributes to read drive temperature information.
+[1] also tries to identify temperature limits from those attributes.
+Unfortunately, SMART attributes are not well defined, resulting in relative
+complex code trying to identify the exact format of the reported data.
 
-(8)Passport/By Attach or Drivers License Number:
-Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
-Note please: I have paid service fees for you but the only money you
-are required
-to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
-pick up your transfer today.
+With the available information and feedback, we can make a number of
+observations and conclusions.
+a) Using available (S)ATA drive temperature information and convert it to
+   a SCSI log page is an interesting idea. On the downside, it would add a
+   substantial amount of complexity to libata-scsi. The code would either
+   have to be optional, or it would have to be built into the kernel even
+   if it is never used on a given system. Without access to SCSI drives
+   supporting this feature, it would be all but impossible to test the code
+   against such a drive. It would neither be possible to test correctness
+   of the code in libata-scsi nor in the driver using that information.
+   Overall it would be much easier and much less risky to implement such
+   code on the receiving side (ie in a driver reporting the temperatures)
+   instead of trying to convert the information from one format to another
+   first. In summary, it is neither practical nor feasible. On top of that,
+   there is no guarantee that code implementing this functionality would
+   ever be accepted into the kernel for this very reason.
+b) The code needed to read and analyze SCSI temperature log pages is quite
+   complex (see smartmontools [5]). There is no existing support code
+   in the Linux kernel; such code would have to be written. This makes
+   the approach discussed in a) even more risky and less practical.
+c) Overall, any attempt to report temperature information for anything
+   but SATA drives in the kernel is not practical due to the complexity
+   involved, and due to the inability to test the resulting code with
+   non-SATA drives.
+d) Using SMART data for anything but basic temperature reporting is not
+   really feasible due to the lack of standardization. Any attempt to do
+   this would add a substantial amount of code, ambiguity, and risk.
 
-Send it to via Money Gram
-Receiver's Name-----Alan Ude
-Country----------Benin
-Address-----------Cotonou
-Quest--------Honest
-Ans-----------Trust
+This submission implements a driver to report the temperature of SATA
+drives through the hardware monitoring subsystem. It is implemented as
+stand-alone driver in the hardware monitoring subsystem. The driver uses
+the mechanism from submission [1] to register with the SCSI subsystem.
+By using this mechanism, changes in the SCSI or ATA subsystems are not
+required.  To reduce risk and complexity, it only instantiates after
+reliably validating that it is connected to a SATA drive. It does not
+attempt to report the temperature of non-SATA drives.
 
-I done all my best for you to receive your transfer now ok.
-We need your urgent reply
-Best Regards
-Rev.Dr Emmanuel Okoye
-CEO Ecobank-benin
+The driver uses the SCT Command Transport feature set as specified in
+ATA8-ACS [4] to read and report the temperature as well as temperature
+limits and lowest/highest temperature information (if available) for
+SATA drives. If a drive does not support SCT Command Transport, the driver
+attempts to access a limited set of well known SMART attributes to read
+the drive temperature. In that case, only the current drive temperature
+is reported.
 
-If we did not receive it urgent from you today,
-I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
-representative.
+---
+References:
+[1] https://patchwork.kernel.org/patch/10688021/
+[2] https://lore.kernel.org/lkml/20090913040104.ab1d0b69.const@mimas.ru/
+[3] http://www.t10.org/cgi-bin/ac.pl?t=f&f=sat5r02.pdf
+    Information technology - SCSI / ATA Translation - 5 (SAT-5),
+    section 10.3.8 (Temperature log page).
+[4] http://www.t13.org/documents/uploadeddocuments/docs2008/d1699r6a-ata8-acs.pdf
+    ANS T13/1699-D "Information technology - AT Attachment 8 - ATA/ATAPI Command
+    Set (ATA8-ACS)"
+[5] https://github.com/mirror/smartmontools.git

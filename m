@@ -2,125 +2,85 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA95A119023
-	for <lists+linux-ide@lfdr.de>; Tue, 10 Dec 2019 19:55:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A97011918A
+	for <lists+linux-ide@lfdr.de>; Tue, 10 Dec 2019 21:09:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727695AbfLJSzm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 10 Dec 2019 13:55:42 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:46502 "EHLO
+        id S1726613AbfLJUJP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 10 Dec 2019 15:09:15 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:44541 "EHLO
         mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727619AbfLJSzh (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Dec 2019 13:55:37 -0500
-Received: by mail-wr1-f67.google.com with SMTP id z7so21220754wrl.13;
-        Tue, 10 Dec 2019 10:55:35 -0800 (PST)
+        with ESMTP id S1726045AbfLJUJP (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Dec 2019 15:09:15 -0500
+Received: by mail-wr1-f67.google.com with SMTP id q10so21538171wrm.11;
+        Tue, 10 Dec 2019 12:09:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=s1fMKJYeDRkS8mQe3Jpqn4jz2RPyPG0Miaq4LKZSo5Y=;
-        b=NureEy4RXepPmeiCNA+IWXrd2xrjGKS457ZRGvhm7qc1GpMVSspDUwDxT3k7azOz89
-         3einWRWtVW6KGpuAfWcoaP1N39F2kZZ1ict3lmMS1iYQj4fikzN1l/3InH7pdLTq1Xzu
-         kn6+DwsWO86S6G9oaOxFoRf9KBeVuKCBjyGanrObE5bFbx+gW3G7AHFgfaEOuNJfATNb
-         m8CelNnXa6Mwg8BqM2N2s035n14P0epNb+TkXokcYuqB0G8g5FMHoM2ZDWKh9WSgSFJJ
-         KSa/x1Hai/9j9WEP8nfuNjtqc6I5tHr60QlA22S0CdAZCzHMGCJ225q7Evzgq0za9uAT
-         y5AQ==
+        h=from:to:cc:subject:date:message-id;
+        bh=6AQpS5vqGgn6cf28d0t5hILD50hP2Bm2ar9YDrMWAUM=;
+        b=j54TP/nAwGznoZrN5sbykaR8He5pb7OtuziWr36u24bFjtgGC4fQqmYI7bt0kQ38Qz
+         AIIBe0vVsCM7FpOz0f27YlcWHKCgzIuAx7vTuT4eMaNThvOD+jLiiZDSAkx0gylHcr8R
+         lQ1uKTx1wQOijjR0jD4PsHKZ8GtZ1JqwSElf5tOW344+hb00eWcRKg25W0y9nlwXFTwO
+         4eCh01Ccn+W/AYaYvwNxY7ecHXsrmeWhzU7dg3GtqxJd/YFZpbVffV9zh31G4a8xmoqq
+         acMn+8dd9s/BK4xl7KbvCHa6yaKsJRYFirKOgOPqreB84RBGY39kNaYP+wIVoIe0uNp5
+         6fIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=s1fMKJYeDRkS8mQe3Jpqn4jz2RPyPG0Miaq4LKZSo5Y=;
-        b=eA2Az/cRSFgCQjDc6BPJ071walvUq+N31BWK3uD7tZNrB0Y5VrqqAClRMePw4LG+d9
-         ZAVgNjXJ0lm8Wbs9CAvP01OL2MxPyCyMWziIxNCxtd55K0xREjVIMM+76Egiy8PAkY92
-         uAmH/bUr+yqQV4N74SxJnHsFwaJQ8t4XPkkjpVJO6OVVd9Zc5iP9mxJm2h0oB/xFJA/x
-         R2ZvgmOORh78EJhCKGsA2GJw/witn4/gsswZ4E3YgcblghPk397T1z1yxXPZd7C3Q2Ll
-         emm5crGytqW88OrySS2xN+q/ieEKf79NzAX+cCdH3OlFoaXUpCfIfd+2CaOCW0znD+sF
-         1NlA==
-X-Gm-Message-State: APjAAAVI4Qnz2nyzzx+WyAx0l3VtP/blkHoLMoelwBYxqqlHmnpFVZTC
-        S11qjR4BVbfm9zi4zRG/0VEZF6yo
-X-Google-Smtp-Source: APXvYqzb9ajCJrYWQ65SYlqBPbFLj+5zV+rFqFiIDQ+KjVD3cQLWN0KqrajUkZMQwHQyoc7YWXVh3Q==
-X-Received: by 2002:a5d:53d1:: with SMTP id a17mr4743038wrw.327.1576004134858;
-        Tue, 10 Dec 2019 10:55:34 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=6AQpS5vqGgn6cf28d0t5hILD50hP2Bm2ar9YDrMWAUM=;
+        b=L2t8D7IEqJB7L3kNpoLLXl73+iiCe/zr4iULV1An5FXx0FNeOZEZAqiiOztLWn2J8e
+         qmkMbeX+RNJr4Jryj51cIgBoeGixYXC/u5FEoLbPv4EAKH3zxKjQkjT/vJ5gQ7KsGA1z
+         8PEw2uWwyikoZ2PZrKmBGxFvmbNbK/N9wi04UGe4nq71XHn5fylyMv3QMC2zKYv3lMnL
+         U5FMbvZWPeRcH8QJBZH3uXC5G1EGrHupZf1N0SRG9Ek8ahvP9fDpES1YzlAvZbDHdFF/
+         4a8PMLr1xU7aXbj6XX6+fp/jCiBs/TMp7sm/Z6hLzR1jzRbzA5TM6yxc90/o4muUFnYi
+         iQKw==
+X-Gm-Message-State: APjAAAVpytTHvBPz+njRzSlg5SlulQaWP/rCzTpIqPBt8Gdfo8aBFJlj
+        3rl/x96KIsAPYpXU3h5oBHE=
+X-Google-Smtp-Source: APXvYqxMVlaHW5ay98kOIFO+brzIC+QLtbbjUCNbwV2fRMJftfklsg7j/ydpu5uw9XjJbdY3Vj3f5Q==
+X-Received: by 2002:adf:dfc1:: with SMTP id q1mr5177155wrn.155.1576008552975;
+        Tue, 10 Dec 2019 12:09:12 -0800 (PST)
 Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id e6sm4213536wru.44.2019.12.10.10.55.31
+        by smtp.gmail.com with ESMTPSA id w19sm4113643wmc.22.2019.12.10.12.09.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2019 10:55:34 -0800 (PST)
+        Tue, 10 Dec 2019 12:09:12 -0800 (PST)
 From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     bcm-kernel-feedback-list@broadcom.com,
-        Florian Fainelli <f.fainelli@gmail.com>,
+To:     kishon@ti.com
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
         Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Tejun Heo <tj@kernel.org>, Jaedon Shin <jaedon.shin@gmail.com>,
+        Al Cooper <alcooperx@gmail.com>,
+        Ray Jui <ray.jui@broadcom.com>, Tejun Heo <tj@kernel.org>,
+        Fengguang Wu <fengguang.wu@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
         Parallel ATA drivers)),
         devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS)
-Subject: [PATCH 8/8] ata: ahci_brcm: Support BCM7216 reset controller name
-Date:   Tue, 10 Dec 2019 10:53:51 -0800
-Message-Id: <20191210185351.14825-9-f.fainelli@gmail.com>
+        DEVICE TREE BINDINGS), linux-kernel@vger.kernel.org (open list),
+        bcm-kernel-feedback-list@broadcom.com
+Subject: [PATCH 0/2] phy: brcm-sata: Support for 7216
+Date:   Tue, 10 Dec 2019 12:08:50 -0800
+Message-Id: <20191210200852.24945-1-f.fainelli@gmail.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191210185351.14825-1-f.fainelli@gmail.com>
-References: <20191210185351.14825-1-f.fainelli@gmail.com>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-BCM7216 uses a different reset controller name which is "rescal" instead
-of "ahci", match the compatible string to account for that minor
-difference, the reset is otherwise identical to how other generations of
-SATA controllers work.
+Hi Kishon,
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
----
- drivers/ata/ahci_brcm.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+This patch series adds support for our latest 7216 class of devices
+which are taped out in a 16nm process and use a different SATA PHY AFE
+that requires a custom initialization sequence.
 
-diff --git a/drivers/ata/ahci_brcm.c b/drivers/ata/ahci_brcm.c
-index 58e1a6e5478d..13ceca687104 100644
---- a/drivers/ata/ahci_brcm.c
-+++ b/drivers/ata/ahci_brcm.c
-@@ -73,6 +73,7 @@ enum brcm_ahci_version {
- 	BRCM_SATA_BCM7425 = 1,
- 	BRCM_SATA_BCM7445,
- 	BRCM_SATA_NSP,
-+	BRCM_SATA_BCM7216,
- };
- 
- enum brcm_ahci_quirks {
-@@ -415,6 +416,7 @@ static const struct of_device_id ahci_of_match[] = {
- 	{.compatible = "brcm,bcm7445-ahci", .data = (void *)BRCM_SATA_BCM7445},
- 	{.compatible = "brcm,bcm63138-ahci", .data = (void *)BRCM_SATA_BCM7445},
- 	{.compatible = "brcm,bcm-nsp-ahci", .data = (void *)BRCM_SATA_NSP},
-+	{.compatible = "brcm,bcm7216-ahci", .data = (void *)BRCM_SATA_BCM7216},
- 	{},
- };
- MODULE_DEVICE_TABLE(of, ahci_of_match);
-@@ -423,6 +425,7 @@ static int brcm_ahci_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id *of_id;
- 	struct device *dev = &pdev->dev;
-+	const char *reset_name = NULL;
- 	struct brcm_ahci_priv *priv;
- 	struct ahci_host_priv *hpriv;
- 	struct resource *res;
-@@ -444,8 +447,13 @@ static int brcm_ahci_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->top_ctrl))
- 		return PTR_ERR(priv->top_ctrl);
- 
--	/* Reset is optional depending on platform */
--	priv->rcdev = devm_reset_control_get(&pdev->dev, "ahci");
-+	/* Reset is optional depending on platform and named differently */
-+	if (priv->version == BRCM_SATA_BCM7216)
-+		reset_name = "rescal";
-+	else
-+		reset_name = "ahci";
-+
-+	priv->rcdev = devm_reset_control_get(&pdev->dev, reset_name);
- 	if (!IS_ERR_OR_NULL(priv->rcdev))
- 		reset_control_deassert(priv->rcdev);
- 
+Thanks!
+
+Florian Fainelli (2):
+  dt-bindings: phy: Document BCM7216 SATA PHY compatible string
+  phy: brcm-sata: Implement 7216 initialization sequence
+
+ .../devicetree/bindings/phy/brcm-sata-phy.txt |   1 +
+ drivers/phy/broadcom/phy-brcm-sata.c          | 120 ++++++++++++++++++
+ 2 files changed, 121 insertions(+)
+
 -- 
 2.17.1
 

@@ -2,266 +2,133 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27596119190
-	for <lists+linux-ide@lfdr.de>; Tue, 10 Dec 2019 21:09:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D21A119629
+	for <lists+linux-ide@lfdr.de>; Tue, 10 Dec 2019 22:25:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726685AbfLJUJX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 10 Dec 2019 15:09:23 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:38309 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbfLJUJX (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Dec 2019 15:09:23 -0500
-Received: by mail-wr1-f66.google.com with SMTP id y17so21561368wrh.5;
-        Tue, 10 Dec 2019 12:09:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=u/LjPuF3/fCHoU0gjJ+jhVHgMQTJmMf2Obyi4CIeoxM=;
-        b=iryaSD524QzJLWrvBJeXCxs6EkdwiQqRjSmDFZXGuvbUw21wuS9yN10e3SW/37q6P9
-         eWloyjbs5DoLPeR572uw1d5acE+ae35FV6018cV2NlXlw32USWCaLtnN4pKcTeW6sezR
-         9c0omx2nBvsPnID3HTeIIPHzm8NU8i19qB4jC5esPPhsXMR6uKeU/TXsxRd4nXuqtaLg
-         x8OaoJ0FzU9e/+nuyJEYyZr9mu6tcmOsUNDsG/BDRA5w+VnFsNU/yBR8xLJuoKwFG5C0
-         X1MZeD8ui/GUMoCJ0JAzIdVIRSQXXzsHxzmXktm//gmUE93sthMSiLczVC9lH1B2b3IY
-         6sEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=u/LjPuF3/fCHoU0gjJ+jhVHgMQTJmMf2Obyi4CIeoxM=;
-        b=cdmupNeKLgstIJMy76UENIGly6L4hCC06eKlh854Jb5ZbYi/1miCgIsE3A3CN3eaUO
-         RMMZnk9GN+qjbg4TDvbyI7zmUu+sFRGOqpW0n+C6SAoBojGca4ROxhONv5n0dutAmyGR
-         NIpnN3gUE+qFZCTDOhtdPIkYotr1Ets40j4QnrFxzHaT9JKuRt/jH2tzxfHUfYJ965qf
-         hte7eMZRXnTTMO8Y8VU2WIRUilJfWcKLNrTCsbcOb4BHIfueCqhB5l6Re8DN0WQuny3z
-         4maD0NuDnCyAK9NZMDs6ZjGv2uk/o0VFNM8C9HJZbIKJ5rBM90IDM//9y5S778kifK1u
-         qwRA==
-X-Gm-Message-State: APjAAAX8UM8ai9imYkfQvoupYYSkHT2mEkNlLT0kLRnWbjAlmlf+XDJM
-        jormGI/jYBqYNEXo+E1LHdU=
-X-Google-Smtp-Source: APXvYqz1HahWkU6kOI2OPxbyEF894A8hHjOhrlhREULuOqq0LKqnnSaxBzfWtlfLB1Lx0VXZjwD33g==
-X-Received: by 2002:adf:ee92:: with SMTP id b18mr5465886wro.281.1576008559977;
-        Tue, 10 Dec 2019 12:09:19 -0800 (PST)
-Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id w19sm4113643wmc.22.2019.12.10.12.09.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2019 12:09:19 -0800 (PST)
-From:   Florian Fainelli <f.fainelli@gmail.com>
-To:     kishon@ti.com
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Al Cooper <alcooperx@gmail.com>,
-        Ray Jui <ray.jui@broadcom.com>, Tejun Heo <tj@kernel.org>,
-        Fengguang Wu <fengguang.wu@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)),
-        devicetree@vger.kernel.org (open list:OPEN FIRMWARE AND FLATTENED
-        DEVICE TREE BINDINGS), linux-kernel@vger.kernel.org (open list),
-        bcm-kernel-feedback-list@broadcom.com
-Subject: [PATCH 2/2] phy: brcm-sata: Implement 7216 initialization sequence
-Date:   Tue, 10 Dec 2019 12:08:52 -0800
-Message-Id: <20191210200852.24945-3-f.fainelli@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191210200852.24945-1-f.fainelli@gmail.com>
-References: <20191210200852.24945-1-f.fainelli@gmail.com>
+        id S1728513AbfLJVKj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 10 Dec 2019 16:10:39 -0500
+Received: from mail.kernel.org ([198.145.29.99]:60730 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728557AbfLJVKi (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 10 Dec 2019 16:10:38 -0500
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9721A246A3;
+        Tue, 10 Dec 2019 21:10:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1576012237;
+        bh=Afo0ZIf5GYFp8mlkMxRwspw4KlnJbwWXjoAzg132PXQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hnYlR1sFiRxk3eFIF+l2kL9bRcx9TpTjZWJITvo+OHgCJS8x3mNnCNfR/2FSelkP7
+         Lm6YaSIeJCCabz/3HLxNuMdhpolazhLOCSRFiPz1YhIQs+J8VrdRP9ZGZQva3WFOou
+         lQvgzv8e7XU5m68wXZ1pfZ8UkVQz4uyerioyqT3Q=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     John Garry <john.garry@huawei.com>, Jens Axboe <axboe@kernel.dk>,
+        Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 186/350] libata: Ensure ata_port probe has completed before detach
+Date:   Tue, 10 Dec 2019 16:04:51 -0500
+Message-Id: <20191210210735.9077-147-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191210210735.9077-1-sashal@kernel.org>
+References: <20191210210735.9077-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-7216 is a 16nm process chip with a slightly different version of the PHY
-SerdDeS/AFE that requires a specific tuning sequence. Key on the
-compatible string to perform that initialization.
+From: John Garry <john.garry@huawei.com>
 
-Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+[ Upstream commit 130f4caf145c3562108b245a576db30b916199d2 ]
+
+With CONFIG_DEBUG_TEST_DRIVER_REMOVE set, we may find the following WARN:
+
+[   23.452574] ------------[ cut here ]------------
+[   23.457190] WARNING: CPU: 59 PID: 1 at drivers/ata/libata-core.c:6676 ata_host_detach+0x15c/0x168
+[   23.466047] Modules linked in:
+[   23.469092] CPU: 59 PID: 1 Comm: swapper/0 Not tainted 5.4.0-rc1-00010-g5b83fd27752b-dirty #296
+[   23.477776] Hardware name: Huawei D06 /D06, BIOS Hisilicon D06 UEFI RC0 - V1.16.01 03/15/2019
+[   23.486286] pstate: a0c00009 (NzCv daif +PAN +UAO)
+[   23.491065] pc : ata_host_detach+0x15c/0x168
+[   23.495322] lr : ata_host_detach+0x88/0x168
+[   23.499491] sp : ffff800011cabb50
+[   23.502792] x29: ffff800011cabb50 x28: 0000000000000007
+[   23.508091] x27: ffff80001137f068 x26: ffff8000112c0c28
+[   23.513390] x25: 0000000000003848 x24: ffff0023ea185300
+[   23.518689] x23: 0000000000000001 x22: 00000000000014c0
+[   23.523987] x21: 0000000000013740 x20: ffff0023bdc20000
+[   23.529286] x19: 0000000000000000 x18: 0000000000000004
+[   23.534584] x17: 0000000000000001 x16: 00000000000000f0
+[   23.539883] x15: ffff0023eac13790 x14: ffff0023eb76c408
+[   23.545181] x13: 0000000000000000 x12: ffff0023eac13790
+[   23.550480] x11: ffff0023eb76c228 x10: 0000000000000000
+[   23.555779] x9 : ffff0023eac13798 x8 : 0000000040000000
+[   23.561077] x7 : 0000000000000002 x6 : 0000000000000001
+[   23.566376] x5 : 0000000000000002 x4 : 0000000000000000
+[   23.571674] x3 : ffff0023bf08a0bc x2 : 0000000000000000
+[   23.576972] x1 : 3099674201f72700 x0 : 0000000000400284
+[   23.582272] Call trace:
+[   23.584706]  ata_host_detach+0x15c/0x168
+[   23.588616]  ata_pci_remove_one+0x10/0x18
+[   23.592615]  ahci_remove_one+0x20/0x40
+[   23.596356]  pci_device_remove+0x3c/0xe0
+[   23.600267]  really_probe+0xdc/0x3e0
+[   23.603830]  driver_probe_device+0x58/0x100
+[   23.608000]  device_driver_attach+0x6c/0x90
+[   23.612169]  __driver_attach+0x84/0xc8
+[   23.615908]  bus_for_each_dev+0x74/0xc8
+[   23.619730]  driver_attach+0x20/0x28
+[   23.623292]  bus_add_driver+0x148/0x1f0
+[   23.627115]  driver_register+0x60/0x110
+[   23.630938]  __pci_register_driver+0x40/0x48
+[   23.635199]  ahci_pci_driver_init+0x20/0x28
+[   23.639372]  do_one_initcall+0x5c/0x1b0
+[   23.643199]  kernel_init_freeable+0x1a4/0x24c
+[   23.647546]  kernel_init+0x10/0x108
+[   23.651023]  ret_from_fork+0x10/0x18
+[   23.654590] ---[ end trace 634a14b675b71c13 ]---
+
+With KASAN also enabled, we may also get many use-after-free reports.
+
+The issue is that when CONFIG_DEBUG_TEST_DRIVER_REMOVE is set, we may
+attempt to detach the ata_port before it has been probed.
+
+This is because the ata_ports are async probed, meaning that there is no
+guarantee that the ata_port has probed prior to detach. When the ata_port
+does probe in this scenario, we get all sorts of issues as the detach may
+have already happened.
+
+Fix by ensuring synchronisation with async_synchronize_full(). We could
+alternatively use the cookie returned from the ata_port probe
+async_schedule() call, but that means managing the cookie, so more
+complicated.
+
+Signed-off-by: John Garry <john.garry@huawei.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-brcm-sata.c | 120 +++++++++++++++++++++++++++
- 1 file changed, 120 insertions(+)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/phy/broadcom/phy-brcm-sata.c b/drivers/phy/broadcom/phy-brcm-sata.c
-index 50ac75bbb0c9..4710cfcc3037 100644
---- a/drivers/phy/broadcom/phy-brcm-sata.c
-+++ b/drivers/phy/broadcom/phy-brcm-sata.c
-@@ -33,6 +33,7 @@
- #define SATA_PHY_CTRL_REG_28NM_SPACE_SIZE		0x8
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 28c492be0a572..74c9b3032d46f 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -6708,6 +6708,9 @@ void ata_host_detach(struct ata_host *host)
+ {
+ 	int i;
  
- enum brcm_sata_phy_version {
-+	BRCM_SATA_PHY_STB_16NM,
- 	BRCM_SATA_PHY_STB_28NM,
- 	BRCM_SATA_PHY_STB_40NM,
- 	BRCM_SATA_PHY_IPROC_NS2,
-@@ -104,10 +105,13 @@ enum sata_phy_regs {
- 	PLL1_ACTRL5				= 0x85,
- 	PLL1_ACTRL6				= 0x86,
- 	PLL1_ACTRL7				= 0x87,
-+	PLL1_ACTRL8				= 0x88,
++	/* Ensure ata_port probe has completed */
++	async_synchronize_full();
++
+ 	for (i = 0; i < host->n_ports; i++)
+ 		ata_port_detach(host->ports[i]);
  
- 	TX_REG_BANK				= 0x070,
- 	TX_ACTRL0				= 0x80,
- 	TX_ACTRL0_TXPOL_FLIP			= BIT(6),
-+	TX_ACTRL5				= 0x85,
-+	TX_ACTRL5_SSC_EN			= BIT(11),
- 
- 	AEQRX_REG_BANK_0			= 0xd0,
- 	AEQ_CONTROL1				= 0x81,
-@@ -116,6 +120,7 @@ enum sata_phy_regs {
- 	AEQ_FRC_EQ				= 0x83,
- 	AEQ_FRC_EQ_FORCE			= BIT(0),
- 	AEQ_FRC_EQ_FORCE_VAL			= BIT(1),
-+	AEQ_RFZ_FRC_VAL				= BIT(8),
- 	AEQRX_REG_BANK_1			= 0xe0,
- 	AEQRX_SLCAL0_CTRL0			= 0x82,
- 	AEQRX_SLCAL1_CTRL0			= 0x86,
-@@ -152,7 +157,28 @@ enum sata_phy_regs {
- 	TXPMD_TX_FREQ_CTRL_CONTROL3_FMAX_MASK	= 0x3ff,
- 
- 	RXPMD_REG_BANK				= 0x1c0,
-+	RXPMD_RX_CDR_CONTROL1			= 0x81,
-+	RXPMD_RX_PPM_VAL_MASK			= 0x1ff,
-+	RXPMD_RXPMD_EN_FRC			= BIT(12),
-+	RXPMD_RXPMD_EN_FRC_VAL			= BIT(13),
-+	RXPMD_RX_CDR_CDR_PROP_BW		= 0x82,
-+	RXPMD_G_CDR_PROP_BW_MASK		= 0x7,
-+	RXPMD_G1_CDR_PROP_BW_SHIFT		= 0,
-+	RXPMD_G2_CDR_PROP_BW_SHIFT		= 3,
-+	RXPMD_G3_CDR_PROB_BW_SHIFT		= 6,
-+	RXPMD_RX_CDR_CDR_ACQ_INTEG_BW		= 0x83,
-+	RXPMD_G_CDR_ACQ_INT_BW_MASK		= 0x7,
-+	RXPMD_G1_CDR_ACQ_INT_BW_SHIFT		= 0,
-+	RXPMD_G2_CDR_ACQ_INT_BW_SHIFT		= 3,
-+	RXPMD_G3_CDR_ACQ_INT_BW_SHIFT		= 6,
-+	RXPMD_RX_CDR_CDR_LOCK_INTEG_BW		= 0x84,
-+	RXPMD_G_CDR_LOCK_INT_BW_MASK		= 0x7,
-+	RXPMD_G1_CDR_LOCK_INT_BW_SHIFT		= 0,
-+	RXPMD_G2_CDR_LOCK_INT_BW_SHIFT		= 3,
-+	RXPMD_G3_CDR_LOCK_INT_BW_SHIFT		= 6,
- 	RXPMD_RX_FREQ_MON_CONTROL1		= 0x87,
-+	RXPMD_MON_CORRECT_EN			= BIT(8),
-+	RXPMD_MON_MARGIN_VAL_MASK		= 0xff,
- };
- 
- enum sata_phy_ctrl_regs {
-@@ -166,6 +192,7 @@ static inline void __iomem *brcm_sata_pcb_base(struct brcm_sata_port *port)
- 	u32 size = 0;
- 
- 	switch (priv->version) {
-+	case BRCM_SATA_PHY_STB_16NM:
- 	case BRCM_SATA_PHY_STB_28NM:
- 	case BRCM_SATA_PHY_IPROC_NS2:
- 	case BRCM_SATA_PHY_DSL_28NM:
-@@ -287,6 +314,94 @@ static int brcm_stb_sata_init(struct brcm_sata_port *port)
- 	return brcm_stb_sata_rxaeq_init(port);
- }
- 
-+static int brcm_stb_sata_16nm_ssc_init(struct brcm_sata_port *port)
-+{
-+	void __iomem *base = brcm_sata_pcb_base(port);
-+	u32 tmp, value;
-+
-+	/* Reduce CP tail current to 1/16th of its default value */
-+	brcm_sata_phy_wr(base, PLL1_REG_BANK, PLL1_ACTRL6, 0, 0x141);
-+
-+	/* Turn off CP tail current boost */
-+	brcm_sata_phy_wr(base, PLL1_REG_BANK, PLL1_ACTRL8, 0, 0xc006);
-+
-+	/* Set a specific AEQ equalizer value */
-+	tmp = AEQ_FRC_EQ_FORCE_VAL | AEQ_FRC_EQ_FORCE;
-+	brcm_sata_phy_wr(base, AEQRX_REG_BANK_0, AEQ_FRC_EQ,
-+			 ~(tmp | AEQ_RFZ_FRC_VAL |
-+			   AEQ_FRC_EQ_VAL_MASK << AEQ_FRC_EQ_VAL_SHIFT),
-+			 tmp | 32 << AEQ_FRC_EQ_VAL_SHIFT);
-+
-+	/* Set RX PPM val center frequency */
-+	if (port->ssc_en)
-+		value = 0x52;
-+	else
-+		value = 0;
-+	brcm_sata_phy_wr(base, RXPMD_REG_BANK, RXPMD_RX_CDR_CONTROL1,
-+			 ~RXPMD_RX_PPM_VAL_MASK, value);
-+
-+	/* Set proportional loop bandwith Gen1/2/3 */
-+	tmp = RXPMD_G_CDR_PROP_BW_MASK << RXPMD_G1_CDR_PROP_BW_SHIFT |
-+	      RXPMD_G_CDR_PROP_BW_MASK << RXPMD_G2_CDR_PROP_BW_SHIFT |
-+	      RXPMD_G_CDR_PROP_BW_MASK << RXPMD_G3_CDR_PROB_BW_SHIFT;
-+	if (port->ssc_en)
-+		value = 2 << RXPMD_G1_CDR_PROP_BW_SHIFT |
-+			2 << RXPMD_G2_CDR_PROP_BW_SHIFT |
-+			2 << RXPMD_G3_CDR_PROB_BW_SHIFT;
-+	else
-+		value = 1 << RXPMD_G1_CDR_PROP_BW_SHIFT |
-+			1 << RXPMD_G2_CDR_PROP_BW_SHIFT |
-+			1 << RXPMD_G3_CDR_PROB_BW_SHIFT;
-+	brcm_sata_phy_wr(base, RXPMD_REG_BANK, RXPMD_RX_CDR_CDR_PROP_BW, ~tmp,
-+			 value);
-+
-+	/* Set CDR integral loop acquisition bandwidth for Gen1/2/3 */
-+	tmp = RXPMD_G_CDR_ACQ_INT_BW_MASK << RXPMD_G1_CDR_ACQ_INT_BW_SHIFT |
-+	      RXPMD_G_CDR_ACQ_INT_BW_MASK << RXPMD_G2_CDR_ACQ_INT_BW_SHIFT |
-+	      RXPMD_G_CDR_ACQ_INT_BW_MASK << RXPMD_G3_CDR_ACQ_INT_BW_SHIFT;
-+	if (port->ssc_en)
-+		value = 1 << RXPMD_G1_CDR_ACQ_INT_BW_SHIFT |
-+			1 << RXPMD_G2_CDR_ACQ_INT_BW_SHIFT |
-+			1 << RXPMD_G3_CDR_ACQ_INT_BW_SHIFT;
-+	else
-+		value = 0;
-+	brcm_sata_phy_wr(base, RXPMD_REG_BANK, RXPMD_RX_CDR_CDR_ACQ_INTEG_BW,
-+			 ~tmp, value);
-+
-+	/* Set CDR integral loop locking bandwidth to 1 for Gen 1/2/3 */
-+	tmp = RXPMD_G_CDR_LOCK_INT_BW_MASK << RXPMD_G1_CDR_LOCK_INT_BW_SHIFT |
-+	      RXPMD_G_CDR_LOCK_INT_BW_MASK << RXPMD_G2_CDR_LOCK_INT_BW_SHIFT |
-+	      RXPMD_G_CDR_LOCK_INT_BW_MASK << RXPMD_G3_CDR_LOCK_INT_BW_SHIFT;
-+	if (port->ssc_en)
-+		value = 1 << RXPMD_G1_CDR_LOCK_INT_BW_SHIFT |
-+			1 << RXPMD_G2_CDR_LOCK_INT_BW_SHIFT |
-+			1 << RXPMD_G3_CDR_LOCK_INT_BW_SHIFT;
-+	else
-+		value = 0;
-+	brcm_sata_phy_wr(base, RXPMD_REG_BANK, RXPMD_RX_CDR_CDR_LOCK_INTEG_BW,
-+			 ~tmp, value);
-+
-+	/* Set no guard band and clamp CDR */
-+	tmp = RXPMD_MON_CORRECT_EN | RXPMD_MON_MARGIN_VAL_MASK;
-+	if (port->ssc_en)
-+		value = 0x51;
-+	else
-+		value = 0;
-+	brcm_sata_phy_wr(base, RXPMD_REG_BANK, RXPMD_RX_FREQ_MON_CONTROL1,
-+			 ~tmp, RXPMD_MON_CORRECT_EN | value);
-+
-+	/* Turn on/off SSC */
-+	brcm_sata_phy_wr(base, TX_REG_BANK, TX_ACTRL5, ~TX_ACTRL5_SSC_EN,
-+			 port->ssc_en ? TX_ACTRL5_SSC_EN : 0);
-+
-+	return 0;
-+}
-+
-+static int brcm_stb_sata_16nm_init(struct brcm_sata_port *port)
-+{
-+	return brcm_stb_sata_16nm_ssc_init(port);
-+}
-+
- /* NS2 SATA PLL1 defaults were characterized by H/W group */
- #define NS2_PLL1_ACTRL2_MAGIC	0x1df8
- #define NS2_PLL1_ACTRL3_MAGIC	0x2b00
-@@ -544,6 +659,9 @@ static int brcm_sata_phy_init(struct phy *phy)
- 	struct brcm_sata_port *port = phy_get_drvdata(phy);
- 
- 	switch (port->phy_priv->version) {
-+	case BRCM_SATA_PHY_STB_16NM:
-+		rc = brcm_stb_sata_16nm_init(port);
-+		break;
- 	case BRCM_SATA_PHY_STB_28NM:
- 	case BRCM_SATA_PHY_STB_40NM:
- 		rc = brcm_stb_sata_init(port);
-@@ -601,6 +719,8 @@ static const struct phy_ops phy_ops = {
- };
- 
- static const struct of_device_id brcm_sata_phy_of_match[] = {
-+	{ .compatible	= "brcm,bcm7216-sata-phy",
-+	  .data = (void *)BRCM_SATA_PHY_STB_16NM },
- 	{ .compatible	= "brcm,bcm7445-sata-phy",
- 	  .data = (void *)BRCM_SATA_PHY_STB_28NM },
- 	{ .compatible	= "brcm,bcm7425-sata-phy",
 -- 
-2.17.1
+2.20.1
 

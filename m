@@ -2,97 +2,68 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8698B119D50
-	for <lists+linux-ide@lfdr.de>; Tue, 10 Dec 2019 23:37:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17D4111A2F6
+	for <lists+linux-ide@lfdr.de>; Wed, 11 Dec 2019 04:22:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730072AbfLJWeA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 10 Dec 2019 17:34:00 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55166 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730058AbfLJWd6 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 10 Dec 2019 17:33:58 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7DD4120836;
-        Tue, 10 Dec 2019 22:33:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576017238;
-        bh=rs2sJsURr2HfQ37CNR+4elN+tvV4lCBxruCYPnxdazE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ubRyAE7aZrOhNyNgKG+/+nW5ciMy6Dre2NKTyJuB2KB+I/0wGvZcD5HmBpzynI3JQ
-         Du6aLZsth/Xr8lF6YfkrumKsZ7ZMS2ZJNUyx3FfHOdK8Wiu9WIknllbKLO1kk/lkJ4
-         xW7YzgPbfa3tLmEVp6a94rXPqOucTVMq/rySh+W8=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jiri Slaby <jslaby@suse.cz>, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 35/71] ata: sata_mv, avoid trigerrable BUG_ON
-Date:   Tue, 10 Dec 2019 17:32:40 -0500
-Message-Id: <20191210223316.14988-35-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191210223316.14988-1-sashal@kernel.org>
-References: <20191210223316.14988-1-sashal@kernel.org>
+        id S1726901AbfLKDWC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 10 Dec 2019 22:22:02 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:7213 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726687AbfLKDWC (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 10 Dec 2019 22:22:02 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 86EDA17B335F7DBE9168;
+        Wed, 11 Dec 2019 11:21:59 +0800 (CST)
+Received: from [127.0.0.1] (10.74.219.194) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Wed, 11 Dec 2019
+ 11:21:50 +0800
+From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
+Subject: Failed to disable WCE for a SATA disk
+To:     "axboe@kernel.dk" <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bart Van Assche <bvanassche@acm.org>
+CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>, Linuxarm <linuxarm@huawei.com>,
+        John Garry <john.garry@huawei.com>
+Message-ID: <a3624979-0917-4b66-ca18-89e0e2dd3bf2@hisilicon.com>
+Date:   Wed, 11 Dec 2019 11:21:49 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.74.219.194]
+X-CFilter-Loop: Reflected
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Jiri Slaby <jslaby@suse.cz>
+Hi,
 
-[ Upstream commit e9f691d899188679746eeb96e6cb520459eda9b4 ]
+I encounter a issue related to libata and libsas. For hisi_sas driver, 
+it uses libsas. When disable WCE with tool sdparm (sdparm --clear=WCE 
+/dev/sda) for a SATA disk,
+it fails with error info from hardware (the error info indicates that 
+the length of transfer data is conflicted with the direction of data, 
+the length is 0 but
+the data of direction is from host to device).
 
-There are several reports that the BUG_ON on unsupported command in
-mv_qc_prep can be triggered under some circumstances:
-https://bugzilla.suse.com/show_bug.cgi?id=1110252
-https://serverfault.com/questions/888897/raid-problems-after-power-outage
-https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1652185
-https://bugs.centos.org/view.php?id=14998
+I check the process: When disable WCE, it sends pasthrough IO with sg_io 
+, req->__data_len is not 0, and scsi_cmd->sc_data_direction = DMA_TO_DEVICE.
+But for the command (MODE_SELECT), qc->tf.protocol is set 0 (not 
+ATA_PROT_DMA) in ->queuecommand() 
+->ata_sas_queuecmd()->ata_scsi_translate()->ata_scsi_mod_select_xlat()->ata_mselect_caching(),
+so it doesn't dma map ata sg in function ata_qc_issue(). While in 
+function sas_ata_qc_issue()，it calcutes the length with the total sum of 
+sg_dma_len(sg), as for the
+command it doesn't dma map ata sg, so the length is 0.
 
-Let sata_mv handle the failure gracefully: warn about that incl. the
-failed command number and return an AC_ERR_INVALID error. We can do that
-now thanks to the previous patch.
+Do we need to dma map ata sg for the command? Or is it really we need 
+the data for the command MODE_SELECT?
 
-Remove also the long-standing FIXME.
+Thanks,
+Shawn
 
-[v2] use %.2x as commands are defined as hexa.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-ide@vger.kernel.org
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ata/sata_mv.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index 729f26322095e..c24bbdb3f76c8 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -2113,12 +2113,10 @@ static void mv_qc_prep(struct ata_queued_cmd *qc)
- 		 * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
- 		 * of which are defined/used by Linux.  If we get here, this
- 		 * driver needs work.
--		 *
--		 * FIXME: modify libata to give qc_prep a return value and
--		 * return error here.
- 		 */
--		BUG_ON(tf->command);
--		break;
-+		ata_port_err(ap, "%s: unsupported command: %.2x\n", __func__,
-+				tf->command);
-+		return AC_ERR_INVALID;
- 	}
- 	mv_crqb_pack_cmd(cw++, tf->nsect, ATA_REG_NSECT, 0);
- 	mv_crqb_pack_cmd(cw++, tf->hob_lbal, ATA_REG_LBAL, 0);
--- 
-2.20.1
 

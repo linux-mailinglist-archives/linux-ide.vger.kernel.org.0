@@ -2,93 +2,93 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF310123E0E
-	for <lists+linux-ide@lfdr.de>; Wed, 18 Dec 2019 04:43:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 752E7124B0A
+	for <lists+linux-ide@lfdr.de>; Wed, 18 Dec 2019 16:13:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726617AbfLRDnH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 17 Dec 2019 22:43:07 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:52036 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726387AbfLRDnG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 17 Dec 2019 22:43:06 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBI3dROh116939;
-        Wed, 18 Dec 2019 03:42:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=PjGUM/EnuhLBD6aKzM6coivdq8W0PG7m5U8o0IABAVg=;
- b=L2n1EUf2W36k0n0SLzEzRS5mRleuhAiZLTWF2cVaoef+/bbmgj6sirqHeSZqJQy3h2SQ
- anW2nKv8BTszFhNrI0iuWry8y9aB0Bp93w/FOFQs9aiIOtc91dlG1F7U/iJG2HOLUIbg
- uc5oPT0WygsTi2uBl1Fho7olpa/8NBiedAadKXDO8BpvsLzJ+My8qc89cm3KteNKD2Ya
- MWfp5gcHRmnrmHd7cXmTDkx+F4/oABZ4RTBTKJVbT+bmWpImNxCFtPR8XmlGi9XfNG0H
- xRd4EaKx92vcpj8KSixmbwnFlHS5KccK/vNkF17kW4dEkabnBHbU9n65+flkKUJff+zZ lA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2wvrcrat71-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 Dec 2019 03:42:43 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBI3dVGK129935;
-        Wed, 18 Dec 2019 03:42:42 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2wxm4wrpfv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 Dec 2019 03:42:42 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBI3geCG003973;
-        Wed, 18 Dec 2019 03:42:40 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 17 Dec 2019 19:42:39 -0800
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org
-Subject: Re: [PATCH 0/1] Summary: hwmon driver for temperature sensors on SATA drives
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20191209052119.32072-1-linux@roeck-us.net>
-        <yq15zinmrmj.fsf@oracle.com>
-        <67b75394-801d-ce91-55f2-f0c0db9cfffc@roeck-us.net>
-        <yq1y2vbhe6i.fsf@oracle.com>
-        <83d528fc-42b7-aa3f-5dd9-a000268da38e@roeck-us.net>
-Date:   Tue, 17 Dec 2019 22:42:37 -0500
-In-Reply-To: <83d528fc-42b7-aa3f-5dd9-a000268da38e@roeck-us.net> (Guenter
-        Roeck's message of "Mon, 16 Dec 2019 19:57:31 -0800")
-Message-ID: <yq1zhfqfgeq.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1727347AbfLRPNz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 18 Dec 2019 10:13:55 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:43339 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727296AbfLRPNy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 18 Dec 2019 10:13:54 -0500
+Received: by mail-il1-f196.google.com with SMTP id v69so1962640ili.10
+        for <linux-ide@vger.kernel.org>; Wed, 18 Dec 2019 07:13:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=Q3vp2fJ40VWpq9rX2ikiWTUrhuiQJXzCeUu43e1oIIOk8rzGCPMljco+W3g3Sdt7mK
+         0zMp27lNXT81ott0dYeyE6wCdI4c1wfi5qCqRmoGIMvdtgle/6NMWI0GJrkD30CBojRq
+         hZbdgtbn9F/6uhvfSLkMdN7NhUpQoMVScRn9uDFKZJxofy0MWDF6kZw53YXeVt8sjWjA
+         Dd9TBzj4Ogplv/txGap2r0I252pQP7l7XSY4YOVhZ7qL539zlqhtO9W4mad505PIZ9Xp
+         yYy+XyL34oyC2pvEIWTDP8EMj+Gj6Cu0eHyc7GTPTD7Enq1rjLHU3JyAyX8LQzaLW/WP
+         +a+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
+        b=lUkGoDw4bW8fZQ2xGsqqg84FTsCUKEqKnFS7fn6CBoESxSptMOEwHaQoq3Shl+0USN
+         7DkoVeZEdXyPoWvUbF5hLWIR1Yx7RmG6Co2YGk3lrO8knAPPF5RzbWIfJ6QSB9t32NJa
+         y68XbC0Z39U/f/A94Y1x/di+RE5CNcobaXjQ6kJUFwqeNM74FRxHFnjSoY0JhwDGDBpm
+         ccNzpY4YT1RrvYpC6NeNEl2fRuV/RGIA47/QysVzjh64+E4uR6Gh8iMo37wUoCjmVcZ1
+         VdbvfGRto2t7qTjkoxZn4MSgg6N627rUeg1wiK5FnjHSDBzyGSk8waYeHLX5g1slHB+f
+         dt7Q==
+X-Gm-Message-State: APjAAAXrznq4PuN8wmsQflVFraWoTSvT0hUEZGFKfGcungaTtTXW13Yn
+        Z+FkbIxaXKg/N+SlGpjLpw0acs4vFcqHiFSuxg==
+X-Google-Smtp-Source: APXvYqzpDMY1kfzvQTGFYFDuSf5Wkv4RFsY3uCP+mpqq6wLn7kqjCTzLCYufYBbbmMCBsVo5PHwr9dpQEEDI7K8RY00=
+X-Received: by 2002:a92:cc90:: with SMTP id x16mr2363556ilo.269.1576682033220;
+ Wed, 18 Dec 2019 07:13:53 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9474 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=776
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912180026
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9474 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=834 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912180026
+Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:52
+ -0800 (PST)
+Reply-To: dhl.expresscourier102156@outlook.fr
+From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
+Date:   Wed, 18 Dec 2019 16:13:52 +0100
+Message-ID: <CABHzvrnY8Lhdw4Y2q97jvAVrRpM9CVLFkw=Ved7y1GhGqHiAdw@mail.gmail.com>
+Subject: I WANT TO YOU TO TREAT THIS EMAIL VERY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Attn Dear.
 
-Guenter,
+Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
+ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
+=9900, as
+approved this morning, Date, 18/12/2019. Through the Intruction from
+INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
 
->> Also, there are some devices that will lock up the way you access that
->> VPD page. So a tweak is also required there.
->>
-> Do you have details ? Do I need to add a call to scsi_device_supports_vpd(),
-> maybe ?
+REGISTRATION NO :EG58945
+PARCEL NUMBER: 140479
+Delivery Schuleded now,
+Finally all we required from you is your ATM Card Proccessing Delivery
+fees $19.00 only which you must send to this DHL service to enable us
+dispatch the parcel to your destination today.
 
-Some devices lock up if you ask for too much data. I actually discovered
-a VPD handling regression in 5.5 while working on a series of prep
-patches for you today. Working on a fix. I'll try to get a patch series
-out for review tomorrow.
+Here is our receiving payment details.
+You are advised to send it Via Money Gram Service.
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Receiver's Name--------Alan Ude
+Country-------Benin Republic.
+City/ Address--------Cotonou
+Test Question--------In God
+Answer-------We Trust
+Amount------------$US19.00 only
+Mtcn-------------
+Sender's Name-------
+
+Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
+Is Due for delivery to your address today upon confirmation of
+required fee from you asap.
+
+Call us on this phone number for any inquiry. +229 62819378
+Awaiting your urgent response.
+
+MS. MARYANNA B. THOMASON, Shipment director, DHL Express
+Courier Company-Benin

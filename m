@@ -2,93 +2,111 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 752E7124B0A
-	for <lists+linux-ide@lfdr.de>; Wed, 18 Dec 2019 16:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22D95125853
+	for <lists+linux-ide@lfdr.de>; Thu, 19 Dec 2019 01:16:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727347AbfLRPNz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 18 Dec 2019 10:13:55 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:43339 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727296AbfLRPNy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 18 Dec 2019 10:13:54 -0500
-Received: by mail-il1-f196.google.com with SMTP id v69so1962640ili.10
-        for <linux-ide@vger.kernel.org>; Wed, 18 Dec 2019 07:13:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=Q3vp2fJ40VWpq9rX2ikiWTUrhuiQJXzCeUu43e1oIIOk8rzGCPMljco+W3g3Sdt7mK
-         0zMp27lNXT81ott0dYeyE6wCdI4c1wfi5qCqRmoGIMvdtgle/6NMWI0GJrkD30CBojRq
-         hZbdgtbn9F/6uhvfSLkMdN7NhUpQoMVScRn9uDFKZJxofy0MWDF6kZw53YXeVt8sjWjA
-         Dd9TBzj4Ogplv/txGap2r0I252pQP7l7XSY4YOVhZ7qL539zlqhtO9W4mad505PIZ9Xp
-         yYy+XyL34oyC2pvEIWTDP8EMj+Gj6Cu0eHyc7GTPTD7Enq1rjLHU3JyAyX8LQzaLW/WP
-         +a+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=lUkGoDw4bW8fZQ2xGsqqg84FTsCUKEqKnFS7fn6CBoESxSptMOEwHaQoq3Shl+0USN
-         7DkoVeZEdXyPoWvUbF5hLWIR1Yx7RmG6Co2YGk3lrO8knAPPF5RzbWIfJ6QSB9t32NJa
-         y68XbC0Z39U/f/A94Y1x/di+RE5CNcobaXjQ6kJUFwqeNM74FRxHFnjSoY0JhwDGDBpm
-         ccNzpY4YT1RrvYpC6NeNEl2fRuV/RGIA47/QysVzjh64+E4uR6Gh8iMo37wUoCjmVcZ1
-         VdbvfGRto2t7qTjkoxZn4MSgg6N627rUeg1wiK5FnjHSDBzyGSk8waYeHLX5g1slHB+f
-         dt7Q==
-X-Gm-Message-State: APjAAAXrznq4PuN8wmsQflVFraWoTSvT0hUEZGFKfGcungaTtTXW13Yn
-        Z+FkbIxaXKg/N+SlGpjLpw0acs4vFcqHiFSuxg==
-X-Google-Smtp-Source: APXvYqzpDMY1kfzvQTGFYFDuSf5Wkv4RFsY3uCP+mpqq6wLn7kqjCTzLCYufYBbbmMCBsVo5PHwr9dpQEEDI7K8RY00=
-X-Received: by 2002:a92:cc90:: with SMTP id x16mr2363556ilo.269.1576682033220;
- Wed, 18 Dec 2019 07:13:53 -0800 (PST)
+        id S1726716AbfLSAPy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 18 Dec 2019 19:15:54 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:50310 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726616AbfLSAPx (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 18 Dec 2019 19:15:53 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJ0EEPG158600;
+        Thu, 19 Dec 2019 00:15:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=EPBwbki9EZdxxDrWcZ24qhfNq3w08d1404ygElG60JE=;
+ b=pNdyvgfEE1eMxZkueum391Od8j2anR8KolD4HRQb4ieKJmdJTgPiHFX/ZmoYagdZM6nH
+ enrjf9DRFURQ+5yd5+uKCxMzeOYNS2oZE7xJh/lgF81gh1vYTGhFDN46JMbd3J+sWxlU
+ CWdIJruk0SA2eqzfRrEE9r8FMBo8GQE2TkSwGsGB2ZCYrm2jBzk6eZPgaSQfOZ9AUvg2
+ p6nEzhxMYSUzt8wUwg5Bx0SzZ9XvIsFmX06DpMlkmlEGfhSSAx4n5TFzcqq0iuSBEE98
+ tSRB5p1gZO7fBu9ePhAuFIXEFVcQWBq7pV5wATXvpNUhPakDtHMLaJAWHAZagxmF05u8 EA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2wvq5urxt0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Dec 2019 00:15:14 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBJ09O8K015978;
+        Thu, 19 Dec 2019 00:15:14 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2wyp08gqdb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 19 Dec 2019 00:15:14 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBJ0FBv4027621;
+        Thu, 19 Dec 2019 00:15:11 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 18 Dec 2019 16:15:10 -0800
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
+        Chris Healy <cphealy@gmail.com>
+Subject: Re: [PATCH v2] hwmon: Driver for temperature sensors on SATA drives
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191215174509.1847-1-linux@roeck-us.net>
+        <20191215174509.1847-2-linux@roeck-us.net>
+Date:   Wed, 18 Dec 2019 19:15:07 -0500
+In-Reply-To: <20191215174509.1847-2-linux@roeck-us.net> (Guenter Roeck's
+        message of "Sun, 15 Dec 2019 09:45:09 -0800")
+Message-ID: <yq1r211dvck.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:52
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:13:52 +0100
-Message-ID: <CABHzvrnY8Lhdw4Y2q97jvAVrRpM9CVLFkw=Ved7y1GhGqHiAdw@mail.gmail.com>
-Subject: I WANT TO YOU TO TREAT THIS EMAIL VERY URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9475 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912190000
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9475 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912190001
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Attn Dear.
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+Guenter,
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+> This driver solves this problem by adding support for reading the
+> temperature of SATA drives from the kernel using the hwmon API and
+> by adding a temperature zone for each drive.
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+My working tree is available here:
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
+  https://git.kernel.org/pub/scm/linux/kernel/git/mkp/linux.git/log/?h=5.6/drivetemp
 
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
+A few notes:
 
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
+ - Before applying your patch I did s/satatemp/drivetemp/
 
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
+ - I get a crash in the driver core during probe if the drivetemp module
+   is loaded prior to loading ahci or a SCSI HBA driver. This crash is
+   unrelated to my changes. Haven't had time to debug.
+
+ - I tweaked your ATA detection heuristics and now use the cached VPD
+   page 0x89 instead of fetching one from the device.
+
+ - I also added support for reading the temperature log page on SCSI
+   drives.
+
+ - Tested with a mixed bag of about 40 SCSI and SATA drives attached.
+
+ - I still think sensor naming needs work. How and where are the
+   "drivetemp-scsi-8-140" names generated?
+
+I'll tinker some more but thought I'd share what I have for now.
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

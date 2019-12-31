@@ -2,47 +2,44 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C0AD12DAEA
-	for <lists+linux-ide@lfdr.de>; Tue, 31 Dec 2019 19:30:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CF1612DAFD
+	for <lists+linux-ide@lfdr.de>; Tue, 31 Dec 2019 19:44:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726720AbfLaSaS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 31 Dec 2019 13:30:18 -0500
-Received: from mail.kernel.org ([198.145.29.99]:36300 "EHLO mail.kernel.org"
+        id S1727064AbfLaSoc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 31 Dec 2019 13:44:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33822 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726658AbfLaSaS (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 31 Dec 2019 13:30:18 -0500
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+        id S1726720AbfLaSoc (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 31 Dec 2019 13:44:32 -0500
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E111206E4;
-        Tue, 31 Dec 2019 18:30:17 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 702CD206D9;
+        Tue, 31 Dec 2019 18:44:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1577817017;
-        bh=LSaQHVFJd5JY9LmBvMywkPv6G/fsXtgDU/dIgzpIayk=;
+        s=default; t=1577817871;
+        bh=riXcoydcyPoxgkVe8tAVNRG3RFVXH6/h9LqbmhayhjA=;
         h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=DWil62AsnC8i2xuyfwRF6OBRj4OW8ChA0n0LQc5Jp6aiMNfXvfSF8CxfhmhlXWHxM
-         dnNy9fiOVe7Yah8ysz8DeemqlNTRJbnXVOuudZOcpi4BR/FbrEAm2SyRChLQQHqqbb
-         5FPM2alRM8PufGypa9qX09TEfOBs4gmiDPcIbVNQ=
-Received: by mail-qt1-f177.google.com with SMTP id l12so32014512qtq.12;
-        Tue, 31 Dec 2019 10:30:17 -0800 (PST)
-X-Gm-Message-State: APjAAAVT4kmgQPAmtVvMD4fMWm9nXoIqutNsO2XXMqAZI8YIWHHFj/+k
-        4Q7zBMxyzBiMtMgZQLcj94N1sNy3VgLpsUAXKw==
-X-Google-Smtp-Source: APXvYqx6kNz0dqWwE7vGq2vamseNVekgF/VaPchp6bR3/XpUKfiLAHLmbSie1LW5HIle8nimS1g6ypl6ThvDehqIGs8=
-X-Received: by 2002:ac8:59:: with SMTP id i25mr54067921qtg.110.1577817016713;
- Tue, 31 Dec 2019 10:30:16 -0800 (PST)
+        b=a3SDFHuDqg2DCCB2Q0X8BaYq8y19qdPTiLDvhBiBjlHBY5C77eokc4FFBB6clAomZ
+         Gu/3FW9D0FxEb1QtoCY3GCipOZr0/t8uFu+74JrmigdHY8maPcdi9RSc1/egCylhza
+         7qtWv6/2Iw1anU9C/SaBUrfaUSeFAVLjIJxuF188=
+Received: by mail-qt1-f180.google.com with SMTP id l12so32033405qtq.12;
+        Tue, 31 Dec 2019 10:44:31 -0800 (PST)
+X-Gm-Message-State: APjAAAWjWiQa8FqZifv/J1/Hc+CzXaeGcrX6neLhVZCct/IZtBdcBbBe
+        4+PoxtULBlSH76APVTUApq+wq925c/Ij4frNug==
+X-Google-Smtp-Source: APXvYqwuXd/iB7mnz6sRuN1D722obsAkIzZeKSerej+GtzsT+NMn+IL6WwSpo9TnuKp7aqFc+cJ7Y327syIQMQJLlRM=
+X-Received: by 2002:ac8:5513:: with SMTP id j19mr53751443qtq.143.1577817870653;
+ Tue, 31 Dec 2019 10:44:30 -0800 (PST)
 MIME-Version: 1.0
 References: <20191231172458.25984-1-linus.walleij@linaro.org>
- <41b527ba-003d-425b-5e59-43cdd8c778e2@cogentembedded.com> <CACRpkdbR3TTiNqU8g54M4N4=N8yiV2UreFKoV0LffYUxZEChJw@mail.gmail.com>
-In-Reply-To: <CACRpkdbR3TTiNqU8g54M4N4=N8yiV2UreFKoV0LffYUxZEChJw@mail.gmail.com>
+In-Reply-To: <20191231172458.25984-1-linus.walleij@linaro.org>
 From:   Rob Herring <robh+dt@kernel.org>
-Date:   Tue, 31 Dec 2019 11:30:05 -0700
-X-Gmail-Original-Message-ID: <CAL_Jsq+3wg8_hHY2zY3PGfNHWRkGVNGXPo_O-TqMZ8SQ6N_O2Q@mail.gmail.com>
-Message-ID: <CAL_Jsq+3wg8_hHY2zY3PGfNHWRkGVNGXPo_O-TqMZ8SQ6N_O2Q@mail.gmail.com>
+Date:   Tue, 31 Dec 2019 11:44:19 -0700
+X-Gmail-Original-Message-ID: <CAL_JsqKcuV1dKuTD7iYdyHA3fqv3ENBVj7RXQuT+yMja4tJpxA@mail.gmail.com>
+Message-ID: <CAL_JsqKcuV1dKuTD7iYdyHA3fqv3ENBVj7RXQuT+yMja4tJpxA@mail.gmail.com>
 Subject: Re: [PATCH 1/2] dt-bindings: Create DT bindings for [PS]ATA controllers
 To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, Jens Axboe <axboe@kernel.dk>,
+Cc:     devicetree@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
         "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
         <linux-ide@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -51,35 +48,87 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Tue, Dec 31, 2019 at 10:56 AM Linus Walleij <linus.walleij@linaro.org> wrote:
+On Tue, Dec 31, 2019 at 10:25 AM Linus Walleij <linus.walleij@linaro.org> wrote:
 >
-> On Tue, Dec 31, 2019 at 6:46 PM Sergei Shtylyov
-> <sergei.shtylyov@cogentembedded.com> wrote:
-> > On 12/31/2019 08:24 PM, Linus Walleij wrote:
+> I need to create subnodes for drives connected to PATA
+> or SATA host controllers, and this needs to be supported
+> generally, so create a common YAML binding for
+> "pata-controller" or "sata-controller" that will support
+> subnodes with drives.
 >
-> > > +properties:
-> > > +  $nodename:
-> > > +    pattern: "^[ps]ata-controller(@.*)?$"
-> >
-> >    I thought the DT spec has long ago standardized the node name as "ide" and "sata"?
+> Cc: Rob Herring <robh+dt@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  .../bindings/ata/pata-sata-common.yaml        | 47 +++++++++++++++++++
+>  1 file changed, 47 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/ata/pata-sata-common.yaml
+>
+> diff --git a/Documentation/devicetree/bindings/ata/pata-sata-common.yaml b/Documentation/devicetree/bindings/ata/pata-sata-common.yaml
+> new file mode 100644
+> index 000000000000..d94aa20a29e3
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/ata/pata-sata-common.yaml
+> @@ -0,0 +1,47 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/ata/pata-sata-common.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Common Properties for Parallel and Serial AT attachment controllers
+> +
+> +maintainers:
+> +  - Linus Walleij <linus.walleij@linaro.org>
+> +
+> +description: |
+> +  This document defines device tree properties common to most Parallel
+> +  (PATA) and Serial (SATA) AT attachment storage devices. It doesn't
+> +  constitue a device tree binding specification by itself but is meant to
+> +  be referenced by device tree bindings.
+> +
+> +  The PATA/SATA controller device tree bindings are responsible for
+> +  defining whether each property is required or optional.
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: "^[ps]ata-controller(@.*)?$"
+> +    description:
+> +      Specifies the host controller node.
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +patternProperties:
+> +  "^drive@[0-1]$":
+> +    description: |
+> +      DT nodes for drives connected on the PATA or SATA host. The master drive
+> +      will have ID number 0 and the slave drive will have ID number 1.
+> +    type: object
 
-Correct.
+See ata/ahci-platform.txt. We already have child nodes defined as
+ports which is essentially a drive (though IIRC SATA can have a mux).
+Arguably, we could have both ports and then a drive child under that,
+but I've never seen a case of a drive needing DT properties (that
+would imply a non-standard connector). So either split this into
+separate IDE/PATA and SATA schemas or extend this to work with SATA
+ports.
 
-> I'm not 100% sure (Rob can answer) but I have *half-guessed* that the process
-> so far has been that when we define a schema for some generic node name
-> we also invent some new generic node name like this, or else all the old DTS
-> files people have will generate (lots of) errors.
+Also, you might consider if you need a regulator property for IDE.
 
-The list of generic node names is a lot longer than what we have
-schema for currently.
+> +
+> +    properties:
+> +      reg:
+> +        minimum: 0
+> +        maximum: 1
+> +        description:
+> +          The ID number of the drive, 0 for the master and 1 for the slave.
 
-> The DTS files can then opt in to the schema by simply renaming its nodes
-> in accordance: "ide" -> "pata-controller", "sata" -> "sata-controller"
-> (I have such a patch for the Gemini that I made this for.)
->
-> If I'm wrong I'll switch to to ide@ and sata@.
->
-> Rob?
->
-> Yours,
-> Linus Walleij
+Why do you need to describe the drives in DT for IDE? They are
+discoverable, right? And unlike SATA, the power to master and slave is
+shared.
+
+Rob

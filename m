@@ -2,457 +2,172 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3077512E7D7
-	for <lists+linux-ide@lfdr.de>; Thu,  2 Jan 2020 16:05:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CFE412F19F
+	for <lists+linux-ide@lfdr.de>; Fri,  3 Jan 2020 00:06:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728636AbgABPEf (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 2 Jan 2020 10:04:35 -0500
-Received: from mout.kundenserver.de ([212.227.126.134]:49789 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728735AbgABPEe (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 2 Jan 2020 10:04:34 -0500
-Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
- 1MvKGv-1jeJKC0t7p-00rKSo; Thu, 02 Jan 2020 16:04:01 +0100
-From:   Arnd Bergmann <arnd@arndb.de>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Jens Axboe <axboe@kernel.dk>,
-        Borislav Petkov <bp@alien8.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Hannes Reinecke <hare@suse.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Martin Wilck <mwilck@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org
-Subject: [PATCH v3 18/22] compat_ioctl: move HDIO ioctl handling into drivers/ide
-Date:   Thu,  2 Jan 2020 15:55:36 +0100
-Message-Id: <20200102145552.1853992-19-arnd@arndb.de>
-X-Mailer: git-send-email 2.20.0
-In-Reply-To: <20200102145552.1853992-1-arnd@arndb.de>
-References: <20200102145552.1853992-1-arnd@arndb.de>
+        id S1726130AbgABXGD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 2 Jan 2020 18:06:03 -0500
+Received: from mail-pg1-f193.google.com ([209.85.215.193]:34298 "EHLO
+        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725890AbgABXGD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 2 Jan 2020 18:06:03 -0500
+Received: by mail-pg1-f193.google.com with SMTP id r11so22605704pgf.1;
+        Thu, 02 Jan 2020 15:06:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Bb6h4ccFElvLG5xqjKacq3uQ2ZA+WTV9OSPOnPBr7yI=;
+        b=lbq7shZMwC/+4dAihW75yVYmcIwB76oxVMtdSmQdRyTzsDOaFoCeEoz7NsVH/baakN
+         wBCjoVYBaiOkRipBKXnfIBxNYByctXw2c3n0mN/Ku/mYXaewpl6CldC7sPHSo9dPgY+E
+         MOMepFRI3iWQeQ5UWAz4hJ8lQLMXO/CWoPylfoNwlhPo5kV6OPN13T0QSMAp0OExdze+
+         goYUS7V4pIMLobJAkMylgbaw67Dci3/FpG9uDTeFscS0tGvxKWLP/OnJaCjs91/Fd0M1
+         ligejLk5JP5nnc3Jh1tp1VFDjS5JwMFLKJ+22EX0fL61tep3QisI0fTpb7qDvgsMNjz0
+         3hVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=Bb6h4ccFElvLG5xqjKacq3uQ2ZA+WTV9OSPOnPBr7yI=;
+        b=UJtUvQdFgc4pxFFlPwZYeqYwkgFPJPw18KuofATvXGUrJUmvjmoiAaUI4hJ40iGXmp
+         zqG4GKpvVsuW65/Ad/C0D1hEsvhkYEiu9sqhJw9jgn+Y2mkdkEy74orE0AqkljYRhHln
+         MUiGHaAQ2XG3MGfDzDc0W2NBrhGHH7N7en7NN6J1DtECLjk4kRFCidRpe5oURe4elyNx
+         a7j0HiIxH3cveJ7oHcBXEixH+CrtBZS89wV7Z6xm+0Jxz9ukekD/p0qzZsEF58GrI7I6
+         9chocQAAFgM3349BklX+0W7nBxyVpZrJL1cnS/2Yyd/MPk9wC9BmfmY7sAp9zMVWGiVj
+         jE2A==
+X-Gm-Message-State: APjAAAUMjWoTOXj8wkChFaijVe68vngLXkfAzZUTY+4VmwLRmwqkWm2a
+        ypERsjFjA3j+K2OS7YFAIaA/m8J3
+X-Google-Smtp-Source: APXvYqxxe7wCOB3G/7ptIEiY2cPoUZSi24nVB9ou4EPATi5X+O7Gr/v6tHy19EALuMJhymUw1ItipA==
+X-Received: by 2002:a63:696:: with SMTP id 144mr96064050pgg.260.1578006362189;
+        Thu, 02 Jan 2020 15:06:02 -0800 (PST)
+Received: from [10.67.50.49] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id a22sm69756313pfk.108.2020.01.02.15.06.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jan 2020 15:06:01 -0800 (PST)
+Subject: Re: [PATCH 0/8] ata: ahci_brcm: Fixes and new device support
+To:     Jens Axboe <axboe@kernel.dk>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-kernel@vger.kernel.org
+Cc:     bcm-kernel-feedback-list@broadcom.com,
+        Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Tejun Heo <tj@kernel.org>, Jaedon Shin <jaedon.shin@gmail.com>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>
+References: <20191210185351.14825-1-f.fainelli@gmail.com>
+ <b65b61a6-3cc7-1e9b-9fa7-83f314e9bbf2@redhat.com>
+ <5ef8d453-84e9-72dc-3db9-6a1923d61076@gmail.com>
+ <e1b21ba3-7129-17dc-86e1-2d2d68302e39@kernel.dk>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ G10n8gCguORqNGMsVRxrlLs7/himep7MrCc=
+Message-ID: <81a60d6e-78f2-3f13-f5c8-cb835d31a80f@gmail.com>
+Date:   Thu, 2 Jan 2020 15:06:00 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:fkDBd9otlz69KCTrRhfhZnw2zKUhbJ5hsLRiiJ3x/MQRpXRm71q
- iOOGKEIaIdFfurKZAMM6afW4NASeEK+pRiREnjLF9xb1E6Fv4i2kYUqww+srpyINlXvaSrb
- ic0siKaTxIOU+bd+55/6/KXKAO6foDF5B3c7Ye/rZj53tyC6UB+LuqN7mKA3I2PE0OrL5WE
- GIcyTAu0zpx9NsGdZTYww==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Rnc4i6anElQ=:DnrdUZwhJXRUJUE+ROE5Kv
- oX91nHmN0UJkeOYA2q3EHzBcNh8BX1uVbavaRXwfadfN4cgoFP3unzIh9lU1VUHTuh4NFNDyH
- UaerZ+JRZ4DbUoELoUt5BCDNtBrmoODrHFnX6w0R9U3nwiIYOqEXuE0DRyYXPMkufipeF7xqU
- cY87JsB92IL/critaJAVdk/ZMTOhYtWk/9vbM4MxCRQCcpIhEBSmx9CuksMqj8ha5W+GSDxRP
- z5Da6pfvxV2eDSYdkS9TUs2LawxTM7N3ZYWQxF8i4WXPtL+zmCfkJ6lrb2tbq44KnLjQn1Naz
- LLDvvYu3yz+hBFJbron893ud8v74nlru3/d+0bb94p4+RIL4DAUaNCjAL9568rGfy2UxDDUwD
- j410JUMrT3bQhtQ/l3wpi26XVgi6f7/I48TsvlS2ObKJQVyKAGcNuJShni7soBAIg+Z2sQR7t
- H+dimlhGn8/L0hGQhs6/t7IyNZ4uQb1eTbcf9+FZOufqzITpzyYhAD7Oy342ouV+M921ab3G8
- yTT+qSWi0WCssVdO2nEjpVwGjhlsHCV+iMeEv/4eO1BcfT5W5KtUBWDFUMZ++CiT+3PX/Eqwv
- NfQEFgEste1OjqIU/HuTciJ6eFX32KeEwhT6BiDhxmBDoYwGIOg5BEmUyUlF+OjuWNbWs1VNZ
- Mh20vJhP+xplgOQhfZd4PgwylbZZ0i0zBSMFA7VOhUT3RpRgplft0IdtVF821ESCEEaim863V
- 74lnu8CFL0z80Qk55rU/lSoHo8W1fXl/GdF7fk/BsThShq3x1EOwGFneMnUm6MImz44yZdYrU
- 5fb6fLMRcHXQD7WjdNVywgvrLRbn/BsUSrfzz7PcRAEt0ljTZj1dDsT8s7KMNwGjntDAMQK+P
- CSkKNyEqhFYcOol+UeOA==
+In-Reply-To: <e1b21ba3-7129-17dc-86e1-2d2d68302e39@kernel.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Most of the HDIO ioctls are only used by the obsolete drivers/ide
-subsystem, these can be handled by changing ide_cmd_ioctl() to be aware
-of compat mode and doing the correct transformations in place and using
-it as both native and compat handlers for all drivers.
+On 12/25/19 7:46 PM, Jens Axboe wrote:
+> On 12/25/19 8:34 PM, Florian Fainelli wrote:
+>>
+>>
+>> On 12/11/2019 5:31 AM, Hans de Goede wrote:
+>>> Hi,
+>>>
+>>> On 10-12-2019 19:53, Florian Fainelli wrote:
+>>>> Hi Jens,
+>>>>
+>>>> The first 4 patches are fixes and should ideally be queued up/picked up
+>>>> by stable. The last 4 patches add support for BCM7216 which is one of
+>>>> our latest devices supported by this driver.
+>>>>
+>>>> Patch #2 does a few things, but it was pretty badly broken before and it
+>>>> is hard not to fix all call sites (probe, suspend, resume) in one shot.
+>>>>
+>>>> Please let me know if you have any comments.
+>>>>
+>>>> Thanks!
+>>>
+>>> The entire series looks good to me:
+>>>
+>>> Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+>>>
+>>> Regards,
+>>
+>> Thanks Hans, Jens is this good to go from your perspective?
+> 
+> I'll queue 1-4 up for 5.5 and mark for stable, then add 5-8 for
+> 5.6. Thanks!
 
-The SCSI drivers implementing the same commands are already doing
-this in the drivers, so the compat_blkdev_driver_ioctl() function
-is no longer needed now.
-
-The BLKSECTSET and HDIO_GETGEO_BIG ioctls are not implemented
-in any driver any more and no longer need any conversion.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- block/compat_ioctl.c           | 75 ----------------------------------
- drivers/ide/ide-cd.c           | 15 +++----
- drivers/ide/ide-disk.c         |  1 +
- drivers/ide/ide-floppy_ioctl.c |  7 ++--
- drivers/ide/ide-ioctls.c       | 47 +++++++++++++--------
- drivers/ide/ide-tape.c         | 11 +++++
- 6 files changed, 54 insertions(+), 102 deletions(-)
-
-diff --git a/block/compat_ioctl.c b/block/compat_ioctl.c
-index e1c5d07b09e5..928b917e692f 100644
---- a/block/compat_ioctl.c
-+++ b/block/compat_ioctl.c
-@@ -78,24 +78,6 @@ static int compat_hdio_getgeo(struct gendisk *disk, struct block_device *bdev,
- 	return ret;
- }
- 
--static int compat_hdio_ioctl(struct block_device *bdev, fmode_t mode,
--		unsigned int cmd, unsigned long arg)
--{
--	unsigned long __user *p;
--	int error;
--
--	p = compat_alloc_user_space(sizeof(unsigned long));
--	error = __blkdev_driver_ioctl(bdev, mode,
--				cmd, (unsigned long)p);
--	if (error == 0) {
--		unsigned int __user *uvp = compat_ptr(arg);
--		unsigned long v;
--		if (get_user(v, p) || put_user(v, uvp))
--			error = -EFAULT;
--	}
--	return error;
--}
--
- struct compat_blkpg_ioctl_arg {
- 	compat_int_t op;
- 	compat_int_t flags;
-@@ -129,61 +111,6 @@ static int compat_blkpg_ioctl(struct block_device *bdev, fmode_t mode,
- #define BLKBSZSET_32		_IOW(0x12, 113, int)
- #define BLKGETSIZE64_32		_IOR(0x12, 114, int)
- 
--static int compat_blkdev_driver_ioctl(struct block_device *bdev, fmode_t mode,
--			unsigned cmd, unsigned long arg)
--{
--	switch (cmd) {
--	case HDIO_GET_UNMASKINTR:
--	case HDIO_GET_MULTCOUNT:
--	case HDIO_GET_KEEPSETTINGS:
--	case HDIO_GET_32BIT:
--	case HDIO_GET_NOWERR:
--	case HDIO_GET_DMA:
--	case HDIO_GET_NICE:
--	case HDIO_GET_WCACHE:
--	case HDIO_GET_ACOUSTIC:
--	case HDIO_GET_ADDRESS:
--	case HDIO_GET_BUSSTATE:
--		return compat_hdio_ioctl(bdev, mode, cmd, arg);
--
--	/*
--	 * No handler required for the ones below, we just need to
--	 * convert arg to a 64 bit pointer.
--	 */
--	case BLKSECTSET:
--	/*
--	 * 0x03 -- HD/IDE ioctl's used by hdparm and friends.
--	 *         Some need translations, these do not.
--	 */
--	case HDIO_GET_IDENTITY:
--	case HDIO_DRIVE_TASK:
--	case HDIO_DRIVE_CMD:
--	/* 0x330 is reserved -- it used to be HDIO_GETGEO_BIG */
--	case 0x330:
--		arg = (unsigned long)compat_ptr(arg);
--	/* These intepret arg as an unsigned long, not as a pointer,
--	 * so we must not do compat_ptr() conversion. */
--	case HDIO_SET_MULTCOUNT:
--	case HDIO_SET_UNMASKINTR:
--	case HDIO_SET_KEEPSETTINGS:
--	case HDIO_SET_32BIT:
--	case HDIO_SET_NOWERR:
--	case HDIO_SET_DMA:
--	case HDIO_SET_PIO_MODE:
--	case HDIO_SET_NICE:
--	case HDIO_SET_WCACHE:
--	case HDIO_SET_ACOUSTIC:
--	case HDIO_SET_BUSSTATE:
--	case HDIO_SET_ADDRESS:
--		break;
--	default:
--		/* unknown ioctl number */
--		return -ENOIOCTLCMD;
--	}
--
--	return __blkdev_driver_ioctl(bdev, mode, cmd, arg);
--}
--
- /* Most of the generic ioctls are handled in the normal fallback path.
-    This assumes the blkdev's low level compat_ioctl always returns
-    ENOIOCTLCMD for unknown ioctls. */
-@@ -294,8 +221,6 @@ long compat_blkdev_ioctl(struct file *file, unsigned cmd, unsigned long arg)
- 	default:
- 		if (disk->fops->compat_ioctl)
- 			ret = disk->fops->compat_ioctl(bdev, mode, cmd, arg);
--		if (ret == -ENOIOCTLCMD)
--			ret = compat_blkdev_driver_ioctl(bdev, mode, cmd, arg);
- 		return ret;
- 	}
- }
-diff --git a/drivers/ide/ide-cd.c b/drivers/ide/ide-cd.c
-index e09b949a7c46..dcf8b51b47fd 100644
---- a/drivers/ide/ide-cd.c
-+++ b/drivers/ide/ide-cd.c
-@@ -1711,7 +1711,6 @@ static int idecd_ioctl(struct block_device *bdev, fmode_t mode,
- 	return ret;
- }
- 
--#ifdef CONFIG_COMPAT
- static int idecd_locked_compat_ioctl(struct block_device *bdev, fmode_t mode,
- 			unsigned int cmd, unsigned long arg)
- {
-@@ -1728,8 +1727,12 @@ static int idecd_locked_compat_ioctl(struct block_device *bdev, fmode_t mode,
- 		break;
- 	}
- 
--	return cdrom_ioctl(&info->devinfo, bdev, mode, cmd,
--			   (unsigned long)argp);
-+	err = generic_ide_ioctl(info->drive, bdev, cmd, arg);
-+	if (err == -EINVAL)
-+		err = cdrom_ioctl(&info->devinfo, bdev, mode, cmd,
-+				  (unsigned long)argp);
-+
-+	return err;
- }
- 
- static int idecd_compat_ioctl(struct block_device *bdev, fmode_t mode,
-@@ -1743,7 +1746,6 @@ static int idecd_compat_ioctl(struct block_device *bdev, fmode_t mode,
- 
- 	return ret;
- }
--#endif
- 
- static unsigned int idecd_check_events(struct gendisk *disk,
- 				       unsigned int clearing)
-@@ -1766,9 +1768,8 @@ static const struct block_device_operations idecd_ops = {
- 	.open			= idecd_open,
- 	.release		= idecd_release,
- 	.ioctl			= idecd_ioctl,
--#ifdef CONFIG_COMPAT
--	.compat_ioctl		= idecd_compat_ioctl,
--#endif
-+	.compat_ioctl		= IS_ENABLED(CONFIG_COMPAT) ?
-+				  idecd_compat_ioctl : NULL,
- 	.check_events		= idecd_check_events,
- 	.revalidate_disk	= idecd_revalidate_disk
- };
-diff --git a/drivers/ide/ide-disk.c b/drivers/ide/ide-disk.c
-index 197912af5c2f..1d3407d7e095 100644
---- a/drivers/ide/ide-disk.c
-+++ b/drivers/ide/ide-disk.c
-@@ -794,4 +794,5 @@ const struct ide_disk_ops ide_ata_disk_ops = {
- 	.set_doorlock		= ide_disk_set_doorlock,
- 	.do_request		= ide_do_rw_disk,
- 	.ioctl			= ide_disk_ioctl,
-+	.compat_ioctl		= ide_disk_ioctl,
- };
-diff --git a/drivers/ide/ide-floppy_ioctl.c b/drivers/ide/ide-floppy_ioctl.c
-index 4fd70f804d6f..39a790ac6cc3 100644
---- a/drivers/ide/ide-floppy_ioctl.c
-+++ b/drivers/ide/ide-floppy_ioctl.c
-@@ -329,10 +329,9 @@ int ide_floppy_compat_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 	if (cmd != CDROM_SEND_PACKET && cmd != SCSI_IOCTL_SEND_COMMAND)
- 		err = scsi_cmd_blk_ioctl(bdev, mode, cmd, argp);
- 
--	/*
--	 * there is no generic_ide_compat_ioctl(), that is handled
--	 * through compat_blkdev_ioctl().
--	 */
-+	if (err == -ENOTTY)
-+		err = generic_ide_ioctl(drive, bdev, cmd, arg);
-+
- out:
- 	mutex_unlock(&ide_floppy_ioctl_mutex);
- 	return err;
-diff --git a/drivers/ide/ide-ioctls.c b/drivers/ide/ide-ioctls.c
-index d48c17003874..09491098047b 100644
---- a/drivers/ide/ide-ioctls.c
-+++ b/drivers/ide/ide-ioctls.c
-@@ -3,11 +3,20 @@
-  * IDE ioctls handling.
-  */
- 
-+#include <linux/compat.h>
- #include <linux/export.h>
- #include <linux/hdreg.h>
- #include <linux/ide.h>
- #include <linux/slab.h>
- 
-+static int put_user_long(long val, unsigned long arg)
-+{
-+	if (in_compat_syscall())
-+		return put_user(val, (compat_long_t __user *)compat_ptr(arg));
-+
-+	return put_user(val, (long __user *)arg);
-+}
-+
- static const struct ide_ioctl_devset ide_ioctl_settings[] = {
- { HDIO_GET_32BIT,	 HDIO_SET_32BIT,	&ide_devset_io_32bit  },
- { HDIO_GET_KEEPSETTINGS, HDIO_SET_KEEPSETTINGS,	&ide_devset_keepsettings },
-@@ -37,7 +46,7 @@ int ide_setting_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 	mutex_lock(&ide_setting_mtx);
- 	err = ds->get(drive);
- 	mutex_unlock(&ide_setting_mtx);
--	return err >= 0 ? put_user(err, (long __user *)arg) : err;
-+	return err >= 0 ? put_user_long(err, arg) : err;
- 
- set_val:
- 	if (bdev != bdev->bd_contains)
-@@ -56,7 +65,7 @@ int ide_setting_ioctl(ide_drive_t *drive, struct block_device *bdev,
- EXPORT_SYMBOL_GPL(ide_setting_ioctl);
- 
- static int ide_get_identity_ioctl(ide_drive_t *drive, unsigned int cmd,
--				  unsigned long arg)
-+				  void __user *argp)
- {
- 	u16 *id = NULL;
- 	int size = (cmd == HDIO_GET_IDENTITY) ? (ATA_ID_WORDS * 2) : 142;
-@@ -77,7 +86,7 @@ static int ide_get_identity_ioctl(ide_drive_t *drive, unsigned int cmd,
- 	memcpy(id, drive->id, size);
- 	ata_id_to_hd_driveid(id);
- 
--	if (copy_to_user((void __user *)arg, id, size))
-+	if (copy_to_user(argp, id, size))
- 		rc = -EFAULT;
- 
- 	kfree(id);
-@@ -87,10 +96,10 @@ static int ide_get_identity_ioctl(ide_drive_t *drive, unsigned int cmd,
- 
- static int ide_get_nice_ioctl(ide_drive_t *drive, unsigned long arg)
- {
--	return put_user((!!(drive->dev_flags & IDE_DFLAG_DSC_OVERLAP)
-+	return put_user_long((!!(drive->dev_flags & IDE_DFLAG_DSC_OVERLAP)
- 			 << IDE_NICE_DSC_OVERLAP) |
- 			(!!(drive->dev_flags & IDE_DFLAG_NICE1)
--			 << IDE_NICE_1), (long __user *)arg);
-+			 << IDE_NICE_1), arg);
- }
- 
- static int ide_set_nice_ioctl(ide_drive_t *drive, unsigned long arg)
-@@ -115,7 +124,7 @@ static int ide_set_nice_ioctl(ide_drive_t *drive, unsigned long arg)
- 	return 0;
- }
- 
--static int ide_cmd_ioctl(ide_drive_t *drive, unsigned long arg)
-+static int ide_cmd_ioctl(ide_drive_t *drive, void __user *argp)
- {
- 	u8 *buf = NULL;
- 	int bufsize = 0, err = 0;
-@@ -123,7 +132,7 @@ static int ide_cmd_ioctl(ide_drive_t *drive, unsigned long arg)
- 	struct ide_cmd cmd;
- 	struct ide_taskfile *tf = &cmd.tf;
- 
--	if (NULL == (void *) arg) {
-+	if (NULL == argp) {
- 		struct request *rq;
- 
- 		rq = blk_get_request(drive->queue, REQ_OP_DRV_IN, 0);
-@@ -135,7 +144,7 @@ static int ide_cmd_ioctl(ide_drive_t *drive, unsigned long arg)
- 		return err;
- 	}
- 
--	if (copy_from_user(args, (void __user *)arg, 4))
-+	if (copy_from_user(args, argp, 4))
- 		return -EFAULT;
- 
- 	memset(&cmd, 0, sizeof(cmd));
-@@ -181,19 +190,18 @@ static int ide_cmd_ioctl(ide_drive_t *drive, unsigned long arg)
- 	args[1] = tf->error;
- 	args[2] = tf->nsect;
- abort:
--	if (copy_to_user((void __user *)arg, &args, 4))
-+	if (copy_to_user(argp, &args, 4))
- 		err = -EFAULT;
- 	if (buf) {
--		if (copy_to_user((void __user *)(arg + 4), buf, bufsize))
-+		if (copy_to_user((argp + 4), buf, bufsize))
- 			err = -EFAULT;
- 		kfree(buf);
- 	}
- 	return err;
- }
- 
--static int ide_task_ioctl(ide_drive_t *drive, unsigned long arg)
-+static int ide_task_ioctl(ide_drive_t *drive, void __user *p)
- {
--	void __user *p = (void __user *)arg;
- 	int err = 0;
- 	u8 args[7];
- 	struct ide_cmd cmd;
-@@ -237,6 +245,10 @@ int generic_ide_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 		      unsigned int cmd, unsigned long arg)
- {
- 	int err;
-+	void __user *argp = (void __user *)arg;
-+
-+	if (in_compat_syscall())
-+		argp = compat_ptr(arg);
- 
- 	err = ide_setting_ioctl(drive, bdev, cmd, arg, ide_ioctl_settings);
- 	if (err != -EOPNOTSUPP)
-@@ -247,7 +259,7 @@ int generic_ide_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 	case HDIO_GET_IDENTITY:
- 		if (bdev != bdev->bd_contains)
- 			return -EINVAL;
--		return ide_get_identity_ioctl(drive, cmd, arg);
-+		return ide_get_identity_ioctl(drive, cmd, argp);
- 	case HDIO_GET_NICE:
- 		return ide_get_nice_ioctl(drive, arg);
- 	case HDIO_SET_NICE:
-@@ -258,6 +270,9 @@ int generic_ide_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 	case HDIO_DRIVE_TASKFILE:
- 		if (!capable(CAP_SYS_ADMIN) || !capable(CAP_SYS_RAWIO))
- 			return -EACCES;
-+		/* missing compat handler for HDIO_DRIVE_TASKFILE */
-+		if (in_compat_syscall())
-+			return -ENOTTY;
- 		if (drive->media == ide_disk)
- 			return ide_taskfile_ioctl(drive, arg);
- 		return -ENOMSG;
-@@ -265,11 +280,11 @@ int generic_ide_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 	case HDIO_DRIVE_CMD:
- 		if (!capable(CAP_SYS_RAWIO))
- 			return -EACCES;
--		return ide_cmd_ioctl(drive, arg);
-+		return ide_cmd_ioctl(drive, argp);
- 	case HDIO_DRIVE_TASK:
- 		if (!capable(CAP_SYS_RAWIO))
- 			return -EACCES;
--		return ide_task_ioctl(drive, arg);
-+		return ide_task_ioctl(drive, argp);
- 	case HDIO_DRIVE_RESET:
- 		if (!capable(CAP_SYS_ADMIN))
- 			return -EACCES;
-@@ -277,7 +292,7 @@ int generic_ide_ioctl(ide_drive_t *drive, struct block_device *bdev,
- 	case HDIO_GET_BUSSTATE:
- 		if (!capable(CAP_SYS_ADMIN))
- 			return -EACCES;
--		if (put_user(BUSSTATE_ON, (long __user *)arg))
-+		if (put_user_long(BUSSTATE_ON, arg))
- 			return -EFAULT;
- 		return 0;
- 	case HDIO_SET_BUSSTATE:
-diff --git a/drivers/ide/ide-tape.c b/drivers/ide/ide-tape.c
-index 3e7482695f77..6f26634b22bb 100644
---- a/drivers/ide/ide-tape.c
-+++ b/drivers/ide/ide-tape.c
-@@ -1945,11 +1945,22 @@ static int idetape_ioctl(struct block_device *bdev, fmode_t mode,
- 	return err;
- }
- 
-+static int idetape_compat_ioctl(struct block_device *bdev, fmode_t mode,
-+				unsigned int cmd, unsigned long arg)
-+{
-+        if (cmd == 0x0340 || cmd == 0x350)
-+		arg = (unsigned long)compat_ptr(arg);
-+
-+	return idetape_ioctl(bdev, mode, cmd, arg);
-+}
-+
- static const struct block_device_operations idetape_block_ops = {
- 	.owner		= THIS_MODULE,
- 	.open		= idetape_open,
- 	.release	= idetape_release,
- 	.ioctl		= idetape_ioctl,
-+	.compat_ioctl	= IS_ENABLED(CONFIG_COMPAT) ?
-+				idetape_compat_ioctl : NULL,
- };
- 
- static int ide_tape_probe(ide_drive_t *drive)
+It looks like I will have two incremental changes on top to minimize the
+number of resources that get cycled through during EPROBE_DEFER and also
+ensure that the 7216 reset line gets properly managed with a call to
+reset_control_reset() per review feedback from the reset controller
+maintainer.
 -- 
-2.20.0
-
+Florian

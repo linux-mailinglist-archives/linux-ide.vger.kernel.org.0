@@ -2,100 +2,72 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7993312FD98
-	for <lists+linux-ide@lfdr.de>; Fri,  3 Jan 2020 21:19:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 983371302B6
+	for <lists+linux-ide@lfdr.de>; Sat,  4 Jan 2020 15:33:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728701AbgACUTx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 3 Jan 2020 15:19:53 -0500
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:33747 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728679AbgACUTr (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 3 Jan 2020 15:19:47 -0500
-Received: by mail-pg1-f194.google.com with SMTP id 6so23883264pgk.0
-        for <linux-ide@vger.kernel.org>; Fri, 03 Jan 2020 12:19:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=AWCc/ylFmQ91zZEJrbKovcmODhKduqUVkKGxHK8uCtVvWppAnjCzAVhlqtuTB6Zv3H
-         fwGfadWPG5OWx3vtouAanI9rAb4+nCSTS9ougZHH94RmFVRXusGOhSeq6LcZbXUbpYke
-         LecHuReAxOHZIAlNr0puF8IN10taJseJbu/8dZmgE65qy44VHc90CsjCbMPz9YIW56uc
-         KAocddCq9fbTe+4eLEe4ukQAx3KuF/S8Bs/5ss0PU18bAsmodPObJCziaNGvW+fW97nj
-         vqPpR6NvW2UHqccwDYrcuioTdRRCTX8F5vGOe97A6Uj5iUQG4sbm5c76feOsNIPb/J8O
-         nOKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=E5ApJDaJl/vfTtvObctPpn/vxmBPFqAUPEZrgzm8hGgeb4QJPkj2ODMkw2Hyt53xnp
-         JKIdOe6MvgKB8OUM88IE2fNZrUjJ6Ni8GFl5N8xVvKwlzQFpwyZ9gCE96XZp0L9a0Yxp
-         qH51jvTjdtbBPB0Zb9xJ51KwCGm0Ve9z1/Buo0eBXd/SuAwphzeQJvxsOkCq5c/cwJJx
-         8gCbTCuH3VYZUm/KDyuCXPfuubnkL3PILQ0NTzjGP2aHpKvEWP6zx+JI0kb7fVzKEfpd
-         WSeRim5bitFMjax4AyBrwzjUzQjzmY0HK+Ee/oD7xz3KVcgIYR1yZoJJ2CiymHppqXe/
-         /FlA==
-X-Gm-Message-State: APjAAAWS0qE3DZQvR4/NSrs+IaAIY+sK3dxFG169n5GEaExdeflm5FG+
-        /QDZckFYgH+tcDepVuSb2fDOXOqnFS7U2iMWi+rGw5DWnvE=
-X-Google-Smtp-Source: APXvYqwTD0MzQRfSqMjBdpNUeZAJzfDvhrEGhXGCrMyvXGb//+N8M9ASxsqTbkQfP5NbaV7n6hKI5gEfY+hOjDS6Fyg=
-X-Received: by 2002:ad4:478b:: with SMTP id z11mr69635758qvy.185.1578082785331;
- Fri, 03 Jan 2020 12:19:45 -0800 (PST)
+        id S1725943AbgADOdy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 4 Jan 2020 09:33:54 -0500
+Received: from mail.kernel.org ([198.145.29.99]:47254 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725924AbgADOdy (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sat, 4 Jan 2020 09:33:54 -0500
+Received: from localhost.localdomain (unknown [194.230.155.149])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC6432464E;
+        Sat,  4 Jan 2020 14:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578148434;
+        bh=+CZsw4P4VZGl7fEe5o8XsbJqKOGkBgvwPlejrzQsNYA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gN63Yo1TBrVz6wg/uF9MQNL8VEI+I6/qc46wwnFJp67QjsuAuU53tT3iNAeIduiZF
+         rLZjCCKR+yyxagHAtij1Js/wwkHfx4z4KuYlJuMdOaXOu3Uw5dhkN1GdUMS+qV1olm
+         EJR3HSBdJaC49E5WjCoYuWm/w5UgOmfzPkmNexno=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     "David S. Miller" <davem@davemloft.net>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 1/2] ide: ht6560b: Fix cast to pointer from integer of different size
+Date:   Sat,  4 Jan 2020 15:33:47 +0100
+Message-Id: <20200104143348.27842-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Received: by 2002:ac8:4410:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:19:45 -0800 (PST)
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Fri, 3 Jan 2020 21:19:45 +0100
-Message-ID: <CAP=nHBKxfmbdRg7q4-1jdSUL6+zok9agasMSrXV5CsEJEmZz3A@mail.gmail.com>
-Subject: I promise you must be happy today, God has uplifted you and your
- family ok
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Friend
+Integer passed as pointer to drvdata should be cast to unsigned long to
+avoid warning (compile testing on alpha architecture):
 
-i hope all is well with you,if so, glory be to God almighty. I'm very
-happy to inform you, about my success in getting payment funds under
-the cooperation of a new partner from United States of
-America.Presently I am in uk for investment projects with my own share
-of the total sum. I didn't forget your past efforts. IMF finally
-approved your compensation payment funds this morning by prepaid (ATM)
-Debit card of US$12,500.000.00Million Dollars, Since you not received
-this payment yet, I was not certified
-but it is not your fault and not my fault, I hold nothing against
-you.than bank official whom has been detaining the transfer in the
-bank, trying to claim your funds by themselves.
+    drivers/ide/ht6560b.c: In function ‘ht6560b_init_dev’:
+    drivers/ide/ht6560b.c:318:27: warning:
+        cast to pointer from integer of different size [-Wint-to-pointer-cast]
 
-Therefore, in appreciation of your effort I have raised an
-International prepaid (ATM) Debit card of US$12,500.000.00 in your
-favor as compensation to you.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
-on His  e-mail Address (mikebenz550@aol.com
+---
 
-ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
-the money is in Prepaid (ATM) Debit card, not cash, so you need to
-send to him,
-your full name
-address  where the prepaid (ATM) Debit card will be delivered to you,
-including your cell phone number. Finally, I left explicit
-instructions with him, on how to send the (ATM CARD) to you.
+Only compile tested
+---
+ drivers/ide/ht6560b.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The Prepaid (ATM) Debit card, will be send to you through my
-Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
-my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
-Below is his contact information:
+diff --git a/drivers/ide/ht6560b.c b/drivers/ide/ht6560b.c
+index 0dae65ac7d6d..743bc3693ac8 100644
+--- a/drivers/ide/ht6560b.c
++++ b/drivers/ide/ht6560b.c
+@@ -310,7 +310,7 @@ static void __init ht6560b_init_dev(ide_drive_t *drive)
+ {
+ 	ide_hwif_t *hwif = drive->hwif;
+ 	/* Setting default configurations for drives. */
+-	int t = (HT_CONFIG_DEFAULT << 8) | HT_TIMING_DEFAULT;
++	unsigned long t = (HT_CONFIG_DEFAULT << 8) | HT_TIMING_DEFAULT;
+ 
+ 	if (hwif->channel)
+ 		t |= (HT_SECONDARY_IF << 8);
+-- 
+2.17.1
 
-NAME : MIKE BENZ
-EMAIL ADDRESS: mikebenz550@aol.com
-Text Him, (256) 284-4886
-
-Request for Delivery of the Prepaid (ATM) Debit card  to you today.
-Note, please I have paid for the whole service fees for you, so the
-only money you will send to my Diplomatic Agent Mr. Mike Benz is
-$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
-ok.
-Let me know once you receive this Card at your address.
-Best regards,
-Rev.Dr, George Adadar

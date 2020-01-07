@@ -2,103 +2,119 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 418EE13270B
-	for <lists+linux-ide@lfdr.de>; Tue,  7 Jan 2020 14:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FCB2132B56
+	for <lists+linux-ide@lfdr.de>; Tue,  7 Jan 2020 17:47:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727834AbgAGNGY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 7 Jan 2020 08:06:24 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:57410 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727900AbgAGNGY (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 7 Jan 2020 08:06:24 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4BKB099322;
-        Tue, 7 Jan 2020 13:06:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=/BsV9yew9Md2YaVOcaWenrT+g7/QmqTL5GV77n4TgO8=;
- b=O7wh9mEmW1U/roYJObLTwupWPbSzaAFgFmqD4pEmVVi+y6+9kSJS0Nc5u+xNEHkDE1b2
- nu6pQLiZr7KLNHpwl2I30zHsbv4rAHKEfgZoMvL8V/6RNDxlE20hnLqsFUzq6hMEHFlI
- 85PQjudOEy3XLjVVwazx/EiQVvMkIhaZOZ/J+j9ZF/CInOEmfjOfFVIVa/MqlBC0dnWy
- iRuUHHlJJShQtaHMiX5Q75slIncNjghPRq9nSE8L+c1RfcGJwM4OtKqQYbi05/8bNWlV
- hkYGR+XSDWGx+JNrwExy7JUqeJsUUEwKan2ko7o4FqRMBka/uX3a96RwsEikcmz7bgtR wQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2xakbqn8u7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Jan 2020 13:06:16 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4P3S120479;
-        Tue, 7 Jan 2020 13:06:15 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2xcjvd4f4s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Jan 2020 13:06:15 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 007D6Eqn019320;
-        Tue, 7 Jan 2020 13:06:14 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Jan 2020 05:06:14 -0800
-Date:   Tue, 7 Jan 2020 16:06:07 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2] ide: serverworks: potential overflow in
- svwks_set_pio_mode()
-Message-ID: <20200107130607.tv3uosduwkw3yka6@kili.mountain>
+        id S1728211AbgAGQr1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 7 Jan 2020 11:47:27 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:40906 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728383AbgAGQr0 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 7 Jan 2020 11:47:26 -0500
+Received: by mail-lj1-f196.google.com with SMTP id u1so261471ljk.7
+        for <linux-ide@vger.kernel.org>; Tue, 07 Jan 2020 08:47:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZvoR1wO4oEITSwLk+nSR4iwy2dpggu13mmwT8OJyr0g=;
+        b=FMjaeoJA437ug2DT9AkKATKeWYluxfalXHIXuGLsu+H/CQWTMXEXGaJONDmFqkXD9Z
+         YIl47qQjL9YED4/QKTQMdRBMaR4UtzhzsUP4vEGJgLYsQ8a2Lh84aBwcaeZ5/Dv4RszG
+         GuV9ct7YZJyaK5EC0tdAm/MZa1N1zGPbW9Y1BGjKgKcF6Eaa0cfA576OBqXwRNXvngR+
+         q5bgSIUOToJTEtbIQwgXjX7ADRA6XiN3fJ+mbM5GBESF0JdmpNuOlJYgepSHvi/UyCa8
+         JcMXJizo1L2IUUuDvh8IEVEK/ct86ME35mNKyCYVQXGlZI1mfCA2nsZb30F/bHp35m1X
+         AOLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZvoR1wO4oEITSwLk+nSR4iwy2dpggu13mmwT8OJyr0g=;
+        b=ug3bgkKCbbYl+alho/NUJ4GD/fckcG7xz7OtLRzXpaaOiQl2Yt/i3FRg9aYvAMC/tp
+         C34Xd8A2HzClR3FwY2/aASG7lamuBIL++T+QKkv+1neNNaDUNHfhM2DLXhK85je4RrxZ
+         nIgngpZkGjEJZVF/agx46tl6VTmyv8z+IWS+aRnpKpcK04M5W9hB0x3D6JlM+7tpKQ78
+         DewTPeqA/2+oxk7sgSlbv8WsT+xnvmJBO+5QAbZtj7RenBN7++ByosrNvdN67LeDtlNB
+         x9AqwQ+RuhQHYKTDrR99gXSY/unTnLDgHKSOTeN2+qoR/dAEYMWdzSCi/fELCVMcKrm3
+         FIgg==
+X-Gm-Message-State: APjAAAWsM5W8zUeIZbHWekglo+O9eUP4XbMw+V5X4MSXhEF3p1UDnVt2
+        ek5ZWJ4OhrNpt2f0UnQmQTQapQs31okfFkymtbxpfA==
+X-Google-Smtp-Source: APXvYqwIOBpCiKZzxq03MFz/y1i3ELijhWT1WUVjLBovW8HeCR9HCsqvBGOQKdcEH2KQk6TVpk5F1srYFucbjgSGpMY=
+X-Received: by 2002:a2e:5357:: with SMTP id t23mr215735ljd.227.1578415644575;
+ Tue, 07 Jan 2020 08:47:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200107130441.y3owvcnxdljailt5@kili.mountain>
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001070109
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001070109
+References: <20191210185351.14825-1-f.fainelli@gmail.com>
+In-Reply-To: <20191210185351.14825-1-f.fainelli@gmail.com>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 7 Jan 2020 22:17:13 +0530
+Message-ID: <CA+G9fYsMyUWGo8Qtd2UCfYDV2aoH71=hCZKaTurq4Aj2eeZczw@mail.gmail.com>
+Subject: Re: [PATCH 0/8] ata: ahci_brcm: Fixes and new device support
+To:     Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     open list <linux-kernel@vger.kernel.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Tejun Heo <tj@kernel.org>, Jaedon Shin <jaedon.shin@gmail.com>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
+        <devicetree@vger.kernel.org>,
+        linux- stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The "drive->dn" variable is a u8 controlled by root.
+On Wed, 11 Dec 2019 at 00:25, Florian Fainelli <f.fainelli@gmail.com> wrote:
+>
+> Hi Jens,
+>
+> The first 4 patches are fixes and should ideally be queued up/picked up
+> by stable. The last 4 patches add support for BCM7216 which is one of
+> our latest devices supported by this driver.
+>
+> Patch #2 does a few things, but it was pretty badly broken before and it
+> is hard not to fix all call sites (probe, suspend, resume) in one shot.
+>
+> Please let me know if you have any comments.
+>
+> Thanks!
+>
+> Florian Fainelli (8):
+>   ata: libahci_platform: Export again ahci_platform_<en/dis>able_phys()
+>   ata: ahci_brcm: Fix AHCI resources management
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/ide/serverworks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Following error on stable-rc 4.14 and 4.9 branch for arm build.
 
-diff --git a/drivers/ide/serverworks.c b/drivers/ide/serverworks.c
-index ac6fc3fffa0d..458e72e034b0 100644
---- a/drivers/ide/serverworks.c
-+++ b/drivers/ide/serverworks.c
-@@ -115,6 +115,9 @@ static void svwks_set_pio_mode(ide_hwif_t *hwif, ide_drive_t *drive)
- 	struct pci_dev *dev = to_pci_dev(hwif->dev);
- 	const u8 pio = drive->pio_mode - XFER_PIO_0;
- 
-+	if (drive->dn >= ARRAY_SIZE(drive_pci))
-+		return;
-+
- 	pci_write_config_byte(dev, drive_pci[drive->dn], pio_modes[pio]);
- 
- 	if (svwks_csb_check(dev)) {
-@@ -141,6 +144,9 @@ static void svwks_set_dma_mode(ide_hwif_t *hwif, ide_drive_t *drive)
- 
- 	u8 ultra_enable	 = 0, ultra_timing = 0, dma_timing = 0;
- 
-+	if (drive->dn >= ARRAY_SIZE(drive_pci2))
-+		return;
-+
- 	pci_read_config_byte(dev, (0x56|hwif->channel), &ultra_timing);
- 	pci_read_config_byte(dev, 0x54, &ultra_enable);
- 
+ drivers/ata/ahci_brcm.c: In function 'brcm_ahci_probe':
+ drivers/ata/ahci_brcm.c:412:28: error: 'struct brcm_ahci_priv' has no
+member named 'rcdev'; did you mean 'dev'?
+   if (!IS_ERR_OR_NULL(priv->rcdev))
+                             ^~~~~
+                             dev
+   CC      fs/pnode.o
+   CC      block/genhd.o
+ drivers/ata/ahci_brcm.c:413:3: error: implicit declaration of
+function 'reset_control_assert'; did you mean 'ahci_reset_controller'?
+[-Werror=implicit-function-declaration]
+    reset_control_assert(priv->rcdev);
+    ^~~~~~~~~~~~~~~~~~~~
+    ahci_reset_controller
+ drivers/ata/ahci_brcm.c:413:30: error: 'struct brcm_ahci_priv' has no
+member named 'rcdev'; did you mean 'dev'?
+    reset_control_assert(priv->rcdev);
+                               ^~~~~
+                               dev
+ cc1: some warnings being treated as errors
+
+Full build log links,
+https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-4.14/DISTRO=lkft,MACHINE=am57xx-evm,label=docker-lkft/702/consoleText
+https://ci.linaro.org/view/lkft/job/openembedded-lkft-linux-stable-rc-4.9/DISTRO=lkft,MACHINE=am57xx-evm,label=docker-lkft/773/consoleText
+
+
 -- 
-2.11.0
-
+Linaro LKFT
+https://lkft.linaro.org

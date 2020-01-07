@@ -2,102 +2,93 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C8A1326E6
-	for <lists+linux-ide@lfdr.de>; Tue,  7 Jan 2020 14:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A1FC13270D
+	for <lists+linux-ide@lfdr.de>; Tue,  7 Jan 2020 14:06:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728020AbgAGNAn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 7 Jan 2020 08:00:43 -0500
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:41572 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727722AbgAGNAm (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 7 Jan 2020 08:00:42 -0500
-Received: by mail-pg1-f194.google.com with SMTP id x8so28474583pgk.8;
-        Tue, 07 Jan 2020 05:00:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=lvbtfIt25K3V9bkjoOOm4QAQQ2RLXWTWl1KKBEvQFkY=;
-        b=USaN/sz2xKuxGlMgjZHB/wUWQ/8RghB5BDQntO5KHxNVHiYUNlXljkZOc+xBwlotWi
-         iR0vr+2KKITG8AilRUMRJvatthQT/2UFg7eTxjT+LRAErQVgfryuIsKryfhO5LuNbdx/
-         wSUFMCEdFIi99eFmxcmYny8U12L3h2jEPieIrMDf2rLBo7G0Nb2Y2jTw5rWt9QlWT4BT
-         W/zAB5JN0aalf1nmGYQukNVY1UsCh6sT/VjlGjg0/ixeKb71W/s7Hxwy8RKU9Dx/b2Yo
-         bE9f/bqLta8M7ohdj39m1HB4K2lvkAzwuPFkw+WH09pDEATD0mwOWflkmzVF2tsG6tUT
-         9ZjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=lvbtfIt25K3V9bkjoOOm4QAQQ2RLXWTWl1KKBEvQFkY=;
-        b=GaZCja/Vdy6t7deyL9MlQH2w/9DdE52ZazACF0FreDMe0pgrLmiQvYN4ucoiz5Vo3u
-         gF2hplvmOlAn8fzD/XXYgP4ZSwaZ306WZHesIQ6IRSMPU+23E8oMktBk/+A1jrnZBjNJ
-         BCEnfexur18gxdWRgAafnzpAhTCWdSdgq47yGfU59SH4hJyIWCiVc7Px/HFGHPL5UDVv
-         KK6nJH2mJewyHnsLKvZIfnfjQ0lfuFBYrhhBtkIYfLZ2Gow8dEmuak9mHXXhNb59PoPO
-         rbE1yH917RSAzGcHooLMztDbB4kTKnNKsug2m9Gqf4CEHB0+WjHeSoyyNQi4hl+UiFn9
-         wj/A==
-X-Gm-Message-State: APjAAAVO40ydyDahA7IrUZE4sTApXjpcCNGn8k7KrnZRzj7KdtPzNesd
-        7QpzVojUtpyoEODtykzZWRs=
-X-Google-Smtp-Source: APXvYqz9WKLmVN/nRjjHtNkoSm6v+LC6l/HWdccIHNtmRotZJu3YefPowp/baIagDwVd/ryHNTbl6w==
-X-Received: by 2002:a62:ac03:: with SMTP id v3mr113535234pfe.17.1578402041672;
-        Tue, 07 Jan 2020 05:00:41 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id j10sm28590800pjb.14.2020.01.07.05.00.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2020 05:00:40 -0800 (PST)
-Subject: Re: [PATCH v2] hwmon: Driver for temperature sensors on SATA drives
-To:     "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
-        Chris Healy <cphealy@gmail.com>
-References: <20191215174509.1847-1-linux@roeck-us.net>
- <20191215174509.1847-2-linux@roeck-us.net> <yq1r211dvck.fsf@oracle.com>
- <20191219003256.GA28144@roeck-us.net> <yq17e233o0o.fsf@oracle.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Message-ID: <d42990af-78e4-e6c4-37ae-8043d27e565a@roeck-us.net>
-Date:   Tue, 7 Jan 2020 05:00:39 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1727972AbgAGNGx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 7 Jan 2020 08:06:53 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:49036 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727834AbgAGNGx (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 7 Jan 2020 08:06:53 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4CfF117173;
+        Tue, 7 Jan 2020 13:06:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=ZpJApk8oOym/UVjrWOP6Tmh1cDDLkipNEJ39dCsVjLA=;
+ b=mNPw+M7jofJXa2gFSWzE2BQR7ImBNyrAiNCcnc0tArnnuW8hvSRp7+Z83mhC5lP28yY/
+ sNrh2bDJwpdkVrIJtkvIr8DB5EKmcy9FLOQe0uHt4GlxKq6e7E3z90ZYMum40Dh9KVxg
+ g03DwcbBqnjxJs0t9qD4es01jAnxR2B4MaUyKjgILMJtp9E3Hshy/9799Kz9F8Dw6E/b
+ G24rElQ2GC5gPrU5ok5mExHQ6kg+pQZveztiGAEDSxLuTYeqO+28hMwLMhzvSCUjkkhq
+ EsVswYMfmR8MW70RQliFgEgfjKM7DbXyljAxZXXIL47HVmlcGq0y91YCGrW/esnh6D8k aw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2xaj4twgfm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Jan 2020 13:06:51 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4B1e163573;
+        Tue, 7 Jan 2020 13:04:49 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 2xcqbe5nhc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Jan 2020 13:04:49 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 007D4nBF010235;
+        Tue, 7 Jan 2020 13:04:49 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jan 2020 05:04:48 -0800
+Date:   Tue, 7 Jan 2020 16:04:41 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "David S. Miller" <davem@davemloft.net>
+Cc:     linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2] cmd64x: potential buffer overflow in
+ cmd64x_program_timings()
+Message-ID: <20200107130441.y3owvcnxdljailt5@kili.mountain>
 MIME-Version: 1.0
-In-Reply-To: <yq17e233o0o.fsf@oracle.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=920
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001070109
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001070109
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/6/20 8:10 PM, Martin K. Petersen wrote:
-> 
-> Hi Guenter!
-> 
->>>   - I still think sensor naming needs work. How and where are the
->>>     "drivetemp-scsi-8-140" names generated?
->>>
->> Quick one: In libsensors, outside the kernel. The naming is generic,
->> along the line of <driver name>-<bus name>-<bus index>-<slot>.
-> 
-> I understand that there are sensors that may not have an obvious
-> associated topology and therefore necessitate coming up with a suitable
-> naming or enumeration scheme. But in this case we already have a
-> well-defined SCSI device name. Any particular reason you don't shift the
-> chip.addr back and print the H:C:T:L format that you used as input?
-> 
-> However arcane H:C:T:L may seem, I think that predictable naming would
-> make things a lot easier for users that need to identify which device
-> matches which sensor...
-> 
+The "drive->dn" value is a u8 and it is controlled by root only, but
+it could be out of bounds here so let's check.
 
-Not sure I understand. Do you mean to add "H:C:T:L" to "drivetemp" ?
-That would make it something like "drivetemp:H:C:T:L-scsi-8-140".
-Not sure if that is really useful, and it would at least be partially
-redundant.
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/ide/cmd64x.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-"scsi-8-140" is created by libsensors, so any change in that would
-have to be made there, not in the kernel driver.
+diff --git a/drivers/ide/cmd64x.c b/drivers/ide/cmd64x.c
+index a1898e11b04e..943bf944bf72 100644
+--- a/drivers/ide/cmd64x.c
++++ b/drivers/ide/cmd64x.c
+@@ -66,6 +66,9 @@ static void cmd64x_program_timings(ide_drive_t *drive, u8 mode)
+ 	struct ide_timing t;
+ 	u8 arttim = 0;
+ 
++	if (drive->dn >= ARRAY_SIZE(drwtim_regs))
++		return;
++
+ 	ide_timing_compute(drive, mode, &t, T, 0);
+ 
+ 	/*
+-- 
+2.11.0
 
-Guenter

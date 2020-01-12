@@ -2,156 +2,90 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D105A1385F0
-	for <lists+linux-ide@lfdr.de>; Sun, 12 Jan 2020 12:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28B9F1385F8
+	for <lists+linux-ide@lfdr.de>; Sun, 12 Jan 2020 12:22:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732659AbgALLR6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 12 Jan 2020 06:17:58 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:40507 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732658AbgALLR6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 12 Jan 2020 06:17:58 -0500
-Received: by mail-lj1-f195.google.com with SMTP id u1so6857002ljk.7
-        for <linux-ide@vger.kernel.org>; Sun, 12 Jan 2020 03:17:56 -0800 (PST)
+        id S1732677AbgALLWC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 12 Jan 2020 06:22:02 -0500
+Received: from mail-lf1-f67.google.com ([209.85.167.67]:34492 "EHLO
+        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732672AbgALLWC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 12 Jan 2020 06:22:02 -0500
+Received: by mail-lf1-f67.google.com with SMTP id l18so4812442lfc.1
+        for <linux-ide@vger.kernel.org>; Sun, 12 Jan 2020 03:22:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Zo6fx5Wpa4UMlaqNMt4nQ/pXNoj/+8/OnmUYzSrIJJE=;
-        b=DyPsmZukkzw850ogUhzgDd3fFknJ/kGmrY3kVMyx0lkBEXBJrfPzYFv3YRfTvmp8kl
-         Bd669W98WgYBXQUZ9lpDKpzpBBtn8jUJySSE+SWf2P5xJTgKjV6ZyDsGzae0sLlZoRMl
-         MU2EhHSIzspbscM9QYgYgeIkhPM8I+eFl3N81hz1uyzDPEiAMngVEEHSzr1Yci+xg+XD
-         nm0h+GMlgU19HBieQ76BJ3D51r+faDsQYH7fNEOMrzznPrYi+F70AN3nFybpw6yS0CGE
-         H7jouGtjkyKkfB98gFMMwrPthJ9K6B264dxg3w0oGjORZ8L6OtUM7mYiBaBL/VYKBiLK
-         PRzA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=J/hGPBV9O8y1r4I/kNVXxaBjxv5wLfCvrzJ+lyF5gU8=;
+        b=YXbrrp5jiT1psd89mFxIh1l3s2A3XepycVbFh/kPLR8Guiy005rNYBb/ebqinuQSjm
+         7vJMXLmcuhp1PojpdzEqkKtVe2H8dm7gQKHsUr/E0yDIt1uy2vHRuHCy+mU4mtVLu3/+
+         plwmBnqKWERkiXStEkIWVNHyNkGMRGh7hmZh0ABbwsM5T/N9ZtdeDMLne27uzfuRgXKA
+         kX8XsC//O5/ujKQLtJMWIJMlAwmyfTYdE4skK3NtnC8tCsCqkeV1d1sRvTen9UuuP5lj
+         o8p/9hK7TNgU8Pv1RydZqaJ1vPa1U0hXXH9LrKri8RGKpskOijePWM74RG1uPYCrCjXV
+         ayBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Zo6fx5Wpa4UMlaqNMt4nQ/pXNoj/+8/OnmUYzSrIJJE=;
-        b=b6D4qIRBXhtKQEzmP4GpPF4BaHfEvAbL48f2U8IgSSpyI/jk6oZiiENeZ/obUmUCAN
-         EKmXg7IgTVkTHKdAl3phNtT0ipL4VkN4RukwuL4kxc82bKOZXTGQuejUmVHBMoLmEGJF
-         Z8XAyeKQ2BKLrg0AxiuArP8/onZvwV3bgdgUKID4mJOMX6yU24ZR9L1uNlhsNS+3YQqo
-         wi96glfIzjIu7WP7sE1GenkCg4GxYAq+0udUrP3HtCNh6VrDYvZdYKASHOdMuwIHQKz7
-         Os5c93iMlksEXHAIWFeJmdSN/MfoouiDev90gAcr1AGaQZGquKpi/LLjdjY3PsQYKUiw
-         kShQ==
-X-Gm-Message-State: APjAAAU+W2cgnzGRcPM79CnJgBb1Z2i6kp5vDAPp3ia0v4bNcadMvIrT
-        wmYyMHKqmxqm4VEWmF4bFUKuFg==
-X-Google-Smtp-Source: APXvYqzhz5rajwXrtmQnWaXrB6kf+ymA5yEzq0l3+mPMYaB/HfAmav4FzTq3fEayQq83TQ/qOJeDgQ==
-X-Received: by 2002:a2e:8197:: with SMTP id e23mr7796249ljg.250.1578827876139;
-        Sun, 12 Jan 2020 03:17:56 -0800 (PST)
-Received: from localhost.bredbandsbolaget (c-5ac9225c.014-348-6c756e10.bbcust.telenor.se. [92.34.201.90])
-        by smtp.gmail.com with ESMTPSA id z13sm4040385lfi.69.2020.01.12.03.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2020 03:17:55 -0800 (PST)
-From:   Linus Walleij <linus.walleij@linaro.org>
-To:     Rob Herring <robh+dt@kernel.org>, devicetree@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>
-Cc:     linux-ide@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: [PATCH v4] dt-bindings: Create DT bindings for SATA controllers
-Date:   Sun, 12 Jan 2020 12:17:51 +0100
-Message-Id: <20200112111751.21984-1-linus.walleij@linaro.org>
-X-Mailer: git-send-email 2.21.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=J/hGPBV9O8y1r4I/kNVXxaBjxv5wLfCvrzJ+lyF5gU8=;
+        b=OJwkyY7erVMSTfyNCY1BzSsl7z52wAUtOuP+JHMF775tpYFCn+4MGYWC62DJ+p4Ivl
+         PLV4yjlgYh5tI62Erht4ONKiNDYUPmvCO1k4jOrFIWEkTGbG7TKQDZFR29dtg2xQ1lgO
+         3k61KDJiBn3BWiRiZGHs1BSzSJLHkRUKcl1kJ0Df1Dn3RGrbIMuKCAD3Zx2x46KmJx9J
+         m0YVlV9z+yCcZuoV9OIrY353UcjMdL+CJZLDRB6KGie0WH3G8n1H4GRtEIVoHc0qUwIY
+         5iQH3HzC6fL7E8yxrUR9uafxdh0hnup38gipDG3XyxZW+aK/vVU055CKVgOF0F0uFR2Z
+         Osmw==
+X-Gm-Message-State: APjAAAXlShYHzHcswmCitumji1qFErPzxYU9ZINlefaQiHEZL1OsJF3O
+        eittmRtT8jt+3e8FWLMAmbzcvzZHb+FTxzCC4IuNFg==
+X-Google-Smtp-Source: APXvYqxIl+s85PduWiqfAEx7nOiaIevZBLUsVcio0qfitsaWujhuW7W5l0Ud7kTZiN0gAlnZOeOTZrvUgoy15qbK+Hw=
+X-Received: by 2002:a19:5513:: with SMTP id n19mr4806877lfe.205.1578828120912;
+ Sun, 12 Jan 2020 03:22:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20191215174509.1847-1-linux@roeck-us.net> <20191215174509.1847-2-linux@roeck-us.net>
+ <yq1r211dvck.fsf@oracle.com> <b22a519c-8f26-e731-345f-9deca1b2150e@roeck-us.net>
+ <yq1sgkq21ll.fsf@oracle.com> <20200108153341.GB28530@roeck-us.net>
+ <38af9fda-9edf-1b54-bd8d-92f712ae4cda@roeck-us.net> <CAEJqkgg_piiAWy4r3VD=KyQ7pi69bZNym2Ws=Tr8SY5wf+Sprg@mail.gmail.com>
+In-Reply-To: <CAEJqkgg_piiAWy4r3VD=KyQ7pi69bZNym2Ws=Tr8SY5wf+Sprg@mail.gmail.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sun, 12 Jan 2020 12:21:49 +0100
+Message-ID: <CACRpkdYU7ZDcKp+BbXRCnEFDw1xwDkU_vXsfo-AZNUWGEVknXQ@mail.gmail.com>
+Subject: Re: [PATCH v2] hwmon: Driver for temperature sensors on SATA drives
+To:     Gabriel C <nix.or.die@gmail.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-hwmon@vger.kernel.org, Jean Delvare <jdelvare@suse.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>, Chris Healy <cphealy@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-I need to create subnodes for drives connected to SATA
-host controllers, and this needs to be supported
-generally, so create a common YAML binding for
-"sata" that will support subnodes with ports.
+On Sun, Jan 12, 2020 at 12:18 PM Gabriel C <nix.or.die@gmail.com> wrote:
 
-This has been designed as a subset of
-ata/ahci-platform.txt with the bare essentials and
-should be possible to extend or superset to cover the
-common bindings.
+> What I've noticed however is the nvme temperature low/high values on
+> the Sensors X are strange here.
+(...)
+> Sensor 1:     +27.9=C2=B0C  (low  =3D -273.1=C2=B0C, high =3D +65261.8=C2=
+=B0C)
+> Sensor 2:     +29.9=C2=B0C  (low  =3D -273.1=C2=B0C, high =3D +65261.8=C2=
+=B0C)
+(...)
+> Sensor 1:     +23.9=C2=B0C  (low  =3D -273.1=C2=B0C, high =3D +65261.8=C2=
+=B0C)
+> Sensor 2:     +25.9=C2=B0C  (low  =3D -273.1=C2=B0C, high =3D +65261.8=C2=
+=B0C)
 
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
----
-ChangeLog v3->v4:
-- Drop any master/slave terminology: SATA has one drive
-  per port or up to 15 drives behind a multiplexer.
-- Drop RFC notation, this feels pretty finished.
-ChangeLog v2->v3:
-- Split off into its own RFC patch
-- Only support sata-port@ in this binding
-- Opt to support devices 0..14 on the sata-port in
-  line with ahci-platforn.txt not modeling the port
-  multiplier in the device tree at all.
-ChangeLog v1->v2:
-- Use ide@ and sata@ as node names.
-- Use ide-port@ and sata-port@ for the ports toward the
-  drives, rather than letting the subnodes be the drives
-  themselves.
----
- .../devicetree/bindings/ata/sata-common.yaml  | 50 +++++++++++++++++++
- 1 file changed, 50 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/ata/sata-common.yaml
+That doesn't look strange to me. It seems like reasonable defaults
+from the firmware if either it doesn't really log the min/max temperatures
+or hasn't been through a cycle of updating these yet. Just set both
+to absolute min/max temperatures possible.
 
-diff --git a/Documentation/devicetree/bindings/ata/sata-common.yaml b/Documentation/devicetree/bindings/ata/sata-common.yaml
-new file mode 100644
-index 000000000000..41f590629fbf
---- /dev/null
-+++ b/Documentation/devicetree/bindings/ata/sata-common.yaml
-@@ -0,0 +1,50 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/ata/sata-common.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Common Properties for Serial AT attachment (SATA) controllers
-+
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
-+
-+description: |
-+  This document defines device tree properties common to most Serial
-+  AT attachment (SATA) storage devices. It doesn't constitute a device tree
-+  binding specification by itself but is meant to be referenced by device
-+  tree bindings.
-+
-+  The SATA controller-specific device tree bindings are responsible for
-+  defining whether each property is required or optional.
-+
-+properties:
-+  $nodename:
-+    pattern: "^sata(@.*)?$"
-+    description:
-+      Specifies the host controller node. SATA host controller nodes are named
-+      "sata"
-+
-+  "#address-cells":
-+    const: 1
-+
-+  "#size-cells":
-+    const: 0
-+
-+patternProperties:
-+  "^sata-port@[0-1]$":
-+    description: |
-+      DT nodes for ports connected on the SATA host. The SATA port
-+      nodes will be named "sata-port".
-+    type: object
-+
-+    properties:
-+      reg:
-+        minimum: 0
-+        maximum: 14
-+        description:
-+          The ID number of the drive port SATA can potentially use a port
-+          multiplier making it possible to connect up to 15 disks to a single
-+          SATA port.
-+
-+...
--- 
-2.21.0
-
+Yours,
+Linus Walleij

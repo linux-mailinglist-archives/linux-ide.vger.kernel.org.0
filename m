@@ -2,72 +2,52 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B301138B47
-	for <lists+linux-ide@lfdr.de>; Mon, 13 Jan 2020 06:52:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 625B0138D91
+	for <lists+linux-ide@lfdr.de>; Mon, 13 Jan 2020 10:19:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733249AbgAMFwe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 13 Jan 2020 00:52:34 -0500
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:32875 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733239AbgAMFw0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 13 Jan 2020 00:52:26 -0500
-Received: by mail-oi1-f193.google.com with SMTP id v140so7227300oie.0
-        for <linux-ide@vger.kernel.org>; Sun, 12 Jan 2020 21:52:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=El5YZgtDEXJCHEtZrRB1ujEJT5GnrR9nqQvx3oNXkD1KXWKAy5lE4fahagwXmNRBuY
-         Z373bCStdjZZAvrcMmyjZhqXNYKD7qS8gpQ1uKt4Zm/CJYofbOmd6y2KCfdaIf8lu4gx
-         e04Qq2Wd5k0QzXhgODgXLh9+BTAbr7mIJG1kvrHD2cB5892G2QaMtoQjZ8YbwAsn/v/R
-         qN1ulSwy8kLJzDOOwwvDkEa6g0paOaNUUW6lO8NcaOsOsQMTh2eV34LXY/bnRxfyDcL+
-         OFIAYoYpyWTxvo4nB11oXa8J2BNLiFXnr18VfN4DCPOmpXqWPT8f/9GzmZX8VWLxs4VK
-         s+8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=hvo0zHYi7/Y/94xi5Z1EU9HKtEScS2PsgoPj1X2sNfchVhvKZlB+Sw2um5o9P3paUH
-         UBtXd0Xpw98fbBqOWHXIZ+6EfbeKDE+uvrDHEQ04kMIVPvPUYMUNqE9peZFSdR7iht9b
-         YW1q7wqkxNUbksgNUoYi6GjZWiPy9b9MenzsSP6KKWbMvQ0uWvdkI7ArGIWhh4CKycdQ
-         TN3yuEhGL4hkhg4Ggh2Br7ufDPIqqN+5mwR3dwugEGZqqq3p+9G6mCQVuar+CzVk0SSd
-         qNGf1jPURzXLe7929Pm7diFCdX9likaWsjGPGkHCE9cMeHdtHCU6Qr1f0b0IzjeLE5cR
-         mzJA==
-X-Gm-Message-State: APjAAAW6mFLKGGqMOKRFHRO24bP9cR9TwiIcz/YItda8nQzfulmF3bJS
-        lCxmeGnNc3AOVe1ag84onZH+duE3dUXvJBkuONNrYbO3
-X-Google-Smtp-Source: APXvYqy7JhGBt0ZjJ/1t4CT74GIhTuvbOMnCynReBbsGRcTAfZPwoiLBCe9XiPA9xaK1JAPmy14eucUMWI9DLkbKsUo=
-X-Received: by 2002:a54:4713:: with SMTP id k19mr11513430oik.113.1578894745174;
- Sun, 12 Jan 2020 21:52:25 -0800 (PST)
+        id S1727014AbgAMJTH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 13 Jan 2020 04:19:07 -0500
+Received: from mail.eatcard24.eu ([80.211.25.68]:56047 "EHLO mail.eatcard24.eu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726435AbgAMJTH (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 13 Jan 2020 04:19:07 -0500
+X-Greylist: delayed 434 seconds by postgrey-1.27 at vger.kernel.org; Mon, 13 Jan 2020 04:19:06 EST
+Received: by mail.eatcard24.eu (Postfix, from userid 1001)
+        id 9FC0787B71; Mon, 13 Jan 2020 10:10:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=eatcard24.eu; s=mail;
+        t=1578906674; bh=mwFI0mAZxzeho6TT6Q+d78QMEWhjq4VpIwhM1Up6VrE=;
+        h=Date:From:To:Subject:From;
+        b=zdwg96ecDguQODoS3wHxDWLpUq1Wm3oK7v7fTjhBzgfF6u0pdU6SLQ3M+jE/ccdoP
+         F3pUiXe7kft/tSmDjAqaSzdtsxpSfeH2oZSxajMqmge9EPtfeYHYBZAVakV2AhpYC6
+         4V9bfQdxYkZfcqQ3iRlVoT9D6vk//W/Po0vEhmL8=
+Received: by mail.eatcard24.eu for <linux-ide@vger.kernel.org>; Mon, 13 Jan 2020 09:10:29 GMT
+Message-ID: <20200113100930-0.1.20.2k75.0.ngpec6lf0h@eatcard24.eu>
+Date:   Mon, 13 Jan 2020 09:10:29 GMT
+From:   "Bastien Cassel" <bastien.cassel@eatcard24.eu>
+To:     <linux-ide@vger.kernel.org>
+Subject: =?UTF-8?Q?GPS_avanc=C3=A9?=
+X-Mailer: mail.eatcard24.eu
 MIME-Version: 1.0
-Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Sun, 12 Jan 2020 21:52:24
- -0800 (PST)
-Reply-To: rickschaech@gmail.com
-From:   Rick Schaech <cathben72@gmail.com>
-Date:   Mon, 13 Jan 2020 01:52:24 -0400
-Message-ID: <CAEcBxO=TAnFn5LzizHa22hUC0Db5FuiZJF28m=yX3_9m--jRqg@mail.gmail.com>
-Subject: I wait for your swift response,
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
-know we have not meet each other before but sometimes in life God have
-a reason of bringing two people from two different countries together
-as business partners or life partners.
+Bonjour,
+Je vous =C3=A9cris sur l'un des meilleurs outils GPS du march=C3=A9.
+=20
+L'outil, que je voudrais vous pr=C3=A9senter bri=C3=A8vement, a de nombre=
+uses fonctions utiles dans votre travail, qui optimisent les processus de=
+ transport et aident =C3=A0 effectuer les t=C3=A2ches sur le terrain plus=
+ efficacement.
+=20
+Voulez-vous conna=C3=AEtre les d=C3=A9tails?
+Dans l'attente de votre r=C3=A9ponse.
+=20
 
-My dear friend, I have the sum of 15.7 Million USD i wish to put in
-your name due to the death of my late client who died several years
-ago as his next of kin column still remain blank. Though the internet
-medium is highly abuse these days but am assuring you that this
-transaction is legitimate and I am contacting you that we may have a
-deal, note for your cooperation and collaboration 40% of the sum will
-be for you while the other 60% will be for me as well. I wait for your
-swift response for more details. please forward your response to my
-personal E-mail: rickschaech@gmail.com
-
-Yours sincerely,
-Rick Schaech.
+Meilleures salutations,
+Bastien Cassel
+Conseiller client=C3=A8le
+bastien.cassel@eatcard24.eu

@@ -2,94 +2,64 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B74A143245
-	for <lists+linux-ide@lfdr.de>; Mon, 20 Jan 2020 20:32:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C38ED143534
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Jan 2020 02:33:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727403AbgATTcE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 20 Jan 2020 14:32:04 -0500
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:36364 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727692AbgATTcC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 20 Jan 2020 14:32:02 -0500
-Received: by mail-ed1-f65.google.com with SMTP id j17so619525edp.3
-        for <linux-ide@vger.kernel.org>; Mon, 20 Jan 2020 11:32:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=kLfnsSTIjE2YEe6HI6GtqXd6cMnhTRLMcstoRngEtLrpsW8Des52P9cJGak3H8TgGi
-         7pI7x0ReUsZVA5020Qw65cEVulbgAqf7PV7Yj5z98jIQHYXuhdjNseji1wTJmoRk9owd
-         jH0nw85bxKb6JNDbbMZz77rTtrhB/lrp1T9+1Yzp1e0fAmiYnPF2y/wqE3N2vxlEpqDg
-         Q62+v45VGQo8fprIjkXGYdl8n0+0lt4RTeTWLmEirmHeh05e1zsbOQ1RyEmjVmqN0eJc
-         PRg9w7tG3wGqyiL8Rgrtjody799fKx6nbHvtMQHhCmcCncWFfzoetJS1edNfQP320vCH
-         Vilg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7I/Kq2V0EnXiuoACdRbnwoAql3KZ080nwyXVjlruyU=;
-        b=REQceP3DDIIIrKW7K92GxY2vrTCV1jZXyE1EJaLWxIxRrLKjjV4JX9Ji7w+w/xb792
-         fph52GQwRZY8tItiyX0c+kNe7LTFZwObxkuSOtbpdzq+lst2cLfVot7JC9nnCIBIXMqY
-         jIpGrjue6qq/gxTzV89+DUjFGFapoctz3eKwQHCka6b3QeFMXHJUkKbnVsZamzclsYzc
-         UZhbKeZi36Hihl6yexDIkACHZh61Dc6VKGOiFaDezXCkgLgeb66mG8e0ma1aJoSe+6ws
-         F7ITjti2f1ONAkXYbH4SsKz5+8WmlmHemir7L9eIno/lm1lML6zI+ayixUmyv8vRwxHr
-         7oIA==
-X-Gm-Message-State: APjAAAVJ77cQfqNtXeKrE8IoncVeTYbLYg4chB3CkC/GuiM/fDSedWct
-        JxS6rL1UKWEv1HNYgscbic2vrRTwZU6gj8izpDE=
-X-Google-Smtp-Source: APXvYqwPh6D8ihOXjaVWGs/0GLulEekGPU0xOOyxhr7PagnLX+E8xWeQy/UQ09ZNp2jZFCCt0xVGiodDu+D5No4niKg=
-X-Received: by 2002:a05:6402:505:: with SMTP id m5mr609398edv.15.1579548719077;
- Mon, 20 Jan 2020 11:31:59 -0800 (PST)
+        id S1728712AbgAUBda (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 20 Jan 2020 20:33:30 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9221 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727009AbgAUBd3 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 20 Jan 2020 20:33:29 -0500
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id DF10D2200792A4E24220;
+        Tue, 21 Jan 2020 09:33:26 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 21 Jan 2020 09:33:18 +0800
+From:   Chen Zhou <chenzhou10@huawei.com>
+To:     <b.zolnierkie@samsung.com>, <axboe@kernel.dk>
+CC:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <chenzhou10@huawei.com>
+Subject: [PATCH -next] ata: pata_macio: fix comparing pointer to 0
+Date:   Tue, 21 Jan 2020 09:28:27 +0800
+Message-ID: <20200121012827.1036-1-chenzhou10@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: by 2002:a05:6402:22dc:0:0:0:0 with HTTP; Mon, 20 Jan 2020 11:31:57
- -0800 (PST)
-Reply-To: mcclainejohn.13@gmail.com
-From:   "Prof, William Roberts" <eco.bank1204@gmail.com>
-Date:   Mon, 20 Jan 2020 20:31:57 +0100
-Message-ID: <CAOE+jAB9Cv76tHqc-hO92yWjVshCsALoX=zT1ruNmX+0-Bjyxw@mail.gmail.com>
-Subject: Contact Diplomatic Agent, Mr. Mcclaine John to receive your ATM CARD
- valued the sum of $12.8Million United States Dollars
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Attn: Dear Beneficiary,
+Fixes coccicheck warning:
 
-I wish to inform you that the diplomatic agent conveying your ATM CARD
-valued the sum of $12.8Million United States Dollars has misplaced
-your address and he is currently stranded at (George Bush
-International Airport) Houston Texas USA now
-We required you to reconfirm the following information's below to him
-so that he can deliver your Payment CARD to you today or tomorrow
-morning as information provided with open communications via email and
-telephone for security reasons.
-HERE IS THE DETAILS  HE NEED FROM YOU URGENT
-YOUR FULL NAME:========
-ADDRESS:========
-MOBILE NO:========
-NAME OF YOUR NEAREST AIRPORT:========
-A COPY OF YOUR IDENTIFICATION :========
+./drivers/ata/pata_macio.c:982:31-32:
+	WARNING comparing pointer to 0, suggest !E
 
-Note; do contact the diplomatic agent immediately through the
-information's listed below
-Contact Person: Diplomatic Agent, Mr. Mcclaine John
-EMAIL: mcclainejohn.13@gmail.com
-Tel:(223) 777-7518
+Compare pointer-typed values to NULL rather than 0.
 
-Contact the diplomatic agent immediately
-because he is waiting to hear from you today with the needed information's.
+Signed-off-by: Chen Zhou <chenzhou10@huawei.com>
+---
+ drivers/ata/pata_macio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-NOTE: The Diplomatic agent does not know that the content of the
-consignment box is $12.800,000,00 Million United States Dollars and on
-no circumstances should you let him know the content. The consignment
-was moved from here as family treasures, so never allow him to open
-the box. Please I have paid delivery fees for you but the only money
-you must send to Mcclaine John is your ATM CARD delivery fee $25.00
-only. text Him as you contact Him Immediately
+diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
+index 1bfd015..e47a282 100644
+--- a/drivers/ata/pata_macio.c
++++ b/drivers/ata/pata_macio.c
+@@ -979,7 +979,7 @@ static void pata_macio_invariants(struct pata_macio_priv *priv)
+ 	priv->aapl_bus_id =  bidp ? *bidp : 0;
+ 
+ 	/* Fixup missing Apple bus ID in case of media-bay */
+-	if (priv->mediabay && bidp == 0)
++	if (priv->mediabay && !bidp)
+ 		priv->aapl_bus_id = 1;
+ }
+ 
+-- 
+2.7.4
 
-Thanks,
-with Regards.
-Prof, William Roberts
-Director DHL COURIER SERVICES-Benin

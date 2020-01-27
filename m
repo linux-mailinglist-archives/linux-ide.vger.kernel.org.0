@@ -2,86 +2,132 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D99149D6B
-	for <lists+linux-ide@lfdr.de>; Sun, 26 Jan 2020 23:55:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C832B14A2CA
+	for <lists+linux-ide@lfdr.de>; Mon, 27 Jan 2020 12:16:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbgAZWzH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 26 Jan 2020 17:55:07 -0500
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:42523 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbgAZWzH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 26 Jan 2020 17:55:07 -0500
-Received: by mail-vs1-f68.google.com with SMTP id b79so4548429vsd.9
-        for <linux-ide@vger.kernel.org>; Sun, 26 Jan 2020 14:55:07 -0800 (PST)
+        id S1729366AbgA0LQd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 27 Jan 2020 06:16:33 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:37973 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726771AbgA0LQd (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 27 Jan 2020 06:16:33 -0500
+Received: by mail-wm1-f66.google.com with SMTP id a9so1662364wmj.3;
+        Mon, 27 Jan 2020 03:16:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xn7yB4aktOLFrm00g1JqVVMv7lRyiD5CclkuV2m30nE=;
-        b=nRs7/onucz4njvTPk+c53i+bR7vueRmeWojVG1yvY1y0mrAK5Bpr81OmR1/wbBgKMI
-         4HVw7r4EqF+2zUTY4+hUoEIgIjTrdIlW4vOA5x/sgUndhDTFFWqy5hn7I2mmhJaao5WG
-         Aj8hekU5EULO5xW24V9/h3ZIAref6NfVe5z6j8yt+Q9c/QEeBUgxWRP75V0Bzv048L2K
-         loG7fx/vCu3naajtMcFHWEA0qPfSdIFZuWke9wcmqFZmbw+azubR9T8Foyyp/ZF91VA8
-         dw5qYM7j9fg6ktRiHm/GyZb7n7tLkhA7VPPwP5tVBcOb710w58wVpDVyT2B38tu36RR2
-         ZTKw==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=ZHMvxWSExnfzvozzoiiK4wClMeOsgnVyBWHpemQRo9s=;
+        b=FHVm4rKfLNiJPHYWvzgfs/nn4g8yQNhrqD8j0c+2odMhabmoA2ddTaXXbP+V1BZOLG
+         qsuZ7oPKkyrzj5NwC49d32DvlQA5IKONDNtqQd+SfPbxr33FTffvfarVNe9XrY6eUKB9
+         F08iDak4HQuaL9qRSqbP4erHO13uByYKNentIdLtOCl9VhTD2j/m6tZtK2pE1rKfXht8
+         7Kx3yHkKChA3bJh22JcCrUOauM8+38NG3pZPDhEDQjb6xH3ZlqqcEEuNlb/JvTg8AMs1
+         PYyANTumkwCX+gSTcCzbEBmFf0zFnTRzTDPVEa/isvL1zpM/mctSr58NZtH86SU+Ug+x
+         u7OA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xn7yB4aktOLFrm00g1JqVVMv7lRyiD5CclkuV2m30nE=;
-        b=LX3mmPOxaLbZtO/pTvsUoTPyXJeqEgUycdWCp2w1tUQjgeeFANfMwAfIZidax4JYyW
-         iQPSQSTGOoJUdT8PKw3eMycB1GgwJRQUkTsUOkXqtITNLo6Hb7e+PIzKAanipcQzJdUf
-         QwrvJJWFqxc6LlahRT/v4tbSzyKhJ12ViIBf3m/izBkALHV+HXBNvf+KMjVg3g26GY2C
-         huUvln8J3tKQj/vkJmklEdrSHsT99D1A4kw0osbbikFLAOvvw6/vSaAkOvlRqE7NuVXS
-         jGdopARrf6UNU6fdbA5boKTX1tw6yL/bmbxqELfyG3f6Jh07FEA+z+Vanxi2tpQi0p4M
-         DGZA==
-X-Gm-Message-State: APjAAAWOFzoJDQSIwLViQRRChoUddMNhJbdgustfr5hWcCa8d3UY6Hkm
-        gGnhuHdmq4ZA4RJ07kQG+bl3aCxeBlUvjLlyPYU=
-X-Google-Smtp-Source: APXvYqx4/YKjnnKlrYH6a1Stqf1G9nWc4hBr0KNb2IwxAw/QAwIWpJZBY1pfFFBVmdkpy7ljRZCgZXm0ivS7z2TFPGU=
-X-Received: by 2002:a67:1884:: with SMTP id 126mr9095646vsy.219.1580079306304;
- Sun, 26 Jan 2020 14:55:06 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=ZHMvxWSExnfzvozzoiiK4wClMeOsgnVyBWHpemQRo9s=;
+        b=Cgs/qMp3Tn9YL32W14lE6gjZk2cawTgHA5T9siMauICDy5chTMkD5v0HTYCBUYzBv5
+         wuPeK/ph8BKh9ynvDcjH7/IsPgGiL7okJP+lCWDK+GnLxtOTkql52YqI6JGtfDi/7Lr8
+         cixgJneS/ZSSjwah2F9ZEZEP+McXE/6WWUTxVLs08OzXEj2/Svd3ID75DirVMcurAQ13
+         dKYjamcQqdWNmkBkkttrLRa8GZKYSnmaFhRIEq4UwPmSOwjmfabFuxr6FmT2E7v7TNMe
+         O/t2nI8wyVGfsHev08faPbcso5Hu0wvy+6T47Tuiu74umOd5nB5/HurgznVwfQyePDUf
+         Lqrg==
+X-Gm-Message-State: APjAAAX/G9k79+mmLiaV1AUj3LekVPmsY867Fqb4pngksUeKP7H5ICfz
+        2GfaO8pQYlpMyhwhhRio3f8=
+X-Google-Smtp-Source: APXvYqwR91RGkxftZpslELja6YtBXa5WMBKeTTjWXx5Zs4tXR3KM/KxQ3+hzLBWkRFSYQG+t2PP2Cg==
+X-Received: by 2002:a7b:c183:: with SMTP id y3mr13254610wmi.0.1580123791552;
+        Mon, 27 Jan 2020 03:16:31 -0800 (PST)
+Received: from pali ([2a02:2b88:2:1::5cc6:2f])
+        by smtp.gmail.com with ESMTPSA id w20sm17584910wmk.34.2020.01.27.03.16.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2020 03:16:30 -0800 (PST)
+Date:   Mon, 27 Jan 2020 12:16:30 +0100
+From:   Pali =?utf-8?B?Um9ow6Fy?= <pali.rohar@gmail.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, kernel@pengutronix.de
+Subject: Re: [PATCH v2] libata: Fix retrieving of active qcs
+Message-ID: <20200127111630.bqqzhj57tzt7geds@pali>
+References: <20191213080408.27032-1-s.hauer@pengutronix.de>
+ <20191225181840.ooo6mw5rffghbmu2@pali>
+ <20200106081605.ffjz7xy6e24rfcgx@pengutronix.de>
 MIME-Version: 1.0
-Received: by 2002:ab0:654d:0:0:0:0:0 with HTTP; Sun, 26 Jan 2020 14:55:05
- -0800 (PST)
-Reply-To: markdonald265@yahoo.com
-From:   Mr Mark Donald <drfarmtavaku@gmail.com>
-Date:   Sun, 26 Jan 2020 23:55:05 +0100
-Message-ID: <CALV5LxBc_mvV0uwQo8+NzUeWJBNit=Q1gC6UG8HaOXFH_bytmQ@mail.gmail.com>
-Subject: I am expecting your urgent response
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200106081605.ffjz7xy6e24rfcgx@pengutronix.de>
+User-Agent: NeoMutt/20180716
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+On Monday 06 January 2020 09:16:05 Sascha Hauer wrote:
+> On Wed, Dec 25, 2019 at 07:18:40PM +0100, Pali Rohár wrote:
+> > Hello Sascha!
+> > 
+> > On Friday 13 December 2019 09:04:08 Sascha Hauer wrote:
+> > > ata_qc_complete_multiple() is called with a mask of the still active
+> > > tags.
+> > > 
+> > > mv_sata doesn't have this information directly and instead calculates
+> > > the still active tags from the started tags (ap->qc_active) and the
+> > > finished tags as (ap->qc_active ^ done_mask)
+> > > 
+> > > Since 28361c40368 the hw_tag and tag are no longer the same and the
+> > > equation is no longer valid. In ata_exec_internal_sg() ap->qc_active is
+> > > initialized as 1ULL << ATA_TAG_INTERNAL, but in hardware tag 0 is
+> > > started and this will be in done_mask on completion. ap->qc_active ^
+> > > done_mask becomes 0x100000000 ^ 0x1 = 0x100000001 and thus tag 0 used as
+> > > the internal tag will never be reported as completed.
+> > > 
+> > > This is fixed by introducing ata_qc_get_active() which returns the
+> > > active hardware tags and calling it where appropriate.
+> > > 
+> > > This is tested on mv_sata, but sata_fsl and sata_nv suffer from the same
+> > > problem. There is another case in sata_nv that most likely needs fixing
+> > > as well, but this looks a little different, so I wasn't confident enough
+> > > to change that.
+> > 
+> > I can confirm that sata_nv.ko does not work in 4.18 (and new) kernel
+> > version correctly. More details are in email:
+> > 
+> > https://lore.kernel.org/linux-ide/20191225180824.bql2o5whougii4ch@pali/T/
+> > 
+> > I tried this patch and it fixed above problems with sata_nv.ko. It just
+> > needs small modification (see below).
+> > 
+> > So you can add my:
+> > 
+> > Tested-by: Pali Rohár <pali.rohar@gmail.com>
+> > 
+> > And I hope that patch would be backported to 4.18 and 4.19 stable
+> > branches soon as distributions kernels are broken for machines with
+> > these nvidia sata controllers.
+> > 
+> > Anyway, what is that another case in sata_nv which needs to be fixed
+> > too?
+> 
+> It's in nv_swncq_sdbfis(). Here we have:
+> 
+> 	sactive = readl(pp->sactive_block);
+> 	done_mask = pp->qc_active ^ sactive;
+> 
+> 	pp->qc_active &= ~done_mask;
+> 	pp->dhfis_bits &= ~done_mask;
+> 	pp->dmafis_bits &= ~done_mask;
+> 	pp->sdbfis_bits |= done_mask;
+> 	ata_qc_complete_multiple(ap, ap->qc_active ^ done_mask);
+> 
+> Sascha
+
+Ok. Are you going to fix also this case?
+
 -- 
-Dear Friend,
-
-I know that this message will come to you as a surprise. I am the
-Auditing and Accounting section manager with African Development
-Bank,Ouagadougou Burkina Faso. I Hope that you will not expose or
-betray this trust and confident that I am about to repose on you for
-the mutual benefit of our both families.
-
-I need your urgent assistance in transferring the sum of($39.5)million
-to your account within 10 or 14 banking days. This money has been
-dormant for years in our Bank without claim.I want the bank to release
-the money to you as the nearest person to our deceased customer late
-Engr. George Granfre who died with his wife and two children on the
-21st day of April 2010 in car clash.
-
-I don't want the money to go into government treasury as an abandoned
-fund. So this is the reason why I am contacting you so that the bank
-can release the money to you as the next of kin to the deceased
-customer. Please I would like you to keep this proposal as atop secret
-and delete it if you are not interested.
-
-Upon receipt of your reply, I will give you full details on how the
-business will be executed and also note that you will have 40% of the
-above mentioned sum if you agree to handle this business with me.
-
-I am expecting your urgent response as soon as you receive my message
-
-Best Regard,
-
-Mr Mark Donald
+Pali Rohár
+pali.rohar@gmail.com

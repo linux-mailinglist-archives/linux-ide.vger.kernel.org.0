@@ -2,221 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E813714ECCC
-	for <lists+linux-ide@lfdr.de>; Fri, 31 Jan 2020 13:57:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E413E14F8F1
+	for <lists+linux-ide@lfdr.de>; Sat,  1 Feb 2020 17:37:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728635AbgAaM5y (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 31 Jan 2020 07:57:54 -0500
-Received: from mx2.suse.de ([195.135.220.15]:32982 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728514AbgAaM5y (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 31 Jan 2020 07:57:54 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 4B791AD69;
-        Fri, 31 Jan 2020 12:57:50 +0000 (UTC)
-Subject: Re: [PATCH 02/24] sata_nv: move DPRINTK to ata debugging
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        Hannes Reinecke <hare@suse.com>
-References: <20181213104716.31930-1-hare@suse.de>
- <CGME20181213104751epcas1p46f3208764bdb8b6a0c03ff234cbe61bf@epcas1p4.samsung.com>
- <20181213104716.31930-13-hare@suse.de>
- <9e9442f4-a8b1-71ac-dabc-a91496f3af78@samsung.com>
-From:   Hannes Reinecke <hare@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=hare@suse.de; prefer-encrypt=mutual; keydata=
- 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
- azzYF4VRJsdl+d0MCaSy8mUh
-Message-ID: <caba9737-e370-5c0e-3d33-b1274739f8fd@suse.de>
-Date:   Fri, 31 Jan 2020 13:57:49 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1726679AbgBAQhF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 1 Feb 2020 11:37:05 -0500
+Received: from sonic316-53.consmr.mail.ne1.yahoo.com ([66.163.187.179]:45025
+        "EHLO sonic316-53.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726670AbgBAQhE (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 1 Feb 2020 11:37:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1580575023; bh=VxFSqOLnoyhxZXWK73TPGK3hr8yutZ4yWmLQa/jSY/I=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Jhu+rinusv8yrO7P+uj9ivOFAjdRsMBmPFc+4IysZP3e42txtiMOS1Ozpd88qtzPDsY7Ry4DTkeFVzuwutwTvuB2SK6jtwnz+e+CV9LD3b7tXVlbuxj0SQCculj/VDgqZbX27+Ef28W/VMCAjI3bUGhbR7zkObIRB9i/4QSUD75FrSIbePMHMqeYH0iRDH93qV5+vpa8I0KTXt8X1xUbiVcSEgY0ezcs/HZwhRIlytkr3tXmf0Eq0BNrIM51cyXxir8X6vAxWcftEFCuWMjb6fuYtRt8Nr1tFEoqkK23t4nGnEiVBfIUCHOg8aYH/SgqjmQ7qSnALaelCJ5naFT5xg==
+X-YMail-OSG: Oiyj.kAVM1n9p7QAwa6TtksRrzjtHbreTj7n.RjcuU6rKCqwcfIKYmMj67_qYGo
+ 50yTBpoZktKs6JI1busMmYqgFQC4mGzsqhpK5haoVlNENBtDgC8f6a8gtgtF3PZJnmsu5_75HMRJ
+ 7YA46Jghe4INcyn1h5KO_7aYAscKpbF1P9.m2EZgGU72tjGLT8fimkIpwFKpUnj2earMHE_v2TsQ
+ MKxYclls27P5vvmnIMV6FrcEeuIn5_DJLmp_uIQ7oDGxO_P0OVuCbdqTtnp.oskGBxMAaLXYfARC
+ 4snjv_yE5eAJrwfxkzoB7hrAAYXJozbpASvQf2QZ_UbbbcNJ0JhEzOCUykboiCT64k5af0oehUin
+ Twv918CXUpToQeByosgu98y4qNOttRZ1NKp5.mGTFZzXnxYsx9Nt5QpGF.2fhQ9saiFU2.uj6fX1
+ fb6swLpUJal48d1jGhfb.XL7IJZ5JQWJoW..NomOUa3Sn8H0lR1E4REfVP33hooYS9inYmNxN9VO
+ zODMWKYbM05xw7AM8NYUBQcko5zdCCw.ZIN4GGyZTJ5MjZXTQwee8HfSIZsn5dXJK90FgBUkQDZF
+ hfiDy9UgkHyeFXTW.wgINim87rwfdlpPKC9cCePMq6AhzTCR9U5_IhxUVj_oM5OLTAy2BB.wU0kU
+ FdtXyxTW9tOMf9ZBC3PGRoiINOUJydKyeov_ZKT5mShpKYiWqyP2NIB1h5wGrYPQm8.NIf4g.3jZ
+ hwJe6OvdF8DQSZJneWdcvzRhXbKwWpI_6Fbl_OVTiwy8QAWeGcl9fTpuTtthLNT2GHx30h6fFCT2
+ i6NadkPFwW6KGcliefTOTNO03jp_.cOeM4_OFYvsOpY_Ql_xFX_jiMtMjdk5qJdJLnOpXkT971pZ
+ rpdK9T6Xbje1MU4FU7PbXhrNDLxv06GO8jQ2VHfHFNXKuzl3wJHjzcsoC8dBSaoIb5FzNPdmJYpU
+ bXHnFy1MMsn_UU6lw9IrcYtlFnRUwqAIyVv70EYZVYE4Ti_WVF8IOU9gj2iA4jqdFRNxUlrbeMDK
+ XCc.yxjw3lylmFEf85twkP0NJLYKliou8KpJ6bFeLN0wtqeMyPoHvt0kLACIwBKlifIbIpwRXDSY
+ Op1MyZfP_EEjDmN5RsrfQ7LI4MsB17EonxqqawHioomWeYVCrSYB1Pa1fmwSLa7ohCQwJ6YNSoMZ
+ DYSugR9RYMCoGhmhT0YlZHTQvzfMXhqV6xnn_zOWOiTfbnmKgLZuLzydgbr6LYBWVQke_PaeZA3t
+ 4vi5C89maj4hpe._H0Zcy8QpEWZ8KWCVHnxqxG2jI_UF1mlmdATy.ATd_8JXmaYVEmGJeCQEvXRF
+ FxmjvPVhnxhZEcXpIBqfsP_vNXbXRMV3RWjs-
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic316.consmr.mail.ne1.yahoo.com with HTTP; Sat, 1 Feb 2020 16:37:03 +0000
+Date:   Sat, 1 Feb 2020 16:35:02 +0000 (UTC)
+From:   "Mrs. Maureen Hinckley" <zz13@gczao.com>
+Reply-To: maurhinck6@gmail.com
+Message-ID: <1187667350.235001.1580574902701@mail.yahoo.com>
+Subject: 
 MIME-Version: 1.0
-In-Reply-To: <9e9442f4-a8b1-71ac-dabc-a91496f3af78@samsung.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+References: <1187667350.235001.1580574902701.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15149 YMailNodin Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36 OPR/66.0.3515.44
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/30/20 11:46 AM, Bartlomiej Zolnierkiewicz wrote:
-> 
-> On 12/13/18 11:46 AM, Hannes Reinecke wrote:
->> Replace all DPRINTK calls with the ata_XXX_dbg functions.
->>
->> Signed-off-by: Hannes Reinecke <hare@suse.com>
->> ---
->>  drivers/ata/sata_nv.c | 22 ++++++++++------------
->>  1 file changed, 10 insertions(+), 12 deletions(-)
->>
->> diff --git a/drivers/ata/sata_nv.c b/drivers/ata/sata_nv.c
->> index 72c9b922a77b..aa2611d638ea 100644
->> --- a/drivers/ata/sata_nv.c
->> +++ b/drivers/ata/sata_nv.c
->> @@ -1451,7 +1451,7 @@ static unsigned int nv_adma_qc_issue(struct ata_queued_cmd *qc)
->>  
->>  	writew(qc->hw_tag, mmio + NV_ADMA_APPEND);
->>  
->> -	DPRINTK("Issued tag %u\n", qc->hw_tag);
->> +	ata_dev_dbg(qc->dev, "Issued tag %u\n", qc->hw_tag);
-> 
-> Please preserve __func__ printing in the conversion.
->  
->>  	return 0;
->>  }
->> @@ -2029,8 +2029,6 @@ static unsigned int nv_swncq_issue_atacmd(struct ata_port *ap,
->>  	if (qc == NULL)
->>  		return 0;
->>  
->> -	DPRINTK("Enter\n");
->> -
-> 
-> Please either keep it or document the removal in the patch description.
-> 
->>  	writel((1 << qc->hw_tag), pp->sactive_block);
->>  	pp->last_issue_tag = qc->hw_tag;
->>  	pp->dhfis_bits &= ~(1 << qc->hw_tag);
->> @@ -2040,7 +2038,7 @@ static unsigned int nv_swncq_issue_atacmd(struct ata_port *ap,
->>  	ap->ops->sff_tf_load(ap, &qc->tf);	 /* load tf registers */
->>  	ap->ops->sff_exec_command(ap, &qc->tf);
->>  
->> -	DPRINTK("Issued tag %u\n", qc->hw_tag);
->> +	ata_dev_dbg(qc->dev, "Issued tag %u\n", qc->hw_tag);
-> 
-> Please preserve __func__ printing in the conversion.
->  
->>  	return 0;
->>  }
->> @@ -2053,7 +2051,7 @@ static unsigned int nv_swncq_qc_issue(struct ata_queued_cmd *qc)
->>  	if (qc->tf.protocol != ATA_PROT_NCQ)
->>  		return ata_bmdma_qc_issue(qc);
->>  
->> -	DPRINTK("Enter\n");
->> +	ata_dev_dbg(qc->dev, "Enter\n");
-> 
-> ditto
->  
->>  	if (!pp->qc_active)
->>  		nv_swncq_issue_atacmd(ap, qc);
->> @@ -2121,7 +2119,7 @@ static int nv_swncq_sdbfis(struct ata_port *ap)
->>  	ata_qc_complete_multiple(ap, ap->qc_active ^ done_mask);
->>  
->>  	if (!ap->qc_active) {
->> -		DPRINTK("over\n");
->> +		ata_port_dbg(ap, "over\n");
-> 
-> ditto
-> 
->>  		nv_swncq_pp_reinit(ap);
->>  		return 0;
->>  	}
->> @@ -2136,10 +2134,10 @@ static int nv_swncq_sdbfis(struct ata_port *ap)
->>  		 */
->>  		lack_dhfis = 1;
->>  
->> -	DPRINTK("id 0x%x QC: qc_active 0x%x,"
->> +	ata_port_dbg(ap, "QC: qc_active 0x%llx,"
-> 
-> ditto
-> 
->>  		"SWNCQ:qc_active 0x%X defer_bits %X "
->>  		"dhfis 0x%X dmafis 0x%X last_issue_tag %x\n",
->> -		ap->print_id, ap->qc_active, pp->qc_active,
->> +		ap->qc_active, pp->qc_active,
->>  		pp->defer_queue.defer_bits, pp->dhfis_bits,
->>  		pp->dmafis_bits, pp->last_issue_tag);
->>  
->> @@ -2181,7 +2179,7 @@ static void nv_swncq_dmafis(struct ata_port *ap)
->>  	__ata_bmdma_stop(ap);
->>  	tag = nv_swncq_tag(ap);
->>  
->> -	DPRINTK("dma setup tag 0x%x\n", tag);
->> +	ata_port_dbg(ap, "dma setup tag 0x%x\n", tag);
-> 
-> ditto
-> 
->>  	qc = ata_qc_from_tag(ap, tag);
->>  
->>  	if (unlikely(!qc))
->> @@ -2249,9 +2247,9 @@ static void nv_swncq_host_interrupt(struct ata_port *ap, u16 fis)
->>  
->>  	if (fis & NV_SWNCQ_IRQ_SDBFIS) {
->>  		pp->ncq_flags |= ncq_saw_sdb;
->> -		DPRINTK("id 0x%x SWNCQ: qc_active 0x%X "
->> +		ata_port_dbg(ap, "SWNCQ: qc_active 0x%X "
-> 
-> ditto
-> 
->>  			"dhfis 0x%X dmafis 0x%X sactive 0x%X\n",
->> -			ap->print_id, pp->qc_active, pp->dhfis_bits,
->> +			pp->qc_active, pp->dhfis_bits,
->>  			pp->dmafis_bits, readl(pp->sactive_block));
->>  		if (nv_swncq_sdbfis(ap) < 0)
->>  			goto irq_error;
->> @@ -2277,7 +2275,7 @@ static void nv_swncq_host_interrupt(struct ata_port *ap, u16 fis)
->>  				goto irq_exit;
->>  
->>  			if (pp->defer_queue.defer_bits) {
->> -				DPRINTK("send next command\n");
->> +				ata_port_dbg(ap, "send next command\n");
-> 
-> ditto
-> 
->>  				qc = nv_swncq_qc_from_dq(ap);
->>  				nv_swncq_issue_atacmd(ap, qc);
->>  			}
->>
-I've moved the __func__ argument into the ata_XXX_dbg() macros; this
-should take care of it.
 
-Cheers,
 
-Hannes
--- 
-Dr. Hannes Reinecke		      Teamlead Storage & Networking
-hare@suse.de			                  +49 911 74053 688
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), GF: Felix Imendörffer
+I am Maureen Hinckley and my foundation is donating (Five hundred and fifty=
+ thousand USD) to you. Contact us via my email at (maurhinck6@gmail.com) fo=
+r further details.
+
+Best Regards,
+Mrs. Maureen Hinckley,
+Copyright =C2=A92020 The Maureen Hinckley Foundation All Rights Reserved.

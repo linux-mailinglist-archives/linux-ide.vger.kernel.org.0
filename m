@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD158151E9E
+	by mail.lfdr.de (Postfix) with ESMTP id 48F1E151E9C
 	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727321AbgBDQ4L (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Feb 2020 11:56:11 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34568 "EHLO mx2.suse.de"
+        id S1727387AbgBDQ4K (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 4 Feb 2020 11:56:10 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34808 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727351AbgBDQ4H (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 4 Feb 2020 11:56:07 -0500
+        id S1727381AbgBDQ4I (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 4 Feb 2020 11:56:08 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 87EB0AFBB;
+        by mx2.suse.de (Postfix) with ESMTP id E43C0B0BE;
         Tue,  4 Feb 2020 16:56:04 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
         Hannes Reinecke <hare@suse.com>
-Subject: [PATCH 04/46] libata: move ata_{port,link,dev}_dbg to standard dev_XXX() macros
-Date:   Tue,  4 Feb 2020 17:55:05 +0100
-Message-Id: <20200204165547.115220-5-hare@suse.de>
+Subject: [PATCH 05/46] libata: remove pointless debugging messages
+Date:   Tue,  4 Feb 2020 17:55:06 +0100
+Message-Id: <20200204165547.115220-6-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -31,294 +31,142 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Use standard dev_{dbg,info,notice,warn,err} macros instead of the
-hand-crafted printk helpers.
-Also change the name for 'ata_device' structure to ataX:Y to be
-inline with the other ata object names.
+Debugging messages in pci init functions or sg setup are pretty
+much pointless, as the workflow pretty much decides what happened.
+So drop them.
 
 Signed-off-by: Hannes Reinecke <hare@suse.com>
 ---
- drivers/ata/ahci.c             |  3 +--
- drivers/ata/libata-acpi.c      | 48 ++++++++++++++++++---------------
- drivers/ata/libata-core.c      | 61 ------------------------------------------
- drivers/ata/libata-transport.c |  4 +--
- include/linux/libata.h         | 48 +++++++++++----------------------
- 5 files changed, 45 insertions(+), 119 deletions(-)
+ drivers/ata/acard-ahci.c  | 4 ----
+ drivers/ata/ahci.c        | 2 --
+ drivers/ata/libahci.c     | 3 ---
+ drivers/ata/libata-core.c | 6 ------
+ drivers/ata/libata-sff.c  | 2 --
+ drivers/ata/sata_nv.c     | 4 ----
+ 6 files changed, 21 deletions(-)
 
+diff --git a/drivers/ata/acard-ahci.c b/drivers/ata/acard-ahci.c
+index 46dc54d18f0b..5270151ac441 100644
+--- a/drivers/ata/acard-ahci.c
++++ b/drivers/ata/acard-ahci.c
+@@ -185,8 +185,6 @@ static unsigned int acard_ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
+ 	struct acard_sg *acard_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+ 	unsigned int si, last_si = 0;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	/*
+ 	 * Next, the S/G list.
+ 	 */
+@@ -364,8 +362,6 @@ static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id
+ 	struct ata_host *host;
+ 	int n_ports, i, rc;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	WARN_ON((int)ATA_MAX_QUEUE > AHCI_MAX_CMDS);
+ 
+ 	ata_print_version_once(&pdev->dev, DRV_VERSION);
 diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 4bfd1b14b390..b2719c64fc04 100644
+index b2719c64fc04..4f628e33f52e 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
-@@ -796,8 +796,7 @@ static int ahci_avn_hardreset(struct ata_link *link, unsigned int *class,
- 				(sstatus & 0xf) != 1)
- 			break;
+@@ -1643,8 +1643,6 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	int n_ports, i, rc;
+ 	int ahci_pci_bar = AHCI_PCI_BAR_STANDARD;
  
--		ata_link_printk(link, KERN_INFO, "avn bounce port%d\n",
--				port);
-+		ata_link_info(link, "avn bounce port%d\n", port);
- 
- 		pci_read_config_word(pdev, 0x92, &val);
- 		val &= ~(1 << port);
-diff --git a/drivers/ata/libata-acpi.c b/drivers/ata/libata-acpi.c
-index 224e3486e9a5..9a7c25252e50 100644
---- a/drivers/ata/libata-acpi.c
-+++ b/drivers/ata/libata-acpi.c
-@@ -649,9 +649,7 @@ static int ata_acpi_run_tf(struct ata_device *dev,
- 	struct ata_taskfile *pptf = NULL;
- 	struct ata_taskfile tf, ptf, rtf;
- 	unsigned int err_mask;
--	const char *level;
- 	const char *descr;
--	char msg[60];
- 	int rc;
- 
- 	if ((gtf->tf[0] == 0) && (gtf->tf[1] == 0) && (gtf->tf[2] == 0)
-@@ -665,6 +663,10 @@ static int ata_acpi_run_tf(struct ata_device *dev,
- 		pptf = &ptf;
- 	}
- 
-+	descr = ata_get_cmd_descript(tf.command);
-+	if (!descr)
-+		descr = "unknown";
-+
- 	if (!ata_acpi_filter_tf(dev, &tf, pptf)) {
- 		rtf = tf;
- 		err_mask = ata_exec_internal(dev, &rtf, NULL,
-@@ -672,40 +674,42 @@ static int ata_acpi_run_tf(struct ata_device *dev,
- 
- 		switch (err_mask) {
- 		case 0:
--			level = KERN_DEBUG;
--			snprintf(msg, sizeof(msg), "succeeded");
-+			ata_dev_dbg(dev,
-+				"ACPI cmd %02x/%02x:%02x:%02x:%02x:%02x:%02x"
-+				"(%s) succeeded\n",
-+				tf.command, tf.feature, tf.nsect, tf.lbal,
-+				tf.lbam, tf.lbah, tf.device, descr);
- 			rc = 1;
- 			break;
- 
- 		case AC_ERR_DEV:
--			level = KERN_INFO;
--			snprintf(msg, sizeof(msg),
--				 "rejected by device (Stat=0x%02x Err=0x%02x)",
--				 rtf.command, rtf.feature);
-+			ata_dev_info(dev,
-+				"ACPI cmd %02x/%02x:%02x:%02x:%02x:%02x:%02x"
-+				"(%s) rejected by device (Stat=0x%02x Err=0x%02x)",
-+				tf.command, tf.feature, tf.nsect, tf.lbal,
-+				tf.lbam, tf.lbah, tf.device, descr,
-+				rtf.command, rtf.feature);
- 			rc = 0;
- 			break;
- 
- 		default:
--			level = KERN_ERR;
--			snprintf(msg, sizeof(msg),
--				 "failed (Emask=0x%x Stat=0x%02x Err=0x%02x)",
--				 err_mask, rtf.command, rtf.feature);
-+			ata_dev_err(dev,
-+				"ACPI cmd %02x/%02x:%02x:%02x:%02x:%02x:%02x"
-+				"(%s) failed (Emask=0x%x Stat=0x%02x Err=0x%02x)",
-+				tf.command, tf.feature, tf.nsect, tf.lbal,
-+				tf.lbam, tf.lbah, tf.device, descr,
-+				err_mask, rtf.command, rtf.feature);
- 			rc = -EIO;
- 			break;
- 		}
- 	} else {
--		level = KERN_INFO;
--		snprintf(msg, sizeof(msg), "filtered out");
-+		ata_dev_info(dev,
-+			"ACPI cmd %02x/%02x:%02x:%02x:%02x:%02x:%02x"
-+			"(%s) filtered out\n",
-+			tf.command, tf.feature, tf.nsect, tf.lbal,
-+			tf.lbam, tf.lbah, tf.device, descr);
- 		rc = 0;
- 	}
--	descr = ata_get_cmd_descript(tf.command);
+-	VPRINTK("ENTER\n");
 -
--	ata_dev_printk(dev, level,
--		       "ACPI cmd %02x/%02x:%02x:%02x:%02x:%02x:%02x (%s) %s\n",
--		       tf.command, tf.feature, tf.nsect, tf.lbal,
--		       tf.lbam, tf.lbah, tf.device,
--		       (descr ? descr : "unknown"), msg);
--
- 	return rc;
- }
+ 	WARN_ON((int)ATA_MAX_QUEUE > AHCI_MAX_CMDS);
  
+ 	ata_print_version_once(&pdev->dev, DRV_VERSION);
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index ea5bf5f4cbed..4055071f213f 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1596,8 +1596,6 @@ static unsigned int ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
+ 	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+ 	unsigned int si;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	/*
+ 	 * Next, the S/G list.
+ 	 */
+@@ -1671,7 +1669,6 @@ static void ahci_fbs_dec_intr(struct ata_port *ap)
+ 	u32 fbs = readl(port_mmio + PORT_FBS);
+ 	int retries = 3;
+ 
+-	DPRINTK("ENTER\n");
+ 	BUG_ON(!pp->fbs_enabled);
+ 
+ 	/* time to wait for DEC is not specified by AHCI spec,
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 6f4ab5c5b52d..cee815ecd7df 100644
+index cee815ecd7df..cea065fb6282 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -7236,67 +7236,6 @@ const struct ata_port_info ata_dummy_port_info = {
- 	.port_ops		= &ata_dummy_port_ops,
- };
+@@ -5052,8 +5052,6 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
+ 	struct ata_port *ap = qc->ap;
+ 	unsigned int n_elem;
  
--/*
-- * Utility print functions
-- */
--void ata_port_printk(const struct ata_port *ap, const char *level,
--		     const char *fmt, ...)
--{
--	struct va_format vaf;
--	va_list args;
+-	VPRINTK("ENTER, ata%u\n", ap->print_id);
 -
--	va_start(args, fmt);
--
--	vaf.fmt = fmt;
--	vaf.va = &args;
--
--	printk("%sata%u: %pV", level, ap->print_id, &vaf);
--
--	va_end(args);
--}
--EXPORT_SYMBOL(ata_port_printk);
--
--void ata_link_printk(const struct ata_link *link, const char *level,
--		     const char *fmt, ...)
--{
--	struct va_format vaf;
--	va_list args;
--
--	va_start(args, fmt);
--
--	vaf.fmt = fmt;
--	vaf.va = &args;
--
--	if (sata_pmp_attached(link->ap) || link->ap->slave_link)
--		printk("%sata%u.%02u: %pV",
--		       level, link->ap->print_id, link->pmp, &vaf);
--	else
--		printk("%sata%u: %pV",
--		       level, link->ap->print_id, &vaf);
--
--	va_end(args);
--}
--EXPORT_SYMBOL(ata_link_printk);
--
--void ata_dev_printk(const struct ata_device *dev, const char *level,
--		    const char *fmt, ...)
--{
--	struct va_format vaf;
--	va_list args;
--
--	va_start(args, fmt);
--
--	vaf.fmt = fmt;
--	vaf.va = &args;
--
--	printk("%sata%u.%02u: %pV",
--	       level, dev->link->ap->print_id, dev->link->pmp + dev->devno,
--	       &vaf);
--
--	va_end(args);
--}
--EXPORT_SYMBOL(ata_dev_printk);
--
- void ata_print_version(const struct device *dev, const char *version)
+ 	n_elem = dma_map_sg(ap->dev, qc->sg, qc->n_elem, qc->dma_dir);
+ 	if (n_elem < 1)
+ 		return -1;
+@@ -6016,8 +6014,6 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
  {
- 	dev_printk(KERN_DEBUG, dev, "version %s\n", version);
-diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
-index 4ccfeb85ec66..db42bd05c4cf 100644
---- a/drivers/ata/libata-transport.c
-+++ b/drivers/ata/libata-transport.c
-@@ -666,9 +666,9 @@ static int ata_tdev_add(struct ata_device *ata_dev)
- 	dev->parent = &link->tdev;
- 	dev->release = ata_tdev_release;
- 	if (ata_is_host_link(link))
--		dev_set_name(dev, "dev%d.%d", ap->print_id,ata_dev->devno);
-+		dev_set_name(dev, "ata%d.%d", ap->print_id, ata_dev->devno);
- 	else
--		dev_set_name(dev, "dev%d.%d.0", ap->print_id, link->pmp);
-+		dev_set_name(dev, "ata%d.%d.0", ap->print_id, link->pmp);
+ 	struct ata_port *ap;
  
- 	transport_setup_device(dev);
- 	ata_acpi_bind_dev(ata_dev);
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 19c9c32bd339..437d2f27bfdd 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1414,51 +1414,38 @@ static inline int sata_srst_pmp(struct ata_link *link)
- 	return link->pmp;
- }
- 
--/*
-- * printk helpers
-- */
--__printf(3, 4)
--void ata_port_printk(const struct ata_port *ap, const char *level,
--		     const char *fmt, ...);
--__printf(3, 4)
--void ata_link_printk(const struct ata_link *link, const char *level,
--		     const char *fmt, ...);
--__printf(3, 4)
--void ata_dev_printk(const struct ata_device *dev, const char *level,
--		    const char *fmt, ...);
+-	DPRINTK("ENTER\n");
 -
- #define ata_port_err(ap, fmt, ...)				\
--	ata_port_printk(ap, KERN_ERR, fmt, ##__VA_ARGS__)
-+	dev_err(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_warn(ap, fmt, ...)				\
--	ata_port_printk(ap, KERN_WARNING, fmt, ##__VA_ARGS__)
-+	dev_warn(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_notice(ap, fmt, ...)				\
--	ata_port_printk(ap, KERN_NOTICE, fmt, ##__VA_ARGS__)
-+	dev_notice(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_info(ap, fmt, ...)				\
--	ata_port_printk(ap, KERN_INFO, fmt, ##__VA_ARGS__)
-+	dev_info(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_dbg(ap, fmt, ...)				\
--	ata_port_printk(ap, KERN_DEBUG, fmt, ##__VA_ARGS__)
-+	dev_dbg(&ap->tdev, "%s: " fmt, __func__, ##__VA_ARGS__)
+ 	ap = kzalloc(sizeof(*ap), GFP_KERNEL);
+ 	if (!ap)
+ 		return NULL;
+@@ -6133,8 +6129,6 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
+ 	int i;
+ 	void *dr;
  
- #define ata_link_err(link, fmt, ...)				\
--	ata_link_printk(link, KERN_ERR, fmt, ##__VA_ARGS__)
-+	dev_err(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_warn(link, fmt, ...)				\
--	ata_link_printk(link, KERN_WARNING, fmt, ##__VA_ARGS__)
-+	dev_warn(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_notice(link, fmt, ...)				\
--	ata_link_printk(link, KERN_NOTICE, fmt, ##__VA_ARGS__)
-+	dev_notice(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_info(link, fmt, ...)				\
--	ata_link_printk(link, KERN_INFO, fmt, ##__VA_ARGS__)
-+	dev_info(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_dbg(link, fmt, ...)				\
--	ata_link_printk(link, KERN_DEBUG, fmt, ##__VA_ARGS__)
-+	dev_dbg(&link->tdev, "%s: " fmt, __func__, ##__VA_ARGS__)
+-	DPRINTK("ENTER\n");
+-
+ 	/* alloc a container for our list of ATA ports (buses) */
+ 	sz = sizeof(struct ata_host) + (max_ports + 1) * sizeof(void *);
+ 	host = kzalloc(sz, GFP_KERNEL);
+diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
+index 038db94216a9..931ae61d69fb 100644
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -2452,8 +2452,6 @@ static int ata_pci_init_one(struct pci_dev *pdev,
+ 	struct ata_host *host = NULL;
+ 	int rc;
  
- #define ata_dev_err(dev, fmt, ...)				\
--	ata_dev_printk(dev, KERN_ERR, fmt, ##__VA_ARGS__)
-+	dev_err(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_warn(dev, fmt, ...)				\
--	ata_dev_printk(dev, KERN_WARNING, fmt, ##__VA_ARGS__)
-+	dev_warn(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_notice(dev, fmt, ...)				\
--	ata_dev_printk(dev, KERN_NOTICE, fmt, ##__VA_ARGS__)
-+	dev_notice(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_info(dev, fmt, ...)				\
--	ata_dev_printk(dev, KERN_INFO, fmt, ##__VA_ARGS__)
-+	dev_info(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_dbg(dev, fmt, ...)				\
--	ata_dev_printk(dev, KERN_DEBUG, fmt, ##__VA_ARGS__)
-+	dev_dbg(&dev->tdev, "%s: " fmt, __func__, ##__VA_ARGS__)
+-	DPRINTK("ENTER\n");
+-
+ 	pi = ata_sff_find_valid_pi(ppi);
+ 	if (!pi) {
+ 		dev_err(&pdev->dev, "no valid port_info specified\n");
+diff --git a/drivers/ata/sata_nv.c b/drivers/ata/sata_nv.c
+index eb9dc14e5147..8639f66706a3 100644
+--- a/drivers/ata/sata_nv.c
++++ b/drivers/ata/sata_nv.c
+@@ -1271,8 +1271,6 @@ static int nv_adma_host_init(struct ata_host *host)
+ 	unsigned int i;
+ 	u32 tmp32;
  
- void ata_print_version(const struct device *dev, const char *version);
+-	VPRINTK("ENTER\n");
+-
+ 	/* enable ADMA on the ports */
+ 	pci_read_config_dword(pdev, NV_MCP_SATA_CFG_20, &tmp32);
+ 	tmp32 |= NV_MCP_SATA_CFG_20_PORT0_EN |
+@@ -1314,8 +1312,6 @@ static void nv_adma_fill_sg(struct ata_queued_cmd *qc, struct nv_adma_cpb *cpb)
+ 	struct scatterlist *sg;
+ 	unsigned int si;
  
-@@ -1980,11 +1967,8 @@ static inline u8 ata_wait_idle(struct ata_port *ap)
- {
- 	u8 status = ata_sff_busy_wait(ap, ATA_BUSY | ATA_DRQ, 1000);
- 
--#ifdef ATA_DEBUG
- 	if (status != 0xff && (status & (ATA_BUSY | ATA_DRQ)))
--		ata_port_printk(ap, KERN_DEBUG, "abnormal Status 0x%X\n",
--				status);
--#endif
-+		ata_port_dbg(ap, "abnormal Status 0x%X\n", status);
- 
- 	return status;
- }
+-	VPRINTK("ENTER\n");
+-
+ 	for_each_sg(qc->sg, sg, qc->n_elem, si) {
+ 		aprd = (si < 5) ? &cpb->aprd[si] :
+ 			&pp->aprd[NV_ADMA_SGTBL_LEN * qc->hw_tag + (si-5)];
 -- 
 2.16.4
 

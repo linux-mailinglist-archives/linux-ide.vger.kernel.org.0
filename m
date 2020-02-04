@@ -2,27 +2,26 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDCED151EB8
+	by mail.lfdr.de (Postfix) with ESMTP id AF720151EB7
 	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727427AbgBDQ4U (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S1727433AbgBDQ4U (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Tue, 4 Feb 2020 11:56:20 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34858 "EHLO mx2.suse.de"
+Received: from mx2.suse.de ([195.135.220.15]:34810 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727429AbgBDQ4P (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1727427AbgBDQ4P (ORCPT <rfc822;linux-ide@vger.kernel.org>);
         Tue, 4 Feb 2020 11:56:15 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 5C323B1E8;
+        by mx2.suse.de (Postfix) with ESMTP id 7026BB1ED;
         Tue,  4 Feb 2020 16:56:05 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
-        Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 38/46] sata_fsl: move DPRINTK to ata debugging
-Date:   Tue,  4 Feb 2020 17:55:39 +0100
-Message-Id: <20200204165547.115220-39-hare@suse.de>
+        linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 39/46] libata: add tracepoints for ATA error handling
+Date:   Tue,  4 Feb 2020 17:55:40 +0100
+Message-Id: <20200204165547.115220-40-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -31,280 +30,262 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Hannes Reinecke <hare@suse.com>
-
-Replace all DPRINTK calls with the standard logging functions.
+Add tracepoints for ATA error handling, and remove the related
+DPRINTK() calls.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_fsl.c | 84 ++++++++++++++++++++++++++------------------------
- 1 file changed, 43 insertions(+), 41 deletions(-)
+ drivers/ata/libata-eh.c       | 22 +++++-----------
+ drivers/ata/libata-pmp.c      |  8 ------
+ include/trace/events/libata.h | 60 +++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 67 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index 5d48e1d223fa..57c8c4a1558d 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -311,10 +311,12 @@ static void fsl_sata_set_irq_coalescing(struct ata_host *host,
- 	intr_coalescing_ticks = ticks;
- 	spin_unlock_irqrestore(&host->lock, flags);
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index ef3576eb5874..f37dad5f9c17 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -526,8 +526,6 @@ void ata_scsi_error(struct Scsi_Host *host)
+ 	unsigned long flags;
+ 	LIST_HEAD(eh_work_q);
  
--	DPRINTK("interrupt coalescing, count = 0x%x, ticks = %x\n",
--			intr_coalescing_count, intr_coalescing_ticks);
--	DPRINTK("ICC register status: (hcr base: 0x%x) = 0x%x\n",
--			hcr_base, ioread32(hcr_base + ICC));
-+	dev_dbg(host->dev,
-+		"%s: interrupt coalescing, count = 0x%x, ticks = %x\n",
-+		__func__, intr_coalescing_count, intr_coalescing_ticks);
-+	dev_dbg(host->dev,
-+		"%s: ICC register status: (hcr base: 0x%x) = 0x%x\n",
-+		__func__, hcr_base, ioread32(hcr_base + ICC));
+-	DPRINTK("ENTER\n");
+-
+ 	spin_lock_irqsave(host->host_lock, flags);
+ 	list_splice_init(&host->eh_cmd_q, &eh_work_q);
+ 	spin_unlock_irqrestore(host->host_lock, flags);
+@@ -541,7 +539,6 @@ void ata_scsi_error(struct Scsi_Host *host)
+ 	/* finish or retry handled scmd's and clean up */
+ 	WARN_ON(!list_empty(&eh_work_q));
+ 
+-	DPRINTK("EXIT\n");
  }
  
- static ssize_t fsl_sata_intr_coalescing_show(struct device *dev,
-@@ -385,18 +387,19 @@ static ssize_t fsl_sata_rx_watermark_store(struct device *dev,
- 	return strlen(buf);
+ /**
+@@ -933,7 +930,7 @@ void ata_std_sched_eh(struct ata_port *ap)
+ 	ata_eh_set_pending(ap, 1);
+ 	scsi_schedule_eh(ap->scsi_host);
+ 
+-	DPRINTK("port EH scheduled\n");
++	trace_ata_std_sched_eh(ap);
+ }
+ EXPORT_SYMBOL_GPL(ata_std_sched_eh);
+ 
+@@ -1060,7 +1057,7 @@ static void __ata_port_freeze(struct ata_port *ap)
+ 
+ 	ap->pflags |= ATA_PFLAG_FROZEN;
+ 
+-	DPRINTK("ata%u port frozen\n", ap->print_id);
++	trace_ata_port_freeze(ap);
  }
  
--static inline unsigned int sata_fsl_tag(unsigned int tag,
-+static inline unsigned int sata_fsl_tag(struct ata_port *ap,
-+					unsigned int tag,
- 					void __iomem *hcr_base)
+ /**
+@@ -1208,7 +1205,7 @@ void ata_eh_thaw_port(struct ata_port *ap)
+ 
+ 	spin_unlock_irqrestore(ap->lock, flags);
+ 
+-	DPRINTK("ata%u port thawed\n", ap->print_id);
++	trace_ata_port_thaw(ap);
+ }
+ 
+ static void ata_eh_scsidone(struct scsi_cmnd *scmd)
+@@ -1347,6 +1344,8 @@ void ata_eh_about_to_do(struct ata_link *link, struct ata_device *dev,
+ 	struct ata_eh_context *ehc = &link->eh_context;
+ 	unsigned long flags;
+ 
++	trace_ata_eh_about_to_do(link, dev ? dev->devno : 0, action);
++
+ 	spin_lock_irqsave(ap->lock, flags);
+ 
+ 	ata_eh_clear_action(link, dev, ehi, action);
+@@ -1377,6 +1376,8 @@ void ata_eh_done(struct ata_link *link, struct ata_device *dev,
  {
- 	/* We let libATA core do actual (queue) tag allocation */
+ 	struct ata_eh_context *ehc = &link->eh_context;
  
- 	if (unlikely(tag >= SATA_FSL_QUEUE_DEPTH)) {
--		DPRINTK("tag %d invalid : out of range\n", tag);
-+		ata_port_dbg(ap, "tag %d invalid : out of range\n", tag);
- 		return 0;
- 	}
- 
- 	if (unlikely((ioread32(hcr_base + CQ)) & (1 << tag))) {
--		DPRINTK("tag %d invalid : in use!!\n", tag);
-+		ata_port_dbg(ap, "tag %d invalid : in use!!\n", tag);
- 		return 0;
- 	}
- 
-@@ -508,7 +511,7 @@ static enum ata_completion_errors sata_fsl_qc_prep(struct ata_queued_cmd *qc)
- 	struct sata_fsl_port_priv *pp = ap->private_data;
- 	struct sata_fsl_host_priv *host_priv = ap->host->private_data;
- 	void __iomem *hcr_base = host_priv->hcr_base;
--	unsigned int tag = sata_fsl_tag(qc->hw_tag, hcr_base);
-+	unsigned int tag = sata_fsl_tag(ap, qc->hw_tag, hcr_base);
- 	struct command_desc *cd;
- 	u32 desc_info = CMD_DESC_RES | CMD_DESC_SNOOP_ENABLE;
- 	u32 num_prde = 0;
-@@ -557,7 +560,7 @@ static unsigned int sata_fsl_qc_issue(struct ata_queued_cmd *qc)
- 	struct ata_port *ap = qc->ap;
- 	struct sata_fsl_host_priv *host_priv = ap->host->private_data;
- 	void __iomem *hcr_base = host_priv->hcr_base;
--	unsigned int tag = sata_fsl_tag(qc->hw_tag, hcr_base);
-+	unsigned int tag = sata_fsl_tag(ap, qc->hw_tag, hcr_base);
- 
- 	VPRINTK("xx_qc_issue called,CQ=0x%x,CA=0x%x,CE=0x%x,CC=0x%x\n",
- 		ioread32(CQ + hcr_base),
-@@ -586,7 +589,7 @@ static bool sata_fsl_qc_fill_rtf(struct ata_queued_cmd *qc)
- 	struct sata_fsl_port_priv *pp = qc->ap->private_data;
- 	struct sata_fsl_host_priv *host_priv = qc->ap->host->private_data;
- 	void __iomem *hcr_base = host_priv->hcr_base;
--	unsigned int tag = sata_fsl_tag(qc->hw_tag, hcr_base);
-+	unsigned int tag = sata_fsl_tag(qc->ap, qc->hw_tag, hcr_base);
- 	struct command_desc *cd;
- 
- 	cd = pp->cmdentry + tag;
-@@ -850,9 +853,10 @@ static int sata_fsl_hardreset(struct ata_link *link, unsigned int *class,
- 			goto try_offline_again;
- 	}
- 
--	DPRINTK("hardreset, controller off-lined\n");
--	VPRINTK("HStatus = 0x%x\n", ioread32(hcr_base + HSTATUS));
--	VPRINTK("HControl = 0x%x\n", ioread32(hcr_base + HCONTROL));
-+	ata_port_dbg(ap, "hardreset, controller off-lined\n"
-+		     "HStatus = 0x%x HControl = 0x%x\n",
-+		     ioread32(hcr_base + HSTATUS),
-+		     ioread32(hcr_base + HCONTROL));
- 
- 	/*
- 	 * PHY reset should remain asserted for atleast 1ms
-@@ -880,9 +884,10 @@ static int sata_fsl_hardreset(struct ata_link *link, unsigned int *class,
- 		goto err;
- 	}
- 
--	DPRINTK("hardreset, controller off-lined & on-lined\n");
--	VPRINTK("HStatus = 0x%x\n", ioread32(hcr_base + HSTATUS));
--	VPRINTK("HControl = 0x%x\n", ioread32(hcr_base + HCONTROL));
-+	ata_port_dbg(ap, "controller off-lined & on-lined\n"
-+		     "HStatus = 0x%x HControl = 0x%x\n",
-+		     ioread32(hcr_base + HSTATUS),
-+		     ioread32(hcr_base + HCONTROL));
- 
- 	/*
- 	 * First, wait for the PHYRDY change to occur before waiting for
-@@ -962,7 +967,7 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 	tf.ctl |= ATA_SRST;	/* setup SRST bit in taskfile control reg */
- 	ata_tf_to_fis(&tf, pmp, 0, cfis);
- 
--	DPRINTK("Dumping cfis : 0x%x, 0x%x, 0x%x, 0x%x\n",
-+	ata_port_dbg(ap, "Dumping cfis : 0x%x, 0x%x, 0x%x, 0x%x\n",
- 		cfis[0], cfis[1], cfis[2], cfis[3]);
- 
- 	/*
-@@ -970,7 +975,7 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 	 * other commands are active on the controller/device
- 	 */
- 
--	DPRINTK("@Softreset, CQ = 0x%x, CA = 0x%x, CC = 0x%x\n",
-+	ata_port_dbg(ap, "CQ = 0x%x, CA = 0x%x, CC = 0x%x\n",
- 		ioread32(CQ + hcr_base),
- 		ioread32(CA + hcr_base), ioread32(CC + hcr_base));
- 
-@@ -983,15 +988,16 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 	if (temp & 0x1) {
- 		ata_port_warn(ap, "ATA_SRST issue failed\n");
- 
--		DPRINTK("Softreset@5000,CQ=0x%x,CA=0x%x,CC=0x%x\n",
-+		ata_port_dbg(ap, "Softreset@5000,CQ=0x%x,CA=0x%x,CC=0x%x\n",
- 			ioread32(CQ + hcr_base),
- 			ioread32(CA + hcr_base), ioread32(CC + hcr_base));
- 
- 		sata_fsl_scr_read(&ap->link, SCR_ERROR, &Serror);
- 
--		DPRINTK("HStatus = 0x%x\n", ioread32(hcr_base + HSTATUS));
--		DPRINTK("HControl = 0x%x\n", ioread32(hcr_base + HCONTROL));
--		DPRINTK("Serror = 0x%x\n", Serror);
-+		ata_port_dbg(ap, "HStatus = 0x%x HControl = 0x%x Serror = 0x%x\n",
-+			     ioread32(hcr_base + HSTATUS),
-+			     ioread32(hcr_base + HCONTROL),
-+			     Serror);
- 		goto err;
- 	}
- 
-@@ -1049,7 +1055,7 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- static void sata_fsl_error_handler(struct ata_port *ap)
- {
- 
--	DPRINTK("in xx_error_handler\n");
-+	ata_port_dbg(ap, "ENTER\n");
- 	sata_pmp_error_handler(ap);
- 
++	trace_ata_eh_done(link, dev ? dev->devno : 0, action);
++
+ 	ata_eh_clear_action(link, dev, &ehc->i, action);
  }
-@@ -1092,7 +1098,7 @@ static void sata_fsl_error_intr(struct ata_port *ap)
- 	if (unlikely(SError & 0xFFFF0000))
- 		sata_fsl_scr_write(&ap->link, SCR_ERROR, SError);
  
--	DPRINTK("error_intr,hStat=0x%x,CE=0x%x,DE =0x%x,SErr=0x%x\n",
-+	ata_port_dbg(ap, "hStat=0x%x,CE=0x%x,DE =0x%x,SErr=0x%x\n",
- 		hstatus, cereg, ioread32(hcr_base + DE), SError);
+@@ -2119,8 +2120,6 @@ static void ata_eh_link_autopsy(struct ata_link *link)
+ 	u32 serror;
+ 	int rc;
  
- 	/* handle fatal errors */
-@@ -1109,7 +1115,7 @@ static void sata_fsl_error_intr(struct ata_port *ap)
- 
- 	/* Handle PHYRDY change notification */
- 	if (hstatus & INT_ON_PHYRDY_CHG) {
--		DPRINTK("SATA FSL: PHYRDY change indication\n");
-+		ata_port_dbg(ap, "PHYRDY change indication\n");
- 
- 		/* Setup a soft-reset EH action */
- 		ata_ehi_hotplugged(ehi);
-@@ -1130,7 +1136,7 @@ static void sata_fsl_error_intr(struct ata_port *ap)
- 		 */
- 		abort = 1;
- 
--		DPRINTK("single device error, CE=0x%x, DE=0x%x\n",
-+		ata_port_dbg(ap, "single device error, CE=0x%x, DE=0x%x\n",
- 			ioread32(hcr_base + CE), ioread32(hcr_base + DE));
- 
- 		/* find out the offending link and qc */
-@@ -1235,12 +1241,12 @@ static void sata_fsl_host_intr(struct ata_port *ap)
- 	}
- 
- 	if (unlikely(SError & 0xFFFF0000)) {
--		DPRINTK("serror @host_intr : 0x%x\n", SError);
-+		ata_port_dbg(ap, "serror @host_intr : 0x%x\n", SError);
- 		sata_fsl_error_intr(ap);
- 	}
- 
- 	if (unlikely(hstatus & status_mask)) {
--		DPRINTK("error interrupt!!\n");
-+		ata_port_dbg(ap, "error interrupt!!\n");
- 		sata_fsl_error_intr(ap);
+-	DPRINTK("ENTER\n");
+-
+ 	if (ehc->i.flags & ATA_EHI_NO_AUTOPSY)
  		return;
+ 
+@@ -2227,7 +2226,6 @@ static void ata_eh_link_autopsy(struct ata_link *link)
+ 		ehc->i.action |= ata_eh_speed_down(dev, eflags, all_err_mask);
+ 		trace_ata_eh_link_autopsy(dev, ehc->i.action, all_err_mask);
  	}
-@@ -1258,15 +1264,13 @@ static void sata_fsl_host_intr(struct ata_port *ap)
- 		/* clear CC bit, this will also complete the interrupt */
- 		iowrite32(done_mask, hcr_base + CC);
+-	DPRINTK("EXIT\n");
+ }
  
--		DPRINTK("Status of all queues :\n");
--		DPRINTK("done_mask/CC = 0x%x, CA = 0x%x, CE=0x%x\n",
-+		ata_port_dbg(ap, "Status of all queues: done_mask/CC = 0x%x, CA = 0x%x, CE=0x%x\n",
- 			done_mask, ioread32(hcr_base + CA),
- 			ioread32(hcr_base + CE));
+ /**
+@@ -3126,8 +3124,6 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
+ 	unsigned long flags;
+ 	int rc = 0;
  
- 		for (i = 0; i < SATA_FSL_QUEUE_DEPTH; i++) {
- 			if (done_mask & (1 << i))
--				DPRINTK
--				    ("completing ncq cmd,tag=%d,CC=0x%x,CA=0x%x\n",
-+				ata_port_dbg(ap, "completing ncq cmd,tag=%d,CC=0x%x,CA=0x%x\n",
- 				     i, ioread32(hcr_base + CC),
- 				     ioread32(hcr_base + CA));
- 		}
-@@ -1277,7 +1281,7 @@ static void sata_fsl_host_intr(struct ata_port *ap)
- 		iowrite32(1, hcr_base + CC);
- 		qc = ata_qc_from_tag(ap, ATA_TAG_INTERNAL);
+-	DPRINTK("ENTER\n");
+-
+ 	/* For PATA drive side cable detection to work, IDENTIFY must
+ 	 * be done backwards such that PDIAG- is released by the slave
+ 	 * device before the master device is identified.
+@@ -3241,7 +3237,6 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
  
--		DPRINTK("completing non-ncq cmd, CC=0x%x\n",
-+		ata_port_dbg(ap, "completing non-ncq cmd, CC=0x%x\n",
- 			 ioread32(hcr_base + CC));
+  err:
+ 	*r_failed_dev = dev;
+-	DPRINTK("EXIT rc=%d\n", rc);
+ 	return rc;
+ }
  
- 		if (qc) {
-@@ -1285,7 +1289,7 @@ static void sata_fsl_host_intr(struct ata_port *ap)
- 		}
- 	} else {
- 		/* Spurious Interrupt!! */
--		DPRINTK("spurious interrupt!!, CC = 0x%x\n",
-+		ata_port_dbg(ap, "spurious interrupt!!, CC = 0x%x\n",
- 			ioread32(hcr_base + CC));
- 		iowrite32(done_mask, hcr_base + CC);
- 		return;
-@@ -1305,7 +1309,7 @@ static irqreturn_t sata_fsl_interrupt(int irq, void *dev_instance)
- 	interrupt_enables = ioread32(hcr_base + HSTATUS);
- 	interrupt_enables &= 0x3F;
+@@ -3755,8 +3750,6 @@ int ata_eh_recover(struct ata_port *ap, ata_prereset_fn_t prereset,
+ 	int rc, nr_fails;
+ 	unsigned long flags, deadline;
  
--	DPRINTK("interrupt status 0x%x\n", interrupt_enables);
-+	ata_port_dbg(ap, "interrupt status 0x%x\n", interrupt_enables);
+-	DPRINTK("ENTER\n");
+-
+ 	/* prep for recovery */
+ 	ata_for_each_link(link, ap, EDGE) {
+ 		struct ata_eh_context *ehc = &link->eh_context;
+@@ -3964,7 +3957,6 @@ int ata_eh_recover(struct ata_port *ap, ata_prereset_fn_t prereset,
+ 	if (rc && r_failed_link)
+ 		*r_failed_link = link;
  
- 	if (!interrupt_enables)
- 		return IRQ_NONE;
-@@ -1359,7 +1363,7 @@ static int sata_fsl_init_controller(struct ata_host *host)
- 	iowrite32((temp & ~0x3F), hcr_base + HCONTROL);
+-	DPRINTK("EXIT, rc=%d\n", rc);
+ 	return rc;
+ }
  
- 	/* Disable interrupt coalescing control(icc), for the moment */
--	DPRINTK("icc = 0x%x\n", ioread32(hcr_base + ICC));
-+	ata_port_dbg(ap, "icc = 0x%x\n", ioread32(hcr_base + ICC));
- 	iowrite32(0x01000000, hcr_base + ICC);
+diff --git a/drivers/ata/libata-pmp.c b/drivers/ata/libata-pmp.c
+index 3ff14071617c..438caf3a7d8c 100644
+--- a/drivers/ata/libata-pmp.c
++++ b/drivers/ata/libata-pmp.c
+@@ -652,8 +652,6 @@ static int sata_pmp_revalidate(struct ata_device *dev, unsigned int new_class)
+ 	u32 *gscr = (void *)ap->sector_buf;
+ 	int rc;
  
- 	/* clear error registers, SError is cleared by libATA  */
-@@ -1378,8 +1382,8 @@ static int sata_fsl_init_controller(struct ata_host *host)
- 	 * callback, that should also initiate the OOB, COMINIT sequence
- 	 */
+-	DPRINTK("ENTER\n");
+-
+ 	ata_eh_about_to_do(link, NULL, ATA_EH_REVALIDATE);
  
--	DPRINTK("HStatus = 0x%x\n", ioread32(hcr_base + HSTATUS));
--	DPRINTK("HControl = 0x%x\n", ioread32(hcr_base + HCONTROL));
-+	ata_port_dbg(ap, "HStatus = 0x%x HControl = 0x%x\n",
-+		     ioread32(hcr_base + HSTATUS), ioread32(hcr_base + HCONTROL));
+ 	if (!ata_dev_enabled(dev)) {
+@@ -686,12 +684,10 @@ static int sata_pmp_revalidate(struct ata_device *dev, unsigned int new_class)
  
+ 	ata_eh_done(link, NULL, ATA_EH_REVALIDATE);
+ 
+-	DPRINTK("EXIT, rc=0\n");
  	return 0;
+ 
+  fail:
+ 	ata_dev_err(dev, "PMP revalidation failed (errno=%d)\n", rc);
+-	DPRINTK("EXIT, rc=%d\n", rc);
+ 	return rc;
  }
-@@ -1458,9 +1462,7 @@ static int sata_fsl_probe(struct platform_device *ofdev)
- 		iowrite32(temp | TRANSCFG_RX_WATER_MARK, csr_base + TRANSCFG);
- 	}
  
--	DPRINTK("@reset i/o = 0x%x\n", ioread32(csr_base + TRANSCFG));
--	DPRINTK("sizeof(cmd_desc) = %d\n", sizeof(struct command_desc));
--	DPRINTK("sizeof(#define cmd_desc) = %d\n", SATA_FSL_CMD_DESC_SIZE);
-+	ata_port_dbg(ap, "@reset i/o = 0x%x\n", ioread32(csr_base + TRANSCFG));
+@@ -759,8 +755,6 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
+ 	int detach = 0, rc = 0;
+ 	int reval_failed = 0;
  
- 	host_priv = kzalloc(sizeof(struct sata_fsl_host_priv), GFP_KERNEL);
- 	if (!host_priv)
+-	DPRINTK("ENTER\n");
+-
+ 	if (dev->flags & ATA_DFLAG_DETACH) {
+ 		detach = 1;
+ 		goto fail;
+@@ -827,7 +821,6 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
+ 	/* okay, PMP resurrected */
+ 	ehc->i.flags = 0;
+ 
+-	DPRINTK("EXIT, rc=0\n");
+ 	return 0;
+ 
+  fail:
+@@ -837,7 +830,6 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
+ 	else
+ 		ata_dev_disable(dev);
+ 
+-	DPRINTK("EXIT, rc=%d\n", rc);
+ 	return rc;
+ }
+ 
+diff --git a/include/trace/events/libata.h b/include/trace/events/libata.h
+index 40027d8424f8..c882c8f9b405 100644
+--- a/include/trace/events/libata.h
++++ b/include/trace/events/libata.h
+@@ -454,6 +454,37 @@ TRACE_EVENT(ata_eh_link_autopsy_qc,
+ 		  __parse_eh_err_mask(__entry->eh_err_mask))
+ );
+ 
++DECLARE_EVENT_CLASS(ata_eh_action_template,
++
++	TP_PROTO(struct ata_link *link, unsigned int devno, unsigned int eh_action),
++
++	TP_ARGS(link, devno, eh_action),
++
++	TP_STRUCT__entry(
++		__field( unsigned int,	ata_port )
++		__field( unsigned int,	ata_dev	)
++		__field( unsigned int,	eh_action )
++	),
++
++	TP_fast_assign(
++		__entry->ata_port	= link->ap->print_id;
++		__entry->ata_dev	= link->pmp + devno;
++		__entry->eh_action	= eh_action;
++	),
++
++	TP_printk("ata_port=%u ata_dev=%u eh_action=%s",
++		  __entry->ata_port, __entry->ata_dev,
++		  __parse_eh_action(__entry->eh_action))
++);
++
++DEFINE_EVENT(ata_eh_action_template, ata_eh_about_to_do,
++	     TP_PROTO(struct ata_link *link, unsigned int devno, unsigned int eh_action),
++	     TP_ARGS(link, devno, eh_action));
++
++DEFINE_EVENT(ata_eh_action_template, ata_eh_done,
++	     TP_PROTO(struct ata_link *link, unsigned int devno, unsigned int eh_action),
++	     TP_ARGS(link, devno, eh_action));
++
+ DECLARE_EVENT_CLASS(ata_link_reset_begin_template,
+ 
+ 	TP_PROTO(struct ata_link *link, unsigned int *class, unsigned long deadline),
+@@ -534,6 +565,35 @@ DEFINE_EVENT(ata_link_reset_end_template, ata_slave_postreset,
+ 	     TP_PROTO(struct ata_link *link, unsigned int *class, int rc),
+ 	     TP_ARGS(link, class, rc));
+ 
++DECLARE_EVENT_CLASS(ata_port_eh_begin_template,
++
++	TP_PROTO(struct ata_port *ap),
++
++	TP_ARGS(ap),
++
++	TP_STRUCT__entry(
++		__field( unsigned int,	ata_port )
++	),
++
++	TP_fast_assign(
++		__entry->ata_port	= ap->print_id;
++	),
++
++	TP_printk("ata_port=%u", __entry->ata_port)
++);
++
++DEFINE_EVENT(ata_port_eh_begin_template, ata_std_sched_eh,
++	     TP_PROTO(struct ata_port *ap),
++	     TP_ARGS(ap));
++
++DEFINE_EVENT(ata_port_eh_begin_template, ata_port_freeze,
++	     TP_PROTO(struct ata_port *ap),
++	     TP_ARGS(ap));
++
++DEFINE_EVENT(ata_port_eh_begin_template, ata_port_thaw,
++	     TP_PROTO(struct ata_port *ap),
++	     TP_ARGS(ap));
++
+ DECLARE_EVENT_CLASS(ata_sff_hsm_template,
+ 
+ 	TP_PROTO(struct ata_queued_cmd *qc, unsigned char status),
 -- 
 2.16.4
 

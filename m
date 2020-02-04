@@ -2,26 +2,26 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DBAF151EB5
-	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3115151EB1
+	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727439AbgBDQ4Q (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Feb 2020 11:56:16 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34808 "EHLO mx2.suse.de"
+        id S1727409AbgBDQ4P (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 4 Feb 2020 11:56:15 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34810 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727408AbgBDQ4K (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1727386AbgBDQ4K (ORCPT <rfc822;linux-ide@vger.kernel.org>);
         Tue, 4 Feb 2020 11:56:10 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 27199B1CC;
+        by mx2.suse.de (Postfix) with ESMTP id 2388DB1C5;
         Tue,  4 Feb 2020 16:56:05 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 22/46] libata-core: drop DPRINTK() calls in reset
-Date:   Tue,  4 Feb 2020 17:55:23 +0100
-Message-Id: <20200204165547.115220-23-hare@suse.de>
+Subject: [PATCH 23/46] libata-sff: drop DPRINTK() calls in reset
+Date:   Tue,  4 Feb 2020 17:55:24 +0100
+Message-Id: <20200204165547.115220-24-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -35,47 +35,55 @@ be dropped.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-core.c | 7 -------
+ drivers/ata/libata-sff.c | 7 -------
  1 file changed, 7 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 8a18047f9bcb..297aa8172d4e 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4070,8 +4070,6 @@ int sata_link_hardreset(struct ata_link *link, const unsigned long *timing,
- 	u32 scontrol;
+diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
+index 60509997137f..f1799291b4a6 100644
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -1946,8 +1946,6 @@ static int ata_bus_softreset(struct ata_port *ap, unsigned int devmask,
+ {
+ 	struct ata_ioports *ioaddr = &ap->ioaddr;
+ 
+-	DPRINTK("ata%u: bus reset via SRST\n", ap->print_id);
+-
+ 	if (ap->ioaddr.ctl_addr) {
+ 		/* software reset.  causes dev0 to be selected */
+ 		iowrite8(ap->ctl, ioaddr->ctl_addr);
+@@ -1985,8 +1983,6 @@ int ata_sff_softreset(struct ata_link *link, unsigned int *classes,
  	int rc;
+ 	u8 err;
  
 -	DPRINTK("ENTER\n");
 -
- 	if (online)
- 		*online = false;
+ 	/* determine if device 0/1 are present */
+ 	if (ata_devchk(ap, 0))
+ 		devmask |= (1 << 0);
+@@ -1997,7 +1993,6 @@ int ata_sff_softreset(struct ata_link *link, unsigned int *classes,
+ 	ap->ops->sff_dev_select(ap, 0);
  
-@@ -4147,7 +4145,6 @@ int sata_link_hardreset(struct ata_link *link, const unsigned long *timing,
- 			*online = false;
- 		ata_link_err(link, "COMRESET failed (errno=%d)\n", rc);
- 	}
--	DPRINTK("EXIT, rc=%d\n", rc);
+ 	/* issue bus reset */
+-	DPRINTK("about to softreset, devmask=%x\n", devmask);
+ 	rc = ata_bus_softreset(ap, devmask, deadline);
+ 	/* if link is occupied, -ENODEV too is an error */
+ 	if (rc && (rc != -ENODEV || sata_scr_valid(link))) {
+@@ -2012,7 +2007,6 @@ int ata_sff_softreset(struct ata_link *link, unsigned int *classes,
+ 		classes[1] = ata_sff_dev_classify(&link->device[1],
+ 						  devmask & (1 << 1), &err);
+ 
+-	DPRINTK("EXIT, classes[0]=%u [1]=%u\n", classes[0], classes[1]);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(ata_sff_softreset);
+@@ -2045,7 +2039,6 @@ int sata_sff_hardreset(struct ata_link *link, unsigned int *class,
+ 	if (online)
+ 		*class = ata_sff_dev_classify(link->device, 1, NULL);
+ 
+-	DPRINTK("EXIT, class=%u\n", *class);
  	return rc;
  }
- 
-@@ -4193,16 +4190,12 @@ void ata_std_postreset(struct ata_link *link, unsigned int *classes)
- {
- 	u32 serror;
- 
--	DPRINTK("ENTER\n");
--
- 	/* reset complete, clear SError */
- 	if (!sata_scr_read(link, SCR_ERROR, &serror))
- 		sata_scr_write(link, SCR_ERROR, serror);
- 
- 	/* print link status */
- 	sata_print_link_status(link);
--
--	DPRINTK("EXIT\n");
- }
- 
- /**
+ EXPORT_SYMBOL_GPL(sata_sff_hardreset);
 -- 
 2.16.4
 

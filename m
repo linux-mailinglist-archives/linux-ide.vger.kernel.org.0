@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B36151EA9
-	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E34B3151E9A
+	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727351AbgBDQ4N (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Feb 2020 11:56:13 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34816 "EHLO mx2.suse.de"
+        id S1727398AbgBDQ4J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 4 Feb 2020 11:56:09 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34814 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727394AbgBDQ4L (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 4 Feb 2020 11:56:11 -0500
+        id S1727389AbgBDQ4J (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 4 Feb 2020 11:56:09 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 07B7EB1A6;
-        Tue,  4 Feb 2020 16:56:05 +0000 (UTC)
+        by mx2.suse.de (Postfix) with ESMTP id 00228B16D;
+        Tue,  4 Feb 2020 16:56:04 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
         Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 10/46] sata_mv: replace DPRINTK with 'pci_dump' module parameter
-Date:   Tue,  4 Feb 2020 17:55:11 +0100
-Message-Id: <20200204165547.115220-11-hare@suse.de>
+Subject: [PATCH 11/46] sata_nv: move DPRINTK to ata debugging
+Date:   Tue,  4 Feb 2020 17:55:12 +0100
+Message-Id: <20200204165547.115220-12-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -33,151 +33,114 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 From: Hannes Reinecke <hare@suse.com>
 
-Implement module parameter 'pci_dump' and move the DPRINTK calls
-over to dev_printk().
+Replace all DPRINTK calls with the ata_XXX_dbg functions.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_mv.c | 71 +++++++++++++++++++++++++++------------------------
- 1 file changed, 38 insertions(+), 33 deletions(-)
+ drivers/ata/sata_nv.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index d7228f8e9297..9e570d455acc 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -83,6 +83,10 @@ module_param(irq_coalescing_usecs, int, S_IRUGO);
- MODULE_PARM_DESC(irq_coalescing_usecs,
- 		 "IRQ coalescing time threshold in usecs");
+diff --git a/drivers/ata/sata_nv.c b/drivers/ata/sata_nv.c
+index 8639f66706a3..0cbddad7cd12 100644
+--- a/drivers/ata/sata_nv.c
++++ b/drivers/ata/sata_nv.c
+@@ -1394,7 +1394,7 @@ static unsigned int nv_adma_qc_issue(struct ata_queued_cmd *qc)
+ 	void __iomem *mmio = pp->ctl_block;
+ 	int curr_ncq = (qc->tf.protocol == ATA_PROT_NCQ);
  
-+static int pci_dump;
-+module_param(pci_dump, int, S_IRUGO);
-+MODULE_PARM_DESC(pci_dump, "Enable dumping of PCI registers on error");
-+
- enum {
- 	/* BAR's are enumerated in terms of pci_resource_start() terms */
- 	MV_PRIMARY_BAR		= 0,	/* offset 0x10: memory space */
-@@ -1245,47 +1249,49 @@ static int mv_stop_edma(struct ata_port *ap)
- 	return err;
+-	VPRINTK("ENTER\n");
++	ata_dev_dbg(qc->dev, "ENTER\n");
+ 
+ 	/* We can't handle result taskfile with NCQ commands, since
+ 	   retrieving the taskfile switches us out of ADMA mode and would abort
+@@ -1428,7 +1428,7 @@ static unsigned int nv_adma_qc_issue(struct ata_queued_cmd *qc)
+ 
+ 	writew(qc->hw_tag, mmio + NV_ADMA_APPEND);
+ 
+-	DPRINTK("Issued tag %u\n", qc->hw_tag);
++	ata_dev_dbg(qc->dev, "Issued tag %u\n", qc->hw_tag);
+ 
+ 	return 0;
  }
+@@ -2007,7 +2007,7 @@ static unsigned int nv_swncq_issue_atacmd(struct ata_port *ap,
+ 	if (qc == NULL)
+ 		return 0;
  
--#ifdef ATA_DEBUG
--static void mv_dump_mem(void __iomem *start, unsigned bytes)
-+static void mv_dump_mem(struct device *dev, void __iomem *start, unsigned bytes)
- {
--	int b, w;
-+	int b, w, o;
-+	unsigned char linebuf[38];
-+
- 	for (b = 0; b < bytes; ) {
--		DPRINTK("%p: ", start + b);
--		for (w = 0; b < bytes && w < 4; w++) {
--			printk("%08x ", readl(start + b));
-+		for (w = 0, o = 0; b < bytes && w < 4; w++) {
-+			o += snprintf(linebuf + o, 38 - o,
-+				      "%08x ", readl(start + b));
- 			b += sizeof(u32);
- 		}
--		printk("\n");
-+		dev_printk(KERN_DEBUG, dev, "%p: %s\n", start + b, linebuf);
- 	}
+-	DPRINTK("Enter\n");
++	ata_port_dbg(ap, "Enter\n");
+ 
+ 	writel((1 << qc->hw_tag), pp->sactive_block);
+ 	pp->last_issue_tag = qc->hw_tag;
+@@ -2018,7 +2018,7 @@ static unsigned int nv_swncq_issue_atacmd(struct ata_port *ap,
+ 	ap->ops->sff_tf_load(ap, &qc->tf);	 /* load tf registers */
+ 	ap->ops->sff_exec_command(ap, &qc->tf);
+ 
+-	DPRINTK("Issued tag %u\n", qc->hw_tag);
++	ata_port_dbg(ap, "Issued tag %u\n", qc->hw_tag);
+ 
+ 	return 0;
  }
--#endif
--#if defined(ATA_DEBUG) || defined(CONFIG_PCI)
-+#if defined(CONFIG_PCI)
- static void mv_dump_pci_cfg(struct pci_dev *pdev, unsigned bytes)
- {
--#ifdef ATA_DEBUG
--	int b, w;
-+	int b, w, o;
- 	u32 dw;
-+	unsigned char linebuf[38];
-+
- 	for (b = 0; b < bytes; ) {
--		DPRINTK("%02x: ", b);
--		for (w = 0; b < bytes && w < 4; w++) {
-+		for (w = 0, o = 0; b < bytes && w < 4; w++) {
- 			(void) pci_read_config_dword(pdev, b, &dw);
--			printk("%08x ", dw);
-+			o += snprintf(linebuf + o, 38 - o,
-+				      "%08x ", dw);
- 			b += sizeof(u32);
- 		}
--		printk("\n");
-+		dev_printk(KERN_DEBUG, &pdev->dev, "%02x: %s\n", b, linebuf);
+@@ -2031,7 +2031,7 @@ static unsigned int nv_swncq_qc_issue(struct ata_queued_cmd *qc)
+ 	if (qc->tf.protocol != ATA_PROT_NCQ)
+ 		return ata_bmdma_qc_issue(qc);
+ 
+-	DPRINTK("Enter\n");
++	ata_port_dbg(ap, "Enter\n");
+ 
+ 	if (!pp->qc_active)
+ 		nv_swncq_issue_atacmd(ap, qc);
+@@ -2099,7 +2099,7 @@ static int nv_swncq_sdbfis(struct ata_port *ap)
+ 	ata_qc_complete_multiple(ap, ap->qc_active ^ done_mask);
+ 
+ 	if (!ap->qc_active) {
+-		DPRINTK("over\n");
++		ata_port_dbg(ap, "over\n");
+ 		nv_swncq_pp_reinit(ap);
+ 		return 0;
  	}
--#endif
- }
- #endif
- static void mv_dump_all_regs(void __iomem *mmio_base, int port,
- 			     struct pci_dev *pdev)
- {
--#ifdef ATA_DEBUG
- 	void __iomem *hc_base = mv_hc_base(mmio_base,
- 					   port >> MV_PORT_HC_SHIFT);
- 	void __iomem *port_base;
- 	int start_port, num_ports, p, start_hc, num_hcs, hc;
+@@ -2114,10 +2114,10 @@ static int nv_swncq_sdbfis(struct ata_port *ap)
+ 		 */
+ 		lack_dhfis = 1;
  
-+	if (!pci_dump)
-+		return;
-+	dev_printk(KERN_DEBUG, &pdev->dev, "All regs @ PCI error\n");
- 	if (0 > port) {
- 		start_hc = start_port = 0;
- 		num_ports = 8;		/* shld be benign for 4 port devs */
-@@ -1295,31 +1301,31 @@ static void mv_dump_all_regs(void __iomem *mmio_base, int port,
- 		start_port = port;
- 		num_ports = num_hcs = 1;
- 	}
--	DPRINTK("All registers for port(s) %u-%u:\n", start_port,
--		num_ports > 1 ? num_ports - 1 : start_port);
-+	dev_printk(KERN_DEBUG, &pdev->dev,
-+		   "All registers for port(s) %u-%u:\n", start_port,
-+		   num_ports > 1 ? num_ports - 1 : start_port);
+-	DPRINTK("id 0x%x QC: qc_active 0x%x,"
++	ata_port_dbg(ap, "QC: qc_active 0x%llx,"
+ 		"SWNCQ:qc_active 0x%X defer_bits %X "
+ 		"dhfis 0x%X dmafis 0x%X last_issue_tag %x\n",
+-		ap->print_id, ap->qc_active, pp->qc_active,
++		ap->qc_active, pp->qc_active,
+ 		pp->defer_queue.defer_bits, pp->dhfis_bits,
+ 		pp->dmafis_bits, pp->last_issue_tag);
  
- 	if (NULL != pdev) {
--		DPRINTK("PCI config space regs:\n");
-+		dev_printk(KERN_DEBUG, &pdev->dev, "PCI config space regs:\n");
- 		mv_dump_pci_cfg(pdev, 0x68);
- 	}
--	DPRINTK("PCI regs:\n");
--	mv_dump_mem(mmio_base+0xc00, 0x3c);
--	mv_dump_mem(mmio_base+0xd00, 0x34);
--	mv_dump_mem(mmio_base+0xf00, 0x4);
--	mv_dump_mem(mmio_base+0x1d00, 0x6c);
-+	dev_printk(KERN_DEBUG, &pdev->dev, "PCI regs:\n");
-+	mv_dump_mem(&pdev->dev, mmio_base+0xc00, 0x3c);
-+	mv_dump_mem(&pdev->dev, mmio_base+0xd00, 0x34);
-+	mv_dump_mem(&pdev->dev, mmio_base+0xf00, 0x4);
-+	mv_dump_mem(&pdev->dev, mmio_base+0x1d00, 0x6c);
- 	for (hc = start_hc; hc < start_hc + num_hcs; hc++) {
- 		hc_base = mv_hc_base(mmio_base, hc);
--		DPRINTK("HC regs (HC %i):\n", hc);
--		mv_dump_mem(hc_base, 0x1c);
-+		dev_printk(KERN_DEBUG, &pdev->dev, "HC regs (HC %i):\n", hc);
-+		mv_dump_mem(&pdev->dev, hc_base, 0x1c);
- 	}
- 	for (p = start_port; p < start_port + num_ports; p++) {
- 		port_base = mv_port_base(mmio_base, p);
--		DPRINTK("EDMA regs (port %i):\n", p);
--		mv_dump_mem(port_base, 0x54);
--		DPRINTK("SATA regs (port %i):\n", p);
--		mv_dump_mem(port_base+0x300, 0x60);
-+		dev_printk(KERN_DEBUG, &pdev->dev, "EDMA regs (port %i):\n", p);
-+		mv_dump_mem(&pdev->dev, port_base, 0x54);
-+		dev_printk(KERN_DEBUG, &pdev->dev, "SATA regs (port %i):\n", p);
-+		mv_dump_mem(&pdev->dev, port_base+0x300, 0x60);
- 	}
--#endif
- }
+@@ -2159,7 +2159,7 @@ static void nv_swncq_dmafis(struct ata_port *ap)
+ 	__ata_bmdma_stop(ap);
+ 	tag = nv_swncq_tag(ap);
  
- static unsigned int mv_scr_offset(unsigned int sc_reg_in)
-@@ -2958,7 +2964,6 @@ static int mv_pci_error(struct ata_host *host, void __iomem *mmio)
+-	DPRINTK("dma setup tag 0x%x\n", tag);
++	ata_port_dbg(ap, "dma setup tag 0x%x\n", tag);
+ 	qc = ata_qc_from_tag(ap, tag);
  
- 	dev_err(host->dev, "PCI ERROR; PCI IRQ cause=0x%08x\n", err_cause);
+ 	if (unlikely(!qc))
+@@ -2227,9 +2227,9 @@ static void nv_swncq_host_interrupt(struct ata_port *ap, u16 fis)
  
--	DPRINTK("All regs @ PCI error\n");
- 	mv_dump_all_regs(mmio, -1, to_pci_dev(host->dev));
+ 	if (fis & NV_SWNCQ_IRQ_SDBFIS) {
+ 		pp->ncq_flags |= ncq_saw_sdb;
+-		DPRINTK("id 0x%x SWNCQ: qc_active 0x%X "
++		ata_port_dbg(ap, "SWNCQ: qc_active 0x%X "
+ 			"dhfis 0x%X dmafis 0x%X sactive 0x%X\n",
+-			ap->print_id, pp->qc_active, pp->dhfis_bits,
++			pp->qc_active, pp->dhfis_bits,
+ 			pp->dmafis_bits, readl(pp->sactive_block));
+ 		if (nv_swncq_sdbfis(ap) < 0)
+ 			goto irq_error;
+@@ -2255,7 +2255,7 @@ static void nv_swncq_host_interrupt(struct ata_port *ap, u16 fis)
+ 				goto irq_exit;
  
- 	writelfl(0, mmio + hpriv->irq_cause_offset);
+ 			if (pp->defer_queue.defer_bits) {
+-				DPRINTK("send next command\n");
++				ata_port_dbg(ap, "send next command\n");
+ 				qc = nv_swncq_qc_from_dq(ap);
+ 				nv_swncq_issue_atacmd(ap, qc);
+ 			}
 -- 
 2.16.4
 

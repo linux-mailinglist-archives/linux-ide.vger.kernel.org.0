@@ -2,27 +2,26 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9800151EA4
-	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14AE6151EB2
+	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727330AbgBDQ4N (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Feb 2020 11:56:13 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34864 "EHLO mx2.suse.de"
+        id S1727386AbgBDQ4P (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 4 Feb 2020 11:56:15 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34814 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727414AbgBDQ4M (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 4 Feb 2020 11:56:12 -0500
+        id S1727404AbgBDQ4K (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 4 Feb 2020 11:56:10 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 2C56DB1D5;
+        by mx2.suse.de (Postfix) with ESMTP id 25DC7B1C7;
         Tue,  4 Feb 2020 16:56:05 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
-        Hannes Reinecke <hare@suse.com>
-Subject: [PATCH 25/46] libata-sff: add tracepoints for HSM state machine
-Date:   Tue,  4 Feb 2020 17:55:26 +0100
-Message-Id: <20200204165547.115220-26-hare@suse.de>
+        linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 26/46] pata_octeon_cf: add bmdma tracepoints and drop DPRINTK()
+Date:   Tue,  4 Feb 2020 17:55:27 +0100
+Message-Id: <20200204165547.115220-27-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -31,226 +30,70 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Add tracepoints for the HSM state machine and remove DPRINTK() calls.
+Add missing bmdma tracepoints and drop the now pointless
+DPRINTK() calls.
 
-Signed-off-by: Hannes Reinecke <hare@suse.com>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-sff.c      | 12 +++---
- drivers/ata/libata-trace.c    | 29 +++++++++++++
- include/trace/events/libata.h | 95 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 129 insertions(+), 7 deletions(-)
+ drivers/ata/pata_octeon_cf.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index a5e6be6955ae..6b961eadc201 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -660,7 +660,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
- 	page = nth_page(page, (offset >> PAGE_SHIFT));
- 	offset %= PAGE_SIZE;
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index f5cd89173028..9527216e59b9 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -19,7 +19,7 @@
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
+ #include <scsi/scsi_host.h>
+-
++#include <trace/events/libata.h>
+ #include <asm/byteorder.h>
+ #include <asm/octeon/octeon.h>
  
--	DPRINTK("data %s\n", qc->tf.flags & ATA_TFLAG_WRITE ? "write" : "read");
-+	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
+@@ -517,17 +517,14 @@ static void octeon_cf_exec_command16(struct ata_port *ap,
+ 	u16 blob;
  
- 	/* do the actual data transfer */
- 	buf = kmap_atomic(page);
-@@ -723,7 +723,7 @@ static void ata_pio_sectors(struct ata_queued_cmd *qc)
- static void atapi_send_cdb(struct ata_port *ap, struct ata_queued_cmd *qc)
- {
- 	/* send SCSI cdb */
--	DPRINTK("send cdb\n");
-+	trace_atapi_send_cdb(qc, 0, qc->dev->cdb_len);
- 	WARN_ON_ONCE(qc->dev->cdb_len < 12);
+ 	if (tf->flags & ATA_TFLAG_DEVICE) {
+-		VPRINTK("device 0x%X\n", tf->device);
+ 		blob = tf->device;
+ 	} else {
+ 		blob = 0;
+ 	}
  
- 	ap->ops->sff_data_xfer(qc, qc->cdb, qc->dev->cdb_len, 1);
-@@ -794,7 +794,7 @@ static int __atapi_pio_bytes(struct ata_queued_cmd *qc, unsigned int bytes)
- 	/* don't cross page boundaries */
- 	count = min(count, (unsigned int)PAGE_SIZE - offset);
+-	DPRINTK("ata%u: cmd 0x%X\n", ap->print_id, tf->command);
+ 	blob |= (tf->command << 8);
+ 	__raw_writew(blob, base + 6);
  
--	DPRINTK("data %s\n", qc->tf.flags & ATA_TFLAG_WRITE ? "write" : "read");
-+	trace_atapi_pio_transfer_data(qc, offset, count);
- 
- 	/* do the actual data transfer */
- 	buf = kmap_atomic(page);
-@@ -976,8 +976,7 @@ int ata_sff_hsm_move(struct ata_port *ap, struct ata_queued_cmd *qc,
- 	WARN_ON_ONCE(in_wq != ata_hsm_ok_in_wq(ap, qc));
- 
- fsm_start:
--	DPRINTK("ata%u: protocol %d task_state %d (dev_stat 0x%X)\n",
--		ap->print_id, qc->tf.protocol, ap->hsm_task_state, status);
-+	trace_ata_sff_hsm_state(qc, status);
- 
- 	switch (ap->hsm_task_state) {
- 	case HSM_ST_FIRST:
-@@ -1178,8 +1177,7 @@ int ata_sff_hsm_move(struct ata_port *ap, struct ata_queued_cmd *qc,
- 		}
- 
- 		/* no more data to transfer */
--		DPRINTK("ata%u: dev %u command complete, drv_stat 0x%x\n",
--			ap->print_id, qc->dev->devno, status);
-+		trace_ata_sff_hsm_command_complete(qc, status);
- 
- 		WARN_ON_ONCE(qc->err_mask & (AC_ERR_DEV | AC_ERR_HSM));
- 
-diff --git a/drivers/ata/libata-trace.c b/drivers/ata/libata-trace.c
-index 08e001303a82..5a9fba18411b 100644
---- a/drivers/ata/libata-trace.c
-+++ b/drivers/ata/libata-trace.c
-@@ -137,6 +137,35 @@ libata_trace_parse_qc_flags(struct trace_seq *p, unsigned int qc_flags)
- 	return ret;
+-
+ 	ata_wait_idle(ap);
  }
  
-+const char *
-+libata_trace_parse_tf_flags(struct trace_seq *p, unsigned int tf_flags)
-+{
-+	const char *ret = trace_seq_buffer_ptr(p);
-+
-+	trace_seq_printf(p, "%x", tf_flags);
-+	if (tf_flags) {
-+		trace_seq_printf(p, "{ ");
-+		if (tf_flags & ATA_TFLAG_LBA48)
-+			trace_seq_printf(p, "LBA48 ");
-+		if (tf_flags & ATA_TFLAG_ISADDR)
-+			trace_seq_printf(p, "ISADDR ");
-+		if (tf_flags & ATA_TFLAG_DEVICE)
-+			trace_seq_printf(p, "DEV ");
-+		if (tf_flags & ATA_TFLAG_WRITE)
-+			trace_seq_printf(p, "WRITE ");
-+		if (tf_flags & ATA_TFLAG_LBA)
-+			trace_seq_printf(p, "LBA ");
-+		if (tf_flags & ATA_TFLAG_FUA)
-+			trace_seq_printf(p, "FUA ");
-+		if (tf_flags & ATA_TFLAG_POLLING)
-+			trace_seq_printf(p, "POLL ");
-+		trace_seq_putc(p, '}');
-+	}
-+	trace_seq_putc(p, 0);
-+
-+	return ret;
-+}
-+
- const char *
- libata_trace_parse_subcmd(struct trace_seq *p, unsigned char cmd,
- 			  unsigned char feature, unsigned char hob_nsect)
-diff --git a/include/trace/events/libata.h b/include/trace/events/libata.h
-index 476acf823928..acfc5d739b17 100644
---- a/include/trace/events/libata.h
-+++ b/include/trace/events/libata.h
-@@ -148,6 +148,15 @@
- 		ata_class_name(ATA_DEV_ZAC_UNSUP),	\
- 		ata_class_name(ATA_DEV_NONE))
+@@ -541,12 +538,10 @@ static void octeon_cf_dma_setup(struct ata_queued_cmd *qc)
+ 	struct octeon_cf_port *cf_port;
  
-+#define ata_sff_hsm_state_name(state)	{ state, #state }
-+#define show_sff_hsm_state_name(val)				\
-+    __print_symbolic(val,				\
-+		ata_sff_hsm_state_name(HSM_ST_IDLE),	\
-+		ata_sff_hsm_state_name(HSM_ST_FIRST),	\
-+		ata_sff_hsm_state_name(HSM_ST),		\
-+		ata_sff_hsm_state_name(HSM_ST_LAST),	\
-+		ata_sff_hsm_state_name(HSM_ST_ERR))
-+
- const char *libata_trace_parse_status(struct trace_seq*, unsigned char);
- #define __parse_status(s) libata_trace_parse_status(p, s)
+ 	cf_port = ap->private_data;
+-	DPRINTK("ENTER\n");
+ 	/* issue r/w command */
+ 	qc->cursg = qc->sg;
+ 	cf_port->dma_finished = 0;
+ 	ap->ops->sff_exec_command(ap, &qc->tf);
+-	DPRINTK("EXIT\n");
+ }
  
-@@ -160,6 +169,9 @@ const char *libata_trace_parse_eh_err_mask(struct trace_seq *, unsigned int);
- const char *libata_trace_parse_qc_flags(struct trace_seq *, unsigned int);
- #define __parse_qc_flags(f) libata_trace_parse_qc_flags(p, f)
+ /**
+@@ -798,8 +793,11 @@ static unsigned int octeon_cf_qc_issue(struct ata_queued_cmd *qc)
+ 	case ATA_PROT_DMA:
+ 		WARN_ON(qc->tf.flags & ATA_TFLAG_POLLING);
  
-+const char *libata_trace_parse_tf_flags(struct trace_seq *, unsigned int);
-+#define __parse_tf_flags(f) libata_trace_parse_tf_flags(p, f)
-+
- const char *libata_trace_parse_subcmd(struct trace_seq *, unsigned char,
- 				      unsigned char, unsigned char);
- #define __parse_subcmd(c,f,h) libata_trace_parse_subcmd(p, c, f, h)
-@@ -514,6 +526,89 @@ DEFINE_EVENT(ata_link_reset_end_template, ata_link_softreset_end,
- 	     TP_PROTO(struct ata_link *link, unsigned int *class, int rc),
- 	     TP_ARGS(link, class, rc));
- 
-+DECLARE_EVENT_CLASS(ata_sff_hsm_template,
-+
-+	TP_PROTO(struct ata_queued_cmd *qc, unsigned char status),
-+
-+	TP_ARGS(qc, status),
-+
-+	TP_STRUCT__entry(
-+		__field( unsigned int,	ata_port )
-+		__field( unsigned int,	ata_dev	)
-+		__field( unsigned int,	tag	)
-+		__field( unsigned int,	qc_flags )
-+		__field( unsigned int,	protocol )
-+		__field( unsigned int,	hsm_state )
-+		__field( unsigned char,	dev_state )
-+	),
-+
-+	TP_fast_assign(
-+		__entry->ata_port	= qc->ap->print_id;
-+		__entry->ata_dev	= qc->dev->link->pmp + qc->dev->devno;
-+		__entry->tag		= qc->tag;
-+		__entry->qc_flags	= qc->flags;
-+		__entry->protocol	= qc->tf.protocol;
-+		__entry->hsm_state	= qc->ap->hsm_task_state;
-+		__entry->dev_state	= status;
-+	),
-+
-+	TP_printk("ata_port=%u ata_dev=%u tag=%d protocol=%d flags=%s task_state=%s dev_stat=0x%X",
-+		  __entry->ata_port, __entry->ata_dev, __entry->tag,
-+		  __entry->protocol,__parse_qc_flags(__entry->qc_flags),
-+		  show_sff_hsm_state_name(__entry->hsm_state),
-+		  __entry->dev_state)
-+);
-+
-+DEFINE_EVENT(ata_sff_hsm_template, ata_sff_hsm_state,
-+	TP_PROTO(struct ata_queued_cmd *qc, unsigned char state),
-+	TP_ARGS(qc, state));
-+
-+DEFINE_EVENT(ata_sff_hsm_template, ata_sff_hsm_command_complete,
-+	TP_PROTO(struct ata_queued_cmd *qc, unsigned char state),
-+	TP_ARGS(qc, state));
-+
-+DECLARE_EVENT_CLASS(ata_transfer_data_template,
-+
-+	TP_PROTO(struct ata_queued_cmd *qc, unsigned int offset, unsigned int count),
-+
-+	TP_ARGS(qc, offset, count),
-+
-+	TP_STRUCT__entry(
-+		__field( unsigned int,	ata_port )
-+		__field( unsigned int,	ata_dev	)
-+		__field( unsigned int,	tag	)
-+		__field( unsigned int,	flags	)
-+		__field( unsigned int,	offset	)
-+		__field( unsigned int,	bytes	)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->ata_port	= qc->ap->print_id;
-+		__entry->ata_dev	= qc->dev->link->pmp + qc->dev->devno;
-+		__entry->tag		= qc->tag;
-+		__entry->flags		= qc->tf.flags;
-+		__entry->offset		= offset;
-+		__entry->bytes		= count;
-+	),
-+
-+	TP_printk("ata_port=%u ata_dev=%u tag=%d flags=%s offset=%u bytes=%u",
-+		  __entry->ata_port, __entry->ata_dev, __entry->tag,
-+		  __parse_tf_flags(__entry->flags),
-+		  __entry->offset, __entry->bytes)
-+);
-+
-+DEFINE_EVENT(ata_transfer_data_template, ata_sff_pio_transfer_data,
-+	     TP_PROTO(struct ata_queued_cmd *qc, unsigned int offset, unsigned int count),
-+	     TP_ARGS(qc, offset, count));
-+
-+DEFINE_EVENT(ata_transfer_data_template, atapi_pio_transfer_data,
-+	     TP_PROTO(struct ata_queued_cmd *qc, unsigned int offset, unsigned int count),
-+	     TP_ARGS(qc, offset, count));
-+
-+DEFINE_EVENT(ata_transfer_data_template, atapi_send_cdb,
-+	     TP_PROTO(struct ata_queued_cmd *qc, unsigned int offset, unsigned int count),
-+	     TP_ARGS(qc, offset, count));
-+
- #endif /*  _TRACE_LIBATA_H */
- 
- /* This part must be outside protection */
++		trace_ata_tf_load(ap, &qc->tf, qc->tag);
+ 		ap->ops->sff_tf_load(ap, &qc->tf);  /* load tf registers */
++		trace_ata_bmdma_setup(qp, &qc->tf, qc->tag);
+ 		octeon_cf_dma_setup(qc);	    /* set up dma */
++		trace_ata_bmdma_start(ap, &qc->tf, qc->tag);
+ 		octeon_cf_dma_start(qc);	    /* initiate dma */
+ 		ap->hsm_task_state = HSM_ST_LAST;
+ 		break;
 -- 
 2.16.4
 

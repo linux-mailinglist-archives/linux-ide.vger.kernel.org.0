@@ -2,26 +2,26 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8C6D151EAE
-	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DBAF151EB5
+	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727388AbgBDQ4P (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Feb 2020 11:56:15 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34806 "EHLO mx2.suse.de"
+        id S1727439AbgBDQ4Q (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 4 Feb 2020 11:56:16 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34808 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727399AbgBDQ4K (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1727408AbgBDQ4K (ORCPT <rfc822;linux-ide@vger.kernel.org>);
         Tue, 4 Feb 2020 11:56:10 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 21AD6B1C2;
+        by mx2.suse.de (Postfix) with ESMTP id 27199B1CC;
         Tue,  4 Feb 2020 16:56:05 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 21/46] sata_fsl: drop DPRINTK() calls in reset
-Date:   Tue,  4 Feb 2020 17:55:22 +0100
-Message-Id: <20200204165547.115220-22-hare@suse.de>
+Subject: [PATCH 22/46] libata-core: drop DPRINTK() calls in reset
+Date:   Tue,  4 Feb 2020 17:55:23 +0100
+Message-Id: <20200204165547.115220-23-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -31,64 +31,51 @@ List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
 Reset is now logged with tracepoints, so the DPRINTK() calls can
-be dropped, and some calls can be dropped as they don't provide
-additional value.
+be dropped.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_fsl.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/ata/libata-core.c | 7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index 0864c4fafa39..5d48e1d223fa 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -825,8 +825,6 @@ static int sata_fsl_hardreset(struct ata_link *link, unsigned int *class,
- 	int i = 0;
- 	unsigned long start_jiffies;
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 8a18047f9bcb..297aa8172d4e 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4070,8 +4070,6 @@ int sata_link_hardreset(struct ata_link *link, const unsigned long *timing,
+ 	u32 scontrol;
+ 	int rc;
  
--	DPRINTK("in xx_hardreset\n");
+-	DPRINTK("ENTER\n");
 -
- try_offline_again:
- 	/*
- 	 * Force host controller to go off-line, aborting current operations
-@@ -941,10 +939,7 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 	u8 *cfis;
- 	u32 Serror;
+ 	if (online)
+ 		*online = false;
  
--	DPRINTK("in xx_softreset\n");
--
- 	if (ata_link_offline(link)) {
--		DPRINTK("PHY reports no device\n");
- 		*class = ATA_DEV_NONE;
- 		return 0;
+@@ -4147,7 +4145,6 @@ int sata_link_hardreset(struct ata_link *link, const unsigned long *timing,
+ 			*online = false;
+ 		ata_link_err(link, "COMRESET failed (errno=%d)\n", rc);
  	}
-@@ -957,8 +952,6 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 	 * reached here, we can send a command to the target device
- 	 */
+-	DPRINTK("EXIT, rc=%d\n", rc);
+ 	return rc;
+ }
  
--	DPRINTK("Sending SRST/device reset\n");
+@@ -4193,16 +4190,12 @@ void ata_std_postreset(struct ata_link *link, unsigned int *classes)
+ {
+ 	u32 serror;
+ 
+-	DPRINTK("ENTER\n");
 -
- 	ata_tf_init(link->device, &tf);
- 	cfis = (u8 *) &pp->cmdentry->cfis;
+ 	/* reset complete, clear SError */
+ 	if (!sata_scr_read(link, SCR_ERROR, &serror))
+ 		sata_scr_write(link, SCR_ERROR, serror);
  
-@@ -1030,8 +1023,6 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 	 */
- 	iowrite32(0x01, CC + hcr_base);	/* We know it will be cmd#0 always */
- 
--	DPRINTK("SATA FSL : Now checking device signature\n");
+ 	/* print link status */
+ 	sata_print_link_status(link);
 -
- 	*class = ATA_DEV_NONE;
+-	DPRINTK("EXIT\n");
+ }
  
- 	/* Verify if SStatus indicates device presence */
-@@ -1045,7 +1036,6 @@ static int sata_fsl_softreset(struct ata_link *link, unsigned int *class,
- 
- 		*class = sata_fsl_dev_classify(ap);
- 
--		DPRINTK("class = %d\n", *class);
- 		VPRINTK("ccreg = 0x%x\n", ioread32(hcr_base + CC));
- 		VPRINTK("cereg = 0x%x\n", ioread32(hcr_base + CE));
- 	}
+ /**
 -- 
 2.16.4
 

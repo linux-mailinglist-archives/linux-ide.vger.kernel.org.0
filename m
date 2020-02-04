@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA5C1151EC0
-	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1826E151EAA
+	for <lists+linux-ide@lfdr.de>; Tue,  4 Feb 2020 17:56:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727436AbgBDQ4W (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Feb 2020 11:56:22 -0500
-Received: from mx2.suse.de ([195.135.220.15]:34808 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727420AbgBDQ4O (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1727413AbgBDQ4O (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Tue, 4 Feb 2020 11:56:14 -0500
+Received: from mx2.suse.de ([195.135.220.15]:34868 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727416AbgBDQ4K (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 4 Feb 2020 11:56:10 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 38983B1D8;
+        by mx2.suse.de (Postfix) with ESMTP id 3C3C9B1DC;
         Tue,  4 Feb 2020 16:56:05 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Bartolomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
         Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 30/46] libata-core: add postreset tracepoints
-Date:   Tue,  4 Feb 2020 17:55:31 +0100
-Message-Id: <20200204165547.115220-31-hare@suse.de>
+Subject: [PATCH 31/46] pata_octeon_cf: move DPRINTK to VPRINTK
+Date:   Tue,  4 Feb 2020 17:55:32 +0100
+Message-Id: <20200204165547.115220-32-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200204165547.115220-1-hare@suse.de>
 References: <20200204165547.115220-1-hare@suse.de>
@@ -33,68 +33,37 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 From: Hannes Reinecke <hare@suse.com>
 
-Add additional tracepoints for postreset and remove
-the DPRINTK() call.
+Move the remaining DPRINTK statement in the interrupt handler to
+VPRINTK. It'll be converted later with the remaining VPRINTK
+calls.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-eh.c       | 5 ++++-
- drivers/ata/libata-sff.c      | 4 +---
- include/trace/events/libata.h | 8 ++++++++
- 3 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/ata/pata_octeon_cf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 253dcf903c1b..ef3576eb5874 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -2900,8 +2900,11 @@ int ata_eh_reset(struct ata_link *link, int classify,
- 	 */
- 	if (postreset) {
- 		postreset(link, classes);
--		if (slave)
-+		trace_ata_link_postreset(link, classes, rc);
-+		if (slave) {
- 			postreset(slave, classes);
-+			trace_ata_slave_postreset(slave, classes, rc);
-+		}
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 9527216e59b9..f262120f4615 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -671,7 +671,7 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
+ 
+ 	spin_lock_irqsave(&host->lock, flags);
+ 
+-	DPRINTK("ENTER\n");
++	VPRINTK("ENTER\n");
+ 	for (i = 0; i < host->n_ports; i++) {
+ 		u8 status;
+ 		struct ata_port *ap;
+@@ -725,7 +725,7 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
+ 		}
  	}
+ 	spin_unlock_irqrestore(&host->lock, flags);
+-	DPRINTK("EXIT\n");
++	VPRINTK("EXIT\n");
+ 	return IRQ_RETVAL(handled);
+ }
  
- 	/*
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 228f801ef611..ffe633f13f55 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -2052,10 +2052,8 @@ void ata_sff_postreset(struct ata_link *link, unsigned int *classes)
- 		ap->ops->sff_dev_select(ap, 0);
- 
- 	/* bail out if no device is present */
--	if (classes[0] == ATA_DEV_NONE && classes[1] == ATA_DEV_NONE) {
--		DPRINTK("EXIT, no device\n");
-+	if (classes[0] == ATA_DEV_NONE && classes[1] == ATA_DEV_NONE)
- 		return;
--	}
- 
- 	/* set up device control */
- 	if (ap->ops->sff_set_devctl || ap->ioaddr.ctl_addr) {
-diff --git a/include/trace/events/libata.h b/include/trace/events/libata.h
-index 446f56cb3f01..40027d8424f8 100644
---- a/include/trace/events/libata.h
-+++ b/include/trace/events/libata.h
-@@ -526,6 +526,14 @@ DEFINE_EVENT(ata_link_reset_end_template, ata_link_softreset_end,
- 	     TP_PROTO(struct ata_link *link, unsigned int *class, int rc),
- 	     TP_ARGS(link, class, rc));
- 
-+DEFINE_EVENT(ata_link_reset_end_template, ata_link_postreset,
-+	     TP_PROTO(struct ata_link *link, unsigned int *class, int rc),
-+	     TP_ARGS(link, class, rc));
-+
-+DEFINE_EVENT(ata_link_reset_end_template, ata_slave_postreset,
-+	     TP_PROTO(struct ata_link *link, unsigned int *class, int rc),
-+	     TP_ARGS(link, class, rc));
-+
- DECLARE_EVENT_CLASS(ata_sff_hsm_template,
- 
- 	TP_PROTO(struct ata_queued_cmd *qc, unsigned char status),
 -- 
 2.16.4
 

@@ -2,191 +2,71 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A13155999
-	for <lists+linux-ide@lfdr.de>; Fri,  7 Feb 2020 15:34:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2B6155FED
+	for <lists+linux-ide@lfdr.de>; Fri,  7 Feb 2020 21:42:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727458AbgBGO3a (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 7 Feb 2020 09:29:30 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:59630 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727705AbgBGO15 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Feb 2020 09:27:57 -0500
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200207142756euoutp015fbeb9f6b13420e61220476bba1fdce4~xJQvInySO2084620846euoutp01L
-        for <linux-ide@vger.kernel.org>; Fri,  7 Feb 2020 14:27:56 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200207142756euoutp015fbeb9f6b13420e61220476bba1fdce4~xJQvInySO2084620846euoutp01L
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1581085676;
-        bh=8qblVHgZQdH7DspEPS2zqxLjyU4sy8NDZsuweya/gac=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qnNMNDAupUeYn7NtCKVpSLvYBZCMJ1CXG6HaUqA1apSITbTS1IrW6zOjbXZfPfGBP
-         ju/QsbtBnzyUWNEGaaYIi+oqY5AA2s8NGBAJ+YxUapkT2PHjVCCYhnnLJvxNlZW0de
-         XvyIjCldwgmeDSQYw6pP8rsXkYnvBXVhhg8Bbk00=
-Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200207142756eucas1p129b389017fe20ac346fc3aa1b4ae9757~xJQuzbuyh2644726447eucas1p19;
-        Fri,  7 Feb 2020 14:27:56 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges2new.samsung.com (EUCPMTA) with SMTP id CD.4D.60679.CE37D3E5; Fri,  7
-        Feb 2020 14:27:56 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200207142756eucas1p14021b9f9dac98434feeb5ba094b8a8c3~xJQukjQVS0218002180eucas1p1N;
-        Fri,  7 Feb 2020 14:27:56 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200207142756eusmtrp236eb205bf1c00a29bf50ea81acd0f2ff~xJQuj8gxX1102911029eusmtrp2-;
-        Fri,  7 Feb 2020 14:27:56 +0000 (GMT)
-X-AuditID: cbfec7f4-0e5ff7000001ed07-75-5e3d73ec33ad
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id 1F.C5.07950.CE37D3E5; Fri,  7
-        Feb 2020 14:27:56 +0000 (GMT)
-Received: from AMDC3058.digital.local (unknown [106.120.51.71]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20200207142755eusmtip29ab1cb3b63d8fdb3cf5f5883fe3f1288~xJQuH0Dvg3155831558eusmtip2D;
-        Fri,  7 Feb 2020 14:27:55 +0000 (GMT)
-From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Michael Schmitz <schmitzmic@gmail.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Christoph Hellwig <hch@lst.de>, linux-ide@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
-        b.zolnierkie@samsung.com
-Subject: [PATCH v2 10/26] ata: fix CodingStyle issues in PATA timings code
-Date:   Fri,  7 Feb 2020 15:27:18 +0100
-Message-Id: <20200207142734.8431-11-b.zolnierkie@samsung.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200207142734.8431-1-b.zolnierkie@samsung.com>
+        id S1727548AbgBGUmX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 7 Feb 2020 15:42:23 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:46457 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727492AbgBGUmM (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 Feb 2020 15:42:12 -0500
+Received: by mail-oi1-f194.google.com with SMTP id a22so3254603oid.13
+        for <linux-ide@vger.kernel.org>; Fri, 07 Feb 2020 12:42:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=YPZJJy834hUJnz7pionGH11ZciL6RrbrPELuvEefyNE4m32c/3BRL7jS6BX3GTRbjW
+         A7PT2XuyoA0DKIOAMXBVLqZDks+EHHVySpQpjboWji0NFQ79t34wrEkdhJ/7mvVnPfcg
+         BPXVuIvRzTGxR9yBINGUBTO7OS1IgYRxQvNJFyy4DMElAWJNigH6Lfy9a++UWnjsZV7K
+         NbU0I3Vhb1neiaj+I96jGm3rPYvdHpbUTw6COrl+fTWEjyjGSvKY6qdov3nXpFudxXNb
+         5mDt4W3AkewRXnJYuxGyMUAK1lkfrMP5hrIUalSBsJd0qxRrK90fgDoK4eboWAVqoACA
+         vQPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
+        b=Rv+kHEjCdlbUH24uiG0DYtsxz4bS89aL80hrOv7NFqdpFwhpG+x0CEop4m3U23xgTv
+         vRT4nfYat2CkLEned15k5KAMNQ8HCIK2E94OyY5c98UPLoyXh7itl8BE94ELbU9lRFf9
+         EPHQSADPldw1ZrCBaJR30/HJ1b2GOzHiDBOco2pM5Dpo2CC1wayvjNJr4/iV1BADRjQF
+         6UkavxBfUCTU1Xp9CaOsQ+Dl2QI0zzK4nFkrE5S0eRi0P/MeJFefeYDNN8Gdw22ZwXAT
+         MAOL+9UdSjMPcCb6cWG3GDa52GRBQ4gtJsxv2TqmyJ60u6ErS5YALZTkx1C23H6Q5940
+         N2Eg==
+X-Gm-Message-State: APjAAAXZc6RhgaGBNHdGTZ4fwrEOnEYOPH4VhUI4XDwh0M9tBnbARD8Z
+        nKvvKYHfOohne6R0z6n+3HAjAj8dnaj0+T28GD8=
+X-Google-Smtp-Source: APXvYqwSeJkRlkGgNiWsW1NpF1DiAIFzsJveh9+wRvoFwY/EgylY09EfD37WjburJ+wD5ZF6dcgpmVqlX+UTGTmHly0=
+X-Received: by 2002:aca:c7cb:: with SMTP id x194mr3327726oif.157.1581108131844;
+ Fri, 07 Feb 2020 12:42:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrLKsWRmVeSWpSXmKPExsWy7djPc7pvim3jDD4eEbFYfbefzWLjjPWs
-        Fs9u7WWyWLn6KJPFsR2PmCwu75rDZrH8yVpmi7mt09kdODx2zrrL7nH5bKnHocMdjB4nW7+x
-        eOy+2cDm0bdlFaPH501yAexRXDYpqTmZZalF+nYJXBkb30xnKfgsXbH06zSmBsYTYl2MnBwS
-        AiYSyw9OYupi5OIQEljBKHH0wWIWkISQwBdGiV/LgyHsz4wSX6e7wzT86LnIDtGwnFHi7LfJ
-        jBAOUMOcpddZQarYBKwkJravYgSxRQQUJHp+r2QDKWIWeM8osWLSXrAVwgJeEpMOtrGB2CwC
-        qhLXX51lArF5BWwldjbcYoZYJy+x9dsnsKGcQPGPU/6yQdQISpyc+QRsDjNQTfPW2cwgCyQE
-        VrFLzHxxnBWi2UXi7f0LULawxKvjW9ghbBmJ/zvnM0E0rGOU+NvxAqp7O6PE8sn/2CCqrCXu
-        nPsFZHMArdCUWL9LHyLsKDFt53VmkLCEAJ/EjbeCEEfwSUzaNh0qzCvR0SYEUa0msWHZBjaY
-        tV07V0L95SFx+NhWpgmMirOQvDMLyTuzEPYuYGRexSieWlqcm55abJSXWq5XnJhbXJqXrpec
-        n7uJEZiITv87/mUH464/SYcYBTgYlXh4Exxt4oRYE8uKK3MPMUpwMCuJ8Pap2sYJ8aYkVlal
-        FuXHF5XmpBYfYpTmYFES5zVe9DJWSCA9sSQ1OzW1ILUIJsvEwSnVwJip9iYs8ENhNWtPyX+P
-        nUVKSh0KjS+fe5x9GVx/qfn7yh0F1ztTXv+bcFBe0LM+lm/pjH8nTnKKBEsvs9L83yvpEJau
-        fUlxoYi3bEPtuX9zypVdT2n2N13Lr5fV+9P7Wt/BQ2bt21qRe5P+Pjy5u0yqJJCBM23ezEjr
-        J66hgUF1OWYvO6+aKbEUZyQaajEXFScCAGNWXQxAAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprNIsWRmVeSWpSXmKPExsVy+t/xe7pvim3jDE5uY7VYfbefzWLjjPWs
-        Fs9u7WWyWLn6KJPFsR2PmCwu75rDZrH8yVpmi7mt09kdODx2zrrL7nH5bKnHocMdjB4nW7+x
-        eOy+2cDm0bdlFaPH501yAexRejZF+aUlqQoZ+cUltkrRhhZGeoaWFnpGJpZ6hsbmsVZGpkr6
-        djYpqTmZZalF+nYJehkb30xnKfgsXbH06zSmBsYTYl2MnBwSAiYSP3ousncxcnEICSxllPiz
-        /ApLFyMHUEJG4vj6MogaYYk/17rYIGo+MUps+PCFHSTBJmAlMbF9FSOILSKgINHzeyVYEbPA
-        V0aJpZO6mUESwgJeEpMOtrGB2CwCqhLXX51lArF5BWwldjbcYobYIC+x9dsnVhCbEyj+ccpf
-        sHohARuJ7+8nsUPUC0qcnPmEBcRmBqpv3jqbeQKjwCwkqVlIUgsYmVYxiqSWFuem5xYb6RUn
-        5haX5qXrJefnbmIERsy2Yz+37GDsehd8iFGAg1GJhzfB0SZOiDWxrLgy9xCjBAezkghvn6pt
-        nBBvSmJlVWpRfnxRaU5q8SFGU6AnJjJLiSbnA6M5ryTe0NTQ3MLS0NzY3NjMQkmct0PgYIyQ
-        QHpiSWp2ampBahFMHxMHp1QDY+ZLm6OH3D7KZkVIPGn117f4F8z60sx/mcBvtYAZRsK+x3/4
-        /critQyTemv5rGJu9mSF3wsmzwjXiNF+o9m0Soe7/0Rqq+47++o1+Zn2Lzwfz5O/8vSnGYNc
-        1/WDFrcNXRxe/bPIFTb7XrxAc1NWcUFKV8TMrYt588MX/5v7RKdu7uwAxnn9SizFGYmGWsxF
-        xYkAGa3pAa4CAAA=
-X-CMS-MailID: 20200207142756eucas1p14021b9f9dac98434feeb5ba094b8a8c3
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200207142756eucas1p14021b9f9dac98434feeb5ba094b8a8c3
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200207142756eucas1p14021b9f9dac98434feeb5ba094b8a8c3
-References: <20200207142734.8431-1-b.zolnierkie@samsung.com>
-        <CGME20200207142756eucas1p14021b9f9dac98434feeb5ba094b8a8c3@eucas1p1.samsung.com>
+Received: by 2002:a4a:d508:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:42:11 -0800 (PST)
+Reply-To: auch197722@gmail.com
+From:   "Mr. Theophilus Odadudu" <cristinamedina0010@gmail.com>
+Date:   Fri, 7 Feb 2020 15:42:11 -0500
+Message-ID: <CAPNvSTgeN84MC4a+RJ1wBioXqDfarTE4_m4nbA9Dm=S8bmF0WQ@mail.gmail.com>
+Subject: LETTER OF INQUIRY
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-* fix the overly long line in ata_timing_quantize()
+Good Day,
 
-* use standard kernel CodingStyle in ata_timing_merge()
+I work as a clerk in a Bank here in Nigeria, I have a very
+confidential Business Proposition for you. There is a said amount of
+money floating in the bank unclaimed, belonging to the bank Foreign
+customer who die with his family in the Ethiopian Airline crash of
+March 11, 2019.
 
-* do not use assignment in if condition in ata_timing_compute()
+I seek your good collaboration to move the fund for our benefit. we
+have agreed that 40% be yours once you help claim.
 
-* fix non-standard comment style in ata_timing_compute()
+Do get back to with 1) Your Full Name: (2) Residential Address: (3)
+Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
+funds.
 
-Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/ata/libata-core.c | 42 +++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index c41198bb9582..31363220aa24 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -3251,7 +3251,8 @@ static const struct ata_timing ata_timing[] = {
- #define ENOUGH(v, unit)		(((v)-1)/(unit)+1)
- #define EZ(v, unit)		((v)?ENOUGH(((v) * 1000), unit):0)
- 
--static void ata_timing_quantize(const struct ata_timing *t, struct ata_timing *q, int T, int UT)
-+static void ata_timing_quantize(const struct ata_timing *t,
-+				struct ata_timing *q, int T, int UT)
- {
- 	q->setup	= EZ(t->setup,       T);
- 	q->act8b	= EZ(t->act8b,       T);
-@@ -3267,15 +3268,24 @@ static void ata_timing_quantize(const struct ata_timing *t, struct ata_timing *q
- void ata_timing_merge(const struct ata_timing *a, const struct ata_timing *b,
- 		      struct ata_timing *m, unsigned int what)
- {
--	if (what & ATA_TIMING_SETUP  ) m->setup   = max(a->setup,   b->setup);
--	if (what & ATA_TIMING_ACT8B  ) m->act8b   = max(a->act8b,   b->act8b);
--	if (what & ATA_TIMING_REC8B  ) m->rec8b   = max(a->rec8b,   b->rec8b);
--	if (what & ATA_TIMING_CYC8B  ) m->cyc8b   = max(a->cyc8b,   b->cyc8b);
--	if (what & ATA_TIMING_ACTIVE ) m->active  = max(a->active,  b->active);
--	if (what & ATA_TIMING_RECOVER) m->recover = max(a->recover, b->recover);
--	if (what & ATA_TIMING_DMACK_HOLD) m->dmack_hold = max(a->dmack_hold, b->dmack_hold);
--	if (what & ATA_TIMING_CYCLE  ) m->cycle   = max(a->cycle,   b->cycle);
--	if (what & ATA_TIMING_UDMA   ) m->udma    = max(a->udma,    b->udma);
-+	if (what & ATA_TIMING_SETUP)
-+		m->setup = max(a->setup, b->setup);
-+	if (what & ATA_TIMING_ACT8B)
-+		m->act8b = max(a->act8b, b->act8b);
-+	if (what & ATA_TIMING_REC8B)
-+		m->rec8b = max(a->rec8b, b->rec8b);
-+	if (what & ATA_TIMING_CYC8B)
-+		m->cyc8b = max(a->cyc8b, b->cyc8b);
-+	if (what & ATA_TIMING_ACTIVE)
-+		m->active = max(a->active, b->active);
-+	if (what & ATA_TIMING_RECOVER)
-+		m->recover = max(a->recover, b->recover);
-+	if (what & ATA_TIMING_DMACK_HOLD)
-+		m->dmack_hold = max(a->dmack_hold, b->dmack_hold);
-+	if (what & ATA_TIMING_CYCLE)
-+		m->cycle = max(a->cycle, b->cycle);
-+	if (what & ATA_TIMING_UDMA)
-+		m->udma = max(a->udma, b->udma);
- }
- EXPORT_SYMBOL_GPL(ata_timing_merge);
- 
-@@ -3306,8 +3316,8 @@ int ata_timing_compute(struct ata_device *adev, unsigned short speed,
- 	/*
- 	 * Find the mode.
- 	 */
--
--	if (!(s = ata_timing_find_mode(speed)))
-+	s = ata_timing_find_mode(speed);
-+	if (!s)
- 		return -EINVAL;
- 
- 	memcpy(t, s, sizeof(*s));
-@@ -3363,9 +3373,11 @@ int ata_timing_compute(struct ata_device *adev, unsigned short speed,
- 		t->recover = t->cycle - t->active;
- 	}
- 
--	/* In a few cases quantisation may produce enough errors to
--	   leave t->cycle too low for the sum of active and recovery
--	   if so we must correct this */
-+	/*
-+	 * In a few cases quantisation may produce enough errors to
-+	 * leave t->cycle too low for the sum of active and recovery
-+	 * if so we must correct this.
-+	 */
- 	if (t->active + t->recover > t->cycle)
- 		t->cycle = t->active + t->recover;
- 
--- 
-2.24.1
-
+Regards
+Theophilus Odadudu

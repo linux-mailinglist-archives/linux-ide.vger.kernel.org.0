@@ -2,49 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F30D158EDA
-	for <lists+linux-ide@lfdr.de>; Tue, 11 Feb 2020 13:45:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E250E159ACD
+	for <lists+linux-ide@lfdr.de>; Tue, 11 Feb 2020 21:56:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728211AbgBKMpz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Tue, 11 Feb 2020 07:45:55 -0500
-Received: from mail2.ija.gob.mx ([189.210.155.140]:56716 "EHLO mail.ija.gob.mx"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728048AbgBKMpz (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 11 Feb 2020 07:45:55 -0500
-X-Greylist: delayed 7602 seconds by postgrey-1.27 at vger.kernel.org; Tue, 11 Feb 2020 07:45:55 EST
-Received: from localhost (localhost [127.0.0.1])
-        by mail.ija.gob.mx (Postfix) with ESMTP id 122704083EB53;
-        Tue, 11 Feb 2020 03:21:59 -0600 (CST)
-Received: from mail.ija.gob.mx ([127.0.0.1])
-        by localhost (mail.ija.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id DBuvtvg3iiMU; Tue, 11 Feb 2020 03:21:58 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.ija.gob.mx (Postfix) with ESMTP id 501B5408430F1;
-        Tue, 11 Feb 2020 03:21:55 -0600 (CST)
-X-Virus-Scanned: amavisd-new at ija.gob.mx
-Received: from mail.ija.gob.mx ([127.0.0.1])
-        by localhost (mail.ija.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 416wJWDs6gOt; Tue, 11 Feb 2020 03:21:54 -0600 (CST)
-Received: from [172.20.10.3] (unknown [106.210.100.48])
-        by mail.ija.gob.mx (Postfix) with ESMTPSA id 47D8240842C02;
-        Tue, 11 Feb 2020 03:21:33 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
+        id S1731865AbgBKU4m convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Tue, 11 Feb 2020 15:56:42 -0500
+Received: from mail.kernel.org ([198.145.29.99]:36442 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731844AbgBKU4m (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 11 Feb 2020 15:56:42 -0500
+From:   bugzilla-daemon@bugzilla.kernel.org
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     linux-ide@vger.kernel.org
+Subject: [Bug 206405] kernel crash during boot debian server on qemu+kvm
+Date:   Tue, 11 Feb 2020 20:56:42 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo io_ide@kernel-bugs.osdl.org
+X-Bugzilla-Product: IO/Storage
+X-Bugzilla-Component: IDE
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: antdev66@gmail.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P1
+X-Bugzilla-Assigned-To: io_ide@kernel-bugs.osdl.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-206405-11633-gZ3kXchNB9@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-206405-11633@https.bugzilla.kernel.org/>
+References: <bug-206405-11633@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re3
-To:     Recipients <fernando.perezloza@ija.gob.mx>
-From:   "Smadar Barber-Tsadik" <fernando.perezloza@ija.gob.mx>
-Date:   Tue, 11 Feb 2020 10:30:09 +0100
-Reply-To: smadartsadik@foxmail.com
-Message-Id: <20200211092134.47D8240842C02@mail.ija.gob.mx>
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
+MIME-Version: 1.0
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-My name is Smadar Barber-Tsadik, I'm the Chief Executive Officer of the First International Bank of Israel. I've a very important matter to discuss with you if you permit me.
+https://bugzilla.kernel.org/show_bug.cgi?id=206405
 
-Await your response,
-Kind regards,
-Smadar Barber-Tsadik
+--- Comment #2 from anthony (antdev66@gmail.com) ---
+same error in version 5.5.3
+
+-- 
+You are receiving this mail because:
+You are watching the assignee of the bug.

@@ -2,62 +2,68 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1EB316456B
-	for <lists+linux-ide@lfdr.de>; Wed, 19 Feb 2020 14:25:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 105C21646D5
+	for <lists+linux-ide@lfdr.de>; Wed, 19 Feb 2020 15:23:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727928AbgBSNZn convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Wed, 19 Feb 2020 08:25:43 -0500
-Received: from scm.imp.edu.mx ([132.247.16.103]:53040 "EHLO scm.imp.edu.mx"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727873AbgBSNZl (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 19 Feb 2020 08:25:41 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 3B6C6188248;
-        Wed, 19 Feb 2020 06:11:32 -0600 (CST)
-X-Virus-Scanned: by SpamTitan at imp.edu.mx
-Received: from scm.imp.edu.mx (localhost [127.0.0.1])
-        by scm.imp.edu.mx (Postfix) with ESMTP id 05C4E18DA1A;
-        Wed, 19 Feb 2020 04:51:48 -0600 (CST)
-Authentication-Results: scm.imp.edu.mx; none
-Received: from imp.edu.mx (unknown [10.249.93.105])
-        by scm.imp.edu.mx (Postfix) with ESMTP id EC4AE18DA02;
-        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id CCC03180635F4F;
-        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id p3LURq5euqGS; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by imp.edu.mx (Postfix) with ESMTP id A871C180635F42;
-        Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-X-Virus-Scanned: amavisd-new at imp.edu.mx
-Received: from imp.edu.mx ([127.0.0.1])
-        by localhost (imp.edu.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id k5jEP27VMrxK; Wed, 19 Feb 2020 04:51:44 -0600 (CST)
-Received: from [45.147.4.119] (unknown [45.147.4.119])
-        by imp.edu.mx (Postfix) with ESMTPSA id 0F277180635F48;
-        Wed, 19 Feb 2020 04:51:43 -0600 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
+        id S1727786AbgBSOW4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Wed, 19 Feb 2020 09:22:56 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:32999 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727855AbgBSOW4 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 19 Feb 2020 09:22:56 -0500
+Received: from mail-pl1-f200.google.com ([209.85.214.200])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1j4QFZ-000220-MG
+        for linux-ide@vger.kernel.org; Wed, 19 Feb 2020 14:22:53 +0000
+Received: by mail-pl1-f200.google.com with SMTP id w17so251848plq.16
+        for <linux-ide@vger.kernel.org>; Wed, 19 Feb 2020 06:22:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:content-transfer-encoding:mime-version
+         :subject:message-id:date:cc:to;
+        bh=MLzunwtdiwZE8X3dSBg1bcU+Imt/wqtftJaxuJ1ldhU=;
+        b=EmNyziiMCjFtT2QynVz3FvIsnAVvlEjGn2kxy3mUceiaAlGi20WlTiAy0orXur2A1V
+         Ec/z/an0Zwo097LrM/VZMfN7znJ7EJbCb2e98LkWGwCGRlmQCxnhhd0bLaeBFrztyrhr
+         dydy+aKtfIvZS5zxi3dwes2QNqurLK7ljMBsN4SFXgbvNsm5doYSXDTpWPg+pSMOysrV
+         /jY4XozsXs8TyX1Cw4exfkx2aIZGsLShjtDhLeuRTrH15+66ymXtGLcmUcZUzEVHZ0l7
+         d7NuwZ1zamzUA+v66DrYjfwP/8MYfrVnTvk45nTI5B/mnvJ+5MxOCXU5m+8VHXN+DrCy
+         e4Uw==
+X-Gm-Message-State: APjAAAXb1ymLxTOcftDmU72Jbn28+ZT+S9oKWugkJFetjJz6CstvIfmx
+        A7xHyDpri83HxdND87sxL8KUWdaH0VyYjTIh47wnwf/eHjVpzcXFnLkDI0m3FGMsNp/cUjO2MaR
+        SCApVpKSf7rpG9zfhjlBIzqG+TxlLhcVE6h2sOg==
+X-Received: by 2002:a63:f84b:: with SMTP id v11mr27755929pgj.133.1582122172397;
+        Wed, 19 Feb 2020 06:22:52 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyAf9zQyTPVPbMjR6FbxyzaCj2ekLS3doKIrUEPzVc140+FEtyEVjAoXaVkdyd8BTxOWOpurg==
+X-Received: by 2002:a63:f84b:: with SMTP id v11mr27755913pgj.133.1582122172066;
+        Wed, 19 Feb 2020 06:22:52 -0800 (PST)
+Received: from 2001-b011-380f-3214-7181-50ee-02bc-c2ee.dynamic-ip6.hinet.net (2001-b011-380f-3214-7181-50ee-02bc-c2ee.dynamic-ip6.hinet.net. [2001:b011:380f:3214:7181:50ee:2bc:c2ee])
+        by smtp.gmail.com with ESMTPSA id w26sm3190144pfj.119.2020.02.19.06.22.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 19 Feb 2020 06:22:51 -0800 (PST)
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+Content-Type: text/plain;
+        charset=us-ascii
 Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: 19-02-2020
-To:     Recipients <mucios@imp.edu.mx>
-From:   "urs portmann" <mucios@imp.edu.mx>
-Date:   Wed, 19 Feb 2020 21:51:40 +1100
-Reply-To: onube@qq.com
-Message-Id: <20200219105143.0F277180635F48@imp.edu.mx>
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
+Subject: Hard Disk consumes lots of power in s2idle
+Message-Id: <0955D72C-D24D-402E-884F-C706578BF477@canonical.com>
+Date:   Wed, 19 Feb 2020 22:22:48 +0800
+Cc:     Linux PM <linux-pm@vger.kernel.org>, linux-ide@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>,
+        Kent Lin <kent.lin@canonical.com>
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+X-Mailer: Apple Mail (2.3608.60.0.2.5)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Guten Morgen,
-                                          19-02-2020
-Wir haben versucht, Sie zu erreichen und haben noch nichts von Ihnen gehört. Haben Sie unsere letzte E-Mail über Ihre S.p.e.n.d.e erhalten? Wenn nicht, melden Sie sich bitte bei uns, um weitere Informationen zu erhalten.
+Hi Srinivas,
 
-Wir warten darauf, von Ihnen zu hören, sobald Sie diese Nachricht erhalten, die Sie bei der weiteren Vorgehensweise unterstützt.
+Your previous work to support DEVSLP works well on SATA SSDs, so I am asking you the issue I am facing:
+Once a laptop has a HDD installed, the power consumption during S2Idle increases ~0.4W, which is quite a lot.
+However, HDDs don't seem to support DEVSLP, so I wonder if you know to do proper power management for HDDs?
 
-Mfg
-urs portmann
+Kai-Heng

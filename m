@@ -2,70 +2,87 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B60B0165EE9
-	for <lists+linux-ide@lfdr.de>; Thu, 20 Feb 2020 14:36:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 971501663EA
+	for <lists+linux-ide@lfdr.de>; Thu, 20 Feb 2020 18:06:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728133AbgBTNgL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 20 Feb 2020 08:36:11 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:40022 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbgBTNgK (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Feb 2020 08:36:10 -0500
-Received: by mail-io1-f66.google.com with SMTP id x1so4661715iop.7
-        for <linux-ide@vger.kernel.org>; Thu, 20 Feb 2020 05:36:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=AqJjL0i98nG1HVHXwCo4WJU0JfdKU7urCdkm8HkFJJQ=;
-        b=EG7GuRdidCVFCgr6WpHn4QmYlYqwm3+UiGQxx77qYG9/sRowZXdOc5ZwL3wIzKwHqh
-         M8DSUMZz6//SIgDzTtK10XCUec3msrZOxfWzwNSrZ54ioVjh6QMYTFsYGr+vcrlNi02M
-         qJL153ququJ91UlYEHTKVmy5C2Vj/O/3KBQQlw+FDSRXpPS0PEH5Aq8fbzN27cteGVY1
-         fjiwfDT5WQMCv59p8W+I7BaYOSB7f8RQkreVdWVmFOew5Nca7LXXbz5oQl1pImRkL4u3
-         RpRNL0MBcUBbz+juQ6SmkU8F76l1hyXj8qVtPc8Ot7TN2ALi4DZOe//Mk9kT/jWh/EwI
-         u9pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=AqJjL0i98nG1HVHXwCo4WJU0JfdKU7urCdkm8HkFJJQ=;
-        b=SlRdgkE0ojAk2tBysPQypIGSyLr2Ib+5fTkcDS7bFb+og8jyhepRmzDenM8QXfSbxJ
-         Nb6ACQYQ5csg0Peqh3y68ofK30tBQpNy/inm42VwJWwZo3LzhANJD/ShtSl38xZoFcEv
-         T19SVoFnzplYkK2U0Y0MqAlEs10ltGddlaWhr0fpIfErHgpqzpORiYG07mt9vEAfHEOL
-         GdwJFGyB9bZvNCIKiKeOBGFgKVJj0iL3xb+rhzvEhsV4rXAfY1AGniVftCs5SPRWNV6y
-         rzYpyfxrj7v84m73XADhls1R3sgrFN1SjmObCzjLdX/Sgbail/+yF8o7cHavXa6uEp3I
-         b/kA==
-X-Gm-Message-State: APjAAAXf4h+ymSKXiQJCoR/gV7QcdKlxOKv+UhCnUgQGSCO1NSa+12BI
-        2Bic5AnKjxj991sgQOqzv069gwEHSLRDsWejhBs=
-X-Google-Smtp-Source: APXvYqw8ys+th32hHcRC+gkKrFuC9gw9aZCD3l2XHYFMXwWB+5zQOIvWTs41eXUUyqPQvQtEzja6M41YF75p13ZhdAk=
-X-Received: by 2002:a6b:7d01:: with SMTP id c1mr23862938ioq.172.1582205770042;
- Thu, 20 Feb 2020 05:36:10 -0800 (PST)
+        id S1728646AbgBTRGt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 20 Feb 2020 12:06:49 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:51170 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728611AbgBTRGt (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Feb 2020 12:06:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1582218408;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=3M6kLg4BjF+DuWA5DcTOS8t/8X/cJ0Opg0BqCTy4sKU=;
+        b=MBE6H7N6KAOUpDWGX3mzGHWn9ntHPYysErKiju0w1LpyWMl24rrXNppZVJHe7lhqAkDBbA
+        4r2ajqMbxV3US10zQ8LjCa5Wusg+ATN7uPap33nUJgVOXgSi8kSMn1h9mVTRlLoaef0Uor
+        VMJ+38u7lomJuWlEoJqS6ZEUagWgLtY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-287-Y7n3AiXIOXK816aJw8_wdQ-1; Thu, 20 Feb 2020 12:06:46 -0500
+X-MC-Unique: Y7n3AiXIOXK816aJw8_wdQ-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 44F09100550E;
+        Thu, 20 Feb 2020 17:06:42 +0000 (UTC)
+Received: from redhatnow.users.ipa.redhat.com (ovpn-117-1.phx2.redhat.com [10.3.117.1])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D2E0419756;
+        Thu, 20 Feb 2020 17:06:32 +0000 (UTC)
+Subject: Re: [RFC PATCH 04/11] cpufreq: Remove Calxeda driver
+To:     Rob Herring <robh@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        soc@kernel.org, Andre Przywara <andre.przywara@arm.com>,
+        Robert Richter <rrichter@marvell.com>,
+        Jon Loeliger <jdl@jdl.com>, Alexander Graf <graf@amazon.com>,
+        Matthias Brugger <mbrugger@suse.com>
+Cc:     Alex Williamson <alex.williamson@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        devicetree@vger.kernel.org, Eric Auger <eric.auger@redhat.com>,
+        iommu@lists.linux-foundation.org,
+        James Morse <james.morse@arm.com>,
+        Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+        kvm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-pm@vger.kernel.org,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        netdev@vger.kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Will Deacon <will@kernel.org>
+References: <20200218171321.30990-1-robh@kernel.org>
+ <20200218171321.30990-5-robh@kernel.org>
+From:   Mark Langsdorf <mlangsdo@redhat.com>
+Message-ID: <16a38b0d-8609-653a-64e8-3a0d4f4b1a45@redhat.com>
+Date:   Thu, 20 Feb 2020 11:06:32 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Received: by 2002:a05:6622:89:0:0:0:0 with HTTP; Thu, 20 Feb 2020 05:36:09
- -0800 (PST)
-From:   tony greg <tonygreg0000@gmail.com>
-Date:   Thu, 20 Feb 2020 05:36:09 -0800
-Message-ID: <CAMoNUY2F=J_xttMCJUrCs7uQLRJGjwdj8D4v0xUUEuvmq-rnwg@mail.gmail.com>
-Subject: URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200218171321.30990-5-robh@kernel.org>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear   FRIEND
+On 2/18/20 11:13 AM, Rob Herring wrote:
+> Cc: "Rafael J. Wysocki" <rjw@rjwysocki.net>
+> Cc: Viresh Kumar <viresh.kumar@linaro.org>
+> Cc: linux-pm@vger.kernel.org
+> Signed-off-by: Rob Herring <robh@kernel.org>
+> ---
 
-             How are you doing today,i will be very happy to hear from you once
-             again, I am looking for a serious foreign business partner who will
-             help me to invest my late father funds in his country.
+Acked-by: Mark Langsdorf <mark.langsdorf@gmail.com>
 
-             The amount involve sum of $ 15,5. million United States Dollars
-             This funds were acquired legitimately, and there are
-              documents to this effect.
-
-              Upon the receipt of a favorable response from you, i
-              will furnish you with more details on proof of funds.
-              For more details.
-
-              Please kindle get back as soon as possible
-             I am waiting to hear from you
-             Thank TONY GREG

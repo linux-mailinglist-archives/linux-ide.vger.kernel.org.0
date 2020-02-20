@@ -2,80 +2,128 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B85D9165B41
-	for <lists+linux-ide@lfdr.de>; Thu, 20 Feb 2020 11:12:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E27A165B63
+	for <lists+linux-ide@lfdr.de>; Thu, 20 Feb 2020 11:25:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727069AbgBTKMh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 20 Feb 2020 05:12:37 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:41275 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726813AbgBTKMh (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Feb 2020 05:12:37 -0500
-Received: by mail-pf1-f194.google.com with SMTP id j9so1688182pfa.8
-        for <linux-ide@vger.kernel.org>; Thu, 20 Feb 2020 02:12:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=G6ndxVsaKWJCXbiu5jgMLSpMYVhvswggiYtN0tu7954kDb9Ed5Wg4om7bZh5tgMiAs
-         ShMrxM5Tm+AnOK7KO7hDk0ERYCoSQFY58L+BhQCsNBAWrG7JHuZK91tDY6Ni8Hh4cTWh
-         zxlTp/gwDDQBNXapItkHPgxralbHl3aXt6B7qCvh73byQ1ZKRUk3q7ff2ElZ2+huHyy+
-         0bONEvLK7nLuMliW2RU87mv3TuVzaBwY0l9wsOPIfQ+4mTuiKPFa9Wpz//kQL5vo1cN9
-         SpE9rPft9ORG7sayQJC6cLfawYio7M3nno0gBL9SSV/1FGD6egFQXcARBZbq7x9fIql6
-         D7Aw==
+        id S1726825AbgBTKZA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Thu, 20 Feb 2020 05:25:00 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39157 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726801AbgBTKZA (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Feb 2020 05:25:00 -0500
+Received: from mail-pl1-f199.google.com ([209.85.214.199])
+        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1j4j0s-0003Et-7l
+        for linux-ide@vger.kernel.org; Thu, 20 Feb 2020 10:24:58 +0000
+Received: by mail-pl1-f199.google.com with SMTP id d20so1948174pls.15
+        for <linux-ide@vger.kernel.org>; Thu, 20 Feb 2020 02:24:58 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
-        b=A8JtBMYCjZbj3HGCgo8sgOMKL+CZelGNlJxgn45U9SEXKHAAe06yRk4b+wtXNthmKD
-         n3SoXKFap1d1JdDoNvsejIIwvL32hFkwyG290VIT5uazQXMR3av3i5lZTUZjmh+c6/Um
-         3VQA39aQAgbWLeuEjt/g3v9JzTBW6EfMM5TKiBA5CGvtnrsgL4mMwtxbQunVDj+C68cY
-         iF1JZV14EsmIvEcZJ0AH5+agh+BeM7TfK6qvCVdpalNbEvoZwGJLL0Dso4xrg0+qZUBe
-         Z1QKzqGIEtmTyhEJtKEpEBZJSDcDuI+t2EhaBZCXk65OnHYBPUbi0EHalWsSZ56WP+8V
-         IBYA==
-X-Gm-Message-State: APjAAAWyLIc3gjK9in7HBYoWj3SUtpv6IOyP5jAxjuEDg7lRDFxaEcpb
-        +h6wJZmhfM1oJPkltJgiK2mLmMrJS4MhiFz8MUQ=
-X-Google-Smtp-Source: APXvYqzs6KJiVTgfCAI8jquZ4KfBGFedm27BLb7nIVDcofBa46XgPl44x02Pza2jnkwPUPMrfnISIXd1W0mtIN9pwsQ=
-X-Received: by 2002:a62:2b8a:: with SMTP id r132mr30323306pfr.56.1582193556159;
- Thu, 20 Feb 2020 02:12:36 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 02:12:35
- -0800 (PST)
-Reply-To: cagesusan199@gmail.com
-From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
-Date:   Thu, 20 Feb 2020 02:12:35 -0800
-Message-ID: <CALjo5=-k-LvyGgS4FSAofTTw2wuC-ysQRTy1eoCjiPort4ytVg@mail.gmail.com>
-Subject: Attention:Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
+         :content-transfer-encoding:message-id:references:to;
+        bh=2EdkyIyCMJrMlWy83hk5i7o/PPrtoxAhqlv9XeDdgGI=;
+        b=itphdm+TG8QJqkJ40l9StkRdisVdTdU7o1IY7Jx4tAFXvSWxdHwYa5b48xr4PNOKiK
+         UZhOm3lhIXpJB4WtP/Qe3H38UWkl/3VEETQM3z3LTplfLHkzIJc7aExZspwpUyglMZ6g
+         ZNUVg6P9q8rvOCG1UiBsxc5EnK84XBlrNAIXlZVMBgnfaSbAtq5NlA/4xgb4ekRpp97V
+         W6pntbu+gYbXzCAHyPbp1aSdWCbjPD7cN7XTxGy6M5IQIiyDCnma3ZX0PTPN/E3ENLBZ
+         HhvUcGj6olb8pYAUjwJuxXdZpDyyO1YTKc9gK9C6+uQesoHfySBE4TvipE0s5DgVmAWR
+         fYYw==
+X-Gm-Message-State: APjAAAWwmjqgVtYe9vr7UP7vfBDvEIbVdVBZVkR8YQQKtVTiol465RPk
+        D8hj1bGUnovwYPCarabMz5zNvYfqy/L9rn023UyGsm54Ib6SfzlLt+ot0hla3sBhw7/LoCh4ERI
+        +V+kwClEqhWdhBbRmDeCUyX8PqgYJIUJgLHCweg==
+X-Received: by 2002:a17:902:502:: with SMTP id 2mr30061230plf.151.1582194296479;
+        Thu, 20 Feb 2020 02:24:56 -0800 (PST)
+X-Google-Smtp-Source: APXvYqw1U1TJJ75/ORRnNCrTCi8jKVdfdbW9hiyENPeCxSlF/WxT8Y2ecFQQknRZTbaIRyynOg0Vxw==
+X-Received: by 2002:a17:902:502:: with SMTP id 2mr30061202plf.151.1582194296022;
+        Thu, 20 Feb 2020 02:24:56 -0800 (PST)
+Received: from 2001-b011-380f-3214-b828-48d4-ee3d-9937.dynamic-ip6.hinet.net (2001-b011-380f-3214-b828-48d4-ee3d-9937.dynamic-ip6.hinet.net. [2001:b011:380f:3214:b828:48d4:ee3d:9937])
+        by smtp.gmail.com with ESMTPSA id a69sm2888860pfa.129.2020.02.20.02.24.54
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Feb 2020 02:24:55 -0800 (PST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.60.0.2.5\))
+Subject: Re: Hard Disk consumes lots of power in s2idle
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+In-Reply-To: <CAJZ5v0jXvo0ceNMp=kstTi24Ne7F-ZGMcD0T0TSMpcZZWsJsUA@mail.gmail.com>
+Date:   Thu, 20 Feb 2020 18:24:53 +0800
+Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Kent Lin <kent.lin@canonical.com>, Tejun Heo <tj@kernel.org>
+Content-Transfer-Encoding: 8BIT
+Message-Id: <CA007B3C-C084-429E-B774-70264A9E609F@canonical.com>
+References: <0955D72C-D24D-402E-884F-C706578BF477@canonical.com>
+ <a9fd25cd0a151d20e975ce79ab70197e39ef01e1.camel@linux.intel.com>
+ <235CF4F8-19BF-4B00-8C92-E59CB2D476A7@canonical.com>
+ <CAJZ5v0jXvo0ceNMp=kstTi24Ne7F-ZGMcD0T0TSMpcZZWsJsUA@mail.gmail.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+X-Mailer: Apple Mail (2.3608.60.0.2.5)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Dearest Friend,
-
-Sorry for invading your privacy, my name is Susan S. Cage I am 81
-years, citizen of United States and presently in hospital undergoing
-chromatography for bronchogenic carcinomas (Lung cancer) which
-affected both Lungs. The doctors said I have few days to live because
-the cancer has now affected my brain.
-
-My late husband left Fifteen Million, Five Hundred British Pounds
-Sterling in my account, I want to transfer the money to you and I want
-you to use it as a donate for charitable and help the needy,
-motherless, less privileged and widows within your location.
-
-I need your assurance that you will use the fund for charity, once I a
-favorable reply from you, will inform my Bank through my lawyer to
-transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
-I receive your response, I will inform my bank in writing through my
-lawyer.
 
 
+> On Feb 20, 2020, at 18:12, Rafael J. Wysocki <rafael@kernel.org> wrote:
+> 
+> On Thu, Feb 20, 2020 at 9:08 AM Kai-Heng Feng
+> <kai.heng.feng@canonical.com> wrote:
+>> 
+>> Hi Srinivas,
+>> 
+>>> On Feb 20, 2020, at 02:36, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
+>>> 
+>>> Hi Kai,
+>>> 
+>>> On Wed, 2020-02-19 at 22:22 +0800, Kai-Heng Feng wrote:
+>>>> Hi Srinivas,
+>>>> 
+>>>> Your previous work to support DEVSLP works well on SATA SSDs, so I am
+>>>> asking you the issue I am facing:
+>>>> Once a laptop has a HDD installed, the power consumption during
+>>>> S2Idle increases ~0.4W, which is quite a lot.
+>>>> However, HDDs don't seem to support DEVSLP, so I wonder if you know
+>>>> to do proper power management for HDDs?
+>>> What is the default here
+>>> cat /sys/power/mem_sleep
+>>> s2idle or deep?
+>> 
+>> It defaults to s2idle.
+>> 
+>>> 
+>>> Please follow debug steps here:
+>>> https://01.org/blogs/qwang59/2018/how-achieve-s0ix-states-linux
+>>> 
+>>> We need to check whether you get any PC10 residency or not.
+>> 
+>> Yes it reaches PC10. It doesn't reach SLP_S0 though.
+>> The real number on S2Idle power consumption:
+>> No HDD: ~1.4W
+>> One HDD: ~1.8W
+>> 
+>> If the SoC doesn't hit PC10 the number should be significantly higher.
+>> That's why I think the issue is the power management on HDD itself.
+> 
+> I'm assuming that you mean a non-SSD device here.
 
-Thank you and God bless you.
+Yes, it's spinning rust here.
 
-Mrs. Susan S. Cage
+> 
+> That would be handled via ata_port_suspend() I gather and whatever
+> that does should do the right thing.
+> 
+> Do you think that the disk doesn't spin down or it spins down, but the
+> logic stays on?
+
+The spin sound is audible, so I am certain the HDD spins down during S2Idle.
+
+How do I know if the logic is on or off?
+
+Kai-Heng
+

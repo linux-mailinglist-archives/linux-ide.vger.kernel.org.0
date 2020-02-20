@@ -2,96 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABE20165B3B
-	for <lists+linux-ide@lfdr.de>; Thu, 20 Feb 2020 11:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B85D9165B41
+	for <lists+linux-ide@lfdr.de>; Thu, 20 Feb 2020 11:12:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726865AbgBTKMa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 20 Feb 2020 05:12:30 -0500
-Received: from mail-ot1-f48.google.com ([209.85.210.48]:33322 "EHLO
-        mail-ot1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726837AbgBTKMa (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Feb 2020 05:12:30 -0500
-Received: by mail-ot1-f48.google.com with SMTP id w6so3162493otk.0;
-        Thu, 20 Feb 2020 02:12:30 -0800 (PST)
+        id S1727069AbgBTKMh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 20 Feb 2020 05:12:37 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:41275 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726813AbgBTKMh (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Feb 2020 05:12:37 -0500
+Received: by mail-pf1-f194.google.com with SMTP id j9so1688182pfa.8
+        for <linux-ide@vger.kernel.org>; Thu, 20 Feb 2020 02:12:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=G6ndxVsaKWJCXbiu5jgMLSpMYVhvswggiYtN0tu7954kDb9Ed5Wg4om7bZh5tgMiAs
+         ShMrxM5Tm+AnOK7KO7hDk0ERYCoSQFY58L+BhQCsNBAWrG7JHuZK91tDY6Ni8Hh4cTWh
+         zxlTp/gwDDQBNXapItkHPgxralbHl3aXt6B7qCvh73byQ1ZKRUk3q7ff2ElZ2+huHyy+
+         0bONEvLK7nLuMliW2RU87mv3TuVzaBwY0l9wsOPIfQ+4mTuiKPFa9Wpz//kQL5vo1cN9
+         SpE9rPft9ORG7sayQJC6cLfawYio7M3nno0gBL9SSV/1FGD6egFQXcARBZbq7x9fIql6
+         D7Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=atbLNfB8xffrjjqL/ucnkxeJEJuBIPdca68FUgtNQMk=;
-        b=SqasnrST3n+jX0FPziWcQVzVB4/hhmq2VLS3t3+0fQB8bTcd27NaB/PFyJSvlhgGSN
-         lExGrPh6BMlzZ3JWdorgEDK9ZaJqVRAAzLtq88y3JDSAKsJbsnH42m+pxwOtfuAHgcuv
-         WwBFaoN1JO8PNj277IKlT3woka7kbkVMBYfE+14sBKeJKzHfSYya58z5Ay3nN2Eeso9s
-         wt51XewSaNJxatJvbVj6mu+toPUlNIPhqlIcv9uWC7jd842Y7JQvT6mIahh/5ozwJNmG
-         PJXPfQt7k8BwZuWW2ObTy7ONxrftozWgzACJz9mX4iufERksD23iD2WFoo2sklIfcVO6
-         K69w==
-X-Gm-Message-State: APjAAAXaGu0AYewYyVjqMbygxRe+Lhmu9fWEOrFY+POkFh8CmUlDK9RL
-        5YV2WFclGkG4Jprlt69Fb88IMhumsmAlHiGt2rQ=
-X-Google-Smtp-Source: APXvYqy3Lp8uHjhvoeSvWG/0ZPoL7miqjtkSwXlVVq4jK3/MToh1rTxX+T/UAWNlCujO8eBtqs+s/LYv38RBeaN/s98=
-X-Received: by 2002:a05:6830:1651:: with SMTP id h17mr21715032otr.167.1582193549689;
- Thu, 20 Feb 2020 02:12:29 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=xsUbPWAhYtsZRE8nHbpZ90/dMr+6ACJOvf/o3gzcGwM=;
+        b=A8JtBMYCjZbj3HGCgo8sgOMKL+CZelGNlJxgn45U9SEXKHAAe06yRk4b+wtXNthmKD
+         n3SoXKFap1d1JdDoNvsejIIwvL32hFkwyG290VIT5uazQXMR3av3i5lZTUZjmh+c6/Um
+         3VQA39aQAgbWLeuEjt/g3v9JzTBW6EfMM5TKiBA5CGvtnrsgL4mMwtxbQunVDj+C68cY
+         iF1JZV14EsmIvEcZJ0AH5+agh+BeM7TfK6qvCVdpalNbEvoZwGJLL0Dso4xrg0+qZUBe
+         Z1QKzqGIEtmTyhEJtKEpEBZJSDcDuI+t2EhaBZCXk65OnHYBPUbi0EHalWsSZ56WP+8V
+         IBYA==
+X-Gm-Message-State: APjAAAWyLIc3gjK9in7HBYoWj3SUtpv6IOyP5jAxjuEDg7lRDFxaEcpb
+        +h6wJZmhfM1oJPkltJgiK2mLmMrJS4MhiFz8MUQ=
+X-Google-Smtp-Source: APXvYqzs6KJiVTgfCAI8jquZ4KfBGFedm27BLb7nIVDcofBa46XgPl44x02Pza2jnkwPUPMrfnISIXd1W0mtIN9pwsQ=
+X-Received: by 2002:a62:2b8a:: with SMTP id r132mr30323306pfr.56.1582193556159;
+ Thu, 20 Feb 2020 02:12:36 -0800 (PST)
 MIME-Version: 1.0
-References: <0955D72C-D24D-402E-884F-C706578BF477@canonical.com>
- <a9fd25cd0a151d20e975ce79ab70197e39ef01e1.camel@linux.intel.com> <235CF4F8-19BF-4B00-8C92-E59CB2D476A7@canonical.com>
-In-Reply-To: <235CF4F8-19BF-4B00-8C92-E59CB2D476A7@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 20 Feb 2020 11:12:18 +0100
-Message-ID: <CAJZ5v0jXvo0ceNMp=kstTi24Ne7F-ZGMcD0T0TSMpcZZWsJsUA@mail.gmail.com>
-Subject: Re: Hard Disk consumes lots of power in s2idle
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Kent Lin <kent.lin@canonical.com>, Tejun Heo <tj@kernel.org>
+Received: by 2002:a17:90a:90f:0:0:0:0 with HTTP; Thu, 20 Feb 2020 02:12:35
+ -0800 (PST)
+Reply-To: cagesusan199@gmail.com
+From:   "Mrs. Susan S. Cage" <drgoodluckebelejonathan061@gmail.com>
+Date:   Thu, 20 Feb 2020 02:12:35 -0800
+Message-ID: <CALjo5=-k-LvyGgS4FSAofTTw2wuC-ysQRTy1eoCjiPort4ytVg@mail.gmail.com>
+Subject: Attention:Beneficiary
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Feb 20, 2020 at 9:08 AM Kai-Heng Feng
-<kai.heng.feng@canonical.com> wrote:
->
-> Hi Srinivas,
->
-> > On Feb 20, 2020, at 02:36, Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com> wrote:
-> >
-> > Hi Kai,
-> >
-> > On Wed, 2020-02-19 at 22:22 +0800, Kai-Heng Feng wrote:
-> >> Hi Srinivas,
-> >>
-> >> Your previous work to support DEVSLP works well on SATA SSDs, so I am
-> >> asking you the issue I am facing:
-> >> Once a laptop has a HDD installed, the power consumption during
-> >> S2Idle increases ~0.4W, which is quite a lot.
-> >> However, HDDs don't seem to support DEVSLP, so I wonder if you know
-> >> to do proper power management for HDDs?
-> > What is the default here
-> > cat /sys/power/mem_sleep
-> > s2idle or deep?
->
-> It defaults to s2idle.
->
-> >
-> > Please follow debug steps here:
-> > https://01.org/blogs/qwang59/2018/how-achieve-s0ix-states-linux
-> >
-> > We need to check whether you get any PC10 residency or not.
->
-> Yes it reaches PC10. It doesn't reach SLP_S0 though.
-> The real number on S2Idle power consumption:
-> No HDD: ~1.4W
-> One HDD: ~1.8W
->
-> If the SoC doesn't hit PC10 the number should be significantly higher.
-> That's why I think the issue is the power management on HDD itself.
+-- 
+Dearest Friend,
 
-I'm assuming that you mean a non-SSD device here.
+Sorry for invading your privacy, my name is Susan S. Cage I am 81
+years, citizen of United States and presently in hospital undergoing
+chromatography for bronchogenic carcinomas (Lung cancer) which
+affected both Lungs. The doctors said I have few days to live because
+the cancer has now affected my brain.
 
-That would be handled via ata_port_suspend() I gather and whatever
-that does should do the right thing.
+My late husband left Fifteen Million, Five Hundred British Pounds
+Sterling in my account, I want to transfer the money to you and I want
+you to use it as a donate for charitable and help the needy,
+motherless, less privileged and widows within your location.
 
-Do you think that the disk doesn't spin down or it spins down, but the
-logic stays on?
+I need your assurance that you will use the fund for charity, once I a
+favorable reply from you, will inform my Bank through my lawyer to
+transfer the fund to you as my Next of Kin and Sole Beneficiary. Once
+I receive your response, I will inform my bank in writing through my
+lawyer.
+
+
+
+Thank you and God bless you.
+
+Mrs. Susan S. Cage

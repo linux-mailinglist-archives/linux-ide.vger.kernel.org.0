@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6365C1772B0
-	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 10:39:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B5401772AB
+	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 10:39:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbgCCJju (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 3 Mar 2020 04:39:50 -0500
-Received: from mx2.suse.de ([195.135.220.15]:47674 "EHLO mx2.suse.de"
+        id S1727742AbgCCJjt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 3 Mar 2020 04:39:49 -0500
+Received: from mx2.suse.de ([195.135.220.15]:47676 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728252AbgCCJjs (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1728259AbgCCJjs (ORCPT <rfc822;linux-ide@vger.kernel.org>);
         Tue, 3 Mar 2020 04:39:48 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 0BD80B236;
+        by mx2.suse.de (Postfix) with ESMTP id 17343B240;
         Tue,  3 Mar 2020 09:39:42 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Tejun Heo <tj@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 27/40] libata: drop DPRINTK() calls during ATA error handling
-Date:   Tue,  3 Mar 2020 10:38:00 +0100
-Message-Id: <20200303093813.18523-28-hare@suse.de>
+Subject: [PATCH 28/40] libata-eh: remove DPRINTK() calls for request sense
+Date:   Tue,  3 Mar 2020 10:38:01 +0100
+Message-Id: <20200303093813.18523-29-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200303093813.18523-1-hare@suse.de>
 References: <20200303093813.18523-1-hare@suse.de>
@@ -31,139 +31,37 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The information is now logged with tracepoints, so the DPRINTK()
-calls can be dropped.
+The information will printed during ata_qc_issue() anyway, so
+this messages can be dropped.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/ata/libata-eh.c  | 12 ------------
- drivers/ata/libata-pmp.c |  8 --------
- 2 files changed, 20 deletions(-)
+ drivers/ata/libata-eh.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
 diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index a068b5370aac..f37dad5f9c17 100644
+index f37dad5f9c17..388f8ed46eab 100644
 --- a/drivers/ata/libata-eh.c
 +++ b/drivers/ata/libata-eh.c
-@@ -526,8 +526,6 @@ void ata_scsi_error(struct Scsi_Host *host)
- 	unsigned long flags;
- 	LIST_HEAD(eh_work_q);
- 
--	DPRINTK("ENTER\n");
--
- 	spin_lock_irqsave(host->host_lock, flags);
- 	list_splice_init(&host->eh_cmd_q, &eh_work_q);
- 	spin_unlock_irqrestore(host->host_lock, flags);
-@@ -541,7 +539,6 @@ void ata_scsi_error(struct Scsi_Host *host)
- 	/* finish or retry handled scmd's and clean up */
- 	WARN_ON(!list_empty(&eh_work_q));
- 
--	DPRINTK("EXIT\n");
- }
- 
- /**
-@@ -2123,8 +2120,6 @@ static void ata_eh_link_autopsy(struct ata_link *link)
- 	u32 serror;
- 	int rc;
- 
--	DPRINTK("ENTER\n");
--
- 	if (ehc->i.flags & ATA_EHI_NO_AUTOPSY)
+@@ -1538,8 +1538,6 @@ static void ata_eh_request_sense(struct ata_queued_cmd *qc,
  		return;
- 
-@@ -2231,7 +2226,6 @@ static void ata_eh_link_autopsy(struct ata_link *link)
- 		ehc->i.action |= ata_eh_speed_down(dev, eflags, all_err_mask);
- 		trace_ata_eh_link_autopsy(dev, ehc->i.action, all_err_mask);
  	}
--	DPRINTK("EXIT\n");
- }
  
- /**
-@@ -3130,8 +3124,6 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
- 	unsigned long flags;
- 	int rc = 0;
- 
--	DPRINTK("ENTER\n");
+-	DPRINTK("ATA request sense\n");
 -
- 	/* For PATA drive side cable detection to work, IDENTIFY must
- 	 * be done backwards such that PDIAG- is released by the slave
- 	 * device before the master device is identified.
-@@ -3245,7 +3237,6 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
+ 	ata_tf_init(dev, &tf);
+ 	tf.flags |= ATA_TFLAG_ISADDR | ATA_TFLAG_DEVICE;
+ 	tf.flags |= ATA_TFLAG_LBA | ATA_TFLAG_LBA48;
+@@ -1580,8 +1578,6 @@ unsigned int atapi_eh_request_sense(struct ata_device *dev,
+ 	struct ata_port *ap = dev->link->ap;
+ 	struct ata_taskfile tf;
  
-  err:
- 	*r_failed_dev = dev;
--	DPRINTK("EXIT rc=%d\n", rc);
- 	return rc;
- }
- 
-@@ -3759,8 +3750,6 @@ int ata_eh_recover(struct ata_port *ap, ata_prereset_fn_t prereset,
- 	int rc, nr_fails;
- 	unsigned long flags, deadline;
- 
--	DPRINTK("ENTER\n");
+-	DPRINTK("ATAPI request sense\n");
 -
- 	/* prep for recovery */
- 	ata_for_each_link(link, ap, EDGE) {
- 		struct ata_eh_context *ehc = &link->eh_context;
-@@ -3968,7 +3957,6 @@ int ata_eh_recover(struct ata_port *ap, ata_prereset_fn_t prereset,
- 	if (rc && r_failed_link)
- 		*r_failed_link = link;
+ 	memset(sense_buf, 0, SCSI_SENSE_BUFFERSIZE);
  
--	DPRINTK("EXIT, rc=%d\n", rc);
- 	return rc;
- }
- 
-diff --git a/drivers/ata/libata-pmp.c b/drivers/ata/libata-pmp.c
-index 3ff14071617c..438caf3a7d8c 100644
---- a/drivers/ata/libata-pmp.c
-+++ b/drivers/ata/libata-pmp.c
-@@ -652,8 +652,6 @@ static int sata_pmp_revalidate(struct ata_device *dev, unsigned int new_class)
- 	u32 *gscr = (void *)ap->sector_buf;
- 	int rc;
- 
--	DPRINTK("ENTER\n");
--
- 	ata_eh_about_to_do(link, NULL, ATA_EH_REVALIDATE);
- 
- 	if (!ata_dev_enabled(dev)) {
-@@ -686,12 +684,10 @@ static int sata_pmp_revalidate(struct ata_device *dev, unsigned int new_class)
- 
- 	ata_eh_done(link, NULL, ATA_EH_REVALIDATE);
- 
--	DPRINTK("EXIT, rc=0\n");
- 	return 0;
- 
-  fail:
- 	ata_dev_err(dev, "PMP revalidation failed (errno=%d)\n", rc);
--	DPRINTK("EXIT, rc=%d\n", rc);
- 	return rc;
- }
- 
-@@ -759,8 +755,6 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
- 	int detach = 0, rc = 0;
- 	int reval_failed = 0;
- 
--	DPRINTK("ENTER\n");
--
- 	if (dev->flags & ATA_DFLAG_DETACH) {
- 		detach = 1;
- 		goto fail;
-@@ -827,7 +821,6 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
- 	/* okay, PMP resurrected */
- 	ehc->i.flags = 0;
- 
--	DPRINTK("EXIT, rc=0\n");
- 	return 0;
- 
-  fail:
-@@ -837,7 +830,6 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
- 	else
- 		ata_dev_disable(dev);
- 
--	DPRINTK("EXIT, rc=%d\n", rc);
- 	return rc;
- }
- 
+ 	/* initialize sense_buf with the error register,
 -- 
 2.16.4
 

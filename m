@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B1E177294
+	by mail.lfdr.de (Postfix) with ESMTP id 82853177292
 	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 10:39:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728223AbgCCJjo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 3 Mar 2020 04:39:44 -0500
-Received: from mx2.suse.de ([195.135.220.15]:47428 "EHLO mx2.suse.de"
+        id S1727621AbgCCJjn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 3 Mar 2020 04:39:43 -0500
+Received: from mx2.suse.de ([195.135.220.15]:47464 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727706AbgCCJjn (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1727791AbgCCJjn (ORCPT <rfc822;linux-ide@vger.kernel.org>);
         Tue, 3 Mar 2020 04:39:43 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 29EF2B1CE;
+        by mx2.suse.de (Postfix) with ESMTP id 2DA67B1D7;
         Tue,  3 Mar 2020 09:39:41 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Tejun Heo <tj@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 02/40] libata.h: whitespace and indentation fixes
-Date:   Tue,  3 Mar 2020 10:37:35 +0100
-Message-Id: <20200303093813.18523-3-hare@suse.de>
+Subject: [PATCH 03/40] libata-transport: Whitespace cleanup
+Date:   Tue,  3 Mar 2020 10:37:36 +0100
+Message-Id: <20200303093813.18523-4-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200303093813.18523-1-hare@suse.de>
 References: <20200303093813.18523-1-hare@suse.de>
@@ -34,128 +34,76 @@ X-Mailing-List: linux-ide@vger.kernel.org
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- include/linux/libata.h | 41 ++++++++++++++++++++++++++---------------
- 1 file changed, 26 insertions(+), 15 deletions(-)
+ drivers/ata/libata-transport.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 710e09dae910..a19ede5644e7 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -593,7 +593,7 @@ struct ata_ioports {
- 
- struct ata_host {
- 	spinlock_t		lock;
--	struct device 		*dev;
-+	struct device		*dev;
- 	void __iomem * const	*iomap;
- 	unsigned int		n_ports;
- 	unsigned int		n_tags;			/* nr of NCQ tags */
-@@ -813,7 +813,7 @@ struct ata_port {
- 	/* Flags that change dynamically, protected by ap->lock */
- 	unsigned int		pflags; /* ATA_PFLAG_xxx */
- 	unsigned int		print_id; /* user visible unique port ID */
--	unsigned int            local_port_no; /* host local port num */
-+	unsigned int		local_port_no; /* host local port num */
- 	unsigned int		port_no; /* 0 based port no. inside the host */
- 
- #ifdef CONFIG_ATA_SFF
-@@ -848,7 +848,7 @@ struct ata_port {
- 
- 	struct ata_port_stats	stats;
- 	struct ata_host		*host;
--	struct device 		*dev;
-+	struct device		*dev;
- 	struct device		tdev;
- 
- 	struct mutex		scsi_scan_mutex;
-@@ -900,11 +900,14 @@ struct ata_port_operations {
- 	 * Configuration and exception handling
- 	 */
- 	int  (*cable_detect)(struct ata_port *ap);
--	unsigned long (*mode_filter)(struct ata_device *dev, unsigned long xfer_mask);
-+	unsigned long (*mode_filter)(struct ata_device *dev,
-+				     unsigned long xfer_mask);
- 	void (*set_piomode)(struct ata_port *ap, struct ata_device *dev);
- 	void (*set_dmamode)(struct ata_port *ap, struct ata_device *dev);
--	int  (*set_mode)(struct ata_link *link, struct ata_device **r_failed_dev);
--	unsigned int (*read_id)(struct ata_device *dev, struct ata_taskfile *tf, u16 *id);
-+	int  (*set_mode)(struct ata_link *link,
-+			 struct ata_device **r_failed_dev);
-+	unsigned int (*read_id)(struct ata_device *dev,
-+				struct ata_taskfile *tf, u16 *id);
- 
- 	void (*dev_config)(struct ata_device *dev);
- 
-@@ -999,7 +1002,7 @@ struct ata_port_info {
- 	unsigned long		mwdma_mask;
- 	unsigned long		udma_mask;
- 	struct ata_port_operations *port_ops;
--	void 			*private_data;
-+	void			*private_data;
+diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
+index 12a505bb9c5b..4ccfeb85ec66 100644
+--- a/drivers/ata/libata-transport.c
++++ b/drivers/ata/libata-transport.c
+@@ -163,7 +163,7 @@ static struct {
+ 	{ AC_ERR_INVALID,		"InvalidArg" },
+ 	{ AC_ERR_OTHER,			"Unknown" },
+ 	{ AC_ERR_NODEV_HINT,		"NoDeviceHint" },
+-	{ AC_ERR_NCQ,		 	"NCQError" }
++	{ AC_ERR_NCQ,			"NCQError" }
  };
+ ata_bitfield_name_match(err, ata_err_names)
  
- struct ata_timing {
-@@ -1103,7 +1106,8 @@ extern int ata_host_activate(struct ata_host *host, int irq,
- 			     irq_handler_t irq_handler, unsigned long irq_flags,
- 			     struct scsi_host_template *sht);
- extern void ata_host_detach(struct ata_host *host);
--extern void ata_host_init(struct ata_host *, struct device *, struct ata_port_operations *);
-+extern void ata_host_init(struct ata_host *, struct device *,
-+			  struct ata_port_operations *);
- extern int ata_scsi_detect(struct scsi_host_template *sht);
- extern int ata_scsi_ioctl(struct scsi_device *dev, unsigned int cmd,
- 			  void __user *arg);
-@@ -1117,7 +1121,8 @@ extern int ata_sas_scsi_ioctl(struct ata_port *ap, struct scsi_device *dev,
- 			    unsigned int cmd, void __user *arg);
- extern void ata_sas_port_destroy(struct ata_port *);
- extern struct ata_port *ata_sas_port_alloc(struct ata_host *,
--					   struct ata_port_info *, struct Scsi_Host *);
-+					   struct ata_port_info *,
-+					   struct Scsi_Host *);
- extern void ata_sas_async_probe(struct ata_port *ap);
- extern int ata_sas_sync_probe(struct ata_port *ap);
- extern int ata_sas_port_init(struct ata_port *);
-@@ -1188,12 +1193,17 @@ extern int ata_scsi_slave_config(struct scsi_device *sdev);
- extern void ata_scsi_slave_destroy(struct scsi_device *sdev);
- extern int ata_scsi_change_queue_depth(struct scsi_device *sdev,
- 				       int queue_depth);
--extern int __ata_change_queue_depth(struct ata_port *ap, struct scsi_device *sdev,
-+extern int __ata_change_queue_depth(struct ata_port *ap,
-+				    struct scsi_device *sdev,
- 				    int queue_depth);
- extern struct ata_device *ata_dev_pair(struct ata_device *adev);
--extern int ata_do_set_mode(struct ata_link *link, struct ata_device **r_failed_dev);
--extern void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap);
--extern void ata_scsi_cmd_error_handler(struct Scsi_Host *host, struct ata_port *ap, struct list_head *eh_q);
-+extern int ata_do_set_mode(struct ata_link *link,
-+			   struct ata_device **r_failed_dev);
-+extern void ata_scsi_port_error_handler(struct Scsi_Host *host,
-+					struct ata_port *ap);
-+extern void ata_scsi_cmd_error_handler(struct Scsi_Host *host,
-+				       struct ata_port *ap,
-+				       struct list_head *eh_q);
- extern bool sata_lpm_ignore_phy_events(struct ata_link *link);
- 
- extern int ata_cable_40wire(struct ata_port *ap);
-@@ -1223,7 +1233,8 @@ struct pci_bits {
- 	unsigned long		val;
- };
- 
--extern int pci_test_config_bits(struct pci_dev *pdev, const struct pci_bits *bits);
-+extern int pci_test_config_bits(struct pci_dev *pdev,
-+				const struct pci_bits *bits);
- extern void ata_pci_shutdown_one(struct pci_dev *pdev);
- extern void ata_pci_remove_one(struct pci_dev *pdev);
- 
-@@ -1497,7 +1508,7 @@ static inline bool ata_tag_valid(unsigned int tag)
-  * Internal use only, iterate commands ignoring error handling and
-  * status of 'qc'.
+@@ -327,7 +327,7 @@ int ata_tport_add(struct device *parent,
   */
--#define ata_qc_for_each_raw(ap, qc, tag)					\
-+#define ata_qc_for_each_raw(ap, qc, tag)			\
- 	__ata_qc_for_each(ap, qc, tag, ATA_MAX_QUEUE, __ata_qc_from_tag)
+ static int noop(int x) { return x; }
  
- /*
+-#define ata_link_show_linkspeed(field, format)			        \
++#define ata_link_show_linkspeed(field, format)				\
+ static ssize_t								\
+ show_ata_link_##field(struct device *dev,				\
+ 		      struct device_attribute *attr, char *buf)		\
+@@ -416,7 +416,7 @@ int ata_tlink_add(struct ata_link *link)
+ 	dev->release = ata_tlink_release;
+ 	if (ata_is_host_link(link))
+ 		dev_set_name(dev, "link%d", ap->print_id);
+-        else
++	else
+ 		dev_set_name(dev, "link%d.%d", ap->print_id, link->pmp);
+ 
+ 	transport_setup_device(dev);
+@@ -484,7 +484,7 @@ show_ata_dev_##field(struct device *dev,				\
+ 
+ #define ata_dev_simple_attr(field, format_string, type)	\
+ 	ata_dev_show_simple(field, format_string, (type))	\
+-static DEVICE_ATTR(field, S_IRUGO, 			\
++	static DEVICE_ATTR(field, S_IRUGO,			\
+ 		   show_ata_dev_##field, NULL)
+ 
+ ata_dev_simple_attr(spdn_cnt, "%d\n", int);
+@@ -502,7 +502,7 @@ static int ata_show_ering(struct ata_ering_entry *ent, void *void_arg)
+ 
+ 	seconds = div_u64_rem(ent->timestamp, HZ, &rem);
+ 	arg->written += sprintf(arg->buf + arg->written,
+-			        "[%5llu.%09lu]", seconds,
++				"[%5llu.%09lu]", seconds,
+ 				rem * NSEC_PER_SEC / HZ);
+ 	arg->written += get_ata_err_names(ent->err_mask,
+ 					  arg->buf + arg->written);
+@@ -667,7 +667,7 @@ static int ata_tdev_add(struct ata_device *ata_dev)
+ 	dev->release = ata_tdev_release;
+ 	if (ata_is_host_link(link))
+ 		dev_set_name(dev, "dev%d.%d", ap->print_id,ata_dev->devno);
+-        else
++	else
+ 		dev_set_name(dev, "dev%d.%d.0", ap->print_id, link->pmp);
+ 
+ 	transport_setup_device(dev);
+@@ -689,7 +689,7 @@ static int ata_tdev_add(struct ata_device *ata_dev)
+  */
+ 
+ #define SETUP_TEMPLATE(attrb, field, perm, test)			\
+-	i->private_##attrb[count] = dev_attr_##field;		       	\
++	i->private_##attrb[count] = dev_attr_##field;			\
+ 	i->private_##attrb[count].attr.mode = perm;			\
+ 	i->attrb[count] = &i->private_##attrb[count];			\
+ 	if (test)							\
 -- 
 2.16.4
 

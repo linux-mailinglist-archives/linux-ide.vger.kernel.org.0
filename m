@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 805D017729D
-	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 10:39:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DFE4F1772A3
+	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 10:39:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728274AbgCCJjr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 3 Mar 2020 04:39:47 -0500
-Received: from mx2.suse.de ([195.135.220.15]:47676 "EHLO mx2.suse.de"
+        id S1728237AbgCCJjs (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 3 Mar 2020 04:39:48 -0500
+Received: from mx2.suse.de ([195.135.220.15]:47750 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728214AbgCCJjq (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        id S1728216AbgCCJjq (ORCPT <rfc822;linux-ide@vger.kernel.org>);
         Tue, 3 Mar 2020 04:39:46 -0500
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id B570BB201;
+        by mx2.suse.de (Postfix) with ESMTP id B9FCDB202;
         Tue,  3 Mar 2020 09:39:41 +0000 (UTC)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Tejun Heo <tj@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 13/40] sata_mv: kill 'port' argument in mv_dump_all_regs()
-Date:   Tue,  3 Mar 2020 10:37:46 +0100
-Message-Id: <20200303093813.18523-14-hare@suse.de>
+Subject: [PATCH 14/40] sata_sx4: move DPRINTK to VPRINTK
+Date:   Tue,  3 Mar 2020 10:37:47 +0100
+Message-Id: <20200303093813.18523-15-hare@suse.de>
 X-Mailer: git-send-email 2.16.4
 In-Reply-To: <20200303093813.18523-1-hare@suse.de>
 References: <20200303093813.18523-1-hare@suse.de>
@@ -31,71 +31,28 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Always '-1', so drop it and simplify the function.
+All other logging instances in this functions are with VPRINTK,
+so follow suit.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/ata/sata_mv.c | 24 +++++++-----------------
- 1 file changed, 7 insertions(+), 17 deletions(-)
+ drivers/ata/sata_sx4.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index 1eb93976af8d..940b7f2e9105 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -1283,23 +1283,13 @@ static void mv_dump_pci_cfg(struct pci_dev *pdev, unsigned bytes)
- 	}
- }
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index 2c7b30c5ea3d..e99d9f5139f9 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -755,7 +755,7 @@ static inline unsigned int pdc20621_host_intr(struct ata_port *ap,
+ 	} else if (qc->tf.protocol == ATA_PROT_NODATA) {
  
--static void mv_dump_all_regs(void __iomem *mmio_base, int port,
--			     struct pci_dev *pdev)
-+static void mv_dump_all_regs(void __iomem *mmio_base, struct pci_dev *pdev)
- {
--	void __iomem *hc_base = mv_hc_base(mmio_base,
--					   port >> MV_PORT_HC_SHIFT);
--	void __iomem *port_base;
- 	int start_port, num_ports, p, start_hc, num_hcs, hc;
- 
--	if (0 > port) {
--		start_hc = start_port = 0;
--		num_ports = 8;		/* shld be benign for 4 port devs */
--		num_hcs = 2;
--	} else {
--		start_hc = port >> MV_PORT_HC_SHIFT;
--		start_port = port;
--		num_ports = num_hcs = 1;
--	}
-+	start_hc = start_port = 0;
-+	num_ports = 8;		/* shld be benign for 4 port devs */
-+	num_hcs = 2;
- 	dev_printk(KERN_DEBUG, &pdev->dev,
- 		   "%s: All registers for port(s) %u-%u:\n", __func__,
- 		   start_port, num_ports > 1 ? num_ports - 1 : start_port);
-@@ -1314,13 +1304,13 @@ static void mv_dump_all_regs(void __iomem *mmio_base, int port,
- 	mv_dump_mem(&pdev->dev, mmio_base+0xf00, 0x4);
- 	mv_dump_mem(&pdev->dev, mmio_base+0x1d00, 0x6c);
- 	for (hc = start_hc; hc < start_hc + num_hcs; hc++) {
--		hc_base = mv_hc_base(mmio_base, hc);
-+		void __iomem *hc_base = mv_hc_base(mmio_base, hc);
- 		dev_printk(KERN_DEBUG, &pdev->dev, "%s: HC regs (HC %i):\n",
- 			   __func__, hc);
- 		mv_dump_mem(&pdev->dev, hc_base, 0x1c);
- 	}
- 	for (p = start_port; p < start_port + num_ports; p++) {
--		port_base = mv_port_base(mmio_base, p);
-+		void __iomem *port_base = mv_port_base(mmio_base, p);
- 		dev_printk(KERN_DEBUG, &pdev->dev, "%s: EDMA regs (port %i):\n",
- 			   __func__, p);
- 		mv_dump_mem(&pdev->dev, port_base, 0x54);
-@@ -2969,7 +2959,7 @@ static int mv_pci_error(struct ata_host *host, void __iomem *mmio)
- 	if (pci_dump) {
- 		dev_printk(KERN_DEBUG, host->dev, "%s: All regs @ PCI error\n",
- 			   __func__);
--		mv_dump_all_regs(mmio, -1, to_pci_dev(host->dev));
-+		mv_dump_all_regs(mmio, to_pci_dev(host->dev));
- 	}
- 	writelfl(0, mmio + hpriv->irq_cause_offset);
- 
+ 		status = ata_sff_busy_wait(ap, ATA_BUSY | ATA_DRQ, 1000);
+-		DPRINTK("BUS_NODATA (drv_stat 0x%X)\n", status);
++		VPRINTK("BUS_NODATA (drv_stat 0x%X)\n", status);
+ 		qc->err_mask |= ac_err_mask(status);
+ 		ata_qc_complete(qc);
+ 		handled = 1;
 -- 
 2.16.4
 

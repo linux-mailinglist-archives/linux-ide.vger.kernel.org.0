@@ -2,84 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F66A1772B9
-	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 10:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFE21781DD
+	for <lists+linux-ide@lfdr.de>; Tue,  3 Mar 2020 20:02:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728271AbgCCJjz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 3 Mar 2020 04:39:55 -0500
-Received: from mx2.suse.de ([195.135.220.15]:47788 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728284AbgCCJjt (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 3 Mar 2020 04:39:49 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 3D47EB253;
-        Tue,  3 Mar 2020 09:39:42 +0000 (UTC)
-From:   Hannes Reinecke <hare@suse.de>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Tejun Heo <tj@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 40/40] libata: remove references to ATA_DEBUG
-Date:   Tue,  3 Mar 2020 10:38:13 +0100
-Message-Id: <20200303093813.18523-41-hare@suse.de>
-X-Mailer: git-send-email 2.16.4
-In-Reply-To: <20200303093813.18523-1-hare@suse.de>
-References: <20200303093813.18523-1-hare@suse.de>
+        id S2387753AbgCCSHS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 3 Mar 2020 13:07:18 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:34157 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387458AbgCCSHR (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 3 Mar 2020 13:07:17 -0500
+Received: by mail-il1-f196.google.com with SMTP id n11so3627595ild.1
+        for <linux-ide@vger.kernel.org>; Tue, 03 Mar 2020 10:07:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=e+LZtO2/zS//8UPeOPncTtMcmtHiZn85qCQrBtLOWHxzfoobLJndAqeCvJ+g5y7xpZ
+         B1fhI8VVBhJPm+8jbo8lmyfRo2Sfq1AAe7Ib/02ctQ5bn2qTyFIORujditgGGP8eMFTg
+         uyYdY36qQAJ/ZX8gkKrMENqj29LLnixO6iDvw5Tuk32ddu/VOsQM1bgi5MI2uA/x7g2m
+         5ldmv7Yaqtd/5xNO/E8ALtKYkZPJXu/jI6GNB7WERmtgly2V7RQXm8B16m/WhTwpMuDA
+         vvXOlnUbEA+CadIqXsja8kvyT0v8pAsHMBMNQ2EGISvzbYuA9Jk0A+VoDT/cw6cWZoo5
+         HUjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=42VRx4KA+cD1ZZnhz/34yl/kjJSKnU+ahvHX6e7S6BM=;
+        b=hnginw6dQURbeqOieYM5XMmUpN+rtLnsbrJgQYGkD6qMxvTG/D0s9p6PISX2Xqep35
+         rL5CNuXTRDzAXnxzNSLdBNHPvxFONeGnCx1NpcqqXrvQGOagyS7F+MqzVrQwPxG9R4EM
+         RMlsVqNJsmnBTODYbiciqiuYw2KpQKjTIl59dAWHDWU/ogBu4CNuFbApdHpNGrK4Ezg0
+         Rv8lR/DWZFbPi5pbIzkBermPeSJyi6Wvi9nQU59fdmAiydoZkwVQ0wZh/H8E6scxQTTL
+         +wOMp3T61w3oBAj7HEzsqNH5R05Xw06r5zmuH+AtOOtTl6yvEqdlyYZQB3wMf+9o/GEv
+         9mBQ==
+X-Gm-Message-State: ANhLgQ0gwYM3uec4xXs9wyoNklwwBgSk/J8Yl+A/oeiZV16HYd/z4vyC
+        F6qbPfTCWOZ1j4oAHfkHJJlQwNBqkrvEG4gEofg=
+X-Google-Smtp-Source: ADFU+vt93DSu2P2pl1SaMYv4kpcSyaDUzN58SUT+uojZkZDBqJKxPQUs/fNaiBOxvI75cxzYrGqWuTKru0NYY3EyAgU=
+X-Received: by 2002:a92:d2c5:: with SMTP id w5mr263781ilg.196.1583258837055;
+ Tue, 03 Mar 2020 10:07:17 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a02:9f04:0:0:0:0:0 with HTTP; Tue, 3 Mar 2020 10:07:16 -0800 (PST)
+Reply-To: dr.challynoah@gmail.com
+From:   DR CHALLY NOAH <mayorabrahamedge404@gmail.com>
+Date:   Tue, 3 Mar 2020 19:07:16 +0100
+Message-ID: <CALqVJWcFsyxyQAsBPyyFTosg2_5wdKBNu+cdqJL092OgFjc=WQ@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-All instances are gone.
-
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
----
- drivers/ata/libata-core.c | 2 --
- include/linux/libata.h    | 5 -----
- 2 files changed, 7 deletions(-)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 18c40cd19290..175b2a9dc000 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -6034,8 +6034,6 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
- #if defined(ATA_VERBOSE_DEBUG)
- 	/* turn on all debugging levels */
- 	ap->msg_enable = 0x00FF;
--#elif defined(ATA_DEBUG)
--	ap->msg_enable = ATA_MSG_DRV | ATA_MSG_WARN | ATA_MSG_ERR;
- #else
- 	ap->msg_enable = ATA_MSG_DRV | ATA_MSG_ERR | ATA_MSG_WARN;
- #endif
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 41dce03da7ef..e7090df2231b 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -38,22 +38,17 @@
-  * compile-time options: to be removed as soon as all the drivers are
-  * converted to the new debugging mechanism
-  */
--#undef ATA_DEBUG		/* debugging output */
- #undef ATA_VERBOSE_DEBUG	/* yet more debugging output */
- #undef ATA_IRQ_TRAP		/* define to ack screaming irqs */
- #undef ATA_NDEBUG		/* define to disable quick runtime checks */
- 
- 
- /* note: prints function name for you */
--#ifdef ATA_DEBUG
- #ifdef ATA_VERBOSE_DEBUG
- #define VPRINTK(fmt, args...) printk(KERN_ERR "%s: " fmt, __func__, ## args)
- #else
- #define VPRINTK(fmt, args...)
- #endif	/* ATA_VERBOSE_DEBUG */
--#else
--#define VPRINTK(fmt, args...)
--#endif	/* ATA_DEBUG */
- 
- #define ata_print_version_once(dev, version)			\
- ({								\
--- 
-2.16.4
-
+Hello Dear,
+What Have Kept You Waiting To Claim Your $600,000.00 USD Compensation Award?
+This said fund was issued out by the UNITED NATIONS To compensate
+you.Please If You Have Not Claim Your Fund (Award),Kindly contact me
+at   DR.CHALLYNOAH@GMAIL.COM   for further details on how to proceed your
+fund (award)release to you or better still reply back Immediately You
+Receive This Information For An Urgent Confirmation And Release Of Your
+Fund To You Without Delays, as your email was listed among those to be
+compensated this year.Congratulations..
+Best Regards,
+Dr Chally Noah.
+Minister Of Finance On Foreign Remittance:

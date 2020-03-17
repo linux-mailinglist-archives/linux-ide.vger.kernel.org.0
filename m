@@ -2,74 +2,174 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEDE318769E
-	for <lists+linux-ide@lfdr.de>; Tue, 17 Mar 2020 01:11:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F71187B9C
+	for <lists+linux-ide@lfdr.de>; Tue, 17 Mar 2020 09:56:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733070AbgCQALn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 16 Mar 2020 20:11:43 -0400
-Received: from mail.uic.edu.hk ([61.143.62.86]:48979 "EHLO umgp.uic.edu.hk"
+        id S1725868AbgCQI4X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 17 Mar 2020 04:56:23 -0400
+Received: from mail-eopbgr50058.outbound.protection.outlook.com ([40.107.5.58]:20355
+        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1733047AbgCQALn (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 16 Mar 2020 20:11:43 -0400
-X-IronPort-AV: E=Sophos;i="5.43,368,1503331200"; 
-   d="scan'208";a="17243176"
-Received: from unknown (HELO zpmail.uic.edu.hk) ([192.168.111.249])
-  by umgp.uic.edu.hk with ESMTP; 17 Mar 2020 08:11:35 +0800
-Received: from zpmail.uic.edu.hk (localhost [127.0.0.1])
-        by zpmail.uic.edu.hk (Postfix) with ESMTPS id D96D941C05A3;
-        Tue, 17 Mar 2020 08:11:32 +0800 (CST)
-Received: from localhost (localhost [127.0.0.1])
-        by zpmail.uic.edu.hk (Postfix) with ESMTP id D554341C0957;
-        Tue, 17 Mar 2020 08:11:31 +0800 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zpmail.uic.edu.hk D554341C0957
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uic.edu.hk;
-        s=6465647E-9D7B-11E8-B17B-42130C7FA3B9; t=1584403892;
-        bh=Wn2BcVyAdGxyDvB/5AnVfCr/iJTzisyuX4dwKssec6E=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=N1pNhkd2l8zz69kDtEsPH5n7SDL70Ak/Rgb/NYqC0+ZCBZFg/G0QkldxXmMRPmztz
-         HwkJ6HHAibMur3rytYhnqKeG349hpGDQCbhvoJdZWkvkFCa93STWbitRqMynzR+Wj5
-         wLEdN7i9CyVDDhspocQMykx6lSGq645dTckJSCrsFHg+uR95rTW6kz2/3F5tST7+Uo
-         ELvvW8oTRw+C3DdE82L8ao85KfwNAx6BRhhB+sNBssPbo3CqQ69/PO1/J9gy3aGO+s
-         FwDrxpCEm2RIo68N7oaYrAjY/FUGCbKk/MsqrV+VDqizldOqfTDFamlvQc82rVkjYy
-         rx6v80NBgwdtg==
-Received: from zpmail.uic.edu.hk ([127.0.0.1])
-        by localhost (zpmail.uic.edu.hk [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id gCmMIXxwS0HE; Tue, 17 Mar 2020 08:11:31 +0800 (CST)
-Received: from zpmail.uic.edu.hk (zpmail.uic.edu.hk [192.168.111.249])
-        by zpmail.uic.edu.hk (Postfix) with ESMTP id 1549641C058D;
-        Tue, 17 Mar 2020 08:11:27 +0800 (CST)
-Date:   Tue, 17 Mar 2020 08:11:26 +0800 (CST)
-From:   David Ibe <ylawrence@uic.edu.hk>
-Reply-To: David Ibe <davidibe718@gmail.com>
-Message-ID: <2065446646.63699156.1584403886963.JavaMail.zimbra@uic.edu.hk>
-Subject: 
+        id S1725536AbgCQI4W (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 17 Mar 2020 04:56:22 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZD37Ht1ULx8DxYVFLsAuG1GuXdptmgp7lK01VPZgqwyBD8I7e0EiVgr7l/ognnb7RtE7A6pdOeK8jy1VQk7j/6ihu1i56LE0kndEyLidfqGtwL8ZD7sFf3Me4WEZ81JnbF2ZR0qp0y/TtTHD5KGIP2wPu0edpR62BuXLwennzJUpEuLmAfJbTjtCtJE7ADOVvpXppuwG2wKjYGyQgccVkbRmCukFFAWAmtZLnXb1J+/jBcZnqLyRz0KKb38eWvAWjREV+U7Hcvp4SqwGQP5+AWIXeqnCPs2xs/l9gQyM+ALEKHqVpDkCJNlemxxgKgtIY7USnwi5XbR+ZmQxUlr/rA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NUwk74+bJFeLafMQBjpLQkYQnkx6+DwDjioK6mgjbLA=;
+ b=C41pfnWrxvVrG4nlQ9xqFDzi6SwXznsJbAPBYxTLUA9nOjP+T5ClgwaLaJQzKL8mku8x+FGdHb5qWN/jiGjrP9MO5gVWS5PC3vLE3t+1suEq9Brkm86W3QtOmByUMblpxEzWdkmeORNDftYnf+C+nE7S3s7oIf2bt0dgnkVdXN6KULArF06jh9b26DfHXLkXvPjSbIUn1gzhXHY/BqfrB4pABbwuZEhaBRjqT2JlEjfob16oI1B2j7YsjmLzRWL1oMSJsD6C1NcdXukKVTuQwuHBga+pIoKBmbW2KmksRJ/lycOS0nWjmtIE/LBIzUDFsv+q9NM/OhXLvpn7esVCKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NUwk74+bJFeLafMQBjpLQkYQnkx6+DwDjioK6mgjbLA=;
+ b=azb1qjUS8EtGERkLWHr3EpNMiITb70bolZabrHqXLvM6+wV5eomNudrsFCdstC71c2V4Lvm++1YO4qUrjlLIDZiYjNCq3p/i3yadkDKl6oAvy3/dXQOKMF+1p98wbGlVBFJT8WxPNFNgZR/MYEAXUzU6nhkbq+aU+iaxsLQ7sxw=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=peng.ma@nxp.com; 
+Received: from AM7PR04MB7016.eurprd04.prod.outlook.com (52.135.58.214) by
+ AM7PR04MB7109.eurprd04.prod.outlook.com (52.135.57.10) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2814.18; Tue, 17 Mar 2020 08:56:19 +0000
+Received: from AM7PR04MB7016.eurprd04.prod.outlook.com
+ ([fe80::14c2:8800:1248:ddfa]) by AM7PR04MB7016.eurprd04.prod.outlook.com
+ ([fe80::14c2:8800:1248:ddfa%7]) with mapi id 15.20.2814.021; Tue, 17 Mar 2020
+ 08:56:19 +0000
+From:   Peng Ma <peng.ma@nxp.com>
+To:     axboe@kernel.dk
+Cc:     leoyang.li@nxp.com, andy.tang@nxp.com, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Udit Kumar <udit.kumar@nxp.com>,
+        Peng Ma <peng.ma@nxp.com>
+Subject: [PATCH] ahci_qoriq: enable acpi support in qoriq ahci driver
+Date:   Tue, 17 Mar 2020 16:52:54 +0800
+Message-Id: <20200317085254.40795-1-peng.ma@nxp.com>
+X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR01CA0104.apcprd01.prod.exchangelabs.com
+ (2603:1096:3:15::30) To AM7PR04MB7016.eurprd04.prod.outlook.com
+ (2603:10a6:20b:11e::22)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.111.160]
-X-Mailer: Zimbra 8.8.15_GA_3829 (ZimbraWebClient - GC80 (Win)/8.8.15_GA_3829)
-Thread-Index: 8IMjdxPQWBZshE+F+QJEttpRaFVxcQ==
-Thread-Topic: 
-To:     unlisted-recipients:; (no To-header on input)
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost.localdomain (119.31.174.73) by SG2PR01CA0104.apcprd01.prod.exchangelabs.com (2603:1096:3:15::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2814.16 via Frontend Transport; Tue, 17 Mar 2020 08:56:16 +0000
+X-Mailer: git-send-email 2.17.1
+X-Originating-IP: [119.31.174.73]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 0bf27c23-a18d-446b-709c-08d7ca510f11
+X-MS-TrafficTypeDiagnostic: AM7PR04MB7109:|AM7PR04MB7109:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <AM7PR04MB71092A8FF47343A36AA88EC7EDF60@AM7PR04MB7109.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:299;
+X-Forefront-PRVS: 0345CFD558
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(346002)(136003)(396003)(366004)(39860400002)(199004)(6506007)(4326008)(52116002)(69590400007)(6512007)(66946007)(6666004)(66476007)(66556008)(1076003)(36756003)(2616005)(956004)(81166006)(44832011)(6486002)(54906003)(478600001)(2906002)(86362001)(16526019)(186003)(81156014)(8936002)(6916009)(8676002)(5660300002)(26005)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:AM7PR04MB7109;H:AM7PR04MB7016.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
+Received-SPF: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: kyLzg0+UKp6ZPz31FD6sky+QvAsneZko+1f9Voh7OOwbm9GMruJBJ8mgGZVBD5zcZOgKr1XvDXy5OICcZwi3Djp6eVwE/j+nvz+ukpN716P20gzmSTk6mxnX00v4YmzvBsJi4skzcyxYQBYQhqrTRi3Ez7t3akRMiVyL9DqZxC/uQK4Tj3a7w5M1n41OtRTSn5rBOomIooP5ApoA676sff7CQRAb+1tVtwPifZAgYbDwj//QEjGrwQ9vDpGzYhQ7fm7vjnJYwRngkYnOj/taRD7jm45+Tch/ZZjQteljfH2szJF06Wh6Uuk8FTunpDyIusSce5ceszPSdhvaCbTESMWiZtlGtj7nq2hYsbfaQzpwTZoJPrzx540qOAze+oAp2pIHcAJ0u9fDqYIgVPFiILaRwpJ26lsYnUZXRsRqWIqyTJ/djz9Y/w3/KBGU/3Nd8Hen/V1Oel8pWgP02fZH7+6G8QvpJVYF1l6uHRy1HutXgrmt8HG4zZyZJF13O/ih
+X-MS-Exchange-AntiSpam-MessageData: kJUCIILO+ACGkpLHBYDk3O/roTXF5OrR9GTfLQcQUsgqF5qlwxWOa5Rg0yvOmXSlqHN9udn0Zel6e4W/tnfyN+Uc12ywRGvvcr0LRa4j54XE+6z2uCbOHixzfIM5rNJtR7PI15DC6LpKuEBKHcs6Tg==
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0bf27c23-a18d-446b-709c-08d7ca510f11
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2020 08:56:19.2467
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: yltehquZr5N7FULKU2SgFaZIAMe586CNszG3n/+zUcz092XVvzDHBsaPrq87ejUa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7109
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+From: Udit Kumar <udit.kumar@nxp.com>
 
+This patch enables ACPI support in qoriq ahci driver.
 
-Good Day,                
+Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
+Signed-off-by: Peng Ma <peng.ma@nxp.com>
+---
+ drivers/ata/ahci_qoriq.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-I am Mr. David Ibe, I work with the International Standards on Auditing, I have seen on records, that several times people has divert your funds into their own personal accounts.
+diff --git a/drivers/ata/ahci_qoriq.c b/drivers/ata/ahci_qoriq.c
+index a330307..f0f7723 100644
+--- a/drivers/ata/ahci_qoriq.c
++++ b/drivers/ata/ahci_qoriq.c
+@@ -6,6 +6,7 @@
+  *   Tang Yuantian <Yuantian.Tang@freescale.com>
+  */
+ 
++#include <linux/acpi.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/pm.h>
+@@ -80,6 +81,12 @@ static const struct of_device_id ahci_qoriq_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ahci_qoriq_of_match);
+ 
++static const struct acpi_device_id ahci_qoriq_acpi_match[] = {
++	{"NXP0004", .driver_data = (kernel_ulong_t)AHCI_LX2160A},
++	{ }
++};
++MODULE_DEVICE_TABLE(acpi, ahci_qoriq_acpi_match);
++
+ static int ahci_qoriq_hardreset(struct ata_link *link, unsigned int *class,
+ 			  unsigned long deadline)
+ {
+@@ -261,25 +268,28 @@ static int ahci_qoriq_probe(struct platform_device *pdev)
+ 	const struct of_device_id *of_id;
+ 	struct resource *res;
+ 	int rc;
++	const struct acpi_device_id *acpi_id;
+ 
+ 	hpriv = ahci_platform_get_resources(pdev, 0);
+ 	if (IS_ERR(hpriv))
+ 		return PTR_ERR(hpriv);
+ 
+ 	of_id = of_match_node(ahci_qoriq_of_match, np);
+-	if (!of_id)
++	acpi_id = acpi_match_device(ahci_qoriq_acpi_match, &pdev->dev);
++	if (!(of_id || acpi_id))
+ 		return -ENODEV;
+ 
+ 	qoriq_priv = devm_kzalloc(dev, sizeof(*qoriq_priv), GFP_KERNEL);
+ 	if (!qoriq_priv)
+ 		return -ENOMEM;
+ 
+-	qoriq_priv->type = (enum ahci_qoriq_type)of_id->data;
++	if (of_id)
++		qoriq_priv->type = (enum ahci_qoriq_type)of_id->data;
++	else
++		qoriq_priv->type = (enum ahci_qoriq_type)acpi_id->driver_data;
+ 
+ 	if (unlikely(!ecc_initialized)) {
+-		res = platform_get_resource_byname(pdev,
+-						   IORESOURCE_MEM,
+-						   "sata-ecc");
++		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
+ 		if (res) {
+ 			qoriq_priv->ecc_addr =
+ 				devm_ioremap_resource(dev, res);
+@@ -288,7 +298,8 @@ static int ahci_qoriq_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
+-	qoriq_priv->is_dmacoherent = of_dma_is_coherent(np);
++	if (device_get_dma_attr(&pdev->dev) == DEV_DMA_COHERENT)
++		qoriq_priv->is_dmacoherent = true;
+ 
+ 	rc = ahci_platform_enable_resources(hpriv);
+ 	if (rc)
+@@ -354,6 +365,7 @@ static struct platform_driver ahci_qoriq_driver = {
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.of_match_table = ahci_qoriq_of_match,
++		.acpi_match_table = ahci_qoriq_acpi_match,
+ 		.pm = &ahci_qoriq_pm_ops,
+ 	},
+ };
+-- 
+2.9.5
 
-Now I am writing to you in respect of the amount which I have been able to send to you through our International United Nations accredited and approved Diplomat, who has arrived Africa, I want you to know that the diplomat would deliver the funds which I have packaged as a diplomatic compensation to you and the amount in the consignment is  $10,000,000.00 United State Dollars.
-
-I did not disclose the contents to the diplomat, but I told him that it is your compensation from the Auditing Corporate Governance and Stewardship, Auditing and Assurance Standards Board. I want you to know that these funds would help with your financial status as I have seen in records that you have spent a lot trying to receive these funds and I am not demanding so much from you but only 30% for my stress and logistics.
-
-I would like you to get back to me with your personal contact details, so that I can give you the contact information's of the diplomat who has arrived Africa and has been waiting to get your details so that he can proceed with the delivery to you.
-
-Yours Sincerely,
-Kindly forward your details to: mrdavidibe966@gmail.com
-Mr. David Ibe
-International Auditor,
-Corporate Governance and Stewardship

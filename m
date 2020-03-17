@@ -2,174 +2,61 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59F71187B9C
-	for <lists+linux-ide@lfdr.de>; Tue, 17 Mar 2020 09:56:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B70B4188301
+	for <lists+linux-ide@lfdr.de>; Tue, 17 Mar 2020 13:09:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725868AbgCQI4X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 17 Mar 2020 04:56:23 -0400
-Received: from mail-eopbgr50058.outbound.protection.outlook.com ([40.107.5.58]:20355
-        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725536AbgCQI4W (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 17 Mar 2020 04:56:22 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ZD37Ht1ULx8DxYVFLsAuG1GuXdptmgp7lK01VPZgqwyBD8I7e0EiVgr7l/ognnb7RtE7A6pdOeK8jy1VQk7j/6ihu1i56LE0kndEyLidfqGtwL8ZD7sFf3Me4WEZ81JnbF2ZR0qp0y/TtTHD5KGIP2wPu0edpR62BuXLwennzJUpEuLmAfJbTjtCtJE7ADOVvpXppuwG2wKjYGyQgccVkbRmCukFFAWAmtZLnXb1J+/jBcZnqLyRz0KKb38eWvAWjREV+U7Hcvp4SqwGQP5+AWIXeqnCPs2xs/l9gQyM+ALEKHqVpDkCJNlemxxgKgtIY7USnwi5XbR+ZmQxUlr/rA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NUwk74+bJFeLafMQBjpLQkYQnkx6+DwDjioK6mgjbLA=;
- b=C41pfnWrxvVrG4nlQ9xqFDzi6SwXznsJbAPBYxTLUA9nOjP+T5ClgwaLaJQzKL8mku8x+FGdHb5qWN/jiGjrP9MO5gVWS5PC3vLE3t+1suEq9Brkm86W3QtOmByUMblpxEzWdkmeORNDftYnf+C+nE7S3s7oIf2bt0dgnkVdXN6KULArF06jh9b26DfHXLkXvPjSbIUn1gzhXHY/BqfrB4pABbwuZEhaBRjqT2JlEjfob16oI1B2j7YsjmLzRWL1oMSJsD6C1NcdXukKVTuQwuHBga+pIoKBmbW2KmksRJ/lycOS0nWjmtIE/LBIzUDFsv+q9NM/OhXLvpn7esVCKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NUwk74+bJFeLafMQBjpLQkYQnkx6+DwDjioK6mgjbLA=;
- b=azb1qjUS8EtGERkLWHr3EpNMiITb70bolZabrHqXLvM6+wV5eomNudrsFCdstC71c2V4Lvm++1YO4qUrjlLIDZiYjNCq3p/i3yadkDKl6oAvy3/dXQOKMF+1p98wbGlVBFJT8WxPNFNgZR/MYEAXUzU6nhkbq+aU+iaxsLQ7sxw=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=peng.ma@nxp.com; 
-Received: from AM7PR04MB7016.eurprd04.prod.outlook.com (52.135.58.214) by
- AM7PR04MB7109.eurprd04.prod.outlook.com (52.135.57.10) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2814.18; Tue, 17 Mar 2020 08:56:19 +0000
-Received: from AM7PR04MB7016.eurprd04.prod.outlook.com
- ([fe80::14c2:8800:1248:ddfa]) by AM7PR04MB7016.eurprd04.prod.outlook.com
- ([fe80::14c2:8800:1248:ddfa%7]) with mapi id 15.20.2814.021; Tue, 17 Mar 2020
- 08:56:19 +0000
-From:   Peng Ma <peng.ma@nxp.com>
-To:     axboe@kernel.dk
-Cc:     leoyang.li@nxp.com, andy.tang@nxp.com, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Udit Kumar <udit.kumar@nxp.com>,
-        Peng Ma <peng.ma@nxp.com>
-Subject: [PATCH] ahci_qoriq: enable acpi support in qoriq ahci driver
-Date:   Tue, 17 Mar 2020 16:52:54 +0800
-Message-Id: <20200317085254.40795-1-peng.ma@nxp.com>
-X-Mailer: git-send-email 2.17.1
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0104.apcprd01.prod.exchangelabs.com
- (2603:1096:3:15::30) To AM7PR04MB7016.eurprd04.prod.outlook.com
- (2603:10a6:20b:11e::22)
+        id S1726875AbgCQMJP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 17 Mar 2020 08:09:15 -0400
+Received: from sonic307-2.consmr.mail.ne1.yahoo.com ([66.163.190.121]:42851
+        "EHLO sonic307-2.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726410AbgCQMJP (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 17 Mar 2020 08:09:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584446954; bh=kcevCRoll2+Bsa3FDERpIV72LVcB1A4YV1b5N2AWYBk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Rrbbl+lM61hZyf9c3JU3tad348/wC0rOJwEr5gQRL0rlhaLClQXTSp3OnqVJK6fQ7fur4yl3NBdmqehvK3pll+nCQWr1uf+fjEZr6KPSHYouVBbaolzgBW0/yNDr/VEUuOn5l4acACf1cwr1Y3fZwl/62Qo/yv1tE08FmnGmK5iwR6+8WSdROSFmXJVjm81FK+ML/ErXZZUPsmKW1GGu4qmuOrMyVAyQYBgIunmqBWL29cEbS+tHyhCiLnypUT8VMcwFVaYM9h1P7FDMc8SOt2ee5KPeFBvFaMiBZKmvxeEuIJIxSbP8SHTeztsqaEVoylC/DOfbHr+VDKxBAISd9g==
+X-YMail-OSG: t2pjGGUVM1kIKYq1Zp3_kkeUyzT4O0Q332.E8w7MbiE2rkt4VUZCbhvg4MYYgao
+ _8Suik9VHsy8mwx5i3ITvP2GRvswFmqne0BQigVcHJN_JlQ.jR0q2I2F9p2ftXLPVj0R_Bb83Vyv
+ 73llJpPkiO6WzRVkYmVZXVYYb5mC.aDG_Aji2wPUHBbVhl3.NhYpYEyH3Nuzu4afCu9ASmXBcyjS
+ xtsdoqMJV1fRI..vZNNrDFewsKV5oThTArSeLQTBdN.gsWahkgJH8nGdRRk3Jj05hEvPagkn_oWz
+ 9OiefMrwluoFF3crQHWAPqDSJtKAGz2rb9HL7lA.YcnLBuFE3TGsHg3oOuCnKF1hwtSy4VuXebPP
+ Kppw6O7p.n_6Bg5U5_iMS4TJMC549w0iPEwRJbqyr_ed7rTSyf3fCqrXiVLEBUbqa_qadstqzyC6
+ zLlMiXoM9FovWOjItNnqqtdIFy2Vg_uAKcy4ofibShpUqAwmyOl5F50sO3zlE6rU8QgDS2RQJmrr
+ gzchTgYv.Ly_fQWJUPHtaeYm4xZiskCGzefT1EIR2VLsBsTkkxIsWtIrs6vDYXqjgns9C.ojGLw4
+ 5hddiHwobj88qvMEimRcvQqi0SLsxPZ6uqrSmZ6ZdJVESZtavT08eAsHE5MR_IOxwcwqyOafIW.B
+ ulW8HISl8hF63yipztV7pxJkzoHFEYzw6d.f1baU9...IaKDasCoGw34z22Zb.f.rlo.LO1EjfH_
+ mN4bYLGSiuHZuU2zhaBnv.LaruVFnFa5AfUcrwmR8P4WmR0ba1t_XHKQbtv0g9SguPRMLA22OSzM
+ eCM4SvsO1jxr.vzgUB5lPvE9_sXFInrxgmHvYBFqGqcn68hv60JovQd7osQCaGzayt3sDfZmkFvV
+ pNqv0XhO4BDYnc0ltwpYmxm_30VsZWsg14O9FD0WH4YfgVhNeijpN7UKsvY0mgz8gE_BiCL6atPe
+ 64u0ZcM44fbyqiRv1ocqHJDv6BcoME0gdKlbHmyRR0Hl.Atg1gYM_zuwHDFDhC.ksrAPrrqX1_Rk
+ TrNU0z2svaPxfGqbh83SRzgohQx461n6PzMmrNSwE21wxV3oetyWeYQprFb7FMnx4f5t5kFd0rjO
+ wMONTbuY2o_idkdtux6P486bQvC.a9OPBB2AXr8oC.3BQuUelBFYC8UhozGlkSumqlzpsyb7tOA3
+ WX3AGjcYbXu7k7VuaMRC4L0kFTRpAtMkNTaG5cibM5xkzuQ32XNO8kzPEADp3qODQpFrrCx9SZpJ
+ RX55CIpE6Vzbz7iwiAajrZaMIuIbxE1F0BvAF1pxC0YjNP.JExyfUPxsxEjf2jTKNVDO4GAJMjvN
+ RqPBGdQZmxbDksuG1um22QpXn0bb_Ew--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Mar 2020 12:09:14 +0000
+Date:   Tue, 17 Mar 2020 12:07:13 +0000 (UTC)
+From:   Stephen Li <stenn7@gabg.net>
+Reply-To: stephli947701@gmail.com
+Message-ID: <2078071840.1852905.1584446833663@mail.yahoo.com>
+Subject: REF
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (119.31.174.73) by SG2PR01CA0104.apcprd01.prod.exchangelabs.com (2603:1096:3:15::30) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2814.16 via Frontend Transport; Tue, 17 Mar 2020 08:56:16 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [119.31.174.73]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 0bf27c23-a18d-446b-709c-08d7ca510f11
-X-MS-TrafficTypeDiagnostic: AM7PR04MB7109:|AM7PR04MB7109:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <AM7PR04MB71092A8FF47343A36AA88EC7EDF60@AM7PR04MB7109.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:299;
-X-Forefront-PRVS: 0345CFD558
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(346002)(136003)(396003)(366004)(39860400002)(199004)(6506007)(4326008)(52116002)(69590400007)(6512007)(66946007)(6666004)(66476007)(66556008)(1076003)(36756003)(2616005)(956004)(81166006)(44832011)(6486002)(54906003)(478600001)(2906002)(86362001)(16526019)(186003)(81156014)(8936002)(6916009)(8676002)(5660300002)(26005)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:AM7PR04MB7109;H:AM7PR04MB7016.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;
-Received-SPF: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: kyLzg0+UKp6ZPz31FD6sky+QvAsneZko+1f9Voh7OOwbm9GMruJBJ8mgGZVBD5zcZOgKr1XvDXy5OICcZwi3Djp6eVwE/j+nvz+ukpN716P20gzmSTk6mxnX00v4YmzvBsJi4skzcyxYQBYQhqrTRi3Ez7t3akRMiVyL9DqZxC/uQK4Tj3a7w5M1n41OtRTSn5rBOomIooP5ApoA676sff7CQRAb+1tVtwPifZAgYbDwj//QEjGrwQ9vDpGzYhQ7fm7vjnJYwRngkYnOj/taRD7jm45+Tch/ZZjQteljfH2szJF06Wh6Uuk8FTunpDyIusSce5ceszPSdhvaCbTESMWiZtlGtj7nq2hYsbfaQzpwTZoJPrzx540qOAze+oAp2pIHcAJ0u9fDqYIgVPFiILaRwpJ26lsYnUZXRsRqWIqyTJ/djz9Y/w3/KBGU/3Nd8Hen/V1Oel8pWgP02fZH7+6G8QvpJVYF1l6uHRy1HutXgrmt8HG4zZyZJF13O/ih
-X-MS-Exchange-AntiSpam-MessageData: kJUCIILO+ACGkpLHBYDk3O/roTXF5OrR9GTfLQcQUsgqF5qlwxWOa5Rg0yvOmXSlqHN9udn0Zel6e4W/tnfyN+Uc12ywRGvvcr0LRa4j54XE+6z2uCbOHixzfIM5rNJtR7PI15DC6LpKuEBKHcs6Tg==
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bf27c23-a18d-446b-709c-08d7ca510f11
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2020 08:56:19.2467
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: yltehquZr5N7FULKU2SgFaZIAMe586CNszG3n/+zUcz092XVvzDHBsaPrq87ejUa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB7109
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <2078071840.1852905.1584446833663.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15342 YMailNodin Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Udit Kumar <udit.kumar@nxp.com>
 
-This patch enables ACPI support in qoriq ahci driver.
 
-Signed-off-by: Udit Kumar <udit.kumar@nxp.com>
-Signed-off-by: Peng Ma <peng.ma@nxp.com>
----
- drivers/ata/ahci_qoriq.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/ata/ahci_qoriq.c b/drivers/ata/ahci_qoriq.c
-index a330307..f0f7723 100644
---- a/drivers/ata/ahci_qoriq.c
-+++ b/drivers/ata/ahci_qoriq.c
-@@ -6,6 +6,7 @@
-  *   Tang Yuantian <Yuantian.Tang@freescale.com>
-  */
- 
-+#include <linux/acpi.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/pm.h>
-@@ -80,6 +81,12 @@ static const struct of_device_id ahci_qoriq_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, ahci_qoriq_of_match);
- 
-+static const struct acpi_device_id ahci_qoriq_acpi_match[] = {
-+	{"NXP0004", .driver_data = (kernel_ulong_t)AHCI_LX2160A},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(acpi, ahci_qoriq_acpi_match);
-+
- static int ahci_qoriq_hardreset(struct ata_link *link, unsigned int *class,
- 			  unsigned long deadline)
- {
-@@ -261,25 +268,28 @@ static int ahci_qoriq_probe(struct platform_device *pdev)
- 	const struct of_device_id *of_id;
- 	struct resource *res;
- 	int rc;
-+	const struct acpi_device_id *acpi_id;
- 
- 	hpriv = ahci_platform_get_resources(pdev, 0);
- 	if (IS_ERR(hpriv))
- 		return PTR_ERR(hpriv);
- 
- 	of_id = of_match_node(ahci_qoriq_of_match, np);
--	if (!of_id)
-+	acpi_id = acpi_match_device(ahci_qoriq_acpi_match, &pdev->dev);
-+	if (!(of_id || acpi_id))
- 		return -ENODEV;
- 
- 	qoriq_priv = devm_kzalloc(dev, sizeof(*qoriq_priv), GFP_KERNEL);
- 	if (!qoriq_priv)
- 		return -ENOMEM;
- 
--	qoriq_priv->type = (enum ahci_qoriq_type)of_id->data;
-+	if (of_id)
-+		qoriq_priv->type = (enum ahci_qoriq_type)of_id->data;
-+	else
-+		qoriq_priv->type = (enum ahci_qoriq_type)acpi_id->driver_data;
- 
- 	if (unlikely(!ecc_initialized)) {
--		res = platform_get_resource_byname(pdev,
--						   IORESOURCE_MEM,
--						   "sata-ecc");
-+		res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
- 		if (res) {
- 			qoriq_priv->ecc_addr =
- 				devm_ioremap_resource(dev, res);
-@@ -288,7 +298,8 @@ static int ahci_qoriq_probe(struct platform_device *pdev)
- 		}
- 	}
- 
--	qoriq_priv->is_dmacoherent = of_dma_is_coherent(np);
-+	if (device_get_dma_attr(&pdev->dev) == DEV_DMA_COHERENT)
-+		qoriq_priv->is_dmacoherent = true;
- 
- 	rc = ahci_platform_enable_resources(hpriv);
- 	if (rc)
-@@ -354,6 +365,7 @@ static struct platform_driver ahci_qoriq_driver = {
- 	.driver = {
- 		.name = DRV_NAME,
- 		.of_match_table = ahci_qoriq_of_match,
-+		.acpi_match_table = ahci_qoriq_acpi_match,
- 		.pm = &ahci_qoriq_pm_ops,
- 	},
- };
--- 
-2.9.5
-
+Greetings,
+I was searching through a local business directory when I found your
+profile. I am Soliciting On-Behalf of my private client who is
+interested in having a serious business investment in your country. If
+you have a valid business, investment or project he can invest
+back to me for more details. Your swift response is highly needed.
+Sincerely
+Stephen Li
+Please response back to me with is my private email below for more details
+stephli947701@gmail.com

@@ -2,197 +2,70 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3EA191F3C
-	for <lists+linux-ide@lfdr.de>; Wed, 25 Mar 2020 03:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41694192527
+	for <lists+linux-ide@lfdr.de>; Wed, 25 Mar 2020 11:09:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727376AbgCYCfT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 24 Mar 2020 22:35:19 -0400
-Received: from sender3-op-o12.zoho.com.cn ([124.251.121.243]:17890 "EHLO
-        sender3-op-o12.zoho.com.cn" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727268AbgCYCfT (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 24 Mar 2020 22:35:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1585103595;
-        s=mail; d=flygoat.com; i=jiaxun.yang@flygoat.com;
-        h=From:To:Cc:Message-ID:Subject:Date:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type;
-        bh=q3522WmCMcchsrcIlYC+4bPpCWTc6GzKb+1Lr0erI0g=;
-        b=aow0CiwG/hBJpTXuR4X2GcdsbXYILhWzbR25pZEkKL1dnOVaDH2BRyez6/6r2dd2
-        GjGJmQMVISsaLIHz0qfSOU8kCoB0KQMx+2rbtyEPtJLbhSVAONkI3SkFlJ/VTIJkPCT
-        907zcU85fxxghl04s5c2HjtqFr3yGfNUyXzMVASQ=
-Received: from localhost.localdomain (39.155.141.144 [39.155.141.144]) by mx.zoho.com.cn
-        with SMTPS id 1585103593296580.9934269828649; Wed, 25 Mar 2020 10:33:13 +0800 (CST)
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     linux-mips@vger.kernel.org
-Cc:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Rob Herring <robh@kernel.org>, Huacai Chen <chenhc@lemote.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Paul Cercueil <paul@crapouillou.net>,
-        John Crispin <john@phrozen.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Jean Delvare <jdelvare@suse.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        "H. Nikolaus Schaller" <hns@goldelico.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Andi Kleen <ak@linux.intel.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Yinglu Yang <yangyinglu@loongson.cn>,
-        Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Allison Randal <allison@lohutok.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Paul Burton <paulburton@kernel.org>,
-        Manuel Lauss <manuel.lauss@gmail.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Matt Redfearn <matt.redfearn@mips.com>,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-doc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-ide@vger.kernel.org
-Message-ID: <20200325022916.106641-6-jiaxun.yang@flygoat.com>
-Subject: [PATCH v7 03/12] dt-bindings: interrupt-controller: Add Loongson LIOINTC
-Date:   Wed, 25 Mar 2020 10:28:21 +0800
-X-Mailer: git-send-email 2.26.0.rc2
-In-Reply-To: <20200325022916.106641-1-jiaxun.yang@flygoat.com>
-References: <20200325022916.106641-1-jiaxun.yang@flygoat.com>
+        id S1727358AbgCYKI5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 25 Mar 2020 06:08:57 -0400
+Received: from mga04.intel.com ([192.55.52.120]:28316 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726206AbgCYKI5 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 25 Mar 2020 06:08:57 -0400
+IronPort-SDR: nUC9ZfTm7WCiYcvHN8xFpv1cyU5ZKIo0YtOgM7VqPJj74GXOZXOlCQsepGJC3ZIB6Ml4yPXNyJ
+ cbftwhDLK8VQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Mar 2020 03:08:57 -0700
+IronPort-SDR: v2TV795Bm99e07M5L0QyAf0Y+5uRHQr2M4T9vMV4YNjRDAFsLixqhYI8Pkohkt6GOTJDcD8Znb
+ WM4jX4Nh5Bog==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,303,1580803200"; 
+   d="scan'208";a="357762450"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 25 Mar 2020 03:08:55 -0700
+Received: by lahna (sSMTP sendmail emulation); Wed, 25 Mar 2020 12:08:54 +0200
+Date:   Wed, 25 Mar 2020 12:08:54 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-ide@vger.kernel.org
+Subject: Re: [PATCH] ahci: Add Intel Comet Lake PCH-H PCI ID
+Message-ID: <20200325100854.GS2564@lahna.fi.intel.com>
+References: <20200227143259.67172-1-mika.westerberg@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-ZohoCNMailClient: External
-Content-Type: text/plain; charset=utf8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200227143259.67172-1-mika.westerberg@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Document Loongson I/O Interrupt controller.
+Hi Jens,
 
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Co-developed-by: Huacai Chen <chenhc@lemote.com>
-Signed-off-by: Huacai Chen <chenhc@lemote.com>
----
- .../loongson,liointc.yaml                     | 93 +++++++++++++++++++
- 1 file changed, 93 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/interrupt-controller/=
-loongson,liointc.yaml
+On Thu, Feb 27, 2020 at 05:32:59PM +0300, Mika Westerberg wrote:
+> Add Intel Comet Lake PCH-H PCI ID to the list of supported controllers.
+> 
+> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-diff --git a/Documentation/devicetree/bindings/interrupt-controller/loongso=
-n,liointc.yaml b/Documentation/devicetree/bindings/interrupt-controller/loo=
-ngson,liointc.yaml
-new file mode 100644
-index 000000000000..9c6b91fee477
---- /dev/null
-+++ b/Documentation/devicetree/bindings/interrupt-controller/loongson,lioin=
-tc.yaml
-@@ -0,0 +1,93 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: "http://devicetree.org/schemas/interrupt-controller/loongson,liointc.=
-yaml#"
-+$schema: "http://devicetree.org/meta-schemas/core.yaml#"
-+
-+title: Loongson Local I/O Interrupt Controller
-+
-+maintainers:
-+  - Jiaxun Yang <jiaxun.yang@flygoat.com>
-+
-+description: |
-+  This interrupt controller is found in the Loongson-3 family of chips as =
-the primary
-+  package interrupt controller which can route local I/O interrupt to inte=
-rrupt lines
-+  of cores.
-+
-+allOf:
-+  - $ref: /schemas/interrupt-controller.yaml#
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - const: loongson,liointc-1.0
-+      - const: loongson,liointc-1.0a
-+
-+  reg:
-+    maxItems: 1
-+
-+  interrupt-controller: true
-+
-+  interrupts:
-+    description:
-+      Interrupt source of the CPU interrupts.
-+    minItems: 1
-+    maxItems: 4
-+
-+  interrupt-names:
-+    description: List of names for the parent interrupts.
-+    items:
-+      - const: int0
-+      - const: int1
-+      - const: int2
-+      - const: int3
-+    minItems: 1
-+    maxItems: 4
-+
-+  '#interrupt-cells':
-+    const: 2
-+
-+  'loongson,parent_int_map':
-+    description: |
-+      This property points how the children interrupts will be mapped into=
- CPU
-+      interrupt lines. Each cell refers to a parent interrupt line from 0 =
-to 3
-+      and each bit in the cell refers to a children interrupt fron 0 to 31=
-.
-+      If a CPU interrupt line didn't connected with liointc, then keep it'=
-s
-+      cell with zero.
-+    allOf:
-+      - $ref: /schemas/types.yaml#/definitions/uint32-array
-+      - items:
-+          minItems: 4
-+          maxItems: 4
-+
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - interrupt-controller
-+  - '#interrupt-cells'
-+  - 'loongson,parent_int_map'
-+
-+
-+examples:
-+  - |
-+    iointc: interrupt-controller@3ff01400 {
-+      compatible =3D "loongson,liointc-1.0";
-+      reg =3D <0x3ff01400 0x64>;
-+
-+      interrupt-controller;
-+      #interrupt-cells =3D <2>;
-+
-+      interrupt-parent =3D <&cpuintc>;
-+      interrupts =3D <2>, <3>;
-+      interrupt-names =3D "int0", "int1";
-+
-+      loongson,parent_int_map =3D <0xf0ffffff>, /* int0 */
-+                                <0x0f000000>, /* int1 */
-+                                <0x00000000>, /* int2 */
-+                                <0x00000000>; /* int3 */
-+
-+    };
-+
-+...
---=20
-2.26.0.rc2
+Any comments regarding this?
 
-
+> ---
+>  drivers/ata/ahci.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index 11ea1aff40db..5f461a92998f 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -245,6 +245,7 @@ static const struct ata_port_info ahci_port_info[] = {
+>  
+>  static const struct pci_device_id ahci_pci_tbl[] = {
+>  	/* Intel */
+> +	{ PCI_VDEVICE(INTEL, 0x06d6), board_ahci }, /* Comet Lake PCH-H RAID */
+>  	{ PCI_VDEVICE(INTEL, 0x2652), board_ahci }, /* ICH6 */
+>  	{ PCI_VDEVICE(INTEL, 0x2653), board_ahci }, /* ICH6M */
+>  	{ PCI_VDEVICE(INTEL, 0x27c1), board_ahci }, /* ICH7 */
+> -- 
+> 2.25.0

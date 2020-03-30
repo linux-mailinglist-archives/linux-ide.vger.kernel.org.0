@@ -2,57 +2,54 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC380197A23
-	for <lists+linux-ide@lfdr.de>; Mon, 30 Mar 2020 13:01:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F3251984DD
+	for <lists+linux-ide@lfdr.de>; Mon, 30 Mar 2020 21:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729530AbgC3LBN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 30 Mar 2020 07:01:13 -0400
-Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:53516 "EHLO
-        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729381AbgC3LBL (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 30 Mar 2020 07:01:11 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id DB5D22F6F5D4;
-        Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id lTJhwE_10QOc; Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 3490C2F6F59C;
-        Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec 3490C2F6F59C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
-        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1585559791;
-        bh=cLQbOHa1aY+/FyDjaDQOZOnnnlZDxMu+rBX/cg5yps8=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Reply-To:Message-Id;
-        b=sMaxFwRzyh2e/usPXpeUKVGg884xMqbLH84GPb84j7eLWa5CsnNlweiVzmme6vGkR
-         leypk1KgYAlxHU8rNke+VRUj4vN3Rz81ZalYkzovytF0vI3YAcAcIfG8laVoK9t8jO
-         o8/73ecBb+tZfYwmvJZ8VMj0+LBRmLW32/YXxvfY=
-X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
-Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id a9dWUaBEpLXP; Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from [10.121.152.251] (unknown [105.12.0.10])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 1E6052F6F5A1;
-        Mon, 30 Mar 2020 04:16:20 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: spende von 2.000.000,00 Euro
-To:     Recipients <luis.sanchez@11d01.mspz7.gob.ec>
-From:   "Manuel Franco" <luis.sanchez@11d01.mspz7.gob.ec>
-Date:   Mon, 30 Mar 2020 11:47:34 +0200
-Reply-To: manuelfrancospende11@gmail.com
-Message-Id: <20200330091621.1E6052F6F5A1@mail.11d01.mspz7.gob.ec>
+        id S1728458AbgC3TuJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 30 Mar 2020 15:50:09 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41364 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727255AbgC3TuJ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 30 Mar 2020 15:50:09 -0400
+Subject: Re: [GIT PULL] libata changes for 5.7-rc
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1585597809;
+        bh=lVH1staHdUc+VWic0ls23crmgogG3F6ST1oi50Hz6uM=;
+        h=From:In-Reply-To:References:Date:To:Cc:From;
+        b=LVuBaoWonleUZ9Y0Y9gn9V+KMxtAIwYT5Apt1wyVUgRE4eubNLr3u2Fyr6kug9VeE
+         qeiTPQWFbQWPkbk2XQjMWL9sdzY/hmz7SACIuInygyp8/ru7MW3Bu5/wvlVsn/dt2q
+         EL/tIu50xyyOesnCWHjml7IrrDc2u/6W/zWBZSWU=
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <d5c6ff8b-f82c-f609-0257-66fb6fbeb331@kernel.dk>
+References: <d5c6ff8b-f82c-f609-0257-66fb6fbeb331@kernel.dk>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <d5c6ff8b-f82c-f609-0257-66fb6fbeb331@kernel.dk>
+X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git
+ tags/for-5.7/libata-2020-03-29
+X-PR-Tracked-Commit-Id: bf89b0bf3038cdc972b563b16c68cee1b8eefb31
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 3a0eb192c01f43dca12628d8b5866d5b8ffb35f5
+Message-Id: <158559780904.12131.5857254947142224855.pr-tracker-bot@kernel.org>
+Date:   Mon, 30 Mar 2020 19:50:09 +0000
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        IDE/ATA development list <linux-ide@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Ich bin Manuel Franco, ich spende Ihnen 2.000.000,00 Euro. Kontaktieren Sie=
- mich jetzt, damit wir fortfahren k=F6nnen.
+The pull request you sent on Sun, 29 Mar 2020 16:45:51 -0600:
 
-I am Manuel Franco, I donate to you 2,000,000.00 euros. Contact me now so w=
-e can proceed.
+> git://git.kernel.dk/linux-block.git tags/for-5.7/libata-2020-03-29
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/3a0eb192c01f43dca12628d8b5866d5b8ffb35f5
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.wiki.kernel.org/userdoc/prtracker

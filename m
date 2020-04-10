@@ -2,37 +2,37 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27F581A41A6
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Apr 2020 06:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C99091A4092
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Apr 2020 05:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728171AbgDJD6q (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 9 Apr 2020 23:58:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60246 "EHLO mail.kernel.org"
+        id S1726638AbgDJDtj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 9 Apr 2020 23:49:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33756 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728278AbgDJDsi (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 9 Apr 2020 23:48:38 -0400
+        id S1726594AbgDJDti (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 9 Apr 2020 23:49:38 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4EAC22137B;
-        Fri, 10 Apr 2020 03:48:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0FA4F20A8B;
+        Fri, 10 Apr 2020 03:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586490519;
+        s=default; t=1586490578;
         bh=QSSGrsx/jMeT0/9tWBypb7x/p6plGQ0B+Kwg+JKNt14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NNqGj85MzHY4s8zy1pMfMce/nvcGUPsGbFhwk02VGLM8trbnoH8lBkE1oRekgTYS/
-         6Ks44KZ3gmgaqspeobf2lTX8xp5QOLjdSljtc9RDGpe3hR6HAX/2/6BFaq6jSxLD1y
-         Rc6ONLQm+b2PY3iLKdsmGFT3/OjFEYM/ZGb48U5Q=
+        b=j5Mg+sdj5WeIr/yoAxRy6NLmXJTzgcDUOpySA+6dLLPISu20yIjwdsAME52JBDNZu
+         YM3tD5BDbcAfJ5wndjv0L4tS+vJ6maYp4FmPksXmEk1H9zMF51TlKvlJtWvT6O53Rb
+         l9ujmCbzb7yOm0MyDEfoLqkem3dzUHKp3MN14wmw=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     John Garry <john.garry@huawei.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.5 32/56] libata: Remove extra scsi_host_put() in ata_scsi_add_hosts()
-Date:   Thu,  9 Apr 2020 23:47:36 -0400
-Message-Id: <20200410034800.8381-32-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 24/46] libata: Remove extra scsi_host_put() in ata_scsi_add_hosts()
+Date:   Thu,  9 Apr 2020 23:48:47 -0400
+Message-Id: <20200410034909.8922-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200410034800.8381-1-sashal@kernel.org>
-References: <20200410034800.8381-1-sashal@kernel.org>
+In-Reply-To: <20200410034909.8922-1-sashal@kernel.org>
+References: <20200410034909.8922-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

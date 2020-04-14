@@ -2,191 +2,253 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B6E1A750C
-	for <lists+linux-ide@lfdr.de>; Tue, 14 Apr 2020 09:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131C31A8645
+	for <lists+linux-ide@lfdr.de>; Tue, 14 Apr 2020 18:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406828AbgDNHmp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 14 Apr 2020 03:42:45 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:37572 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406821AbgDNHmn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 14 Apr 2020 03:42:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=ntNsFq7cgy8U6I7hRIN4P7odFKtpBsZoSKP2UJOeTXE=; b=jqPt05Z84OoY5cs9gziz5W7lY5
-        P949RxM7wbvW2DN6icQ3b6cW4fUzOhW3PwcOAvCvNlcqVTHYKziXFTyiU3hpA0tO7hjR+yjs+jHtD
-        3Bw/dBGeQ5fst719zqxrq4301BA0sslpJ0JZ6LG8/VZldnp73ttnO4AbMbzcJOy+5JyzpPuR2wR0A
-        kFnW4Bczq4PuDJH57T0/vb+DVPIBhVvJd9ZJnGHjzIYmPQX6ljjtKNMZt1rnRevbjO/VdWYYUryMO
-        crkZ/r7sjoo/cTQmDPD0Z25/AV+glK7xplXsmUM3OXiOSX+6NkoUb208fC12cnTwXCllF8zLA+Xmj
-        3wFEDfCg==;
-Received: from [2001:4bb8:180:384b:4c21:af7:dd95:e552] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jOGDS-0007Bm-5g; Tue, 14 Apr 2020 07:42:42 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: [PATCH 5/5] block: move dma_pad handling from blk_rq_map_sg into the callers
-Date:   Tue, 14 Apr 2020 09:42:25 +0200
-Message-Id: <20200414074225.332324-6-hch@lst.de>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200414074225.332324-1-hch@lst.de>
-References: <20200414074225.332324-1-hch@lst.de>
+        id S2391914AbgDNQz1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 14 Apr 2020 12:55:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55194 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2440299AbgDNQtI (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 14 Apr 2020 12:49:08 -0400
+Received: from mail.kernel.org (ip5f5ad4d8.dynamic.kabel-deutschland.de [95.90.212.216])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 64BDD20787;
+        Tue, 14 Apr 2020 16:49:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1586882942;
+        bh=hpU3ilpDhIBh1EkpHoT8CRglKxDNGuySrswIRHuRmXU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qP/fh2JuBrTWMBDU0Po9QgHcYacrRlFhnHwEY8en7h953JH1K2J6xRWgtWi+ouXIY
+         3gGiDenojv2rrUzJ4Wxk3whARW64aaikv0MOeHbofi1sPuRVe5IZT8BpzPaRPNxcO+
+         07Ps8XSWU9UmRtIfijlblMPlQG+5+iBYwuA7KjAY=
+Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
+        (envelope-from <mchehab@kernel.org>)
+        id 1jOOk8-0068kv-FR; Tue, 14 Apr 2020 18:49:00 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Rob Herring <robh@kernel.org>,
+        Maxime Ripard <maxime@cerno.tech>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Yuti Amonkar <yamonkar@cadence.com>,
+        devicetree@vger.kernel.org, linux-arch@vger.kernel.org,
+        kvm@vger.kernel.org, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+        kvmarm@lists.cs.columbia.edu, linux-crypto@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        freedreno@lists.freedesktop.org, linux-afs@lists.infradead.org,
+        ecryptfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
+        ocfs2-devel@oss.oracle.com, linux-pci@vger.kernel.org,
+        linux-edac@vger.kernel.org, linux-spi@vger.kernel.org,
+        Sandeep Maheswaram <sanm@codeaurora.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        linux-usb@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Matthias Brugger <mbrugger@suse.com>, netdev@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-rockchip@lists.infradead.org,
+        linux-ide@vger.kernel.org, linux1394-devel@lists.sourceforge.net
+Subject: [PATCH v2 00/33] Documentation fixes for Kernel 5.8
+Date:   Tue, 14 Apr 2020 18:48:26 +0200
+Message-Id: <cover.1586881715.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.25.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-There are only two callers of blk_rq_map_sg/__blk_rq_map_sg that set
-the dma_pad value in the queue.  Move the handling into those callers
-instead of burdening the common code, and move the ->extra_len field
-from struct request to struct scsi_cmnd.
+Patches 1 to 5 contain changes to the documentation toolset:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-core.c          |  1 -
- block/blk-merge.c         |  8 --------
- block/blk-mq.c            |  1 -
- drivers/ata/libata-scsi.c |  2 +-
- drivers/ide/ide-io.c      |  7 +++++--
- drivers/scsi/scsi_lib.c   | 10 +++++++++-
- include/linux/blkdev.h    |  2 --
- include/scsi/scsi_cmnd.h  |  1 +
- 8 files changed, 16 insertions(+), 16 deletions(-)
+- The first 3 patches help to reduce a lot the number of reported
+  kernel-doc issues, by making the tool more smart.
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index 7e4a1da0715e..311596d5dbc4 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -1638,7 +1638,6 @@ int blk_rq_prep_clone(struct request *rq, struct request *rq_src,
- 	}
- 	rq->nr_phys_segments = rq_src->nr_phys_segments;
- 	rq->ioprio = rq_src->ioprio;
--	rq->extra_len = rq_src->extra_len;
- 
- 	return 0;
- 
-diff --git a/block/blk-merge.c b/block/blk-merge.c
-index 25f5a5e00ee6..c49eb3bdd0be 100644
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -531,14 +531,6 @@ int __blk_rq_map_sg(struct request_queue *q, struct request *rq,
- 	else if (rq->bio)
- 		nsegs = __blk_bios_map_sg(q, rq->bio, sglist, last_sg);
- 
--	if (blk_rq_bytes(rq) && (blk_rq_bytes(rq) & q->dma_pad_mask)) {
--		unsigned int pad_len =
--			(q->dma_pad_mask & ~blk_rq_bytes(rq)) + 1;
+- Patches 4 and 5 are meant to partially address the PDF
+  build, with now requires Sphinx version 2.4 or upper.
+
+The remaining patches fix broken references detected by
+this tool:
+
+        ./scripts/documentation-file-ref-check
+
+and address other random errors due to tags being mis-interpreted
+or mis-used.
+
+They are independent each other, but some may depend on
+the kernel-doc improvements.
+
+PS.: Due to the large number of C/C, I opted to keep a smaller
+set of C/C at this first e-mail (only e-mails with "L:" tag from
+MAINTAINERS file).
+
+Jon,
+
+Those patches should apply cleanly at docs-next, once you
+pull from v5.7-rc1.
+
+
 -
--		(*last_sg)->length += pad_len;
--		rq->extra_len += pad_len;
--	}
--
- 	if (*last_sg)
- 		sg_mark_end(*last_sg);
- 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 28ad7e1e850b..983773214ee3 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -318,7 +318,6 @@ static struct request *blk_mq_rq_ctx_init(struct blk_mq_alloc_data *data,
- 	rq->nr_integrity_segments = 0;
- #endif
- 	/* tag was already set */
--	rq->extra_len = 0;
- 	WRITE_ONCE(rq->deadline, 0);
- 
- 	rq->timeout = 0;
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index feb13b8f93d7..435781a16875 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -649,7 +649,7 @@ static void ata_qc_set_pc_nbytes(struct ata_queued_cmd *qc)
- {
- 	struct scsi_cmnd *scmd = qc->scsicmd;
- 
--	qc->extrabytes = scmd->request->extra_len;
-+	qc->extrabytes = scmd->extra_len;
- 	qc->nbytes = scsi_bufflen(scmd) + qc->extrabytes;
- }
- 
-diff --git a/drivers/ide/ide-io.c b/drivers/ide/ide-io.c
-index b137f27a34d5..c31f1d2b3b07 100644
---- a/drivers/ide/ide-io.c
-+++ b/drivers/ide/ide-io.c
-@@ -233,10 +233,13 @@ static ide_startstop_t do_special(ide_drive_t *drive)
- void ide_map_sg(ide_drive_t *drive, struct ide_cmd *cmd)
- {
- 	ide_hwif_t *hwif = drive->hwif;
--	struct scatterlist *sg = hwif->sg_table;
-+	struct scatterlist *sg = hwif->sg_table, *last_sg = NULL;
- 	struct request *rq = cmd->rq;
- 
--	cmd->sg_nents = blk_rq_map_sg(drive->queue, rq, sg);
-+	cmd->sg_nents = __blk_rq_map_sg(drive->queue, rq, sg, &last_sg);
-+	if (blk_rq_bytes(rq) && (blk_rq_bytes(rq) & rq->q->dma_pad_mask))
-+		last_sg->length +=
-+			(rq->q->dma_pad_mask & ~blk_rq_bytes(rq)) + 1;
- }
- EXPORT_SYMBOL_GPL(ide_map_sg);
- 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index b561c6dbda6b..8396b9f56dc7 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1030,13 +1030,21 @@ blk_status_t scsi_init_io(struct scsi_cmnd *cmd)
- 	 */
- 	count = __blk_rq_map_sg(rq->q, rq, cmd->sdb.table.sgl, &last_sg);
- 
-+	if (blk_rq_bytes(rq) & rq->q->dma_pad_mask) {
-+		unsigned int pad_len =
-+			(rq->q->dma_pad_mask & ~blk_rq_bytes(rq)) + 1;
-+
-+		last_sg->length += pad_len;
-+		cmd->extra_len += pad_len;
-+	}
-+
- 	if (need_drain) {
- 		sg_unmark_end(last_sg);
- 		last_sg = sg_next(last_sg);
- 		sg_set_buf(last_sg, sdev->dma_drain_buf, sdev->dma_drain_len);
- 		sg_mark_end(last_sg);
- 
--		rq->extra_len += sdev->dma_drain_len;
-+		cmd->extra_len += sdev->dma_drain_len;
- 		count++;
- 	}
- 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 8e4726bce498..f00bd4042295 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -224,8 +224,6 @@ struct request {
- 	unsigned short write_hint;
- 	unsigned short ioprio;
- 
--	unsigned int extra_len;	/* length of alignment and padding */
--
- 	enum mq_rq_state state;
- 	refcount_t ref;
- 
-diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
-index 80ac89e47b47..f93c0b800790 100644
---- a/include/scsi/scsi_cmnd.h
-+++ b/include/scsi/scsi_cmnd.h
-@@ -142,6 +142,7 @@ struct scsi_cmnd {
- 	unsigned long state;	/* Command completion state */
- 
- 	unsigned char tag;	/* SCSI-II queued command tag */
-+	unsigned int extra_len;	/* length of alignment and padding */
- };
- 
- /*
+
+v2:
+
+- patches re-ordered;
+- added reviewed/acked-by tags;
+- rebased on the top of docs-next + v5.7-rc1.
+
+
+Mauro Carvalho Chehab (33):
+  scripts: kernel-doc: proper handle @foo->bar()
+  scripts: kernel-doc: accept negation like !@var
+  scripts: kernel-doc: accept blank lines on parameter description
+  docs: update recommended Sphinx version to 2.4.4
+  docs: LaTeX/PDF: drop list of documents
+  MAINTAINERS: dt: update display/allwinner file entry
+  MAINTAINERS: dt: fix pointers for ARM Integrator, Versatile and
+    RealView
+  docs: dt: fix broken reference to phy-cadence-torrent.yaml
+  docs: fix broken references to text files
+  docs: fix broken references for ReST files that moved around
+  docs: filesystems: fix renamed references
+  docs: amu: supress some Sphinx warnings
+  docs: arm64: booting.rst: get rid of some warnings
+  docs: pci: boot-interrupts.rst: improve html output
+  docs: ras: get rid of some warnings
+  docs: ras: don't need to repeat twice the same thing
+  docs: infiniband: verbs.c: fix some documentation warnings
+  docs: spi: spi.h: fix a doc building warning
+  docs: drivers: fix some warnings at base/platform.c when building docs
+  docs: mm: userfaultfd.rst: use ``foo`` for literals
+  docs: mm: userfaultfd.rst: use a cross-reference for a section
+  docs: vm: index.rst: add an orphan doc to the building system
+  docs: dt: qcom,dwc3.txt: fix cross-reference for a converted file
+  docs: dt: fix a broken reference for a file converted to json
+  docs: powerpc: cxl.rst: mark two section titles as such
+  docs: i2c: rename i2c.svg to i2c_bus.svg
+  docs: Makefile: place final pdf docs on a separate dir
+  docs: dt: rockchip,dwc3.txt: fix a pointer to a renamed file
+  ata: libata-core: fix a doc warning
+  firewire: firewire-cdev.hL get rid of a docs warning
+  fs: inode.c: get rid of docs warnings
+  futex: get rid of a kernel-docs build warning
+  lib: bitmap.c: get rid of some doc warnings
+
+ Documentation/ABI/stable/sysfs-devices-node   |   2 +-
+ Documentation/ABI/testing/procfs-smaps_rollup |   2 +-
+ Documentation/Makefile                        |   6 +-
+ Documentation/PCI/boot-interrupts.rst         |  34 +--
+ Documentation/admin-guide/cpu-load.rst        |   2 +-
+ Documentation/admin-guide/mm/userfaultfd.rst  | 209 +++++++++---------
+ Documentation/admin-guide/nfs/nfsroot.rst     |   2 +-
+ Documentation/admin-guide/ras.rst             |  18 +-
+ Documentation/arm64/amu.rst                   |   5 +
+ Documentation/arm64/booting.rst               |  36 +--
+ Documentation/conf.py                         |  38 ----
+ .../bindings/net/qualcomm-bluetooth.txt       |   2 +-
+ .../bindings/phy/ti,phy-j721e-wiz.yaml        |   2 +-
+ .../devicetree/bindings/usb/qcom,dwc3.txt     |   4 +-
+ .../devicetree/bindings/usb/rockchip,dwc3.txt |   2 +-
+ .../doc-guide/maintainer-profile.rst          |   2 +-
+ .../driver-api/driver-model/device.rst        |   4 +-
+ .../driver-api/driver-model/overview.rst      |   2 +-
+ Documentation/filesystems/dax.txt             |   2 +-
+ Documentation/filesystems/dnotify.txt         |   2 +-
+ .../filesystems/ramfs-rootfs-initramfs.rst    |   2 +-
+ Documentation/filesystems/sysfs.rst           |   2 +-
+ Documentation/i2c/{i2c.svg => i2c_bus.svg}    |   2 +-
+ Documentation/i2c/summary.rst                 |   2 +-
+ Documentation/memory-barriers.txt             |   2 +-
+ Documentation/powerpc/cxl.rst                 |   2 +
+ .../powerpc/firmware-assisted-dump.rst        |   2 +-
+ Documentation/process/adding-syscalls.rst     |   2 +-
+ Documentation/process/submit-checklist.rst    |   2 +-
+ Documentation/sphinx/requirements.txt         |   2 +-
+ .../it_IT/process/adding-syscalls.rst         |   2 +-
+ .../it_IT/process/submit-checklist.rst        |   2 +-
+ .../translations/ko_KR/memory-barriers.txt    |   2 +-
+ .../translations/zh_CN/filesystems/sysfs.txt  |   8 +-
+ .../zh_CN/process/submit-checklist.rst        |   2 +-
+ Documentation/virt/kvm/arm/pvtime.rst         |   2 +-
+ Documentation/virt/kvm/devices/vcpu.rst       |   2 +-
+ Documentation/virt/kvm/hypercalls.rst         |   4 +-
+ Documentation/virt/kvm/mmu.rst                |   2 +-
+ Documentation/virt/kvm/review-checklist.rst   |   2 +-
+ Documentation/vm/index.rst                    |   1 +
+ MAINTAINERS                                   |   7 +-
+ arch/powerpc/include/uapi/asm/kvm_para.h      |   2 +-
+ arch/x86/kvm/mmu/mmu.c                        |   2 +-
+ drivers/ata/libata-core.c                     |   2 +-
+ drivers/base/core.c                           |   2 +-
+ drivers/base/platform.c                       |   6 +-
+ .../allwinner/sun8i-ce/sun8i-ce-cipher.c      |   2 +-
+ .../crypto/allwinner/sun8i-ce/sun8i-ce-core.c |   2 +-
+ .../allwinner/sun8i-ss/sun8i-ss-cipher.c      |   2 +-
+ .../crypto/allwinner/sun8i-ss/sun8i-ss-core.c |   2 +-
+ drivers/gpu/drm/Kconfig                       |   2 +-
+ drivers/gpu/drm/drm_ioctl.c                   |   2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h       |   2 +-
+ drivers/hwtracing/coresight/Kconfig           |   2 +-
+ drivers/infiniband/core/verbs.c               |   7 +-
+ drivers/media/v4l2-core/v4l2-fwnode.c         |   2 +-
+ fs/Kconfig                                    |   2 +-
+ fs/Kconfig.binfmt                             |   2 +-
+ fs/adfs/Kconfig                               |   2 +-
+ fs/affs/Kconfig                               |   2 +-
+ fs/afs/Kconfig                                |   6 +-
+ fs/bfs/Kconfig                                |   2 +-
+ fs/cramfs/Kconfig                             |   2 +-
+ fs/ecryptfs/Kconfig                           |   2 +-
+ fs/fat/Kconfig                                |   8 +-
+ fs/fuse/Kconfig                               |   2 +-
+ fs/fuse/dev.c                                 |   2 +-
+ fs/hfs/Kconfig                                |   2 +-
+ fs/hpfs/Kconfig                               |   2 +-
+ fs/inode.c                                    |   6 +-
+ fs/isofs/Kconfig                              |   2 +-
+ fs/namespace.c                                |   2 +-
+ fs/notify/inotify/Kconfig                     |   2 +-
+ fs/ntfs/Kconfig                               |   2 +-
+ fs/ocfs2/Kconfig                              |   2 +-
+ fs/overlayfs/Kconfig                          |   6 +-
+ fs/proc/Kconfig                               |   4 +-
+ fs/romfs/Kconfig                              |   2 +-
+ fs/sysfs/dir.c                                |   2 +-
+ fs/sysfs/file.c                               |   2 +-
+ fs/sysfs/mount.c                              |   2 +-
+ fs/sysfs/symlink.c                            |   2 +-
+ fs/sysv/Kconfig                               |   2 +-
+ fs/udf/Kconfig                                |   2 +-
+ include/linux/kobject.h                       |   2 +-
+ include/linux/kobject_ns.h                    |   2 +-
+ include/linux/mm.h                            |   4 +-
+ include/linux/relay.h                         |   2 +-
+ include/linux/spi/spi.h                       |   1 +
+ include/linux/sysfs.h                         |   2 +-
+ include/uapi/linux/ethtool_netlink.h          |   2 +-
+ include/uapi/linux/firewire-cdev.h            |   2 +-
+ include/uapi/linux/kvm.h                      |   4 +-
+ include/uapi/rdma/rdma_user_ioctl_cmds.h      |   2 +-
+ kernel/futex.c                                |   3 +
+ kernel/relay.c                                |   2 +-
+ lib/bitmap.c                                  |  27 +--
+ lib/kobject.c                                 |   4 +-
+ mm/gup.c                                      |  12 +-
+ scripts/kernel-doc                            |  41 ++--
+ tools/include/uapi/linux/kvm.h                |   4 +-
+ virt/kvm/arm/vgic/vgic-mmio-v3.c              |   2 +-
+ virt/kvm/arm/vgic/vgic.h                      |   4 +-
+ 104 files changed, 343 insertions(+), 326 deletions(-)
+ rename Documentation/i2c/{i2c.svg => i2c_bus.svg} (99%)
+
 -- 
-2.25.1
+2.25.2
+
 

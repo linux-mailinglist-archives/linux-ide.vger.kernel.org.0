@@ -2,80 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD3161ACDA0
-	for <lists+linux-ide@lfdr.de>; Thu, 16 Apr 2020 18:27:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B97E1AD32F
+	for <lists+linux-ide@lfdr.de>; Fri, 17 Apr 2020 01:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387577AbgDPQ1X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Apr 2020 12:27:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728987AbgDPQ1W (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Apr 2020 12:27:22 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D5EC061A0C
-        for <linux-ide@vger.kernel.org>; Thu, 16 Apr 2020 09:27:22 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id t8so7498217ilj.3
-        for <linux-ide@vger.kernel.org>; Thu, 16 Apr 2020 09:27:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=5DsdlMWlvuKqdtofFGPhOBVDzjYRJgpB+utt/BhA+Gg=;
-        b=wUMC0iiCB0tQ1cxYbtN02WiSpx8JmnyaLU5ZLLvSd1FVmiW0lGTTIM0Yc6qs5MfpYB
-         /NnHD75ZXPbMPmND6SalTeHbMOH2QfztZ619tbR5Pr0OezsUZLYJ75KHQ2ISCusbNp3y
-         Zoy3lFwZfvt5XHYCnUmTPrCcYusEZZsxDp60qXBJCrtGNe+sci7LBs6HDM8OjhPJ0Hyj
-         1O5XGyw3A/7/pwTGUbS1t0dBgol6qHj+BU0c1J2/udEV5dkhApZ6GTi9YBFmsVljCujI
-         X43Zsj85uzCfki6E3pI/dqd3K2blN6FnoG+nhHmcPgEdRBg2doNye7GZYCUdNU48RtDn
-         fvTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=5DsdlMWlvuKqdtofFGPhOBVDzjYRJgpB+utt/BhA+Gg=;
-        b=hz8Z81a/wuqPl6B/meVcqM5Ndggbd97gIufYzD5bjuUFgcfczowrffBVIU1fDxO399
-         /zqnJsyXN4f5RpKfMBhy27BibsyHGdsV3r/V41ekmTy3HSbGPjdrPPDcoC5M2teXeNfW
-         rVqqcfruwwzNIfhJbQ6/G3FKHFT58YoLt7BvDHqydfvuMlJM/3arBmkud1HEIhzniSW4
-         83v31oskhxgNhMQMqQ0QK0zmTX4JoxMOdICHUr8DtBUBTEt3IVuRM4rGV1vFdz6t5qVI
-         cEmU4xOH2yI4NHxNTevhoCxhlrKVfBgnITNle9daKtp64enSfTPMDQXBKn+16sbyDxnP
-         CCtg==
-X-Gm-Message-State: AGi0PuYe7fYI14vdiU/0Pq/7ezQKSvjEmsBpH9EgOotLsAWpnrGnAzJ9
-        s9assRTSsgTBzBlP+aze1MuSamfT9PxKbA==
-X-Google-Smtp-Source: APiQypJ0dfbckQxr1NrwNvt7cHhmbz6qQidF/3io3d3O3dqzN970+sNdaHNdcctW3wgajOCqL3gYuA==
-X-Received: by 2002:a92:d44e:: with SMTP id r14mr9721711ilm.244.1587054442072;
-        Thu, 16 Apr 2020 09:27:22 -0700 (PDT)
-Received: from [192.168.1.159] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id d10sm7251313ilu.46.2020.04.16.09.27.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Apr 2020 09:27:21 -0700 (PDT)
-Subject: Re: [PATCH] ahci: Add Intel Comet Lake PCH-U PCI ID
-To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
-Cc:     "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20200416063540.30462-1-kai.heng.feng@canonical.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <8b04c4e8-32f1-216e-055d-5ba2e1052750@kernel.dk>
-Date:   Thu, 16 Apr 2020 10:27:20 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        id S1726568AbgDPXfE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 16 Apr 2020 19:35:04 -0400
+Received: from mail.dsns.gov.ua ([194.0.148.99]:37970 "EHLO mail.dsns.gov.ua"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725770AbgDPXfD (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 16 Apr 2020 19:35:03 -0400
+X-Greylist: delayed 9287 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Apr 2020 19:34:56 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dsns.gov.ua (Postfix) with ESMTP id 6223A1EC85AF;
+        Thu, 16 Apr 2020 23:35:36 +0300 (EEST)
+Received: from mail.dsns.gov.ua ([127.0.0.1])
+        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ekdCUR6pZ0Aa; Thu, 16 Apr 2020 23:35:36 +0300 (EEST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.dsns.gov.ua (Postfix) with ESMTP id 67C3E1EC85F9;
+        Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.dsns.gov.ua 67C3E1EC85F9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dsns.gov.ua;
+        s=1E60DAC0-2607-11E9-81E6-7A77C2B36653; t=1587069326;
+        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=BFrHb0sdI6ttGZUrYrU3NgniYtd1aDAhnXXb2vKIb2B9styAswbm0NbzZRAHiMp0y
+         hUE3veWMbUD+qTP/VmiRFig+sJh7tgrjRSipmI8jEPDH4mLyVFQtPdyPojLkpu/SlT
+         y/CjSPHdIqozfsh/zyWU9aeO41yKuuO77HTVyT/eVGDUtLYGTijz0IeETvwB1Yur4I
+         5RegLOWC96rliENvAjVU5IoM4JfcadYa95Q959RRtGyCSnevHOMfGycVhDjkxX/p7G
+         0gUYzq9GdO73hW8YI3AV2m5dSWB1tPfsxP4FJUwoBTp88jIZZeY7uAiDenSeAUtBdj
+         PKl/BScyij7GQ==
+X-Virus-Scanned: amavisd-new at dsns.gov.ua
+Received: from mail.dsns.gov.ua ([127.0.0.1])
+        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id U4DcK3mdlYyf; Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
+Received: from mail.dsns.gov.ua (localhost [127.0.0.1])
+        by mail.dsns.gov.ua (Postfix) with ESMTP id 9BAF81EC8118;
+        Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
+Date:   Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
+From:   Saleem Netanyahu <duchenko@dsns.gov.ua>
+Reply-To: Saleem Netanyahu <saleemnetu@gmail.com>
+Message-ID: <1255292802.718114.1587069315574.JavaMail.zimbra@dsns.gov.ua>
+Subject: Hey, how are u, can we talk?
 MIME-Version: 1.0
-In-Reply-To: <20200416063540.30462-1-kai.heng.feng@canonical.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [45.82.223.36, 172.69.54.54]
+X-Mailer: Zimbra 8.8.15_GA_3918 (zclient/8.8.15_GA_3918)
+Thread-Index: oV9MZN6+Sh4gFPdsGziQ2IngcJhATw==
+Thread-Topic: Hey, how are u, can we talk?
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
-
-On 4/16/20 12:35 AM, Kai-Heng Feng wrote:
-> Add Intel Comet Lake PCH-U PCI ID to the list of supported controllers.
-> 
-> Set default SATA LPM so the SoC can enter S0ix.
-
-Applied, thanks.
-
--- 
-Jens Axboe
 

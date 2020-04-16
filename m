@@ -2,56 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 190921AE808
-	for <lists+linux-ide@lfdr.de>; Sat, 18 Apr 2020 00:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3161ACDA0
+	for <lists+linux-ide@lfdr.de>; Thu, 16 Apr 2020 18:27:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728691AbgDQWPL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 17 Apr 2020 18:15:11 -0400
-Received: from [104.248.214.7] ([104.248.214.7]:43092 "EHLO narrain.in"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726284AbgDQWPK (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 17 Apr 2020 18:15:10 -0400
-X-Greylist: delayed 69077 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Apr 2020 18:15:10 EDT
-Received: from 127.0.0.1 (localhost [127.0.0.1])
-        by narrain.in (Postfix) with SMTP id 66031B09967;
-        Thu, 16 Apr 2020 05:53:08 +0000 (UTC)
-Received: from [19.25.172.139] by 127.0.0.1 id <7864622-31911> for <qushenzheng@hisilicon.com>; Thu, 16 Apr 2020 06:51:25 -0300
-Message-ID: <82x-8-48vlh1$$809-0c@3zmt5.3p>
-From:   "JAK ADBULLAH FRAAM." <jak4@sozimail.com>
-Reply-To: "JAK ADBULLAH FRAAM." <jak4@sozimail.com>
-To:     qushenzheng@hisilicon.com
-Subject: HELLO.
-Date:   Thu, 16 Apr 20 06:51:25 GMT
-X-Mailer: Internet Mail Service (5.5.2650.21)
+        id S2387577AbgDPQ1X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 16 Apr 2020 12:27:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728987AbgDPQ1W (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Apr 2020 12:27:22 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D5EC061A0C
+        for <linux-ide@vger.kernel.org>; Thu, 16 Apr 2020 09:27:22 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id t8so7498217ilj.3
+        for <linux-ide@vger.kernel.org>; Thu, 16 Apr 2020 09:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=5DsdlMWlvuKqdtofFGPhOBVDzjYRJgpB+utt/BhA+Gg=;
+        b=wUMC0iiCB0tQ1cxYbtN02WiSpx8JmnyaLU5ZLLvSd1FVmiW0lGTTIM0Yc6qs5MfpYB
+         /NnHD75ZXPbMPmND6SalTeHbMOH2QfztZ619tbR5Pr0OezsUZLYJ75KHQ2ISCusbNp3y
+         Zoy3lFwZfvt5XHYCnUmTPrCcYusEZZsxDp60qXBJCrtGNe+sci7LBs6HDM8OjhPJ0Hyj
+         1O5XGyw3A/7/pwTGUbS1t0dBgol6qHj+BU0c1J2/udEV5dkhApZ6GTi9YBFmsVljCujI
+         X43Zsj85uzCfki6E3pI/dqd3K2blN6FnoG+nhHmcPgEdRBg2doNye7GZYCUdNU48RtDn
+         fvTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=5DsdlMWlvuKqdtofFGPhOBVDzjYRJgpB+utt/BhA+Gg=;
+        b=hz8Z81a/wuqPl6B/meVcqM5Ndggbd97gIufYzD5bjuUFgcfczowrffBVIU1fDxO399
+         /zqnJsyXN4f5RpKfMBhy27BibsyHGdsV3r/V41ekmTy3HSbGPjdrPPDcoC5M2teXeNfW
+         rVqqcfruwwzNIfhJbQ6/G3FKHFT58YoLt7BvDHqydfvuMlJM/3arBmkud1HEIhzniSW4
+         83v31oskhxgNhMQMqQ0QK0zmTX4JoxMOdICHUr8DtBUBTEt3IVuRM4rGV1vFdz6t5qVI
+         cEmU4xOH2yI4NHxNTevhoCxhlrKVfBgnITNle9daKtp64enSfTPMDQXBKn+16sbyDxnP
+         CCtg==
+X-Gm-Message-State: AGi0PuYe7fYI14vdiU/0Pq/7ezQKSvjEmsBpH9EgOotLsAWpnrGnAzJ9
+        s9assRTSsgTBzBlP+aze1MuSamfT9PxKbA==
+X-Google-Smtp-Source: APiQypJ0dfbckQxr1NrwNvt7cHhmbz6qQidF/3io3d3O3dqzN970+sNdaHNdcctW3wgajOCqL3gYuA==
+X-Received: by 2002:a92:d44e:: with SMTP id r14mr9721711ilm.244.1587054442072;
+        Thu, 16 Apr 2020 09:27:22 -0700 (PDT)
+Received: from [192.168.1.159] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id d10sm7251313ilu.46.2020.04.16.09.27.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Apr 2020 09:27:21 -0700 (PDT)
+Subject: Re: [PATCH] ahci: Add Intel Comet Lake PCH-U PCI ID
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>
+Cc:     "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>
+References: <20200416063540.30462-1-kai.heng.feng@canonical.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <8b04c4e8-32f1-216e-055d-5ba2e1052750@kernel.dk>
+Date:   Thu, 16 Apr 2020 10:27:20 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="1EFA237D8AF"
-X-Priority: 3
-X-MSMail-Priority: Normal
+In-Reply-To: <20200416063540.30462-1-kai.heng.feng@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+On 4/16/20 12:35 AM, Kai-Heng Feng wrote:
+> Add Intel Comet Lake PCH-U PCI ID to the list of supported controllers.
+> 
+> Set default SATA LPM so the SoC can enter S0ix.
 
---1EFA237D8AF
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+Applied, thanks.
 
-Asalam walekum ramatulilah wobarukutuh,
-Greetings to you in the name of Almighy Allah,
-
-
-Hello friend,
-
-I have a business proposal that I want to share with you, is lucrative and=
- it is going to benefit you and me. And I do need you to advise me on your=
- position.
-Please contact me via email address: (jakaf2525@scurelmail.com) for more i=
-nformationa.
-
-Regards,
-MR. JAK ABDULLAH FRAAM.
-
---1EFA237D8AF--
+-- 
+Jens Axboe
 

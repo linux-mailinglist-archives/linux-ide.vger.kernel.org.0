@@ -2,79 +2,55 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ADCF51A85F5
-	for <lists+linux-ide@lfdr.de>; Tue, 14 Apr 2020 18:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE16B1AB81D
+	for <lists+linux-ide@lfdr.de>; Thu, 16 Apr 2020 08:35:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502459AbgDNQwc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 14 Apr 2020 12:52:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55568 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2440373AbgDNQtR (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 14 Apr 2020 12:49:17 -0400
-Received: from mail.kernel.org (ip5f5ad4d8.dynamic.kabel-deutschland.de [95.90.212.216])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3AD4C221EC;
-        Tue, 14 Apr 2020 16:49:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1586882943;
-        bh=pkQRKk4Q3BJwEsZPq9Rvl8GhUQxw4EhOBSPeWUeyTXI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rG5nVl1W0Rid3dG6nLfg4tMmA1DCW3FdHWe3eGgKITbBHXDH/TchxjTJtcazKc+3d
-         puylXEIwwgNpsv8d6R8mE+cNxmdX/0dkZO4ZgaMsYW1I6wEaqeDQdbKoWeP2Fh26PN
-         nnj+98DwIsnMxETSV0SYEMQjrN1HycbwkRRrcDsE=
-Received: from mchehab by mail.kernel.org with local (Exim 4.92.3)
-        (envelope-from <mchehab@kernel.org>)
-        id 1jOOk9-0068nE-Fy; Tue, 14 Apr 2020 18:49:01 +0200
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
-Subject: [PATCH v2 29/33] ata: libata-core: fix a doc warning
-Date:   Tue, 14 Apr 2020 18:48:55 +0200
-Message-Id: <9a21444df75c46095c4b1839d2061d19c9addcff.1586881715.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.25.2
-In-Reply-To: <cover.1586881715.git.mchehab+huawei@kernel.org>
-References: <cover.1586881715.git.mchehab+huawei@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S2408100AbgDPGf4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 16 Apr 2020 02:35:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37686 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2407924AbgDPGfv (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Apr 2020 02:35:51 -0400
+Received: from 61-220-137-37.hinet-ip.hinet.net ([61.220.137.37] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <kai.heng.feng@canonical.com>)
+        id 1jOy7l-000851-Dp; Thu, 16 Apr 2020 06:35:45 +0000
+From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
+To:     axboe@kernel.dk
+Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH] ahci: Add Intel Comet Lake PCH-U PCI ID
+Date:   Thu, 16 Apr 2020 14:35:40 +0800
+Message-Id: <20200416063540.30462-1-kai.heng.feng@canonical.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The docs toolchain doesn't recognise this pattern:
+Add Intel Comet Lake PCH-U PCI ID to the list of supported controllers.
 
-	@link->[hw_]sata_spd_limit
+Set default SATA LPM so the SoC can enter S0ix.
 
-As it can't really process it. So, instead, let's mark it with
-a literal block markup:
-
-	``link->[hw_]sata_spd_limit``
-
-in order to get rid of the following warning:
-
-	./drivers/ata/libata-core.c:5974: WARNING: Unknown target name: "hw".
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
 ---
- drivers/ata/libata-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/ahci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index beca5f91bb4c..69361ec43db5 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5209,7 +5209,7 @@ void ata_link_init(struct ata_port *ap, struct ata_link *link, int pmp)
-  *	sata_link_init_spd - Initialize link->sata_spd_limit
-  *	@link: Link to configure sata_spd_limit for
-  *
-- *	Initialize @link->[hw_]sata_spd_limit to the currently
-+ *	Initialize ``link->[hw_]sata_spd_limit`` to the currently
-  *	configured value.
-  *
-  *	LOCKING:
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 0101b65250cb..0c0a736eb861 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -410,6 +410,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x22a3), board_ahci_mobile }, /* Cherry Tr. AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x5ae3), board_ahci_mobile }, /* ApolloLake AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_mobile }, /* Ice Lake LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_mobile }, /* Comet Lake PCH-U AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_mobile }, /* Comet Lake PCH RAID */
+ 
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
 -- 
-2.25.2
+2.17.1
 

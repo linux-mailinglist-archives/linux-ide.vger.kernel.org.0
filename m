@@ -2,55 +2,56 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE16B1AB81D
-	for <lists+linux-ide@lfdr.de>; Thu, 16 Apr 2020 08:35:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190921AE808
+	for <lists+linux-ide@lfdr.de>; Sat, 18 Apr 2020 00:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408100AbgDPGf4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Apr 2020 02:35:56 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37686 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407924AbgDPGfv (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Apr 2020 02:35:51 -0400
-Received: from 61-220-137-37.hinet-ip.hinet.net ([61.220.137.37] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <kai.heng.feng@canonical.com>)
-        id 1jOy7l-000851-Dp; Thu, 16 Apr 2020 06:35:45 +0000
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     axboe@kernel.dk
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] ahci: Add Intel Comet Lake PCH-U PCI ID
-Date:   Thu, 16 Apr 2020 14:35:40 +0800
-Message-Id: <20200416063540.30462-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        id S1728691AbgDQWPL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 17 Apr 2020 18:15:11 -0400
+Received: from [104.248.214.7] ([104.248.214.7]:43092 "EHLO narrain.in"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726284AbgDQWPK (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Fri, 17 Apr 2020 18:15:10 -0400
+X-Greylist: delayed 69077 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Apr 2020 18:15:10 EDT
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+        by narrain.in (Postfix) with SMTP id 66031B09967;
+        Thu, 16 Apr 2020 05:53:08 +0000 (UTC)
+Received: from [19.25.172.139] by 127.0.0.1 id <7864622-31911> for <qushenzheng@hisilicon.com>; Thu, 16 Apr 2020 06:51:25 -0300
+Message-ID: <82x-8-48vlh1$$809-0c@3zmt5.3p>
+From:   "JAK ADBULLAH FRAAM." <jak4@sozimail.com>
+Reply-To: "JAK ADBULLAH FRAAM." <jak4@sozimail.com>
+To:     qushenzheng@hisilicon.com
+Subject: HELLO.
+Date:   Thu, 16 Apr 20 06:51:25 GMT
+X-Mailer: Internet Mail Service (5.5.2650.21)
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="1EFA237D8AF"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Add Intel Comet Lake PCH-U PCI ID to the list of supported controllers.
 
-Set default SATA LPM so the SoC can enter S0ix.
+--1EFA237D8AF
+Content-Type: text/plain;
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
- drivers/ata/ahci.c | 1 +
- 1 file changed, 1 insertion(+)
+Asalam walekum ramatulilah wobarukutuh,
+Greetings to you in the name of Almighy Allah,
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 0101b65250cb..0c0a736eb861 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -410,6 +410,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, 0x22a3), board_ahci_mobile }, /* Cherry Tr. AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x5ae3), board_ahci_mobile }, /* ApolloLake AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_mobile }, /* Ice Lake LP AHCI */
-+	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_mobile }, /* Comet Lake PCH-U AHCI */
- 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_mobile }, /* Comet Lake PCH RAID */
- 
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
--- 
-2.17.1
+
+Hello friend,
+
+I have a business proposal that I want to share with you, is lucrative and=
+ it is going to benefit you and me. And I do need you to advise me on your=
+ position.
+Please contact me via email address: (jakaf2525@scurelmail.com) for more i=
+nformationa.
+
+Regards,
+MR. JAK ABDULLAH FRAAM.
+
+--1EFA237D8AF--
 

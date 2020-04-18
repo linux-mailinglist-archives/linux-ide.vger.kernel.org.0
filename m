@@ -2,38 +2,38 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B7541AF0EF
-	for <lists+linux-ide@lfdr.de>; Sat, 18 Apr 2020 16:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFFCE1AF095
+	for <lists+linux-ide@lfdr.de>; Sat, 18 Apr 2020 16:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728119AbgDROlx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 18 Apr 2020 10:41:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51460 "EHLO mail.kernel.org"
+        id S1727896AbgDROua (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 18 Apr 2020 10:50:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53928 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728154AbgDROlw (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 18 Apr 2020 10:41:52 -0400
+        id S1728506AbgDROnJ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sat, 18 Apr 2020 10:43:09 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 29AAF2224E;
-        Sat, 18 Apr 2020 14:41:51 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id E656E22250;
+        Sat, 18 Apr 2020 14:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587220911;
-        bh=KyrpO90/tqR+AI6DpqqySqtXff+7gxIIyn4vDSSV/D4=;
+        s=default; t=1587220988;
+        bh=DaZJWPTSTAzcStopkRnvBbDOO8N2y9SEPL3j26QQpAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJWyAlE3Wl0VlAzXnS5jwNyUipRA38TwqKNeJ9ywlz/csZhkg3v1v1CMe5r/0HsIY
-         OBcyl5Z5gkBJ7ns88FEGIDn+rTVxKnGloCIQQPkXYRWpo79onz8pbeTaodBCr/WtyV
-         A6V+DFcCeW87OSW4uDmJbdL43oBDtGqSzcPgxU9s=
+        b=hsMRDIao9J61wIkweVAOOTY0YvgWEqfXZLLvs43P24d4ae+W8jcAOX/NPub9+ByWp
+         /YZ/KCLaU2/hHDG6YmM1XTBzsJ8UZMQKPexMvtMI0uyQbz4Oq3YvFEs3Et6/eMk61J
+         CE6kWR54KXaaFDOYzcTYATtrSrWJ9AJUd+v/GMa0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
         Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
         linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 51/78] libata: Return correct status in sata_pmp_eh_recover_pm() when ATA_DFLAG_DETACH is set
-Date:   Sat, 18 Apr 2020 10:40:20 -0400
-Message-Id: <20200418144047.9013-51-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 32/47] libata: Return correct status in sata_pmp_eh_recover_pm() when ATA_DFLAG_DETACH is set
+Date:   Sat, 18 Apr 2020 10:42:12 -0400
+Message-Id: <20200418144227.9802-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200418144047.9013-1-sashal@kernel.org>
-References: <20200418144047.9013-1-sashal@kernel.org>
+In-Reply-To: <20200418144227.9802-1-sashal@kernel.org>
+References: <20200418144227.9802-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -102,10 +102,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/ata/libata-pmp.c b/drivers/ata/libata-pmp.c
-index 3ff14071617cd..79f2aeeb482ab 100644
+index 2ae1799f49927..51eeaea65833d 100644
 --- a/drivers/ata/libata-pmp.c
 +++ b/drivers/ata/libata-pmp.c
-@@ -763,6 +763,7 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
+@@ -764,6 +764,7 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
  
  	if (dev->flags & ATA_DFLAG_DETACH) {
  		detach = 1;

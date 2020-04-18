@@ -2,117 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A3D11AEFDB
-	for <lists+linux-ide@lfdr.de>; Sat, 18 Apr 2020 16:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E548F1AF545
+	for <lists+linux-ide@lfdr.de>; Sun, 19 Apr 2020 00:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726681AbgDROp3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 18 Apr 2020 10:45:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57152 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728931AbgDROo7 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 18 Apr 2020 10:44:59 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2148922263;
-        Sat, 18 Apr 2020 14:44:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1587221098;
-        bh=UMlaP/NeGsbjNpFWIDP5Jdm0OEQJeTjnAjNiEBovdZU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oIr1hVngh3nSuk7gZ25Nz/WSa+iECJSJMDc4AF1OzkyzVxnVPhe3kN6vwF3wiJBP+
-         pI+zZsoD31cKPkSZEd68ggkr3SMHz+bW5JrDK5RxNire3gCU4WXC/kW5azyHZPVzgv
-         l6FLuW/a6SzbML7zSBBmZ+YIb1OYCtanx6lNxTRg=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 17/19] libata: Return correct status in sata_pmp_eh_recover_pm() when ATA_DFLAG_DETACH is set
-Date:   Sat, 18 Apr 2020 10:44:34 -0400
-Message-Id: <20200418144436.10818-17-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20200418144436.10818-1-sashal@kernel.org>
-References: <20200418144436.10818-1-sashal@kernel.org>
+        id S1727927AbgDRWHz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 18 Apr 2020 18:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44756 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726887AbgDRWHy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 18 Apr 2020 18:07:54 -0400
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DB1C061A0C
+        for <linux-ide@vger.kernel.org>; Sat, 18 Apr 2020 15:07:54 -0700 (PDT)
+Received: by mail-qv1-xf42.google.com with SMTP id w18so2392399qvs.3
+        for <linux-ide@vger.kernel.org>; Sat, 18 Apr 2020 15:07:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=XY8qLZISPOcN//yeyj5gvtwVqNkO/KJremmxQQ/PxhU=;
+        b=uhEjz/JYXlQ5soYgGV+G3UINJQxebSkS/B6BsOvRw45NmtSXTUXyeoU0mma/0XBtdx
+         x9CAjp7js0ak55k0VEI1F1ZJS1CZHRtbObfRq99CovGIoVVtmn428aPVolSOWBa9pK1C
+         vnttJUL84g3TsA03k+bJgeH0gDfaqgdb7MKcpC42leXhI5e+pMQwEwYAaQG7NKYRcXzw
+         Yj3HWKd4bL+OkfcXxVZoXTTOZLzXKimqLpw0ctYIF15TUJNl1OhaUxtNRYbVubnscDvh
+         EBHW7O4bpE+UjK53NViyR68ejeBKj/k2DyetKPNyXtfcxAKl2hkl+74RDTohCKLaGZU1
+         BCCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=XY8qLZISPOcN//yeyj5gvtwVqNkO/KJremmxQQ/PxhU=;
+        b=b75+dHugJqII2rQqqz6Wgq4fjcPtHx67f701H3qilLJfXHvQKk9XYhOb6MQQC4pbJN
+         OMqZl6BMm+UlcWNtb4FhGEHydwwQJLmkppui5dSZE9d7k44y6G+18QNAUBGGXUz4neYI
+         d7mJmPw80d02hn1NciqKeoNvaZ8lfky+yza0ezxTYB2hq6Ro3aefTsXJGqvuEXNhi8u3
+         k9VDlGRnhDGu6rFSnVZ20oCO41LDIV42ztDMB3Q+7NVF42rn9NlgTtm7hXQR7UaHSGk6
+         hD+j73VKxkjHfSwF523CS/QFaXpRN4kxO/pycbaKA4BY9L8UnOvSDIZ0coJyYa4FYWqt
+         wC+Q==
+X-Gm-Message-State: AGi0PuaqwOYSLd+oiSW579SxJlr3euLuoPo36ahIFQ6PWAbsm4zZ9BJy
+        mFf1I5xhFnzFZi2r/lrgYhE5BCfb2yTUk3w0ef0=
+X-Google-Smtp-Source: APiQypKd5HA6RsstviCnhCv4RHqeSdKQtH85hcJtUaWmAxRjhJqXIh062EXRoeqqY1rUiHobNBM7KcawxKeHL0W1gB4=
+X-Received: by 2002:a05:6214:150f:: with SMTP id e15mr8545120qvy.18.1587247673423;
+ Sat, 18 Apr 2020 15:07:53 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Reply-To: kabiruwahid199@gmail.com
+Received: by 2002:ac8:f86:0:0:0:0:0 with HTTP; Sat, 18 Apr 2020 15:07:53 -0700 (PDT)
+From:   Mr Kabiru Wahid <kabiruwahid111@gmail.com>
+Date:   Sat, 18 Apr 2020 22:07:53 +0000
+X-Google-Sender-Auth: KRd8LvkXnhk-K5uoTe4Zl6k8sjA
+Message-ID: <CAM5G+8xiYwGomhViNUoUgJGcwc5Cyws5Fph5qKUhn-qB+=YY1A@mail.gmail.com>
+Subject: Hello Dear Friend!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
-
-[ Upstream commit 8305f72f952cff21ce8109dc1ea4b321c8efc5af ]
-
-During system resume from suspend, this can be observed on ASM1062 PMP
-controller:
-
-ata10.01: SATA link down (SStatus 0 SControl 330)
-ata10.02: hard resetting link
-ata10.02: SATA link down (SStatus 0 SControl 330)
-ata10.00: configured for UDMA/133
-Kernel panic - not syncing: stack-protector: Kernel
- in: sata_pmp_eh_recover+0xa2b/0xa40
-
-CPU: 2 PID: 230 Comm: scsi_eh_9 Tainted: P OE
-#49-Ubuntu
-Hardware name: System manufacturer System Product
- 1001 12/10/2017
-Call Trace:
-dump_stack+0x63/0x8b
-panic+0xe4/0x244
-? sata_pmp_eh_recover+0xa2b/0xa40
-__stack_chk_fail+0x19/0x20
-sata_pmp_eh_recover+0xa2b/0xa40
-? ahci_do_softreset+0x260/0x260 [libahci]
-? ahci_do_hardreset+0x140/0x140 [libahci]
-? ata_phys_link_offline+0x60/0x60
-? ahci_stop_engine+0xc0/0xc0 [libahci]
-sata_pmp_error_handler+0x22/0x30
-ahci_error_handler+0x45/0x80 [libahci]
-ata_scsi_port_error_handler+0x29b/0x770
-? ata_scsi_cmd_error_handler+0x101/0x140
-ata_scsi_error+0x95/0xd0
-? scsi_try_target_reset+0x90/0x90
-scsi_error_handler+0xd0/0x5b0
-kthread+0x121/0x140
-? scsi_eh_get_sense+0x200/0x200
-? kthread_create_worker_on_cpu+0x70/0x70
-ret_from_fork+0x22/0x40
-Kernel Offset: 0xcc00000 from 0xffffffff81000000
-(relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-
-Since sata_pmp_eh_recover_pmp() doens't set rc when ATA_DFLAG_DETACH is
-set, sata_pmp_eh_recover() continues to run. During retry it triggers
-the stack protector.
-
-Set correct rc in sata_pmp_eh_recover_pmp() to let sata_pmp_eh_recover()
-jump to pmp_fail directly.
-
-BugLink: https://bugs.launchpad.net/bugs/1821434
-Cc: stable@vger.kernel.org
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/ata/libata-pmp.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ata/libata-pmp.c b/drivers/ata/libata-pmp.c
-index 85aa76116a305..7924d0635718d 100644
---- a/drivers/ata/libata-pmp.c
-+++ b/drivers/ata/libata-pmp.c
-@@ -764,6 +764,7 @@ static int sata_pmp_eh_recover_pmp(struct ata_port *ap,
- 
- 	if (dev->flags & ATA_DFLAG_DETACH) {
- 		detach = 1;
-+		rc = -ENODEV;
- 		goto fail;
- 	}
- 
--- 
-2.20.1
-
+Dear Sir,  I came across your e-mail contact prior a private search
+while in need of your assistance, I have investment funds worth
+million of dollars and i need a trusted investment Manager/Partner, If
+you are willing to handle this project on my behalf kindly reply
+urgent to enable me provide you more information please this is not a
+spam, its a real business that will benefit both of us your urgent
+reply will be appreciated i will explain to you on how the business
+will be executed! kabiruwahid111@gmail.com.

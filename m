@@ -2,66 +2,82 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E548F1AF545
-	for <lists+linux-ide@lfdr.de>; Sun, 19 Apr 2020 00:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 763851B0D6A
+	for <lists+linux-ide@lfdr.de>; Mon, 20 Apr 2020 15:52:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbgDRWHz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 18 Apr 2020 18:07:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44756 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726887AbgDRWHy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 18 Apr 2020 18:07:54 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73DB1C061A0C
-        for <linux-ide@vger.kernel.org>; Sat, 18 Apr 2020 15:07:54 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id w18so2392399qvs.3
-        for <linux-ide@vger.kernel.org>; Sat, 18 Apr 2020 15:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=XY8qLZISPOcN//yeyj5gvtwVqNkO/KJremmxQQ/PxhU=;
-        b=uhEjz/JYXlQ5soYgGV+G3UINJQxebSkS/B6BsOvRw45NmtSXTUXyeoU0mma/0XBtdx
-         x9CAjp7js0ak55k0VEI1F1ZJS1CZHRtbObfRq99CovGIoVVtmn428aPVolSOWBa9pK1C
-         vnttJUL84g3TsA03k+bJgeH0gDfaqgdb7MKcpC42leXhI5e+pMQwEwYAaQG7NKYRcXzw
-         Yj3HWKd4bL+OkfcXxVZoXTTOZLzXKimqLpw0ctYIF15TUJNl1OhaUxtNRYbVubnscDvh
-         EBHW7O4bpE+UjK53NViyR68ejeBKj/k2DyetKPNyXtfcxAKl2hkl+74RDTohCKLaGZU1
-         BCCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=XY8qLZISPOcN//yeyj5gvtwVqNkO/KJremmxQQ/PxhU=;
-        b=b75+dHugJqII2rQqqz6Wgq4fjcPtHx67f701H3qilLJfXHvQKk9XYhOb6MQQC4pbJN
-         OMqZl6BMm+UlcWNtb4FhGEHydwwQJLmkppui5dSZE9d7k44y6G+18QNAUBGGXUz4neYI
-         d7mJmPw80d02hn1NciqKeoNvaZ8lfky+yza0ezxTYB2hq6Ro3aefTsXJGqvuEXNhi8u3
-         k9VDlGRnhDGu6rFSnVZ20oCO41LDIV42ztDMB3Q+7NVF42rn9NlgTtm7hXQR7UaHSGk6
-         hD+j73VKxkjHfSwF523CS/QFaXpRN4kxO/pycbaKA4BY9L8UnOvSDIZ0coJyYa4FYWqt
-         wC+Q==
-X-Gm-Message-State: AGi0PuaqwOYSLd+oiSW579SxJlr3euLuoPo36ahIFQ6PWAbsm4zZ9BJy
-        mFf1I5xhFnzFZi2r/lrgYhE5BCfb2yTUk3w0ef0=
-X-Google-Smtp-Source: APiQypKd5HA6RsstviCnhCv4RHqeSdKQtH85hcJtUaWmAxRjhJqXIh062EXRoeqqY1rUiHobNBM7KcawxKeHL0W1gB4=
-X-Received: by 2002:a05:6214:150f:: with SMTP id e15mr8545120qvy.18.1587247673423;
- Sat, 18 Apr 2020 15:07:53 -0700 (PDT)
+        id S1728549AbgDTNwR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 20 Apr 2020 09:52:17 -0400
+Received: from cmccmta1.chinamobile.com ([221.176.66.79]:4378 "EHLO
+        cmccmta1.chinamobile.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728018AbgDTNwQ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 20 Apr 2020 09:52:16 -0400
+Received: from spf.mail.chinamobile.com (unknown[172.16.121.17]) by rmmx-syy-dmz-app02-12002 (RichMail) with SMTP id 2ee25e9da8f9a32-d6d3e; Mon, 20 Apr 2020 21:51:54 +0800 (CST)
+X-RM-TRANSID: 2ee25e9da8f9a32-d6d3e
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG: 00000000
+Received: from localhost.localdomain (unknown[112.1.173.179])
+        by rmsmtp-syy-appsvr09-12009 (RichMail) with SMTP id 2ee95e9da8f73fc-c6f20;
+        Mon, 20 Apr 2020 21:51:54 +0800 (CST)
+X-RM-TRANSID: 2ee95e9da8f73fc-c6f20
+From:   Tang Bin <tangbin@cmss.chinamobile.com>
+To:     axboe@kernel.dk, b.zolnierkie@samsung.com
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Tang Bin <tangbin@cmss.chinamobile.com>
+Subject: [PATCH] ata: omit superfluous error message
+Date:   Mon, 20 Apr 2020 21:53:42 +0800
+Message-Id: <20200420135342.11984-1-tangbin@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.20.1.windows.1
 MIME-Version: 1.0
-Reply-To: kabiruwahid199@gmail.com
-Received: by 2002:ac8:f86:0:0:0:0:0 with HTTP; Sat, 18 Apr 2020 15:07:53 -0700 (PDT)
-From:   Mr Kabiru Wahid <kabiruwahid111@gmail.com>
-Date:   Sat, 18 Apr 2020 22:07:53 +0000
-X-Google-Sender-Auth: KRd8LvkXnhk-K5uoTe4Zl6k8sjA
-Message-ID: <CAM5G+8xiYwGomhViNUoUgJGcwc5Cyws5Fph5qKUhn-qB+=YY1A@mail.gmail.com>
-Subject: Hello Dear Friend!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Sir,  I came across your e-mail contact prior a private search
-while in need of your assistance, I have investment funds worth
-million of dollars and i need a trusted investment Manager/Partner, If
-you are willing to handle this project on my behalf kindly reply
-urgent to enable me provide you more information please this is not a
-spam, its a real business that will benefit both of us your urgent
-reply will be appreciated i will explain to you on how the business
-will be executed! kabiruwahid111@gmail.com.
+In the probe function, when get irq failed, the function
+platform_get_irq() logs an error message, so remove
+redundant message here.
+
+Signed-off-by: Tang Bin <tangbin@cmss.chinamobile.com>
+---
+ drivers/ata/pata_rb532_cf.c | 4 +---
+ drivers/ata/sata_highbank.c | 4 +---
+ 2 files changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/ata/pata_rb532_cf.c b/drivers/ata/pata_rb532_cf.c
+index 479c4b29b..dcde84f57 100644
+--- a/drivers/ata/pata_rb532_cf.c
++++ b/drivers/ata/pata_rb532_cf.c
+@@ -115,10 +115,8 @@ static int rb532_pata_driver_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq <= 0) {
+-		dev_err(&pdev->dev, "no IRQ resource found\n");
++	if (irq <= 0)
+ 		return -ENOENT;
+-	}
+ 
+ 	gpiod = devm_gpiod_get(&pdev->dev, NULL, GPIOD_IN);
+ 	if (IS_ERR(gpiod)) {
+diff --git a/drivers/ata/sata_highbank.c b/drivers/ata/sata_highbank.c
+index ad3893c62..efd1925a9 100644
+--- a/drivers/ata/sata_highbank.c
++++ b/drivers/ata/sata_highbank.c
+@@ -469,10 +469,8 @@ static int ahci_highbank_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq <= 0) {
+-		dev_err(dev, "no irq\n");
++	if (irq <= 0)
+ 		return -EINVAL;
+-	}
+ 
+ 	hpriv = devm_kzalloc(dev, sizeof(*hpriv), GFP_KERNEL);
+ 	if (!hpriv) {
+-- 
+2.20.1.windows.1
+
+
+

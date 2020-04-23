@@ -2,76 +2,91 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27DC61B6006
-	for <lists+linux-ide@lfdr.de>; Thu, 23 Apr 2020 17:59:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 860E41B63A6
+	for <lists+linux-ide@lfdr.de>; Thu, 23 Apr 2020 20:27:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729257AbgDWP7z (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 23 Apr 2020 11:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726109AbgDWP7z (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 23 Apr 2020 11:59:55 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05653C09B040
-        for <linux-ide@vger.kernel.org>; Thu, 23 Apr 2020 08:59:55 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id s10so5997097iln.11
-        for <linux-ide@vger.kernel.org>; Thu, 23 Apr 2020 08:59:54 -0700 (PDT)
+        id S1730295AbgDWS1i (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 23 Apr 2020 14:27:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52834 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730292AbgDWS0w (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 23 Apr 2020 14:26:52 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CF88C025491
+        for <linux-ide@vger.kernel.org>; Thu, 23 Apr 2020 11:26:51 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id r14so3385230pfg.2
+        for <linux-ide@vger.kernel.org>; Thu, 23 Apr 2020 11:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=H56dCNWzMv1cG8zQ/XZsLJBghV5eUZ/t0Tde2AZJjDc=;
-        b=e8CQ6cVkj8IRAa5QO8Y30+bpwk40P/+McqYiWfbmVRwPmyC0XA3u2eI0NRoKwGh1MR
-         AJXQPYoiXm2o3bJrI6devMXI9bjdABTAwRfVSJag50kufWErhkvsAOo54d8VzipIlrSr
-         on/Sbsp5SkRHmxDbFJyx3z1hPyZnmrqCPyO5wcwYOGv+TYIVdk1bMM/MuykhAfHL0ryj
-         05B9eUqSAj3y/Ed7GEa01y5UWFYTK8fQjSfwl6q2wMUjEKgp1w8A/NaVgrvqdT1l9AuD
-         gcjOn/XGvp8I2+RW5hvvEH/NrbkOq4C6h4QoJMnmw/lNsbWOzbrhUqezU36rkQqOm9kq
-         lKkg==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
+        b=g40sBMuaO0eKdotmx6qgQBl63DKBmrekz5bvyEQHA4wVZtcqrxc+aFVgh/QD84O9VQ
+         7GeGJGwCstc5CQBYUut5JFB/SR9hiHRBoNucBdQ5+M/xcZE7LYnQNVriX94nlJDQQ53M
+         WWNnGuPMmJMtuCxOc6M3BOG48McWyi9pwkfv1qCbwmDhh95byI3UmcGK9ZJ59xQm/kqA
+         giNgZwxUHu+XTIAoqn/uu1orK63Ur+6hMBQW2TB101zb0oJ5HpVThkCq6id/TjpQtg27
+         HPMb1DcYsj7bM6wQaeV1UkPK6mgUhECRFNV10F5zDhvx1RXP4ikb8uuEIGMKOSNWVb51
+         vLew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=H56dCNWzMv1cG8zQ/XZsLJBghV5eUZ/t0Tde2AZJjDc=;
-        b=RGjgDni2x+He5RUXbqgrdmtaOikb8UvbHWj1tJrFw/zW6gIHncOG9gMokQlF2I5oqh
-         e75zLSwrC3M4RXlF2GDYrroOJovEHtqQP6X7KI3JrZfcVF8krr9Nb7Tvvf8xK6oMX7pJ
-         2qWcRoYabbDoLww9hd6hY78R2rIXHsORgyOZdLtXazGqm6lQLmsEYn6bleJThld4wDM5
-         ra4xTqG+Ejte8nvz8EDVEigGQMXOAiykBvV/8Vh4yKe/7XkcVldVfherwihF65DCz84a
-         zcIGXNesXShWHTqRAxf0OqqTq4BS5Cl41Z87vRKceuWkSuYFiNl95HrNDcvqV50tbm2g
-         0iJg==
-X-Gm-Message-State: AGi0PuZEyo6E60WeHOUmy6Q8XCsWvAf8mx5fNdvEd+UWRGcOsnENpRan
-        +uO7cu07rndoCIJWUP3M0RCLMnNKFNgxpQ==
-X-Google-Smtp-Source: APiQypILHtPjs8/054VadV1CS6zFpJtI717uwmdHbv1h8zY1V+PUwUYTwFzoF49ovXZGcgQFpzBWPA==
-X-Received: by 2002:a92:d90b:: with SMTP id s11mr4155392iln.295.1587657594040;
-        Thu, 23 Apr 2020 08:59:54 -0700 (PDT)
-Received: from [192.168.1.159] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id o202sm999084ila.57.2020.04.23.08.59.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Apr 2020 08:59:52 -0700 (PDT)
-Subject: Re: [PATCH] ata: sata_inic162x fixed a spelling issue
-To:     John Oldman <john.oldman@polehill.co.uk>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200423090742.20590-1-john.oldman@polehill.co.uk>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <ec61b2c1-3b7b-9b17-77a0-b131da1eca79@kernel.dk>
-Date:   Thu, 23 Apr 2020 09:59:51 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=DHzQtr3OkXyFWXbvXEU307GvVJtF7cl8Gt7nfdQPyE8=;
+        b=Io2T0DV+miBkUxoJsFxycaLpporenBVPOmitVT4etD9oZSz5LYiz3FDnQc/dng1k/d
+         BwQ+q9DcOEGhH+V5nE5ZNOyR4EfMaYbJtmvFE5e1lmZkT7d4m3miBp2KZEyz3f47uId2
+         KIP3P4Kok/HcyF3qlscnXoT/qMxQP/dwDgGRJvb6OEsCkkKkk5SP4tDxMgKpJO7Fc4M5
+         MRS6hO7CwUNLOfeiqeUx1rg+19jTwmxxEsD6vttwQ+oNDb3NMnjwAVVL443r4SCs2DlC
+         8Xc4+PPWO1otWdGZC/LY8XSRB26JKkLkXPrdfS+LL73xHD729ERDUTyCLZ22ZmcguZlS
+         bFGQ==
+X-Gm-Message-State: AGi0PuZnHiBHe65TOOS2bEvYQoqmRVGekpBzBLZYRh6r4RXQnGQptIK2
+        hsBDgKw06DRdBRcoWKY+Y3DANPhddYU5D3xNksNf9Js=
+X-Google-Smtp-Source: APiQypKZ88CB7WlyCjo0k9+cU4PX0VcggKkKtzSKgRJHkcPGizF0yZXAjzEMBgo6XH4xzBXv0KAOMjPM9p1sgpp6/70=
+X-Received: by 2002:a5e:9416:: with SMTP id q22mr2547966ioj.93.1587666410194;
+ Thu, 23 Apr 2020 11:26:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200423090742.20590-1-john.oldman@polehill.co.uk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a02:c845:0:0:0:0:0 with HTTP; Thu, 23 Apr 2020 11:26:49
+ -0700 (PDT)
+Reply-To: boa.benin107@yahoo.com
+From:   "Mrs. Angella Michelle" <info.zennitbankplcnigerian@gmail.com>
+Date:   Thu, 23 Apr 2020 20:26:49 +0200
+Message-ID: <CABHzvr=N78snvtMHePMOa+RLFdcZEjXLPkuhkojt4VoZGNzBsQ@mail.gmail.com>
+Subject: Contact Bank of Africa-Benin to receive your payment funds transfer
+ amount of $12.800.000,00 Million USD,approved this morning by IMF.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 4/23/20 3:07 AM, John Oldman wrote:
-> Fixed a warning message spelling issue.
-
-Applied, thanks.
-
--- 
-Jens Axboe
-
+Attn Dear.
+Contact Bank of Africa-Benin to receive your payment funds transfer amount =
+of
+$12.800.000,00 Million USD,approved this morning by IMF.
+Happy to inform you, we have finally deposited your payment funds
+$12.8 million us dollars with the Paying Bank of Africa-Benin
+to transfer the payment amount of $12.800,000,00 Million Us Dollars to you
+Contact the bank immediately you receive this email now.
+Director Bank of Africa-Benin: Dr. Festus Obiara
+Email id:  boa.benin107@yahoo.com
+Tel/mobile, (229) 62819378
+BOA-BENIN | GROUPE BANK OF AFRICA, boa-benin
+Avenue Jean-Paul II - 08 BP 0879 - Cotonou - B=C3=A9nin
+Phone:(229) 62819378.
+2020 GROUPE BANK OF AFRICA
+Be advised to re-confirm your bank details to this bank as listed.
+Your account Holder's name----------------
+Bank Name----------------------------------------------------------
+Bank address----------------------------------------------
+Account Numbers---------------------------------------
+Rounting-----------------------------------------------------------------
+Your direct Phone Numbers----------------------------------------------
+Note,I have paid the deposit and insurance fees for you
+But the only money you are to send to this bank is $150.00 us dollars
+Been for the wire transfer fees of your funds
+Contact Him now to receive your transfer deposited this morning
+I wait for your reply upon confirmation
+Mrs. Angella Michelle
+Editor, Zenith Bank- Companies Benin
+mrsa9389@gmail.com

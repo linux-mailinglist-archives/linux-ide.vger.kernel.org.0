@@ -2,123 +2,99 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B11CD1C3BE7
-	for <lists+linux-ide@lfdr.de>; Mon,  4 May 2020 16:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 383551C3F98
+	for <lists+linux-ide@lfdr.de>; Mon,  4 May 2020 18:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728377AbgEDN75 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 4 May 2020 09:59:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47412 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728088AbgEDN74 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 May 2020 09:59:56 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CA99C061A41;
-        Mon,  4 May 2020 06:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=U//7dJcVU8Y3pHY5ljTkEwmYgkA64gPl3bOWhYC99c0=; b=c2UJn86GjfReLqes8s5dn8SneA
-        hAz6rzjtbgjbuTGPTNSWlnb7ZxvTITVderF9+NG9oLxzLIIFp6XYbCxwcA2EVUQlx4Whcmd/u/qsX
-        O7zmlb08sF6a2CAgV3egRXvpkN3B6uQ4xfwESwdSV1mkaG6bKNuZIaBqBlM9oKKdzNrX2tTHUcqYs
-        O6yQnxyeqM7sUTmUv9ZEZWyCzvATkX6mzYBbP8zipKGSsIU1L6IkeE0dWC3UNCMdOTNzVmhSG3kTb
-        tijeuFnFAZoAh+RWwTHc58YUiUETWQBcFaEFtD4rZqQs1THxQomeB/I29o2+h5LA7OhNHT4oOySkI
-        26ryfOxQ==;
-Received: from [2001:4bb8:18c:10bd:c70:4a89:bc61:2] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jVbdO-0007b2-Qj; Mon, 04 May 2020 13:59:51 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Jens Axboe <axboe@kernel.dk>
+        id S1729540AbgEDQQo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 4 May 2020 12:16:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729584AbgEDQQn (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 May 2020 12:16:43 -0400
+Received: from mail-il1-x143.google.com (mail-il1-x143.google.com [IPv6:2607:f8b0:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78893C0610D5
+        for <linux-ide@vger.kernel.org>; Mon,  4 May 2020 09:16:42 -0700 (PDT)
+Received: by mail-il1-x143.google.com with SMTP id c16so11787349ilr.3
+        for <linux-ide@vger.kernel.org>; Mon, 04 May 2020 09:16:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=O2NAB+HJ6UzNB91gndqrDrOBWBRRYdtXc0RXwgVqjIU=;
+        b=JtB9E0VAIJLFoltqJ/EHP5uJ1L/CC5gPEHBmZzWmKIrxbjl26Ne5XpvBSLm41xSBIg
+         t1xVdmJvdqBHaspjtVCP0vgnGV8j2MBTNBjG6GfJcM4fXOhB5+xGf03i727pyog2NP6D
+         GccF27GbRs4QZX7lndDIpxFVeOCoMgIl3dOrXZVf+VRPY7WwOdamJ/8xOXsiov24FI4J
+         cg7O0CG65PADdLp8q2dvOrT5ZwuaButnO4gv0VIES92fKah6Zco3/qNsmkTYiehcGMU9
+         Q2MWvAeM0Qng2AHkE9aLevizkhC1L0KUTdxlOLZZymREU3y6Lz7t6E+UeIP0pi9e0AJ9
+         6new==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=O2NAB+HJ6UzNB91gndqrDrOBWBRRYdtXc0RXwgVqjIU=;
+        b=hdFzwcd4rH/9Hc5tFqpcG/0VElE4e3AbnIwP9XUETQp64snUMVxFZ1+uixb0+xsvTs
+         x51ftRvF3QuJWpzcpsq/W0yCBdJVxdQWVJnqC3+gL1+Rff+cbyQn2xmlspTobylDAi6/
+         ZsfxoPnN1JgnWOYxjEiZx7d0wCxTGD4W64AGdi/2xqS9MYJ8VYPaEnrBa7I4Cs/WrMQV
+         CoCxvNvR9Vc9CjSvd2NF/mzjx4ULB89ZI/eTVJuN1YrAJFDX5feg97RnP/lV+K4XJZVr
+         LtU4oPeJgHx0AHPOCsgpkrRGr9zOY2mLAvDKIdyxhXRhkTNJY1tdd/JeuknErC0EVNCl
+         TEew==
+X-Gm-Message-State: AGi0PuYTsghqyj5b3UvwA8mfaW9aWwD72J3epXQrdQvoZIF7Z5uJQDsb
+        wtdgzgmsHkpE9J5bbATBjF2wnQ==
+X-Google-Smtp-Source: APiQypLOM7ihGkQHTNt/pKRC46v+xHKsvR0zC0Gq/TKe4vXwyBmsBEqqQDWLYSJ6GF4HlBlFg2BYoQ==
+X-Received: by 2002:a92:d6c6:: with SMTP id z6mr16340696ilp.32.1588609001697;
+        Mon, 04 May 2020 09:16:41 -0700 (PDT)
+Received: from [192.168.1.159] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id m22sm4250384iow.35.2020.05.04.09.16.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 May 2020 09:16:41 -0700 (PDT)
+Subject: Re: [PATCH 5/7] hfsplus: stop using ioctl_by_bdev
+To:     Christoph Hellwig <hch@lst.de>
 Cc:     Tim Waugh <tim@cyberelk.net>, Borislav Petkov <bp@alien8.de>,
         Jan Kara <jack@suse.com>, linux-block@vger.kernel.org,
         linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jan Kara <jack@suse.cz>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 8/8] udf: stop using ioctl_by_bdev
-Date:   Mon,  4 May 2020 15:59:27 +0200
-Message-Id: <20200504135927.2835750-9-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200504135927.2835750-1-hch@lst.de>
-References: <20200504135927.2835750-1-hch@lst.de>
+        Damien Le Moal <damien.lemoal@wdc.com>
+References: <20200425075706.721917-1-hch@lst.de>
+ <20200425075706.721917-6-hch@lst.de>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <6c47f731-7bff-f186-da55-7ce6cffacdc3@kernel.dk>
+Date:   Mon, 4 May 2020 10:16:40 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20200425075706.721917-6-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Instead just call the CDROM layer functionality directly.
+On 4/25/20 1:57 AM, Christoph Hellwig wrote:
+>  	if (HFSPLUS_SB(sb)->session >= 0) {
+> +		struct cdrom_tocentry te;
+> +
+> +		if (!cdi)
+> +			return -EINVAL;
+> +
+>  		te.cdte_track = HFSPLUS_SB(sb)->session;
+>  		te.cdte_format = CDROM_LBA;
+> -		res = ioctl_by_bdev(sb->s_bdev,
+> -			CDROMREADTOCENTRY, (unsigned long)&te);
+> -		if (!res && (te.cdte_ctrl & CDROM_DATA_TRACK) == 4) {
+> -			*start = (sector_t)te.cdte_addr.lba << 2;
+> -			return 0;
+> +		if (cdrom_read_tocentry(cdi, &te) ||
+> +		    (te.cdte_ctrl & CDROM_DATA_TRACK) != 4) {
+> +			pr_err("invalid session number or type of track\n");
+> +			return -EINVAL;
+>  		}
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Damien Le Moal <damien.lemoal@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
----
- fs/udf/lowlevel.c | 29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+I must be missing something obvious from just looking over the patches,
+but how does this work if cdrom is modular and hfsplus is builtin?
 
-diff --git a/fs/udf/lowlevel.c b/fs/udf/lowlevel.c
-index 5c7ec121990da..f1094cdcd6cde 100644
---- a/fs/udf/lowlevel.c
-+++ b/fs/udf/lowlevel.c
-@@ -27,41 +27,38 @@
- 
- unsigned int udf_get_last_session(struct super_block *sb)
- {
-+	struct cdrom_device_info *cdi = disk_to_cdi(sb->s_bdev->bd_disk);
- 	struct cdrom_multisession ms_info;
--	unsigned int vol_desc_start;
--	struct block_device *bdev = sb->s_bdev;
--	int i;
- 
--	vol_desc_start = 0;
--	ms_info.addr_format = CDROM_LBA;
--	i = ioctl_by_bdev(bdev, CDROMMULTISESSION, (unsigned long)&ms_info);
-+	if (!cdi) {
-+		udf_debug("CDROMMULTISESSION not supported.\n");
-+		return 0;
-+	}
- 
--	if (i == 0) {
-+	ms_info.addr_format = CDROM_LBA;
-+	if (cdrom_multisession(cdi, &ms_info) == 0) {
- 		udf_debug("XA disk: %s, vol_desc_start=%d\n",
- 			  ms_info.xa_flag ? "yes" : "no", ms_info.addr.lba);
- 		if (ms_info.xa_flag) /* necessary for a valid ms_info.addr */
--			vol_desc_start = ms_info.addr.lba;
--	} else {
--		udf_debug("CDROMMULTISESSION not supported: rc=%d\n", i);
-+			return ms_info.addr.lba;
- 	}
--	return vol_desc_start;
-+	return 0;
- }
- 
- unsigned long udf_get_last_block(struct super_block *sb)
- {
- 	struct block_device *bdev = sb->s_bdev;
-+	struct cdrom_device_info *cdi = disk_to_cdi(bdev->bd_disk);
- 	unsigned long lblock = 0;
- 
- 	/*
--	 * ioctl failed or returned obviously bogus value?
-+	 * The cdrom layer call failed or returned obviously bogus value?
- 	 * Try using the device size...
- 	 */
--	if (ioctl_by_bdev(bdev, CDROM_LAST_WRITTEN, (unsigned long) &lblock) ||
--	    lblock == 0)
-+	if (!cdi || cdrom_get_last_written(cdi, &lblock) || lblock == 0)
- 		lblock = i_size_read(bdev->bd_inode) >> sb->s_blocksize_bits;
- 
- 	if (lblock)
- 		return lblock - 1;
--	else
--		return 0;
-+	return 0;
- }
 -- 
-2.26.2
+Jens Axboe
 

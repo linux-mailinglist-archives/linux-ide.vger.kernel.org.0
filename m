@@ -2,121 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB001C2F87
-	for <lists+linux-ide@lfdr.de>; Sun,  3 May 2020 23:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CC01C3BDE
+	for <lists+linux-ide@lfdr.de>; Mon,  4 May 2020 16:00:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729140AbgECVqa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 3 May 2020 17:46:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54988 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729135AbgECVqa (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 3 May 2020 17:46:30 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 61519206B9;
-        Sun,  3 May 2020 21:46:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1588542389;
-        bh=GBGCkhxLK9ereAx0GcQnVpnlPY3m3AUtgAJvWygV8lE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=sfNDkH2osiIRVWaHRKquVVacc40DjLOz6VoO/VHWZN5xxrAYRnnr/Iq+j4Xpd56QQ
-         QQXWwxuHCD4jtPSeWrVRfkCGIkqtUKtnNkT3Z9x0y5sVDEG5prW2/Mj7IY5RZpHioD
-         okDQebXI8EwXI4bn/MIuGGT460B1LmXp0Tqm8S1w=
-Received: by pali.im (Postfix)
-        id 6A5E7F28; Sun,  3 May 2020 23:46:27 +0200 (CEST)
-Date:   Sun, 3 May 2020 23:46:27 +0200
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Sascha Hauer <s.hauer@pengutronix.de>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, kernel@pengutronix.de
-Subject: Re: [PATCH v2] libata: Fix retrieving of active qcs
-Message-ID: <20200503214627.gerb3ipcwek2h3h7@pali>
-References: <20191213080408.27032-1-s.hauer@pengutronix.de>
- <20191225181840.ooo6mw5rffghbmu2@pali>
- <20200106081605.ffjz7xy6e24rfcgx@pengutronix.de>
- <20200127111630.bqqzhj57tzt7geds@pali>
- <20200127112428.sdfxvlqdox5efzcb@pengutronix.de>
+        id S1728445AbgEDN75 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 4 May 2020 09:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47414 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728110AbgEDN74 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 May 2020 09:59:56 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E01AC0610D5;
+        Mon,  4 May 2020 06:59:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=CT9TPYB1gBir/yelz692kCRjhkXIcgo4vO0zDJE8gwk=; b=rJyjevkJ4AJbP004OHAOCBnof1
+        YIafKltJ9MfSxyThjuPBAXEj2GLR36kE4nJ8GJokvQILLT6qSQIiWp+GRKXEXjYXAchKjJUjaFHM9
+        G4BDqH+3RH3n+9LXVGpwy1cuq3UH+2+nGccvKrTVdOYkcBsY5MrBgX9uTpFQ1ehd/gRhiTBOyxzcb
+        YQWNTTvHhkrZa8Ve1OkkvMoQhddwnMoc2+UyoOoynmMQmnsrzOt8TbVI9BbWtuG0vTa+itpKcNdb3
+        wwxjlmc4iIzipoTy5Pa8SOYpmy9Ssli5sz+ho9ZZ/CpO6i1dEEOiT0nzFyQ+ixNZZTh6od2ml6tqf
+        KBmtyCAw==;
+Received: from [2001:4bb8:18c:10bd:c70:4a89:bc61:2] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jVbd5-0007Y5-DB; Mon, 04 May 2020 13:59:31 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Tim Waugh <tim@cyberelk.net>, Borislav Petkov <bp@alien8.de>,
+        Jan Kara <jack@suse.com>, linux-block@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: stop using ioctl_by_bdev for file system access to CDROMs v3
+Date:   Mon,  4 May 2020 15:59:19 +0200
+Message-Id: <20200504135927.2835750-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200127112428.sdfxvlqdox5efzcb@pengutronix.de>
-User-Agent: NeoMutt/20180716
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Monday 27 January 2020 12:24:28 Sascha Hauer wrote:
-> On Mon, Jan 27, 2020 at 12:16:30PM +0100, Pali Rohár wrote:
-> > On Monday 06 January 2020 09:16:05 Sascha Hauer wrote:
-> > > On Wed, Dec 25, 2019 at 07:18:40PM +0100, Pali Rohár wrote:
-> > > > Hello Sascha!
-> > > > 
-> > > > On Friday 13 December 2019 09:04:08 Sascha Hauer wrote:
-> > > > > ata_qc_complete_multiple() is called with a mask of the still active
-> > > > > tags.
-> > > > > 
-> > > > > mv_sata doesn't have this information directly and instead calculates
-> > > > > the still active tags from the started tags (ap->qc_active) and the
-> > > > > finished tags as (ap->qc_active ^ done_mask)
-> > > > > 
-> > > > > Since 28361c40368 the hw_tag and tag are no longer the same and the
-> > > > > equation is no longer valid. In ata_exec_internal_sg() ap->qc_active is
-> > > > > initialized as 1ULL << ATA_TAG_INTERNAL, but in hardware tag 0 is
-> > > > > started and this will be in done_mask on completion. ap->qc_active ^
-> > > > > done_mask becomes 0x100000000 ^ 0x1 = 0x100000001 and thus tag 0 used as
-> > > > > the internal tag will never be reported as completed.
-> > > > > 
-> > > > > This is fixed by introducing ata_qc_get_active() which returns the
-> > > > > active hardware tags and calling it where appropriate.
-> > > > > 
-> > > > > This is tested on mv_sata, but sata_fsl and sata_nv suffer from the same
-> > > > > problem. There is another case in sata_nv that most likely needs fixing
-> > > > > as well, but this looks a little different, so I wasn't confident enough
-> > > > > to change that.
-> > > > 
-> > > > I can confirm that sata_nv.ko does not work in 4.18 (and new) kernel
-> > > > version correctly. More details are in email:
-> > > > 
-> > > > https://lore.kernel.org/linux-ide/20191225180824.bql2o5whougii4ch@pali/T/
-> > > > 
-> > > > I tried this patch and it fixed above problems with sata_nv.ko. It just
-> > > > needs small modification (see below).
-> > > > 
-> > > > So you can add my:
-> > > > 
-> > > > Tested-by: Pali Rohár <pali.rohar@gmail.com>
-> > > > 
-> > > > And I hope that patch would be backported to 4.18 and 4.19 stable
-> > > > branches soon as distributions kernels are broken for machines with
-> > > > these nvidia sata controllers.
-> > > > 
-> > > > Anyway, what is that another case in sata_nv which needs to be fixed
-> > > > too?
-> > > 
-> > > It's in nv_swncq_sdbfis(). Here we have:
-> > > 
-> > > 	sactive = readl(pp->sactive_block);
-> > > 	done_mask = pp->qc_active ^ sactive;
-> > > 
-> > > 	pp->qc_active &= ~done_mask;
-> > > 	pp->dhfis_bits &= ~done_mask;
-> > > 	pp->dmafis_bits &= ~done_mask;
-> > > 	pp->sdbfis_bits |= done_mask;
-> > > 	ata_qc_complete_multiple(ap, ap->qc_active ^ done_mask);
-> > > 
-> > > Sascha
-> > 
-> > Ok. Are you going to fix also this case?
-> 
-> As said, this one looks slightly different than the others and I would
-> prefer if somebody could fix it who actually has a hardware and can test
-> it.
+Hi Jens,
 
-Well, I have hardware and could test changes. But I'm not really sure
-that I understand this part of code. So it would be better if somebody
-else with better knowledge prepares patches I could test them. But
-currently during coronavirus I have only remote ssh access, so boot,
-modify/compile/reboot process is quite slower.
+can you pick up this series?
+
+Except for the DASD case under discussion the last users of ioctl_by_bdev
+are the file system drivers that want to query CDROM information using
+ioctls.  This series switches them to use function calls directly into
+the CDROM midlayer instead, which implies:
+
+ - adding a cdrom_device_info pointer to the gendisk, so that file systems
+   can find it without going to the low-level driver first
+ - ensuring that the CDROM midlayer (which isn't a lot of code) is built
+   in if the file systems are built in so that they can actually call the
+   exported functions
+
+Changes since v2:
+ - add a patch to also convert hfs (exactly duplicate of the hfsplus code)
+Changes since v1:
+ - fix up the no-CDROM error case in isofs_get_last_session to return 0
+   instead of -EINVAL.

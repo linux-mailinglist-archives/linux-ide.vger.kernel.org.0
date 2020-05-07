@@ -2,39 +2,62 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 035D71C55D2
-	for <lists+linux-ide@lfdr.de>; Tue,  5 May 2020 14:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F4E1C878F
+	for <lists+linux-ide@lfdr.de>; Thu,  7 May 2020 13:07:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728608AbgEEMnN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 May 2020 08:43:13 -0400
-Received: from verein.lst.de ([213.95.11.211]:35163 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728569AbgEEMnM (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 5 May 2020 08:43:12 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 135E768C4E; Tue,  5 May 2020 14:43:08 +0200 (CEST)
-Date:   Tue, 5 May 2020 14:43:08 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Tim Waugh <tim@cyberelk.net>, Borislav Petkov <bp@alien8.de>,
-        Jan Kara <jack@suse.com>, linux-block@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5/8] hfs: stop using ioctl_by_bdev
-Message-ID: <20200505124308.GA26266@lst.de>
-References: <20200504135927.2835750-1-hch@lst.de> <20200504135927.2835750-6-hch@lst.de>
+        id S1726069AbgEGLH3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 7 May 2020 07:07:29 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:38726 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725949AbgEGLH3 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 7 May 2020 07:07:29 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A3436C3DCBDDF1752CA0;
+        Thu,  7 May 2020 19:07:26 +0800 (CST)
+Received: from huawei.com (10.175.124.28) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Thu, 7 May 2020
+ 19:07:16 +0800
+From:   Jason Yan <yanaijie@huawei.com>
+To:     <axboe@kernel.dk>, <b.zolnierkie@samsung.com>,
+        <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC:     Jason Yan <yanaijie@huawei.com>
+Subject: [PATCH] ata: return true in ata_is_host_link()
+Date:   Thu, 7 May 2020 19:06:37 +0800
+Message-ID: <20200507110637.37341-1-yanaijie@huawei.com>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200504135927.2835750-6-hch@lst.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.28]
+X-CFilter-Loop: Reflected
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Jens,
+Fix the following coccicheck warning:
 
-can you pick up this patch as well?  I forgot about hfs earlier and this
-was only added to the most recent resend.  The changes are identical to
-those in hfsplus.
+include/linux/libata.h:1446:8-9: WARNING: return of 0/1 in function
+'ata_is_host_link' with return type bool
+
+Signed-off-by: Jason Yan <yanaijie@huawei.com>
+---
+ include/linux/libata.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 8bf5e59a7859..e05a8ed2e31e 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -1443,7 +1443,7 @@ static inline bool sata_pmp_attached(struct ata_port *ap)
+ 
+ static inline bool ata_is_host_link(const struct ata_link *link)
+ {
+-	return 1;
++	return true;
+ }
+ #endif /* CONFIG_SATA_PMP */
+ 
+-- 
+2.21.1
+

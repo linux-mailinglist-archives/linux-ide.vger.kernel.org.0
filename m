@@ -2,62 +2,88 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63F4E1C878F
-	for <lists+linux-ide@lfdr.de>; Thu,  7 May 2020 13:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 197301C8866
+	for <lists+linux-ide@lfdr.de>; Thu,  7 May 2020 13:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726069AbgEGLH3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 7 May 2020 07:07:29 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:38726 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725949AbgEGLH3 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 7 May 2020 07:07:29 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A3436C3DCBDDF1752CA0;
-        Thu,  7 May 2020 19:07:26 +0800 (CST)
-Received: from huawei.com (10.175.124.28) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Thu, 7 May 2020
- 19:07:16 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <axboe@kernel.dk>, <b.zolnierkie@samsung.com>,
-        <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     Jason Yan <yanaijie@huawei.com>
-Subject: [PATCH] ata: return true in ata_is_host_link()
-Date:   Thu, 7 May 2020 19:06:37 +0800
-Message-ID: <20200507110637.37341-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.21.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.124.28]
-X-CFilter-Loop: Reflected
+        id S1726778AbgEGLfO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 7 May 2020 07:35:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50018 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725985AbgEGLfO (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 7 May 2020 07:35:14 -0400
+X-Greylist: delayed 301 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 May 2020 04:35:14 PDT
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4733EC05BD43
+        for <linux-ide@vger.kernel.org>; Thu,  7 May 2020 04:35:14 -0700 (PDT)
+Received: from ramsan ([IPv6:2a02:1810:ac12:ed60:6572:4a1f:d283:9ae8])
+        by xavier.telenet-ops.be with bizsmtp
+        id bnW3220043ZRV0X01nW3Ki; Thu, 07 May 2020 13:30:11 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan with esmtp (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jWej4-0006zG-Vp; Thu, 07 May 2020 13:30:02 +0200
+Received: from geert by rox.of.borg with local (Exim 4.90_1)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1jWej4-00068L-UG; Thu, 07 May 2020 13:30:02 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Shawn Guo <shawnguo@kernel.org>, Li Yang <leoyang.li@nxp.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Amit Kucheria <amit.kucheria@verdurent.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-ide@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/4] qoriq: Add platform dependencies
+Date:   Thu,  7 May 2020 13:29:51 +0200
+Message-Id: <20200507112955.23520-1-geert+renesas@glider.be>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Fix the following coccicheck warning:
+	Hi all,
 
-include/linux/libata.h:1446:8-9: WARNING: return of 0/1 in function
-'ata_is_host_link' with return type bool
+Several QorIQ blocks are only present on Freescale or NXP SoCs.
+This series adds platform dependencies to the corresponding config
+ymbols, to avoid asking the user about them when configuring a kernel
+without support for these SoCs.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- include/linux/libata.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Most patches in this series are independent, but the third patch may
+cause some Kconfig warnings when applied before the second patch, and
+enabling the QorIQ CPU frequency scaling driver in a non-Layerscape
+kernel.
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 8bf5e59a7859..e05a8ed2e31e 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1443,7 +1443,7 @@ static inline bool sata_pmp_attached(struct ata_port *ap)
- 
- static inline bool ata_is_host_link(const struct ata_link *link)
- {
--	return 1;
-+	return true;
- }
- #endif /* CONFIG_SATA_PMP */
- 
+Thanks for your comments!
+
+Geert Uytterhoeven (4):
+  ahci: qoriq: Add platform dependencies
+  cpufreq: qoriq: Add platform dependencies
+  clk: qoriq: Add platform dependencies
+  thermal: qoriq: Add platform dependencies
+
+ drivers/ata/Kconfig     | 1 +
+ drivers/clk/Kconfig     | 3 ++-
+ drivers/cpufreq/Kconfig | 3 ++-
+ drivers/thermal/Kconfig | 4 ++--
+ 4 files changed, 7 insertions(+), 4 deletions(-)
+
 -- 
-2.21.1
+2.17.1
 
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds

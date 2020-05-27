@@ -2,33 +2,32 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D5021E4359
-	for <lists+linux-ide@lfdr.de>; Wed, 27 May 2020 15:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB9981E44CF
+	for <lists+linux-ide@lfdr.de>; Wed, 27 May 2020 15:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730210AbgE0NSq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 27 May 2020 09:18:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
+        id S2389048AbgE0N5o (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 27 May 2020 09:57:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730262AbgE0NSp (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 27 May 2020 09:18:45 -0400
-X-Greylist: delayed 132 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 27 May 2020 06:18:44 PDT
+        with ESMTP id S2388555AbgE0N5o (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 27 May 2020 09:57:44 -0400
 Received: from msa13.plala.or.jp (msa13.plala.or.jp [IPv6:2400:7800:0:502e::13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 43119C08C5C1;
-        Wed, 27 May 2020 06:18:44 -0700 (PDT)
-Received: from mwebp13 ([172.23.13.133]) by msa11.plala.or.jp with ESMTP
-          id <20200527130828.KRSY32305.msa11.plala.or.jp@mwebp13>;
-          Wed, 27 May 2020 22:08:28 +0900
-Date:   Wed, 27 May 2020 22:08:28 +0900
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 959F0C08C5C1
+        for <linux-ide@vger.kernel.org>; Wed, 27 May 2020 06:57:43 -0700 (PDT)
+Received: from mwebp13 ([172.23.13.133]) by msa13.plala.or.jp with ESMTP
+          id <20200527135742.YYSM25516.msa13.plala.or.jp@mwebp13>;
+          Wed, 27 May 2020 22:57:42 +0900
+Date:   Wed, 27 May 2020 22:57:42 +0900
 From:   "Mrs.Judith Rice" <hamurafujimi@tmail.plala.or.jp>
 Reply-To: jonesevansje@gmail.com
-Message-ID: <20200527220828.CT7ZD.794.root@mwebp13>
+Message-ID: <20200527225742.6DSZ4.1020.root@mwebp13>
 Subject: Spende
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-2022-jp
 Content-Transfer-Encoding: 7bit
 X-Priority: 3 (Normal)
 Sensitivity: Normal
-X-VirusScan: Outbound; mvir-ac11; Wed, 27 May 2020 22:08:28 +0900
+X-VirusScan: Outbound; mvir-ac13; Wed, 27 May 2020 22:57:43 +0900
 To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
@@ -53,3 +52,4 @@ Herkunftsland:
 Gr&#252;&#223;e,
 Mrs. Judith Rice
 
+Spende

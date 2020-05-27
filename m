@@ -2,100 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C6F41E2D10
-	for <lists+linux-ide@lfdr.de>; Tue, 26 May 2020 21:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D63F1E34C1
+	for <lists+linux-ide@lfdr.de>; Wed, 27 May 2020 03:33:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392407AbgEZTTK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 26 May 2020 15:19:10 -0400
-Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:45882 "EHLO
-        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2403869AbgEZTNW (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 26 May 2020 15:13:22 -0400
-Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
-        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 85DF630D74C;
-        Tue, 26 May 2020 12:13:20 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 85DF630D74C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-        s=dkimrelay; t=1590520400;
-        bh=IufzkrNWxifj/z4iOOO9Me24W7Zq/AMCYeh1e0Xhaoc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pikWQvMJwOx6J2n6DpDgU/vBryQdPAdbUO0y7iPpgZBgc2C/cgS9aTscNqQXpG0yR
-         /DPYCerr3vkQooZmUhLmvOkWw9EFlG1lgAH3eObG113dkMDFzr2CJig6YLN41VdgZT
-         0VfP2v0KXeIJNQdi//7729dgs+uZINCmnwlYvUUA=
-Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
-        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 4293E14008C;
-        Tue, 26 May 2020 12:13:19 -0700 (PDT)
-From:   Jim Quinlan <james.quinlan@broadcom.com>
-To:     linux-pci@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
-Cc:     Jim Quinlan <james.quinlan@broadcom.com>,
+        id S1726036AbgE0Bbl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 26 May 2020 21:31:41 -0400
+Received: from mail-il1-f195.google.com ([209.85.166.195]:45314 "EHLO
+        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725287AbgE0Bbl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 26 May 2020 21:31:41 -0400
+Received: by mail-il1-f195.google.com with SMTP id 9so3988807ilg.12;
+        Tue, 26 May 2020 18:31:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=k9Tih4XnsvyNY6esAFQ63eiV+bEtuajcRZUBRdAyvvc=;
+        b=ZrOYu8wV++Ea9KqNlQN7fknl4Pd81KfHqWRahHTkU+uZtDiN5F2qgGxWieHX/v1gLR
+         z/ydCWUG1XOnVF2yMEnD8Z41L0Lxn7WRP1UwsTo8lJP4v+vHQ21kNc8MWiP/sDwPqD1q
+         xozhOw0wFrlyhELIx0cw0cbzwQ+TgX2Dr9l4rjpZVcfJEGsRdCW/qkAUJ2W1SezquEPc
+         IIrjsWfcYpBCqjkdwN6Bd8VlgnulxCcfr4zJzrgTlLAS4mutxIyrsVPk5kVhO5bNXMOQ
+         cZ07Od+zN4Z5GWFO8gNDn8xymkbSCPAp0PaWMJpCi6rq0Rb0mICYXn4gqPGyzp+zHZq6
+         PaJQ==
+X-Gm-Message-State: AOAM5310M/pQEkV3OHnltFX4iS7RMtRj2NzDHP5sX3gY6Oi2s334PffO
+        1gUMpF476+X9A6jcV+dkOQ==
+X-Google-Smtp-Source: ABdhPJwJOyjslkUwLMUCa6L98wpsiVwI3A8D8vv1EsWHGsWdVRUWm3/bwvdmfxReZz4y9VPBwudgAA==
+X-Received: by 2002:a92:7e90:: with SMTP id q16mr13816ill.199.1590543098611;
+        Tue, 26 May 2020 18:31:38 -0700 (PDT)
+Received: from xps15 ([64.188.179.252])
+        by smtp.gmail.com with ESMTPSA id j2sm615491ioo.8.2020.05.26.18.31.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2020 18:31:37 -0700 (PDT)
+Received: (nullmailer pid 843489 invoked by uid 1000);
+        Wed, 27 May 2020 01:31:36 -0000
+Date:   Tue, 26 May 2020 19:31:36 -0600
+From:   Rob Herring <robh@kernel.org>
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
         Jens Axboe <axboe@kernel.dk>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
-        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v2 02/14] ata: ahci_brcm: Fix use of BCM7216 reset controller
-Date:   Tue, 26 May 2020 15:12:41 -0400
-Message-Id: <20200526191303.1492-3-james.quinlan@broadcom.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200526191303.1492-1-james.quinlan@broadcom.com>
-References: <20200526191303.1492-1-james.quinlan@broadcom.com>
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-ide@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-i2c@vger.kernel.org, linux-mmc@vger.kernel.org,
+        netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-watchdog@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>
+Subject: Re: [PATCH 16/17] dt-bindings: watchdog: renesas,wdt: Document
+ r8a7742 support
+Message-ID: <20200527013136.GA838011@bogus>
+References: <1589555337-5498-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1589555337-5498-17-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Jim Quinlan <jquinlan@broadcom.com>
+On Fri, May 15, 2020 at 04:08:56PM +0100, Lad Prabhakar wrote:
+> RZ/G1H (R8A7742) watchdog implementation is compatible with R-Car Gen2,
+> therefore add relevant documentation.
+> 
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+> ---
+>  Documentation/devicetree/bindings/watchdog/renesas,wdt.txt | 1 +
+>  1 file changed, 1 insertion(+)
 
-A reset controller "rescal" is shared between the AHCI driver and the PCIe
-driver for the BrcmSTB 7216 chip.  The code is modified to allow this
-sharing and to deassert() properly.
+Meanwhile in the DT tree, converting this schema landed. Can you prepare 
+a version based on the schema.
 
-Signed-off-by: Jim Quinlan <jquinlan@broadcom.com>
----
- drivers/ata/ahci_brcm.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/ata/ahci_brcm.c b/drivers/ata/ahci_brcm.c
-index 6853dbb4131d..c4ea555573dd 100644
---- a/drivers/ata/ahci_brcm.c
-+++ b/drivers/ata/ahci_brcm.c
-@@ -428,7 +428,6 @@ static int brcm_ahci_probe(struct platform_device *pdev)
- {
- 	const struct of_device_id *of_id;
- 	struct device *dev = &pdev->dev;
--	const char *reset_name = NULL;
- 	struct brcm_ahci_priv *priv;
- 	struct ahci_host_priv *hpriv;
- 	struct resource *res;
-@@ -452,11 +451,11 @@ static int brcm_ahci_probe(struct platform_device *pdev)
- 
- 	/* Reset is optional depending on platform and named differently */
- 	if (priv->version == BRCM_SATA_BCM7216)
--		reset_name = "rescal";
-+		priv->rcdev = devm_reset_control_get_optional_shared(&pdev->dev,
-+								     "rescal");
- 	else
--		reset_name = "ahci";
--
--	priv->rcdev = devm_reset_control_get_optional(&pdev->dev, reset_name);
-+		priv->rcdev = devm_reset_control_get_optional(&pdev->dev,
-+							      "ahci");
- 	if (IS_ERR(priv->rcdev))
- 		return PTR_ERR(priv->rcdev);
- 
-@@ -479,10 +478,7 @@ static int brcm_ahci_probe(struct platform_device *pdev)
- 		break;
- 	}
- 
--	if (priv->version == BRCM_SATA_BCM7216)
--		ret = reset_control_reset(priv->rcdev);
--	else
--		ret = reset_control_deassert(priv->rcdev);
-+	ret = reset_control_deassert(priv->rcdev);
- 	if (ret)
- 		return ret;
- 
--- 
-2.17.1
-
+Rob

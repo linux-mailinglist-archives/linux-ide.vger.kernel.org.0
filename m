@@ -2,62 +2,101 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 377341E8E28
-	for <lists+linux-ide@lfdr.de>; Sat, 30 May 2020 08:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACE6B1E951C
+	for <lists+linux-ide@lfdr.de>; Sun, 31 May 2020 05:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728765AbgE3GSd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 30 May 2020 02:18:33 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:59282 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728657AbgE3GSd (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 30 May 2020 02:18:33 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id AC5D7FB11EB59DE3554F;
-        Sat, 30 May 2020 14:18:30 +0800 (CST)
-Received: from [127.0.0.1] (10.166.215.224) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.487.0; Sat, 30 May 2020
- 14:18:28 +0800
-Subject: Re: [PATCH] scsi/libata: Fix usage of page address by page_address in
- ata_scsi_mode_select_xlat function
-To:     Christoph Hellwig <hch@infradead.org>
-References: <20200529063251.14665-1-yebin10@huawei.com>
- <20200529124807.GA23222@infradead.org>
-CC:     <linux-ide@vger.kernel.org>, <axboe@kernel.dk>,
-        Paolo Bonzini <pbonzini@redhat.com>
-From:   yebin <yebin10@huawei.com>
-Message-ID: <5ED1FAB3.6020609@huawei.com>
-Date:   Sat, 30 May 2020 14:18:27 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.1.0
+        id S1729385AbgEaDod (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 30 May 2020 23:44:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48988 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729026AbgEaDoc (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 30 May 2020 23:44:32 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB12C03E969
+        for <linux-ide@vger.kernel.org>; Sat, 30 May 2020 20:44:31 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id q8so3507303iow.7
+        for <linux-ide@vger.kernel.org>; Sat, 30 May 2020 20:44:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=IHdVpQ0BdfXNiTu5JHlOze0C3k/x5AyNV5jgRLzSMiU=;
+        b=BtH9PrErKeJc6K10xsUxO325mEaMvuhA64aCwKZHyg+IvZ2k78W1APgzyVS4By7Zzz
+         x04eYUzvINaVK+cNWNX8s/lbh15e6V3YD2GI+rPUKxmNYMU9uXxfmAH4QRSlCLL7kKln
+         Wc+Y3egn837X8B05q5lgU6xZhwpYSqMGJJuchsxLgyS7Ua9s/VrbDMXZRgci8kNsVDXA
+         iq49Cqj+i2ot5DIZJX0HGoM/nCYyp0RYTJhTSlbvpetJIpN3+e0X437T6MNQqjJTMLaI
+         1W6W2sla+HCeWkrVM3aPL5g0NPRAtsz2VfvJ8kn97wzoVZz49+WNIuq+MVeHyJbo7lSs
+         gIkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=IHdVpQ0BdfXNiTu5JHlOze0C3k/x5AyNV5jgRLzSMiU=;
+        b=JjDf/zqHe3xLglNL73CSw+CO+p/2kYswEnprBaglrE3ypoe6EDuqOhlRHZ/8MlNHv5
+         PmmSm5A1mIlsuGtgaL+jBiEKb9LOazzWyPywkJ2L2Mz2jbk0/cnKw9xcxAEsKt6FDKf7
+         jZmq+JBWShBVrcETbchkHtm4TBPSUFbCVkLLPwH0imMCl6+BOayQmcW45RcO2ZQy1x4U
+         ZdkRPOL7GIB6yeoxciSKtPEv1vpRd8eZ9qucNKDM4rhiakJ8pBEAmKzAxx5WWKxBTGRG
+         AB3CH/S4q9XgH1iffegx1/Wa3HQ7VwUWMDx7YtBrafYeHF6zJurHTMUgHlcl1m1XtnKh
+         DU4w==
+X-Gm-Message-State: AOAM530kxa80Lbc7YVOe707/NM6pfJOrIAHe9FQPQc33I6vKIrCwwaD9
+        yd1JUeAmXibnApZMUBTA3tLyAjsCfYpK5yL0Nb0=
+X-Google-Smtp-Source: ABdhPJw5sTVbdjYJDJu3DVNUjNfy6WnbfKEP0gSJlDzULvQDwckbZ2fJj//vywJznwJcuDd6VtEBqI7eDJMheCO3ISM=
+X-Received: by 2002:a6b:ef1a:: with SMTP id k26mr13180353ioh.124.1590896670697;
+ Sat, 30 May 2020 20:44:30 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200529124807.GA23222@infradead.org>
-Content-Type: text/plain; charset="windows-1252"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.166.215.224]
-X-CFilter-Loop: Reflected
+Reply-To: abd747591@gmail.com
+Received: by 2002:a5d:9141:0:0:0:0:0 with HTTP; Sat, 30 May 2020 20:44:30
+ -0700 (PDT)
+From:   Mr Abd Manaf <abdmanaf2002@gmail.com>
+Date:   Sun, 31 May 2020 04:44:30 +0100
+X-Google-Sender-Auth: d2yLZbygvsPKW3MU9Dm5PLbY2gw
+Message-ID: <CAGrhT3C0bOcD6f1yz5HK-FOPmXNYoZjSto0EXU62iXkvuc2fsw@mail.gmail.com>
+Subject: Good Morning!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2020/5/29 20:48, Christoph Hellwig wrote:
-> On Fri, May 29, 2020 at 02:32:51PM +0800, Ye Bin wrote:
->> index 435781a16875..d674184ed835 100644
->> --- a/drivers/ata/libata-scsi.c
->> +++ b/drivers/ata/libata-scsi.c
->> @@ -3723,7 +3723,7 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
->>   	if (!scsi_sg_count(scmd) || scsi_sglist(scmd)->length < len)
->>   		goto invalid_param_len;
->>   
->> -	p = page_address(sg_page(scsi_sglist(scmd)));
->> +	p = page_address(sg_page(scsi_sglist(scmd))) + scsi_sglist(scmd)->offset;
-> This also looks completely buggy on highmem systems and really needs to
-> use a kmap_atomic.
-> .
-Thank you  for your reply.
-  As in sg_scsi_ioctl  function allocate bio memory by kzalloc. Maybe 
-it's better to give
-the caller more freedom, and at the same time, it's more robust.
->
+Dear how are you,
 
 
+How Are You? I Know That This Mail May Come To You Almost A Surprise
+As We Never Met Before And Please Before You Proceed Reading This
+mail,This Is True and not An Well I Saw Your Contact Email From Yahoo
+Search when I Was Looking For a Foreign Partner, please I don=E2=80=99t now=
+ if
+you can keep secret? A word of your own as a human-being? As I have
+gone through your profile.Well I have a deal worth 15.5m$ from the
+dormant account in the bank where I am working.so Please if you can
+keep secret, I will give you more details and the nest thing to do,
+
+Also all the documents that will back you up must send to you.
+Meanwhile before I contact you I have done every underground work
+through the documents of the deceases person, I have put or attachment
+his file to our favor. Also with my position every thing works
+successfully.
+
+Your Full Name,
+Phone No=E2=80=A6.,
+Receiver Country..,
+Occupation..,
+
+thanks for your understandplease contact me base if you can control
+this fund once it transferinto your account before my family and I
+will arriver in your country for the sharing, 40% for you. 10% for the
+poorest, rest is for me.
+Give me your Phone number Let me call you so that we can talk one and one=
+=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6
+
+You should contact me immediately as soon as you receive this
+letter,if only you are interested and ready to help On this Contact
+me. through my private email address(abd747591@gmail.com)Trusting to
+hear from you immediately. Do keep this a top secret for security
+reasons.
+
+Yours faithfully,
+
+MR.Abd Manaf.

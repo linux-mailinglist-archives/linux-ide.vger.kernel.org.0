@@ -2,146 +2,81 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DB5E1E9A18
-	for <lists+linux-ide@lfdr.de>; Sun, 31 May 2020 21:31:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD07E1E9C72
+	for <lists+linux-ide@lfdr.de>; Mon,  1 Jun 2020 06:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727050AbgEaTbR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 31 May 2020 15:31:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53384 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725991AbgEaTbR (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 31 May 2020 15:31:17 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB253C061A0E
-        for <linux-ide@vger.kernel.org>; Sun, 31 May 2020 12:31:16 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id l10so9336727wrr.10
-        for <linux-ide@vger.kernel.org>; Sun, 31 May 2020 12:31:16 -0700 (PDT)
+        id S1725765AbgFAETl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 1 Jun 2020 00:19:41 -0400
+Received: from hs-162.6.buanalintas.co.id ([223.165.6.162]:49548 "EHLO
+        mx.bestprofit-futures.co.id" rhost-flags-OK-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S1725283AbgFAETl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Jun 2020 00:19:41 -0400
+X-Greylist: delayed 10934 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Jun 2020 00:19:40 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTP id E425D524686;
+        Mon,  1 Jun 2020 07:38:39 +0700 (WIB)
+Received: from mx.bestprofit-futures.co.id ([127.0.0.1])
+        by localhost (mx.bestprofit-futures.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id VrAj4rqdOqBz; Mon,  1 Jun 2020 07:38:39 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTP id 795BD5248B8;
+        Mon,  1 Jun 2020 07:38:39 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mx.bestprofit-futures.co.id 795BD5248B8
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=K7gaS/RyXysP8XSZO8VW4EjVKZZX26nytji80U6hsMY=;
-        b=yoeFpNJ+AseffVizMDPduAqqWvYGR7BQmrl+MDzHjoDY9K2v+cLFgirieqtS0PqQ3a
-         +VTIvLQAs/SVxvOr/kdurO4JmFDfV8609wIJad9ybEr7Ihc3UGy9F8znq3h6nVmtkxNh
-         xCfXfyQrBkcRGkECDMCx+uwAHLBt8iVW8XwCpAPfQf77EBK6ZHchoOiLmzueaKvUSyYA
-         y9TOu86u+HGIsoGdnYdCLNKnAGmhLCmOnzMD/jkfb1u5cXqQGxa9agYoi9qa21agPqWI
-         x/BuLafgYeI0HFQM3inFbeXY2/f87wM4LmQyYfWgKekm+g621FpzRNucUFIs82/eOYmt
-         iuVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=K7gaS/RyXysP8XSZO8VW4EjVKZZX26nytji80U6hsMY=;
-        b=Ryfb7mgdPGb0i49Tg19WOR3AQdpQpjy3VI698qQM+/BustmqroKuEMGYhRnXcSJMvK
-         erY34DNqPcDdvr2vlumdqTnuRlrQ44CPfrF2GvQQE9dutYSMSAyAT/Lt4jeZ+UyddsrR
-         PeR8HsQPtUsUPsqYMw/92c0RRy6bzWUOaxIG4bsB5WD4rjfL+X5/77XGd2Y4WvkeDM1k
-         Wcj4Ld9nw/qhboX/TL0o+4XT005SF/4CnDZj+mAG1sP3/bZiyLO0SSIImC4orALWDaIt
-         pwlpjaXYvbchcJxPLrAOV2q+A4kBqO/gdr4PdTWZmPeaRL6mI5ciJOimsWwST2bArJLw
-         W4ZQ==
-X-Gm-Message-State: AOAM532RMEqzYLKiW6biENKESMihyTkOnw5BvuCdaMAkeUECclf0/Ehu
-        pMzKuD05xk6ZoFkcBIoFbQw4HA==
-X-Google-Smtp-Source: ABdhPJytocb9A9TtDKbdZE0MZ2PiWgscC7HCd7dwvCd7A/ytwz5tGlXtyT8nR8tVO74J9u9xjXE06w==
-X-Received: by 2002:adf:9106:: with SMTP id j6mr17964678wrj.216.1590953475177;
-        Sun, 31 May 2020 12:31:15 -0700 (PDT)
-Received: from Red ([2a01:cb1d:3d5:a100:2e56:dcff:fed2:c6d6])
-        by smtp.googlemail.com with ESMTPSA id o10sm18189197wrq.40.2020.05.31.12.31.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 31 May 2020 12:31:14 -0700 (PDT)
-Date:   Sun, 31 May 2020 21:31:11 +0200
-From:   LABBE Corentin <clabbe@baylibre.com>
-To:     thierry.reding@gmail.com, jonathanh@nvidia.com,
-        pgaikwad@nvidia.com, pdeschrijver@nvidia.com,
-        mturquette@baylibre.com, sboyd@kernel.org, axboe@kernel.dk
-Cc:     linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-ide@vger.kernel.org
-Subject: Re: tegra124-jetson-tk1: sata doesnt work since 5.2
-Message-ID: <20200531193111.GA15331@Red>
-References: <20200319074401.GA4116@Red>
+        d=bestprofit-futures.co.id; s=4D3D1390-5211-11EA-8C0C-8C41A122B001;
+        t=1590971919; bh=zLTonXbKn6LYrnOZVETw9C2bepTvRzI70GQOlIiRCC0=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=GpyTqyZPvgLrxQb9+DW2FmU4VV4im695BDHFhmEMTR4rxm9hMowyAFEQ3vN8wkxvJ
+         z7SirxsGr2zzdiq8IfsgWJFv+03BWMjYtS0a2m5LmQSW6K3Uw4YBLdpaZDQg4uVH4W
+         RlzqhCuFCdM8etPs49yBOwhfBaSCVfEYTacUCGdhhF0ZmkghCyFeIX6+ScKHI3TMBx
+         WNrHDH41iNfnXLZPucOU8jex9/YpTUh6cOTv63nC7YMQpOrYdmhBSlaDrLPdISOXc9
+         45ZGqEDkUoZjbcQKEemJt4NU3vsWjE8ID00ACvRg5Klt7mpw4IXYj/KEYX2JETE9bd
+         SAZQCYe8gV6yA==
+X-Virus-Scanned: amavisd-new at mx.bestprofit-futures.co.id
+Received: from mx.bestprofit-futures.co.id ([127.0.0.1])
+        by localhost (mx.bestprofit-futures.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id IB7IpwNk7IC3; Mon,  1 Jun 2020 07:38:39 +0700 (WIB)
+Received: from [10.81.249.6] (unknown [105.8.6.41])
+        by mx.bestprofit-futures.co.id (Postfix) with ESMTPSA id ECB56524686;
+        Mon,  1 Jun 2020 07:38:31 +0700 (WIB)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200319074401.GA4116@Red>
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <yoshi@bestprofit-futures.co.id>
+From:   ''Tayeb Souami'' <yoshi@bestprofit-futures.co.id>
+Date:   Mon, 01 Jun 2020 02:38:24 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200601003831.ECB56524686@mx.bestprofit-futures.co.id>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Mar 19, 2020 at 08:44:01AM +0100, LABBE Corentin wrote:
-> Hello
-> 
-> sata doesnt work on tegra124-jetson-tk1 on next and master and at least since 5.2 (but 5.1 works).
-> [    0.492810] +5V_SATA: supplied by +5V_SYS
-> [    0.493230] +12V_SATA: supplied by +VDD_MUX
-> [    2.088675] tegra-ahci 70027000.sata: 70027000.sata supply ahci not found, using dummy regulator
-> [    2.097643] tegra-ahci 70027000.sata: 70027000.sata supply phy not found, using dummy regulator
-> [    3.314776] tegra-ahci 70027000.sata: 70027000.sata supply ahci not found, using dummy regulator
-> [    3.323658] tegra-ahci 70027000.sata: 70027000.sata supply phy not found, using dummy regulator
-> [    5.236964] tegra-ahci 70027000.sata: 70027000.sata supply ahci not found, using dummy regulator
-> [    5.245867] tegra-ahci 70027000.sata: 70027000.sata supply phy not found, using dummy regulator
-> [    5.254706] tegra-ahci 70027000.sata: 70027000.sata supply target not found, using dummy regulator
-> [    5.310270] phy phy-sata.6: phy poweron failed --> -110
-> [    5.315604] tegra-ahci 70027000.sata: failed to power on AHCI controller: -110
-> [    5.323022] tegra-ahci: probe of 70027000.sata failed with error -110
-> [   35.694269] +5V_SATA: disabling
-> [   35.697438] +12V_SATA: disabling
-> 
-> I have bisected this problem:
-> git bisect start
-> # bad: [22c58fd70ca48a29505922b1563826593b08cc00] Merge tag 'armsoc-soc' of git://git.kernel.org/pub/scm/linux/kernel/git/soc/soc
-> git bisect bad 22c58fd70ca48a29505922b1563826593b08cc00
-> # good: [67e38f578aaebf34fc1278bbe45a78ee8c73dd33] ARM: ep93xx: move pinctrl interfaces into include/linux/soc
-> git bisect good 67e38f578aaebf34fc1278bbe45a78ee8c73dd33
-> # good: [80f232121b69cc69a31ccb2b38c1665d770b0710] Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net-next
-> git bisect good 80f232121b69cc69a31ccb2b38c1665d770b0710
-> # good: [e57ccca1ba33e1d92cc3bbf8b6304a46948844b0] Merge tag 'sound-5.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tiwai/sound
-> git bisect good e57ccca1ba33e1d92cc3bbf8b6304a46948844b0
-> # bad: [983dfa4b6ee556563f7963348e4e2f97fc8a15b8] Merge tag 'for-linus-5.2-rc1' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/rw/uml
-> git bisect bad 983dfa4b6ee556563f7963348e4e2f97fc8a15b8
-> # good: [8e4ff713ce313dcabbb60e6ede1ffc193e67631f] Merge tag 'rtc-5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/linux
-> git bisect good 8e4ff713ce313dcabbb60e6ede1ffc193e67631f
-> # bad: [b970afcfcabd63cd3832e95db096439c177c3592] Merge tag 'powerpc-5.2-1' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/powerpc/linux
-> git bisect bad b970afcfcabd63cd3832e95db096439c177c3592
-> # bad: [601e6bcc4ef02bda2831d5ac8133947b5edf597b] Merge git://git.kernel.org/pub/scm/linux/kernel/git/davem/net
-> git bisect bad 601e6bcc4ef02bda2831d5ac8133947b5edf597b
-> # good: [7e9c62bdb41af76974d594da89854a6aba645e58] Merge branches 'clk-sa', 'clk-aspeed', 'clk-samsung', 'clk-ingenic' and 'clk-zynq' into clk-next
-> git bisect good 7e9c62bdb41af76974d594da89854a6aba645e58
-> # bad: [0caf000817353cfc5db22363ecdac63b83d3a3f9] Merge branch 'clk-ti' into clk-next
-> git bisect bad 0caf000817353cfc5db22363ecdac63b83d3a3f9
-> # good: [5816b74581b45cf086a84ab14e13354a65e8e22c] Merge branches 'clk-hisi', 'clk-lochnagar', 'clk-allwinner', 'clk-rockchip' and 'clk-qoriq' into clk-next
-> git bisect good 5816b74581b45cf086a84ab14e13354a65e8e22c
-> # good: [7b4c162e03d47e037f8ee773c3e300eefb599a83] clk: at91: Mark struct clk_range as const
-> git bisect good 7b4c162e03d47e037f8ee773c3e300eefb599a83
-> # bad: [e71f4d385878671991e200083c7d30eb4ca8e99a] clk: tegra: divider: Mark Memory Controller clock as read-only
-> git bisect bad e71f4d385878671991e200083c7d30eb4ca8e99a
-> # bad: [924ee3d551c9deb16090230b824988bd37e72aa8] clk: tegra: emc: Don't enable EMC clock manually
-> git bisect bad 924ee3d551c9deb16090230b824988bd37e72aa8
-> # bad: [40db569d6769ffa3864fd1b89616b1a7323568a8] clk: tegra: Fix PLLM programming on Tegra124+ when PMC overrides divider
-> git bisect bad 40db569d6769ffa3864fd1b89616b1a7323568a8
-> # bad: [bff1cef5f23afbe49f5ebd766980dc612f5e9d0a] clk: tegra: Don't enable already enabled PLLs
-> git bisect bad bff1cef5f23afbe49f5ebd766980dc612f5e9d0a
-> # first bad commit: [bff1cef5f23afbe49f5ebd766980dc612f5e9d0a] clk: tegra: Don't enable already enabled PLLs
-> 
+Lieber Freund,
 
-Hello
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
+Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
+f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
+il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
+meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
+und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
+Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
+ spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
+ou Tube Seite unten.
 
-I have digged a bit more and with the following "patch" I have now access to sata again
-diff --git a/drivers/clk/tegra/clk-pll.c b/drivers/clk/tegra/clk-pll.c
-index 0b212cf2e794..b4e2020051d5 100644
---- a/drivers/clk/tegra/clk-pll.c
-+++ b/drivers/clk/tegra/clk-pll.c
-@@ -1602,7 +1603,7 @@ static int clk_plle_tegra114_enable(struct clk_hw *hw)
-        unsigned long input_rate;
- 
-        if (clk_pll_is_enabled(hw))
--               return 0;
-+               pr_info("%s %s\n", __func__, clk_hw_get_name(&pll->hw));
- 
-        input_rate = clk_hw_get_rate(clk_hw_get_parent(hw));
+UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
 
-This patch lead to a probed ahci, and I can see "clk_plle_tegra114_enable pll_e" in messages.
 
-So the bad part of bff1cef5f23afbe49f5ebd766980dc612f5e9d0a is found.
-As additional information, my previous kernel has CONFIG_PHY_TEGRA_XUSB=m (since firmware is on rootfs which is on sata)
-but with this sata fail the same, having CONFIG_PHY_TEGRA_XUSB=y (and so xusb firmware in kernel) seems "necessary" for having SATA working.
+Das ist dein Spendencode: [TS530342018]
 
-Regards
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+ E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
+
+Gr=C3=BC=C3=9Fe
+Herr Tayeb Souami

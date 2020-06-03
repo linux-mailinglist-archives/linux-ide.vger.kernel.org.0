@@ -2,100 +2,101 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 951B21ED077
-	for <lists+linux-ide@lfdr.de>; Wed,  3 Jun 2020 15:04:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D45E1ED156
+	for <lists+linux-ide@lfdr.de>; Wed,  3 Jun 2020 15:49:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726021AbgFCNEo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 3 Jun 2020 09:04:44 -0400
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:24379 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725917AbgFCNEn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 3 Jun 2020 09:04:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1591189481;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pJrHpg1OL1BtBmaAtK36M9SjSe87ZwCInDPm/vcZ+kI=;
-        b=dEyD17VzISIYSoC7w+FCHGwsgynPIVGBOySF77KPZCG+47LCxqW4u2OLJQpJdwdZj5y9wf
-        nAHR1o6HHWLibhB8T8xFl4Fb1YbIMP1FdKI/Kdg4QcwESKCZE6wBryf26BORt/VEoT2dok
-        WLrNm4+93GMOIgwhnxq6BiitHlH57gM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-295-5mY55_Q5P9GIxetJ_H41_w-1; Wed, 03 Jun 2020 09:04:40 -0400
-X-MC-Unique: 5mY55_Q5P9GIxetJ_H41_w-1
-Received: by mail-wm1-f69.google.com with SMTP id l26so852493wmh.3
-        for <linux-ide@vger.kernel.org>; Wed, 03 Jun 2020 06:04:40 -0700 (PDT)
+        id S1725965AbgFCNtK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 3 Jun 2020 09:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50104 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbgFCNsu (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 3 Jun 2020 09:48:50 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E91CC008633
+        for <linux-ide@vger.kernel.org>; Wed,  3 Jun 2020 06:48:49 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id x22so1366992lfd.4
+        for <linux-ide@vger.kernel.org>; Wed, 03 Jun 2020 06:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=LImzFWfFZ5MGhzJT1qzCsgEXVo7xW37sUIdrDLCKiXHQE0/Tq0rYX6Af/ld5dvlhmE
+         opFt8B8vUrhAfyxGIRs7eIQZmnu+cHCt7Dz4gEu/fnBWHDlMa8iVHDbM7XgqJUtNcgor
+         I4Oj1yGJ3ygOniFn6Dr+FHDS5BV48N/ldz+eBwWbR5/ADnYCL6KuztRZu9mrKJOxMODU
+         fmVICwwGmTYXXsgICTxE6unupuMdGq6+YZvkWKysZVLYK3Wwxrg7U2ecMo3WGycHWcU1
+         w35jxyjuynpm30G3kj/I18A4vO2Y2WN0kfTajUkGc1Xe9t84eQuWhnB4AGlAS8dbrawc
+         iC3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=pJrHpg1OL1BtBmaAtK36M9SjSe87ZwCInDPm/vcZ+kI=;
-        b=THUYPG7LDPdB0Tvg8V6yehDZJWtoWTcEX3d0c/8RDRaMZLziSin2bNOFosnRFhw0/2
-         bshBYsFtsSXFugxhpVRV9Rve9wtO5x1wPsuTKgD89dyrKU2C1MqPk0+qErzk5ZKeOJCm
-         uAUye8u4iNU3ftXIRQi/aUupgD1Lrk+pbG6Hp0ofFs3/mkCBoOe/usE4f+J8zea8/PUw
-         J8LIiSYMHVy8HBwjCgQHrwP0TXt3PX9BEE6GpuLT5JTwn61Gnz2OhWXuc7Qkfg1QNhZm
-         XHbvDVsJAhYDWWAjYMrWcBVuiJyy++rog3sbaJhiFqIy9Twjs2TJZ67k23zWAKkbYo+3
-         0xCA==
-X-Gm-Message-State: AOAM533zPysskcWkbUqqCcPS9HoKWX8QdZ3HcA3PcyEDSSaX541kc1VY
-        lBKunIwMA9rWyjvcGFap4UmXY9rDsU9c+7FZwrpUpMCMpNiXdHsFG9SmScG3rWDhRJuE1fvYxcj
-        jXYztOaFUt4JRyXuEYaiz
-X-Received: by 2002:adf:f707:: with SMTP id r7mr33172843wrp.390.1591189478985;
-        Wed, 03 Jun 2020 06:04:38 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzH4y0ksSVVWNPHpgQOrvjfwbzl9/zKgKN7/IJjGgt7M/4YHudyopsIn+DESEGYBqp7gX0lCA==
-X-Received: by 2002:adf:f707:: with SMTP id r7mr33172827wrp.390.1591189478711;
-        Wed, 03 Jun 2020 06:04:38 -0700 (PDT)
-Received: from [192.168.178.58] ([151.20.243.176])
-        by smtp.gmail.com with ESMTPSA id d17sm3794702wrg.75.2020.06.03.06.04.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Jun 2020 06:04:38 -0700 (PDT)
-Subject: Re: [PATCH v2] ata/libata: Fix usage of page address by page_address
- in ata_scsi_mode_select_xlat function
-To:     Ye Bin <yebin10@huawei.com>, axboe@kernel.dk,
-        linux-ide@vger.kernel.org, hch@infradead.org
-References: <20200603123924.135160-1-yebin10@huawei.com>
-From:   Paolo Bonzini <pbonzini@redhat.com>
-Message-ID: <18288afe-efea-a670-c9da-3827f4f2ec0c@redhat.com>
-Date:   Wed, 3 Jun 2020 15:04:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.6.0
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=H8rDQEJouwBJIElP/Vpqq+PrvTZxQQy2H7A/MvyMMB0=;
+        b=t1oU6A/+ZvbF0U3Hp01jnipj8rYgaDsXmQNTK8jFVuEmAtAVRa7wPqCwoVEd6jYaHB
+         lK7+fUnXe4gw4eQ6Ok1TDQPWFOQmf7yavhiV4p3WejLnmgy2CljGq4gIqTg6T/iHLDGK
+         JDo2sx1SbCVTQTpW1L+cTff6Wpx7ms6tX9Jdn8gaLB8KkvPPyDg36myEZ/hrWQ6lm+yA
+         ZIKcXzmkzlpII2aYh8ch99tedYmi1c/5S608wLyuhcQt5W/FCiuJdL6G5iPZbPjWtMzt
+         FvKILuoGFhm+v7YamKOnKbb0CJ97v61xcoiIcNBrcU0ipSQYrflUy3RA/VVwVKX8xFnN
+         Y3+g==
+X-Gm-Message-State: AOAM5317uYlWaNlO2oSjVEGlB+DXGjObaF1HX2xnYi7cDvE7e1cMyPV+
+        U0XRsbIcA91WUWurySYutw9+zqhk9rKf36t6fwU=
+X-Google-Smtp-Source: ABdhPJzc66PsPJ7uf2JiXrqj7zfh07Ra5BpBms0TPKeexmxkWkfXYY+ch/Os+E85wJbdOE6Lm+0ANdybV/7KRG4HAcU=
+X-Received: by 2002:a05:6512:308e:: with SMTP id z14mr2566308lfd.29.1591192127287;
+ Wed, 03 Jun 2020 06:48:47 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200603123924.135160-1-yebin10@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Reply-To: susanjones.wife@gmail.com
+Received: by 2002:a19:a405:0:0:0:0:0 with HTTP; Wed, 3 Jun 2020 06:48:46 -0700 (PDT)
+From:   "Mrs.Susan Jones" <joneswife.susan@gmail.com>
+Date:   Wed, 3 Jun 2020 14:48:46 +0100
+X-Google-Sender-Auth: aH2vam-ZraP3yG1gz3ryctMgTE4
+Message-ID: <CALBhdBfusXWup1N4iFuTS3D1AZxWbZbTDS_qa-wA3FkbkE7MrQ@mail.gmail.com>
+Subject: HELLO: I AM MRS SUSAN JONES
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 03/06/20 14:39, Ye Bin wrote:
->  	if (!scsi_sg_count(scmd) || scsi_sglist(scmd)->length < len)
->  		goto invalid_param_len;
->  
-> -	p = page_address(sg_page(scsi_sglist(scmd)));
-> -
->  	/* Move past header and block descriptors.  */
->  	if (len < hdr_len)
->  		goto invalid_param_len;
->  
-> +	if (sg_copy_to_buffer(scsi_sglist(scmd), scsi_sg_count(scmd),
-> +			      buffer, 64) != 64)
-> +		goto invalid_param_len;
-> +
->  	if (six_byte)
->  		bd_len = p[3];
->  	else
+-- 
+OUR GOLDEN OPPORTUNITY
 
-You should not check that the number of copied bytes is 64; it will be
-less than that in most cases (because CACHE_MPAGE_LEN+8+8+4-2 is less
-than 64).
+Hello Dear Friend,
 
-How did you test this patch?
+Complement of the day, i hope you are doing great today. However, I am
+Mrs.Susan Jones, an auditor with one of the new generation banks here
+in Burkina Faso.
 
-Thanks,
+I am writing you this letter based on the latest development at my
+Department. i discovered some abandoned huge amount of money, Ten
+Million, Five hundred thousand  United States Dollars.($10.500.000).
+Now I am only contacting you as a foreigner because this money cannot
+be approved to a local bank account here, but can only be approved to
+any foreign account and foreign beneficiary because the money is in US
+dollars
 
-Paolo
+This will be  a legitimate transaction once you accept to build trust
+with me and follow simple instruction doing the transfer process,
+until the total sum transfer out of the bank here to your own bank
+account any where in the world, and I agreed to share the total money
+50/50 with you once you successful confirmed it in your bank account.
+But any expenses doing the transfer process will be deduct from the
+amount before sharing, If you are interested to work with me and
+provide a good receiving bank account, get back to me as soon as
+possible with the following details below.
 
+Your full name
+Your Profession
+Your direct mobile phone number
+Your Scanned International passport or any of your identity
+
+NOTE: PLEASE IT YOU ARE NOT INTERESTED DON'T BORDER TO RESPOND BACK TO
+AVOID TIME WASTED.
+
+As soon as I receive these data's, I will forward to you the
+application form which you will send to the bank for the claim and
+transfer of the fund into your bank account as the  new beneficial.
+
+I am waiting to hear from you soon
+
+Yours
+Mrs.Susan Jones

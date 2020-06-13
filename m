@@ -2,86 +2,39 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 102D61FA722
-	for <lists+linux-ide@lfdr.de>; Tue, 16 Jun 2020 05:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73CAA1FC013
+	for <lists+linux-ide@lfdr.de>; Tue, 16 Jun 2020 22:36:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726134AbgFPDso (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 15 Jun 2020 23:48:44 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:60916 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725985AbgFPDsn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 15 Jun 2020 23:48:43 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05G3foSZ186488;
-        Tue, 16 Jun 2020 03:48:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2020-01-29;
- bh=XgO9rozhzUb4b1RJT0FSSZ2lSj+Tsv9oHAVRK4CoEjo=;
- b=bs4Cbg3vVEmK2ks7O2GpJesNeGyTQfc/FRhuxRXlET/MBWhgC87d1+4b+O+/oj06zOr5
- G1uDDj0AGGwM7JH84lU1buqu+BSVB9jeLUapEsHrtm2EEwRqVxBzPFCsRwsyFF27FeGM
- Lsu2Rshw6kfpjKPjl4/ZoB8gJ040JDhrQjENbdgt2MOa9YCnSH3HOr/Gbj/Fv/ZUxScd
- WItajTxODnbjgLtP8QB3i1zz3b5e6O6V1gKsGY+Ssyzp0gMX/pBry2V7IKiDDvJajknb
- zfc3mA7Lxi9LHByVE2coP8zPplDLd6jV2d/AoPSCc9gesclEcTEEVrModpeEQK3ZGp5c qw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 31p6s249h6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 16 Jun 2020 03:48:26 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 05G3h22d185023;
-        Tue, 16 Jun 2020 03:46:26 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 31p6s6hb3w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 16 Jun 2020 03:46:26 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 05G3kM2L015942;
-        Tue, 16 Jun 2020 03:46:22 GMT
-Received: from ca-mkp.ca.oracle.com (/10.156.108.201)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 15 Jun 2020 20:46:21 -0700
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.garry@huawei.com>, linux-scsi@vger.kernel.org,
-        brking@us.ibm.com, jinpu.wang@cloud.ionos.com, mpe@ellerman.id.au,
-        linux-ide@vger.kernel.org
-Subject: Re: [PATCH 1/2] libata: provide a ata_scsi_dma_need_drain stub for !CONFIG_ATA
-Date:   Mon, 15 Jun 2020 23:46:19 -0400
-Message-Id: <159227896596.21874.13848984426600233866.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200615064624.37317-2-hch@lst.de>
-References: <20200615064624.37317-1-hch@lst.de> <20200615064624.37317-2-hch@lst.de>
+        id S1729024AbgFPUgU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 16 Jun 2020 16:36:20 -0400
+Received: from dns.tdjhs.tyc.edu.tw ([163.30.27.129]:46486 "EHLO
+        host.tdjhs.tyc.edu.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726428AbgFPUgU (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 16 Jun 2020 16:36:20 -0400
+Received: from www.tdjhs.tyc.edu.tw (localhost.tdjhs.tyc.edu.tw [127.0.0.1])
+        by host.tdjhs.tyc.edu.tw (8.14.5/8.14.5) with ESMTP id 05DKv5wP024335;
+        Sun, 14 Jun 2020 04:57:05 +0800 (CST)
+        (envelope-from ldhlupz@gmail.com)
+From:   "L.D Holt" <ldhlupz@gmail.com>
+Reply-To: ldhlupz@gmail.com
+Subject: Re: Lucrative Proposal.
+Date:   Sun, 14 Jun 2020 04:57:05 +0800
+Message-Id: <20200613205514.M32050@gmail.com>
+X-Mailer: OpenWebMail 2.53 
+X-OriginatingIP: 212.103.50.217 (whitedove)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 mlxscore=0
- suspectscore=0 mlxlogscore=999 phishscore=0 bulkscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2004280000
- definitions=main-2006160025
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9653 signatures=668680
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 impostorscore=0
- clxscore=1011 mlxscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
- malwarescore=0 suspectscore=0 spamscore=0 cotscore=-2147483648 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2004280000 definitions=main-2006160025
+Content-Type: text/plain;
+        charset=utf-8
+To:     undisclosed-recipients:;
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, 15 Jun 2020 08:46:23 +0200, Christoph Hellwig wrote:
+Hello,
 
-> SAS drivers can be compiled with ata support disabled.  Provide a
-> stub so that the drivers don't have to ifdef around wiring up
-> ata_scsi_dma_need_drain.
+Good day.I am a banker and I have a lucrative business proposal of mutual 
+benefit. Please contact me on my email: ldhlupz@gmail.com
 
-Applied to 5.8/scsi-fixes, thanks!
-
-[1/2] scsi: libata: Provide an ata_scsi_dma_need_drain stub for !CONFIG_ATA
-      https://git.kernel.org/mkp/scsi/c/7bb7ee8704fe
-[2/2] scsi: Wire up ata_scsi_dma_need_drain for SAS HBA drivers
-      https://git.kernel.org/mkp/scsi/c/b8f1d1e05817
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Sincerely,
+L.D Holt.

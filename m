@@ -2,167 +2,42 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F5041F8E06
-	for <lists+linux-ide@lfdr.de>; Mon, 15 Jun 2020 08:46:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A81D91F8F54
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Jun 2020 09:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728277AbgFOGql (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 15 Jun 2020 02:46:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51140 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728180AbgFOGqk (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 15 Jun 2020 02:46:40 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CD0C03E97C;
-        Sun, 14 Jun 2020 23:46:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description;
-        bh=cqXSPP4zZpW5SVurE/Ck5YyoT09UupiEIInhvdxSYjI=; b=uZgAo0iG2h1g1JlhHAyw366H0G
-        A99kmrM0U+ZJWvqhSPhM0Uvokz2CoWKMmZMKKNMilotlYnlTKeT5VtSATYf3g5d6OFe8PGMXyKDY7
-        XA6pLFMn96PMBY6hrCWtRmey9NWMITwcrIxRlsD6QdMaBDWDlorp4KJic7iL6Hxw2mly1EBmDJZ1a
-        nRkro3I54qzBizXlH1Bv2CLTbfR1jdOVIImU+mI/90CnrHGwZtPnl01VF3/gPuoEZHNQV/C/HguUi
-        +Y6ay6Rwj+//WsBcpRTo313CDjuPss6f1+YET1uR+GBQSd2WAtUgCDuMBCd7oT7LbEecxJ3kCUPW0
-        NB4m/4Kw==;
-Received: from 195-192-102-148.dyn.cablelink.at ([195.192.102.148] helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jkit6-0001WL-Rs; Mon, 15 Jun 2020 06:46:33 +0000
+        id S1728268AbgFOHVi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 15 Jun 2020 03:21:38 -0400
+Received: from verein.lst.de ([213.95.11.211]:59980 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726299AbgFOHVi (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 15 Jun 2020 03:21:38 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id DA67168AFE; Mon, 15 Jun 2020 09:21:36 +0200 (CEST)
+Date:   Mon, 15 Jun 2020 09:21:36 +0200
 From:   Christoph Hellwig <hch@lst.de>
-To:     martin.petersen@oracle.com
-Cc:     brking@us.ibm.com, jinpu.wang@cloud.ionos.com,
-        John Garry <john.garry@huawei.com>, mpe@ellerman.id.au,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org
-Subject: [PATCH 2/2] scsi: wire up ata_scsi_dma_need_drain for SAS HBA drivers
-Date:   Mon, 15 Jun 2020 08:46:24 +0200
-Message-Id: <20200615064624.37317-3-hch@lst.de>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200615064624.37317-1-hch@lst.de>
-References: <20200615064624.37317-1-hch@lst.de>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, kernel test robot <lkp@intel.com>,
+        Christoph Hellwig <hch@lst.de>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ata: fix AHCI_SHT() macro definition
+Message-ID: <20200615072136.GB21903@lst.de>
+References: <CGME20200612120932eucas1p29411e0c60963fad8c36ca35f2e6b8872@eucas1p2.samsung.com> <0d803e72-b15e-4673-4858-4741f2772fc4@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0d803e72-b15e-4673-4858-4741f2772fc4@samsung.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-We need ata_scsi_dma_need_drain for all drivers wired up to drive ATAPI
-devices through libata.  That also includes the SAS HBA drivers in
-addition to native libata HBA drivers.
+On Fri, Jun 12, 2020 at 02:09:31PM +0200, Bartlomiej Zolnierkiewicz wrote:
+> Fix AHCI_SHT() macro definition to not reinitialize .can_queue and
+> .sdev_attrs fields.
+> 
+> This removes gcc warnings from W=1 builds such as:
 
-Fixes: cc97923a5bcc ("block: move dma drain handling to scsi")
-Reported-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
-Acked-by: Jack Wang <jinpu.wang@cloud.ionos.com>
-Acked-by: John Garry <john.garry@huawei.com>
----
- drivers/scsi/aic94xx/aic94xx_init.c    | 1 +
- drivers/scsi/hisi_sas/hisi_sas_v1_hw.c | 1 +
- drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 1 +
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 1 +
- drivers/scsi/ipr.c                     | 1 +
- drivers/scsi/isci/init.c               | 1 +
- drivers/scsi/mvsas/mv_init.c           | 1 +
- drivers/scsi/pm8001/pm8001_init.c      | 1 +
- 8 files changed, 8 insertions(+)
-
-diff --git a/drivers/scsi/aic94xx/aic94xx_init.c b/drivers/scsi/aic94xx/aic94xx_init.c
-index d022407e5645c7..bef47f38dd0dbc 100644
---- a/drivers/scsi/aic94xx/aic94xx_init.c
-+++ b/drivers/scsi/aic94xx/aic94xx_init.c
-@@ -40,6 +40,7 @@ static struct scsi_host_template aic94xx_sht = {
- 	/* .name is initialized */
- 	.name			= "aic94xx",
- 	.queuecommand		= sas_queuecommand,
-+	.dma_need_drain		= ata_scsi_dma_need_drain,
- 	.target_alloc		= sas_target_alloc,
- 	.slave_configure	= sas_slave_configure,
- 	.scan_finished		= asd_scan_finished,
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-index 2e1718f9ade218..09a7669dad4c67 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v1_hw.c
-@@ -1756,6 +1756,7 @@ static struct scsi_host_template sht_v1_hw = {
- 	.proc_name		= DRV_NAME,
- 	.module			= THIS_MODULE,
- 	.queuecommand		= sas_queuecommand,
-+	.dma_need_drain		= ata_scsi_dma_need_drain,
- 	.target_alloc		= sas_target_alloc,
- 	.slave_configure	= hisi_sas_slave_configure,
- 	.scan_finished		= hisi_sas_scan_finished,
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-index e7e7849a4c14e2..968d3870235359 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
-@@ -3532,6 +3532,7 @@ static struct scsi_host_template sht_v2_hw = {
- 	.proc_name		= DRV_NAME,
- 	.module			= THIS_MODULE,
- 	.queuecommand		= sas_queuecommand,
-+	.dma_need_drain		= ata_scsi_dma_need_drain,
- 	.target_alloc		= sas_target_alloc,
- 	.slave_configure	= hisi_sas_slave_configure,
- 	.scan_finished		= hisi_sas_scan_finished,
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 3e6b78a1f993b9..55e2321a65bc5f 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -3075,6 +3075,7 @@ static struct scsi_host_template sht_v3_hw = {
- 	.proc_name		= DRV_NAME,
- 	.module			= THIS_MODULE,
- 	.queuecommand		= sas_queuecommand,
-+	.dma_need_drain		= ata_scsi_dma_need_drain,
- 	.target_alloc		= sas_target_alloc,
- 	.slave_configure	= hisi_sas_slave_configure,
- 	.scan_finished		= hisi_sas_scan_finished,
-diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-index 7d77997d26d457..7d86f4ca266c86 100644
---- a/drivers/scsi/ipr.c
-+++ b/drivers/scsi/ipr.c
-@@ -6731,6 +6731,7 @@ static struct scsi_host_template driver_template = {
- 	.compat_ioctl = ipr_ioctl,
- #endif
- 	.queuecommand = ipr_queuecommand,
-+	.dma_need_drain = ata_scsi_dma_need_drain,
- 	.eh_abort_handler = ipr_eh_abort,
- 	.eh_device_reset_handler = ipr_eh_dev_reset,
- 	.eh_host_reset_handler = ipr_eh_host_reset,
-diff --git a/drivers/scsi/isci/init.c b/drivers/scsi/isci/init.c
-index 974c3b9116d5ba..085e285f427d93 100644
---- a/drivers/scsi/isci/init.c
-+++ b/drivers/scsi/isci/init.c
-@@ -153,6 +153,7 @@ static struct scsi_host_template isci_sht = {
- 	.name				= DRV_NAME,
- 	.proc_name			= DRV_NAME,
- 	.queuecommand			= sas_queuecommand,
-+	.dma_need_drain			= ata_scsi_dma_need_drain,
- 	.target_alloc			= sas_target_alloc,
- 	.slave_configure		= sas_slave_configure,
- 	.scan_finished			= isci_host_scan_finished,
-diff --git a/drivers/scsi/mvsas/mv_init.c b/drivers/scsi/mvsas/mv_init.c
-index 5973eed9493820..b0de3bdb01db06 100644
---- a/drivers/scsi/mvsas/mv_init.c
-+++ b/drivers/scsi/mvsas/mv_init.c
-@@ -33,6 +33,7 @@ static struct scsi_host_template mvs_sht = {
- 	.module			= THIS_MODULE,
- 	.name			= DRV_NAME,
- 	.queuecommand		= sas_queuecommand,
-+	.dma_need_drain		= ata_scsi_dma_need_drain,
- 	.target_alloc		= sas_target_alloc,
- 	.slave_configure	= sas_slave_configure,
- 	.scan_finished		= mvs_scan_finished,
-diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
-index a8f5344fdfda2a..9e99262a2b9dd3 100644
---- a/drivers/scsi/pm8001/pm8001_init.c
-+++ b/drivers/scsi/pm8001/pm8001_init.c
-@@ -87,6 +87,7 @@ static struct scsi_host_template pm8001_sht = {
- 	.module			= THIS_MODULE,
- 	.name			= DRV_NAME,
- 	.queuecommand		= sas_queuecommand,
-+	.dma_need_drain		= ata_scsi_dma_need_drain,
- 	.target_alloc		= sas_target_alloc,
- 	.slave_configure	= sas_slave_configure,
- 	.scan_finished		= pm8001_scan_finished,
--- 
-2.26.2
-
+I think these warnings arg bogus, at least when used with cases like
+libata that want to implement inheritance schemes.  Can we get them
+removed from W=1 insted if people really are about W=1 builds?

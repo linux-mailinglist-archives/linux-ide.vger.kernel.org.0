@@ -2,78 +2,49 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D80851F8CCE
-	for <lists+linux-ide@lfdr.de>; Mon, 15 Jun 2020 06:01:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 011631F8E09
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Jun 2020 08:46:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727971AbgFOEBb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 15 Jun 2020 00:01:31 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5887 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725294AbgFOEBa (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 15 Jun 2020 00:01:30 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 331B8FD817FCBAC1C319;
-        Mon, 15 Jun 2020 12:01:27 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.487.0; Mon, 15 Jun 2020
- 12:01:20 +0800
-From:   Jason Yan <yanaijie@huawei.com>
-To:     <axboe@kernel.dk>, <b.zolnierkie@samsung.com>,
-        <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC:     <kernel-hardening@lists.openwall.com>,
-        Jason Yan <yanaijie@huawei.com>,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH] ata: Eliminate usage of uninitialized_var() macro
-Date:   Mon, 15 Jun 2020 12:02:36 +0800
-Message-ID: <20200615040236.3720734-1-yanaijie@huawei.com>
-X-Mailer: git-send-email 2.25.4
+        id S1728162AbgFOGql (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 15 Jun 2020 02:46:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728163AbgFOGqk (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 15 Jun 2020 02:46:40 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2C2CC05BD43;
+        Sun, 14 Jun 2020 23:46:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=uKa77b8twRfAptF8+KeX0q2xmlubg6fRTOrYh3bzSV4=; b=YX9wAK9EprTykUtMY8AWX6Id+N
+        z6bsjEweDssQXiwOyQX4ADOJX06k3FrXJNttctATyhSpfwfgrB956Uh9HEXw1eo0NPmlPQW5CemUE
+        LljhFdW/5MoSWmkLMj3MaAPTPkogVMu4gcpgmpFxJrhDhUGO4wfTqxpRYn9fJIzIZSxwg0uw5OmIV
+        cwS2aCqvRIbnEVhgi7sOgvMOMJe+JZnTwG5J/71yd3R5EF9O9cW2v4WRRmcwl6ELb0rAi7It/oJmn
+        9mWiNjpCxuOzcieZVLUKkUHb3S3jlxeGxMF9vCBRhchl0jrnbvtoBcSkbeoJLwace0XEPAU71+rR3
+        u29KCObg==;
+Received: from 195-192-102-148.dyn.cablelink.at ([195.192.102.148] helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jkit1-0001Vt-E6; Mon, 15 Jun 2020 06:46:27 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     martin.petersen@oracle.com
+Cc:     brking@us.ibm.com, jinpu.wang@cloud.ionos.com,
+        John Garry <john.garry@huawei.com>, mpe@ellerman.id.au,
+        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org
+Subject: fix ATAPI support for libsas drivers
+Date:   Mon, 15 Jun 2020 08:46:22 +0200
+Message-Id: <20200615064624.37317-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.127.227]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-This is an effort to eliminate the uninitialized_var() macro[1].
+Hi all,
 
-The use of this macro is the wrong solution because it forces off ANY
-analysis by the compiler for a given variable. It even masks "unused
-variable" warnings.
-
-Quoted from Linus[2]:
-
-"It's a horrible thing to use, in that it adds extra cruft to the
-source code, and then shuts up a compiler warning (even the _reliable_
-warnings from gcc)."
-
-The gcc option "-Wmaybe-uninitialized" has been disabled and this change
-will not produce any warnnings even with "make W=1".
-
-[1] https://github.com/KSPP/linux/issues/81
-[2] https://lore.kernel.org/lkml/CA+55aFz2500WfbKXAx8s67wrm9=yVJu65TpLgN_ybYNv0VEOKA@mail.gmail.com/
-
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
----
- drivers/ata/libata-scsi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 435781a16875..fcb00f2825fe 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -93,7 +93,7 @@ static ssize_t ata_scsi_park_show(struct device *device,
- 	struct ata_link *link;
- 	struct ata_device *dev;
- 	unsigned long now;
--	unsigned int uninitialized_var(msecs);
-+	unsigned int msecs;
- 	int rc = 0;
- 
- 	ap = ata_shost_to_port(sdev->host);
--- 
-2.25.4
-
+this series fixes the ATAPI DMA drain refactoring for SAS HBAs that
+use libsas.

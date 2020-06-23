@@ -2,34 +2,34 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 15281205923
-	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 19:38:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64BDE20591B
+	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 19:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733277AbgFWRiT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 23 Jun 2020 13:38:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34368 "EHLO mail.kernel.org"
+        id S1733186AbgFWRhz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 23 Jun 2020 13:37:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34660 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387670AbgFWRgw (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 23 Jun 2020 13:36:52 -0400
+        id S2387712AbgFWRhB (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 23 Jun 2020 13:37:01 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 091E620780;
-        Tue, 23 Jun 2020 17:36:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 81DF020780;
+        Tue, 23 Jun 2020 17:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592933811;
-        bh=zV13Z/VwWJQ8fHvGZGGb+IWqtbJN6UljGUIXqPq8WJE=;
+        s=default; t=1592933820;
+        bh=YysgsPNm2TWnOYKtFlFI4M81gTU4d5l7bYC5CbnM2ms=;
         h=From:To:Cc:Subject:Date:From;
-        b=L0YyCqKhXaCY5aAjGsZ0oJBTY3CpuqtAKy9TyDgLBLLkiRheU1PpFlVUE1Ts4Sxb2
-         s+Fjv/uGMehbjDZ4cZRQPMCbnlg2RpLGZIUzsZLAKQIptPhxCBwN/PtA7ABIKyqYt/
-         1H6+nTuH/u8bQYWMq047wGq4hs6TSmb+12mD2Iqs=
+        b=QYWAlCSk55BkLmh8IW4cdRBx7z51/fcXSTneSD4I9x0UAv9zYWFn0qxsFRcqkuJHU
+         iLU6L/crlAwFpMV0qThYxS0Slsq5k42xj2eqPe6X71OVfsIZ2hQmx7J6e8HO+0R1GB
+         gZEBYoB29GFo8bbeLXZb7j+1yw7S6uzfEe6yjRWo=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ye Bin <yebin10@huawei.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 1/6] ata/libata: Fix usage of page address by page_address in ata_scsi_mode_select_xlat function
-Date:   Tue, 23 Jun 2020 13:36:44 -0400
-Message-Id: <20200623173649.1356142-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 1/6] ata/libata: Fix usage of page address by page_address in ata_scsi_mode_select_xlat function
+Date:   Tue, 23 Jun 2020 13:36:53 -0400
+Message-Id: <20200623173658.1356241-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 X-stable: review
@@ -178,10 +178,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 2f81d65342709..bc2c27f0493fc 100644
+index c4f2b563c9f03..f4b38adb9d8a7 100644
 --- a/drivers/ata/libata-scsi.c
 +++ b/drivers/ata/libata-scsi.c
-@@ -3996,12 +3996,13 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
+@@ -3967,12 +3967,13 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
  {
  	struct scsi_cmnd *scmd = qc->scsicmd;
  	const u8 *cdb = scmd->cmnd;
@@ -196,7 +196,7 @@ index 2f81d65342709..bc2c27f0493fc 100644
  
  	VPRINTK("ENTER\n");
  
-@@ -4035,12 +4036,14 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
+@@ -4006,12 +4007,14 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
  	if (!scsi_sg_count(scmd) || scsi_sglist(scmd)->length < len)
  		goto invalid_param_len;
  

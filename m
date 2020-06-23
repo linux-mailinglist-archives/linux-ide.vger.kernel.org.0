@@ -2,65 +2,105 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9B312051A8
-	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 14:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03862059E3
+	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 19:45:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732426AbgFWMCD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 23 Jun 2020 08:02:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59864 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729611AbgFWMCD (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 23 Jun 2020 08:02:03 -0400
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB35C061755
-        for <linux-ide@vger.kernel.org>; Tue, 23 Jun 2020 05:02:02 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id z63so6408377qkb.8
-        for <linux-ide@vger.kernel.org>; Tue, 23 Jun 2020 05:02:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=YkNvEB0RghyQ/LID7DI3H/TzVIqKKH3OfHutMrPzS1Ft5wZacDaDGbWBr1wDsPw40D
-         g2cep8e8WNxhhZoP0tv0keTabp0KH2XePa6jhdCZ6KjsrinF0okn6f0x4cZlvkUFghcO
-         YzXQhfkQ1Ejzf8HGzbdKzl09JV3KRbHEyM9ff5NaRd8A/Vg+TH5yWiF/JSTMofKD3/ZP
-         Dz4JrZ4B5dHsaZ++4eNotnosIf+Bj3V16T8B8G117ooviuSB6fqUSDC1pCDlKgNqt9kU
-         IrNENMeXbT+pE8VPvUgphWpcOhyuQOwBcOQSfj43C1kdlvgaxsZ03BjgB4klYZ4KUWTQ
-         ItDw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=cVgC6RD9podhDXM6KxrdopdE/TJOnXCw27Gd183P5PPJTlLtTgKLdw3D81dmNWpOP3
-         x+oVo6Sh99Fr5HlkzmshxWGNGk2nLI751Kw00ugqRQgu+4zC3IgYsRil2WZYsTs6iKGP
-         MO2ennfcZlvphvx5sBdCAZKuU6B0qIzUeFEVfTUXO36NcAaH4/zXveadyiQQ2Qz7JEth
-         fha7pNXYf8hZMqjoDwfpDc4GAKi3go/TcsY0RtkYgbSbxLG85V5fSkNelsRkx+668hNf
-         O5cFrPBLYs79e0H8MGlVgPZhZM2WnDYyR9NwJHeobYuOIjAubeHHfz9EMW/U4HRyd8Rd
-         X4hg==
-X-Gm-Message-State: AOAM53229rFn2NLsfSXJUSoU2Gw2VCzgYg1ZS8Ye2C93Oa4LBPcX53ut
-        sVV41zDD9Li/kcWIgulm5ZNj6USWVCz9FSQDKi0=
-X-Google-Smtp-Source: ABdhPJxlnsE4ng2mdTNnGMppXdCVg+yzTUzgH31AY7OdaGoZZoynWOvkMQkGviwErZPlbs4p0YZQOLy+Xj8tdoHaV8E=
-X-Received: by 2002:a37:62c6:: with SMTP id w189mr8246250qkb.67.1592913721979;
- Tue, 23 Jun 2020 05:02:01 -0700 (PDT)
+        id S1733263AbgFWRoj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 23 Jun 2020 13:44:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59936 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1733153AbgFWRfZ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 23 Jun 2020 13:35:25 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 892AB20774;
+        Tue, 23 Jun 2020 17:35:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1592933725;
+        bh=rddvpDfFVekss7/Pg3s+lxXRzrKvxWRTL8sw+yvTBNE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=0poEAU+iLCFJpeQ1zms+YPfpUUd1elRRkx+EcDDwo8aNtHVdmJO65pIT1CACkahAO
+         I///GMi1Cf/Z/Uhy24zYGlFqEwGj32u21seozwBiMFV55g4qpSU3kiVDANVc/mV6/3
+         QDqkXcgW+xC9ovZU3UvGHh+XtGVNzUtlWDhpY6Oo=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
+        linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.7 01/28] sata_rcar: handle pm_runtime_get_sync failure cases
+Date:   Tue, 23 Jun 2020 13:34:56 -0400
+Message-Id: <20200623173523.1355411-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:01:45
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bakert.jg@gmail.com>
-Date:   Tue, 23 Jun 2020 05:01:45 -0700
-Message-ID: <CAAUSuTUzqhQ7W7uxAxvEnnx7a-YvEGZTJvP7e3YeSZjJ67T7_Q@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+From: Navid Emamdoost <navid.emamdoost@gmail.com>
+
+[ Upstream commit eea1238867205b9e48a67c1a63219529a73c46fd ]
+
+Calling pm_runtime_get_sync increments the counter even in case of
+failure, causing incorrect ref count. Call pm_runtime_put if
+pm_runtime_get_sync fails.
+
+Signed-off-by: Navid Emamdoost <navid.emamdoost@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/ata/sata_rcar.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/ata/sata_rcar.c b/drivers/ata/sata_rcar.c
+index 980aacdbcf3b4..141ac600b64c8 100644
+--- a/drivers/ata/sata_rcar.c
++++ b/drivers/ata/sata_rcar.c
+@@ -907,7 +907,7 @@ static int sata_rcar_probe(struct platform_device *pdev)
+ 	pm_runtime_enable(dev);
+ 	ret = pm_runtime_get_sync(dev);
+ 	if (ret < 0)
+-		goto err_pm_disable;
++		goto err_pm_put;
+ 
+ 	host = ata_host_alloc(dev, 1);
+ 	if (!host) {
+@@ -937,7 +937,6 @@ static int sata_rcar_probe(struct platform_device *pdev)
+ 
+ err_pm_put:
+ 	pm_runtime_put(dev);
+-err_pm_disable:
+ 	pm_runtime_disable(dev);
+ 	return ret;
+ }
+@@ -991,8 +990,10 @@ static int sata_rcar_resume(struct device *dev)
+ 	int ret;
+ 
+ 	ret = pm_runtime_get_sync(dev);
+-	if (ret < 0)
++	if (ret < 0) {
++		pm_runtime_put(dev);
+ 		return ret;
++	}
+ 
+ 	if (priv->type == RCAR_GEN3_SATA) {
+ 		sata_rcar_init_module(priv);
+@@ -1017,8 +1018,10 @@ static int sata_rcar_restore(struct device *dev)
+ 	int ret;
+ 
+ 	ret = pm_runtime_get_sync(dev);
+-	if (ret < 0)
++	if (ret < 0) {
++		pm_runtime_put(dev);
+ 		return ret;
++	}
+ 
+ 	sata_rcar_setup_port(host);
+ 
+-- 
+2.25.1
+

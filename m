@@ -2,37 +2,35 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE2E205946
-	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 19:39:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15281205923
+	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 19:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387533AbgFWRjR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 23 Jun 2020 13:39:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33888 "EHLO mail.kernel.org"
+        id S1733277AbgFWRiT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 23 Jun 2020 13:38:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34368 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387570AbgFWRge (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 23 Jun 2020 13:36:34 -0400
+        id S2387670AbgFWRgw (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 23 Jun 2020 13:36:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A7EB120780;
-        Tue, 23 Jun 2020 17:36:32 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 091E620780;
+        Tue, 23 Jun 2020 17:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1592933793;
-        bh=mnT2yJesXZAOGtKIXAb3DzWwFxtj/hQi1jbByk/WOt8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJsEasYUpJz8gNIhWKq3I7i4DD9YjfMryeoFq4VO4QW79Dbz4l8GUGbE6ySPe+8Kk
-         hDtOmRvXNdjW+SfVO611FNfJBL23xg0wICeB6tcRVrcq33SkXwWiG02CM2aRNeAt62
-         2mNsWZ1meAV2B5Lp+YFQnu7U4hVqY8iTFA+lWHko=
+        s=default; t=1592933811;
+        bh=zV13Z/VwWJQ8fHvGZGGb+IWqtbJN6UljGUIXqPq8WJE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=L0YyCqKhXaCY5aAjGsZ0oJBTY3CpuqtAKy9TyDgLBLLkiRheU1PpFlVUE1Ts4Sxb2
+         s+Fjv/uGMehbjDZ4cZRQPMCbnlg2RpLGZIUzsZLAKQIptPhxCBwN/PtA7ABIKyqYt/
+         1H6+nTuH/u8bQYWMq047wGq4hs6TSmb+12mD2Iqs=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ye Bin <yebin10@huawei.com>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 02/15] ata/libata: Fix usage of page address by page_address in ata_scsi_mode_select_xlat function
-Date:   Tue, 23 Jun 2020 13:36:17 -0400
-Message-Id: <20200623173630.1355971-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 1/6] ata/libata: Fix usage of page address by page_address in ata_scsi_mode_select_xlat function
+Date:   Tue, 23 Jun 2020 13:36:44 -0400
+Message-Id: <20200623173649.1356142-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200623173630.1355971-1-sashal@kernel.org>
-References: <20200623173630.1355971-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -180,10 +178,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 0c1572a1cc5ed..6c2c2b07f029e 100644
+index 2f81d65342709..bc2c27f0493fc 100644
 --- a/drivers/ata/libata-scsi.c
 +++ b/drivers/ata/libata-scsi.c
-@@ -3995,12 +3995,13 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
+@@ -3996,12 +3996,13 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
  {
  	struct scsi_cmnd *scmd = qc->scsicmd;
  	const u8 *cdb = scmd->cmnd;
@@ -198,7 +196,7 @@ index 0c1572a1cc5ed..6c2c2b07f029e 100644
  
  	VPRINTK("ENTER\n");
  
-@@ -4034,12 +4035,14 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
+@@ -4035,12 +4036,14 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
  	if (!scsi_sg_count(scmd) || scsi_sglist(scmd)->length < len)
  		goto invalid_param_len;
  

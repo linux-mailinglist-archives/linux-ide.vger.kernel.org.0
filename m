@@ -2,78 +2,65 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0162205110
-	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 13:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B312051A8
+	for <lists+linux-ide@lfdr.de>; Tue, 23 Jun 2020 14:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732487AbgFWLqL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 23 Jun 2020 07:46:11 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2358 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732245AbgFWLqK (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 23 Jun 2020 07:46:10 -0400
-Received: from lhreml724-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id 809C446CFF0D20FDCD46;
-        Tue, 23 Jun 2020 12:46:08 +0100 (IST)
-Received: from [127.0.0.1] (10.47.2.88) by lhreml724-chm.china.huawei.com
- (10.201.108.75) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Tue, 23 Jun
- 2020 12:46:07 +0100
-Subject: Re: fix ATAPI support for libsas drivers
-To:     Hannes Reinecke <hare@suse.de>, Christoph Hellwig <hch@lst.de>
-CC:     <martin.petersen@oracle.com>, <brking@us.ibm.com>,
-        <jinpu.wang@cloud.ionos.com>, <mpe@ellerman.id.au>,
-        <linux-scsi@vger.kernel.org>, <linux-ide@vger.kernel.org>
-References: <20200615064624.37317-1-hch@lst.de>
- <d3459f71-501e-3fea-d5dc-a5599758459d@huawei.com>
- <20200618152848.GA30919@lst.de>
- <bed58e53-2019-cbb6-2ebe-93d0e404c90a@suse.de>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <2bcf7cc7-f3e0-de41-8bf2-b8c5979fe927@huawei.com>
-Date:   Tue, 23 Jun 2020 12:44:38 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+        id S1732426AbgFWMCD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 23 Jun 2020 08:02:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729611AbgFWMCD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 23 Jun 2020 08:02:03 -0400
+Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB35C061755
+        for <linux-ide@vger.kernel.org>; Tue, 23 Jun 2020 05:02:02 -0700 (PDT)
+Received: by mail-qk1-x741.google.com with SMTP id z63so6408377qkb.8
+        for <linux-ide@vger.kernel.org>; Tue, 23 Jun 2020 05:02:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
+        b=YkNvEB0RghyQ/LID7DI3H/TzVIqKKH3OfHutMrPzS1Ft5wZacDaDGbWBr1wDsPw40D
+         g2cep8e8WNxhhZoP0tv0keTabp0KH2XePa6jhdCZ6KjsrinF0okn6f0x4cZlvkUFghcO
+         YzXQhfkQ1Ejzf8HGzbdKzl09JV3KRbHEyM9ff5NaRd8A/Vg+TH5yWiF/JSTMofKD3/ZP
+         Dz4JrZ4B5dHsaZ++4eNotnosIf+Bj3V16T8B8G117ooviuSB6fqUSDC1pCDlKgNqt9kU
+         IrNENMeXbT+pE8VPvUgphWpcOhyuQOwBcOQSfj43C1kdlvgaxsZ03BjgB4klYZ4KUWTQ
+         ItDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
+        b=cVgC6RD9podhDXM6KxrdopdE/TJOnXCw27Gd183P5PPJTlLtTgKLdw3D81dmNWpOP3
+         x+oVo6Sh99Fr5HlkzmshxWGNGk2nLI751Kw00ugqRQgu+4zC3IgYsRil2WZYsTs6iKGP
+         MO2ennfcZlvphvx5sBdCAZKuU6B0qIzUeFEVfTUXO36NcAaH4/zXveadyiQQ2Qz7JEth
+         fha7pNXYf8hZMqjoDwfpDc4GAKi3go/TcsY0RtkYgbSbxLG85V5fSkNelsRkx+668hNf
+         O5cFrPBLYs79e0H8MGlVgPZhZM2WnDYyR9NwJHeobYuOIjAubeHHfz9EMW/U4HRyd8Rd
+         X4hg==
+X-Gm-Message-State: AOAM53229rFn2NLsfSXJUSoU2Gw2VCzgYg1ZS8Ye2C93Oa4LBPcX53ut
+        sVV41zDD9Li/kcWIgulm5ZNj6USWVCz9FSQDKi0=
+X-Google-Smtp-Source: ABdhPJxlnsE4ng2mdTNnGMppXdCVg+yzTUzgH31AY7OdaGoZZoynWOvkMQkGviwErZPlbs4p0YZQOLy+Xj8tdoHaV8E=
+X-Received: by 2002:a37:62c6:: with SMTP id w189mr8246250qkb.67.1592913721979;
+ Tue, 23 Jun 2020 05:02:01 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <bed58e53-2019-cbb6-2ebe-93d0e404c90a@suse.de>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.47.2.88]
-X-ClientProxiedBy: lhreml730-chm.china.huawei.com (10.201.108.81) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
+Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:01:45
+ -0700 (PDT)
+Reply-To: bektery@outlook.com
+From:   YAVUZ BEKTER <bakert.jg@gmail.com>
+Date:   Tue, 23 Jun 2020 05:01:45 -0700
+Message-ID: <CAAUSuTUzqhQ7W7uxAxvEnnx7a-YvEGZTJvP7e3YeSZjJ67T7_Q@mail.gmail.com>
+Subject: Hello.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 22/06/2020 07:28, Hannes Reinecke wrote:
-> On 6/18/20 5:28 PM, Christoph Hellwig wrote:
->> On Thu, Jun 18, 2020 at 10:02:58AM +0100, John Garry wrote:
->>> On 15/06/2020 07:46, Christoph Hellwig wrote:
->>>> Hi all,
->>>>
->>>> this series fixes the ATAPI DMA drain refactoring for SAS HBAs that
->>>> use libsas.
->>>> .
->>>>
->>>
->>> Something I meant to ask before and was curious about, specifically 
->>> since
->>> ipr doesn't actually use libsas: Why not wire up other SAS HBAs, like
->>> megaraid_sas?
->>
->> megaraid_sas and mpt3sas don't use the libata code at all.  ipr actually
->> is a special case and uses libata directly instead of libsas (something
->> I hadn't realized, but which doesn't change anything for the patches
->> itself, just possibly the commit log).
->>
-> More to the point, megaraid_sas and mpt3sas have their own SATL in 
-> firmware so there is no need to use libata here.
-
-ok.
-
-BTW, @Christoph, I have no setup to verify this refactoring for anything 
-which uses libsas (that I know about, anyway).
-
-Thanks
-
+I am the foreign operations director of Bank of Turkey.
+My name is Mr, Yavuz. I have a sensitive investment project to discuss
+with you, please reply now.
+________________________
+Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
+Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
+met u, antwoord dan nu.

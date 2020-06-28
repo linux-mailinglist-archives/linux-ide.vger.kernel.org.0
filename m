@@ -2,88 +2,90 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9B1A20C488
-	for <lists+linux-ide@lfdr.de>; Sun, 28 Jun 2020 00:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A5E120C955
+	for <lists+linux-ide@lfdr.de>; Sun, 28 Jun 2020 19:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726453AbgF0WDv (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 27 Jun 2020 18:03:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50844 "EHLO
+        id S1726654AbgF1RqX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 28 Jun 2020 13:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725907AbgF0WDv (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 27 Jun 2020 18:03:51 -0400
-Received: from mail-io1-xd41.google.com (mail-io1-xd41.google.com [IPv6:2607:f8b0:4864:20::d41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B62FC061794
-        for <linux-ide@vger.kernel.org>; Sat, 27 Jun 2020 15:03:51 -0700 (PDT)
-Received: by mail-io1-xd41.google.com with SMTP id i4so13392000iov.11
-        for <linux-ide@vger.kernel.org>; Sat, 27 Jun 2020 15:03:51 -0700 (PDT)
+        with ESMTP id S1726059AbgF1RqS (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 28 Jun 2020 13:46:18 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF86DC08C5EF
+        for <linux-ide@vger.kernel.org>; Sun, 28 Jun 2020 10:46:17 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id k15so13387791otp.8
+        for <linux-ide@vger.kernel.org>; Sun, 28 Jun 2020 10:46:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=N6kPulua2YSlM8imcShAj91mdG3FVs3SsXSz87fb1+u3nd7u7PFa6MKJ279dIRDWxh
-         0Ldfj86Lh7w+Xrc1R5Ac12lp/bi6BKorqLlDMWYld1qOBhdJB4N7Na0XiYaHB8nKtBEn
-         57C/Tzw6MUWAOIXcOnRxxN4MeNm7iQhU/hvtXzHXK0vqQBasxFJE8WhTf5ke+LZ6XEZm
-         /oWHd42QW3NLQJh3kf1TRlauenW2jL1Poq5HUYmLYngCGGUW3fX0WLGx3ldU3AhEukyR
-         HJCMoV5irc6uSRF+aDmFQnYTlSn+N9B5n6b9ltoSvd3dHTYHCaXSwIr77k6vqrwMxy85
-         lwfQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/bJJuAbxLOI8ZB5kWrg6GnM3H9CKnk3zJ1in7nW69lY=;
+        b=YUBq+VgNMjlk38u14axPL08DzqARV0dHwd7VsntceEuDODm7tXtyIQiPnBEqwTqorM
+         FLgKk/WWEbN669NPAWBs5Q5Gn/Gw86s5KbgPWdKneNmtH17uT3bYx80xwgMEDbop8BVT
+         4AlOoyISrzqCwJLvSN+nVH9lFdx700mtRrJmEbhJzdpPADkw25XlX9qIwrm0L5lPQrGt
+         sHpMYC76UUuOqEIhiYHo/SrZyArNzUc5xWQzQJVjCCoL1o6dPw+1muYQhIpwYqVaKQyH
+         7il99UsBp0LEis5jgVygo+cs3PrEwvki/U9tgVDWLPcHxPjGhom7KOAMAeqfYI2Bq0H2
+         dL/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=hDm0J70xfMLbVvceQHwxPddZCp69UMTk2d0jtKg2a8s=;
-        b=L4jo+EUVC+D0eEaisW2URS1MYjfZuFvTxsdOVfROUILKMYCMrzQCS3QYQMxZaW9eog
-         WYZ0LqNFgcIKbRaq15H/N9/sm+qxKwJWm+L3vakDbUp/KUiwNYF962/RGCF7JjDgulSN
-         Cnylm4kJF5wxoBjoxgHixkeUqcrwlQXrFj8t8a7zLtdj1IHM/N6bLE71ClU1Hh8APYOU
-         l2U/WX6FGG/cvpbouCa1YPR38/FemCScHuvdVe+P2JJ9C6zpJXZ+93FbTvmJlZySyJUr
-         c+Rx71rrj7mn+l2b3pI8fZBweP62pSmVp8aM+1lDGxszm07A0/CeBMRmxidssgE1KHeV
-         NbdA==
-X-Gm-Message-State: AOAM5339/FcEyNZpUanOwwJp2KbPsuAhIxKW/VY2R7QvWzPVD2fdwt4r
-        ChmInKlrMcMx73lYzYjSbMN7ZmUt502lnickZembceAYh9w=
-X-Google-Smtp-Source: ABdhPJwHv45zwmNuK/YSX2uBVAIqQ2zLOwtA+ngiZqoTP9Rs9Xn2gCCD3OWXiVcvkiJ+PU31Rp2ZvkRVy2hsrxlhX9g=
-X-Received: by 2002:a92:7749:: with SMTP id s70mr10069248ilc.259.1593295098567;
- Sat, 27 Jun 2020 14:58:18 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/bJJuAbxLOI8ZB5kWrg6GnM3H9CKnk3zJ1in7nW69lY=;
+        b=WUPLIRIPdsgDAH282Co2kX3QELr3zsBl0D71n+AYqyj/ogbiwBiEqWAfoRtqvAEOZD
+         VF49g1fQpfjwqXhZ3gXhJO8UuRaVG9n9ouYOGht/dYVO81y19L6ylnqLMNx2r3u5NT71
+         FvqWm8mJVXPYo+sdgPWcW9N7l4hY1eUPqSquTcXc3TleZbkcByFqHrUDqUpclSJ2CEjq
+         tdoFkjGWoFpb4ActXWEE8kPRYIANMy23Ftvc5mg2jHpKgFJ9mpE/CkAJ1baxKBdSG54a
+         1OnXw4FAmejAth8U//+Y42cVZTLFOX6JEyoyFKaJSL0sRSYFG5YP5fQAD5b4SG/wdAIF
+         aA3g==
+X-Gm-Message-State: AOAM530R7ZBWUeGEpv6TujfYroV82fy5kEc3R8S/BEqVzM3wlAf8G8+A
+        9KW4nnIBDeMz2IPtOuq6QtXEhJU62MJfUCQvPZ4=
+X-Google-Smtp-Source: ABdhPJy3Gj0bD4+GZ16fIU6y/MzUrvVfW0UiVZl9y/IjQee69OJiPuEA8c3wMHv+p8mmb1g6c9ot9wDO/UA+LL3ZfeY=
+X-Received: by 2002:a05:6830:610:: with SMTP id w16mr10586414oti.165.1593366376804;
+ Sun, 28 Jun 2020 10:46:16 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a4f:4e46:0:0:0:0:0 with HTTP; Sat, 27 Jun 2020 14:58:17
+Received: by 2002:ac9:27ee:0:0:0:0:0 with HTTP; Sun, 28 Jun 2020 10:46:15
  -0700 (PDT)
-From:   lookman joe <mrlookmanjoe@gmail.com>
-Date:   Sat, 27 Jun 2020 22:58:17 +0100
-Message-ID: <CAG9X5Hfvk-fmbqs9+RtHRqyUu35f9-A5+EbwjPrw9eVNH09ftg@mail.gmail.com>
-Subject: 
+Reply-To: mrjohnscottyounger35@gmail.com
+From:   John Scott Younger <mrszahraalkami@gmail.com>
+Date:   Sun, 28 Jun 2020 18:46:15 +0100
+Message-ID: <CALQpPg30nAHHtUyi_G5mCvJ6ntraDa3A=oR7H3f5LumSg+StqA@mail.gmail.com>
+Subject: Your attention to this news update.
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-MONEY-GRAM TRANSFERRED PAYMENT INFO:
+-- 
+Your attention to this news update.
 
-Below is the sender=E2=80=99s information
+The report / analysis received from our correspondence shows that you
+have NOT received your PAYMENT, due to administrative injustice from
+unpatriotic and uncivil payment officials. Following the resolution of
+the U.S Department of State, you are mandated to kindly reinstate your
+fund acquisition details for accreditation.
 
+Sequel to the joint /collaborative effort by United Nations and US
+Department of State, to review, nullify and release all STOP ORDER on
+beneficiary transferred sum and consignment HELD at custom port
+authorities. At this juncture, you are advised to forward information
+of agencies that has put a HOLD on your consignment or STOP ORDER on
+your transferred sum.
 
+This office is commission to investigate/rectify ISSUES affecting
+beneficiaries whose payment is HELD/STOP unjustly with the intent of
+demanding un-official fees/levies. Be informed that all administrative
+injustice imposed on beneficiaries by some dubious person(s) has come
+to the knowledge of oversight committee of United Nations and US
+Department of State.
 
-1. MG. REFERENCE NO#: 36360857
+Thus our objective is to resolve all challenges facing release of your
+payment. Therefore get back to my office with the required information
+for assessment.
 
-2. SENDER'S NAME: Johnson Williams
+Our in service,
 
-3. AMOUNT TO PICKUP: US$10,000
-
-
-
-Go to any Money Gram office near you and pick up the payment Track the
-
-Reference Number by visiting and click the link below
-
-(https://secure.moneygram.com/embed/track) and enter the Reference
-
-Number: 36360857 and the Last Name: Williams, you will find the payment
-
-available for pickup instantly.
-
-Yours Sincerely,
-
-Mrs. Helen Marvis
-United Nations Liaison Office
-Directorate for International Payments
+John Scott Younger
+Human Right Activist
+Tel:- + 44 770 002 8251

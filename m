@@ -2,73 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E19F219481
-	for <lists+linux-ide@lfdr.de>; Thu,  9 Jul 2020 01:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 030F221A7C3
+	for <lists+linux-ide@lfdr.de>; Thu,  9 Jul 2020 21:28:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726169AbgGHXnY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Jul 2020 19:43:24 -0400
-Received: from sonic315-14.consmr.mail.bf2.yahoo.com ([74.6.134.124]:40791
-        "EHLO sonic315-14.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725848AbgGHXnY (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Jul 2020 19:43:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1594251803; bh=NajTNMrfMLb6UXcjRhYpYerQX8PtVBLz0oFgaMINSWY=; h=Date:From:Reply-To:Subject:References:From:Subject; b=HN/tC86bgd9/bl0s6IeF7/tTIZBIL2DEL9PrwfD4kVUQ1LMi5I6lm6FBpl/KwSFQtXb2wamnZsFd3+s5GQLHbvZWMPE6bXjI4LmWKNNPYvKpNYd3sAjlI0CyjTzL7o7u1puNU63WnQ1Z8M2eFD+rWQf552GdEtjWNou67aqixJruaCX5ShsT3Z4RDlSHK5DpnRLtjFprtIRwEAypKTAIpUorNSa6zq1lHcRWnnXxxYQ9EbLBfXzINd6YFYAXmFhNLal23cmRn1UKz9oOCp9M6AfdyUoMonpp1c/aM3uh4Jcp4jFAzT1qY+KjeNt92/9HQmgroPrObTyzEMWxbOrsvw==
-X-YMail-OSG: ApNgELwVM1n3OnKggDcyUQbs6uDdswzcjNLrTQsL0FqezVfk.7hmyNK3PaHUDN0
- Fsn_WbNiwszR6kSu31R5FivOmyuuv5HGWx7vVuii.TR2HlbiqUHnb2KlzsMgqhZpOc3bxngF3ZCb
- cRjUjqmEL8x7NK8_4CuBWKPmJONtXQdP6eEwuDdUqOBPmVdR.7ypGNjMG1VPKsScoWSt.7A5yhmA
- J43kLhp5ahK4mBMGvU4.JR_o3BDIyEiyYpP3hYwKLhNZK.D0iQPAM7a4rtxwY_eo1HUr3NkIaPe6
- hHQJnz4C_f5CUkrRKBS0TnQToQZaHceZkWlXIX2BYt67EZOf7exqrdPpkvFKJNNurrFMativbm7X
- mDXGcmqxGMtQO8p73kIrkugcvVcw6pfCffrhiWGa2CLPDzIwnvPrSrl2Dyz2kYJ2B3sMdkxTAzTw
- UFTNsjiosfnJ.muRTIuR463gJ7tynb1k5Z5DIoLMsfL9dDSAvLUE702q_dBjQWU8z9aajFL6CDHT
- AyvbVuTSdgZq0CN5KRXbBvvj7uy6wbMPnx9VyUWk7NAojM1w6lQZFJI.NUthoUq55vNMf3ue3myr
- uxEPLl7ZoENxjrNGXG3iGP1P3AGS96G_cdX9.huM.nOj6zxwcCPQzm03LSrzYfrEQgc_q.4Sw29h
- jaRgIuE4P6Txfrt7l5y78zYidR5.RsJC8yPOW0qLiXET0L_UkE4635ZZ70R2osfK8SXGb4f2ByOO
- Qiq4qs.nhY69m.8HhZirKOGzF3jnx.Gf54jlYPBvtoaHa3Y4d1avdZEWyd_iXIIuyxNSqS0nXIhl
- R7iNuM0QE6INCccjK5ALf1tW2lGzPRzn.wOCu5ySSbaY25yvW9iWs1bnoHCgOcYtvAC6Ku.9_e.H
- .Fqo8q9u34mG.Ww1bEN.DwwPqGsyEULUCHgDKKNlTqacYTYcagUuCGpVLsrXh3Vd5TNpP2bF_tOu
- N_NsaloNmJi3Fcsoqq46HpiAUjUN0sVCqRQjwQR8i9LDWRTPJv0XeLIdvdb8m8pedbVouWwB8iF5
- Mjiol6S3IovfHEv0DTZh2t6wHqLYaYU62.5LKz9LnUIX5zrxV_a_fhNrSJlEKXOTHfiRsQbRo80z
- QAZV6cXio6GnJdpJ4kCPiTI1mjTSsjTESifKh6OaTfQv6XxQEkTd_8eWqcp39icC4_ZN5Y84J6Gi
- 8DNCP5uG8pt.XHkpGgCgH8tIaYmf3oGqfeNRNsXJwKM39QT0VlSQmitMO.GAQgiNj4.MYWZJjSGf
- O1bJiE05RUl6IpfNcgWdLfbcZBBCS8vZ_CJis5oFQSjO3KymQlAYmNw.76xleRyiGZtJHSPx5AG7
- A
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.bf2.yahoo.com with HTTP; Wed, 8 Jul 2020 23:43:23 +0000
-Date:   Wed, 8 Jul 2020 23:43:20 +0000 (UTC)
-From:   Ms lisa Hugh <lisahugh531@gmail.com>
-Reply-To: ms.lisahugh000@gmail.com
-Message-ID: <538527762.4633085.1594251800761@mail.yahoo.com>
-Subject: MASSAGE FROM(Ms Lisa hugh).
+        id S1726196AbgGIT2W (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 9 Jul 2020 15:28:22 -0400
+Received: from smtp.al2klimov.de ([78.46.175.9]:57656 "EHLO smtp.al2klimov.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726193AbgGIT2V (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 9 Jul 2020 15:28:21 -0400
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+        by smtp.al2klimov.de (Postfix) with ESMTPA id 72870BC0FF;
+        Thu,  9 Jul 2020 19:28:19 +0000 (UTC)
+From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To:     davem@davemloft.net, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH] IDE SUBSYSTEM: Replace HTTP links with HTTPS ones
+Date:   Thu,  9 Jul 2020 21:28:13 +0200
+Message-Id: <20200709192813.26413-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <538527762.4633085.1594251800761.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16197 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101 Firefox/78.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: +++++
+X-Spam-Level: *****
+Authentication-Results: smtp.al2klimov.de;
+        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
+
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
+
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+---
+ Continuing my work started at 93431e0607e5.
+ See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+ (Actually letting a shell for loop submit all this stuff for me.)
+
+ If there are any URLs to be removed completely or at least not HTTPSified:
+ Just clearly say so and I'll *undo my change*.
+ See also: https://lkml.org/lkml/2020/6/27/64
+
+ If there are any valid, but yet not changed URLs:
+ See: https://lkml.org/lkml/2020/6/26/837
+
+ If you apply the patch, please let me know.
 
 
-Dear Friend,
+ drivers/ide/Kconfig  | 2 +-
+ drivers/ide/hpt366.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-I am Ms Lisa hugh, work with the department of Audit and accounting manager here in the Bank(B.O.A).
+diff --git a/drivers/ide/Kconfig b/drivers/ide/Kconfig
+index 973ed4b684ce..410d717d5ab2 100644
+--- a/drivers/ide/Kconfig
++++ b/drivers/ide/Kconfig
+@@ -98,7 +98,7 @@ config IDE_GD_ATAPI
+ 
+ 	  For information about jumper settings and the question
+ 	  of when a ZIP drive uses a partition table, see
+-	  <http://www.win.tue.nl/~aeb/linux/zip/zip-1.html>.
++	  <https://www.win.tue.nl/~aeb/linux/zip/zip-1.html>.
+ 
+ 	  If unsure, say N.
+ 
+diff --git a/drivers/ide/hpt366.c b/drivers/ide/hpt366.c
+index fd3b5da44619..209e5b01cac0 100644
+--- a/drivers/ide/hpt366.c
++++ b/drivers/ide/hpt366.c
+@@ -13,7 +13,7 @@
+  *
+  *
+  * HighPoint has its own drivers (open source except for the RAID part)
+- * available from http://www.highpoint-tech.com/USA_new/service_support.htm 
++ * available from https://www.highpoint-tech.com/USA_new/service_support.htm 
+  * This may be useful to anyone wanting to work on this driver, however  do not
+  * trust  them too much since the code tends to become less and less meaningful
+  * as the time passes... :-/
+-- 
+2.27.0
 
-Please i need your assistance for the transferring of thIs fund to your bank account for both of us benefit for life time investment, amount (US$4.5M DOLLARS).
-
-I have every inquiry details to make the bank believe you and release the fund in within 5 banking working days with your full co-operation with me for success.
-
-Note/ 50% for you why 50% for me after success of the transfer to your bank account.
-
-Below information is what i need from you so will can be reaching each other
-
-1)Full name ...
-2)Private telephone number...
-3)Age...
-4)Nationality...
-5)Occupation ...
-
-
-Thanks.
-
-Ms Lisa hugh.

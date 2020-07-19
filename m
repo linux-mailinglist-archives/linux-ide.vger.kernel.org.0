@@ -2,31 +2,31 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16427224FFC
-	for <lists+linux-ide@lfdr.de>; Sun, 19 Jul 2020 08:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14814224FFE
+	for <lists+linux-ide@lfdr.de>; Sun, 19 Jul 2020 08:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726123AbgGSG7y (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 19 Jul 2020 02:59:54 -0400
+        id S1726126AbgGSG75 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 19 Jul 2020 02:59:57 -0400
 Received: from mail-eopbgr60138.outbound.protection.outlook.com ([40.107.6.138]:29674
         "EHLO EUR04-DB3-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726067AbgGSG7x (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 19 Jul 2020 02:59:53 -0400
+        id S1726021AbgGSG74 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 19 Jul 2020 02:59:56 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=C/h+D/FHaeeXr+qFnEtUK85QGkv//NsNKTnU0YPa5IMLdv1DKIEPrFfNjTT5xVYoPpXqD4c4EiiTinN0LWyfgkqIZXmAcVoSAlLF8iA68b7FdCQLcSHWbxTwnXShS0rCz+qEGjPzhMV/eU4W/TAX/7S/aCh1nEnLXVMjkSvVzkq0y5NEbloww8/xTQeLbBAYwACJBsHd333F5XrKdceNlZ6rvYVfk137EQzoMNHrZNxOkoyrPT6HG307iSNWm3lhMaiZovjqTvFE8+V+CV7z1vZdWBOg0wAx+9kHcrqHodR5hBgOx8WaiqT9D2uwB4GYMBx0WCP1vUQofZIQK4Bh1A==
+ b=Dljspi5wyOjspkvmolR9mfTKA0jNAXQ2AsL/0tld68bJb/2D9f0/r7ZbfLepDPlxwvT2KBch5YZ+87Qy3x7x7m6qNt24deSRLtw6YtZpP7CYDQLaVB5DFF3D1rBt1YoUDbq8MBJev26IOSVyH3oVHgDE56eWLoZ4fpPKE8v7cOuhjJKo3yUHLs4PAs/ArunWtRDQgLlix8g3EulaLNUUe2CnEQteiTrGYue6YGgXhFL78y6z5kGoHMX9TqY4DuaRoypPccwau2/fUaFyVnja/+T1/bkOArSnPbOS2FffIZASCVzg8FTBZ8GibWX7DGtYnovu4C+Tw4MSi/GXTj5VLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d1W+rcX4qhXUIUoCj8g+SMPjANoyubk0uFu4xCICvFg=;
- b=ZNQrWOUm7m7UNMgq2F1zceuqqreD4kpmITTfCzaYFxoXuKbPzsvtA4fy6TIwmynGFTqaSJd6CcbTc5iJw5y8eTaKM8wbRoq31MHiy7IWXvyIIml74epyniL90/iwiXhu8hsg1w0HbVRp1AW5Po1uByR3kHe+mMiF5R6ZgLVPv6HW7jlT6uVMoTYTSHVidtWtMfJnRItxFnFp7DGgvpqkJAM4vWz6o82yTzGwBBSqUCqEPpYlk+WUpkX9gqQEodTrV8Sh0y/R77BwsC4THa5VwgGwBN30wmah3vK3X45fqzF0wLmUbX1le2mjrkmJsqJ++ULCAkNghOOPlMsaGuAGHw==
+ bh=WGQwZ6WvpTr5qSvW+tXuIm1L5RQLeAew0OCO/xPoW0Q=;
+ b=Uny6VdsA0hqlvNtSrikHqFO3xioomWwePXC7ZcpMFOOtp47M4Uyt7m154IpIL/atKr311L8qLECGVqn1sNA3tP8ca4hS29JeER1a2qs0x7iH31BoN8Q7CvAWwo7jfI5j0iqrmdABVbDsTWoTlYFDzyV/ovW4wUDqsRHRBPKbD8jpIJ+Tb2A+i6H+ntwsjTnLGQfLhRdXJU1Mgt5/d4xI8OkSoxnqW/Ism/SEkkiRmww8V5xH23eJC7p4F8Ht4NDOMCfS02BbLbfMqxSv2EaaZPuhrUB8fZVy0IQ7BIhuKeafqWX5sakRmfB8B0lO2r8gm2sBRSQhe3P0FciyeWpqgQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=voleatech.de; dmarc=pass action=none header.from=voleatech.de;
  dkim=pass header.d=voleatech.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=voleatech.de;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d1W+rcX4qhXUIUoCj8g+SMPjANoyubk0uFu4xCICvFg=;
- b=izIvLi3mylAhMmaaBp/omEVekKREu71fW/YZHhmzy8cqNgaTtc5ONZi7lNo6ZpxfnBLDxL8QsjCKxYYnLWrvf6EWyH969yS9FW1wGddtrEjI99+l66L4QzWuqEGHkzbykap9mxf/t1WkwY1357FbD1ynz7r4WgByOnrW3jjvx/A=
+ bh=WGQwZ6WvpTr5qSvW+tXuIm1L5RQLeAew0OCO/xPoW0Q=;
+ b=H/zHJQKkG1GIZqyRf01tZF5RNrwH/2kIrUePS0lzBYCW964Zp947zgR5zYGeRHM0OaTtoaPfZqD6sVJPRvJd56O/7n+bjWZ2/Q7E5GeaBy2D4lGwuE6Y1CVT9u4l8dRoB3Z6nPPIQLzlgacyciM/NaL4I4aMSEAgyz8lAOrjXso=
 Authentication-Results: lists.infradead.org; dkim=none (message not signed)
  header.d=none;lists.infradead.org; dmarc=none action=none
  header.from=voleatech.de;
@@ -34,11 +34,11 @@ Received: from AM4PR0501MB2785.eurprd05.prod.outlook.com
  (2603:10a6:200:5d::11) by AM4PR05MB3396.eurprd05.prod.outlook.com
  (2603:10a6:205:5::33) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3174.23; Sun, 19 Jul
- 2020 06:59:48 +0000
+ 2020 06:59:49 +0000
 Received: from AM4PR0501MB2785.eurprd05.prod.outlook.com
  ([fe80::39a1:e237:5fef:6f39]) by AM4PR0501MB2785.eurprd05.prod.outlook.com
  ([fe80::39a1:e237:5fef:6f39%11]) with mapi id 15.20.3195.025; Sun, 19 Jul
- 2020 06:59:48 +0000
+ 2020 06:59:49 +0000
 From:   sven.auhagen@voleatech.de
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     miquel.raynal@bootlin.com, baruch@tkos.co.il,
@@ -48,9 +48,9 @@ Cc:     miquel.raynal@bootlin.com, baruch@tkos.co.il,
         sebastian.hesselbarth@gmail.com, robh+dt@kernel.org,
         mark.rutland@arm.com, axboe@kernel.dk, hdegoede@redhat.com,
         tglx@linutronix.de, marc.zyngier@arm.com, linux-ide@vger.kernel.org
-Subject: [PATCH v5 4/7] irqchip/irq-mvebu-icu: Remove the double SATA ports interrupt hack
-Date:   Sun, 19 Jul 2020 08:59:39 +0200
-Message-Id: <20200719065942.24693-5-sven.auhagen@voleatech.de>
+Subject: [PATCH v5 5/7] dt-bindings: ata: Update ahci bindings with possible per-port interrupts
+Date:   Sun, 19 Jul 2020 08:59:40 +0200
+Message-Id: <20200719065942.24693-6-sven.auhagen@voleatech.de>
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 In-Reply-To: <20200719065942.24693-1-sven.auhagen@voleatech.de>
 References: <20200719065942.24693-1-sven.auhagen@voleatech.de>
@@ -61,29 +61,29 @@ X-ClientProxiedBy: AM0PR01CA0099.eurprd01.prod.exchangelabs.com
  (2603:10a6:200:5d::11)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from SvensMacBookAir.sven.lan (109.193.235.168) by AM0PR01CA0099.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.17 via Frontend Transport; Sun, 19 Jul 2020 06:59:47 +0000
+Received: from SvensMacBookAir.sven.lan (109.193.235.168) by AM0PR01CA0099.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.17 via Frontend Transport; Sun, 19 Jul 2020 06:59:48 +0000
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 X-Originating-IP: [109.193.235.168]
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 69543b68-a8bf-40bc-d7f2-08d82bb1535e
+X-MS-Office365-Filtering-Correlation-Id: e64294b6-b93a-4b83-e673-08d82bb153e4
 X-MS-TrafficTypeDiagnostic: AM4PR05MB3396:
-X-Microsoft-Antispam-PRVS: <AM4PR05MB339653BBDFAEC50672209A52EF7A0@AM4PR05MB3396.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Microsoft-Antispam-PRVS: <AM4PR05MB3396B2DCF63B05E841039DD1EF7A0@AM4PR05MB3396.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FZYmjL6RJM2lkQPHYEoTq1AHXhl7D5oIflGWCKYIWa5Ip6YgaSB9t/ciyaUaKXdxxG35cJ620GICuhS9XOLtqKEyXq9Rav1JNL9SJXIWAedQZY2aij63hPGCz6IQBLPZ6NW9hP5QxwKR/QmkTdbBJUBrEV2YVCzZo0ym5CNRsSun1mDv4W7aOBfm/SULb4LBO1ctwFm8+I7B6ne8SiO/0IphHlmXMNNw8eGugeOJ47LwH00smw7R/pKPkE1IbYyg7QwJT72EEqhmKs6ByxLjlWEORMK5GR7P/Wa/Q3w/pPzY9+qoYN7vQ8YfgRRz5OhkGn4cOcWBOi393xk2UkqlGQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM4PR0501MB2785.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(346002)(376002)(396003)(39830400003)(136003)(36756003)(316002)(5660300002)(2906002)(6666004)(6486002)(7416002)(66556008)(508600001)(6916009)(83380400001)(8676002)(66476007)(8936002)(6506007)(956004)(1076003)(4326008)(2616005)(26005)(16526019)(86362001)(9686003)(6512007)(186003)(66946007)(52116002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: ONDFQr4r9yKF9OIN4+esgfE1IqbtzH8yG2m8C30BjbmB1n4SVnZvu15VWUdcRUeIO25t/spDZWoelImA5W2AASSc9mXsgE/znQH1gG1UIvxzs9ZZeHT4cs3OrYXt+TK6w672vRypBN8MExsIY2WVSZ10udgx5Dy7v/7YRdKvXaP8N9q0hWtBuPIhu03LBLykh2FTjM45INJ15vxTnsrGMtkk+byXbHoBzoRcTAVrqGpR0k1S+imlmKksQy+3DBpvtjTmKNU45hMUddu7cXg4a0es7NyYPyQB67d6hC6LdN6bD/ukGo07wCgy9eD4QNkJy3CqL2PCvdEAv67cuAInDS3B1/bObEDgf0PD2miriuM/7kUxQ06kRMvLie8pPUp28GqCDhvu/9bQHxWGzUJnMOxxzXv4sLWkIPfVlKmI2OZpaNc4QxJs92clvmieCJME0caBgmcqq2crLyFoNCMXw0SbDs++8Efp9zZox88GoPhsRUzAn73ByWrtwJq57uo1
+X-Microsoft-Antispam-Message-Info: P/70upInJ4tWZToMt9OjR0o0nQZr1v3uShERh5AjLoThGb3c+k0Pa42bM7Bo6S7poSaTo4bxETgME3tBQd8J1Jc01r1id9nvI3dOrPwdJaJGp/y9yaAtg+SF0luYj3DRMpefUZex28zHcTYB8IM44Frhkm3oh2mrlMCd9IAOCURBU+wSry9fKR2bgM/XAANtEJkj1fknh3afS8VXvP/ftkoaTOL2qAspnRAJrVjubyMAQyhPMAzisfGkkA2ShrCjWiXiIyI1w/WMMSgy+uxFaHIZLV/EgVdwbOj6nQJSxmtIh3IkVT1ESzncIAqWNoA9QtaG4ijA7Hce13TOEXXstSTlRBb8gt6s1Bk8R04SJh+nX5wxUxgHdD5+ZwAWetJh
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM4PR0501MB2785.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(39840400004)(366004)(346002)(376002)(396003)(136003)(36756003)(316002)(5660300002)(2906002)(6666004)(6486002)(7416002)(66556008)(508600001)(6916009)(83380400001)(15650500001)(8676002)(66476007)(8936002)(6506007)(956004)(1076003)(4326008)(2616005)(26005)(16526019)(86362001)(9686003)(6512007)(186003)(66946007)(52116002)(46800400005);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: 9Rzdo73YMCjIK2IB4/WK3H/2eqdPVWhvHhF2mjPtJbfiYhH8Qr3dwE3mfdy4IBq/eSeT97HvOCRGApcnSd/uzCLLS5lFsNVHYPX097y7Tps6wVdbt9H/6Jyl4j7H1qmS2bRbXH9rzthdrcdxaKhT04vrUurxKrqXcOQageiizUCmHGxoRctYrtCHMHWd++WJNNIyVwi/MhTN0XEbHYs7bC2QspSPaVVDgNUCpCIPlgxQ2REcRN4amFTBzBxi07/7231VqByf40DtOLmC4JOQPjV+/dN3A9w4+LoYSEnWiC3Va/SPT0ULBkmEsnb7nRB2qlYPLY+DsP81kDCc4PghmPUrH2rwFXpfmQzrAVKsZE/9MCjdqY/TQ4rX4P168+7G3rrAK35zZ0jtXho/j7ZmeqbEZL8SKUFS3RA01SS96y+mi2BXQ1LOkvTqNjAoeQAuwaWcpoq8PyeKeUCnaKLKiFabdYEN2QLikRMCf9nbgJeKYr9eg7PnuSlYu0MZAJQd
 X-OriginatorOrg: voleatech.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 69543b68-a8bf-40bc-d7f2-08d82bb1535e
+X-MS-Exchange-CrossTenant-Network-Message-Id: e64294b6-b93a-4b83-e673-08d82bb153e4
 X-MS-Exchange-CrossTenant-AuthSource: AM4PR0501MB2785.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2020 06:59:48.2374
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2020 06:59:49.1220
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: b82a99f6-7981-4a72-9534-4d35298f847b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vsZavzUmcTFZYKSmOIeC/sLC6iannBFT7wQoBk7Rf3WK5JF2rXDka4p7IV5kApCcsldxOeYNzss1Lojs3cJI9Kao3ME+S8o46BP+lcnL+es=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 37lJefJAxeHkMvPZeBIvk3xEuxHNQVQlF13iunqlo/eYCHK4RcMd7Jqr1A9jlmvz8PwaLD7ZZpFWkJDpg5TaOu/hkT2qwVpNXtrwr4zOYok=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR05MB3396
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
@@ -92,54 +92,36 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-When writing the driver, a hack was introduced to configure both SATA
-interrupts regardless of the port in use to overcome a limitation in
-the SATA core. Now that this limitation has been addressed and the
-hack moved in the (historically) responsible SATA driver,
-ahci_{platform,mvebu}.c, let's clean this driver section.
+Update bindings to reflect the fact that a SATA IP can either have:
+- only one interrupt: in this case an 'interrupts' property is
+  declared at the root of the node;
+or
+- each SATA port can have their own interrupt: in this case there is
+  one 'interrupts' property per port/sub-node and none at the root.
 
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Marc Zyngier <marc.zyngier@arm.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 ---
- drivers/irqchip/irq-mvebu-icu.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ Documentation/devicetree/bindings/ata/ahci-platform.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/irqchip/irq-mvebu-icu.c b/drivers/irqchip/irq-mvebu-icu.c
-index 91adf771f185..3e29f8d5b33b 100644
---- a/drivers/irqchip/irq-mvebu-icu.c
-+++ b/drivers/irqchip/irq-mvebu-icu.c
-@@ -38,8 +38,6 @@
+diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+index 77091a277642..83d715cbcecd 100644
+--- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
++++ b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+@@ -49,6 +49,12 @@ And at least one of the following properties:
+ - phys		    : reference to the SATA PHY node
+ - target-supply     : regulator for SATA target power
  
- /* ICU definitions */
- #define ICU_MAX_IRQS		207
--#define ICU_SATA0_ICU_ID	109
--#define ICU_SATA1_ICU_ID	107
- 
- struct mvebu_icu_subset_data {
- 	unsigned int icu_group;
-@@ -111,22 +109,6 @@ static void mvebu_icu_write_msg(struct msi_desc *desc, struct msi_msg *msg)
- 	}
- 
- 	writel_relaxed(icu_int, icu->base + ICU_INT_CFG(d->hwirq));
--
--	/*
--	 * The SATA unit has 2 ports, and a dedicated ICU entry per
--	 * port. The ahci sata driver supports only one irq interrupt
--	 * per SATA unit. To solve this conflict, we configure the 2
--	 * SATA wired interrupts in the south bridge into 1 GIC
--	 * interrupt in the north bridge. Even if only a single port
--	 * is enabled, if sata node is enabled, both interrupts are
--	 * configured (regardless of which port is actually in use).
--	 */
--	if (d->hwirq == ICU_SATA0_ICU_ID || d->hwirq == ICU_SATA1_ICU_ID) {
--		writel_relaxed(icu_int,
--			       icu->base + ICU_INT_CFG(ICU_SATA0_ICU_ID));
--		writel_relaxed(icu_int,
--			       icu->base + ICU_INT_CFG(ICU_SATA1_ICU_ID));
--	}
- }
- 
- static struct irq_chip mvebu_icu_nsr_chip = {
++Sub-nodes optional properties:
++- interrupts        : <interrupt mapping for SATA ports IRQ>, please
++                      note that either the root SATA node has the
++                      interrupts property, or there is one per SATA
++                      port, but not both at the same time.
++
+ Examples:
+         sata@ffe08000 {
+ 		compatible = "snps,spear-ahci";
 -- 
 2.24.3 (Apple Git-128)
 

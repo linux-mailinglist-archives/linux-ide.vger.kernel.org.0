@@ -2,31 +2,31 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A6457224FFD
-	for <lists+linux-ide@lfdr.de>; Sun, 19 Jul 2020 08:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC73D224FF9
+	for <lists+linux-ide@lfdr.de>; Sun, 19 Jul 2020 08:59:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbgGSG7y (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 19 Jul 2020 02:59:54 -0400
+        id S1726094AbgGSG7t (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 19 Jul 2020 02:59:49 -0400
 Received: from mail-am6eur05on2111.outbound.protection.outlook.com ([40.107.22.111]:50369
         "EHLO EUR05-AM6-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725355AbgGSG7y (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 19 Jul 2020 02:59:54 -0400
+        id S1725355AbgGSG7t (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 19 Jul 2020 02:59:49 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iKZ9gxH5ekKNxC4C5/Z9HFn3ib30IjfsuUHA+kple5xuVkhk/QY5IBHFDhl0Ek230IG+4Jh2Ly3FkU9ZhkeS2IrBYe+wZbrxeKu2kLpelIvudKGx+1Qkpjel98DSg/bTen8Qdx8s45MnBpFhdhtOFVEHedvv/D9JKRfI6+lfRecRVnHlOCsohtSPrBZES3WAhc+a3kpTaummuHnFmppu0Hi9/57/NDNcSaP0eVqrKkmzkmAAotMn3rlqvwYFfzMA9ry/AZAa7yD1NUQ/WWZ/S+KYVGDA1/ZTSz5ZANbaDIh03YgDMdUuioXstUE7XXaHQPhdtr7/bPSFSGH2OVLTNA==
+ b=d2xCq72FAWZm0VMf498UiADHz7NZUlQ9thsuVNQwy1fRpJbVajTVtcVUu8TF94LVxv2ObEashNkYMhgLF3GCWHjr/MINH56YOSQgY8SP2qCDkaSCbLXyhQnyZ9RzkbuOCoR+i7DwcdIk+41bwq/rH9SUP0Fz+cklpdZHN9Gvy7Nu7leE/RdsLWk7S86g0RQYdfE+0wg54UJbCWoiP4YvgVqMcEq474mhKLYHbNJdklTxYsG4MV91//42aLKqa7QdCg0g6glJqaYLGc3cd3r0rpaeuRhdUda48hTr5YRVcmLVuTanG3WVAkC7OuI5GoCV4aQ2+EJqanI2u8IPFdsMtQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zDC2bRUORaPVhaon8cHIeQOHaHLqj3tuUgiiQ3+iI30=;
- b=ES5HUch/tEjC0LC58MtS5dbuZo3zfe3crF2TzavMnZWJdc7zuhxJllKc8FMaQmqEp6xhDhuWMRhRH/0ILoy4/kHRnHe5pbgP51eijsb2SmwzZOFm0gtQRLJ7BoRZa9HN2RZY5zObdapRAIkkkxNeYyccUXXjxKJ+DUYikVpLe5Q47QWJgLn8cRdsQy92bJtaH+i0iykz+uGALLmG3sQxkB/sfs4qI5a0RKCyFU8OsfdcHONGjScGYjYloobe4zLwbP90t5albvJwx8XSIVMRwIfBdH4uIL51sj0CdqJEgki9OKs+tgReWzZ+os3FcqefXuSXCuAY3vUu5x0w8aCnmw==
+ bh=aGjZ1/ViDdjFpDJn6oquiUiE5uvTVkg71oPWAFLeU0Q=;
+ b=MCWPK6F1m86adkZUq0tBp8HiEOs+PXyZ3oAn0qPFbULKfopbPlwI/uyJXQACtQ1p+OcKinHKH1kJwCksgMfEO5A3VfwnFdUU1/wrg+vVv77z0tz7o88niALXS6f8Yq8S53k2P0Cj9mgRHksxjAHYiaJWvx+vzr7UPuFEdATxxqjWuWBcoNmuGfbWCQULVpkEu6EalNmWANY8qG0t/VrnKfVSkuXiB/W1xyibKtyCV5/dGJYXZzxzhE9v+kiczlBFhg6F+RmGB8vYKSCfOm85gMRnMZHlVdI3ydxyI4mWHlaIHYCBBXyKGiBGGNoLCYLUciyNZLhxkpOVxPyE+iSU5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=voleatech.de; dmarc=pass action=none header.from=voleatech.de;
  dkim=pass header.d=voleatech.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=voleatech.de;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zDC2bRUORaPVhaon8cHIeQOHaHLqj3tuUgiiQ3+iI30=;
- b=NTpEgyiLywolHdJoLuWzgCzyQVLCWRL+DiNPval22kNnst7Yu44CI+wqdp8IfWvmRNfL3niJbzvqm3YpdrrL/vEoiJb5O6QZQ067TyXrkH/DzOGcs1IapfG5fBTzWqm6M23w0mkcR+shdhfGNBWZ1HXo0/rsZlm8vaR/GJcPszE=
+ bh=aGjZ1/ViDdjFpDJn6oquiUiE5uvTVkg71oPWAFLeU0Q=;
+ b=eNao1fUqpjOL/EkxpoJ6/mcoiR9eDjiLxF3FM6NlamyMumuufZjkp4DGaWJaB9I8KfIp/ZALPt1IVtNygJiQy6IhSTAoxgrxgTNreNDl1J+EitpJaewLn0S3OEGoUu7tnHAy2mM8EdU003VIKdorpfdTTOjDujExkhH3MMeq1fg=
 Authentication-Results: lists.infradead.org; dkim=none (message not signed)
  header.d=none;lists.infradead.org; dmarc=none action=none
  header.from=voleatech.de;
@@ -34,11 +34,11 @@ Received: from AM4PR0501MB2785.eurprd05.prod.outlook.com
  (2603:10a6:200:5d::11) by AM0PR05MB6690.eurprd05.prod.outlook.com
  (2603:10a6:20b:146::10) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.23; Sun, 19 Jul
- 2020 06:59:44 +0000
+ 2020 06:59:45 +0000
 Received: from AM4PR0501MB2785.eurprd05.prod.outlook.com
  ([fe80::39a1:e237:5fef:6f39]) by AM4PR0501MB2785.eurprd05.prod.outlook.com
  ([fe80::39a1:e237:5fef:6f39%11]) with mapi id 15.20.3195.025; Sun, 19 Jul
- 2020 06:59:44 +0000
+ 2020 06:59:45 +0000
 From:   sven.auhagen@voleatech.de
 To:     linux-arm-kernel@lists.infradead.org
 Cc:     miquel.raynal@bootlin.com, baruch@tkos.co.il,
@@ -48,150 +48,89 @@ Cc:     miquel.raynal@bootlin.com, baruch@tkos.co.il,
         sebastian.hesselbarth@gmail.com, robh+dt@kernel.org,
         mark.rutland@arm.com, axboe@kernel.dk, hdegoede@redhat.com,
         tglx@linutronix.de, marc.zyngier@arm.com, linux-ide@vger.kernel.org
-Subject: [PATCH v5 0/7] Armada8k enable per-port SATA interrupts and drop a hack in the IRQ subsystem
-Date:   Sun, 19 Jul 2020 08:59:35 +0200
-Message-Id: <20200719065942.24693-1-sven.auhagen@voleatech.de>
+Subject: [PATCH v5 1/7] ata: ahci: mvebu: Rename a platform data flag
+Date:   Sun, 19 Jul 2020 08:59:36 +0200
+Message-Id: <20200719065942.24693-2-sven.auhagen@voleatech.de>
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20200719065942.24693-1-sven.auhagen@voleatech.de>
+References: <20200719065942.24693-1-sven.auhagen@voleatech.de>
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: AM0PR01CA0099.eurprd01.prod.exchangelabs.com
  (2603:10a6:208:10e::40) To AM4PR0501MB2785.eurprd05.prod.outlook.com
  (2603:10a6:200:5d::11)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from SvensMacBookAir.sven.lan (109.193.235.168) by AM0PR01CA0099.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.17 via Frontend Transport; Sun, 19 Jul 2020 06:59:43 +0000
+Received: from SvensMacBookAir.sven.lan (109.193.235.168) by AM0PR01CA0099.eurprd01.prod.exchangelabs.com (2603:10a6:208:10e::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.17 via Frontend Transport; Sun, 19 Jul 2020 06:59:44 +0000
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 X-Originating-IP: [109.193.235.168]
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 829e2d92-2c73-4d8e-9a0a-08d82bb1513f
+X-MS-Office365-Filtering-Correlation-Id: da25161c-4d18-4c77-a413-08d82bb151c7
 X-MS-TrafficTypeDiagnostic: AM0PR05MB6690:
-X-Microsoft-Antispam-PRVS: <AM0PR05MB6690AFA12C509D30B9B8D16BEF7A0@AM0PR05MB6690.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-Microsoft-Antispam-PRVS: <AM0PR05MB66909BD2761F76BEE041C14FEF7A0@AM0PR05MB6690.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FSDCe4Li0+s20Cj4PIRiqDqFnLg8Zh8oCGkcR3QvxoVXVP3HU6haZUcHkRt+ftE6s2GWKi2SBNq0EHW0wM8kYL9hbVGPQrzHkBp0sJqhWtVvL6im8VgQTUkOSZU8zLfuUgT+msMSCwasvw/DTJ0Hpp1wFGr0Yxs5h8lmqkuWvv5jv+OjTWFQ//Jd9OpjyZQ8CN7ODUedX7zUGBmBi+/E+8LCIPeEQLe+MaM7RtPtTipJ6lTRnWLcqS8D8VYsKEHb0YgMrgHQtEB8Jx8/OEkPWhsZ0JCadCxtgKVV2FFAATmY6d32p1H2CEPS0kBaw299jX67U0V7U0HukzMW8Dhm2Iqe9FypZxvnR4Tx3xOSiZ3qWieS060ovHuyYnLc0ZYI
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM4PR0501MB2785.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(39830400003)(396003)(376002)(346002)(136003)(2616005)(4326008)(66574015)(6916009)(7416002)(86362001)(508600001)(1076003)(956004)(316002)(16526019)(6486002)(6512007)(9686003)(186003)(66556008)(66476007)(6506007)(6666004)(52116002)(8676002)(2906002)(26005)(36756003)(66946007)(83380400001)(5660300002)(8936002)(32563001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: uE/gcCtDJBQJpHi3YMeS5tQUwM5OPn25PL10wFY+w79QOf7Q84C5uCS9Gl5nqUQtxL7l+ro2HzhVCptxsc3Cs7eZJDafD4EbLnAb76uPqy2W/aOLC2Za4qpLeu9nCW//0v4eMawuYanhKHUXIa8A8py1yqFvYLJMiVfClGf07yOnVAx9kJH8bR2C1Kv0nzy7zjO6Q+jML0JoEWYt3AdrQScf9OXdo4Il1loC+K5+tnfLTuwwoTtK1JUgOMnyKSD+B+GrronYZQlY8noRSihvm0GPM+t9zSlvrzM3J0uYBr6dNpdGyA7R/bKlNgcGaklkroZ8MAYIw5truIIx7NTFhjXWHJaxT0JNJXjsKCDRu2ekYxmRazRezZ/juZ8juUPDVz36xhkEr8ILiVP4IY+T+ssLfNiJopI/h5fhEfNmLnI4CbPFR4ABRnC/ZHSLiNjok8Hf8uBVBgp9P6PfaBjpqjTrXRncfbAViAAx7AUKoFwDzRPHNT+eonh18KwHtTMs
+X-Microsoft-Antispam-Message-Info: /Y4OJfK2QK/I1PKRNpznF9gGqroR5fhLsztqpRl5ojOXBfUsazj4tUrOQEY1AxREMOBouG49LpkNtoEhvlkLwoJl3CGiyfPbJF4WTyzE+vpAfuIOmOKYHkzk2F6SEzc8+MY28onBrMqxFylYijsafzfaz9sOhkxTX3NJdSyaOouPOmIznkMHEwD91+WuDi9ey9H4fGQAGJP7stiQ9X/jlua6DTHItyEfYrmvWAziS5hG2i5ioceB18Hif80FSqhDw0rlgUtv0FgWpUCgXQVGhGLyieZee8H3kn3CalBFTCdn7kQATQxHtrW3tV0YzgHk7vabXrGtaSwuUk63WMie6w==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM4PR0501MB2785.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(366004)(39830400003)(396003)(376002)(346002)(136003)(2616005)(4326008)(6916009)(7416002)(86362001)(508600001)(1076003)(956004)(316002)(16526019)(6486002)(6512007)(9686003)(186003)(66556008)(66476007)(6506007)(6666004)(52116002)(8676002)(2906002)(26005)(36756003)(66946007)(83380400001)(5660300002)(8936002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: JnrhrY5z+96CfHbZjK7S/85uCoR64OOWiCALR7ECyQE9pLs/BGqzL8Lbt5D0rYoO3yiXBtJLe4nMDROKmb2uzRumG1FglyIHCRVjv/yaC1PzRuPjVP+N4Vcu+EeBFjp3nfBnX459Qnlvel6l4QvaSS9fjYSQR+NknZ2mnIyYBSfedNjANy6BAuvis47knheDmycgVTiLPTh81IdZRk/8iuOe30vglXFZB1loWai8Zub8RINuJMiI4XjzKENDh82dPDfSH6ozd7/7LG4KX7MVHJcEyHtty1X6BvnTYtW00VYtzANj3vx9iCBxd+iCm7FLMUBhMneSaipDiEvTx4FbNFl+DXdv90ccYAi/yU8RgwElGs9e+VwZB0/guSLOXuIQJtM8ahVaRgj3c+dFummumydR2heznWCsKmYlf2ZxLL4zRzHctLMjFP4qK99xf3lqiQB1Lgrq7oLiuqUtds/7GGJC2oTlgGXfAke95CVF3MBQYCkwtfr7v1RxM6/GP7vP
 X-OriginatorOrg: voleatech.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 829e2d92-2c73-4d8e-9a0a-08d82bb1513f
+X-MS-Exchange-CrossTenant-Network-Message-Id: da25161c-4d18-4c77-a413-08d82bb151c7
 X-MS-Exchange-CrossTenant-AuthSource: AM4PR0501MB2785.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2020 06:59:44.6842
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jul 2020 06:59:45.5798
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: b82a99f6-7981-4a72-9534-4d35298f847b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: cVviVxHv8gpJ6IvdXM6jOr2muKSQr8Z/C3e5CrPv+JJTqNMRvGNofGiFtT9FCHgT98A1Z+N4LaOxqy787LJkBaRjQejec36knymFX8SKjz0=
+X-MS-Exchange-CrossTenant-UserPrincipalName: GmrsPJbvCQhcQ9uNVG6t5gK3i+vUVNOV44WbU8iiWv3676NAfR7XK0XvzmTAns0uNnkrnZt8aMkuwDiv4iuAPIWBxLrCHmG9hYouAxUAtkw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB6690
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Sven Auhagen <sven.auhagen@voleatech.de>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-Hello,
+Before adding more entries in the platform data structure, rename the
+flags entry to be more precise and name it host_flags.
 
-there were already 4 versions of this series from Miquèl.
-I talked to Miquèl and I fixed up the last comments from v4.
-I am looking for feedback if this patch series is now ready to be merged
-and what should be further changed.
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+---
+ drivers/ata/ahci_mvebu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Here is the original cover letter:
-
-Some time ago, when the initial support for Armada CP110 was
-contributed, the SATA core was not able to handle per-port
-interrupts. Despite the hardware reality, the device tree only
-represents one main interrupt for the two ports. Having both SATA
-ports enabled at the same time has been achieved by a hack in the ICU
-driver(1) that faked the use of the two interrupts, no matter which
-SATA port was in use.
-
-Now that the SATA core is ready to handle more than one interrupt,
-this series adds support for it in the libahci_platform code. The
-CP110 device tree must be updated to reflect the two SATA ports
-available and their respective interrupts. To do not break DT backward
-compatibility, the ahci_platform driver now embeds a special quirk
-which checks if the DT is valid (only for A8k compatible) and, if
-needed, creates the two missing sub-nodes, and assign them the
-relevant "reg" and "interrupts" properties, before removing the main
-SATA node "interrupts" one.
-
-(1) The ICU is an irqchip aggregating the CP110 (south-bridge)
-interrupts into MSIs for the AP806 (north-bridge).
-
-Best
-Sven
-
-Changes in v5
-=============
-* Rebase on top of v5.8-rc3
-* Move code to ahci mvebu and use custom functions
-
-Changes in v4
-=============
-* Rebase on top of v5.2-rc1
-* s/ARM64/arm64/ in the DT change commit title.
-
-Changes in v3
-=============
-* Removed useless locking when acking the SATA host IRQ_STAT bit.
-* As spotted by Hans, do not enable the AHCI_HFLAG_MULTI_MSI flag only
-  if more than one port is enabled, DTs might declare only one
-  interrupt and have multiple ports. Added Hans' Reviewed-by tag.
-* Added Rob's Reviewed-by tags.
-* Added explicit references to the 'Device Tree' being the culprit
-  for the hacks which are being treated in patch "ata: ahci: mvebu:
-  Add support for A8k legacy bindings" as suggested by Marc.
-* Modified all DTs to avoid enabling/disabling the SATA ports
-  independently, which does not work. Either both ports are enabled, or
-  none. Tested on MacchiatoBin that all three availabe ports on the
-  board are functional.
-
-Changes in v2
-=============
-* In the AHCI world, the 'irq' is now an '*irqs' array, I ensured it
-  is allocated even when not using *_platform drivers.
-* Moved the whole logic from the generic ahci_platform.c driver to the
-  Marvell's ahci_mvebu.c driver.
-* Dropped the whole DT manipulation quirk.
-* Instead used a hack to configure both interrupts when using the
-  deprecated bindings, this hack is a8k specific but there is a flag
-  that is passed to the core during the ahci_platform_get_resources()
-  to indicate that the number of ports must be forced to 2 no matter
-  the number of child nodes.
-* The A8k based Clearfog-GT actually uses the SATA IP (Baruch's info)
-  so do not remove the SATA node from the DT. Instead, change the DTS
-  to fit the new bindings (the board only uses the second port at
-  offset 1).
-* Added bindings documentation about the A8k AHCI compatible (existing
-  in DTs, missing in the doc).
-* SATA Sub-nodes representing ports already are documented, I just
-  added a mention that they can also have an interrupts property which
-  is mutually exclusive with the root SATA node.
-
-Miquel Raynal (5):
-  ata: ahci: mvebu: Rename a platform data flag
-  ata: ahci: mvebu: Support A8k compatible
-  irqchip/irq-mvebu-icu: Remove the double SATA ports interrupt hack
-  dt-bindings: ata: Update ahci bindings with possible per-port
-    interrupts
-  dt-bindings: ata: Update ahci_mvebu bindings
-
-Sven Auhagen (2):
-  ata: ahci: mvebu: Add support for A8k legacy DT bindings
-  arm64: dts: marvell: armada-cp110: Switch to per-port SATA interrupts
-
- .../devicetree/bindings/ata/ahci-platform.txt |   7 +
- arch/arm64/boot/dts/marvell/armada-cp11x.dtsi |   6 +-
- drivers/ata/ahci.h                            |   3 +
- drivers/ata/ahci_mvebu.c                      | 254 +++++++++++++++++-
- drivers/ata/libahci.c                         |   3 +-
- drivers/ata/libahci_platform.c                |   3 +
- drivers/irqchip/irq-mvebu-icu.c               |  18 --
- include/linux/ahci_platform.h                 |   1 +
- 8 files changed, 265 insertions(+), 30 deletions(-)
-
+diff --git a/drivers/ata/ahci_mvebu.c b/drivers/ata/ahci_mvebu.c
+index d4bba3ace45d..43bb2db59698 100644
+--- a/drivers/ata/ahci_mvebu.c
++++ b/drivers/ata/ahci_mvebu.c
+@@ -30,7 +30,7 @@
+ 
+ struct ahci_mvebu_plat_data {
+ 	int (*plat_config)(struct ahci_host_priv *hpriv);
+-	unsigned int flags;
++	unsigned int host_flags;
+ };
+ 
+ static void ahci_mvebu_mbus_config(struct ahci_host_priv *hpriv,
+@@ -196,7 +196,7 @@ static int ahci_mvebu_probe(struct platform_device *pdev)
+ 	if (IS_ERR(hpriv))
+ 		return PTR_ERR(hpriv);
+ 
+-	hpriv->flags |= pdata->flags;
++	hpriv->flags |= pdata->host_flags;
+ 	hpriv->plat_data = (void *)pdata;
+ 
+ 	rc = ahci_platform_enable_resources(hpriv);
+@@ -227,7 +227,7 @@ static const struct ahci_mvebu_plat_data ahci_mvebu_armada_380_plat_data = {
+ 
+ static const struct ahci_mvebu_plat_data ahci_mvebu_armada_3700_plat_data = {
+ 	.plat_config = ahci_mvebu_armada_3700_config,
+-	.flags = AHCI_HFLAG_SUSPEND_PHYS,
++	.host_flags = AHCI_HFLAG_SUSPEND_PHYS,
+ };
+ 
+ static const struct of_device_id ahci_mvebu_of_match[] = {
 -- 
 2.24.3 (Apple Git-128)
 

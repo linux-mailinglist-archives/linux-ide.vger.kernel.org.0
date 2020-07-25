@@ -2,103 +2,83 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CDDB822D663
-	for <lists+linux-ide@lfdr.de>; Sat, 25 Jul 2020 11:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F56922D68D
+	for <lists+linux-ide@lfdr.de>; Sat, 25 Jul 2020 12:06:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726704AbgGYJSj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 25 Jul 2020 05:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53272 "EHLO
+        id S1726780AbgGYKGI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 25 Jul 2020 06:06:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbgGYJSj (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 25 Jul 2020 05:18:39 -0400
-Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 999A2C0619D3;
-        Sat, 25 Jul 2020 02:18:38 -0700 (PDT)
-Received: by mail-lj1-x242.google.com with SMTP id b25so12330282ljp.6;
-        Sat, 25 Jul 2020 02:18:38 -0700 (PDT)
+        with ESMTP id S1726572AbgGYKGH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 25 Jul 2020 06:06:07 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4972C0619D3;
+        Sat, 25 Jul 2020 03:06:07 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id a23so6568231pfk.13;
+        Sat, 25 Jul 2020 03:06:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Tt4lBP8eHDcChTcrk6HpzOZG+ZscpSQCi8G310B6EEA=;
-        b=SsJ6neoxYIFGtlNWPoyAvoOlaM8lvGNtgbgtaZD/UQltNSFJfBPBIHqsdRF88KKdtJ
-         f3DUCdYuHgDEeMOBtFqaW0rDKpLRPV+MUaOuUxKpI67PAAuDGnJlQfD8EQUuX6Xb/tb2
-         oVop7ZBCmena9OX27q+XdEBlPk8mAwa0BH7t+r4uevtYzT8zMRKqwU2rcL3RfA0YkSSo
-         VYtiZLFshXQWUzuoxFGrAYKtf8/XPYr6nGuylX5b6iL5k23tefbaG/b4D/feMoTu6Ujv
-         yYHOrrEaUqi1Gne4Zhv7VWyfcSqwJxriBgozPG7cnrzZYp2Qn/YUfN1UOswhR3w+bw4Y
-         A0Bg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=o4MdyPd4FwJNN1L7gfFEaTU+8yhML1lu+0tVhMhnwAM=;
+        b=aJhDGStKtBwZuMIoYYEPl2TtYY3iIaDNK5pYcDOiJXEuKoA3M9qPzGCHTouPjJc6dz
+         KeIOWbQ/AVt1k0YFLE507+uudo/skz4i689nh/DXNCc1zvmNmYkSx3AG4PsS3Ap0q44v
+         wDjfjFul4flugULbHlymMuj13fzvDUqP1GGWMG0QSAu8FHbM0tnLj9HLL+/JIVYyivQh
+         lajhcnIETPjIuXD09f4BH+kUF1lgcL5UD3bhpCAWu3D0GBV0GOFaB3Sg/Z1u0M5Pxmzh
+         ATJYZE2cqplWfN3mRuokAQr+VS3qVzJ1PwpZzAULSG0j+rxhEhVJqDR1OjzPzGwKREuh
+         AV2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=Tt4lBP8eHDcChTcrk6HpzOZG+ZscpSQCi8G310B6EEA=;
-        b=mba8pNNbfBi/7CzBLGy22BtHEWliQy/fViriza95n5XX+7Fa9cqHozhkpuIULcbUlb
-         vIvRnajKeaGp047boIrbwVNNeqCDKnYiRomRi7AiB9BtG/xCcWcLOnqTtt/lr3c5qUqi
-         U8jxyZZbpziTBxWCEXXCIIEsRE4ySHe9qPFk0iSYJYffpzTs3qSFtKxhzosEIoHPF7kF
-         hmEkGX1l3fFqw24YTphS98JYSdm7zA0jrzUrvZwDiSuYx4++dwQc9qAXCzyubEBxUwiP
-         H1VtaKtNZNxQ6NsjzMlE1RBjEtX3PJ6BkktrHs7Ew3TBqDFGd/MtCfBuZWOFOkMoZRnF
-         gw5g==
-X-Gm-Message-State: AOAM5330+pUeq/n+MxTgM8upKaQ/keX0sP8I7mOoxAmdgrxElA9M70e+
-        PLbMSXZ/oPAQ1Kl/5nPKwCisnIuUGYw=
-X-Google-Smtp-Source: ABdhPJzHxnxj5UPJ9LFQGOyklSNEPZ4gVbk/cPhkmFeEURr4kF3VAybMQ8Q1RkYu0E3EgNGoJmZ87w==
-X-Received: by 2002:a2e:9913:: with SMTP id v19mr963221lji.292.1595668716933;
-        Sat, 25 Jul 2020 02:18:36 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:253:4416:cc94:657b:2972:b01d? ([2a00:1fa0:253:4416:cc94:657b:2972:b01d])
-        by smtp.gmail.com with ESMTPSA id e22sm876553ljb.12.2020.07.25.02.18.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 25 Jul 2020 02:18:36 -0700 (PDT)
-Subject: Re: [PATCH v9 02/12] ata: ahci_brcm: Fix use of BCM7216 reset
- controller
-To:     Jim Quinlan <james.quinlan@broadcom.com>,
-        linux-pci@vger.kernel.org,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Christoph Hellwig <hch@lst.de>,
-        Robin Murphy <robin.murphy@arm.com>,
-        bcm-kernel-feedback-list@broadcom.com
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20200724203407.16972-1-james.quinlan@broadcom.com>
- <20200724203407.16972-3-james.quinlan@broadcom.com>
-From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Organization: Brain-dead Software
-Message-ID: <4950d265-5aea-8d0b-7984-553e53f421f6@gmail.com>
-Date:   Sat, 25 Jul 2020 12:18:32 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=o4MdyPd4FwJNN1L7gfFEaTU+8yhML1lu+0tVhMhnwAM=;
+        b=OhzUN6dRzyFs6kwyseAOxn7wWPGwVNzn4EHIUMslphsT3Ff9wL0Fu/sqQ42TSzCUz8
+         s7zZ8sadrHK8iGpR4Id3GwK8xxz1TTukWviJlH2Si8dQLJt2aersEsFrdwRTMkwq+Zjy
+         V9y+IKSa4plasY4BJ3s5arXFZeA4ukpzSKdCMYKohd0fYjNe/2on2OpWjugHOtSZzPvr
+         HfexZrA9gyuqjGQf0BFm6FJNt2BXzBveQhiOkW8R4+u4B2G/UvJn2PJ3w/OWHiqvaUan
+         60CIU+E82dK4CnYmdomAZTuXrfqVRMfkOu9uRoyGXDlLINECo6mL444r6hd4PNVtmk7p
+         T5gw==
+X-Gm-Message-State: AOAM533k6hTP8y96rSfTcIXQQmo0lDL572jjbSR6/O1MCR7eSRcl1+hZ
+        4wjJ8/lxTtJIW0Tyn8Ejlz9mPdkU2WW55dAZqVdb60Sg
+X-Google-Smtp-Source: ABdhPJxxR8K10M6/03HrPBRxVKahwHeFZirVdQwi0NTxs8aZflSh+JYyO6WFwsatB9YsjaAFdxcYLSfUrtgxyIvCcBQ=
+X-Received: by 2002:a62:8ccb:: with SMTP id m194mr12804651pfd.36.1595671567294;
+ Sat, 25 Jul 2020 03:06:07 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200724203407.16972-3-james.quinlan@broadcom.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200724171706.1550403-1-tasleson@redhat.com> <20200724171706.1550403-4-tasleson@redhat.com>
+In-Reply-To: <20200724171706.1550403-4-tasleson@redhat.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Sat, 25 Jul 2020 13:05:51 +0300
+Message-ID: <CAHp75VcwDhHmLbOO2WKkShNYAdLawLx6A5O-4newkCe4XEb3LQ@mail.gmail.com>
+Subject: Re: [v4 03/11] dev_vprintk_emit: Increase hdr size
+To:     Tony Asleson <tasleson@redhat.com>
+Cc:     linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello!
+On Fri, Jul 24, 2020 at 8:19 PM Tony Asleson <tasleson@redhat.com> wrote:
+>
+> With the addition of the device persistent id we have the possibility
+> of adding 154 more bytes to the hdr.  Thus if we assume the previous
+> size of 128 was sufficent we can simply add the 2 amounts and round
 
-On 24.07.2020 23:33, Jim Quinlan wrote:
+sufficient
 
-> From: Jim Quinlan <jquinlan@broadcom.com>
-> 
-> A reset controller "rescal" is shared between the AHCI driver and the PCIe
-> driver for the BrcmSTB 7216 chip.  Use
-> devm_reset_control_get_optional_shared() to handle this sharing.
-> 
-> Signed-off-by: Jim Quinlan <jquinlan@broadcom.com>
-> 
+> up.
 
-    Shouldn't break up the tag area with the empty lines.
+...
 
-> Fixes: 272ecd60a636 ("ata: ahci_brcm: BCM7216 reset is self de-asserting")
-> Fixes: c345ec6a50e9 ("ata: ahci_brcm: Support BCM7216 reset controller name")
-[...]
+> -       char hdr[128];
+> +       char hdr[288];
 
-MBR, Sergei
+This is quite a drastic change for the stack.
+Can you refactor to avoid this?
+
+-- 
+With Best Regards,
+Andy Shevchenko

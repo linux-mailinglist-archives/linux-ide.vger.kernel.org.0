@@ -2,62 +2,70 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22F4F230F1D
-	for <lists+linux-ide@lfdr.de>; Tue, 28 Jul 2020 18:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA6B3233660
+	for <lists+linux-ide@lfdr.de>; Thu, 30 Jul 2020 18:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731088AbgG1QWs convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Tue, 28 Jul 2020 12:22:48 -0400
-Received: from customer-201-134-139-73.uninet-ide.com.mx ([201.134.139.73]:43964
-        "EHLO correo.tlalpan.gob.mx" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730679AbgG1QWs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 28 Jul 2020 12:22:48 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by correo.tlalpan.gob.mx (Postfix) with ESMTP id 5CF9E57596C;
-        Tue, 28 Jul 2020 06:02:18 -0500 (CDT)
-Received: from correo.tlalpan.gob.mx ([127.0.0.1])
-        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id HYAaaTGZwF-Z; Tue, 28 Jul 2020 06:02:18 -0500 (CDT)
-Received: from localhost (localhost [127.0.0.1])
-        by correo.tlalpan.gob.mx (Postfix) with ESMTP id 76F1347A14D;
-        Tue, 28 Jul 2020 04:05:17 -0500 (CDT)
-X-Virus-Scanned: amavisd-new at tlalpan.gob.mx
-Received: from correo.tlalpan.gob.mx ([127.0.0.1])
-        by localhost (correo.tlalpan.gob.mx [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ekvwoo44P_kg; Tue, 28 Jul 2020 04:05:17 -0500 (CDT)
-Received: from [10.85.108.11] (unknown [105.8.2.12])
-        by correo.tlalpan.gob.mx (Postfix) with ESMTPSA id 5265D43A2C1;
-        Tue, 28 Jul 2020 03:32:37 -0500 (CDT)
-Content-Type: text/plain; charset="utf-8"
+        id S1729459AbgG3QKu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 30 Jul 2020 12:10:50 -0400
+Received: from mga17.intel.com ([192.55.52.151]:41509 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729387AbgG3QKt (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 30 Jul 2020 12:10:49 -0400
+IronPort-SDR: wMFzm5+JdSiWPFJ5rvBJ8M/j0epBUpuqYajn2gfC4Idj1AHe3JqwdTR+JGaRcB6YsPGZ58UNnp
+ Ooa156Mer5pA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9698"; a="131698927"
+X-IronPort-AV: E=Sophos;i="5.75,415,1589266800"; 
+   d="scan'208";a="131698927"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jul 2020 09:10:46 -0700
+IronPort-SDR: SauiCJzHrcqnkcbEQT5pRUkuaSYCy1JFy1mITJiVvNzSlUt0WNre9568a5hMxBPm6USYfRp50H
+ N3klzR81n+cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.75,415,1589266800"; 
+   d="scan'208";a="330790504"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga007.jf.intel.com with ESMTP; 30 Jul 2020 09:10:43 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id E9C9D119; Thu, 30 Jul 2020 19:10:42 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     "David S. Miller" <davem@davemloft.net>, linux-ide@vger.kernel.org
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1] ide-acpi: use %*ph to print small buffer
+Date:   Thu, 30 Jul 2020 19:10:42 +0300
+Message-Id: <20200730161042.41392-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <aguayenergia@tlalpan.gob.mx>
-From:   ''Tayeb Souami'' <aguayenergia@tlalpan.gob.mx>
-Date:   Tue, 28 Jul 2020 10:36:55 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200728083239.5265D43A2C1@correo.tlalpan.gob.mx>
+Content-Transfer-Encoding: 8bit
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Lieber Freund,
+Use %*ph format to print small buffer as hex string.
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/ide/ide-acpi.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+diff --git a/drivers/ide/ide-acpi.c b/drivers/ide/ide-acpi.c
+index 05e18d658141..9a4ec281b985 100644
+--- a/drivers/ide/ide-acpi.c
++++ b/drivers/ide/ide-acpi.c
+@@ -320,10 +320,7 @@ static int do_drive_set_taskfiles(ide_drive_t *drive,
+ 		u8 *gtf = (u8 *)(gtf_address + ix * REGS_PER_GTF);
+ 		struct ide_cmd cmd;
+ 
+-		DEBPRINT("(0x1f1-1f7): "
+-			 "hex: %02x %02x %02x %02x %02x %02x %02x\n",
+-			 gtf[0], gtf[1], gtf[2],
+-			 gtf[3], gtf[4], gtf[5], gtf[6]);
++		DEBPRINT("(0x1f1-1f7): hex: %7ph\n", gtf);
+ 
+ 		if (!ide_acpigtf) {
+ 			DEBPRINT("_GTF execution disabled\n");
+-- 
+2.27.0
 
-
-Das ist dein Spendencode: [TS530342018]
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami

@@ -2,44 +2,44 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDBB023CFC3
-	for <lists+linux-ide@lfdr.de>; Wed,  5 Aug 2020 21:25:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC01C23D22A
+	for <lists+linux-ide@lfdr.de>; Wed,  5 Aug 2020 22:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728431AbgHETZK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 5 Aug 2020 15:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52822 "EHLO
+        id S1726238AbgHEUJh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 5 Aug 2020 16:09:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728577AbgHERZG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Aug 2020 13:25:06 -0400
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA5BC0086A6;
-        Wed,  5 Aug 2020 07:46:41 -0700 (PDT)
-Received: by mail-oi1-x244.google.com with SMTP id v13so23174659oiv.13;
-        Wed, 05 Aug 2020 07:46:41 -0700 (PDT)
+        with ESMTP id S1727045AbgHEQce (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Aug 2020 12:32:34 -0400
+Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F57BC008693;
+        Wed,  5 Aug 2020 07:33:53 -0700 (PDT)
+Received: by mail-yb1-xb42.google.com with SMTP id p191so7703246ybg.0;
+        Wed, 05 Aug 2020 07:33:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=a747GTvzdj8BhTC99m/ltqffKPbWLknrH4UGCy7e+04=;
-        b=rx4G6ali42qaP1XHM/3dxNM9N32RXYC90XDH13dCFvCuQE5nEC2SKndrWA1Ie0QM7S
-         ezkvzSM2i8lafkAgtm1zUyLUZf3GeD4Vd0ts1FW+G6aOiCuLMKVX9g3yrcVAaWb25Q1/
-         UuEbBKFc18FoVVCVauRntkumg7dcVHp+khSrm6YNG+h44L31cZ/P4g8/iFP0WY7iWNEP
-         tSORMkowazJHMGpHn7YGoId8llCJWyuVhcjSSGiKJMQJW6fqBUxIWdgWJGQfLtkwsGdU
-         cJDqr9WWtb64EhtmBX9uAw0gm8IsXtKmLeVhSZheEL8nKT7dqasoc7/lWyTq54nXtgNY
-         hOOw==
-X-Gm-Message-State: AOAM530bfeRays6JRYcl9Jh6UofxignYBe8JLo4m2ms3N+Db/oZU/M6V
-        Lb/RFB32tjmPRPwFHpoYvaPE/S9lp36FDTsWnBY0Qg==
-X-Google-Smtp-Source: ABdhPJxOLh0H5vKRdwT+SgNB4/VJFY79xxN/fk4jyCR22Pxw8fbAj3AqGa5onUuCO90I+Y+bzEmqLPTLGI8ksjYr6g8=
-X-Received: by 2002:aca:b742:: with SMTP id h63mr2149267oif.148.1596625738500;
- Wed, 05 Aug 2020 04:08:58 -0700 (PDT)
+        bh=GhwGBb3og4FBqTm6+fj02zyv7weIuiKRDAujBvepcdQ=;
+        b=fch6LB7KMtoU3ydFD3x7lOUc816sn1DTq0b2HNj9twAMga3EBXvQdvMsHrkfPKS4jA
+         uazXvHSW7mG00Dl3XKr58t6jr8EBxhTHSTnuRfGIiD5GyECH26bslPfhbFYhbtu82MAY
+         2Q0GucivfIHZWvsJWi05WKA64nxxs+rTDAVDz9CuV00E4FewnxKDvVwibVnN/0Psu1cY
+         VTfNWD3V2pvwMp2i9ssSkE8ew9aCLuweBQRmiEwkvoQ38JD6sWL2DO6s9aWIuwFGitMe
+         +/Z8/nqZ0tA+8vF78a8eml0NsVGBf0c0Bdn7dh8feKNv3TqsLzJgSYmr4EGtEOpf8qgZ
+         uMjA==
+X-Gm-Message-State: AOAM532T925N06vt1YjS95QmTDSXnaxD/9Mjq6ncaejqcd7jdURcMvRQ
+        pgAdlXUBfOPh2Zwx7GYd9J2ONA4jcxNJ0tLDoU5HyuwK
+X-Google-Smtp-Source: ABdhPJy6Few2JSpX34d8UWs2mHs62Jj4zoFqif/HtRZNiG9fgu0Yy1ArYH3I3/SVye0G2Oxi4tcy3VslWxu2yq+qpJs=
+X-Received: by 2002:a05:6830:1b79:: with SMTP id d25mr2025587ote.107.1596625767021;
+ Wed, 05 Aug 2020 04:09:27 -0700 (PDT)
 MIME-Version: 1.0
 References: <1594919915-5225-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1594919915-5225-3-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
-In-Reply-To: <1594919915-5225-3-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+ <1594919915-5225-5-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
+In-Reply-To: <1594919915-5225-5-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
 From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 5 Aug 2020 13:08:47 +0200
-Message-ID: <CAMuHMdVNrbi2twUoJ1wB4DY++M+VgsLVQXxS_NTK9YtExF8BBg@mail.gmail.com>
-Subject: Re: [PATCH 02/20] arm64: dts: renesas: r8a774e1: Add PCIe device nodes
+Date:   Wed, 5 Aug 2020 13:09:14 +0200
+Message-ID: <CAMuHMdVTBWuDVueW4OJff5kC+=PF+Q5OnKAo5-M4+7g9WB-adA@mail.gmail.com>
+Subject: Re: [PATCH 04/20] arm64: dts: renesas: r8a774e1: Add SATA controller node
 To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Cc:     Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
         Vinod Koul <vkoul@kernel.org>,
@@ -70,9 +70,9 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Jul 16, 2020 at 7:18 PM Lad Prabhakar
+On Thu, Jul 16, 2020 at 7:19 PM Lad Prabhakar
 <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> Add PCIe{0,1} device nodes for R8A774E1 SoC.
+> Add the SATA controller node to the RZ/G2H SoC specific dtsi.
 >
 > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 > Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>

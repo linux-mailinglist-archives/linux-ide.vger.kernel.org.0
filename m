@@ -2,139 +2,74 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 437C2242B08
-	for <lists+linux-ide@lfdr.de>; Wed, 12 Aug 2020 16:13:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14AFD2441B2
+	for <lists+linux-ide@lfdr.de>; Fri, 14 Aug 2020 01:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726637AbgHLONM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 12 Aug 2020 10:13:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44012 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726639AbgHLONK (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 12 Aug 2020 10:13:10 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55916C061386
-        for <linux-ide@vger.kernel.org>; Wed, 12 Aug 2020 07:13:10 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id f1so2205122wro.2
-        for <linux-ide@vger.kernel.org>; Wed, 12 Aug 2020 07:13:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BAYgOfe5stUcl69x3S7eimrTDZBSiHB9OvfmPx9Zdrw=;
-        b=iMx16CFMmDH2fRRYk1rZbM/ORr/ooYW/ce6+lp1QXcOJO7DkGjJvgbPjnQ9dpqFOcR
-         BQd9bFmrHx259fF4+pnLrDLKzHU8BN60APCkxTzh2CWJUqLCcqsalXd8riNjZXhure06
-         HoP1PAiNEs/gdPQ2RJCkMX+syFcxq6J2jDdvuRzhAZUZpeK3levdB9KTIGXns2WLSY+7
-         jeUM2TP2BBlHH7cwC28jej7YkL0SnN61RWDV1CGs+WI+4pNEn0OBcrpVWB4jvF7RazvK
-         FD7XjCicKe1WmhUCAo36zCBymfbB9PK95AKScfv0XaONkZOZKhdAptUin0T8jRh7jV7D
-         fmxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BAYgOfe5stUcl69x3S7eimrTDZBSiHB9OvfmPx9Zdrw=;
-        b=Jr8/yTvnDTfnd/dcXGClWv5iOxQLcSPHJNIKtYLPJJrMoKx2r3kNrU0RxnmcrMxXwA
-         ITRrN9+aUVTsYLC+uXf+bR+098+vWDcac0AcNnMG8u5M1rCf+nQfk9DYn2AjvHJsfIlh
-         P5uZjNjZe/4OqRm6tvswpa6mceH9aXfvFrNNbCeZGnCKSdgQRS90v3fLDPzrv6MFxBVt
-         JKbsfnvYYDIIq8vjr7sszXIaXxu0VI1BN78DCrk0E+svzPIY+9x4O9DIY0tI3cwTZpZA
-         +nihrJVbKIE7XjcSlKbPa5H9o3Ll+nHplituB2uIQKFljsEMF8PHzIVQ8QgHu6aYVS7C
-         c2Og==
-X-Gm-Message-State: AOAM532w2SQ/mtGMNN77TARhQrDoC/j+goTFFbTv/m53ILLN7i/5n7B3
-        tbh45P1OWDHfm+abvz04oLqsyDFkZa2gdiq5GjrJ7Q==
-X-Google-Smtp-Source: ABdhPJzHu2ZRSBGxhkIBggfOak2BaqrqSKgARW9ic/KPrejEq5Og+5of1oDTl5faeGNIqwjzmhEgxDeTRZCKa32paBc=
-X-Received: by 2002:adf:f248:: with SMTP id b8mr36015334wrp.247.1597241588772;
- Wed, 12 Aug 2020 07:13:08 -0700 (PDT)
+        id S1726499AbgHMXYj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Thu, 13 Aug 2020 19:24:39 -0400
+Received: from [186.47.21.114] ([186.47.21.114]:34166 "EHLO mail.hmvi.gob.ec"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726205AbgHMXYj (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 13 Aug 2020 19:24:39 -0400
+X-Greylist: delayed 16365 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Aug 2020 19:24:39 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hmvi.gob.ec (Postfix) with ESMTP id 1CD44C02BC0EF;
+        Thu, 13 Aug 2020 12:25:01 -0500 (-05)
+Received: from mail.hmvi.gob.ec ([127.0.0.1])
+        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id lAp6vO-hT1PW; Thu, 13 Aug 2020 12:25:00 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hmvi.gob.ec (Postfix) with ESMTP id 67473C03548D0;
+        Thu, 13 Aug 2020 12:08:17 -0500 (-05)
+X-Virus-Scanned: amavisd-new at hmvi.gob.ec
+Received: from mail.hmvi.gob.ec ([127.0.0.1])
+        by localhost (mail.hmvi.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id pNd8Vebi-Lto; Thu, 13 Aug 2020 12:08:17 -0500 (-05)
+Received: from [10.73.80.190] (unknown [105.8.3.183])
+        by mail.hmvi.gob.ec (Postfix) with ESMTPSA id E6D84C0344189;
+        Thu, 13 Aug 2020 11:57:25 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20200811081712.4981-1-geert+renesas@glider.be>
-In-Reply-To: <20200811081712.4981-1-geert+renesas@glider.be>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 12 Aug 2020 16:12:32 +0200
-Message-ID: <CAPDyKFpsWpvsQjG6Oh=FudUbWFUvJv_3PtzauGOckKLtOx8BRg@mail.gmail.com>
-Subject: Re: [PATCH v2] ata: sata_rcar: Fix DMA boundary mask
-To:     Geert Uytterhoeven <geert+renesas@glider.be>
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        linux-ide@vger.kernel.org,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients <danny.puetate@mail.hmvi.gob.ec>
+From:   ''Tayeb Souami'' <danny.puetate@mail.hmvi.gob.ec>
+Date:   Thu, 13 Aug 2020 18:57:05 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20200813165725.E6D84C0344189@mail.hmvi.gob.ec>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Tue, 11 Aug 2020 at 10:17, Geert Uytterhoeven
-<geert+renesas@glider.be> wrote:
->
-> Before commit 9495b7e92f716ab2 ("driver core: platform: Initialize
-> dma_parms for platform devices"), the R-Car SATA device didn't have DMA
-> parameters.  Hence the DMA boundary mask supplied by its driver was
-> silently ignored, as __scsi_init_queue() doesn't check the return value
-> of dma_set_seg_boundary(), and the default value of 0xffffffff was used.
->
-> Now the device has gained DMA parameters, the driver-supplied value is
-> used, and the following warning is printed on Salvator-XS:
->
->     DMA-API: sata_rcar ee300000.sata: mapping sg segment across boundary [start=0x00000000ffffe000] [end=0x00000000ffffefff] [boundary=0x000000001ffffffe]
->     WARNING: CPU: 5 PID: 38 at kernel/dma/debug.c:1233 debug_dma_map_sg+0x298/0x300
->
-> (the range of start/end values depend on whether IOMMU support is
->  enabled or not)
->
-> The issue here is that SATA_RCAR_DMA_BOUNDARY doesn't have bit 0 set, so
-> any typical end value, which is odd, will trigger the check.
->
-> Fix this by increasing the DMA boundary value by 1.
->
-> Fixes: 8bfbeed58665dbbf ("sata_rcar: correct 'sata_rcar_sht'")
-> Fixes: 9495b7e92f716ab2 ("driver core: platform: Initialize dma_parms for platform devices")
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Reviewed-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-> Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> Cc: stable <stable@vger.kernel.org>
+Lieber Freund,
 
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika,
+der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich
+an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre
+E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines
+Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und
+Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die
+Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden,
+um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite
+unten.
 
-Kind regards
-Uffe
 
-> ---
-> v2:
->   - Add Reviewed-by, Tested-by, Cc.
->
-> This is a fix for a regression in v5.7-rc5 that fell through the cracks.
-> https://lore.kernel.org/linux-ide/20200513110426.22472-1-geert+renesas@glider.be/
->
-> As by default the DMA debug code prints the first error only, this issue
-> may be hidden on plain v5.7-rc5, where the FCP driver triggers a similar
-> warning.  Merging commit dd844fb8e50b12e6 ("media: platform: fcp: Set
-> appropriate DMA parameters", in v5.8-rc1) from the media tree fixes the
-> FCP issue, and exposes the SATA issue.
->
-> I added the second fixes tag because that commit is already being
-> backported to stable kernels, and this patch thus needs backporting,
-> too.
-> ---
->  drivers/ata/sata_rcar.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/ata/sata_rcar.c b/drivers/ata/sata_rcar.c
-> index 141ac600b64c87ef..44b0ed8f6bb8a120 100644
-> --- a/drivers/ata/sata_rcar.c
-> +++ b/drivers/ata/sata_rcar.c
-> @@ -120,7 +120,7 @@
->  /* Descriptor table word 0 bit (when DTA32M = 1) */
->  #define SATA_RCAR_DTEND                        BIT(0)
->
-> -#define SATA_RCAR_DMA_BOUNDARY         0x1FFFFFFEUL
-> +#define SATA_RCAR_DMA_BOUNDARY         0x1FFFFFFFUL
->
->  /* Gen2 Physical Layer Control Registers */
->  #define RCAR_GEN2_PHY_CTL1_REG         0x1704
-> --
-> 2.17.1
->
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+
+
+Das ist dein Spendencode: [TS530342018]
+
+
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+
+Grüße
+
+Herr Tayeb Souami

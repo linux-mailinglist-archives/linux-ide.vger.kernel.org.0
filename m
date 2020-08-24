@@ -2,68 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B74C25062C
-	for <lists+linux-ide@lfdr.de>; Mon, 24 Aug 2020 19:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A946250A26
+	for <lists+linux-ide@lfdr.de>; Mon, 24 Aug 2020 22:40:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728421AbgHXR3B convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Mon, 24 Aug 2020 13:29:01 -0400
-Received: from ns2.chapar.net ([81.31.224.5]:4773 "EHLO mail.chapar.net"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728219AbgHXR2d (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 24 Aug 2020 13:28:33 -0400
-X-Greylist: delayed 20126 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Aug 2020 13:28:30 EDT
-Received: from chapar.net by mail.chapar.net (MDaemon PRO v12.5.6)
-        with ESMTP id md50001230172.msg
-        for <linux-ide@vger.kernel.org>; Tue, 23 Jun 2020 12:27:14 +0430
-X-Spam-Processed: mail.chapar.net, Tue, 23 Jun 2020 12:27:14 +0430
-        (not processed: message from trusted or authenticated source)
-X-Authenticated-Sender: iphone@chapar.net
-X-MDRemoteIP: 197.234.219.46
-X-Return-Path: iphone@chapar.net
-X-Envelope-From: iphone@chapar.net
-X-MDaemon-Deliver-To: linux-ide@vger.kernel.org
-Reply-To: conseiljuriquemealabijoel1@gmail.com
-From:   Mr JOEL ALABI <iphone@chapar.net>
-To:     linux-ide@vger.kernel.org
-Subject: Mes Salutations
-Date:   23 Jun 2020 03:25:24 +0200
-Message-ID: <20200623032523.2D442526EBF1213C@chapar.net>
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+        id S1725904AbgHXUkM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 24 Aug 2020 16:40:12 -0400
+Received: from rnd-relay.smtp.broadcom.com ([192.19.229.170]:47754 "EHLO
+        rnd-relay.smtp.broadcom.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726856AbgHXUkM (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 24 Aug 2020 16:40:12 -0400
+Received: from mail-irv-17.broadcom.com (mail-irv-17.lvn.broadcom.net [10.75.242.48])
+        by rnd-relay.smtp.broadcom.com (Postfix) with ESMTP id 3475C30C59A;
+        Mon, 24 Aug 2020 13:37:18 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.10.3 rnd-relay.smtp.broadcom.com 3475C30C59A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
+        s=dkimrelay; t=1598301438;
+        bh=VUcYyNhxVc56Z1xLuntQ21z2Ol04rpFCa0F1A3b4tjA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=kN9FCpEJYHAPr9gXB2XjBiqWrzhRYXBlIhExa8sIzGmCKsFCu/3IH+THutR7wWErf
+         M5T8U7waXJz0g+UGZy8YFIMEdmhWnOIaqAu8VhbhaUxAtC24Bm+r1ssVcB8yGZSLRv
+         7TZHrO8RmYQbhbjR4IjqcR2MwBWaUdGegkmeqRxE=
+Received: from stbsrv-and-01.and.broadcom.net (stbsrv-and-01.and.broadcom.net [10.28.16.211])
+        by mail-irv-17.broadcom.com (Postfix) with ESMTP id 2FC301400A6;
+        Mon, 24 Aug 2020 13:40:07 -0700 (PDT)
+From:   Jim Quinlan <james.quinlan@broadcom.com>
+To:     bcm-kernel-feedback-list@broadcom.com, james.quinlan@broadcom.com
+Cc:     Jim Quinlan <james.quinlan@broadcom.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v1] ata: ahci_brcm: Fix use of BCM7216 reset controller
+Date:   Mon, 24 Aug 2020 16:40:02 -0400
+Message-Id: <20200824204002.45500-1-james.quinlan@broadcom.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-A votre attention 
+From: Jim Quinlan <jquinlan@broadcom.com>
 
-OFFRE
-Je vous prie de m'excuser si vous êtes surpris de mon message. Je 
-me
-présente donc, je suis Mr Malik  AL- KHABIR ancien ingénieur 
-pétrolier
-sous le régime de l’ex et défunt président Mouammar KADHAFI.
-En effet, dans le cadre de mon soutien humanitaire individuel en 
-ces
-temps difficiles de lutte contre la maladie du virus Corona
-(COVID-19), au vu de la crise économique mondiale, votre adresse
-e-mail a été sélectionnée pour un don de 500 000 € pour une œuvre
-caritative et soutien médical communautaire dans votre  région. 
-En
-acceptant notre donation nous aidons ainsi toute une communauté à
-travers vous.
-Alors si vous acceptez cette donation je vous prie de prendre 
-contact
-avec mon avocat à son adresse personnelle  afin de rentrer en
-possession de ces fonds qui sont domiciliés dans une banque 
-située en
-Afrique ceci en toute légalité selon les lois en vigueur.
-Contact de l’avocat :
-NOM : Me JOEL ALABI
-E-mail : conseiljuriquemealabijoel1@gmail.com
-Cordialement…
-Mr Malik  AL- KHABIR
+A reset controller "rescal" is shared between the AHCI driver and the PCIe
+driver for the BrcmSTB 7216 chip.  Use
+devm_reset_control_get_optional_shared() to handle this sharing.
 
+Fixes: 272ecd60a636 ("ata: ahci_brcm: BCM7216 reset is self de-asserting")
+Fixes: c345ec6a50e9 ("ata: ahci_brcm: Support BCM7216 reset controller name")
+Signed-off-by: Jim Quinlan <jquinlan@broadcom.com>
+---
+ drivers/ata/ahci_brcm.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/ata/ahci_brcm.c b/drivers/ata/ahci_brcm.c
+index 6853dbb4131d..d6115bc04b09 100644
+--- a/drivers/ata/ahci_brcm.c
++++ b/drivers/ata/ahci_brcm.c
+@@ -428,7 +428,6 @@ static int brcm_ahci_probe(struct platform_device *pdev)
+ {
+ 	const struct of_device_id *of_id;
+ 	struct device *dev = &pdev->dev;
+-	const char *reset_name = NULL;
+ 	struct brcm_ahci_priv *priv;
+ 	struct ahci_host_priv *hpriv;
+ 	struct resource *res;
+@@ -452,11 +451,10 @@ static int brcm_ahci_probe(struct platform_device *pdev)
+ 
+ 	/* Reset is optional depending on platform and named differently */
+ 	if (priv->version == BRCM_SATA_BCM7216)
+-		reset_name = "rescal";
++		priv->rcdev = devm_reset_control_get_optional_shared(&pdev->dev, "rescal");
+ 	else
+-		reset_name = "ahci";
++		priv->rcdev = devm_reset_control_get_optional(&pdev->dev, "ahci");
+ 
+-	priv->rcdev = devm_reset_control_get_optional(&pdev->dev, reset_name);
+ 	if (IS_ERR(priv->rcdev))
+ 		return PTR_ERR(priv->rcdev);
+ 
+@@ -479,10 +477,7 @@ static int brcm_ahci_probe(struct platform_device *pdev)
+ 		break;
+ 	}
+ 
+-	if (priv->version == BRCM_SATA_BCM7216)
+-		ret = reset_control_reset(priv->rcdev);
+-	else
+-		ret = reset_control_deassert(priv->rcdev);
++	ret = reset_control_deassert(priv->rcdev);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.17.1
 

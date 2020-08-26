@@ -2,87 +2,92 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B4F6251F59
-	for <lists+linux-ide@lfdr.de>; Tue, 25 Aug 2020 20:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A8C2526C8
+	for <lists+linux-ide@lfdr.de>; Wed, 26 Aug 2020 08:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726066AbgHYSwZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Tue, 25 Aug 2020 14:52:25 -0400
-Received: from ns2.chapar.net ([81.31.224.5]:4759 "EHLO mail.chapar.net"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726843AbgHYSwU (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 25 Aug 2020 14:52:20 -0400
-Received: from chapar.net by mail.chapar.net (MDaemon PRO v12.5.6)
-        with ESMTP id md50001200345.msg
-        for <linux-ide@vger.kernel.org>; Sat, 20 Jun 2020 10:47:43 +0430
-X-Spam-Processed: mail.chapar.net, Sat, 20 Jun 2020 10:47:43 +0430
-        (not processed: message from trusted or authenticated source)
-X-Authenticated-Sender: iphone@chapar.net
-X-MDRemoteIP: 197.234.219.55
-X-Return-Path: iphone@chapar.net
-X-Envelope-From: iphone@chapar.net
-X-MDaemon-Deliver-To: linux-ide@vger.kernel.org
-Reply-To: agboarmand276@gmail.com
-From:   Mr ARMAND AGBO <iphone@chapar.net>
-To:     linux-ide@vger.kernel.org
-Subject: Mes Salutations
-Date:   19 Jun 2020 23:19:41 +0800
-Message-ID: <20200619231941.AD62221DB2F70C21@chapar.net>
+        id S1725980AbgHZG1J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 26 Aug 2020 02:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40308 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725786AbgHZG1I (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 26 Aug 2020 02:27:08 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 952F7C061574;
+        Tue, 25 Aug 2020 23:27:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=URbi35ITEx0sBDS+gz9q1KAsHiBx7ovqc5LTFJh6RT8=; b=hSj9PxAsHOberVXnSB9JrbiJiK
+        2wEnkioGnx85t845UIZ6nI7mkTVHeeExksJqF2on4FF6MEA5+Mo8HEudzcBvcUsa9+D1tXbB2J3D1
+        eTjmKmTdyQWOMwDQRz2Bq8D0w4ex/5/0y92kibxbFitDJjE98AgAPFa3pgAp7JnFHVo8q4jlKxz07
+        vuy/zMNeCSSs3IIiv6XCh9AAJdl8tq8GSJHJlinI75r+zTqnjfgLO2Zijcq5KzZH1BuBeMMI4cQ8o
+        aVfQohvx5peKoXmsMZZn92p2ce+CaQBY8RK3Z9cIrwixA/jLgopPo0pQWM8cXrXlAQmMYp50foJmE
+        2BECFo4g==;
+Received: from 213-225-6-196.nat.highway.a1.net ([213.225.6.196] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kAotd-0000ou-PZ; Wed, 26 Aug 2020 06:26:58 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Song Liu <song@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-raid@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-m68k@lists.linux-m68k.org
+Subject: simplify gendisk lookup and remove struct block_device aliases
+Date:   Wed, 26 Aug 2020 08:24:27 +0200
+Message-Id: <20200826062446.31860-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-A votre Attention
+Hi all,
 
-Veuillez m'excuser pour ce dérangement très surprenant car c'est 
-suite
-à une recherche  de partenariat que je suis tombé suis votre 
-adresse.
-Je suis Mr Armand AGBO gestionnaire de compte auprès d’une 
-institution
-bancaire en Afrique de l'ouest. Je prends contact avec vous afin 
-de
-lier une relation de partenariat entre vous et moi.
+this series removes the annoying struct block_device aliases, which can
+happen for a bunch of old floppy drivers (and z2ram).  In that case
+multiple struct block device instances for different dev_t's can point
+to the same gendisk, without being partitions.  The cause for that
+is the probe/get callback registered through blk_register_regions.
 
-En effet, il s'agit d’un compte dont je suis le gestionnaire et 
-le
-compte appartenait à un investisseur libyen EL HADJ MALIK IDRISS
-malheureusement décédé suite à une courte maladie. Comme ce 
-dernier
-n'a personne ici et pour que la Banque ne bénéficie pas de ses 
-fonds,
-alors étant le gestionnaire de ce compte, je cherche une personne 
-de
-confiance que je ferais passer pour le mandataire de ce compte 
-afin
-que la  Banque lui verse cet argent.  En retour  nous allons le
-partager à part égale.
+This series removes blk_register_region entirely, splitting it it into
+a simple xarray lookup of registered gendisks, and a probe callback
+stored in the major_names array that can be used for modprobe overrides
+or creating devices on demands when no gendisk is found.  The old
+remapping is gone entirely, and instead the 4 remaining drivers just
+register a gendisk for each operating mode.  In case of the two drivers
+that have lots of aliases that is done on-demand using the new probe
+callback, while for the other two I simply register all at probe time
+to keep things simple.
 
-Sachez que cette transaction ne représente aucun risque seulement 
-une
-confiance mutuelle et la discrétion. Alors si vous êtes d'accord  
-pour
- une sérieuse collaboration, veuillez me fournir les informations
-suivantes par e-mail agboarmand276@gmail.com :
-NOM :
-PRENOM :
-AGE : 
-PROFESSION :
-PAYS :
-ADRESSE COMPLETES:
-NUMERO DE TELEPHONE MOBILE :
+Note that the m68k drivers are compile tested only.
 
-Suite à cela je vous enverrai les détails et la procédure à 
-suivre.
-Dans l'attente de vos nouvelles, recevez  mes sincères et 
-profondes
-salutations.
-
-Cordialement…
-Mr Armand AGBO
-
-
+Diffstat:
+ b/block/genhd.c           |  183 +++++++--------
+ b/drivers/base/Makefile   |    2 
+ b/drivers/block/amiflop.c |   98 ++++----
+ b/drivers/block/ataflop.c |  135 +++++++----
+ b/drivers/block/brd.c     |   39 ---
+ b/drivers/block/floppy.c  |  154 ++++++++----
+ b/drivers/block/loop.c    |   30 --
+ b/drivers/block/swim.c    |   17 -
+ b/drivers/block/z2ram.c   |  551 ++++++++++++++++++++++------------------------
+ b/drivers/ide/ide-probe.c |   66 -----
+ b/drivers/ide/ide-tape.c  |    2 
+ b/drivers/md/md.c         |   21 -
+ b/drivers/scsi/sd.c       |   19 -
+ b/fs/char_dev.c           |   94 +++----
+ b/fs/dcache.c             |    1 
+ b/fs/internal.h           |    5 
+ b/include/linux/genhd.h   |   12 -
+ b/include/linux/ide.h     |    3 
+ drivers/base/map.c        |  154 ------------
+ include/linux/kobj_map.h  |   20 -
+ 20 files changed, 686 insertions(+), 920 deletions(-)

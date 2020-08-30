@@ -2,49 +2,96 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E0BDB2567D6
-	for <lists+linux-ide@lfdr.de>; Sat, 29 Aug 2020 15:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23BB9256C00
+	for <lists+linux-ide@lfdr.de>; Sun, 30 Aug 2020 08:25:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728157AbgH2NNh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 29 Aug 2020 09:13:37 -0400
-Received: from gvtcout.syn-alias.com ([208.47.184.56]:55967 "EHLO
-        smtp.gvtc.emerald.synacor.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728244AbgH2NM6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Aug 2020 09:12:58 -0400
-X-Greylist: delayed 1277 seconds by postgrey-1.27 at vger.kernel.org; Sat, 29 Aug 2020 09:12:57 EDT
-X_CMAE_Category: , ,
-X-CNFS-Analysis: v=2.3 cv=atbM9hRV c=1 sm=1 tr=0 a=sOJG561dOovE9JBqKNxcJA==:117 a=9cW_t1CCXrUA:10 a=KGjhK52YXX0A:10 a=FKkrIqjQGGEA:10 a=trSyE3EC3vIA:10 a=IkcTkHD0fZMA:10 a=y4yBn9ojGxQA:10 a=8z8WUE8S3pcA:10 a=GKyMDYfx_qgA:10 a=0l4FTOkWn5Pc5lJRnf0A:9 a=QEXdDO2ut3YA:10 a=xo5jKAKm-U-Zyk2_beg_:22
-X-CM-Score: 0
-X-Scanned-by: Cloudmark Authority Engine
-X-Authed-Username: ZGVubmlzYUBndnRjLmNvbQ==
-X_CMAE_Category: , ,
-X-CNFS-Analysis: 
-X-CM-Score: 
-X-Scanned-by: Cloudmark Authority Engine
-Authentication-Results: smtp01.emerald.cmh.synacor.com header.from=dennisa@gvtc.com; sender-id=neutral
-Authentication-Results: smtp01.emerald.cmh.synacor.com smtp.mail=dennisa@gvtc.com; spf=neutral; sender-id=neutral
-Received: from [10.33.73.65] ([10.33.73.65:41976] helo=md05.emerald.cmh.synacor.com)
-        by smtp.etc.emerald.synacor.com (envelope-from <dennisa@gvtc.com>)
-        (ecelerity 3.6.25.56547 r(Core:3.6.25.0)) with ESMTP
-        id 9E/D2-21741-85F4A4F5; Sat, 29 Aug 2020 08:51:36 -0400
-Date:   Sat, 29 Aug 2020 08:51:35 -0400 (EDT)
-From:   Steve Harrison <dennisa@gvtc.com>
-Reply-To: drsteveharrison@mghealthgov.org
-Message-ID: <2063690156.92457741.1598705495873.JavaMail.zimbra@gvtc.com>
-Subject: Hello
+        id S1726547AbgH3GZM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 30 Aug 2020 02:25:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58494 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726264AbgH3GZA (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 30 Aug 2020 02:25:00 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73CAAC06123C;
+        Sat, 29 Aug 2020 23:25:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=M8NGywF+zE3/DWly96sK3ZsPyCZ2PLaa+20n24HbM5w=; b=pQ6BXHuhUiXptBbNhhajHLmx2j
+        rHMW1iV1DIOaQecBNTKGUFrEu0njZSCCsOOLXdQe2IRyq1eXKAXkzd8LkXVouP2Nlf8wDiW8G5c7r
+        NoOEVX+xXo25toy4lSfOxoPPe+dwyNzMf4QhYdJH+q+VK8r4hvFnu734Kr//3fGLwKySvgqkPVN8V
+        JcrBq/EAVSVhwDB4XT9Zao7yBIAIQMOKS0reHVbB6Cn2ldrASCi02oAxcpyAmqg5XKSNdaTtVWvVg
+        GKh4XLzxpj8zf7VEo7AP1Z7T1SDnAncTot6eFVrNZAbdHj9MZnOhTo3dzSpLbadcQ5dnok2Oo6TF1
+        6hs6GCDg==;
+Received: from [2001:4bb8:18c:45ba:9892:9e86:5202:32f0] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kCGlh-0002MA-Rm; Sun, 30 Aug 2020 06:24:46 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Song Liu <song@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-raid@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-m68k@lists.linux-m68k.org
+Subject: simplify gendisk lookup and remove struct block_device aliases v2
+Date:   Sun, 30 Aug 2020 08:24:26 +0200
+Message-Id: <20200830062445.1199128-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [199.229.250.134]
-X-Mailer: Zimbra 8.0.7_GA_6021 (zclient/8.0.7_GA_6021)
-Thread-Topic: Hello
-Thread-Index: 4yw9PF6cUSbyBQl17c5a/LDqqnaLlA==
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-I am in search of a particular ventilator and  I want to buy a large quantity, reply email if interested .   
+Hi all,
 
-Thank You
+this series removes the annoying struct block_device aliases, which can
+happen for a bunch of old floppy drivers (and z2ram).  In that case
+multiple struct block device instances for different dev_t's can point
+to the same gendisk, without being partitions.  The cause for that
+is the probe/get callback registered through blk_register_regions.
+
+This series removes blk_register_region entirely, splitting it it into
+a simple xarray lookup of registered gendisks, and a probe callback
+stored in the major_names array that can be used for modprobe overrides
+or creating devices on demands when no gendisk is found.  The old
+remapping is gone entirely, and instead the 4 remaining drivers just
+register a gendisk for each operating mode.  In case of the two drivers
+that have lots of aliases that is done on-demand using the new probe
+callback, while for the other two I simply register all at probe time
+to keep things simple.
+
+Note that the m68k drivers are compile tested only.
+
+Changes since v1:
+ - add back a missing kobject_put in the cdev code
+ - improve the xarray delete loops
+
+Diffstat:
+ b/block/genhd.c           |  183 +++++++--------
+ b/drivers/base/Makefile   |    2 
+ b/drivers/block/amiflop.c |   98 ++++----
+ b/drivers/block/ataflop.c |  135 +++++++----
+ b/drivers/block/brd.c     |   39 ---
+ b/drivers/block/floppy.c  |  154 ++++++++----
+ b/drivers/block/loop.c    |   30 --
+ b/drivers/block/swim.c    |   17 -
+ b/drivers/block/z2ram.c   |  547 ++++++++++++++++++++++------------------------
+ b/drivers/ide/ide-probe.c |   66 -----
+ b/drivers/ide/ide-tape.c  |    2 
+ b/drivers/md/md.c         |   21 -
+ b/drivers/scsi/sd.c       |   19 -
+ b/fs/char_dev.c           |   94 +++----
+ b/fs/dcache.c             |    1 
+ b/fs/internal.h           |    5 
+ b/include/linux/genhd.h   |   12 -
+ b/include/linux/ide.h     |    3 
+ drivers/base/map.c        |  154 ------------
+ include/linux/kobj_map.h  |   20 -
+ 20 files changed, 686 insertions(+), 916 deletions(-)

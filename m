@@ -2,59 +2,94 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 698C5256CA3
-	for <lists+linux-ide@lfdr.de>; Sun, 30 Aug 2020 09:36:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF0D7257A5B
+	for <lists+linux-ide@lfdr.de>; Mon, 31 Aug 2020 15:27:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726507AbgH3HfG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 30 Aug 2020 03:35:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36864 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726013AbgH3HfG (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 30 Aug 2020 03:35:06 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 243402076D;
-        Sun, 30 Aug 2020 07:35:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598772905;
-        bh=Z/FmyEd9eHtomr5XbHkYpPD1417KzQFnCXSZgfQ4Z2w=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TZNUvmUykyNDYQkeTDMM7k7xX6Q8qTwfuHNXRhJpwT3hFd72yxhzKbv2be1iUohkx
-         zmtHbAcdIPmKrtNX8gpSqwzEgaZYAmV4Mw223NUF7w00kD4RQyAhtTKZ05n5zJYAkv
-         BJeK9Rsq3ErIWcoaajLCvbBxSo2ktQSHCxveqQE4=
-Date:   Sun, 30 Aug 2020 09:35:03 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Jens Axboe <axboe@kernel.dk>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Denis Efremov <efremov@linux.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Song Liu <song@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org, linux-raid@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-m68k@lists.linux-m68k.org
-Subject: Re: [PATCH 19/19] block: switch gendisk lookup to a simple xarray
-Message-ID: <20200830073503.GB112265@kroah.com>
-References: <20200830062445.1199128-1-hch@lst.de>
- <20200830062445.1199128-20-hch@lst.de>
+        id S1727861AbgHaN1J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 31 Aug 2020 09:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726948AbgHaN0j (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 31 Aug 2020 09:26:39 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E459C0611E1
+        for <linux-ide@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id i10so6711304ljn.2
+        for <linux-ide@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
+         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
+         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
+         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
+         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
+         wJdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=BZaEmXTwdz8i+8QpLY3efgWoo19KlBeZTizY5CspthULgvawKe5Bi4ZI/3WX5eSPZ3
+         RRyxfSTLTXXE2WIwI5A7YsbZnJ81tGRS51CexVz4kRlzfolrwZ7zk6ZaLjKiM0z5LfnT
+         VmJZURcgvruEBcFst0qS0VU/8Zz1KTuASvilLwiwe6f27gPpr0K6V+NzNl6SzQ5MlXlM
+         fp8Nu0dayN8r10ewYISo6NvtDpT/pNDKkh8NkceQl87D0gDfVx3H+5thvNxgcuZ6iyaa
+         /E/rn3y3K2zdQMS5Z3PKegccM3frZdXWvleI4WuwPB0yHCR37e82wRiSs5dsbUOwjYS5
+         CRIw==
+X-Gm-Message-State: AOAM532opxIU0P8O1D5B82ukJxwo16lCWpPkFsgUMuaYtPwmKgNjV7oo
+        jc5LrhOkwxJf+fx9eXq7y+if20ADWsf3EcJ+dEI=
+X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
+X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
+ Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200830062445.1199128-20-hch@lst.de>
+Reply-To: marie_avis12@yahoo.com
+Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
+ -0700 (PDT)
+From:   Miss Maris Avis <marie.avis11@gmail.com>
+Date:   Mon, 31 Aug 2020 13:26:18 +0000
+X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
+Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Sun, Aug 30, 2020 at 08:24:45AM +0200, Christoph Hellwig wrote:
-> Now that bdev_map is only used for finding gendisks, we can use
-> a simple xarray instead of the regions tracking structure for it.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  block/genhd.c         | 208 ++++++++----------------------------------
->  include/linux/genhd.h |   7 --
->  2 files changed, 37 insertions(+), 178 deletions(-)
+My Dear,
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
+Father was dealing in Cocoa and Timber in this country before his
+death,  It is my pleasure to contact you for a business venture which
+I intend to establish in your country. Though I have not met with you
+before but I believe one has to risk confiding before you can succeed
+sometimes in life.
+
+I can confide in you for my brighter future since you are a human
+being like me. There is this huge amount of Ten Million five hundred
+thousand United States dollars. ($10.500.000.00) which my late Father
+kept for me in a suspense account with one of the bank here in Abidjan
+Cote d'Ivoire before he was assassinated by unknown persons, Now I
+have decided to invest these money in your country or anywhere safe
+enough for me.
+
+I want you to help me claim this fund from the bank and have it
+transfer into your personal account in your country for investment
+purposes in your country in these areas:
+
+1). Telecommunication
+2). The transport Industry
+3). Five Star Hotel
+4). Tourism
+5). Real Estate
+
+If you can be of assistance to me I will be pleased to offer you 20%
+of the total fund.
+
+I await your soonest response.
+
+Respectfully yours,
+Miss Marie Evis
+Tel: +225597438528

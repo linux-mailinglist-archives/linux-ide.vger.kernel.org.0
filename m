@@ -2,94 +2,69 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0D7257A5B
-	for <lists+linux-ide@lfdr.de>; Mon, 31 Aug 2020 15:27:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E487258D2D
+	for <lists+linux-ide@lfdr.de>; Tue,  1 Sep 2020 13:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727861AbgHaN1J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 31 Aug 2020 09:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35950 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726948AbgHaN0j (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 31 Aug 2020 09:26:39 -0400
-Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E459C0611E1
-        for <linux-ide@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
-Received: by mail-lj1-x241.google.com with SMTP id i10so6711304ljn.2
-        for <linux-ide@vger.kernel.org>; Mon, 31 Aug 2020 06:26:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=HyW5/n2KU8W3FGefd/FUm/bl6fINTQmZ8owzYdBGhP5oyAu9pJQPQCMOdYEDNFegUA
-         if9VN+pra3iBgWNYJjHcBV7T99CY2GFOcHOVU+3vJ7r2Hvzgah2ZCqHTq6bk4iv0uilM
-         xQiEPrdMcYz9cIZL++pevJSb5RdixTZAk95pbnwmQ3/GOLv8xUS1vQ8t141F6N8CgROI
-         mubb31iIEGHTmIRsfQchZCL6N1v85LnpPi/V/jmyUdodp49jy+hBMBGM/QhsUL+AVu8e
-         3Cg9SzlMyigtpwqPqg6kcnc+pElD0XMp/EB9mY9MxbJL6EWXLnnT1YiTj0+V+0DhoQI2
-         wJdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
-        b=BZaEmXTwdz8i+8QpLY3efgWoo19KlBeZTizY5CspthULgvawKe5Bi4ZI/3WX5eSPZ3
-         RRyxfSTLTXXE2WIwI5A7YsbZnJ81tGRS51CexVz4kRlzfolrwZ7zk6ZaLjKiM0z5LfnT
-         VmJZURcgvruEBcFst0qS0VU/8Zz1KTuASvilLwiwe6f27gPpr0K6V+NzNl6SzQ5MlXlM
-         fp8Nu0dayN8r10ewYISo6NvtDpT/pNDKkh8NkceQl87D0gDfVx3H+5thvNxgcuZ6iyaa
-         /E/rn3y3K2zdQMS5Z3PKegccM3frZdXWvleI4WuwPB0yHCR37e82wRiSs5dsbUOwjYS5
-         CRIw==
-X-Gm-Message-State: AOAM532opxIU0P8O1D5B82ukJxwo16lCWpPkFsgUMuaYtPwmKgNjV7oo
-        jc5LrhOkwxJf+fx9eXq7y+if20ADWsf3EcJ+dEI=
-X-Google-Smtp-Source: ABdhPJxEvvXnVfErpjDwHOkyCqRTciyX/SNwRaUYVOHmxIQS6MbFpht1V2v8jY7chkhk3ZxIDw/BvL8uxGOjXPjCGG8=
-X-Received: by 2002:a2e:9c86:: with SMTP id x6mr662832lji.346.1598880379026;
- Mon, 31 Aug 2020 06:26:19 -0700 (PDT)
+        id S1725989AbgIALGF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 1 Sep 2020 07:06:05 -0400
+Received: from sonic303-20.consmr.mail.ir2.yahoo.com ([77.238.178.201]:39956
+        "EHLO sonic303-20.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726102AbgIALAB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 1 Sep 2020 07:00:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1598957998; bh=XBE4xSzzkPC5/YTLs8GPUUR7cERQCUTpAxei+5SR1s4=; h=Date:From:Reply-To:Subject:References:From:Subject; b=VfJS0K2spxck/ckeESLpk6425+REOlGgYos+N1Coz9/s0ZZQqigGT9uGKCOSNuzD7bAlIXs9YANO4sMQwk4uFg/cf6ROXR1cG/3MtC3f6Sn1/1A97+f93xUtGLRtoiWzfeG/FGjgM1PFkJkC9ZTHdJNz9mClsWT34DD5ecUSmlLBEHnTJp1QIEgI2R1WtTgJzIECe5GAgoeZn1TRNNly6p5fmshf3plHiVIX7qiEYB278LUosoc5VkF1ZM29aWSNL07N5gDzumTzb3TTCPQsDWe0UwaUxv1efU2YLxumIuOExXvIffqCh15A6xQbaxtdXBxvSgtdnUAXv7mJEqQEvg==
+X-YMail-OSG: .HXDPU0VM1kJa9pNNY239Q6yMzQzgUpewXonNLumnap5ZDQQzyyCCiyALa5Cq0W
+ sItndPf5sbMEKUV7zlKjojQm3OCNU7wpivFRYrERe0vo.kE1BsqCsU28ahs3tm89I53uZXZoIfZl
+ zMp.H4XP8eqq_6WiZsSj0B8c10p8A54l6teYY_hs5kgQViPfXhBoC4cZ4Tf81suyoTlhPAS4YZ10
+ Ckmn48Y7f2YzIeU29Dn00Mlngi0uXiBMkeaY7rzhFIJR6oi9v0DPxlx8YO4WSfKODZoYvHrxMJFn
+ .e.86HDpbmlHF7s_1kkxFtFAACtdRZg54HiF0rPar09eQyHJqPdIyeSoIXbFA_XIfPbt9QPPwxVu
+ ZZfQC2NiyMEDYyNRfDJ9JiMIfBErsklH553QzmJFozakUft7zj9bdRE6BGLAcDTS30AbXpfFoaVW
+ joz7dRL8bbr2wJWIFz8ILfH75014X6CPs3h18OYHpA52m9XMTKYLEABegyee7LDusITRFco2.APc
+ QvTgU3ckvEcBUbvBLtqQfSRyrBcl1dON7GB9x3RP8.y8yyoYfnTRqRgKhLcaBrZ_aBahSx2Dc_j9
+ 2AkJZgS1TpdFGbUsIdQhQSjGhpVjD1toaX7LdbEhZgQd6NCqXm1KWRkM6mni2LmfanOG54yIIELA
+ CwwppRLycpHu5NYP74.3vIrOlYSFNXjrwml7V_rAPZrm_ALBNkW1QDIN1X1XR0p9.qvsyiPAhy9h
+ BDApmYt0_Xy.amyaoXL2Xrm8BBSHQaTYaK7Y07b9pvoLCdJ4e0v46h_fwLS30fHPwTbZZZRY4MQX
+ T260VxoNeEfHVCXN0fRZI67DgBFtD0SN74FSVKzjYXBpmk3jQI6SfeGkzyE7aAWCgeqk0ZP.Ftgb
+ DqLmNSJ0KYIysRl6czUXyiiE0GyD7H9tMK1plVU06987MiQu526nkvA2p_p.do5T7XoiIy7cawQp
+ UB6Nqn4F1.i0J0aATpU998UTwQN7iKQXE.z8CC0lRpAyN2CqjvPV1oDRWAZWww83uC4o6t_DhzB3
+ Wmq4TGr5aXzyVWOAby3edgB.ihUk2qK9uXisg2JKS5o.AzwAgX4RC4oy53Gt0wXBWngjHSojJ_3J
+ VzhnbQBdpQ3PRaoXCDpgbpvrrz4om1mKRkOgRtiNS41hCue4h1K.YbT6EGiephbQhhz6J4YLquEm
+ NKfwpbOGSpkjGUDQPIQLyrI6XqniM4TOM7vWROeLPR4yCJkCrTKWIQb61wb6JNN9ZEiX5maTWSyK
+ l.gbHyjcP_Q.reThzMce4Gg6.gKtBvNCq5aPWj9POeuQ0yNNpJpzPEWX31D0yqtddjfhVDPsqmpw
+ ewdssjKBUdleUXvY3Bn_M0iwAhQvW3YCFYiFqqDyW4yKvIZI1D94UHGnksNpRF3Htaeq.EvsnL6a
+ JOkfHeoUwrTzhwk5bIuNCEI2AQJz92cluyvC5ReUzfxkkww--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ir2.yahoo.com with HTTP; Tue, 1 Sep 2020 10:59:58 +0000
+Date:   Tue, 1 Sep 2020 10:59:55 +0000 (UTC)
+From:   Dr Rhama Benson <rhamabenson@gmail.com>
+Reply-To: drrhamabenson16@gmail.com
+Message-ID: <1426456914.1756697.1598957995255@mail.yahoo.com>
+Subject: Can you be trusted and sincerely.
 MIME-Version: 1.0
-Reply-To: marie_avis12@yahoo.com
-Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:18
- -0700 (PDT)
-From:   Miss Maris Avis <marie.avis11@gmail.com>
-Date:   Mon, 31 Aug 2020 13:26:18 +0000
-X-Google-Sender-Auth: ENkN_TdcXF5NiFOWAHQrklZpWrk
-Message-ID: <CADTVshNj9Ztqm75AkbunLeeRTsk07qB5LsiKLoagvmiH7TvYgQ@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1426456914.1756697.1598957995255.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16565 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:47.0) Gecko/20100101 Firefox/47.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-My Dear,
 
-My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
-Father was dealing in Cocoa and Timber in this country before his
-death,  It is my pleasure to contact you for a business venture which
-I intend to establish in your country. Though I have not met with you
-before but I believe one has to risk confiding before you can succeed
-sometimes in life.
 
-I can confide in you for my brighter future since you are a human
-being like me. There is this huge amount of Ten Million five hundred
-thousand United States dollars. ($10.500.000.00) which my late Father
-kept for me in a suspense account with one of the bank here in Abidjan
-Cote d'Ivoire before he was assassinated by unknown persons, Now I
-have decided to invest these money in your country or anywhere safe
-enough for me.
+My Dear Friend.
 
-I want you to help me claim this fund from the bank and have it
-transfer into your personal account in your country for investment
-purposes in your country in these areas:
+How are you and your family Today? I hope all is well, and I am happy to share this transaction with you ,but you must keep everything as secret and very confidential.
 
-1). Telecommunication
-2). The transport Industry
-3). Five Star Hotel
-4). Tourism
-5). Real Estate
+I have a very lucrative business transaction which requires your utmost discretion. Please understand that you and me, are to work as one team to inherit this fund, hence I am your insider in the bank as the transaction commence. I advise you to feel free with me for all is going to be well with us. This business is 100% risk free.
 
-If you can be of assistance to me I will be pleased to offer you 20%
-of the total fund.
+Though, I know it would come to you at uttermost surprise unbelief because it is virtually impossible to know who is trustworthy and who to believed I am Dr. Rhama Benson sum of $10.5 million is lying in our bank without claim i want you to help me to claim and receive it to your account in your country for our benefit.
 
-I await your soonest response.
+I am aware of the unsafe nature of the internet, and was compelled to use this medium due to the nature of this project.I have access to every vital information that can be used to transfer this huge amount of money, which may culminate into the investment of the said funds into your account or any lucrative company in your country.
 
-Respectfully yours,
-Miss Marie Evis
-Tel: +225597438528
+If you will like to assist me as a partner then indicate your interest, after which we shall both discuss the modalities and the sharing percentage. Upon receipt of your reply on your expression of Interest, I will give you full details on how the business will be executed. I am open for negotiation,
+
+Thanks for your anticipated cooperation.Note you might receive this message in your inbox or spam folder, depends on your web host or server network
+
+Compliment of the day,
+Regards,
+Dr. Rhama.

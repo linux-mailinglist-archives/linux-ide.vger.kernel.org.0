@@ -2,69 +2,121 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E487258D2D
-	for <lists+linux-ide@lfdr.de>; Tue,  1 Sep 2020 13:08:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F39CB25A60C
+	for <lists+linux-ide@lfdr.de>; Wed,  2 Sep 2020 09:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725989AbgIALGF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 1 Sep 2020 07:06:05 -0400
-Received: from sonic303-20.consmr.mail.ir2.yahoo.com ([77.238.178.201]:39956
-        "EHLO sonic303-20.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726102AbgIALAB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 1 Sep 2020 07:00:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1598957998; bh=XBE4xSzzkPC5/YTLs8GPUUR7cERQCUTpAxei+5SR1s4=; h=Date:From:Reply-To:Subject:References:From:Subject; b=VfJS0K2spxck/ckeESLpk6425+REOlGgYos+N1Coz9/s0ZZQqigGT9uGKCOSNuzD7bAlIXs9YANO4sMQwk4uFg/cf6ROXR1cG/3MtC3f6Sn1/1A97+f93xUtGLRtoiWzfeG/FGjgM1PFkJkC9ZTHdJNz9mClsWT34DD5ecUSmlLBEHnTJp1QIEgI2R1WtTgJzIECe5GAgoeZn1TRNNly6p5fmshf3plHiVIX7qiEYB278LUosoc5VkF1ZM29aWSNL07N5gDzumTzb3TTCPQsDWe0UwaUxv1efU2YLxumIuOExXvIffqCh15A6xQbaxtdXBxvSgtdnUAXv7mJEqQEvg==
-X-YMail-OSG: .HXDPU0VM1kJa9pNNY239Q6yMzQzgUpewXonNLumnap5ZDQQzyyCCiyALa5Cq0W
- sItndPf5sbMEKUV7zlKjojQm3OCNU7wpivFRYrERe0vo.kE1BsqCsU28ahs3tm89I53uZXZoIfZl
- zMp.H4XP8eqq_6WiZsSj0B8c10p8A54l6teYY_hs5kgQViPfXhBoC4cZ4Tf81suyoTlhPAS4YZ10
- Ckmn48Y7f2YzIeU29Dn00Mlngi0uXiBMkeaY7rzhFIJR6oi9v0DPxlx8YO4WSfKODZoYvHrxMJFn
- .e.86HDpbmlHF7s_1kkxFtFAACtdRZg54HiF0rPar09eQyHJqPdIyeSoIXbFA_XIfPbt9QPPwxVu
- ZZfQC2NiyMEDYyNRfDJ9JiMIfBErsklH553QzmJFozakUft7zj9bdRE6BGLAcDTS30AbXpfFoaVW
- joz7dRL8bbr2wJWIFz8ILfH75014X6CPs3h18OYHpA52m9XMTKYLEABegyee7LDusITRFco2.APc
- QvTgU3ckvEcBUbvBLtqQfSRyrBcl1dON7GB9x3RP8.y8yyoYfnTRqRgKhLcaBrZ_aBahSx2Dc_j9
- 2AkJZgS1TpdFGbUsIdQhQSjGhpVjD1toaX7LdbEhZgQd6NCqXm1KWRkM6mni2LmfanOG54yIIELA
- CwwppRLycpHu5NYP74.3vIrOlYSFNXjrwml7V_rAPZrm_ALBNkW1QDIN1X1XR0p9.qvsyiPAhy9h
- BDApmYt0_Xy.amyaoXL2Xrm8BBSHQaTYaK7Y07b9pvoLCdJ4e0v46h_fwLS30fHPwTbZZZRY4MQX
- T260VxoNeEfHVCXN0fRZI67DgBFtD0SN74FSVKzjYXBpmk3jQI6SfeGkzyE7aAWCgeqk0ZP.Ftgb
- DqLmNSJ0KYIysRl6czUXyiiE0GyD7H9tMK1plVU06987MiQu526nkvA2p_p.do5T7XoiIy7cawQp
- UB6Nqn4F1.i0J0aATpU998UTwQN7iKQXE.z8CC0lRpAyN2CqjvPV1oDRWAZWww83uC4o6t_DhzB3
- Wmq4TGr5aXzyVWOAby3edgB.ihUk2qK9uXisg2JKS5o.AzwAgX4RC4oy53Gt0wXBWngjHSojJ_3J
- VzhnbQBdpQ3PRaoXCDpgbpvrrz4om1mKRkOgRtiNS41hCue4h1K.YbT6EGiephbQhhz6J4YLquEm
- NKfwpbOGSpkjGUDQPIQLyrI6XqniM4TOM7vWROeLPR4yCJkCrTKWIQb61wb6JNN9ZEiX5maTWSyK
- l.gbHyjcP_Q.reThzMce4Gg6.gKtBvNCq5aPWj9POeuQ0yNNpJpzPEWX31D0yqtddjfhVDPsqmpw
- ewdssjKBUdleUXvY3Bn_M0iwAhQvW3YCFYiFqqDyW4yKvIZI1D94UHGnksNpRF3Htaeq.EvsnL6a
- JOkfHeoUwrTzhwk5bIuNCEI2AQJz92cluyvC5ReUzfxkkww--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ir2.yahoo.com with HTTP; Tue, 1 Sep 2020 10:59:58 +0000
-Date:   Tue, 1 Sep 2020 10:59:55 +0000 (UTC)
-From:   Dr Rhama Benson <rhamabenson@gmail.com>
-Reply-To: drrhamabenson16@gmail.com
-Message-ID: <1426456914.1756697.1598957995255@mail.yahoo.com>
-Subject: Can you be trusted and sincerely.
+        id S1726193AbgIBHGK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 2 Sep 2020 03:06:10 -0400
+Received: from mail-mw2nam10on2074.outbound.protection.outlook.com ([40.107.94.74]:59041
+        "EHLO NAM10-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726310AbgIBHGA (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 2 Sep 2020 03:06:00 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bs1hr1MRIIOUaXRUGYTKnMYQ1Elqx5GXS7Ni28Db7qokeFL0vpQKmJfkp2jLWjku1AdmbVPkyivd65HYTrEDVm3AbXX93frLmk3OutSkgr4DqGiEDZbajLoXpKN84Vm4jZQsVJ7MKzyUuYOQzyTXZPMS42s+aySrdr/B+BYcF6LrgZd7Tp1lP1fPrFNDVaju/jJ1GE3eqhOAh+jM15hhFu08VrJjFEdkGPLcZFj6etv1oU3BRSSEL21grlghzirCiUMfJFClce8efvdZkR3AS9BP+fKhLCHebx+beR7gZntwpATfbHRaJ2oljFtJiKKApXU/TkNSUuV8zrLvK5FVfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3+pKfQ6Bw8b1c02d89GwZAgSlUe3x4w8rGFSDPE0R3Q=;
+ b=F/fvTxEP8hivVkNlFgJyy4s/ETE6L98erRQZcSH7eEgz8Vpv6oDuZvl1HJCFjPQw9Ric/pFpOfHQAarzzw+jz6yrxmh7xW9O8vmQbndC0wH5fDw0ASKnNo+1xlPgCyPC7tAzNGHlaZrSS2z0/DWhEupitidzOhEEY5FyByXvSwgmsaeI5jNmO1PzdjjItWE3tP4y0VRnCyhP33Req8b9jMYKOyxWrFEWVU3GKQ6gFNgv6wKUysEkhcosf9KkqYSDNcYbD2PujrvIwws2zJesRwftduog4Ag0HRNwh5BORIWGMB2KbjM5BPppJCqyc2PYYmXxSgK1C1bwyhA1oiwBPg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3+pKfQ6Bw8b1c02d89GwZAgSlUe3x4w8rGFSDPE0R3Q=;
+ b=QD2RkVw0Ba7K8j5UGqrk1zR5YUWL9e+5kQn8uN9yI5oClzsVzAhpSrgclfF5wP98Gvb/rcvpGRomWdzGH+4bbE/35Oskqb3/Gfgd1J0U+D1rxNAuCTm2n0l5h1kGOCfpYYEYwCqmIbskXQ7AoU0Fxi6z4JRyUr2GgI8ObqQqbAY=
+Received: from CY4PR2201CA0008.namprd22.prod.outlook.com
+ (2603:10b6:910:5f::18) by BN6PR02MB3364.namprd02.prod.outlook.com
+ (2603:10b6:405:63::36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.21; Wed, 2 Sep
+ 2020 07:05:58 +0000
+Received: from CY1NAM02FT039.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:910:5f:cafe::9e) by CY4PR2201CA0008.outlook.office365.com
+ (2603:10b6:910:5f::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3326.19 via Frontend
+ Transport; Wed, 2 Sep 2020 07:05:57 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ CY1NAM02FT039.mail.protection.outlook.com (10.152.75.140) with Microsoft SMTP
+ Server id 15.20.3326.19 via Frontend Transport; Wed, 2 Sep 2020 07:05:57
+ +0000
+Received: from [149.199.38.66] (port=38190 helo=smtp.xilinx.com)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1kDMq9-0005aM-Bs; Wed, 02 Sep 2020 00:05:53 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by smtp.xilinx.com with smtp (Exim 4.63)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1kDMqD-0002GP-Ew; Wed, 02 Sep 2020 00:05:57 -0700
+Received: from xsj-pvapsmtp01 (xsj-mail.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 08275tZk004135;
+        Wed, 2 Sep 2020 00:05:55 -0700
+Received: from [10.140.6.6] (helo=xhdappanad40.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1kDMqA-0002Ee-Nd; Wed, 02 Sep 2020 00:05:55 -0700
+From:   Piyush Mehta <piyush.mehta@xilinx.com>
+To:     axboe@kernel.dk, p.zabel@pengutronix.de, robh+dt@kernel.org
+Cc:     linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, git@xilinx.com, sgoud@xilinx.com,
+        michal.simek@xilinx.com, Piyush Mehta <piyush.mehta@xilinx.com>
+Subject: [PATCH 0/2] ata: ahci: ceva: Update the driver to support xilinx GT phy
+Date:   Wed,  2 Sep 2020 12:35:46 +0530
+Message-Id: <1599030348-3334-1-git-send-email-piyush.mehta@xilinx.com>
+X-Mailer: git-send-email 2.7.4
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-PublicTrafficType: Email
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-References: <1426456914.1756697.1598957995255.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.16565 YMailNodin Mozilla/5.0 (Windows NT 6.1; rv:47.0) Gecko/20100101 Firefox/47.0
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: e564ad56-0b80-4fa8-70e0-08d84f0ea457
+X-MS-TrafficTypeDiagnostic: BN6PR02MB3364:
+X-Microsoft-Antispam-PRVS: <BN6PR02MB336475ACC8734CDDBABBF936D42F0@BN6PR02MB3364.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:5516;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: g4SuJnW42jhTOLGOcV/gQ8VSlAY1/HNwwGzbNpuRbvXEMMb8RCU4L+7T1SrLGB6d0fXqZz6+NnqsI3iDERIk1VQ4Oa4M8ayA30sybbHnwaV16AT2yPjDgmwPSkqXHdHMOVeWWvhpI0Xgy2Udx4fbadi4WzYzXpUBIj25HLsvN/xmAwZHli+aUf0msM6AMlJHGk/h7Bl2na8VIl04BDS/FIqX6fd//5jfnqJUcNC5iJHJnhwnExWbZxwOyQTc4JnK8Goo0FgUeyPoexH9XIaTOeZJ1Vt5D48AdvXqQsO0kxe3IBUPOsmrXCVqV8DygKYvREfuLNiTPcxCUj7NfMDXH+wXelUseg0ovauoqunab4D65ogRFLcaoZFVfcdWImq48Hynr6x/h8JH9F+PsOEwFQ==
+X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFS:(136003)(376002)(346002)(39860400002)(396003)(46966005)(336012)(8936002)(186003)(8676002)(70206006)(83380400001)(82310400003)(356005)(82740400003)(478600001)(70586007)(81166007)(4744005)(6666004)(47076004)(5660300002)(9786002)(4326008)(316002)(2906002)(15650500001)(44832011)(107886003)(36756003)(26005)(7696005)(2616005)(426003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Sep 2020 07:05:57.8155
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e564ad56-0b80-4fa8-70e0-08d84f0ea457
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-AuthSource: CY1NAM02FT039.eop-nam02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR02MB3364
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+This patch series updates the ceva driver to add support for Xilinx GT phy.
+This also updates the documentation with the device tree binding required
+for working with Xilinx GT phy.
 
+Piyush Mehta (2):
+  ata: ahci: ceva: Update the driver to support xilinx GT phy
+  dt-bindings: ata: achi: ceva: Update documentation for CEVA Controller
 
-My Dear Friend.
+ .../devicetree/bindings/ata/ahci-ceva.txt          |  8 +++++
+ drivers/ata/ahci_ceva.c                            | 34 ++++++++++++++++++++--
+ 2 files changed, 40 insertions(+), 2 deletions(-)
 
-How are you and your family Today? I hope all is well, and I am happy to share this transaction with you ,but you must keep everything as secret and very confidential.
+-- 
+2.7.4
 
-I have a very lucrative business transaction which requires your utmost discretion. Please understand that you and me, are to work as one team to inherit this fund, hence I am your insider in the bank as the transaction commence. I advise you to feel free with me for all is going to be well with us. This business is 100% risk free.
-
-Though, I know it would come to you at uttermost surprise unbelief because it is virtually impossible to know who is trustworthy and who to believed I am Dr. Rhama Benson sum of $10.5 million is lying in our bank without claim i want you to help me to claim and receive it to your account in your country for our benefit.
-
-I am aware of the unsafe nature of the internet, and was compelled to use this medium due to the nature of this project.I have access to every vital information that can be used to transfer this huge amount of money, which may culminate into the investment of the said funds into your account or any lucrative company in your country.
-
-If you will like to assist me as a partner then indicate your interest, after which we shall both discuss the modalities and the sharing percentage. Upon receipt of your reply on your expression of Interest, I will give you full details on how the business will be executed. I am open for negotiation,
-
-Thanks for your anticipated cooperation.Note you might receive this message in your inbox or spam folder, depends on your web host or server network
-
-Compliment of the day,
-Regards,
-Dr. Rhama.

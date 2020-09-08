@@ -2,31 +2,31 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0193261FDD
-	for <lists+linux-ide@lfdr.de>; Tue,  8 Sep 2020 22:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4981262002
+	for <lists+linux-ide@lfdr.de>; Tue,  8 Sep 2020 22:08:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730702AbgIHUG6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 8 Sep 2020 16:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46876 "EHLO
+        id S1730885AbgIHUIt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 8 Sep 2020 16:08:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730240AbgIHPUw (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Sep 2020 11:20:52 -0400
+        with ESMTP id S1730200AbgIHPTN (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Sep 2020 11:19:13 -0400
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A968FC0A3BE6;
-        Tue,  8 Sep 2020 07:54:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF6FCC0A3BF0;
+        Tue,  8 Sep 2020 07:55:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
         References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
         Content-Type:Content-ID:Content-Description;
-        bh=CokwUhLtLY+HJBUS4+kWwYLSBZUJwKz5SbJHqq17dNs=; b=e8WxUJ04cgOn5PPMEkZOv1VJAx
-        xPxEtTVTtYeROSAdSqWsWh2V/9iTgmtfw0EV9V4V+gHWIbd4Y36s4uqASOey8kQ1lDmrihyyHrA/o
-        N2i/G/DSmmZb/GOC6nyU1q90mg/zIRgocv2+SIZWG85W8CCc2HtKxebIpn9AkFIF8/BB6yiv0sJMb
-        ThBFmrg7Z7gjKogjX4Mw426+cNBvX8T0DaUVGod+G7YPLHm8rWFTaV6hjvwnKWp70gJUbf5a42J93
-        b6al7WYDCfltB0lHajfE3Pv3W74poknrXE23A30KOkElM4jEDJXLp0YhBOhVIBjsRB7VPrHvzHVw7
-        7kn1Gz2g==;
+        bh=e8UHu128BOucpF3Nt3G76NBwCQdX+XymqNnsSMwHxZQ=; b=ULEEX4pqiG0rpUIcfCQiiH99la
+        0zqHLiRmorEWRz3YaTpL5W/sFi0/Zv9L1qH5VnRIzVggbwz+MIu2EJywgEE4vOmpkf3VgvA9A6uTF
+        BGbhuaQVQ45BvFItW8hPcDX9RBUx2lonpU781IaOo/EeON4VIX1JEIi2CA7BKPMisiR/HD7j87J5e
+        X2vB8KoUkr8T43SpK5vCMoBk4fXayWzO/7Et49o9ZYAR92y0YOVyXkkhUTa3u8NXgUosSEgmfOb6y
+        IS72enXK/zrLXMeQw/9wEM8iCmsLQGXMzx4fRNbc9V2lfNmtq6ApMFTs6cT1b4ocoyQ2/kfkO7EPt
+        67W1vvkw==;
 Received: from [2001:4bb8:184:af1:3dc3:9c83:fc6c:e0f] (helo=localhost)
         by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kFf0b-0002wi-Qz; Tue, 08 Sep 2020 14:54:15 +0000
+        id 1kFf14-0002yj-Ly; Tue, 08 Sep 2020 14:54:38 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Jens Axboe <axboe@kernel.dk>
 Cc:     Denis Efremov <efremov@linux.com>, Tim Waugh <tim@cyberelk.net>,
@@ -40,10 +40,11 @@ Cc:     Denis Efremov <efremov@linux.com>, Tim Waugh <tim@cyberelk.net>,
         linux-m68k@lists.linux-m68k.org, linux-block@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
         linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org
-Subject: [PATCH 04/19] floppy: use bdev_check_media_change
-Date:   Tue,  8 Sep 2020 16:53:32 +0200
-Message-Id: <20200908145347.2992670-5-hch@lst.de>
+        linux-fsdevel@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Subject: [PATCH 12/19] ide-cd: use bdev_check_media_changed
+Date:   Tue,  8 Sep 2020 16:53:40 +0200
+Message-Id: <20200908145347.2992670-13-hch@lst.de>
 X-Mailer: git-send-email 2.28.0
 In-Reply-To: <20200908145347.2992670-1-hch@lst.de>
 References: <20200908145347.2992670-1-hch@lst.de>
@@ -55,57 +56,48 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Switch to use bdev_check_media_change instead of check_disk_change and
-call floppy_revalidate manually.  Given that floppy_revalidate only
-deals with media change events, the extra call into ->revalidate_disk
-from bdev_disk_changed is not required either, so stop wiring up the
-method.
+Switch to use bdev_check_media_changed instead of check_disk_change and
+call idecd_revalidate_disk manually.  Given that idecd_revalidate_disk
+only re-reads the TOC, and we already do the same at probe time, the
+extra call into ->revalidate_disk from bdev_disk_changed is not required
+either, so stop wiring up the method.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 ---
- drivers/block/floppy.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/ide/ide-cd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
-index a563b023458a8b..7df79ae6b0a1e1 100644
---- a/drivers/block/floppy.c
-+++ b/drivers/block/floppy.c
-@@ -561,6 +561,7 @@ static void floppy_release_irq_and_dma(void);
-  * output_byte is automatically disabled when reset is set.
-  */
- static void reset_fdc(void);
-+static int floppy_revalidate(struct gendisk *disk);
+diff --git a/drivers/ide/ide-cd.c b/drivers/ide/ide-cd.c
+index 212bb2d8bf346a..6a38cbc80aea0d 100644
+--- a/drivers/ide/ide-cd.c
++++ b/drivers/ide/ide-cd.c
+@@ -56,6 +56,7 @@ static DEFINE_MUTEX(ide_cd_mutex);
+ static DEFINE_MUTEX(idecd_ref_mutex);
  
- /*
-  * These are global variables, as that's the easiest way to give
-@@ -3275,7 +3276,8 @@ static int invalidate_drive(struct block_device *bdev)
- 	/* invalidate the buffer track to force a reread */
- 	set_bit((long)bdev->bd_disk->private_data, &fake_change);
- 	process_fd_request();
+ static void ide_cd_release(struct device *);
++static int idecd_revalidate_disk(struct gendisk *disk);
+ 
+ static struct cdrom_info *ide_cd_get(struct gendisk *disk)
+ {
+@@ -1611,7 +1612,8 @@ static int idecd_open(struct block_device *bdev, fmode_t mode)
+ 	struct cdrom_info *info;
+ 	int rc = -ENXIO;
+ 
 -	check_disk_change(bdev);
 +	if (bdev_check_media_change(bdev))
-+		floppy_revalidate(bdev->bd_disk);
- 	return 0;
- }
++		idecd_revalidate_disk(bdev->bd_disk);
  
-@@ -4123,7 +4125,8 @@ static int floppy_open(struct block_device *bdev, fmode_t mode)
- 			drive_state[drive].last_checked = 0;
- 			clear_bit(FD_OPEN_SHOULD_FAIL_BIT,
- 				  &drive_state[drive].flags);
--			check_disk_change(bdev);
-+			if (bdev_check_media_change(bdev))
-+				floppy_revalidate(bdev->bd_disk);
- 			if (test_bit(FD_DISK_CHANGED_BIT, &drive_state[drive].flags))
- 				goto out;
- 			if (test_bit(FD_OPEN_SHOULD_FAIL_BIT, &drive_state[drive].flags))
-@@ -4291,7 +4294,6 @@ static const struct block_device_operations floppy_fops = {
- 	.ioctl			= fd_ioctl,
- 	.getgeo			= fd_getgeo,
- 	.check_events		= floppy_check_events,
--	.revalidate_disk	= floppy_revalidate,
- #ifdef CONFIG_COMPAT
- 	.compat_ioctl		= fd_compat_ioctl,
- #endif
+ 	mutex_lock(&ide_cd_mutex);
+ 	info = ide_cd_get(bdev->bd_disk);
+@@ -1770,7 +1772,6 @@ static const struct block_device_operations idecd_ops = {
+ 	.compat_ioctl		= IS_ENABLED(CONFIG_COMPAT) ?
+ 				  idecd_compat_ioctl : NULL,
+ 	.check_events		= idecd_check_events,
+-	.revalidate_disk	= idecd_revalidate_disk
+ };
+ 
+ /* module options */
 -- 
 2.28.0
 

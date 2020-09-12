@@ -2,88 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EA5CF2679A5
-	for <lists+linux-ide@lfdr.de>; Sat, 12 Sep 2020 12:51:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4224A267B89
+	for <lists+linux-ide@lfdr.de>; Sat, 12 Sep 2020 19:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725838AbgILKvz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 12 Sep 2020 06:51:55 -0400
-Received: from mout.gmx.net ([212.227.15.15]:48153 "EHLO mout.gmx.net"
+        id S1725854AbgILRV7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 12 Sep 2020 13:21:59 -0400
+Received: from mail.fadu.edu.uy ([164.73.217.21]:42351 "EHLO mail.fadu.edu.uy"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725820AbgILKvx (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 12 Sep 2020 06:51:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1599907905;
-        bh=SuZQc4F1e50rQLUc+N9sxG+irJvw7Qea6IpD11Cajgk=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=kTCD1jtQn8s+OqLBE4Xxgk3ttI0jKDVxlwaBp5IJO7M68uQuezlsFJO3/pqsj5N1M
-         pgE8aIUZirnhuu3XMZP/Q/PlkcMMJ9SV0l4UJgWZuQ5NzdbJfroQy35jqDx46iExNl
-         REUYRAo+/Zz8fEA3pc+C1b0H+7NQccUeTi0Ep1mE=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from ls3530.fritz.box ([92.116.134.185]) by mail.gmx.com (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1ML9uK-1k04Tj3MX4-00IGvG; Sat, 12
- Sep 2020 12:51:45 +0200
-Date:   Sat, 12 Sep 2020 12:51:43 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
-Cc:     linux-parisc@vger.kernel.org
-Subject: [PATCH] ata: pata_ns87415.c: Driver works on parisc with superio chip
-Message-ID: <20200912105143.GA28477@ls3530.fritz.box>
+        id S1725850AbgILRV6 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sat, 12 Sep 2020 13:21:58 -0400
+X-Greylist: delayed 797 seconds by postgrey-1.27 at vger.kernel.org; Sat, 12 Sep 2020 13:21:57 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mail.fadu.edu.uy (Postfix) with ESMTP id 6CCFA12D55F5;
+        Sat, 12 Sep 2020 14:06:27 -0300 (-03)
+Received: from mail.fadu.edu.uy ([127.0.0.1])
+        by localhost (mail.fadu.edu.uy [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id CG_E_-CF63I9; Sat, 12 Sep 2020 14:06:27 -0300 (-03)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.fadu.edu.uy (Postfix) with ESMTP id F0CF412D55D1;
+        Sat, 12 Sep 2020 14:06:26 -0300 (-03)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.fadu.edu.uy F0CF412D55D1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fadu.edu.uy;
+        s=08C1D22E-0AE4-11EA-9527-FE35185E3364; t=1599930387;
+        bh=NPk5mtg97T14g7wZ5QhfLKTRZf72H4kOUG++a0YNPhQ=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=sPD7yIBvQtnTH+EpwNYqfy8uuow5J63n5NSOh9EUTnP2b20VZoBrGLwmLvIr65Mav
+         ZIrNQMJjiytvKWBJMN1aqzV0sxp45Q9FHsB5/Z6vrik24xksRmb5Fn3LHY+nniWa/a
+         JoUUXc0pImXpGazXAtP3r547wcw+alyLww6uZEM2g+17pRr7/6jjjMSdh1Hw/QxlGe
+         C4099dfE1mlmUmUlShuNWbC+kVMRk8xHUUurnOcxT4zTur4hocWryHQSqnYXioKWJr
+         grg9nx4HHmMeqxLcKeueeR4hEZxluqB13JITytdeJBfEcvionE49hNvi9mY48N1MBi
+         XFN2cYqhRg42A==
+X-Virus-Scanned: amavisd-new at fadu.edu.uy
+Received: from mail.fadu.edu.uy ([127.0.0.1])
+        by localhost (mail.fadu.edu.uy [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id oTHC44COO93d; Sat, 12 Sep 2020 14:06:26 -0300 (-03)
+Received: from [192.168.8.143] (unknown [129.205.124.68])
+        by mail.fadu.edu.uy (Postfix) with ESMTPSA id EA72B12D52A9;
+        Sat, 12 Sep 2020 14:05:43 -0300 (-03)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Provags-ID: V03:K1:Ybu7Xv23dKbjvX7adwSRR7TxxEs0uGjyYuudEcU9u8hPhBwaFLm
- YRy9B9tAo2zgr4JlAbLNDhdK3ILOODLereOCr4jHbhmVZofb4oLhIXvJHe5H++wEyLF00ft
- PgHcjIp69YNSfpFKA3f5buSjC+t9Vr1xX+bLRFnlEOj/xLvXcJa74Wv3njI70i21FNOcgnY
- oZGXe/EZTgdZchPCPP+kA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:NtNyMhJge4E=:zOfek3GMjPfhSWw5jkaMSQ
- FIeCsWBIkTmtsAEEzqSgrOJsNkLgYawk+P8n8HExf71eZbMCx2O8xQYhN7whdBA7zZtTZEfoB
- eeVfjLDpX8V6BG8UJfUyyd5kFRlezrBJKWnB77vP7UoKs0WI0lwOwm7Qerse7xbmdjN9iy7cb
- 2kaYA7wldo8n5k9t3KXDtsUuz4WdXBbi2OfHYCYtTS6paV7tyLTDty3uVOLpWZyUwNLuKl/aV
- 4+GiM9dRxFeqtKOYVcA+UlCyCOaXkDmYMbOkFDXYhdgAmDk7hXlu6r/4zufyvHJov4qro8hF9
- AHWJol9XDxUcQETgTOIDfiGzBQ1YbwMdqda9UXUFfZZ9Ea9gMJCeq5Zw+t3Osvu+/tIMKKRCC
- npbGphn7fSVde95TUITWAMhflKHk/Y6P3nqlo/xQywX5vMb+xwG5wpx8KGSmGsGQOCbBgMxMA
- X7v4V76ABgKdek5TRzutu0DWUPqhuZ1BCRS14/jX9v9mprJhN4DaWvCUhxaAeqjwVBKAio0dp
- g+F3PK9NqqwbwukKA0lqbbkV3GhM53V03ZnQ7S2hFkVoaYe1wsP3Pe0fpWhcZxqgO8y40kRdk
- tcLbhv4MLyZYAOx27KuSEstFNycUUzsK85t8cqJv6z/6O9638sDaqCtXuTbULa/l59szb0riq
- 4kvl6jeyvp4nFeiMM7KMxYTPtSqFVPHLHCVzS4dLsEtZcnxSSj1mV9SzM6SYFC8zDpGzPWyZW
- PrZhcgFW5NCavQHwS9Pr3CuXA7h+Gdi8VClFWMm+4rZYaVXHbT+f8T9HJOxotna/7qWIXibm8
- wfldNSPNvucQTOug9x90G7/K2q5wRbkkiziWM7yKRCMhovV+ew33xTcvk7PLUGmWtxyfZtXOE
- kyjwzKyc715QJS1FYMwdJAE6GCSRX+O5rEip2tpiCI8FkpYUOBSnNYE1gDrogjUZiq2AhFICu
- Rv5CRCBdlMtUDF/gTwpO3kSSV6e7y/Ap3+8+vp5yg2ce2LgMbMyBiwXKk6qtBSIxaNkmOoH0p
- E8Pk5DMuICh2xUCZu/ImXssPZP2PbHg5opZLmUzdunB8Ryw+ordrVrVEY2k1GuqHQMVjStLEK
- 7+rg2qv9Xs62NE4oSLJ68jizcNvvqPUo5nRpENedSpnAZBhW/+a1Dn+/JPLmmjUpPmA5mjfml
- 7BL1uovYmsG5DQlG4BjoYggOA6Rug79llM54Y6kaIeHAnn/OOk2qzD8KepJVzN7zIxASw6RCn
- Ot5yyabTuT59hWcVY
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: DETAILS
+To:     Recipients <info@fadu.edu.uy>
+From:   "DONNA AND DAVID STICKLEY" <info@fadu.edu.uy>
+Date:   Sat, 12 Sep 2020 10:05:05 -0700
+Reply-To: donna.anddavid_stickley2020@outlook.com
+Message-Id: <20200912170543.EA72B12D52A9@mail.fadu.edu.uy>
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-I tested this driver on my HP PA-RISC C3000 workstation, and it works
-with the built-in TEAC CD-532E-B CD-ROM drive.
-So drop the TODO item and adjust the file header.
+FAMILY DONATION. GET BACK TO US FOR MORE DETAILS... =
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-
-diff --git a/drivers/ata/pata_ns87415.c b/drivers/ata/pata_ns87415.c
-index 4b2ba813dcab..1532b2e3c672 100644
---- a/drivers/ata/pata_ns87415.c
-+++ b/drivers/ata/pata_ns87415.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- *    pata_ns87415.c - NS87415 (non PARISC) PATA
-+ *    pata_ns87415.c - NS87415 (and PARISC SUPERIO 87560) PATA
-  *
-  *	(C) 2005 Red Hat <alan@lxorguk.ukuu.org.uk>
-  *
-@@ -16,7 +16,6 @@
-  *    systems. This has its own special mountain of errata.
-  *
-  *    TODO:
-- *	Test PARISC SuperIO
-  *	Get someone to test on SPARC
-  *	Implement lazy pio/dma switching for better performance
-  *	8bit shared timing.
+donna.anddavid_stickley@outlook.com

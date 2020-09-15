@@ -2,75 +2,39 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7918F269C4F
-	for <lists+linux-ide@lfdr.de>; Tue, 15 Sep 2020 05:05:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C44B1269DFC
+	for <lists+linux-ide@lfdr.de>; Tue, 15 Sep 2020 07:45:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726082AbgIODD5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 14 Sep 2020 23:03:57 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:12282 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726045AbgIODD4 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 14 Sep 2020 23:03:56 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 12998763F03EE3FFA957;
-        Tue, 15 Sep 2020 11:03:54 +0800 (CST)
-Received: from huawei.com (10.175.113.32) by DGGEMS410-HUB.china.huawei.com
- (10.3.19.210) with Microsoft SMTP Server id 14.3.487.0; Tue, 15 Sep 2020
- 11:03:43 +0800
-From:   Liu Shixin <liushixin2@huawei.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>
-CC:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Liu Shixin <liushixin2@huawei.com>
-Subject: [PATCH -next] ata: pata_samsung_cf: simplify the return expression of pata_s3c_wait_after_reset()
-Date:   Tue, 15 Sep 2020 11:26:21 +0800
-Message-ID: <20200915032621.1772254-1-liushixin2@huawei.com>
-X-Mailer: git-send-email 2.25.1
+        id S1726073AbgIOFp3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 15 Sep 2020 01:45:29 -0400
+Received: from verein.lst.de ([213.95.11.211]:46372 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726046AbgIOFp3 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 15 Sep 2020 01:45:29 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 9F7B76736F; Tue, 15 Sep 2020 07:45:25 +0200 (CEST)
+Date:   Tue, 15 Sep 2020 07:45:25 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     dm-devel@redhat.com, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+        drbd-dev@lists.linbit.com, linux-ide@vger.kernel.org,
+        linux-raid@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+        target-devel@vger.kernel.org
+Subject: Re: clean up is partition checks
+Message-ID: <20200915054525.GA18276@lst.de>
+References: <20200903054104.228829-1-hch@lst.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.32]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200903054104.228829-1-hch@lst.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ide-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Simplify the return expression.
+Jens,
 
-Signed-off-by: Liu Shixin <liushixin2@huawei.com>
----
- drivers/ata/pata_samsung_cf.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/ata/pata_samsung_cf.c b/drivers/ata/pata_samsung_cf.c
-index 3da0e8e30286..5fd5c79e1543 100644
---- a/drivers/ata/pata_samsung_cf.c
-+++ b/drivers/ata/pata_samsung_cf.c
-@@ -340,19 +340,14 @@ static unsigned int pata_s3c_devchk(struct ata_port *ap,
- static int pata_s3c_wait_after_reset(struct ata_link *link,
- 		unsigned long deadline)
- {
--	int rc;
--
- 	ata_msleep(link->ap, ATA_WAIT_AFTER_RESET);
- 
--	/* always check readiness of the master device */
--	rc = ata_sff_wait_ready(link, deadline);
--	/* -ENODEV means the odd clown forgot the D7 pulldown resistor
-+	/*
-+	 * always check readiness of the master device.
-+	 * -ENODEV means the odd clown forgot the D7 pulldown resistor
- 	 * and TF status is 0xff, bail out on it too.
- 	 */
--	if (rc)
--		return rc;
--
--	return 0;
-+	return ata_sff_wait_ready(link, deadline);
- }
- 
- /*
--- 
-2.25.1
-
+can you pick this series up?

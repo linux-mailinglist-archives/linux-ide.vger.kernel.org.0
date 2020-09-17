@@ -2,114 +2,83 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB5926DC80
-	for <lists+linux-ide@lfdr.de>; Thu, 17 Sep 2020 15:09:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F374A26E1A7
+	for <lists+linux-ide@lfdr.de>; Thu, 17 Sep 2020 19:04:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726955AbgIQNJl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 17 Sep 2020 09:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46348 "EHLO
+        id S1728831AbgIQQ7t (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 17 Sep 2020 12:59:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726756AbgIQNJd (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 17 Sep 2020 09:09:33 -0400
-Received: from andre.telenet-ops.be (andre.telenet-ops.be [IPv6:2a02:1800:120:4::f00:15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB6CC061756
-        for <linux-ide@vger.kernel.org>; Thu, 17 Sep 2020 06:09:30 -0700 (PDT)
-Received: from ramsan ([84.195.186.194])
-        by andre.telenet-ops.be with bizsmtp
-        id V19N230014C55Sk0119NN1; Thu, 17 Sep 2020 15:09:24 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan with esmtp (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1kItf7-0000ND-Vf; Thu, 17 Sep 2020 15:09:21 +0200
-Received: from geert by rox.of.borg with local (Exim 4.90_1)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1kItf7-0001kc-Sy; Thu, 17 Sep 2020 15:09:21 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
+        with ESMTP id S1728789AbgIQQ7r (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 17 Sep 2020 12:59:47 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E947EC06174A;
+        Thu, 17 Sep 2020 09:59:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=HSelo8V/K+50+NYuLpI9PLlnsmvIK7gx8VI0Sz6V4PU=; b=vGDEFPJ707ptXPX4+9i9781old
+        xsNpeVCD4XZDVGcYjA+MbX7KhnFmO2+Yd5n3Vf0yEESEKcsLUbPxWwT15jA3buY1zl2MK6FfS0ROG
+        DZUMm0K5g0YSc9P06hadFGy4ElAsekq4P3uCLR9redzUX1H6V5ppdPeHjga6HRevxK+UAaYumvD8o
+        R5K7DdkgyGf6GvPxLtWtBVeQWFoLGRZBOJTo44ytDXTkLWYOsxYjrnPmoMNQVn2ULA+FN5FXWvO3M
+        cN0C195atpvFDiNWRYEw+cffFy3bh6UD8Gmx+H0YzX1600akIqtqGsy5vnbcTdZL0KnAsu+TLFfRq
+        x88nyRIw==;
+Received: from 089144214092.atnat0023.highway.a1.net ([89.144.214.92] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kIxFq-0000Af-QF; Thu, 17 Sep 2020 16:59:31 +0000
+From:   Christoph Hellwig <hch@lst.de>
 To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Christoph Hellwig <hch@lst.de>, Ming Lei <ming.lei@redhat.com>,
-        Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        linux-ide@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable <stable@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v3] ata: sata_rcar: Fix DMA boundary mask
-Date:   Thu, 17 Sep 2020 15:09:20 +0200
-Message-Id: <20200917130920.6689-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.17.1
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, nbd@other.debian.org,
+        linux-ide@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        linux-pm@vger.kernel.org, linux-mm@kvack.org,
+        linux-block@vger.kernel.org
+Subject: remove blkdev_get as a public API
+Date:   Thu, 17 Sep 2020 18:57:06 +0200
+Message-Id: <20200917165720.3285256-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Before commit 9495b7e92f716ab2 ("driver core: platform: Initialize
-dma_parms for platform devices"), the R-Car SATA device didn't have DMA
-parameters.  Hence the DMA boundary mask supplied by its driver was
-silently ignored, as __scsi_init_queue() doesn't check the return value
-of dma_set_seg_boundary(), and the default value of 0xffffffff was used.
+Hi Jens,
 
-Now the device has gained DMA parameters, the driver-supplied value is
-used, and the following warning is printed on Salvator-XS:
+this series removes blkdev_get as a public API, leaving it as just an
+implementation detail of blkdev_get_by_path and blkdev_get_by_dev.  The
+reason for that is that blkdev_get is a very confusing API that requires
+a struct block_device to be fed in, but then actually consumes the
+reference.  And it turns out just using the two above mentioned APIs
+actually significantly simplifies the code as well.
 
-    DMA-API: sata_rcar ee300000.sata: mapping sg segment across boundary [start=0x00000000ffffe000] [end=0x00000000ffffefff] [boundary=0x000000001ffffffe]
-    WARNING: CPU: 5 PID: 38 at kernel/dma/debug.c:1233 debug_dma_map_sg+0x298/0x300
-
-(the range of start/end values depend on whether IOMMU support is
- enabled or not)
-
-The issue here is that SATA_RCAR_DMA_BOUNDARY doesn't have bit 0 set, so
-any typical end value, which is odd, will trigger the check.
-
-Fix this by increasing the DMA boundary value by 1.
-
-This also fixes the following WRITE DMA EXT timeout issue:
-
-    # dd if=/dev/urandom of=/mnt/de1/file1-1024M bs=1M count=1024
-    ata1.00: exception Emask 0x0 SAct 0x0 SErr 0x0 action 0x6 frozen
-    ata1.00: failed command: WRITE DMA EXT
-    ata1.00: cmd 35/00:00:00:e6:0c/00:0a:00:00:00/e0 tag 0 dma 1310720 out
-    res 40/00:01:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
-    ata1.00: status: { DRDY }
-
-as seen by Shimoda-san since commit 429120f3df2dba2b ("block: fix
-splitting segments on boundary masks").
-
-Fixes: 8bfbeed58665dbbf ("sata_rcar: correct 'sata_rcar_sht'")
-Fixes: 9495b7e92f716ab2 ("driver core: platform: Initialize dma_parms for platform devices")
-Fixes: 429120f3df2dba2b ("block: fix splitting segments on boundary masks")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Cc: stable <stable@vger.kernel.org>
----
-v3:
-  - Add Reviewed-by, Tested-by,
-  - Augment description and Fixes: with Shimoda-san's problem report
-    https://lore.kernel.org/r/1600255098-21411-1-git-send-email-yoshihiro.shimoda.uh@renesas.com,
-
-v2:
-  - Add Reviewed-by, Tested-by, Cc.
----
- drivers/ata/sata_rcar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/ata/sata_rcar.c b/drivers/ata/sata_rcar.c
-index 141ac600b64c87ef..44b0ed8f6bb8a120 100644
---- a/drivers/ata/sata_rcar.c
-+++ b/drivers/ata/sata_rcar.c
-@@ -120,7 +120,7 @@
- /* Descriptor table word 0 bit (when DTA32M = 1) */
- #define SATA_RCAR_DTEND			BIT(0)
- 
--#define SATA_RCAR_DMA_BOUNDARY		0x1FFFFFFEUL
-+#define SATA_RCAR_DMA_BOUNDARY		0x1FFFFFFFUL
- 
- /* Gen2 Physical Layer Control Registers */
- #define RCAR_GEN2_PHY_CTL1_REG		0x1704
--- 
-2.17.1
-
+Diffstat:
+ block/genhd.c                   |   11 ++--
+ block/ioctl.c                   |   13 ++---
+ drivers/block/nbd.c             |    8 +--
+ drivers/block/pktcdvd.c         |   92 +++++-----------------------------------
+ drivers/block/zram/zram_drv.c   |    7 +--
+ drivers/char/raw.c              |   51 ++++++++--------------
+ drivers/ide/ide-gd.c            |    2 
+ drivers/s390/block/dasd_genhd.c |   13 +----
+ fs/block_dev.c                  |   12 ++---
+ fs/ocfs2/cluster/heartbeat.c    |   28 ++++--------
+ include/linux/blk_types.h       |    4 -
+ include/linux/blkdev.h          |    1 
+ include/linux/genhd.h           |    2 
+ include/linux/suspend.h         |    4 -
+ include/linux/swap.h            |    3 -
+ kernel/power/swap.c             |   21 +++------
+ kernel/power/user.c             |   26 +++--------
+ mm/swapfile.c                   |   45 ++++++++++---------
+ 18 files changed, 119 insertions(+), 224 deletions(-)

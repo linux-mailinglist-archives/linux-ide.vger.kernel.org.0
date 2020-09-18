@@ -2,39 +2,39 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 598F926F185
-	for <lists+linux-ide@lfdr.de>; Fri, 18 Sep 2020 04:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDCEA26EFC4
+	for <lists+linux-ide@lfdr.de>; Fri, 18 Sep 2020 04:38:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728260AbgIRCvw (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 17 Sep 2020 22:51:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59484 "EHLO mail.kernel.org"
+        id S1728260AbgIRCiA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 17 Sep 2020 22:38:00 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38926 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728071AbgIRCIU (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:08:20 -0400
+        id S1728779AbgIRCM3 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:12:29 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1423D23A1E;
-        Fri, 18 Sep 2020 02:08:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BE02222211;
+        Fri, 18 Sep 2020 02:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600394897;
-        bh=CxUFPlRC6nzasIL5f5l3yPfZq2ajA4bHA08VTVPJ/Vk=;
+        s=default; t=1600395148;
+        bh=LcRrcvlT5O5XjIJyOwW4jaDxXj8yTMOjRspd7FQ6sNw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YMTC09SXnyILHSHkakhscCQaSZiAzpKKrcDEyQbIMUjO8EMmdjtlVlm0Imd59pcAQ
-         +uiezmdzlbIFQ6H/dQvTe78MIZNgGyDmWWOeeeOn26Ue5FuCISFOKxTW1LsjZ3rcly
-         9MSsPPQuyS9h5ZGN/jxqYqehml9V5q56jUZr9MX0=
+        b=u3hX1kZ5lMOASu07AlfC5b63VENcJ7s+tjBjzGvG/O9kEcHnNL6HwSad/YJary8ED
+         kgBRoTgpkGynQuE1eZ96S4PdWFlLfiRnkGxm4CQKGjiyHzChq1P4ck9dqeJY2BNd5i
+         gnLdSmcF89FngN6/diU0+oLgsEDGKoTb3KT+Jb7I=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jiri Slaby <jslaby@suse.cz>, Jens Axboe <axboe@kernel.dk>,
         linux-ide@vger.kernel.org,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 012/206] ata: sata_mv, avoid trigerrable BUG_ON
-Date:   Thu, 17 Sep 2020 22:04:48 -0400
-Message-Id: <20200918020802.2065198-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 007/127] ata: sata_mv, avoid trigerrable BUG_ON
+Date:   Thu, 17 Sep 2020 22:10:20 -0400
+Message-Id: <20200918021220.2066485-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918020802.2065198-1-sashal@kernel.org>
-References: <20200918020802.2065198-1-sashal@kernel.org>
+In-Reply-To: <20200918021220.2066485-1-sashal@kernel.org>
+References: <20200918021220.2066485-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,7 +73,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index ab2e9f62ddc1a..25d24ed3385ab 100644
+index 3b2246dded74f..d897deb4bffbe 100644
 --- a/drivers/ata/sata_mv.c
 +++ b/drivers/ata/sata_mv.c
 @@ -2111,12 +2111,10 @@ static void mv_qc_prep(struct ata_queued_cmd *qc)

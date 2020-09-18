@@ -2,39 +2,39 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FDA626EE9D
-	for <lists+linux-ide@lfdr.de>; Fri, 18 Sep 2020 04:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 522BD26EDC8
+	for <lists+linux-ide@lfdr.de>; Fri, 18 Sep 2020 04:23:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726449AbgIRC3j (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 17 Sep 2020 22:29:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43652 "EHLO mail.kernel.org"
+        id S1726333AbgIRCXl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 17 Sep 2020 22:23:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46880 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729166AbgIRCPC (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 17 Sep 2020 22:15:02 -0400
+        id S1728928AbgIRCQu (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 17 Sep 2020 22:16:50 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C71623976;
-        Fri, 18 Sep 2020 02:15:01 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2E4F22396E;
+        Fri, 18 Sep 2020 02:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600395302;
-        bh=gFlss6PyCs3bnuohTwxiu4BoJJVf65zcD8wTeN2q2ns=;
+        s=default; t=1600395409;
+        bh=3YycbV/jtxrHb7pwKbGEgjIF8VqDjyWqUTo7sE4e3jk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S90D1fMRXmZl5oLpEmasKVSTvsJox7KTjRJhp9ewyg4KCZA2RzrnSphjZKvriWlX3
-         spRxV6QRM9z7OkIuzqns8G9b3yJlIYflqkfit8Ed2lG4fT+Quzzt5q8bPjqGbMDMbZ
-         R0nEBqbm38gQ2rEp0rpovKxLnDVIIBi1DuAj4vkQ=
+        b=hFKO6VQ1mZ8S9gz2aDZTxDCuMPCim06M00DZPPeyDF6xYUGwPuw0tCQPcVLe63OvL
+         m6vAdcx+9b/b61Ns+/I7DIDu9o2RpHsIbUMo/ZEhhV4fPx/aPXg50s72eF4rOvW1tj
+         qLa6XNiu1E9HnFC7FXM98IFhtVq5mxU56qWqJOBE=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Jiri Slaby <jslaby@suse.cz>, Jens Axboe <axboe@kernel.dk>,
         linux-ide@vger.kernel.org,
         Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 05/90] ata: sata_mv, avoid trigerrable BUG_ON
-Date:   Thu, 17 Sep 2020 22:13:30 -0400
-Message-Id: <20200918021455.2067301-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 05/64] ata: sata_mv, avoid trigerrable BUG_ON
+Date:   Thu, 17 Sep 2020 22:15:44 -0400
+Message-Id: <20200918021643.2067895-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200918021455.2067301-1-sashal@kernel.org>
-References: <20200918021455.2067301-1-sashal@kernel.org>
+In-Reply-To: <20200918021643.2067895-1-sashal@kernel.org>
+References: <20200918021643.2067895-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -73,10 +73,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index 2f32782cea6d9..2ec37a038eda8 100644
+index 729f26322095e..c24bbdb3f76c8 100644
 --- a/drivers/ata/sata_mv.c
 +++ b/drivers/ata/sata_mv.c
-@@ -2111,12 +2111,10 @@ static void mv_qc_prep(struct ata_queued_cmd *qc)
+@@ -2113,12 +2113,10 @@ static void mv_qc_prep(struct ata_queued_cmd *qc)
  		 * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
  		 * of which are defined/used by Linux.  If we get here, this
  		 * driver needs work.

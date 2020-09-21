@@ -2,85 +2,88 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76CE02714D0
-	for <lists+linux-ide@lfdr.de>; Sun, 20 Sep 2020 16:08:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D01D271B59
+	for <lists+linux-ide@lfdr.de>; Mon, 21 Sep 2020 09:20:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726448AbgITOIW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 20 Sep 2020 10:08:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34276 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726290AbgITOIV (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 20 Sep 2020 10:08:21 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0AC2621531;
-        Sun, 20 Sep 2020 14:08:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600610900;
-        bh=lu9h9XynfWiHeNchuTVq0VmpBRgsLcjroJ08RriK6FQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tLu+eCAhLmynwau/OgjdgXITj8Uu3Ajyw7j6L6WMWTBtOCQUoxWo96pINqGo/ITMB
-         iLoj0ieZJon4iv+bsf0rstdavCuZDRNOCuxN4mFQi7hrQT+zsjVJE3jrAAC9dKoSX8
-         Rim6zO4acLR631zEPonMI5FK/X8l5Rf9YUot6uBQ=
-Date:   Sun, 20 Sep 2020 16:08:46 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Marek Vasut <marek.vasut+renesas@gmail.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Niklas <niklas.soderlund@ragnatech.se>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-ide@vger.kernel.org,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-media <linux-media@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        alsa-devel <alsa-devel@alsa-project.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>
-Subject: Re: [PATCH 11/20] dt-bindings: usb: renesas,usbhs: Add r8a774e1
- support
-Message-ID: <20200920140846.GB2915460@kroah.com>
-References: <1594919915-5225-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1594919915-5225-12-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <CA+V-a8vuR-7vqxNnrqQ5Ysf3Xjvhp3xRZ33i8+6nEGFLJciT3A@mail.gmail.com>
+        id S1726548AbgIUHUR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 21 Sep 2020 03:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59362 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726492AbgIUHUI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 21 Sep 2020 03:20:08 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA5E8C0613D1;
+        Mon, 21 Sep 2020 00:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=uiln3MtorCIt+OqTbXUWnLiMXWC8lUgm2hs2JozLc28=; b=WlAvqo0PcB605+Hw0QLRuD1pQx
+        BdyYtsNFPR3wMN5n8f93MPj6oeQPqy60GRR7KR8bYAlYCuZAV8luCL8w+E8yqR9ni0BMRscRRY/iW
+        BUZ16kWwXlC+tHFzJzi9sWaMYwaug6V8SIOW0b0kfNVKHHE181qPrix3SHrySoGyTgz1fO3D0O/W9
+        eeIwVaKs6zgWS3g2U3WN1SDQBNkp6w54ecHbNf+X36dRXVbSVKkTJOoOuUWusZDlmIpfwewvJnGpm
+        EjjwNpfnPKmsjgRiOI+gFhBvsYdAesrUy9JAiGqPs0teXQE5Ceg8fqbMPBSPgzUQ8Sy1TQ1zYmQyy
+        CsavluHw==;
+Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kKG73-0003Dm-IT; Mon, 21 Sep 2020 07:19:49 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, nbd@other.debian.org,
+        linux-ide@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        linux-pm@vger.kernel.org, linux-mm@kvack.org,
+        linux-block@vger.kernel.org
+Subject: remove blkdev_get as a public API v2
+Date:   Mon, 21 Sep 2020 09:19:44 +0200
+Message-Id: <20200921071958.307589-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+V-a8vuR-7vqxNnrqQ5Ysf3Xjvhp3xRZ33i8+6nEGFLJciT3A@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Sat, Sep 19, 2020 at 11:54:05AM +0100, Lad, Prabhakar wrote:
-> Hi Greg,
-> 
-> On Thu, Jul 16, 2020 at 6:19 PM Lad Prabhakar
-> <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> >
-> > Document RZ/G2H (R8A774E1) SoC bindings.
-> >
-> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
-> > ---
-> >  Documentation/devicetree/bindings/usb/renesas,usbhs.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> Could you please pick this patch.
+Hi Jens,
 
-Same here, doesn't a DT maintainer have to ack this?
+this series removes blkdev_get as a public API, leaving it as just an
+implementation detail of blkdev_get_by_path and blkdev_get_by_dev.  The
+reason for that is that blkdev_get is a very confusing API that requires
+a struct block_device to be fed in, but then actually consumes the
+reference.  And it turns out just using the two above mentioned APIs
+actually significantly simplifies the code as well.
 
-thanks,
+Changes since v1:
+ - fix a mismerged that left a stray bdget_disk around
+ - factour the partition scan at registration time code into a new
+   helper.
 
-greg k-h
+Diffstat:
+ block/genhd.c                   |   35 ++++++---------
+ block/ioctl.c                   |   13 ++---
+ drivers/block/nbd.c             |    8 +--
+ drivers/block/pktcdvd.c         |   92 +++++-----------------------------------
+ drivers/block/zram/zram_drv.c   |    7 +--
+ drivers/char/raw.c              |   51 ++++++++--------------
+ drivers/ide/ide-gd.c            |    2 
+ drivers/s390/block/dasd_genhd.c |   15 +-----
+ fs/block_dev.c                  |   12 ++---
+ fs/ocfs2/cluster/heartbeat.c    |   28 ++++--------
+ include/linux/blk_types.h       |    4 -
+ include/linux/blkdev.h          |    1 
+ include/linux/genhd.h           |    2 
+ include/linux/suspend.h         |    4 -
+ include/linux/swap.h            |    3 -
+ kernel/power/swap.c             |   21 +++------
+ kernel/power/user.c             |   26 +++--------
+ mm/swapfile.c                   |   45 ++++++++++---------
+ 18 files changed, 130 insertions(+), 239 deletions(-)

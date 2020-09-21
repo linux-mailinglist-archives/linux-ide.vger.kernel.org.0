@@ -2,100 +2,76 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCE5B271B96
-	for <lists+linux-ide@lfdr.de>; Mon, 21 Sep 2020 09:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A66271BBD
+	for <lists+linux-ide@lfdr.de>; Mon, 21 Sep 2020 09:27:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726365AbgIUHVD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 21 Sep 2020 03:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726547AbgIUHUR (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 21 Sep 2020 03:20:17 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D3FC061755;
-        Mon, 21 Sep 2020 00:20:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=aWpQMjG3K8ZDoYTgVEFk+u0gKdJASH29rDnXXsv40lc=; b=nPdCKsa1AKYRb5HoCWLpMWnHZ2
-        WCzoTP4XCD0vyRaLIMn5iDFyYAA8Xb8Yddn7TOP2uVGBRq5AP3wK3vqVJFCaxhLv4Kt7Alp2qbVuS
-        tMAx1+5VCDlAsg7CXEFh2DA26uSrVwWRbVDQBrJ9zo8doVfGJfAhpINmK98BIZyZUGrC+K0x32iwX
-        LYBk5b1gPP3CeKR/yE/3rZTm2osd3al6VncOcoX/Ji3imqTpOVc8wf6lO72NvI5Rm+BOqOjrpAnmf
-        Qyb8TYf1JgO1QiDHTK29wr3DOXIzknAMqf5iWxna1LDXl9q6kzsxGQ8z64z9kpKzWizW5DRXA03qw
-        ZdXiB9DQ==;
-Received: from p4fdb0c34.dip0.t-ipconnect.de ([79.219.12.52] helo=localhost)
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kKG7J-0003JK-J0; Mon, 21 Sep 2020 07:20:05 +0000
-From:   Christoph Hellwig <hch@lst.de>
+        id S1726333AbgIUH1S (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 21 Sep 2020 03:27:18 -0400
+Received: from relmlor2.renesas.com ([210.160.252.172]:42950 "EHLO
+        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726211AbgIUH1S (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 21 Sep 2020 03:27:18 -0400
+X-Greylist: delayed 303 seconds by postgrey-1.27 at vger.kernel.org; Mon, 21 Sep 2020 03:27:18 EDT
+X-IronPort-AV: E=Sophos;i="5.77,285,1596466800"; 
+   d="scan'208";a="57556396"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 21 Sep 2020 16:22:13 +0900
+Received: from localhost.localdomain (unknown [10.226.36.204])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id C4BF741C23B7;
+        Mon, 21 Sep 2020 16:22:11 +0900 (JST)
+From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Josef Bacik <josef@toxicpanda.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Stefan Haberland <sth@linux.ibm.com>,
-        Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, nbd@other.debian.org,
-        linux-ide@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, ocfs2-devel@oss.oracle.com,
-        linux-pm@vger.kernel.org, linux-mm@kvack.org,
-        linux-block@vger.kernel.org
-Subject: [PATCH 14/14] block: mark blkdev_get static
-Date:   Mon, 21 Sep 2020 09:19:58 +0200
-Message-Id: <20200921071958.307589-15-hch@lst.de>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200921071958.307589-1-hch@lst.de>
-References: <20200921071958.307589-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Prabhakar <prabhakar.csengg@gmail.com>
+Subject: [RESEND PATCH] dt-bindings: ata: renesas,rcar-sata: Add r8a774e1 support
+Date:   Mon, 21 Sep 2020 08:22:06 +0100
+Message-Id: <20200921072206.15182-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-There are no users outside the core block code left now.
+Document SATA support for the RZ/G2H, no driver change required.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 ---
- fs/block_dev.c         | 3 +--
- include/linux/blkdev.h | 1 -
- 2 files changed, 1 insertion(+), 3 deletions(-)
+Hi All,
 
-diff --git a/fs/block_dev.c b/fs/block_dev.c
-index 2898d69be6b3e4..6b9d19ffa5af7b 100644
---- a/fs/block_dev.c
-+++ b/fs/block_dev.c
-@@ -1616,7 +1616,7 @@ static int __blkdev_get(struct block_device *bdev, fmode_t mode, void *holder,
-  * RETURNS:
-  * 0 on success, -errno on failure.
-  */
--int blkdev_get(struct block_device *bdev, fmode_t mode, void *holder)
-+static int blkdev_get(struct block_device *bdev, fmode_t mode, void *holder)
- {
- 	int ret, perm = 0;
- 
-@@ -1637,7 +1637,6 @@ int blkdev_get(struct block_device *bdev, fmode_t mode, void *holder)
- 	bdput(bdev);
- 	return ret;
- }
--EXPORT_SYMBOL(blkdev_get);
- 
- /**
-  * blkdev_get_by_path - open a block device by name
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 5bd96fbab9b4c8..14117995091224 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -1975,7 +1975,6 @@ void blkdev_show(struct seq_file *seqf, off_t offset);
- #define BLKDEV_MAJOR_MAX	0
- #endif
- 
--int blkdev_get(struct block_device *bdev, fmode_t mode, void *holder);
- struct block_device *blkdev_get_by_path(const char *path, fmode_t mode,
- 		void *holder);
- struct block_device *blkdev_get_by_dev(dev_t dev, fmode_t mode, void *holder);
+This patch is part of series [1] (orignal patch [2]) where rest of the
+patches have been picked up by the respective maintainers so just
+resending this patch.
+
+I have included the Acks' from the maintainers.
+
+[1] https://patchwork.kernel.org/project/linux-renesas-soc/
+    list/?series=319563
+[2] https://patchwork.kernel.org/patch/11668061/
+
+Cheers,
+Prabhakar
+---
+ Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml b/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
+index d06096a7ba4b..2ad2444f1042 100644
+--- a/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
++++ b/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
+@@ -26,6 +26,7 @@ properties:
+       - items:
+           - enum:
+               - renesas,sata-r8a774b1     # RZ/G2N
++              - renesas,sata-r8a774e1     # RZ/G2H
+               - renesas,sata-r8a7795      # R-Car H3
+               - renesas,sata-r8a77965     # R-Car M3-N
+           - const: renesas,rcar-gen3-sata # generic R-Car Gen3 or RZ/G2
 -- 
-2.28.0
+2.17.1
 

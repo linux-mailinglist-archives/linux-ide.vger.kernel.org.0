@@ -2,117 +2,126 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E62C273D8C
-	for <lists+linux-ide@lfdr.de>; Tue, 22 Sep 2020 10:40:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68450273F5E
+	for <lists+linux-ide@lfdr.de>; Tue, 22 Sep 2020 12:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726589AbgIVIko (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 22 Sep 2020 04:40:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726098AbgIVIko (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Sep 2020 04:40:44 -0400
-Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCA3C061755;
-        Tue, 22 Sep 2020 01:40:43 -0700 (PDT)
-Received: by mail-yb1-xb43.google.com with SMTP id 133so5031600ybg.11;
-        Tue, 22 Sep 2020 01:40:43 -0700 (PDT)
+        id S1726522AbgIVKQR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 22 Sep 2020 06:16:17 -0400
+Received: from mail-dm6nam12on2070.outbound.protection.outlook.com ([40.107.243.70]:53250
+        "EHLO NAM12-DM6-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726423AbgIVKQR (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 22 Sep 2020 06:16:17 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CCCPP0OUV1dD88pQIPetY8YqenJl9Ac5vBntKLqh7ivVaMqBW15RJzayj9jLhGPjl39QXkOnB/kLgerrxTeeBXbTRAt5b2NaiBlQ1hh2/crW+KwJVI/Ykulh5X8DpxU6ZCt5BXaykge9tmoInwqpqh63uWPAyHep1+KjZLOcLenpCMKsFIEZIehSjwWXJl522FsA/003Y0X1zacWiA++cDepokDBoK+6XI4SEuazn4savAekRoe12K3KpJRAP/56JRpZegEONhPzMa7fRwRGs+8BCKmsLvZfIgkvzYlpeOQ6LEBUpcDxId8VrZbW9Zr9hpJ6m1E+kJv9h+9BqZ6Q+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r3Kwn3a6DAe5FyjA7reT+/bGlZsf7JAO3C/IfiHJ/tw=;
+ b=biAlDiVA3FGBp4krB9Nv2cj/YhDZeLHDddiNGa5Rz3gLmM1dVCOe0mYA7mV6SgVT3UiP3gZU5/QCnSeDHlIdc3wpD6SmWkYf7pQM5fzmgkbe3GagygWAS5VqvUxEWuhusu2Ep1zLe3JtGaKJeKCQcsOmpNrFdTm6sdD5UBjXlsJZ/BKN6cR3h9BKW0QzpRmsSqohNNTr90A1KqwxM4zfTNB7YRxlQYTUa7GH9jsnv7nFdweT516Rx2VEeems1BEhUvimPXfy0EkhYul2FbFGYaUbYlDTwGcyeVPde7HTmU8evqgQzkRomdJqebUk/7cMi5ytWkAh8Gw6Z/0yuIL0ZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=N+OZiUP1vnnZHS8QHCk/3wxoJQlfFggJgv3Kp7po0iw=;
-        b=NuVLgPgziheHwTfP5LjhFY4SesKJN6z12RILB1pN4/SeYDJzsHHvNKezR7ZYNY4dks
-         R0rzGhN6Udmt//3tnPZXjgTsNr/c3ToPlEYCpNKg+XX1/tON4IljkX1fpQmsFLu4fysH
-         ZjJ86XJRSYLhpVFJDKRk9CJOC4RjlB+fC4P1iwaz1sZk4aKze740Q52vngewtGl/oIyY
-         Y45SYNMv6ibCl+2Vx1HERK0vRajzkUQ1kQpv9q64EgtEFcw7fBDhONQWuRZU8tl15Q5p
-         dapvzfVuitIIPO3bUQ/+iHaSDz56C4mqO4AuLzfsHRSyNQkmm471kLn7Lwusf38OStzE
-         yLyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=N+OZiUP1vnnZHS8QHCk/3wxoJQlfFggJgv3Kp7po0iw=;
-        b=V4Dsro4+lFjeFdaVIcURwTKwb9hB2isUYSy3tdcmi4AE+LepaLjwOIPiLYiPJx0frl
-         cLk42+AFL+OWynJsD2xkkJKvGpSF0LR52PoL8/gxavMaMeDW7FJHv1OKPTiNMUUiKRTu
-         QVNZNR/EHJI3bNbs7dlN+LRDaNNVneNwuFFjTRWtPY88D2/k0+ZOdlW9hCvITi5ELZp4
-         taV710LI6Z9PTC4SL5c01MMqGw63ifPtf8bXlyvWRmOQN6YChWBFj66G8Ilicvd8r7CM
-         /r85iG4sJqb9zW2AcHwqyBTcvn7VPgLrwoB+JOnDZQMPat791AyWxZzxTOMpbTqwGDNW
-         2P0g==
-X-Gm-Message-State: AOAM533MjfZ69pZZ+pN6Q0uCxIo8gH86xf/4wqkf+EPdBvQgRs+EAmOF
-        1+7sgWi0bBw+rxk77DpxLIDZxKNBPmR+Z9fpY1k=
-X-Google-Smtp-Source: ABdhPJz7tp5/sbJjNYhmIjZ7Es4Bbt3UXUUN5/fc2NbqpCJMyZa2zZxOrHHSujRQO3IVOmIzjvH6zmqGIz2tZe5DpxI=
-X-Received: by 2002:a25:aba1:: with SMTP id v30mr5709473ybi.518.1600764043123;
- Tue, 22 Sep 2020 01:40:43 -0700 (PDT)
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r3Kwn3a6DAe5FyjA7reT+/bGlZsf7JAO3C/IfiHJ/tw=;
+ b=tXB6Kw0P6VKOxX8bmB1bWuHuXB+hukWU8p8Eyc/jSZqdcPSaHZnrvYuuc9YM8i3ZsnLouqgfT0Hw/mtKFbZXk3+3wgeV+El5wKMui+v75JmyRwzrNBy8eVIBH7Zgs4Qa6io+q/JIr+AGrvtBcv1v1mRNdqYbHc0oQGQLCU9mJhY=
+Received: from CY4PR13CA0045.namprd13.prod.outlook.com (2603:10b6:903:99::31)
+ by MWHPR02MB2446.namprd02.prod.outlook.com (2603:10b6:300:40::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3391.11; Tue, 22 Sep
+ 2020 10:16:13 +0000
+Received: from CY1NAM02FT021.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:903:99:cafe::f1) by CY4PR13CA0045.outlook.office365.com
+ (2603:10b6:903:99::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3412.4 via Frontend
+ Transport; Tue, 22 Sep 2020 10:16:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; vger.kernel.org; dkim=none (message not signed)
+ header.d=none;vger.kernel.org; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ CY1NAM02FT021.mail.protection.outlook.com (10.152.75.187) with Microsoft SMTP
+ Server id 15.20.3391.15 via Frontend Transport; Tue, 22 Sep 2020 10:16:12
+ +0000
+Received: from [149.199.38.66] (port=47630 helo=smtp.xilinx.com)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.90)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1kKfL4-0005x3-Bj; Tue, 22 Sep 2020 03:15:58 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by smtp.xilinx.com with smtp (Exim 4.63)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1kKfLI-0001nH-IP; Tue, 22 Sep 2020 03:16:12 -0700
+Received: from xsj-pvapsmtp01 (mailhub.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id 08MAG5RM017692;
+        Tue, 22 Sep 2020 03:16:05 -0700
+Received: from [10.140.6.6] (helo=xhdappanad40.xilinx.com)
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1kKfLA-0001dQ-PX; Tue, 22 Sep 2020 03:16:05 -0700
+From:   Piyush Mehta <piyush.mehta@xilinx.com>
+To:     axboe@kernel.dk, p.zabel@pengutronix.de, robh+dt@kernel.org
+Cc:     linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, git@xilinx.com, sgoud@xilinx.com,
+        michal.simek@xilinx.com, Piyush Mehta <piyush.mehta@xilinx.com>
+Subject: [PATCH V2 0/2] ata: ahci: ceva: Update the driver to support xilinx GT phy
+Date:   Tue, 22 Sep 2020 15:45:11 +0530
+Message-Id: <1600769713-944-1-git-send-email-piyush.mehta@xilinx.com>
+X-Mailer: git-send-email 2.7.4
+X-RCIS-Action: ALLOW
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-PublicTrafficType: Email
 MIME-Version: 1.0
-References: <1594919915-5225-1-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <1594919915-5225-8-git-send-email-prabhakar.mahadev-lad.rj@bp.renesas.com>
- <CA+V-a8vJ2n3KEL8P+XmVob2zjoWaX+s4a6c1TV_WoPFkwdkZmA@mail.gmail.com>
- <20200920140824.GA2915460@kroah.com> <CAMuHMdUyXMfZcVKkqaZHJ8tJf-3Kotqg+S2NHMZT0VFO0ZJJww@mail.gmail.com>
- <20200922083909.GA2092905@kroah.com>
-In-Reply-To: <20200922083909.GA2092905@kroah.com>
-From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date:   Tue, 22 Sep 2020 09:40:16 +0100
-Message-ID: <CA+V-a8u_0+XqyBiV6vxuc1d6_eDZdzO8dy3qBrmO1ke3L4BROQ@mail.gmail.com>
-Subject: Re: [PATCH 07/20] dt-bindings: usb: renesas,usb3-peri: Document
- r8a774e1 support
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Jens Axboe <axboe@kernel.dk>, Rob Herring <robh+dt@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Marek Vasut <marek.vasut+renesas@gmail.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Mark Brown <broonie@kernel.org>,
-        Niklas <niklas.soderlund@ragnatech.se>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Magnus Damm <magnus.damm@gmail.com>,
-        "open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" 
-        <devicetree@vger.kernel.org>, linux-ide@vger.kernel.org,
-        dmaengine <dmaengine@vger.kernel.org>,
-        Linux I2C <linux-i2c@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-media <linux-media@vger.kernel.org>,
-        linux-pci <linux-pci@vger.kernel.org>,
-        alsa-devel <alsa-devel@alsa-project.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        USB list <linux-usb@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: c17e7dac-3d0e-4e5e-0b88-08d85ee08878
+X-MS-TrafficTypeDiagnostic: MWHPR02MB2446:
+X-Microsoft-Antispam-PRVS: <MWHPR02MB2446E387AD6BFB869D4FF1F6D43B0@MWHPR02MB2446.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:5797;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: amttLuXsSH22Zo6k3hdxGgeELyFaU6h3/y3tuAf3CsWPxuGebDrnz0zup054fvTTX057cn42fqMOCv5AoeJ2ZiIMKAR0b4dDXylJb7uie0ww2egB6hkJXlEPdMOLyD8jHzuHPrS6W0BEeyQHzTovWv4nwjguhO09cB5Dd2ShDTJ8BeP2MtYQZzj1zeZuNVcchiLDKaN2Yus+gmVeg5ULD0Phil8KWEFmfOQXhhhH+KvtElf4bRVhikAzhAeZu23ylBGDZDz2uU4/u2MwGEQO8YLRe/6QnBU1tOMjyUKhgq2ym5BxLGJjEawat7O3MtrZHEkGoVCwiFXEt4LG/Kcr3W3nNO1uwi3uxuWpQ8UVkqJNlJudh9ecJzcDdMzV6bYD9NSRjhaj/YokUjFRuPCpRkbKd5MxxBTgFQji1cq67oSFNXyLDm2Bkn1xPY+K9rxK
+X-Forefront-Antispam-Report: CIP:149.199.60.83;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapsmtpgw01;PTR:unknown-60-83.xilinx.com;CAT:NONE;SFS:(396003)(376002)(346002)(136003)(39860400002)(46966005)(81166007)(107886003)(47076004)(356005)(2906002)(316002)(26005)(70586007)(44832011)(70206006)(82740400003)(2616005)(478600001)(5660300002)(36756003)(6666004)(186003)(426003)(82310400003)(15650500001)(9786002)(4744005)(83380400001)(7696005)(8676002)(4326008)(8936002)(336012);DIR:OUT;SFP:1101;
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Sep 2020 10:16:12.8099
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c17e7dac-3d0e-4e5e-0b88-08d85ee08878
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-AuthSource: CY1NAM02FT021.eop-nam02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR02MB2446
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Tue, Sep 22, 2020 at 9:38 AM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Sep 21, 2020 at 09:30:39AM +0200, Geert Uytterhoeven wrote:
-> > Hi Greg,
-> >
-> > On Sun, Sep 20, 2020 at 4:08 PM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > > On Sat, Sep 19, 2020 at 11:50:07AM +0100, Lad, Prabhakar wrote:
-> > > > On Thu, Jul 16, 2020 at 6:19 PM Lad Prabhakar
-> > > > <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
-> > > > >
-> > > > > Document RZ/G2H (R8A774E1) SoC bindings.
-> > > > >
-> > > > > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > > > > Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
-> > > > > ---
-> > > > >  Documentation/devicetree/bindings/usb/renesas,usb3-peri.yaml | 1 +
-> > > > >  1 file changed, 1 insertion(+)
-> > > > >
-> > > > Could you please pick this patch.
-> > >
-> > > Don't DT patches have to be acked by a DT maintainer first?
-> >
-> > https://lore.kernel.org/r/20200721033508.GA3504365@bogus
->
-> Ah, missed that, sorry.  This, and patch 11/20, now queued up.
->
-Thank you.
+This patch series updates the ceva driver to add support for Xilinx GT phy.
+This also updates the documentation with the device tree binding required
+for working with Xilinx GT phy.
 
-Cheers,
-Prabhakar
+---
+Changes in V2:
+ - Added backward compatibility with the older sequence of the CEVA controller.
+ - Update dt-bindings document: To make phy and reset properties optional.
+ - Remove rst_names property.
+---
+Piyush Mehta (2):
+  dt-bindings: ata: ahci: ceva: Update documentation for CEVA Controller
+  ata: ahci: ceva: Update the driver to support xilinx GT phy
+
+ .../devicetree/bindings/ata/ahci-ceva.txt          |  6 ++++
+ drivers/ata/ahci_ceva.c                            | 39 ++++++++++++++++++++--
+ 2 files changed, 43 insertions(+), 2 deletions(-)
+
+-- 
+2.7.4
+

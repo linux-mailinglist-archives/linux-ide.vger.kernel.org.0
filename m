@@ -2,72 +2,99 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4851127530A
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Sep 2020 10:16:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99A2D275DB9
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Sep 2020 18:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726196AbgIWIQK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 23 Sep 2020 04:16:10 -0400
-Received: from hermes.cta.br ([161.24.235.5]:52746 "EHLO hermes.cta.br"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726193AbgIWIQK (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 23 Sep 2020 04:16:10 -0400
-X-Greylist: delayed 6351 seconds by postgrey-1.27 at vger.kernel.org; Wed, 23 Sep 2020 04:16:09 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by hermes.cta.br (Postfix) with ESMTP id BF605170271B;
-        Wed, 23 Sep 2020 02:27:32 -0300 (-03)
-Received: from hermes.cta.br ([127.0.0.1])
-        by localhost (hermes.cta.br [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id UNehmDtDZHmo; Wed, 23 Sep 2020 02:27:32 -0300 (-03)
-Received: from localhost (localhost [127.0.0.1])
-        by hermes.cta.br (Postfix) with ESMTP id F2AC51628BBE;
-        Wed, 23 Sep 2020 01:38:49 -0300 (-03)
-DKIM-Filter: OpenDKIM Filter v2.10.3 hermes.cta.br F2AC51628BBE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cta.br;
-        s=50824260-A46F-11E8-B5E3-16F5207DEC71; t=1600835930;
-        bh=PEgy+RpcsckcVXxslQn6d+tc//P81+6V7lvSU9dRFp0=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=a03zLYv8mGdf7m0T1pzWrqbtFmtCdOUdNQxagvMs/bshy6mRARfyyoHkRKNzbqLht
-         PsznlkWgb4HGWiQsOcAb9WUq82+LZGqSbM+UhFGragba+23nk6mZLZBuklGDIzGWSH
-         IvR7RyR3W65smvWbsE+UJU7SmcWj/m6A3CFbtyYDiI4cIUGUds5SvDQmoaudvQ+vBu
-         g/MZBBP9NsGsFjc4DXhnI8MTYfEU5/N3X+0qKY/+pOqJJRG4Z4gwY1HqrM0TxsBPdw
-         N1X9qouq0Ka9Mc1d2QmUbzGXMS23alHM+fFiv7ApvzXLVHkZYzv/Mfew/KYWWFR84B
-         /yns7oYnaS/PQ==
-X-Virus-Scanned: amavisd-new at cta.br
-Received: from hermes.cta.br ([127.0.0.1])
-        by localhost (hermes.cta.br [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Ps3w9JZBtnw3; Wed, 23 Sep 2020 01:38:49 -0300 (-03)
-Received: from [10.120.212.214] (unknown [105.12.3.179])
-        by hermes.cta.br (Postfix) with ESMTPSA id 6869E16E83BE;
-        Wed, 23 Sep 2020 01:19:40 -0300 (-03)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726761AbgIWQoA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 23 Sep 2020 12:44:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54146 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726130AbgIWQoA (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Sep 2020 12:44:00 -0400
+Received: from mail-pf1-x444.google.com (mail-pf1-x444.google.com [IPv6:2607:f8b0:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA4BC0613D2
+        for <linux-ide@vger.kernel.org>; Wed, 23 Sep 2020 09:43:59 -0700 (PDT)
+Received: by mail-pf1-x444.google.com with SMTP id d6so5329pfn.9
+        for <linux-ide@vger.kernel.org>; Wed, 23 Sep 2020 09:43:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=9kKVBm2QDcEhoI7VNH0u9uwqsgFbX84K7to4q+EvAF8=;
+        b=wo1HxCm5bKIVa9so0OH72jUPeuxpy0gBmSztrnAMX5SSm8gqDsd/uDbJD7n0nTY7Hv
+         CKJoObg/EBB1JCvStmCq+2DKeNopjuTxhY6T7yv5TlzOVOSgvtBEy4neG07it4ARoA4J
+         WHOi+7obrEMIUDmzT3kBBEHLDf0ZbrbNxMoUwtAnQnNZ4qwV/A1Mq5PJhKVbgpJ/Rod5
+         V4wdCnvNPJU0KSWHIs05KbU5DxoLhNDG93YaWxwBm6g7XccmnyHw+ixRtSpxeaSGMhwd
+         mx1/GOsS6pG7kDo6kprXjUbJ/6H+1rzHGTrQ7trw2dp1Uk7jyzCH8F6put7clvS8xmh3
+         DueQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=9kKVBm2QDcEhoI7VNH0u9uwqsgFbX84K7to4q+EvAF8=;
+        b=kq7YWg+Qs4bDIUzHqoqI+IZAR1+6+lbhCRaMW8kevgAiW1++wH19tkAPRf2ThZXObQ
+         CyGcqg3isxcaXXCxz12JheRP873T3tg7tmZz4WYhTqDb7o4VHMdb5IiTe6Cc6foE20td
+         b3TtfEVZrN074iBAIenQZ4h3E0+R7bZEMvNbgRgmoQDD18k4iy+rU6JsOuRPAllNl2d7
+         iT45rsDDhWARNsikuCLncclVl9y6Sks28kPdvmYxUdDG3HwSZIeiv4+fB+kxbKS4nsTd
+         LXJrvJYHlk26Ir3pPztF2SDpcJ6e8KWIL8sR7mVqpMllKSNb5kiPtZNCR/zxVxqaGO2S
+         FflA==
+X-Gm-Message-State: AOAM530zLfyQQ8JU778xVbzkovSP2zitvox75S2K8gmmF+G69fN5V2DB
+        EvmIGDUuT9AkwzjxFBu6biHpEHZiiiusQw==
+X-Google-Smtp-Source: ABdhPJzQnxjNRw3M1n4lJU3pDIkemY3ZCQKnOQ7VywhFrMYRm0itMgYfj3gWdktm3tes58COiW8SXA==
+X-Received: by 2002:a62:2b52:0:b029:142:2501:39e9 with SMTP id r79-20020a622b520000b0290142250139e9mr746426pfr.56.1600879439083;
+        Wed, 23 Sep 2020 09:43:59 -0700 (PDT)
+Received: from [192.168.1.30] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id q190sm241046pfq.99.2020.09.23.09.43.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Sep 2020 09:43:58 -0700 (PDT)
+Subject: Re: remove blkdev_get as a public API v2
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Stefan Haberland <sth@linux.ibm.com>,
+        Jan Hoeppner <hoeppner@linux.ibm.com>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Pavel Machek <pavel@ucw.cz>, Len Brown <len.brown@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, nbd@other.debian.org,
+        linux-ide@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, ocfs2-devel@oss.oracle.com,
+        linux-pm@vger.kernel.org, linux-mm@kvack.org,
+        linux-block@vger.kernel.org
+References: <20200921071958.307589-1-hch@lst.de>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <d23e5bd4-4d69-f909-eb8b-10c489b67f8b@kernel.dk>
+Date:   Wed, 23 Sep 2020 10:43:57 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: spende von 2,000,000 euro
-To:     Recipients <scco@cta.br>
-From:   ''Tayeb souami'' <scco@cta.br>
-Date:   Wed, 23 Sep 2020 06:22:00 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20200923041941.6869E16E83BE@hermes.cta.br>
+In-Reply-To: <20200921071958.307589-1-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hallo mein lieber Freund
-                                  Mein Name ist Tayeb Souami aus New Jersey=
- in Amerika und ich habe den America Lottery Jackpot von 315 Millionen Euro=
- gewonnen. Ich habe mich entschlossen, die Summe von 2.000.000 Euro an f=FC=
-nf gl=FCckliche Personen zu spenden, und Sie wurden als einer der Beg=FCnst=
-igten ausgew=E4hlt. Bitte klicken Sie auf diesen Link, um mehr =FCber meine=
-n Gewinn zu erfahren.
+On 9/21/20 1:19 AM, Christoph Hellwig wrote:
+> Hi Jens,
+> 
+> this series removes blkdev_get as a public API, leaving it as just an
+> implementation detail of blkdev_get_by_path and blkdev_get_by_dev.  The
+> reason for that is that blkdev_get is a very confusing API that requires
+> a struct block_device to be fed in, but then actually consumes the
+> reference.  And it turns out just using the two above mentioned APIs
+> actually significantly simplifies the code as well.
+> 
+> Changes since v1:
+>  - fix a mismerged that left a stray bdget_disk around
+>  - factour the partition scan at registration time code into a new
+>    helper.
 
+Applied for 5.10, thanks.
 
-UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
+-- 
+Jens Axboe
 
-Bitte kontaktieren Sie mich =FCber diese E-Mail: Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie gl=FCcklich zu machen.
-
-Gr=FC=DFe
-Herr Tayeb Souami

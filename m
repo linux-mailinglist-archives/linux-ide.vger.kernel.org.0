@@ -2,97 +2,125 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1BF276CE4
-	for <lists+linux-ide@lfdr.de>; Thu, 24 Sep 2020 11:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 740C2276FCA
+	for <lists+linux-ide@lfdr.de>; Thu, 24 Sep 2020 13:22:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726710AbgIXJPD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 24 Sep 2020 05:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37442 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727311AbgIXJPB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Sep 2020 05:15:01 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3483FC0613D5
-        for <linux-ide@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id c8so2632082edv.5
-        for <linux-ide@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=blIPJEbomAKiMgTEwz666YDx51JxK5KUKkCacV2k5DGrYF1dgoN3TPlbCce3UdPyqn
-         l+sjX0//ZpWoRSpXvagCpGylKqMTkNMo/2HAZJY28dwC1rti3ofKw4Z1RDbjcvxMDnbn
-         DBnAhALu6UdIa4wCDzo7dIv9qp2U03O4u7rDCQdwmjFPbrVpv5bepecSdGtwKnTJB9rH
-         nH/oGusFJ6JM43Xna+7eDdLYcEoJL8AsTmou4kcpDb2UtDY0KPfodc/NGQ4TUEcOm3hs
-         6cMsgEJtG/d3gouoUvTe4+Wy9RSjcJnO5Ygg3P7zVsSedlaT/hDy9teH4tkT8r3LGB8W
-         6cvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
-        b=Bvs0EY2ifjQGyGot9rSjKXsWbQgvihyBAtqlkTxEA7eYjBc9yDwOv8j7AMUpWMF4tM
-         /kEM9U6b2BS0xhMsOx98QwYUhTshHy5atDhvyX09QqyD2YCgJjmmHFkXm/FOuoeX1Wk9
-         t4RQ/two+U5oZAONeOFWeuqCE8ssLPS05kjlt21pWoIPgJ11mVG1cu+LsjqbElGh61oz
-         ykb0H76HQntfZKbLAAsmBIaxWzMHzicpPLVQdhyYNgCOczApgH5X+/fCeDjcetwqcmz2
-         IWw1TU5VbBNZtphRiz3A2KmuUx80H2QjfEtmyFlKdqzG759+xj0sPKtwPYQbmu9BdhJy
-         NpGA==
-X-Gm-Message-State: AOAM530OC2GEsyap+VhtPsxj8s/BQRLaDluP95jUtr6Jy8rwF6O2d4i6
-        aqqXiC0emJCXU/wkLtsuTF3PNLnVK+uNq69OSOc=
-X-Google-Smtp-Source: ABdhPJyTPH8PP/2mieNLbOyLqms9pUviMKvSeTWD9wb8h+Pr7H1ZfKMbyjpiQTFtDXkxINcaJ73NV9FfmSogeqXajbU=
-X-Received: by 2002:a05:6402:c15:: with SMTP id co21mr1946edb.268.1600938899597;
- Thu, 24 Sep 2020 02:14:59 -0700 (PDT)
+        id S1726617AbgIXLWy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 24 Sep 2020 07:22:54 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:35758 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726465AbgIXLWy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Sep 2020 07:22:54 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200924112252euoutp01da373cae4de32ecb5bb4ffe501beac82~3tG0FK9pu2096620966euoutp019
+        for <linux-ide@vger.kernel.org>; Thu, 24 Sep 2020 11:22:52 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200924112252euoutp01da373cae4de32ecb5bb4ffe501beac82~3tG0FK9pu2096620966euoutp019
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1600946572;
+        bh=1HVgujXL6+VFHAinjipBTSMhpDiAZWzmTesRTiQUnYE=;
+        h=To:Cc:From:Subject:Date:References:From;
+        b=DLsznSWRI6mXxbNlOe8NdYt5RqPV9zoRdtTInzW17/lh5T2+rn8eHnF4Ivpdb72cU
+         CNANoOa+JIBK6WQ9lJrDiGu9yHuyabTurZoDogl3M1SsXfmtukaTa2o0BvFGfGplRf
+         WkM7+1D2OqTMuD5W6+ch/ZCQhZ3j/nEAwRbjivlk=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200924112252eucas1p2fb6d4757dff7fa9643fd533149b49ab1~3tGz6Q8hm2922129221eucas1p2X;
+        Thu, 24 Sep 2020 11:22:52 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 12.E7.06318.C818C6F5; Thu, 24
+        Sep 2020 12:22:52 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200924112252eucas1p2e372d1ce6d6f8cf8106572adeb200fee~3tGzkec1U1794217942eucas1p2X;
+        Thu, 24 Sep 2020 11:22:52 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200924112252eusmtrp1348420c81288c5e35fabede0444b26b0~3tGzj5E-e2014820148eusmtrp1f;
+        Thu, 24 Sep 2020 11:22:52 +0000 (GMT)
+X-AuditID: cbfec7f5-371ff700000018ae-26-5f6c818c004d
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 6A.75.06314.C818C6F5; Thu, 24
+        Sep 2020 12:22:52 +0100 (BST)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200924112252eusmtip18983928ef9ee893900e3033b552c28d3~3tGzYZA3a3166431664eusmtip19;
+        Thu, 24 Sep 2020 11:22:52 +0000 (GMT)
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Subject: [PATCH] MAINTAINERS: remove LIBATA PATA DRIVERS entry
+Message-ID: <1c6cdd00-93a2-55f7-9494-1c0058de384a@samsung.com>
+Date:   Thu, 24 Sep 2020 13:22:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Received: by 2002:a54:2811:0:0:0:0:0 with HTTP; Thu, 24 Sep 2020 02:14:58
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <floradarpin.d@gmail.com>
-Date:   Thu, 24 Sep 2020 02:14:58 -0700
-Message-ID: <CAPX4zWxG6--oZzPaoMmta9n5fWHajuiA-wFBP=cbGe-CKGcWaw@mail.gmail.com>
-Subject: Lieber Freund (Assalamu Alaikum),?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpjleLIzCtJLcpLzFFi42LZduzned2expx4g5M31CxW3+1nszi24xGT
+        xeVdc9gcmD0uny31+LxJLoApissmJTUnsyy1SN8ugSvj2PFpTAWLOCo+HlnN1MDYw97FyMkh
+        IWAiseLMfbYuRi4OIYEVjBL3Vs8HSwgJfGGUmLYyHiLxmVFiyrXLzF2MHGAdLZfdIeLLGSW2
+        nljPAuG8ZZQ4+38ZC0i3iICCRM/vlWwgNrOAtcTW1mlgU9kErCQmtq9iBLGFBewknk5ZzwRi
+        8wLZe3q+sYLYLAKqEtuPLwCLiwpESHx6cJgVokZQ4uTMJywQM8Ulbj2ZzwRhy0tsfzuHGeQI
+        CYHHbBJXr/yG+s1FYtWUTkYIW1ji1fEtUHEZidOTe1ggGtYxSvzteAHVvZ1RYvnkf2wQVdYS
+        d879YgP5mVlAU2L9Ln2IsKNE3/9b0KDgk7jxVhDiCD6JSdumQ4V5JTrahCCq1SQ2LNvABrO2
+        a+dKZgjbQ+LSyz3sExgVZyF5bRaS12YheW0Wwg0LGFlWMYqnlhbnpqcWG+ellusVJ+YWl+al
+        6yXn525iBKaO0/+Of93BuO9P0iFGAQ5GJR5eDt3seCHWxLLiytxDjBIczEoivE5nT8cJ8aYk
+        VlalFuXHF5XmpBYfYpTmYFES5zVe9DJWSCA9sSQ1OzW1ILUIJsvEwSnVwHjhSvozfRWnhD1/
+        pLSn9vxL7jv5aMPXz5EZxw6skNRpU4iwdnqVl9Ixdevx0w6nF+wwUPnq5aPRf2zzUV+1HZ+U
+        paKk7hxRyPgYrJBx2fPYUYVZBucehm7rC7TWCRa9/0bgcewupmb/T3IrAvqW3SlO7vbu0Txf
+        usel97zBo9/sb779WKB6zV+JpTgj0VCLuag4EQBhaKAYGQMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrPLMWRmVeSWpSXmKPExsVy+t/xu7o9jTnxBh+mCFusvtvPZnFsxyMm
+        i8u75rA5MHtcPlvq8XmTXABTlJ5NUX5pSapCRn5xia1StKGFkZ6hpYWekYmlnqGxeayVkamS
+        vp1NSmpOZllqkb5dgl7GsePTmAoWcVR8PLKaqYGxh72LkYNDQsBEouWyexcjF4eQwFJGieXT
+        HrNBxGUkjq8v62LkBDKFJf5c62KDqHnNKPFh+k42kISIgIJEz++VYDazgLXE1tZp7CA2m4CV
+        xMT2VYwgtrCAncTTKeuZQGxeIHtPzzdWEJtFQFVi+/EFYHFRgQiJwztmMULUCEqcnPmEBWKm
+        usSfeZeYIWxxiVtP5jNB2PIS29/OYZ7AKDALScssJC2zkLTMQtKygJFlFaNIamlxbnpusaFe
+        cWJucWleul5yfu4mRmDgbzv2c/MOxksbgw8xCnAwKvHwcuhmxwuxJpYVV+YeYpTgYFYS4XU6
+        ezpOiDclsbIqtSg/vqg0J7X4EKMp0EMTmaVEk/OBUZlXEm9oamhuYWlobmxubGahJM7bIXAw
+        RkggPbEkNTs1tSC1CKaPiYNTqoGRx8aERanl5vmMrLvtnrqfDrkYx9QfyRSfsp3Z9dRCjawe
+        s/hpl/f9y56xpyJMzSlY9N7FhIszDBsyL/6raLy+Z/K5y347Znh3XW0L2CE+d3FS9/HubUs3
+        rWIp3zTtrkd//Ns7F3cuvXb7e+g0zuj/3Nq+Qme//MqLE9UOzjnvNOlLT5PVm8MWSizFGYmG
+        WsxFxYkAepmCfZICAAA=
+X-CMS-MailID: 20200924112252eucas1p2e372d1ce6d6f8cf8106572adeb200fee
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200924112252eucas1p2e372d1ce6d6f8cf8106572adeb200fee
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200924112252eucas1p2e372d1ce6d6f8cf8106572adeb200fee
+References: <CGME20200924112252eucas1p2e372d1ce6d6f8cf8106572adeb200fee@eucas1p2.samsung.com>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
---=20
-Lieber Freund (Assalamu Alaikum),
+Even though there is not much happening for libata PATA drivers
+I don't have time to look after them anymore.
 
-Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
-Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
-Mutter und eine Witwe
-mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
-hen
-Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
+Since Jens is maintaining the whole libata anyway just remove
+"LIBATA PATA DRIVERS" entry.
 
-Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
-f=C3=BCnfhunderttausend
-United State Dollar ($ 27.500.000.00) und ich brauche eine
-vertrauensw=C3=BCrdige Investition
-Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
-jedoch
-M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
-von
-Investitionsprojekten in Ihrem Land
-Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
-bauen.
+Signed-off-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+---
+ MAINTAINERS |    9 ---------
+ 1 file changed, 9 deletions(-)
 
-Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
-n und
-Unternehmensgewinn zu verhandeln
-Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
-
-Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
-antworten Sie bitte dringend
-Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
-.
-
-Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
-esse (
-ayishagddafio@mail.ru ) zur weiteren Diskussion.
-
-Freundliche Gr=C3=BC=C3=9Fe
-Frau Aisha Al-Qaddafi
+Index: b/MAINTAINERS
+===================================================================
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -9912,15 +9912,6 @@ T:	git git://git.kernel.org/pub/scm/linu
+ F:	drivers/ata/pata_arasan_cf.c
+ F:	include/linux/pata_arasan_cf_data.h
+ 
+-LIBATA PATA DRIVERS
+-M:	Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+-M:	Jens Axboe <axboe@kernel.dk>
+-L:	linux-ide@vger.kernel.org
+-S:	Maintained
+-T:	git git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
+-F:	drivers/ata/ata_generic.c
+-F:	drivers/ata/pata_*.c
+-
+ LIBATA PATA FARADAY FTIDE010 AND GEMINI SATA BRIDGE DRIVERS
+ M:	Linus Walleij <linus.walleij@linaro.org>
+ L:	linux-ide@vger.kernel.org

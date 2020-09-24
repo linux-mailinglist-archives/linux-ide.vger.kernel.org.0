@@ -2,96 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92167276AA8
-	for <lists+linux-ide@lfdr.de>; Thu, 24 Sep 2020 09:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D1BF276CE4
+	for <lists+linux-ide@lfdr.de>; Thu, 24 Sep 2020 11:15:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727080AbgIXHW3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 24 Sep 2020 03:22:29 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:40529 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726993AbgIXHW3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Sep 2020 03:22:29 -0400
-Received: by mail-ot1-f67.google.com with SMTP id c2so199965otp.7;
-        Thu, 24 Sep 2020 00:22:29 -0700 (PDT)
+        id S1726710AbgIXJPD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 24 Sep 2020 05:15:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37442 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727311AbgIXJPB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Sep 2020 05:15:01 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3483FC0613D5
+        for <linux-ide@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id c8so2632082edv.5
+        for <linux-ide@vger.kernel.org>; Thu, 24 Sep 2020 02:15:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
+        b=blIPJEbomAKiMgTEwz666YDx51JxK5KUKkCacV2k5DGrYF1dgoN3TPlbCce3UdPyqn
+         l+sjX0//ZpWoRSpXvagCpGylKqMTkNMo/2HAZJY28dwC1rti3ofKw4Z1RDbjcvxMDnbn
+         DBnAhALu6UdIa4wCDzo7dIv9qp2U03O4u7rDCQdwmjFPbrVpv5bepecSdGtwKnTJB9rH
+         nH/oGusFJ6JM43Xna+7eDdLYcEoJL8AsTmou4kcpDb2UtDY0KPfodc/NGQ4TUEcOm3hs
+         6cMsgEJtG/d3gouoUvTe4+Wy9RSjcJnO5Ygg3P7zVsSedlaT/hDy9teH4tkT8r3LGB8W
+         6cvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=doJWUSEuMMX5XwNCFHPsthPQ0ya9qYj2kuRu85qUti0=;
-        b=E9ygRWcRUTJFflTne/vC4Rcsm01qjd3z1JoZ+Cef5O2GVw7rENIk5iyi5BRosKxAl3
-         1q7GmP4wiqLyvd25g+iPdGAkJf+YHnwJoLGAlFt3WGbNc4Kvty0UhPgTnFT7eb1OE/8k
-         kqq38Rdg/QGkBxVEUEzED4TqGJkoTKb+4Hn15Upa6IVhTqKt4qyUU8EURyTdYMU2kMVL
-         iItVXuc1zAhZ+idgJI2npv6l+ips+X91tH479Hpeb1LQYFxkSHvRIn56XfWg4xzuebWn
-         8dIeEIAbi/kaoX+2dUkzZFG9wGdU0TsJnmWQCkPGd1NMj9kDWLGAWjxf+tbltN8BQgZg
-         Qzhg==
-X-Gm-Message-State: AOAM5304K3+zxfB5ejy2BKEPBgIiFppUkrH6BzcjlBgOnBnbYAtuKSic
-        iQxnvOSv1wt32j9OdtfDHNX+E60gOce3LnRa2s4=
-X-Google-Smtp-Source: ABdhPJwjrYu9v7nTc+tMgh9KYdsuHGvFOqnkyNOKYLmjSPS5VINKugoRgAsR/1ACTFe/LzcZfS+u3Zu/r8tn/L3D59A=
-X-Received: by 2002:a05:6830:1008:: with SMTP id a8mr2062693otp.107.1600932148967;
- Thu, 24 Sep 2020 00:22:28 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=zdxUWMWXTEs/zs0LJh1bxLoOHpDg1k5nkLimqXptzik=;
+        b=Bvs0EY2ifjQGyGot9rSjKXsWbQgvihyBAtqlkTxEA7eYjBc9yDwOv8j7AMUpWMF4tM
+         /kEM9U6b2BS0xhMsOx98QwYUhTshHy5atDhvyX09QqyD2YCgJjmmHFkXm/FOuoeX1Wk9
+         t4RQ/two+U5oZAONeOFWeuqCE8ssLPS05kjlt21pWoIPgJ11mVG1cu+LsjqbElGh61oz
+         ykb0H76HQntfZKbLAAsmBIaxWzMHzicpPLVQdhyYNgCOczApgH5X+/fCeDjcetwqcmz2
+         IWw1TU5VbBNZtphRiz3A2KmuUx80H2QjfEtmyFlKdqzG759+xj0sPKtwPYQbmu9BdhJy
+         NpGA==
+X-Gm-Message-State: AOAM530OC2GEsyap+VhtPsxj8s/BQRLaDluP95jUtr6Jy8rwF6O2d4i6
+        aqqXiC0emJCXU/wkLtsuTF3PNLnVK+uNq69OSOc=
+X-Google-Smtp-Source: ABdhPJyTPH8PP/2mieNLbOyLqms9pUviMKvSeTWD9wb8h+Pr7H1ZfKMbyjpiQTFtDXkxINcaJ73NV9FfmSogeqXajbU=
+X-Received: by 2002:a05:6402:c15:: with SMTP id co21mr1946edb.268.1600938899597;
+ Thu, 24 Sep 2020 02:14:59 -0700 (PDT)
 MIME-Version: 1.0
-References: <edd106dad1bbea32500601c6071f37a9f02a8004.1600901284.git.fthain@telegraphics.com.au>
-In-Reply-To: <edd106dad1bbea32500601c6071f37a9f02a8004.1600901284.git.fthain@telegraphics.com.au>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 24 Sep 2020 09:22:17 +0200
-Message-ID: <CAMuHMdXb=bPg=tsmCfTFj_asSyeE=MF=MxmeobUKv0qbHDisig@mail.gmail.com>
-Subject: Re: [PATCH v4] ide/macide: Convert Mac IDE driver to platform driver
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Joshua Thompson <funaho@jurai.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ide@vger.kernel.org
+Received: by 2002:a54:2811:0:0:0:0:0 with HTTP; Thu, 24 Sep 2020 02:14:58
+ -0700 (PDT)
+Reply-To: ayishagddafio@mail.ru
+From:   AISHA GADDAFI <floradarpin.d@gmail.com>
+Date:   Thu, 24 Sep 2020 02:14:58 -0700
+Message-ID: <CAPX4zWxG6--oZzPaoMmta9n5fWHajuiA-wFBP=cbGe-CKGcWaw@mail.gmail.com>
+Subject: Lieber Freund (Assalamu Alaikum),?
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Finn,
+--=20
+Lieber Freund (Assalamu Alaikum),
 
-On Thu, Sep 24, 2020 at 1:17 AM Finn Thain <fthain@telegraphics.com.au> wrote:
-> Add platform devices for the Mac IDE controller variants. Convert the
-> macide module into a platform driver to support two of those variants.
-> For the third, use a generic "pata_platform" driver instead.
-> This enables automatic loading of the appropriate module and begins
-> the process of replacing the driver with libata alternatives.
->
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> Cc: Joshua Thompson <funaho@jurai.org>
-> References: commit 5ed0794cde593 ("m68k/atari: Convert Falcon IDE drivers to platform drivers")
-> References: commit 7ad19a99ad431 ("ide: officially deprecated the legacy IDE driver")
-> Tested-by: Stan Johnson <userm57@yahoo.com>
-> Signed-off-by: Finn Thain <fthain@telegraphics.com.au>
-> ---
-> This patch was tested successfully on a Powerbook 190 (MAC_IDE_BABOON)
-> using both pata_platform and ide_platform drivers.
-> The next step will be to try using these generic drivers with the other
-> IDE controller variants (MAC_IDE_QUADRA or MAC_IDE_PB) so that the macide
-> driver can be entirely replaced with libata drivers.
->
-> Changed since v3:
->  - Updated Kconfig help text.
->
-> Changed since v2:
->  - Enabled CONFIG_BLK_DEV_PLATFORM in multi_defconfig.
->  - Replaced dev_get_drvdata() with platform_get_drvdata().
+Ich bin vor einer privaten Suche auf Ihren E-Mail-Kontakt gesto=C3=9Fen
+Ihre Hilfe. Mein Name ist Aisha Al-Qaddafi, eine alleinerziehende
+Mutter und eine Witwe
+mit drei Kindern. Ich bin die einzige leibliche Tochter des Sp=C3=A4tlibysc=
+hen
+Pr=C3=A4sident (verstorbener Oberst Muammar Gaddafi).
 
-Thanks for the updates!
+Ich habe Investmentfonds im Wert von siebenundzwanzig Millionen
+f=C3=BCnfhunderttausend
+United State Dollar ($ 27.500.000.00) und ich brauche eine
+vertrauensw=C3=BCrdige Investition
+Manager / Partner aufgrund meines aktuellen Fl=C3=BCchtlingsstatus bin ich =
+jedoch
+M=C3=B6glicherweise interessieren Sie sich f=C3=BCr die Unterst=C3=BCtzung =
+von
+Investitionsprojekten in Ihrem Land
+Von dort aus k=C3=B6nnen wir in naher Zukunft Gesch=C3=A4ftsbeziehungen auf=
+bauen.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-i.e. will queue in the m68k for-v5.10 branch, hopefully with an
-Acked-by from the IDE maintainer.
+Ich bin bereit, mit Ihnen =C3=BCber das Verh=C3=A4ltnis zwischen Investitio=
+n und
+Unternehmensgewinn zu verhandeln
+Basis f=C3=BCr die zuk=C3=BCnftige Investition Gewinne zu erzielen.
 
-Gr{oetje,eeting}s,
+Wenn Sie bereit sind, dieses Projekt in meinem Namen zu bearbeiten,
+antworten Sie bitte dringend
+Damit ich Ihnen mehr Informationen =C3=BCber die Investmentfonds geben kann=
+.
 
-                        Geert
+Ihre dringende Antwort wird gesch=C3=A4tzt. schreibe mir an diese email adr=
+esse (
+ayishagddafio@mail.ru ) zur weiteren Diskussion.
 
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Freundliche Gr=C3=BC=C3=9Fe
+Frau Aisha Al-Qaddafi

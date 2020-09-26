@@ -2,86 +2,95 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 22995278E0D
-	for <lists+linux-ide@lfdr.de>; Fri, 25 Sep 2020 18:19:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D61552797FF
+	for <lists+linux-ide@lfdr.de>; Sat, 26 Sep 2020 10:40:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729496AbgIYQTs (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 25 Sep 2020 12:19:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:27058 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729539AbgIYQTs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 25 Sep 2020 12:19:48 -0400
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601050787;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=josTUHWqNyzesA2exKGBBZWjajhUHsqLRfrpS+k19OQ=;
-        b=WfS2ojw6JESgTsa2y87aPwxj0OJJiSxQlMqu0u9/4JQDIzTj54E1h4R7Co4n5c9xcY8rT8
-        1kqZE04HJUyWDI84uzpDQoKJBgei3GGjw/3skwKF9q3yB4tYFvn8buyVhElOQ+1WNHt8KW
-        iiKkJSr/F9QBHsQLbSFAWjzHfyZ661E=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-432-IyxQ6YfPNM-NvfhphXgtww-1; Fri, 25 Sep 2020 12:19:45 -0400
-X-MC-Unique: IyxQ6YfPNM-NvfhphXgtww-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 723AB8712FD;
-        Fri, 25 Sep 2020 16:19:44 +0000 (UTC)
-Received: from sulaco.redhat.com (unknown [10.10.110.11])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A3D385D9DC;
-        Fri, 25 Sep 2020 16:19:43 +0000 (UTC)
-From:   Tony Asleson <tasleson@redhat.com>
-To:     linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-ide@vger.kernel.org
-Subject: [v5 12/12] buffer_io_error: Use durable_name_printk_ratelimited
-Date:   Fri, 25 Sep 2020 11:19:29 -0500
-Message-Id: <20200925161929.1136806-13-tasleson@redhat.com>
-In-Reply-To: <20200925161929.1136806-1-tasleson@redhat.com>
+        id S1726309AbgIZIkH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 26 Sep 2020 04:40:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726305AbgIZIkH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 26 Sep 2020 04:40:07 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BC97C0613CE;
+        Sat, 26 Sep 2020 01:40:07 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id m5so5429826lfp.7;
+        Sat, 26 Sep 2020 01:40:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:organization:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=pPUPKOAJ7Ev2nJbdIQQ6RKeN+shYKl1n/l4jnQBOK44=;
+        b=XAjmp//NmcL1D27RAZkZiGabBTVQHMVxsgqq8SKmjOuZsrT53Nhxv9s2wTTmEdupzM
+         n0e8xzR25e+V4cXKmKnyBb7FAtW93zvkEwrQ0qprir9XVTzkr3cb9fr4ZxiYLFLwnP+S
+         buiYmdVozTTlVcFSGsDJ3dVx/ZS46k7Ko/A4gsYIVJHWXMYGNgLpdsUb4/Ykcas3c5dc
+         koA7SeyPSfcJpAKfmclD674ExY1rCU1qbcs5qyVmYluCmKAVv8eaIVDmJkWJBILSsXPG
+         Fldqydq+AI81soT6AxI9XDe02irGTk10GKcQV7X30dvBNNZlaTPraxEWI6LNrJjIHVYs
+         tJAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=pPUPKOAJ7Ev2nJbdIQQ6RKeN+shYKl1n/l4jnQBOK44=;
+        b=TnxrwN5QPL3RHApg/tK8x1Vdpcad+LSx26xwVKLLEUwor6VzCvKovXgult3bxvcHCn
+         EoC8E51xfXALiOqOamqIBPUQt7d0rgrj6gYHJvlKqbeComp89uvHYMBX+InCRArIcdXX
+         +dGHBNPl91aGG7sjzXh85hp6vVGjmn9Xwt4jyoUpIveacHVEMYxOTiMdldaGxuaHGHUR
+         R/5/d8OOr8zxlcbn7B/Qm/+jTZEJZFrYSAUHGJvb7+XNpkzBqP1ZhBCEvsh0HZLS1Igq
+         ltdPLYrTfzCF+kAMOuQAo4JbmfNiL0jz/ll8ei/XCnJn3i0CvxlEJia6Fh5tf9X94isu
+         f8Dg==
+X-Gm-Message-State: AOAM532Gu8/0MLpxL4D7X3RsVENmcJs/YCPyBHjMeyljd+ES+65JJqdv
+        T1MN4aod2uDF1aVtvanZMIvUb0m8kEM=
+X-Google-Smtp-Source: ABdhPJw39c4l34BMEWXp5xkK60eUXP/tQEvQQ0VYmLMWQ1eTvtTNq95/HUiqia+X5RLHNx7m/Vtqzg==
+X-Received: by 2002:ac2:4d10:: with SMTP id r16mr813784lfi.58.1601109605622;
+        Sat, 26 Sep 2020 01:40:05 -0700 (PDT)
+Received: from ?IPv6:2a00:1fa0:4850:6d74:c94:bdc6:ff06:f208? ([2a00:1fa0:4850:6d74:c94:bdc6:ff06:f208])
+        by smtp.gmail.com with ESMTPSA id n3sm1174267lfq.274.2020.09.26.01.40.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 26 Sep 2020 01:40:05 -0700 (PDT)
+Subject: Re: [v5 07/12] libata: Make ata_scsi_durable_name static
+To:     Tony Asleson <tasleson@redhat.com>, linux-scsi@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org
 References: <20200925161929.1136806-1-tasleson@redhat.com>
+ <20200925161929.1136806-8-tasleson@redhat.com>
+From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Organization: Brain-dead Software
+Message-ID: <ec0479bf-e5ac-58f1-248a-2d4c29ae3efa@gmail.com>
+Date:   Sat, 26 Sep 2020 11:40:04 +0300
+User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+In-Reply-To: <20200925161929.1136806-8-tasleson@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Replace printk_ratelimited with one that adds the key/value
-durable name to log entry.
+Hello!
 
-Signed-off-by: Tony Asleson <tasleson@redhat.com>
----
- fs/buffer.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+On 25.09.2020 19:19, Tony Asleson wrote:
 
-diff --git a/fs/buffer.c b/fs/buffer.c
-index 64fe82ec65ff..5c4e5b4c82dd 100644
---- a/fs/buffer.c
-+++ b/fs/buffer.c
-@@ -125,10 +125,17 @@ EXPORT_SYMBOL(__wait_on_buffer);
- 
- static void buffer_io_error(struct buffer_head *bh, char *msg)
- {
--	if (!test_bit(BH_Quiet, &bh->b_state))
--		printk_ratelimited(KERN_ERR
--			"Buffer I/O error on dev %pg, logical block %llu%s\n",
--			bh->b_bdev, (unsigned long long)bh->b_blocknr, msg);
-+	struct device *gendev;
-+
-+	if (test_bit(BH_Quiet, &bh->b_state))
-+		return;
-+
-+	gendev = bh->b_bdev->bd_disk ?
-+		disk_to_dev(bh->b_bdev->bd_disk) : NULL;
-+
-+	durable_name_printk_ratelimited(KERN_ERR, gendev,
-+		"Buffer I/O error on dev %pg, logical block %llu%s\n",
-+		bh->b_bdev, (unsigned long long)bh->b_blocknr, msg);
- }
- 
- /*
--- 
-2.26.2
+> Signed-off-by: Tony Asleson <tasleson@redhat.com>
+> Signed-off-by: kernel test robot <lkp@intel.com>
+> ---
+>   drivers/ata/libata-scsi.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index 194dac7dbdca..13a58ed7184c 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+> @@ -1086,7 +1086,7 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
+>   	return 0;
+>   }
+>   
+> -int ata_scsi_durable_name(const struct device *dev, char *buf, size_t len)
+> +static int ata_scsi_durable_name(const struct device *dev, char *buf, size_t len)
 
+    Why not do it in patch #6 -- when introducing the function?
+
+[...]
+
+MBR, Sergei

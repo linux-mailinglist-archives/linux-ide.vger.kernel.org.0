@@ -2,119 +2,194 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87A3127A1CB
-	for <lists+linux-ide@lfdr.de>; Sun, 27 Sep 2020 18:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7980027A3D9
+	for <lists+linux-ide@lfdr.de>; Sun, 27 Sep 2020 22:03:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726314AbgI0QP0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 27 Sep 2020 12:15:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60876 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726239AbgI0QPZ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 27 Sep 2020 12:15:25 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82FE6C0613CE;
-        Sun, 27 Sep 2020 09:15:25 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id x69so8303592lff.3;
-        Sun, 27 Sep 2020 09:15:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:organization:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=L/xc46eYC0rZns9hNBhr248U6alDhReApEPhDLkCO6E=;
-        b=VdQBUzc/6LpyDv2Xp8olbr6AbUms+2N2G53yQPXbznI2rqUR7RoPQd63+zLAC2VKRT
-         krG6jeEqUHdq7uW+rPYqX6XC1xOaKONLfJ15kR+JwWGr9CJaCqXfTzsR3OkQ3jsShKA2
-         +WwPvBMPm1B1Bo58AymftI3xbbco3d9uZPNHTe6pu+YzhAhkzn4TL+UJmpOfp8NWpXGb
-         td3K6BsTCc/bV0JobIvZ8bddmrlz7lVZpSXTyexbITeMbFXnTZLZm3bATnXBtcbQCM45
-         3A5WUwlwCxfNj4R0EE+9vd3V0qf+h4mJUM4tbvZMk22xAYWeYtMeDdsVX7wGtNj6Lsyw
-         E3ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=L/xc46eYC0rZns9hNBhr248U6alDhReApEPhDLkCO6E=;
-        b=e3XMf3hmjdUt9VqgNFZIMyOaHSOa9rXraloO/41qpsWHNTHm8vENLLPHSB/svcwr7y
-         3/Dj1sVO8APlf893IjFVH3zNnEt8phlI8v3Oh6zTYwXPXDcDYxuHg4Jv2wFMopZkgW48
-         HkrsjKQut7xsOmyRSHhA27Q32SEs5QD6OWyzD8LuJa+R7hC51OPL6Payrltr1PNi0P+U
-         uszivldakKmZryU4fN1TvACRw6pliF1Ix9aRiXYT4AzJmTgKB21J5sP7DGKBh2LM7eRr
-         1EZRb6i3c4nmCxbirgot4uw1kwBfN3xZFHQjN76qJTwzyxXoYQFyrUsWDYa4d4IDezV7
-         CR4g==
-X-Gm-Message-State: AOAM531LyzmebaJd0iqHBnPzsXOOU0DRwI+gYzV6SXYg9J6FS3CwF5GS
-        T3oXVnpGOyh4ezASmtSn21HhJUCLN68=
-X-Google-Smtp-Source: ABdhPJweeGA3s6tWwyWwovw6Rhzh1m2PRjg8htzqpYDmOK4ZLzVRz1hasBUTiHMhlNCsxJ185rYUew==
-X-Received: by 2002:a19:8386:: with SMTP id f128mr2390970lfd.78.1601223323824;
-        Sun, 27 Sep 2020 09:15:23 -0700 (PDT)
-Received: from ?IPv6:2a00:1fa0:42b8:5974:65f4:959a:46a2:f702? ([2a00:1fa0:42b8:5974:65f4:959a:46a2:f702])
-        by smtp.gmail.com with ESMTPSA id p9sm3134414ljj.52.2020.09.27.09.15.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 27 Sep 2020 09:15:23 -0700 (PDT)
-Subject: Re: [v5 01/12] struct device: Add function callback durable_name
-To:     tasleson@redhat.com, linux-scsi@vger.kernel.org,
-        linux-block@vger.kernel.org, linux-ide@vger.kernel.org
-References: <20200925161929.1136806-1-tasleson@redhat.com>
- <20200925161929.1136806-2-tasleson@redhat.com>
- <1cfc145b-180a-d906-5d9b-638c483177c7@gmail.com>
- <90ef294c-2f37-2299-6253-68ea27e312b4@redhat.com>
-From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Organization: Brain-dead Software
-Message-ID: <f276f116-a80c-fb98-0569-d7a6799868d4@gmail.com>
-Date:   Sun, 27 Sep 2020 19:15:18 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.0
-MIME-Version: 1.0
-In-Reply-To: <90ef294c-2f37-2299-6253-68ea27e312b4@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        id S1726977AbgI0UC2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 27 Sep 2020 16:02:28 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:14476
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726697AbgI0UC2 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 27 Sep 2020 16:02:28 -0400
+X-Greylist: delayed 431 seconds by postgrey-1.27 at vger.kernel.org; Sun, 27 Sep 2020 16:02:25 EDT
+X-IronPort-AV: E=Sophos;i="5.77,311,1596492000"; 
+   d="scan'208";a="360169486"
+Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES256-SHA256; 27 Sep 2020 21:55:11 +0200
+From:   Julia Lawall <Julia.Lawall@inria.fr>
+To:     linux-iio@vger.kernel.org
+Cc:     =?UTF-8?q?Valdis=20Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        Joe Perches <joe@perches.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org,
+        David Lechner <david@lechnology.com>,
+        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        openipmi-developer@lists.sourceforge.net,
+        linux-crypto@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-amlogic@lists.infradead.org, linux-acpi@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>, drbd-dev@lists.linbit.com,
+        linux-block@vger.kernel.org
+Subject: [PATCH 00/18] use semicolons rather than commas to separate statements
+Date:   Sun, 27 Sep 2020 21:12:10 +0200
+Message-Id: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 27.09.2020 17:22, Tony Asleson wrote:
+These patches replace commas by semicolons.  This was done using the
+Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
 
->>> Function callback and function to be used to write a persistent
->>> durable name to the supplied character buffer.  This will be used to add
->>> structured key-value data to log messages for hardware related errors
->>> which allows end users to correlate message and specific hardware.
->>>
->>> Signed-off-by: Tony Asleson <tasleson@redhat.com>
->>> ---
->>>    drivers/base/core.c    | 24 ++++++++++++++++++++++++
->>>    include/linux/device.h |  4 ++++
->>>    2 files changed, 28 insertions(+)
->>>
->>> diff --git a/drivers/base/core.c b/drivers/base/core.c
->>> index 05d414e9e8a4..88696ade8bfc 100644
->>> --- a/drivers/base/core.c
->>> +++ b/drivers/base/core.c
->>> @@ -2489,6 +2489,30 @@ int dev_set_name(struct device *dev, const char
->>> *fmt, ...)
->>>    }
->>>    EXPORT_SYMBOL_GPL(dev_set_name);
->>>    +/**
->>> + * dev_durable_name - Write "DURABLE_NAME"=<durable name> in buffer
->>> + * @dev: device
->>> + * @buffer: character buffer to write results
->>> + * @len: length of buffer
->>> + * @return: Number of bytes written to buffer
->>
->>     This is not how the kernel-doc commenta describe the function result,
->> IIRC...
-> 
-> I did my compile with `make  W=1` and there isn't any warnings/error
-> with source documentation, but the documentation does indeed outline a
+This semantic patch ensures that commas inside for loop headers will not be
+transformed.  It also doesn't touch macro definitions.
 
-    IIRC, you only get the warnings when you try to build the kernel-docs.
+Coccinelle ensures that braces are added as needed when a single-statement
+branch turns into a multi-statement one.
 
-> different syntax.  It's interesting how common the @return syntax is in
-> the existing code base.
+This semantic patch has a few false positives, for variable delcarations
+such as:
 
-    FWIW, I'm seeing @return: for the 1st time in my Linux tenure (since 2004).
+LIST_HEAD(x), *y;
 
-> I'll re-work the function documentation return.
+The semantic patch could be improved to avoid these, but for the moment
+they have been removed manually (2 occurrences).
 
-    OK, thanks. :-)
+// <smpl>
+@initialize:ocaml@
+@@
 
-> Thanks
+let infunction p =
+  (* avoid macros *)
+  (List.hd p).current_element <> "something_else"
 
-MBR, Sergei
+let combined p1 p2 =
+  (List.hd p1).line_end = (List.hd p2).line ||
+  (((List.hd p1).line_end < (List.hd p2).line) &&
+   ((List.hd p1).col < (List.hd p2).col))
+
+@bad@
+statement S;
+declaration d;
+position p;
+@@
+
+S@p
+d
+
+// special cases where newlines are needed (hope for no more than 5)
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@@
+expression e1,e2;
+statement S;
+position p != bad.p;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && combined p1 p2 };
+@@
+
+- e1@p1,@S@p e2@p2;
++ e1; e2;
+
+@r@
+expression e1,e2;
+statement S;
+position p != bad.p;
+@@
+
+e1 ,@S@p e2;
+
+@@
+expression e1,e2;
+position p1;
+position p2 :
+    script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+statement S;
+position r.p;
+@@
+
+e1@p1
+-,@S@p
++;
+e2@p2
+... when any
+// </smpl>
+
+---
+
+ drivers/acpi/processor_idle.c               |    4 +++-
+ drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+ drivers/base/regmap/regmap-debugfs.c        |    2 +-
+ drivers/bcma/driver_pci_host.c              |    4 ++--
+ drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+ drivers/char/agp/amd-k7-agp.c               |    2 +-
+ drivers/char/agp/nvidia-agp.c               |    2 +-
+ drivers/char/agp/sworks-agp.c               |    2 +-
+ drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+ drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+ drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+ drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+ drivers/clk/meson/meson-aoclk.c             |    2 +-
+ drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+ drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+ drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+ drivers/clocksource/mps2-timer.c            |    6 +++---
+ drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+ drivers/counter/ti-eqep.c                   |    2 +-
+ drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+ drivers/crypto/atmel-tdes.c                 |    2 +-
+ drivers/crypto/hifn_795x.c                  |    4 ++--
+ drivers/crypto/talitos.c                    |    8 ++++----
+ 23 files changed, 60 insertions(+), 51 deletions(-)

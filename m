@@ -2,73 +2,88 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 885ED27A3F9
-	for <lists+linux-ide@lfdr.de>; Sun, 27 Sep 2020 22:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2B527B133
+	for <lists+linux-ide@lfdr.de>; Mon, 28 Sep 2020 17:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726406AbgI0UPw (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 27 Sep 2020 16:15:52 -0400
-Received: from smtprelay0182.hostedemail.com ([216.40.44.182]:36606 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726239AbgI0UPw (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 27 Sep 2020 16:15:52 -0400
-X-Greylist: delayed 441 seconds by postgrey-1.27 at vger.kernel.org; Sun, 27 Sep 2020 16:15:51 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave02.hostedemail.com (Postfix) with ESMTP id 1170418011273;
-        Sun, 27 Sep 2020 20:08:31 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id 7E77118017FB8;
-        Sun, 27 Sep 2020 20:08:29 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 50,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:967:973:988:989:1260:1263:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1538:1568:1593:1594:1711:1714:1730:1747:1777:1792:2393:2525:2560:2563:2682:2685:2693:2828:2859:2933:2937:2939:2942:2945:2947:2951:2954:3022:3138:3139:3140:3141:3142:3622:3865:3866:3867:3868:3872:3874:3934:3936:3938:3941:3944:3947:3950:3953:3956:3959:4321:4362:5007:6742:7903:9025:10004:10400:11232:11658:11914:12295:12297:12740:12760:12895:13019:13069:13311:13357:13439:14181:14659:14721:21063:21080:21451:21627:30034:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: toy29_471566e2717b
-X-Filterd-Recvd-Size: 2021
-Received: from XPS-9350.home (unknown [47.151.133.149])
-        (Authenticated sender: joe@perches.com)
-        by omf19.hostedemail.com (Postfix) with ESMTPA;
-        Sun, 27 Sep 2020 20:08:26 +0000 (UTC)
-Message-ID: <9f6ebf51253bf420c8f6f8974a82283ae3e9e446.camel@perches.com>
-Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
- statements
-From:   Joe Perches <joe@perches.com>
-To:     Julia Lawall <Julia.Lawall@inria.fr>, linux-iio@vger.kernel.org
-Cc:     Valdis =?UTF-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org,
-        David Lechner <david@lechnology.com>,
-        linux-wireless@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        openipmi-developer@lists.sourceforge.net,
-        linux-crypto@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jerome Brunet <jbrunet@baylibre.com>,
-        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-        linux-amlogic@lists.infradead.org, linux-acpi@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>, drbd-dev@lists.linbit.com,
-        linux-block@vger.kernel.org
-Date:   Sun, 27 Sep 2020 13:08:25 -0700
-In-Reply-To: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        id S1726380AbgI1PwZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 28 Sep 2020 11:52:25 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:45074 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726420AbgI1PwZ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 28 Sep 2020 11:52:25 -0400
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601308344;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=kgXIn4BQsJnN5L6cWcBOBBCKst9r4t6llgxKEXMltS8=;
+        b=aBmR6K3okzYl7aIJvzDoOUH+rM4BxHi8HPg+bLD4z4pcWIGWvYHCz6NJwhZwMuvHVuOzIb
+        JNWBI8dUcnrdj3tbky4RJGiYK5m9C0MMRHUA+Mg9ubZjLipQkyLd4yaljPNzLdH3jikgTQ
+        K/Eu9wHWqoNKdmexe7k0Fdt8ALB545o=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-590-FSkicAZFOaugcgPTujJ50Q-1; Mon, 28 Sep 2020 11:52:22 -0400
+X-MC-Unique: FSkicAZFOaugcgPTujJ50Q-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 232E5801F9B;
+        Mon, 28 Sep 2020 15:52:21 +0000 (UTC)
+Received: from [10.10.110.11] (unknown [10.10.110.11])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 277EF5D9CC;
+        Mon, 28 Sep 2020 15:52:19 +0000 (UTC)
+Reply-To: tasleson@redhat.com
+Subject: Re: [v5 08/12] Add durable_name_printk
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-scsi@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org
+References: <20200925161929.1136806-1-tasleson@redhat.com>
+ <20200925161929.1136806-9-tasleson@redhat.com>
+ <fbd1b019-04ee-5fda-11c8-95fecf031113@infradead.org>
+From:   Tony Asleson <tasleson@redhat.com>
+Organization: Red Hat
+Message-ID: <0e091001-a260-856c-1e6c-9b6fb7350d26@redhat.com>
+Date:   Mon, 28 Sep 2020 10:52:19 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
+In-Reply-To: <fbd1b019-04ee-5fda-11c8-95fecf031113@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Sun, 2020-09-27 at 21:12 +0200, Julia Lawall wrote:
-> These patches replace commas by semicolons.  This was done using the
-> Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+On 9/26/20 6:53 PM, Randy Dunlap wrote:
+> I suggest that these 2 new function names should be
+> 	printk_durable_name()
+> and
+> 	printk_durable_name_ratelimited()
 > 
-> This semantic patch ensures that commas inside for loop headers will not be
-> transformed.  It also doesn't touch macro definitions.
+> Those names would be closer to the printk* family of
+> function names.  Of course, you can find exceptions to this,
+> like dev_printk(), but that is in the dev_*() family of
+> function names.
 
-Thanks.
+durable_name_printk has the same argument signature as dev_printk with
+it's intention that in the future it might be a candidate to get changed
+to dev_printk.  The reason I'm not using dev_printk is to avoid changing
+the content of the message users see.
 
-All of these appear to be correct and without effect
-except for __LINE__ number changes where braces are added.
+With this clarification, do you still suggest the rename or maybe
+suggest something different?
 
+dev_id_printk
+id_printk
+...
 
+I'm also thinking that maybe we should add a new function do everything
+dev_printk does, but without prepending the device driver name and
+device name to the message.  So we can get the metadata adds without
+having the content of the message change.
+
+Thanks
 

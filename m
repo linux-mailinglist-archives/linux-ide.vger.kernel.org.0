@@ -2,94 +2,240 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F05327CC17
-	for <lists+linux-ide@lfdr.de>; Tue, 29 Sep 2020 14:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B4C27CC88
+	for <lists+linux-ide@lfdr.de>; Tue, 29 Sep 2020 14:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728720AbgI2MdP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 29 Sep 2020 08:33:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37340 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729206AbgI2LW5 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 29 Sep 2020 07:22:57 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5D5D923A5F;
-        Tue, 29 Sep 2020 11:19:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601378397;
-        bh=jsNYaKVgFHpLC/ktuWsKIVg7iwR9LxHLmxcBHAgJsHI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TI7ZDqx0XpMowAgSX5/bXIRAQfhNSAfMM8oEfzVn+uNIwg0B15BSwkN3a3rgjUoTk
-         SsGXinzBDFgrOGnQ6nwrgTN6OqrVmkbR7dm0fj3709HrQJXIzqVTLvbbyVXyULgaeQ
-         WKwZIV/XAhpCLo65qUocS8aaRQEBCdTPQexTBWec=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: [PATCH 4.14 166/166] ata: sata_mv, avoid trigerrable BUG_ON
-Date:   Tue, 29 Sep 2020 13:01:18 +0200
-Message-Id: <20200929105943.488679849@linuxfoundation.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200929105935.184737111@linuxfoundation.org>
-References: <20200929105935.184737111@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S1733192AbgI2MhM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 29 Sep 2020 08:37:12 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:8965 "EHLO
+        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728786AbgI2MhF (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 29 Sep 2020 08:37:05 -0400
+X-IronPort-AV: E=Sophos;i="5.77,318,1596492000"; 
+   d="scan'208";a="360346486"
+Received: from abo-173-121-68.mrs.modulonet.fr (HELO hadrien) ([85.68.121.173])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Sep 2020 14:36:52 +0200
+Date:   Tue, 29 Sep 2020 14:36:52 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Ard Biesheuvel <ardb@kernel.org>
+cc:     linux-iio@vger.kernel.org, drbd-dev@lists.linbit.com,
+        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        David Lechner <david@lechnology.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-wireless@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
+        Joe Perches <joe@perches.com>,
+        linux-amlogic@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        openipmi-developer@lists.sourceforge.net,
+        linux-clk@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Jerome Brunet <jbrunet@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+In-Reply-To: <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+Message-ID: <alpine.DEB.2.22.394.2009291428020.2808@hadrien>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr> <CAMj1kXGh+CzuXkAnqsoMO2A3T1p=D6uFOV347Ym5+VFn5U1gWg@mail.gmail.com>
+User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Jiri Slaby <jslaby@suse.cz>
-
-commit e9f691d899188679746eeb96e6cb520459eda9b4 upstream.
-
-There are several reports that the BUG_ON on unsupported command in
-mv_qc_prep can be triggered under some circumstances:
-https://bugzilla.suse.com/show_bug.cgi?id=1110252
-https://serverfault.com/questions/888897/raid-problems-after-power-outage
-https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1652185
-https://bugs.centos.org/view.php?id=14998
-
-Let sata_mv handle the failure gracefully: warn about that incl. the
-failed command number and return an AC_ERR_INVALID error. We can do that
-now thanks to the previous patch.
-
-Remove also the long-standing FIXME.
-
-[v2] use %.2x as commands are defined as hexa.
-
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-ide@vger.kernel.org
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
----
- drivers/ata/sata_mv.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -2111,12 +2111,10 @@ static enum ata_completion_errors mv_qc_
- 		 * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
- 		 * of which are defined/used by Linux.  If we get here, this
- 		 * driver needs work.
--		 *
--		 * FIXME: modify libata to give qc_prep a return value and
--		 * return error here.
- 		 */
--		BUG_ON(tf->command);
--		break;
-+		ata_port_err(ap, "%s: unsupported command: %.2x\n", __func__,
-+				tf->command);
-+		return AC_ERR_INVALID;
- 	}
- 	mv_crqb_pack_cmd(cw++, tf->nsect, ATA_REG_NSECT, 0);
- 	mv_crqb_pack_cmd(cw++, tf->hob_lbal, ATA_REG_LBAL, 0);
 
 
+On Tue, 29 Sep 2020, Ard Biesheuvel wrote:
+
+> On Sun, 27 Sep 2020 at 21:56, Julia Lawall <Julia.Lawall@inria.fr> wrote:
+> >
+> > These patches replace commas by semicolons.
+>
+>
+> Why?
+
+Among the complete 5000 lines of changes there is one probable bug where
+an if branch ends with a comma and thus pulls the subsequent statement
+under the if branch, in contradiction to what is indicated by the
+indentation.
+
+The use of comma often appears to be random, with a sequence of similar
+statements where some have commas and some don't.
+
+From a self-interested point of view, commas are not good for Coccinelle,
+because multiple statements are put into one.  Any problems involving them
+are thus likely to be overlooked unless one thinks of looking for them
+explicitly.  As an example, Christophe Jaillet noticed that one sequence
+of comma assignments would be better written using swap.  If one looked
+for opportunities for using swap in the most obvious way, one wouldn't
+find it.
+
+julia
+
+
+>
+>
+> > This was done using the
+> > Coccinelle semantic patch (http://coccinelle.lip6.fr/) shown below.
+> >
+> > This semantic patch ensures that commas inside for loop headers will not be
+> > transformed.  It also doesn't touch macro definitions.
+> >
+> > Coccinelle ensures that braces are added as needed when a single-statement
+> > branch turns into a multi-statement one.
+> >
+> > This semantic patch has a few false positives, for variable delcarations
+> > such as:
+> >
+> > LIST_HEAD(x), *y;
+> >
+> > The semantic patch could be improved to avoid these, but for the moment
+> > they have been removed manually (2 occurrences).
+> >
+> > // <smpl>
+> > @initialize:ocaml@
+> > @@
+> >
+> > let infunction p =
+> >   (* avoid macros *)
+> >   (List.hd p).current_element <> "something_else"
+> >
+> > let combined p1 p2 =
+> >   (List.hd p1).line_end = (List.hd p2).line ||
+> >   (((List.hd p1).line_end < (List.hd p2).line) &&
+> >    ((List.hd p1).col < (List.hd p2).col))
+> >
+> > @bad@
+> > statement S;
+> > declaration d;
+> > position p;
+> > @@
+> >
+> > S@p
+> > d
+> >
+> > // special cases where newlines are needed (hope for no more than 5)
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && combined p1 p2 };
+> > @@
+> >
+> > - e1@p1,@S@p e2@p2;
+> > + e1; e2;
+> >
+> > @r@
+> > expression e1,e2;
+> > statement S;
+> > position p != bad.p;
+> > @@
+> >
+> > e1 ,@S@p e2;
+> >
+> > @@
+> > expression e1,e2;
+> > position p1;
+> > position p2 :
+> >     script:ocaml(p1) { infunction p1 && not(combined p1 p2) };
+> > statement S;
+> > position r.p;
+> > @@
+> >
+> > e1@p1
+> > -,@S@p
+> > +;
+> > e2@p2
+> > ... when any
+> > // </smpl>
+> >
+> > ---
+> >
+> >  drivers/acpi/processor_idle.c               |    4 +++-
+> >  drivers/ata/pata_icside.c                   |   21 +++++++++++++--------
+> >  drivers/base/regmap/regmap-debugfs.c        |    2 +-
+> >  drivers/bcma/driver_pci_host.c              |    4 ++--
+> >  drivers/block/drbd/drbd_receiver.c          |    6 ++++--
+> >  drivers/char/agp/amd-k7-agp.c               |    2 +-
+> >  drivers/char/agp/nvidia-agp.c               |    2 +-
+> >  drivers/char/agp/sworks-agp.c               |    2 +-
+> >  drivers/char/hw_random/iproc-rng200.c       |    8 ++++----
+> >  drivers/char/hw_random/mxc-rnga.c           |    6 +++---
+> >  drivers/char/hw_random/stm32-rng.c          |    8 ++++----
+> >  drivers/char/ipmi/bt-bmc.c                  |    6 +++---
+> >  drivers/clk/meson/meson-aoclk.c             |    2 +-
+> >  drivers/clk/mvebu/ap-cpu-clk.c              |    2 +-
+> >  drivers/clk/uniphier/clk-uniphier-cpugear.c |    2 +-
+> >  drivers/clk/uniphier/clk-uniphier-mux.c     |    2 +-
+> >  drivers/clocksource/mps2-timer.c            |    6 +++---
+> >  drivers/clocksource/timer-armada-370-xp.c   |    8 ++++----
+> >  drivers/counter/ti-eqep.c                   |    2 +-
+> >  drivers/crypto/amcc/crypto4xx_alg.c         |    2 +-
+> >  drivers/crypto/atmel-tdes.c                 |    2 +-
+> >  drivers/crypto/hifn_795x.c                  |    4 ++--
+> >  drivers/crypto/talitos.c                    |    8 ++++----
+> >  23 files changed, 60 insertions(+), 51 deletions(-)
+> >
+> > _______________________________________________
+> > linux-arm-kernel mailing list
+> > linux-arm-kernel@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+>

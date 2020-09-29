@@ -2,94 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F81B27CA5A
-	for <lists+linux-ide@lfdr.de>; Tue, 29 Sep 2020 14:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6225427C882
+	for <lists+linux-ide@lfdr.de>; Tue, 29 Sep 2020 14:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732062AbgI2MS1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 29 Sep 2020 08:18:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49134 "EHLO mail.kernel.org"
+        id S1730429AbgI2Li4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 29 Sep 2020 07:38:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60746 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729969AbgI2LgV (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 29 Sep 2020 07:36:21 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        id S1730404AbgI2Lio (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 29 Sep 2020 07:38:44 -0400
+Received: from localhost (fw-tnat.cambridge.arm.com [217.140.96.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 981BD23E1E;
-        Tue, 29 Sep 2020 11:31:23 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6554921924;
+        Tue, 29 Sep 2020 11:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1601379084;
-        bh=jsNYaKVgFHpLC/ktuWsKIVg7iwR9LxHLmxcBHAgJsHI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y7sVl2gtkDfIGkUzlHUufeIhSVOBELmUaUUJgDQJISl9KUnMBU3rQlZuaSiFTEplJ
-         eSeRaFX9s7vYSd2fjW8toh5wC0Z9/VQKmTtkIOS0LsLM7G8blIfdLhALMRpJiTp/6V
-         MkpZK0cunFJdUMEi0zkVg1XlzaJOA3inj9E789Do=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Jiri Slaby <jslaby@suse.cz>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Subject: [PATCH 4.19 244/245] ata: sata_mv, avoid trigerrable BUG_ON
-Date:   Tue, 29 Sep 2020 13:01:35 +0200
-Message-Id: <20200929105958.878335927@linuxfoundation.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200929105946.978650816@linuxfoundation.org>
-References: <20200929105946.978650816@linuxfoundation.org>
-User-Agent: quilt/0.66
+        s=default; t=1601379523;
+        bh=a1gSTFeVH3iQKCsomWRRIF1vuKiVS5UiB6voFxEywig=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hdzI0LjRLhiFG0H47FIBQWDcq5DX1OrXKHvX76qVWK0yBh7qixa5RtPKtcE8g49eP
+         849mw8WVqgX3AJpUqyOH01WQOeFbrbw/M492DQxRltPOst6YZTph/nyc+VD+s81Egu
+         Ct3VdN9U6DSJGkK9104YvlYtXkg0L6SNaTM2JCZ4=
+Date:   Tue, 29 Sep 2020 12:37:45 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Joe Perches <joe@perches.com>
+Cc:     linux-iio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-crypto@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jerome Brunet <jbrunet@baylibre.com>,
+        linux-acpi@vger.kernel.org, David Lechner <david@lechnology.com>,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        kernel-janitors@vger.kernel.org, drbd-dev@lists.linbit.com,
+        openipmi-developer@lists.sourceforge.net,
+        Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+        linux-ide@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-wireless@vger.kernel.org,
+        Neil Armstrong <narmstrong@baylibre.com>
+Subject: Re: [PATCH 00/18] use semicolons rather than commas to separate
+ statements
+Message-ID: <20200929113745.GB4799@sirena.org.uk>
+References: <1601233948-11629-1-git-send-email-Julia.Lawall@inria.fr>
+ <160132172369.55460.9237357219623604216.b4-ty@kernel.org>
+ <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="0ntfKIWw70PvrIHh"
+Content-Disposition: inline
+In-Reply-To: <b1174f9be2ce65f6b5ebefcba0b48e792926abbc.camel@perches.com>
+X-Cookie: I left my WALLET in the BATHROOM!!
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Jiri Slaby <jslaby@suse.cz>
 
-commit e9f691d899188679746eeb96e6cb520459eda9b4 upstream.
+--0ntfKIWw70PvrIHh
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-There are several reports that the BUG_ON on unsupported command in
-mv_qc_prep can be triggered under some circumstances:
-https://bugzilla.suse.com/show_bug.cgi?id=1110252
-https://serverfault.com/questions/888897/raid-problems-after-power-outage
-https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1652185
-https://bugs.centos.org/view.php?id=14998
+On Mon, Sep 28, 2020 at 05:45:24PM -0700, Joe Perches wrote:
+> On Mon, 2020-09-28 at 20:35 +0100, Mark Brown wrote:
 
-Let sata_mv handle the failure gracefully: warn about that incl. the
-failed command number and return an AC_ERR_INVALID error. We can do that
-now thanks to the previous patch.
+> > [1/1] regmap: debugfs: use semicolons rather than commas to separate statements
+> >       commit: 7f4a122d0b50b40c64d24a5cf7aafe26dd9487ee
 
-Remove also the long-standing FIXME.
+> Rather than replying to the 0/n cover letter to a patch
+> series, can you reply to each of the specific patches in
+> the patch series you are applying?
 
-[v2] use %.2x as commands are defined as hexa.
+> Otherwise, it's a bit difficult to figure out which patches
+> you are applying.
 
-Signed-off-by: Jiri Slaby <jslaby@suse.cz>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-ide@vger.kernel.org
-Cc: Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Feel free to submit patches to b4.  Ideally things like this wouldn't be
+being sent as serieses in the first place, there's no dependencies or
+interactions between the patches.
 
----
- drivers/ata/sata_mv.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+--0ntfKIWw70PvrIHh
+Content-Type: application/pgp-signature; name="signature.asc"
 
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -2111,12 +2111,10 @@ static enum ata_completion_errors mv_qc_
- 		 * non-NCQ mode are: [RW] STREAM DMA and W DMA FUA EXT, none
- 		 * of which are defined/used by Linux.  If we get here, this
- 		 * driver needs work.
--		 *
--		 * FIXME: modify libata to give qc_prep a return value and
--		 * return error here.
- 		 */
--		BUG_ON(tf->command);
--		break;
-+		ata_port_err(ap, "%s: unsupported command: %.2x\n", __func__,
-+				tf->command);
-+		return AC_ERR_INVALID;
- 	}
- 	mv_crqb_pack_cmd(cw++, tf->nsect, ATA_REG_NSECT, 0);
- 	mv_crqb_pack_cmd(cw++, tf->hob_lbal, ATA_REG_LBAL, 0);
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl9zHIgACgkQJNaLcl1U
+h9AUrQf/V6+K22eTWHbMJo7Z/GUR0aZ8ZbPiLfJjhWnbSq+gQVC1xnbSwQx7hDlv
++AoeDaVjgmnGS3YtW/c1K8e4d2SFvxR89a5I5U/dEtc/j/N/5vnGgwxjLDfN5xUC
+lV2F+ftiHGIRzn0ojcUVOj6hEIqnGvkQe17key6Po0TlZuuoZE+eh3mfbajDeYCs
+/BJ39skDi0g8xqOY8V8qZAoH/Bowz0xIroEbdg0zbM78UIOi2Fzxl5MSXapN2Cd7
+o9QO7lsPCWxberp7ZwIUg6cvYQnjBE4ZZRGsfnzuPRH4fptLRzDSZRJCSW6IqH8s
+j8rUaeCv+XQBPjpBvj3FJIUWXyI5QQ==
+=kEnh
+-----END PGP SIGNATURE-----
 
+--0ntfKIWw70PvrIHh--

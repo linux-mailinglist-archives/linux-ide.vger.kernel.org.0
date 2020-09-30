@@ -2,110 +2,198 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7837D27DD3D
-	for <lists+linux-ide@lfdr.de>; Wed, 30 Sep 2020 02:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D576E27E2BE
+	for <lists+linux-ide@lfdr.de>; Wed, 30 Sep 2020 09:38:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728291AbgI3AIS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 29 Sep 2020 20:08:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41918 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728192AbgI3AIR (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 29 Sep 2020 20:08:17 -0400
-Received: from mail-vs1-xe42.google.com (mail-vs1-xe42.google.com [IPv6:2607:f8b0:4864:20::e42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C9AC061755
-        for <linux-ide@vger.kernel.org>; Tue, 29 Sep 2020 17:08:17 -0700 (PDT)
-Received: by mail-vs1-xe42.google.com with SMTP id z193so42965vsz.10
-        for <linux-ide@vger.kernel.org>; Tue, 29 Sep 2020 17:08:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=19p4DAUqOoY1BJ7e1k8m1cKY/4elnAnjn3N7EIL9F5o=;
-        b=p9S353kjCh+d62J0dUci3NJzkP4a/HzUtAEp9hb1HyQSNWVRZTMdzwA4oOr8mUUF0o
-         Oieyl2xH9AHLGw+pfaY3sXAmV98NOnWPQRJfTTZgXjJhkU/2b44t6U/IG56HbZj0WwvC
-         uZwbf7o6DeuIFI2tpRM90dwgpgM2030yHm41Dol3G4su7s7JkqSsWLDTJU5YXFX3PCF3
-         HeIAZwP7w6hmymWuww5t6ChTGKIozgBtHM+f8tPy29Lv5/817C/eQMO1ULj7RmZaMSGG
-         DWvhqCJHpVjx4WrW4aw3wZIstJzt06tsFAjCwsoHQ+eK9OIET/fNw3UcONFa5eaCgSPd
-         mj6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=19p4DAUqOoY1BJ7e1k8m1cKY/4elnAnjn3N7EIL9F5o=;
-        b=qgNNfPyYh0f1a+MIUI9uUQQcHBRzq9YQ/nD0ucZiDqDdoE6/ncPBtIJmjgo+G5YZSS
-         8OE5vskckxBz5TXYaMOX+11Y8B8+jF9t2NGGYPZdPP1A1dRWCm56V11+07lWSTETgrue
-         QSktrEeR435IJho3cylFRffa+qbr2Iuc2PhZ1t8YRFz2DSuBsV6B4eY1xX24mRJKkJSi
-         +VdkE78+HQvTvO43dJP8aZxQ2WtBf9/AJU1SsKgtIO85AC1QWRAbWgFSHZ5KqostbyJP
-         8WPvt9MzEZsffw6GyAn7uUMaG8VeeVeyKYkET3mStrL4LGwogXqF6HbLrrBp57qQuWjc
-         +y5w==
-X-Gm-Message-State: AOAM532H6pFbwuTjRm/2OlCuON7x+ewSBznI+D4RPekeMUNjUsNsSeg3
-        qbEr25TodR4HlFvijuqclIbVx17yQRzJtMshm4g=
-X-Google-Smtp-Source: ABdhPJxbO005qRmARiRzAY2ThrqlkPsY/fY/QkpwCVQ52xDn/HIZ99tsSTLw5ERPPchyxBJ5cNONJyiUdzGqI6VgT6I=
-X-Received: by 2002:a67:e951:: with SMTP id p17mr4681346vso.21.1601424496832;
- Tue, 29 Sep 2020 17:08:16 -0700 (PDT)
+        id S1725908AbgI3Hi4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 30 Sep 2020 03:38:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60024 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725535AbgI3Hi4 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 30 Sep 2020 03:38:56 -0400
+Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E25882075F;
+        Wed, 30 Sep 2020 07:38:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1601451535;
+        bh=dKx7zotX7jRA1uJHnJb99FbL3A5ZVBq5tyMAbHV3svI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dnMiR5p3XeHNr4MDMtAO/at2k7IOeGkQVoWuNknVIISMxupfqjcAhoQoGXTIdgM/g
+         qZ/Ib5Yn8h6XvggiCiv/Y4tIPF2iLD2d/t6GC+BGQ8LDefjWolc440bHSPgnTzoz8c
+         05p2PfdtqfiVLFqTfjnmFvrQZbdNTi9qbQo6GKS8=
+Date:   Wed, 30 Sep 2020 09:38:59 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tony Asleson <tasleson@redhat.com>
+Cc:     Christoph Hellwig <hch@infradead.org>, linux-scsi@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
+        Hannes Reinecke <hare@suse.de>
+Subject: Re: [v5 01/12] struct device: Add function callback durable_name
+Message-ID: <20200930073859.GA1509708@kroah.com>
+References: <20200925161929.1136806-1-tasleson@redhat.com>
+ <20200925161929.1136806-2-tasleson@redhat.com>
+ <20200929175102.GA1613@infradead.org>
+ <20200929180415.GA1400445@kroah.com>
+ <20e220a6-4bde-2331-6e5e-24de39f9aa3b@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:ab0:40e5:0:0:0:0:0 with HTTP; Tue, 29 Sep 2020 17:08:16
- -0700 (PDT)
-Reply-To: wadragohamzak777@gmail.com
-From:   Hamzak Wadrago <hamzak03wadrago@gmail.com>
-Date:   Wed, 30 Sep 2020 00:08:16 +0000
-Message-ID: <CACZfpCYaQaAe=Hs8uYAbYmkLAJYoiwiaJ4SO3HMWdNngrtOh1g@mail.gmail.com>
-Subject: I will be waiting to hear from you!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20e220a6-4bde-2331-6e5e-24de39f9aa3b@redhat.com>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Friend,
+On Tue, Sep 29, 2020 at 05:04:32PM -0500, Tony Asleson wrote:
+> On 9/29/20 1:04 PM, Greg Kroah-Hartman wrote:
+> > On Tue, Sep 29, 2020 at 06:51:02PM +0100, Christoph Hellwig wrote:
+> >> Independ of my opinion on the whole scheme that I shared last time,
+> >> we really should not bloat struct device with function pointers.
+> 
+> Christoph, thank you for sharing a bit more of your concerns and
+> bringing Greg into the discussion.  It's more productive.
+> 
+> >>
+> >> On Fri, Sep 25, 2020 at 11:19:18AM -0500, Tony Asleson wrote:
+> >>> Function callback and function to be used to write a persistent
+> >>> durable name to the supplied character buffer.  This will be used to add
+> >>> structured key-value data to log messages for hardware related errors
+> >>> which allows end users to correlate message and specific hardware.
+> >>>
+> >>> Signed-off-by: Tony Asleson <tasleson@redhat.com>
+> >>> ---
+> >>>  drivers/base/core.c    | 24 ++++++++++++++++++++++++
+> >>>  include/linux/device.h |  4 ++++
+> >>>  2 files changed, 28 insertions(+)
+> > 
+> > I can't find this patch anywhere in my archives, why was I not cc:ed on
+> > it?  It's a v5 and no one thought to ask the driver core
+> > developers/maintainers about it???
+> 
+> You were CC'd into v3, ref.
+> 
+> https://lore.kernel.org/linux-ide/20200714081750.GB862637@kroah.com/
 
-I decided to contact you after a careful thought that you may be
-capable of handling this business transaction which I explained below,
-I am the head of Accounts and Audit Department of Bank of Africa
-Ouagadougou. In my department while cross-checking the files of
-foreigners. since our federal government has announced on the need of
-settling all foreign bills to enable foreign investors to come into
-our country and as an order from African unity governed by African
-heads, I discovered an abandoned sum of $15.5m US dollars (fifteen
-million, five hundred thousand US dollars). In an account that belongs
-to one of our foreign customer who died along with his entire family
-in a plane crash.
+Yeah, and I rejected that patch too, no wonder you didn't include me in
+further patch reviews, you didn't want me to reject them either :)
 
-Since i got information about his death, The bank have been expecting
-his next of kin to come over and claim his money because The fund
-cannot be released unless somebody applies for it as next of kin or
-relation to the deceased as indicated in our banking guidelines but
-unfortunately I learnt that his supposed next of kin(his son and wife)
-died alongside with him at the plane crash leaving nobody behind for
-the claim .It is therefore upon this discovery that I now decided to
-make this business proposal to you and release the money to you as the
-next of kin (I want to present you as his business associate )to the
-deceased for safety and subsequent disbursement since nobody is coming
-for it and I don't want this money to go into the Bank treasury as
-unclaimed Bill.
+> > {sigh}
+> > 
+> > And for log messages, what about the dynamic debug developers, why not
+> > include them as well?  Since when is this a storage-only thing?
+> 
+> Hannes Reinecke has been involved in the discussion some and he's
+> involved in dynamic debug AFAIK.
 
-The Banking law and guideline here stipulates that if such money
-remained Unclaimed after Nine years, the money will be transferred
-into the Bank treasury as unclaimed fund.. The request of foreigner as
-next of kin in this business is occasioned by the fact that the
-customer was a foreigner and a Burkina be cannot stand as next of kin
-to a foreigner.
+From the maintainers file:
+	DYNAMIC DEBUG
+	M:      Jason Baron <jbaron@akamai.com>
+	S:      Maintained
+	F:      include/linux/dynamic_debug.h
+	F:      lib/dynamic_debug.c
 
-I agree that 40% of this money will be for you as foreign partner, in
-respect to the provision of a foreign account, 60% would be for me .
-There after I will visit your country for disbursement according to
-the percentages indicated. Therefore to enable the immediate transfer
-of this fund to your account as arranged, you must apply first to the
-bank as next of kin of the deceased customer.
+Come on, you know this, don't try to avoid the people who have to
+maintain the code you are wanting to change, that's not ok.
 
-Upon receipt of your reply, more details and text of application form
-will be given to you for immediate transfer of the fund, I will not
-fail to bring to your notice that this transaction is hitch free and
-that you should not entertain any atom of fear as all required
-arrangements have been made for the transfer.
+> If others have a need to identify a specific piece of hardware in a
+> potential sea of identical hardware that is encountering errors and
+> logging messages and can optionally be added and removed at run-time,
+> then yes they should be included too.  There is nothing with this patch
+> series that is preventing any device from registering a callback which
+> provides this information when asked.
 
-i will like  you to send me this information about you such as  your
-full names, direct telephone numbers, and physical address.
+But that's not what the kernel is supposed to be doing, it doesn't care
+about tracking things outside of the lifetime from when it can see a
+device.  That's what userspace is for.
 
-Thanks,
-Yours sincerely,
-Mr. Hamzak Wadrago.
+> >>> diff --git a/include/linux/device.h b/include/linux/device.h
+> >>> index 5efed864b387..074125999dd8 100644
+> >>> --- a/include/linux/device.h
+> >>> +++ b/include/linux/device.h
+> >>> @@ -614,6 +614,8 @@ struct device {
+> >>>  	struct iommu_group	*iommu_group;
+> >>>  	struct dev_iommu	*iommu;
+> >>>  
+> >>> +	int (*durable_name)(const struct device *dev, char *buff, size_t len);
+> > 
+> > No, that's not ok at all, why is this even a thing?
+> > 
+> > Who is setting this?  Why can't the bus do this without anything
+> > "special" needed from the driver core?
+> 
+> I'm setting it in the different storage subsystems.  The intent is that
+> when we go through a common logging path eg. dev_printk you can ask the
+> device what it's ID is so that it can be logged as structured data with
+> the log message.  I was trying to avoid having separate logging
+> functions all over the place which enforces a consistent meta data to
+> log messages, but maybe that would be better than adding a function
+> pointer to struct device?  My first patch tried adding a call back to
+> struct device_type, but that ran into the issue where struct device_type
+> is static const in a number of areas.
+> 
+> Basically for any piece of hardware with a serial number, call this
+> function to get it.  That was the intent anyway.
+
+That's not ok, again, if you really want something crazy like this, then
+modify your logging messages to provide it.  But I would strongly argue
+that you do not really need this, as you have this information at
+runtime, in userspace, already.
+
+> > We have a mapping of 'struct device' to a unique hardware device at a
+> > specific point in time, why are you trying to create another one?
+> 
+> I don't think I'm creating anything new.  Can you clarify this a bit
+> more?  I'm trying to leverage what is already in place.
+> 
+> > What is wrong with what we have today?
+> 
+> I'm trying to figure out a way to positively identify which storage
+> device an error belongs to over time.
+
+"over time" is not the kernel's responsibility.
+
+This comes up every 5 years or so. The kernel provides you, at runtime,
+a mapping between a hardware device and a "logical" device.  It can
+provide information to userspace about this mapping, but once that
+device goes away, the kernel is free to reuse that logical device again.
+
+If you want to track what logical devices match up to what physical
+device, then do it in userspace, by parsing the log files.  All of the
+needed information is already there, you don't have to add anything new
+to it.
+
+Again, this comes up every few years for some reason, because people
+feel it is eaasier to modify the kernel than work with userspace
+programs.  Odd...
+
+> > So this is a HARD NAK on this patch for now.
+> 
+> Thank you for supplying some feedback and asking questions.  I've been
+> asking for suggestions and would very much like to have a discussion on
+> how this issue is best solved.  I'm not attached to what I've provided.
+> I'm just trying to get towards a solution.
+
+Again, solve this in userspace, you have the information there at
+runtime, why not use it?
+
+> We've looked at user space quite a bit and there is an inherit race
+> condition with trying to fetch the unique hardware id for a message when
+> it gets emitted from the kernel as udev rules haven't even run (assuming
+> we even have the meta-data to make the association).
+
+But one moment later you do have the information, so you can properly
+correlate it, right?
+
+> The last thing
+> people want to do is delay writing the log message to disk until the
+> device it belongs to can be identified.  Of course this patch series
+> still has a window from where the device is first discovered by the
+> kernel and fetches the needed vpd data from the device.  Any kernel
+> messages logged during that time have no id to associate with it.
+
+No need to delay logging, you are looking at things way later in time,
+so there's no issue of race conditions or anything else.
+
+thanks,
+
+greg k-h

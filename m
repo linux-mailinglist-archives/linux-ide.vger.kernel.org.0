@@ -2,64 +2,76 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89509281B7D
-	for <lists+linux-ide@lfdr.de>; Fri,  2 Oct 2020 21:21:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56DAA281D28
+	for <lists+linux-ide@lfdr.de>; Fri,  2 Oct 2020 22:52:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388317AbgJBTVr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Fri, 2 Oct 2020 15:21:47 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:64928 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388054AbgJBTVq (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:21:46 -0400
-X-Greylist: delayed 339 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:21:46 EDT
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 9FF5662A5D
-        for <linux-ide@vger.kernel.org>; Fri,  2 Oct 2020 22:16:06 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 62DE1629DB
-        for <linux-ide@vger.kernel.org>; Fri,  2 Oct 2020 22:16:06 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id 2938562887; Fri,  2 Oct 2020 22:16:04 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id B702E61A1D;
-        Fri,  2 Oct 2020 22:15:57 +0300 (EEST)
+        id S1725497AbgJBUwi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 2 Oct 2020 16:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57696 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725283AbgJBUwi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 2 Oct 2020 16:52:38 -0400
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D27C0613D0
+        for <linux-ide@vger.kernel.org>; Fri,  2 Oct 2020 13:52:38 -0700 (PDT)
+Received: by mail-il1-x12b.google.com with SMTP id z5so2476423ilq.5
+        for <linux-ide@vger.kernel.org>; Fri, 02 Oct 2020 13:52:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=UZyjpBmoUocxKOfQ+zvNjRm1gBOP6POpyQdGrj+HPsA=;
+        b=yaH38mQO1USosTmNeZmkEN+HGWbZL/Yhp7rCaVP2z5fi0of7CzAWRKLod6ao58Et8g
+         7Zabu4Kwb/YhnzXACn7AidUisbolGcmaNPnMvKEJmPcPGmOpu7TDT7e8TpWkZa4tozC2
+         J9XMjiPkasfJUXoiYromOv2iNp9UHEMzV2r2uVzLutQ+OHLX+MdcXX2qlDH3WX+rNWZo
+         nW5/CozzzvelGGYtJDSHF5FVtvOCgwSpNAaJAwZAmm6QC0Wk8Y+mYOBMiYkgVKoHgVo0
+         4mh5EucNTkZxOfnS9ghuYLrtQqXFPDmBeU5tutm3Fooe2i/R+ZSoB1/pSWfoLSOwhioQ
+         0mWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=UZyjpBmoUocxKOfQ+zvNjRm1gBOP6POpyQdGrj+HPsA=;
+        b=ggBswOrq80eW3KxXrniSCB40QDBX0U2x6DhvwoI5/I7TglJvOECGfhZyBwvMKlh9jG
+         Jd9BWDvMHdigGQc+l5mjvKWbrk7U2nMIMlOxZqqpNBgbDLprcJpbs3Sc0Nfc94BhvOIN
+         0s/nt6XJvoRt0uMb5op+QLgUGPq/wjLm5NEJbvdyIXK6Fn/de6MrY/nfZ9A1uXZSnevb
+         S/bNKNuTlHvfCoyHGaG8jPp0XKQNfI0BVAjflJnP/OrKjZgmi9Ul06Fn8KOjeM8uwJoY
+         EPg+V+Y4X3TOaQzCyq8byZN+OezrBhTzBj4yRP+JylppGKbehyMMNvafWjRjXYkAM2vk
+         91Pg==
+X-Gm-Message-State: AOAM530LTZqhfEhuvO8r56omIshJbQKwweZUkmBhKonKsNmVAi+vAnoz
+        yDHY5cFSJPj5W+iX9NBUcrYSG4iQ6enpXA==
+X-Google-Smtp-Source: ABdhPJwazyAixESeZXRcZDcI0ehkP8bD7q0ahZQt2I+2ZjGH+pZEorjj/yrOTlTTEQtPLIehlgoYXg==
+X-Received: by 2002:a92:8e03:: with SMTP id c3mr3386781ild.16.1601671957836;
+        Fri, 02 Oct 2020 13:52:37 -0700 (PDT)
+Received: from [192.168.1.30] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id l7sm1400004ili.82.2020.10.02.13.52.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 02 Oct 2020 13:52:37 -0700 (PDT)
+Subject: Re: [PATCH] ahci: Add Intel Rocket Lake PCH-H RAID PCI IDs
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     linux-ide@vger.kernel.org
+References: <20201002094035.57329-1-mika.westerberg@linux.intel.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <8d0a3d54-ea80-b0bc-1752-8e9a42bb47c2@kernel.dk>
+Date:   Fri, 2 Oct 2020 14:52:36 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Fri, 02 Oct 2020 16:15:48 -0300
-Reply-To: binmurrah@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191604.2938562887@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201002 notchecked
+In-Reply-To: <20201002094035.57329-1-mika.westerberg@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello Dear,
+On 10/2/20 3:40 AM, Mika Westerberg wrote:
+> Add Intel Rocket Lake PCH-H RAID PCI IDs to the list of supported
+> controllers.
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+Applied, thanks.
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+-- 
+Jens Axboe
 
-Please get back to me if you are interested for more
-details.
-
-Yours faithfully,
-Hashim Bin 

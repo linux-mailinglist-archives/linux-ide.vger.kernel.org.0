@@ -2,113 +2,78 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CE6628630D
-	for <lists+linux-ide@lfdr.de>; Wed,  7 Oct 2020 18:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C474D286430
+	for <lists+linux-ide@lfdr.de>; Wed,  7 Oct 2020 18:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728289AbgJGQDH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 7 Oct 2020 12:03:07 -0400
-Received: from mail-eopbgr80101.outbound.protection.outlook.com ([40.107.8.101]:59394
-        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728984AbgJGQDF (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 7 Oct 2020 12:03:05 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=oOi0DG10IVKjh4YGmCKOF50dxQ/0TJjVCgBqLCE51iBXcaH42YYoRQXykEYZlZ6/TO7cK1miNsxWk0v9gtf9Ora4le4LKV+5IuUx+/c0bIEN/PaDET4JkeuMakq9hp5lR3rzin+dtCft15dwqgu9Ncw9jNIumVReDvTmM0FTIQyJaZHi/znP+pl0AmtmNSqzd6UsZrfz3d31vIpBAL5NfC83ZD+LQwjhGvSgBTL3DsYbSb6sSLSjUaHxREBzhECbwAdcHSFTCh3+R57gJYgGwxDxi4n1uRdDCtpqeXBihg8JOJMzhSe+LIZXKPQ6Yk34zN4Or+NydLU80QMC6cQ6jA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n6kQpsKs2LExf4IY+Sn5wn2rN5eXiYd8aUOnC22Aas8=;
- b=jy4G5cWAOMdhVP/20QEovjTnBiko6j3Bw+277H3GD86v45yy0yxqv4zIm/tEPcJEh0jmKAYiLcoyJwfxnYtZeGoqsX2grUfR8eJhvurbXeqKkR2fvgzaf5ZQKobZXe0miI+q5bDRTu0PYJjYz4uLxRtJgRo3/JYxCDeIlVjRmw8KuNeQURfewLbej4N9Fn7WmDBMCDkSA3Q8uPNv90uNAsBDnls++uSxYJNQLgsPeLhIFIwXhst2wYeSwamO02fNYu8SdYfGbSG+OFqWyjdhVE4JCfJpqwWlNXlOVOjCdWj5h8rnkHQz1jkdKm28ZdQyQrzrp5I5Ig0LjBJanILK6A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=voleatech.de; dmarc=pass action=none header.from=voleatech.de;
- dkim=pass header.d=voleatech.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=voleatech.de;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n6kQpsKs2LExf4IY+Sn5wn2rN5eXiYd8aUOnC22Aas8=;
- b=A5eGA+QggvrqE5YDgxgyGFqykE6czAe4crbP7d+y+zQVUloSW/uFyPGklPZbAOeQ/ewtKAAqwGx/e7KcQssiauge29xOeLCoUv1AITILTB2Dvis6XGD7fPCZaQrxkJLGm85dhIIhzaXfKlglWsu0vTf/KphgyUP5vVEq306816k=
-Authentication-Results: kernel.org; dkim=none (message not signed)
- header.d=none;kernel.org; dmarc=none action=none header.from=voleatech.de;
-Received: from AM8PR05MB7251.eurprd05.prod.outlook.com (2603:10a6:20b:1d4::23)
- by AM8PR05MB7268.eurprd05.prod.outlook.com (2603:10a6:20b:1dd::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23; Wed, 7 Oct
- 2020 16:03:01 +0000
-Received: from AM8PR05MB7251.eurprd05.prod.outlook.com
- ([fe80::f132:2cc:34f2:5e4]) by AM8PR05MB7251.eurprd05.prod.outlook.com
- ([fe80::f132:2cc:34f2:5e4%7]) with mapi id 15.20.3433.045; Wed, 7 Oct 2020
- 16:03:01 +0000
-Date:   Wed, 7 Oct 2020 18:02:59 +0200
-From:   Sven Auhagen <sven.auhagen@voleatech.de>
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     axboe@kernel.dk, hdegoede@redhat.com, robh+dt@kernel.org,
-        tglx@linutronix.de, gregory.clement@bootlin.com,
-        linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        devicetree@vger.kernel.org, jason@lakedaemon.net, andrew@lunn.ch,
-        rjw@rjwysocki.net, viresh.kumar@linaro.org,
-        antoine.tenart@bootlin.com, maxime.chevallier@bootlin.com,
-        thomas.petazzoni@bootlin.com, miquel.raynal@bootlin.com
-Subject: Re: [PATCH 1/7] ata: ahci: mvebu: Rename a platform data flag
-Message-ID: <20201007160259.y3jblrt5b6b5ygqp@svensmacbookair.sven.lan>
-References: <20201007154554.66650-1-sven.auhagen@voleatech.de>
- <20201007154554.66650-2-sven.auhagen@voleatech.de>
- <5f24cd5774b5e68681fc9c460cc44bec@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f24cd5774b5e68681fc9c460cc44bec@kernel.org>
-X-Originating-IP: [109.193.235.168]
-X-ClientProxiedBy: AM4PR0302CA0035.eurprd03.prod.outlook.com
- (2603:10a6:205:2::48) To AM8PR05MB7251.eurprd05.prod.outlook.com
- (2603:10a6:20b:1d4::23)
+        id S1726348AbgJGQbo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 7 Oct 2020 12:31:44 -0400
+Received: from sonic305-2.consmr.mail.bf2.yahoo.com ([74.6.133.41]:32995 "EHLO
+        sonic305-2.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727903AbgJGQbo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 7 Oct 2020 12:31:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1602088303; bh=PxMwWzXvs+dqOoH0/FHvFmQpYH2JguaCUHYAVLLmaiw=; h=Date:From:Reply-To:Subject:References:From:Subject; b=C2CTlAID32TrDiNTm+YcHSLAFg/4t9GbTNa0kKfJTQm3Eqc4GZj4FRVd6AtgIqDyQlWnXLB/Tji+CtW3+JpgvuI4b0RxVSrQ2uNMfi2rJ+vqfPFDaGMDAJY2SsSDQywkDCbhyo0g5Iq6sAM4ECGrs0jYYxtQ27Wb9hFqF7OBUPktpU82nnVFivjD1asjpsbYPwn3/F9M9EpVPbVvKuF9rF7lIrm48IraoFMEHm4EXL9qariqrbsloze0FNnUDkA+E1nz/X2CycEWPj2dNyBrY9cKkRnhRCaf5r4Q45zysQYRj5Rvn3RoV30zvGocXhCRQC372N+uCInKWnTov7yxhg==
+X-YMail-OSG: lpGfp38VM1k9L7ZGPf.gkDDSY63m2JYZzKShr8D9XAOXCYJmUBBkWPGQF8z8n6A
+ GgN.O45iNGMmt7dwGMQ3np.eV.phhHadtX0k9IJSeG0DHXqgCx5WE5SRFIc2gDj_NuMWT5Kdh2I4
+ dm9lE_Ug5oEbCvMTFc7LjcdYdbBxrYWEeOeQ_68Dmrn97UXJ8wySgaaY0wihTXQQuUCwidFsS3vt
+ _NpSbZg3kBIUybAlodIusBgKbDqaD4ZKD_6m5rQ6NaCqXY.RndUiE81cCqNcrHJqYWIB8dJ2zpia
+ YmjhkAiJ5gsNwjs27j_RaL9lHbMmTfows07JepdlKigKlc71bG7aDGdgUQ9CITJlkvchc7GL7KZG
+ RozUQlzjodLZoH1WbRQft5E97Jw1.KNXEyq3W1z3MqLWqrXl2cHXhEci_wyeANKXvNlEN7KVFp8I
+ fCk0QcE4JHQP1gBVWycMUrtT1wej9Cr8QRKQN0WkrWK.n.UoY5ePg8FNXrICSlWixZqzBcWkHfpv
+ ezguTRJ75dXqRMff_NJ0eEBqYL61TwRE5mMQhnIZrWCfJkdAIw.SQSjklddjdEMMmXlZEc0L9nPZ
+ HY004Bgku7YWY4jhhIKDcLpHw1Z7VmAErSY0gdlUt0Wblg4gSgZGkxcaKZLgdtGL1jDPiEBfZNQl
+ qS2.KCKCw_HP30cb28.zdRPSy2CAm8J7pY31paSYjJRcVYkT3uQykWazrKdaZL_DXzLvqa.cGokB
+ egq7uzh6jXPCInpDcVTUiDwcUx8F1sTBDLu951OBLps_mcHYXu8F.baS8NuZwpibAkfjk.FPx_zS
+ .MkaDqZFZnfuikCED6xAbEcc7St4WAAOU3g7fv_x0eOTmat__3We7v2hX7KQ5tOvZ9FT.2U9Fukk
+ bJfBdfnknxf0bgVRavBWojfHtoI_km_qsLRI0uyGevFa8ZvAQWzemnnvRexwSIgYXQ.GCVDtSqlL
+ LlvWczVn2_8QN2ISAmYXjvbQiBJfRKWe_zsu1FWwe72d1MGjcAADC9qDMKZrL.ulyQVEwPZJ_aUV
+ 5KQlWHHLBUtmxCKm.DZS.KKq4_FFFgbCKb4EIFycDK4vd9fe_F8Jdj_bI7o1lNVpJvrWDldMQFmq
+ hobhusHZxeIneZzvwCZwf3lpsaDqxdHXliGnpL4BiKXb23AjmRqNGa2qDdzd_52vrBJv7BANQqeB
+ PCa5.nzKXeVLh6uUu8u02pQnvLC8XfdojH0f9rzzTkYVKNcd7zzldDL4f._INAaDGkYTJOZJ_GHo
+ 4aO3X3nNFI69Ir9X837d3mbo10ZPJgat6Mgpfnp1_BVzmCpys_nqhVZiLz9N93mt889M8j2RJvUo
+ xZF0r0W1Yx1dT_8QGB7I2k8msP7MZUqSUNjArs3Xr7_SAm3q0hNqGA8cmZryasvNQf_ttLvbYwCO
+ m0TXHg_OmKIAoeU_8KYdc6LQAOnrWxg5gYjcK9WaFnims
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Wed, 7 Oct 2020 16:31:43 +0000
+Date:   Wed, 7 Oct 2020 16:31:35 +0000 (UTC)
+From:   Marilyn Robert <fredodinga22@gmail.com>
+Reply-To: marilyobert@gmail.com
+Message-ID: <888166675.146654.1602088295264@mail.yahoo.com>
+Subject: =?UTF-8?B?0J3QsNGY0LzQuNC70LAg0LrQsNGYINCz0L7RgdC/0L7QtNCw0YDQvtGC?=
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from svensmacbookair.sven.lan (109.193.235.168) by AM4PR0302CA0035.eurprd03.prod.outlook.com (2603:10a6:205:2::48) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3455.23 via Frontend Transport; Wed, 7 Oct 2020 16:03:00 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1ea9aba9-a9f7-4236-8488-08d86ada7784
-X-MS-TrafficTypeDiagnostic: AM8PR05MB7268:
-X-Microsoft-Antispam-PRVS: <AM8PR05MB7268D72CFF1BED3A6F9BE901EF0A0@AM8PR05MB7268.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:669;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: V7qWKIlXElGjkFa6b+QRmLTf0NYPYUBlE3RB/wcSaEfbL1Jb/YhBT+jxMR1ocr7/zb2AWn8S7mKTKph3UALxwNzGpH3vIxAtGgn87eKV/fylzYN+5BohrqHjJmShW2Q0Ay2iC+ZyN9Oeb8V5zAz3tLE2rQFpN9VuhOqJY3g5esvWaHfQifdj8HTJ7fYln4qE+eoMb3BZefvJISOZkc/17aDn9Zb/enCcrxu6jKf7CQ0pDgA028xeYhDjN5ibS4jSMJQBob4fgnSN1JFsJXCv1kq0BrTJ865EuHCA4T2yiTMfpLFCH9goYAALbIbzqZJ4
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR05MB7251.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(366004)(39840400004)(376002)(346002)(478600001)(956004)(4744005)(7416002)(55016002)(6916009)(44832011)(186003)(4326008)(16526019)(53546011)(2906002)(7696005)(6506007)(52116002)(66556008)(66946007)(66476007)(8676002)(9686003)(316002)(8936002)(5660300002)(86362001)(1076003)(26005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: lE49RkgnWLvRee+ZqQe307wMbwvHGEfCxN8KP86GDY+JhwjRdMmJDE4m6we7qEJ62jIXKMqcH711XisI9RrpAY8Znv1BK4yCCU0GE2ADwS2ChHJoOlVkgQB7wUDcC1uMfkADeXBZRQi0H2Z6DowuqWG/2OCuQhFJJZWYMt/tZAbn3uG+CxBEFC+ZKY07fh9/9FeMZRVnCHw3yYMs08F81x5SZSrb4gbg3yDT2NX7mI2wDrjgf10WlQ64p23H4vbj2t5t317p/qupq720X21aYRLE3Gf5z4ONDU2LAIqpBEmzL1EobTeE87Y8XHk3clv19ui+iDTE3E/cHJ20Y8OGUNz5vO8SdLVAViFv0Z7/ac1yaLno+OjO+abf+FphIfDE3tCJ7BfifRbwUjqrkWyfp3aiVuYdX0oGIbIsL/bJMFu0T2s6Yuxl6ahArPC0qHFZtqIWfWYRVupXybUzA1xn3c+GvcKnDHU88jVO44jddIwnplpKBhdRXkbAVXuTmmlV7JNeBgFMnslQcIXjKI5EsxqBWUQL4qMqEuleofLHBBaTnZJXzbbCkSKZxfuL17/dGau42CGKZ8pks447/mWEg9o86aLoUW1GQ+rkHaPLdhJHAh5CDHkkNQdDJL4Nsl+4MAlUVRFxMXrNnInlZscu3Q==
-X-OriginatorOrg: voleatech.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ea9aba9-a9f7-4236-8488-08d86ada7784
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR05MB7251.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Oct 2020 16:03:01.5385
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: b82a99f6-7981-4a72-9534-4d35298f847b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2nXM6RJKBw9e2uyVtM7+kGWrDklc5YZKFZ9Mh9ywnABglkyjg1/93td5jwlOgoo2PYVQOewuQhc+7YZE1J3iVIBJxdziWdcCtU71ofc80Mo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR05MB7268
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+References: <888166675.146654.1602088295264.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.16795 YMailNodin Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Wed, Oct 07, 2020 at 05:01:15PM +0100, Marc Zyngier wrote:
-> On 2020-10-07 16:45, sven.auhagen@voleatech.de wrote:
-> > From: Miquel Raynal <miquel.raynal@bootlin.com>
-> > 
-> > Before adding more entries in the platform data structure, rename the
-> > flags entry to be more precise and name it host_flags.
-> > 
-> > Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> 
-> You are missing your own sign-off, as you are posting someone
-> else's patch.
-
-Ah, I did not know that it was necessary.
-I used the patch without any changes.
-
-I will add it for the next version, thanks.
-
-Best
-Sven
-
-> 
->         M.
-> -- 
-> Jazz is not dead. It just smells funny...
+DQoNCtCd0LDRmNC80LjQu9CwINC60LDRmCDQs9C+0YHQv9C+0LTQsNGA0L7Rgg0KDQrQiNCw0YEg
+0YHRg9C8IDY4LdCz0L7QtNC40YjQvdCwINC20LXQvdCwLCDQutC+0ZjQsCDRgdGC0YDQsNC00LAg
+0L7QtCDQv9GA0L7QtNC+0LvQttC10L0g0LrQsNGA0YbQuNC90L7QvCDQvdCwINC00L7RmNC60LAs
+INC+0LQg0YHQuNGC0LUg0LzQtdC00LjRhtC40L3RgdC60Lgg0LjQvdC00LjQutCw0YbQuNC4LCDQ
+vNC+0ZjQsNGC0LAg0YHQvtGB0YLQvtGY0LHQsCDQvdCw0LLQuNGB0YLQuNC90LAg0YHQtSDQstC7
+0L7RiNC4INC4INC+0YfQuNCz0LvQtdC00L3QviDQtSDQtNC10LrQsCDQvNC+0LbQtdCx0Lgg0L3Q
+tdC80LAg0LTQsCDQttC40LLQtdCw0Lwg0L/QvtCy0LXRnNC1INC+0LQg0YjQtdGB0YIg0LzQtdGB
+0LXRhtC4INC60LDQutC+INGA0LXQt9GD0LvRgtCw0YIg0L3QsCDQsdGA0LfQuNC+0YIg0YDQsNGB
+0YIg0Lgg0LHQvtC70LrQsNGC0LAg0YjRgtC+INGB0LUg0ZjQsNCy0YPQstCwINC60LDRmCDQvdC1
+0LAuINCc0L7RmNC+0YIg0YHQvtC/0YDRg9CzINC/0L7Rh9C40L3QsCDQvdC10LrQvtC70LrRgyDQ
+s9C+0LTQuNC90Lgg0L3QsNC90LDQt9Cw0LQg0Lgg0L3QsNGI0LjRgtC1INC00L7Qu9Cz0Lgg0LPQ
+vtC00LjQvdC4INCx0YDQsNC6INC90LUg0LHQtdCwINCx0LvQsNCz0L7RgdC70L7QstC10L3QuCDR
+gdC+INC90LjRgtGDINC10LTQvdC+INC00LXRgtC1LCDQv9C+INC90LXQs9C+0LLQsNGC0LAg0YHQ
+vNGA0YIg0LPQviDQvdCw0YHQu9C10LTQuNCyINGG0LXQu9C+0YLQviDQvdC10LPQvtCy0L4g0LHQ
+vtCz0LDRgtGB0YLQstC+Lg0KDQrQlNC+0LDRk9Cw0Lwg0LrQsNGYINCy0LDRgSDQvtGC0LrQsNC6
+0L4g0YHQtSDQv9C+0LzQvtC70LjQsiDQt9CwINGC0L7QsCwg0L/QvtC00LPQvtGC0LLQtdC9INGB
+0YPQvCDQtNCwINC00L7QvdC40YDQsNC8INGB0YPQvNCwINC+0LQgMiwgMzAwLCAwMDAg0LXQstGA
+0LAg0LfQsCDQv9C+0LzQvtGIINC90LAg0YHQuNGA0L7QvNCw0YjQvdC40YLQtSwg0YHQuNGA0L7Q
+vNCw0YjQvdC40YLQtSDQuCDQv9C+0LzQsNC70LrRgyDQv9GA0LjQstC40LvQtdCz0LjRgNCw0L3Q
+uNGC0LUg0LzQtdGT0YMg0LLQsNGI0LjRgtC1INGB0L7QsdGA0LDQvdC40ZjQsCAvINC+0L/RiNGC
+0LXRgdGC0LLQvi4g0JfQsNCx0LXQu9C10LbQtdGC0LUg0LTQtdC60LAg0L7QstC+0Zgg0YTQvtC9
+0LQg0LUg0LTQtdC/0L7QvdC40YDQsNC9INCy0L4g0LHQsNC90LrQsCDQutCw0LTQtSDRiNGC0L4g
+0YDQsNCx0L7RgtC10YjQtSDQvNC+0ZjQvtGCINGB0L7Qv9GA0YPQsy4gQXBwcmVjaWF0ZdC1INGG
+0LXQvdCw0Lwg0LDQutC+INC+0LHRgNC90LXRgtC1INCy0L3QuNC80LDQvdC40LUg0L3QsCDQvNC+
+0LXRgtC+INCx0LDRgNCw0ZrQtSDQt9CwINC/0YDQvtC/0LDQs9C40YDQsNGa0LUg0L3QsCDQvNCw
+0YHQsNC20LDRgtCwINC90LAg0LrRgNCw0LvRgdGC0LLQvtGC0L4sINGc0LUg0LLQuCDQtNCw0LTQ
+sNC8INC/0L7QstC10ZzQtSDQtNC10YLQsNC70Lgg0LfQsCDRgtC+0LAg0LrQsNC60L4g0LTQsCDQ
+v9C+0YHRgtCw0L/QuNGC0LUuDQoNCtCR0LvQsNCz0L7QtNCw0YDQsNC8DQrQky3Rk9CwINCc0LXR
+gNC40LvQuNC9INCg0L7QsdC10YDRgg==

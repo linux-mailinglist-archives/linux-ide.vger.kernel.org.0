@@ -2,64 +2,86 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0599B290544
-	for <lists+linux-ide@lfdr.de>; Fri, 16 Oct 2020 14:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5891290267
+	for <lists+linux-ide@lfdr.de>; Fri, 16 Oct 2020 12:02:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407604AbgJPMh1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 16 Oct 2020 08:37:27 -0400
-Received: from cpanel.giganet.cl ([190.96.78.139]:39766 "EHLO
-        cpanel.giganet.cl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2407562AbgJPMhY (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 16 Oct 2020 08:37:24 -0400
-X-Greylist: delayed 20782 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Oct 2020 08:37:10 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dplgrout.cl
-        ; s=default; h=Content-Transfer-Encoding:Content-Type:Message-ID:Reply-To:
-        Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:Content-Description:
-        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=TrgUs68YRs3neP+PfrvGhLoeMXh3YzKv5z9oCWPJ0m4=; b=m/ABHCVvyLYD2QkkwOjuWUgGFG
-        i9BJXsIic9wHOFEzjhXFPbcsR2XTWptcrmKLSqDrJOV7hGJM6za5nSEFhd4CC/+eaHHsgS48/E2jM
-        qvMpEeazlOlIrwSs4xM+Zdf/REorOK5GVU6ZAJUjCzQuCMv9dTVBPKuexZxj1Qoi2hPLiQ576Ik0L
-        XzwzerIXphINfmlVQ0r0UMIuChB1Vcn201QVmD2skB/Nh9D/yp0E95Av9ZMQq7ln6H0uEUnu/2/5Y
-        /CHuMEs39xrrgaYDtG7jTh3PfukIIcCJEs3b52/mZokA1w+tDL1dp0MaV2Z+qYj+Bzs13o0ru0vv/
-        Mq733mMw==;
-Received: from [::1] (port=55048 helo=cpanel.giganet.cl)
-        by cpanel.giganet.cl with esmtpa (Exim 4.93)
-        (envelope-from <info@controlypotencia.com>)
-        id 1kTJ7f-0009vt-N3; Fri, 16 Oct 2020 03:21:51 -0300
+        id S2406482AbgJPKBx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 16 Oct 2020 06:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406459AbgJPKBw (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 16 Oct 2020 06:01:52 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53BC5C0613D4
+        for <linux-ide@vger.kernel.org>; Fri, 16 Oct 2020 03:01:52 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id l16so1869135ilt.13
+        for <linux-ide@vger.kernel.org>; Fri, 16 Oct 2020 03:01:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=cvCOy9gmWwEIGoAvKN1wTgWgmqeY7BJZiB7+75Zr3Co=;
+        b=VVldiOk8oq8kYrPwagrSCebMbGdc+eNT5XsEMEtvGSBZx5FZa8mDTT4xi2V/aarWbR
+         DfdecSUhsDjPmt5esRWTekqzISQW+SKcBNOaNSFNGvNS8h3TMjZQbm/9LizVi7LoBOOh
+         uwspdJgvThlxvaMtbAoV32xqy+/v52noAjnhCIV6uJBa56N8yfvHY6edyt3B0rw2XTsH
+         Km1AQnMBRqVbDx/659iCuZAwOZrlJPiA6cwRNInkD0by81D6+8kkrYQjihVmzZE1A+vm
+         X1pJW+CW3Td760s2elu/gPEdALpZpxicSbQUZkQTBaN8tkynKJ3xMxoy0VfnySja4ykY
+         xj0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=cvCOy9gmWwEIGoAvKN1wTgWgmqeY7BJZiB7+75Zr3Co=;
+        b=V3aWTdoG3KG+GDlrX0eRKbZpxw7GQDmNNXpNlvZL0QV9Ttgb/O/Q67aD7NZSdtrj9+
+         XTZCNcLhHPX7tdOJDvjAkFf5utYs8X93PM7oPK8FapfF17JNL4me8Sv7Gvfi3J/Xyv5L
+         tKfXe+9BWAHkDEUasUPmKTcdd3RO7xWqOrk8QwW1aaJDDiTt0vTQZGamljqKdYKd46Gq
+         AYBK4/X71VT71By9dig24gUU1jhigIJaEfNxBwIYZPZGdENShCconv5R2VGk7sIMitEy
+         zB8kxroAOXmSh82BMZY0NAqjJV/LEksR85ouSLVwJTGpTHG/5q0nN6eBKeOqtgjXuXLl
+         HB1g==
+X-Gm-Message-State: AOAM533bD7biTNBrOovZ4nTguaDO7nvJuLnE0bwnLu9aTTkmok6nGfuQ
+        hBSB1Btl6KdHu9yRJRFMXxaD0+41+pXTrLsqPzk=
+X-Google-Smtp-Source: ABdhPJw3IWA1y2JP8ySXyOAQsgLNedAa0y+yxfCbUEqXJmBe6vecsQVABicw6uxoViJ8hLC+QCySrW8EObsJX9CgRPw=
+X-Received: by 2002:a92:9e94:: with SMTP id s20mr2248512ilk.102.1602842511555;
+ Fri, 16 Oct 2020 03:01:51 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 16 Oct 2020 03:21:50 -0300
-From:   Ying Chongan <info@controlypotencia.com>
+Received: by 2002:a6b:3b15:0:0:0:0:0 with HTTP; Fri, 16 Oct 2020 03:01:49
+ -0700 (PDT)
+Reply-To: bukarmangora@hotmail.com
+From:   Bukar Mangora <bukarmangora@gmail.com>
+Date:   Fri, 16 Oct 2020 10:01:49 +0000
+Message-ID: <CAJLrak8Gz=sbdVGE+hwSHfB_RsEb_8X4-dFQz2C9k0Hqe-kd7A@mail.gmail.com>
+Subject: From Bukar Mangora, Hello Friend Please Treat Urgent
 To:     undisclosed-recipients:;
-Subject: Investment opportunity
-Reply-To: yingchongan@zohomail.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <e70e5a6e462f92c7f06eea146a612430@controlypotencia.com>
-X-Sender: info@controlypotencia.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel.giganet.cl
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - controlypotencia.com
-X-Get-Message-Sender-Via: cpanel.giganet.cl: authenticated_id: mariapaz.lopez@dplgrout.cl
-X-Authenticated-Sender: cpanel.giganet.cl: mariapaz.lopez@dplgrout.cl
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Greetings,
+Good day my good friend.
+How are you doing today? It has been long i hear from you, what is
+going on your side? Today i am very much happy to inform you about my
+success in getting those inheritance funds transferred under the
+co-operation of a new partner from India Asia. He is a Canadian but
+based in India, but presently I'm in India for investment projects
+with my own share of the total sum of Millions of dollars. meanwhile,
+i didn't forget your past efforts and attempts to assist me in
+transferring those inheritance funds despite that it failed us
+somehow, i want you to contact my Secretary in Lom=C3=A9 Togo, his name is
+Mr. Paul Agwa, this is his email address (paulagwad@aol.com ), ask him
+to contact Ecobank were i kept the sum of $350,000.00, for your
+compensation, this compensation fund is for all the past efforts and
+attempts to assist me in the past transaction. I appreciated your
+efforts at that time very much.  so, feel free and contact my
+secretary, and instruct him where Ecobank will transfer the total sum
+of $350,000.00.
 
-This email is for an opportunity to invest in any lucrative business in 
-your country.
+Please do let me know immediately Ecobank transfer the fund
+$350.000.00 into your own bank account, in the moment, I am too busy
+here because of the investment projects which i am having with my new
+partner at hand, so get in touch with Mr. Paul Agwa on his email
+address, he will contact Ecobank on your behalf without any delay.
+Stay safe of Covid 19.
 
-We offer a quick loan at low interest rate, if you are interested, 
-please reply to yingchongan@gmail.com for more details.
-
-Sincerely: Ying Chongan
+Best regards,
+Bukar Mangora.

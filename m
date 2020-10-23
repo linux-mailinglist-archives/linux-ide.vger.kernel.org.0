@@ -2,112 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47314296D01
-	for <lists+linux-ide@lfdr.de>; Fri, 23 Oct 2020 12:44:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 636792974A0
+	for <lists+linux-ide@lfdr.de>; Fri, 23 Oct 2020 18:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S462386AbgJWKn7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 23 Oct 2020 06:43:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50902 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S462364AbgJWKn7 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 23 Oct 2020 06:43:59 -0400
-Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE2F7C0613CE
-        for <linux-ide@vger.kernel.org>; Fri, 23 Oct 2020 03:43:57 -0700 (PDT)
-Received: by mail-pf1-x443.google.com with SMTP id f19so840565pfj.11
-        for <linux-ide@vger.kernel.org>; Fri, 23 Oct 2020 03:43:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=BaMOVcZpZpD3yn88ajr63mpct/txiCTpzh3Ew3F7lD8=;
-        b=GdiYVk9qlE2PC2Z6h1fgypKsN7wrr1yUjjp2VoK60IZsvTykVxnsii16XRJokjUTH7
-         fv5PElxlYvhkkzo3an2F/HGLDHQgQGGZ8DXpcS7++CpYOlPSADuXoVEe2s/Uf0yRNnGT
-         5V4V+u/zdY0VYVVJE9HGi83xFQ9tGRuHlmw83iBRtqW32xSAVhRgj6+DcSkTQPn5Sy6q
-         NuJAaBV9HV0DutR0uhaS/Pw039gNQ8RfpvYc6EKGDGkx4Y/fHCRMhMXhu/i6nRaPa0Ab
-         gbvKi4rna1C8yela4o1CzBIyrf5ajvlpoxwDpm3miTGn0YPcRPQfCGn3zWIPg0dQ84sc
-         +8pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=BaMOVcZpZpD3yn88ajr63mpct/txiCTpzh3Ew3F7lD8=;
-        b=ICjNgLx9uS7JJs0djI0hrXqjLcerAj115CdgqzOG1kgmDdZKD1I+PtxNmbUTaJx3vu
-         aFJwQvN8BKH31HR4KTo/7A6UXCtWoDY0RuUOHdZ24wB2HrsWy5+XsCZd/266t2nbU1lG
-         yWDTReYaYluWHhHDlBMdiXMYdOzgL99UjjT1lb3vEaSS2JmGVRrAS8Kg/akMtrrR0/56
-         50Tcyeo6tUL86lci1OvToPqTkvKeTprY1xDujBKzjEZXd5P+Vai1z2l8sijypYGroo4b
-         +ov4WfMUVtlFy0kJmekwtL4hmJRvZuGMyjrYJTRV43vjXxWJEO2XgTLVubsxZk4gQ6R/
-         CW8Q==
-X-Gm-Message-State: AOAM533/hvdyBX5ZltR7sTi8gI/TTeRafvAg4u3kL9DohUc+h8b2u+iC
-        FDn0i+XClllWZvv1NMI3PyuENJxdBhytcZbeR2Y=
-X-Google-Smtp-Source: ABdhPJyQ4x78DdVWJHH3IZpTYKbiLMfy/weNJ6WEYf6XEtMIueNbbLj2E+nmjnEB/U/qO0NNHxufPf7OCAx2VyguVgs=
-X-Received: by 2002:a17:90b:33ca:: with SMTP id lk10mr1796077pjb.221.1603449837148;
- Fri, 23 Oct 2020 03:43:57 -0700 (PDT)
+        id S1752298AbgJWQiQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 23 Oct 2020 12:38:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33220 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1750865AbgJWQdt (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Fri, 23 Oct 2020 12:33:49 -0400
+Received: from mail.kernel.org (ip5f5ad5a3.dynamic.kabel-deutschland.de [95.90.213.163])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1825A2465B;
+        Fri, 23 Oct 2020 16:33:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1603470827;
+        bh=6T96WIbhEdoUn7swuSEk+0sEbN+E2NxuoZFz3O2v1AU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JlpEBZhm4413VDb28h87ZUEs9QiiHwQo0nsys9AmJX0ew2+PvwD78rEK1IHxVTL7Q
+         8J4rhG3T1Dz7oQ1jH0aTK4rKjItSdNx0r0j980ZKQQX3+D7ofyW5wP0VbhH1UA1EDp
+         Xl+LSIzC9Kd0g6KmvXcgKzrSDRXlPHbpV9K23gjM=
+Received: from mchehab by mail.kernel.org with local (Exim 4.94)
+        (envelope-from <mchehab@kernel.org>)
+        id 1kW00e-002Avd-Th; Fri, 23 Oct 2020 18:33:44 +0200
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "Jonathan Corbet" <corbet@lwn.net>, Jens Axboe <axboe@kernel.dk>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 08/56] ata: fix some kernel-doc markups
+Date:   Fri, 23 Oct 2020 18:32:55 +0200
+Message-Id: <a7e159be08bcb0c42aa219cf99c2adfd4db0a9d9.1603469755.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <cover.1603469755.git.mchehab+huawei@kernel.org>
+References: <cover.1603469755.git.mchehab+huawei@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a17:90a:d56:0:0:0:0 with HTTP; Fri, 23 Oct 2020 03:43:56
- -0700 (PDT)
-Reply-To: wadragohamzak777@gmail.com
-From:   Hamzak Wadrago <hamzak07wadrago@gmail.com>
-Date:   Fri, 23 Oct 2020 10:43:56 +0000
-Message-ID: <CAB5=tVonfJ3=5HvrXcJ3QYCAfpSYGXaUxuY-F5QL=HY7FWE3XQ@mail.gmail.com>
-Subject: I will be waiting to hear from you,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Friend,
+Some functions have different names between their prototypes
+and the kernel-doc markup.
 
-I decided to contact you after a careful thought that you may be
-capable of handling this business transaction which I explained below,
-I am the head of Accounts and Audit Department of Bank of Africa
-Ouagadougou. In my department while cross-checking the files of
-foreigners. since our federal government has announced on the need of
-settling all foreign bills to enable foreign investors to come into
-our country and as an order from African unity governed by African
-heads, I discovered an abandoned sum of $15.5m US dollars (fifteen
-million, five hundred thousand US dollars). In an account that belongs
-to one of our foreign customer who died along with his entire family
-in a plane crash.
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+---
+ drivers/ata/libata-core.c | 2 +-
+ drivers/ata/libata-eh.c   | 2 +-
+ drivers/ata/libata-scsi.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Since i got information about his death, The bank have been expecting
-his next of kin to come over and claim his money because The fund
-cannot be released unless somebody applies for it as next of kin or
-relation to the deceased as indicated in our banking guidelines but
-unfortunately I learnt that his supposed next of kin(his son and wife)
-died alongside with him at the plane crash leaving nobody behind for
-the claim .It is therefore upon this discovery that I now decided to
-make this business proposal to you and release the money to you as the
-next of kin (I want to present you as his business associate )to the
-deceased for safety and subsequent disbursement since nobody is coming
-for it and I don't want this money to go into the Bank treasury as
-unclaimed Bill.
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index f546a5761c4f..61c762961ca8 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5616,7 +5616,7 @@ int ata_host_start(struct ata_host *host)
+ EXPORT_SYMBOL_GPL(ata_host_start);
+ 
+ /**
+- *	ata_sas_host_init - Initialize a host struct for sas (ipr, libsas)
++ *	ata_host_init - Initialize a host struct for sas (ipr, libsas)
+  *	@host:	host to initialize
+  *	@dev:	device host is attached to
+  *	@ops:	port_ops
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index d912eaa65c94..b6f92050e60c 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1115,7 +1115,7 @@ void ata_eh_freeze_port(struct ata_port *ap)
+ EXPORT_SYMBOL_GPL(ata_eh_freeze_port);
+ 
+ /**
+- *	ata_port_thaw_port - EH helper to thaw port
++ *	ata_eh_thaw_port - EH helper to thaw port
+  *	@ap: ATA port to thaw
+  *
+  *	Thaw frozen port @ap.
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 70431912dc63..48b8934970f3 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1003,7 +1003,7 @@ void ata_scsi_sdev_config(struct scsi_device *sdev)
+ }
+ 
+ /**
+- *	atapi_drain_needed - Check whether data transfer may overflow
++ *	ata_scsi_dma_need_drain - Check whether data transfer may overflow
+  *	@rq: request to be checked
+  *
+  *	ATAPI commands which transfer variable length data to host
+-- 
+2.26.2
 
-The Banking law and guideline here stipulates that if such money
-remained Unclaimed after Nine years, the money will be transferred
-into the Bank treasury as unclaimed fund.. The request of foreigner as
-next of kin in this business is occasioned by the fact that the
-customer was a foreigner and a Burkina be cannot stand as next of kin
-to a foreigner.
-
-I agree that 40% of this money will be for you as foreign partner, in
-respect to the provision of a foreign account, 60% would be for me .
-There after I will visit your country for disbursement according to
-the percentages indicated. Therefore to enable the immediate transfer
-of this fund to your account as arranged, you must apply first to the
-bank as next of kin of the deceased customer.
-
-Upon receipt of your reply, more details and text of application form
-will be given to you for immediate transfer of the fund, I will not
-fail to bring to your notice that this transaction is hitch free and
-that you should not entertain any atom of fear as all required
-arrangements have been made for the transfer.
-
-i will like  you to send me this information about you such as  your
-full names, direct telephone numbers, and physical address.
-
-Your quick response will be highly appreciated.
-
-Yours sincerely,
-
-Mr. Hamzak Wadrago.

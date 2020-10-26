@@ -2,52 +2,52 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5BD2299992
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Oct 2020 23:24:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0E082999A1
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Oct 2020 23:26:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393718AbgJZWYC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 26 Oct 2020 18:24:02 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:46461 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2393611AbgJZWYC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Oct 2020 18:24:02 -0400
-Received: by mail-ed1-f65.google.com with SMTP id 33so11327696edq.13
-        for <linux-ide@vger.kernel.org>; Mon, 26 Oct 2020 15:24:01 -0700 (PDT)
+        id S2394271AbgJZW0U (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 26 Oct 2020 18:26:20 -0400
+Received: from mail-ej1-f65.google.com ([209.85.218.65]:42488 "EHLO
+        mail-ej1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394248AbgJZW0U (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Oct 2020 18:26:20 -0400
+Received: by mail-ej1-f65.google.com with SMTP id h24so16152453ejg.9
+        for <linux-ide@vger.kernel.org>; Mon, 26 Oct 2020 15:26:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:sender:from:date:message-id:subject:to
          :content-transfer-encoding;
         bh=l8o/PxZLRUsXqbfQdaHQ/PhODuJFQTqIyS1z/DNGmXE=;
-        b=dx1Jb6hzSEqpU9NjblMcUG260YMpP9g3GG+xkBT1O5gq+cVKsjGdgWRH46ZG+qJTRk
-         2l/1uZx2G93KFbDr9qQ/VSyajS/ybN2F4KwXKH8X9pc+zdsEgVQj5kj0Yiu3s5i7ETlP
-         2b9IIAJ/LcdPjy8mcji+6kQKy5xzaipqamWzlSDloRKR7s7KUtVimL3Di84hLLolYNur
-         bcAeyQILM2Udl+40kCrMeIwVuBd7A2pefixe04gnsdXVgpCv75ZAgQuCGToDb1e45Tam
-         2k+O2JWw/ja2Jf6U5gztX4Dedg+pDUod1saMJ/N+9OUb+SvbRJcne4BdI7Kp7eUh0i5Q
-         OeOQ==
+        b=bJXsNdd/HVaV4ZTybcdKOcYzHO+3oSm/cNO5xOP5Dkmc9QexZ3dknF+N8I+5YE91fp
+         VFExSvShRysqF5QDtU3c56LhTc5G3uq2L6hdpvh6gb7TJWxPspzPvTyOQMRpVkwayvof
+         ziYv9iKzGqeiZOtJvLl9juOlF5n6rkYbpRYRRQSyM0PIu/xLEcGx2hLMLb10/xhGOvj1
+         R5KemTaaSY/5mhJoDnoZ8GHh/8nxSwPCiLtfqQTDPDAorzw2f/mF9gYfirgdHH4dWqzo
+         I9ynV95pUiOnaiLxHZPzXl2g40zSwyZA5fbbPDjWHi4cCgOoAZyLQ+Ly1Qd0lET5okfm
+         2hTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
          :to:content-transfer-encoding;
         bh=l8o/PxZLRUsXqbfQdaHQ/PhODuJFQTqIyS1z/DNGmXE=;
-        b=fr+WXIvnrQ+aZrCB9ePL9+cG9pHltuZLVs9kdSVjKG9pUbzVnlz1hP/LOy0Hr67tla
-         mWA1foXqTCOdTDiNgJicZ6JIi7cjmQSfdkK21BS3XTG3JoYoO3nB82i1ViHb/p2KIGwK
-         x6hCv/ej0TOpvranOrnqnzZLCF5nGAKGxqabszZ5LlA1bEVpvkEU1SZEwI4y2/euFLPs
-         5ydS6SkDkPeegckWyzg0njqlRaXU2wQ9Z5kqgEN9puLQdERpeJeKsV03ZuYCNfOwxFcf
-         CmV8iNZGMuE+e+6ADNS/1ZSAgO3nMPD+e1o/xmI2+xXNafTwKIpjcZiiLoQrGbaW0Aq6
-         vJjg==
-X-Gm-Message-State: AOAM530irIx5dXvT+HjlCGT4Q2owqLYb5d7snm3i91sqcMUJvvNkHfHi
-        vDvL4E87mem2i7bfgF6OAc62mk5OL0L6Ww+9Qmk=
-X-Google-Smtp-Source: ABdhPJxq87u9l+dLVoNP4JWpQvGdu0APBfmyqoNPnITX/WqkOOoBXqXFVhW0HFdP7nuc8QZRxahvX3rM/VQe1C74cH4=
-X-Received: by 2002:aa7:d28a:: with SMTP id w10mr18156192edq.192.1603751040220;
- Mon, 26 Oct 2020 15:24:00 -0700 (PDT)
+        b=HDUo5Y69TSTsxrnJyWezy7kYYeUoAvtxf7n/cwmUUJwmHLSC/lYE2NgynjbIElDsKu
+         GChqouqkdxqHtBFvBNcsZ0HSUFnLry2UBP9oc+GLJUS1xQtB1Fq9VGAUxXuVCZv6k7/n
+         zJ9PaIo3s1EsRAetEr5xR3etz/PwX9xwHurgPSzgwNuP3GfsQ4vmLtK4g1jE7ZH2sTey
+         9dTL0CEBUBuscaGSQ3Owdmuu0UPVm8wVXQ4MkRRU+Rvgis9tKc5CuIqiyMj3YW05UTIw
+         GUZQNr2q6FIMMzGXh/FKbYGnQEAKoMnViDSN9JlP+MXExAQ4Jj+FVed6aJiaG6wPyPOA
+         gPTg==
+X-Gm-Message-State: AOAM530nBeiS0v0KG37fTVVUCcdLER8bbqN+EPLZn6YUi0NPLX26iRy4
+        zBYYm+DdRCTrO5jgV/8FRXEljzTbdBwtlcbI3Ac=
+X-Google-Smtp-Source: ABdhPJzPf/v/ucNqOSNN6n6EKD2zYHT1DcWr6osP2+8pBHaukq6AUpS0xLUOf1VkJrzfamosq3w0411gEDFHEINi77I=
+X-Received: by 2002:a17:906:4d44:: with SMTP id b4mr17047135ejv.131.1603751177855;
+ Mon, 26 Oct 2020 15:26:17 -0700 (PDT)
 MIME-Version: 1.0
 Sender: djmacdon5@gmail.com
-Received: by 2002:ab4:a1d1:0:0:0:0:0 with HTTP; Mon, 26 Oct 2020 15:23:59
+Received: by 2002:ab4:a1d1:0:0:0:0:0 with HTTP; Mon, 26 Oct 2020 15:26:17
  -0700 (PDT)
 From:   Donna Louise <donnamcinneslouise@gmail.com>
-Date:   Mon, 26 Oct 2020 10:23:59 -1200
-X-Google-Sender-Auth: Z_ipWkvIqPmdkUpX4HmbH9wzK8o
-Message-ID: <CAKGPEqgKjPRKqY4cQm8jP44sd3O=G5Zajsji0XdkAHtrndr+pg@mail.gmail.com>
+Date:   Mon, 26 Oct 2020 10:26:17 -1200
+X-Google-Sender-Auth: iX-wKhsy3q0g7xCIEVTiDGj51qI
+Message-ID: <CAKGPEqi0TnJVUQ8y1W+RAgB=RFA83rJan6X54AOk-mNQFb+Fuw@mail.gmail.com>
 Subject: Hello,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"

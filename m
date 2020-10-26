@@ -2,52 +2,45 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71292297E41
-	for <lists+linux-ide@lfdr.de>; Sat, 24 Oct 2020 21:55:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFD8329977B
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Oct 2020 20:54:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1764228AbgJXTzQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 24 Oct 2020 15:55:16 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33642 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1764226AbgJXTzP (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 24 Oct 2020 15:55:15 -0400
-Subject: Re: [GIT PULL] libata fixes for 5.10-rc1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603569315;
-        bh=8KcIQsNs0DKTdfnmQpKc4tqHQrmPrLm0EYLr2qPKJls=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=oQWN936O9EKJebCLoAibO9ovHibIPDLEPQ7yTbXcWGtCZgt7eb/PsrWeSjy/LEPtA
-         tfQmiPjYrVJykrQb++LzH8gY9nJmjJdsPyD6czXhb3UiMshvQGf4iA+o4ZA5ueUvWL
-         dKhfyAM6Saxcn2vbrIcc0c8b+mp7a3lcstpcIlgo=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <78f005fb-c35a-9120-5299-c8bd1efb1216@kernel.dk>
-References: <78f005fb-c35a-9120-5299-c8bd1efb1216@kernel.dk>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <78f005fb-c35a-9120-5299-c8bd1efb1216@kernel.dk>
-X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git tags/libata-5.10-2020-10-24
-X-PR-Tracked-Commit-Id: 94bd5719e491564c61ee9f121d544e23b4e51374
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: cb6b2897b9b425433ae31dc01f4e1d549f0028c8
-Message-Id: <160356931524.14356.4528595097698117279.pr-tracker-bot@kernel.org>
-Date:   Sat, 24 Oct 2020 19:55:15 +0000
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        IDE/ATA development list <linux-ide@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+        id S1727058AbgJZTyw (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 26 Oct 2020 15:54:52 -0400
+Received: from mail28.hostingvirtuale.com ([80.211.73.28]:37782 "EHLO
+        mail28.hostingvirtuale.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726522AbgJZTyv (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Oct 2020 15:54:51 -0400
+X-Greylist: delayed 391 seconds by postgrey-1.27 at vger.kernel.org; Mon, 26 Oct 2020 15:54:49 EDT
+Received: from mail28.hostingvirtuale.com (localhost [127.0.0.1])
+        by mail28.hostingvirtuale.com (Postfix) with ESMTPA id AE85F44BEE;
+        Mon, 26 Oct 2020 20:48:15 +0100 (CET)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Mon, 26 Oct 2020 12:48:15 -0700
+From:   Miss Osa John <missosajohn20@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Hello
+Reply-To: missosajohn201@gmail.com
+User-Agent: Roundcube Webmail/1.4.2
+Message-ID: <5eaea909588eb557a0c8d4652bd1a936@gmail.com>
+X-Sender: missosajohn20@gmail.com
+Organization: Love
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Sat, 24 Oct 2020 09:13:29 -0600:
 
-> git://git.kernel.dk/linux-block.git tags/libata-5.10-2020-10-24
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/cb6b2897b9b425433ae31dc01f4e1d549f0028c8
-
-Thank you!
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Hello
+How are you today? I hope you are fine.My name is Miss Osa John ,26 
+years I am single girl looking for honest and nice person. Somebody who 
+i can partner with .I don't care about your colour or ethnicity.I would 
+like to know you more,most especially what you like and what you 
+dislike.I'm sending you this beautiful mail, with a wish for much 
+happiness.I am looking forward to hear from you
+Love from,
+Miss Osa

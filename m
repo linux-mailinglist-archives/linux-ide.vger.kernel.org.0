@@ -2,99 +2,86 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A71E929DF55
-	for <lists+linux-ide@lfdr.de>; Thu, 29 Oct 2020 02:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5ED29EF4B
+	for <lists+linux-ide@lfdr.de>; Thu, 29 Oct 2020 16:11:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728619AbgJ2BAq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 28 Oct 2020 21:00:46 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60512 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731542AbgJ1WR2 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 28 Oct 2020 18:17:28 -0400
-Received: from pali.im (pali.im [31.31.79.79])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C0CFC24728;
-        Wed, 28 Oct 2020 13:55:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603893316;
-        bh=BxlMyj/ERhPQpajoGhj5wK+DMWvDJ3D2iMgwQXUd4fA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OFGDIVecxXHb7KAfE/gTEJw/IdQ5B4BhfoMt17zAWKNQHQchkXqQvDtrFLTW5/0UC
-         lPio3FnnBEHCUW/utdXc/Nb26Y6bwaxOGTVG+eGSkpQg9pQrGOlLaSHJOQIx4myUL+
-         feIqJHwJ6vsAx1FpoPFF4s2gUO5vB14sYwQu/UNM=
-Received: by pali.im (Postfix)
-        id 51D1ACB4; Wed, 28 Oct 2020 14:55:14 +0100 (CET)
-Date:   Wed, 28 Oct 2020 14:55:14 +0100
-From:   Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To:     Sascha Hauer <s.hauer@pengutronix.de>, Jens Axboe <axboe@kernel.dk>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel@pengutronix.de
-Subject: Re: [PATCH v2] libata: Fix retrieving of active qcs
-Message-ID: <20201028135514.r2m3kxchbg6nljht@pali>
-References: <20191213080408.27032-1-s.hauer@pengutronix.de>
- <20191225181840.ooo6mw5rffghbmu2@pali>
- <20200106081605.ffjz7xy6e24rfcgx@pengutronix.de>
- <20200127111630.bqqzhj57tzt7geds@pali>
- <20200127112428.sdfxvlqdox5efzcb@pengutronix.de>
- <20200503214627.gerb3ipcwek2h3h7@pali>
- <20200508054644.GJ5877@pengutronix.de>
+        id S1726375AbgJ2PK7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 29 Oct 2020 11:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43406 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727842AbgJ2PK7 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 29 Oct 2020 11:10:59 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFBBC0613CF;
+        Thu, 29 Oct 2020 08:01:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=5UpmUUK4HkD04BYNwcucPUw7TY2FGi/Q9CTm0VHziQI=; b=tWqW+P040RkCrD1rrAjfY9sgJz
+        KO8cA88SpwWBoN64XQ280vwozNesIh3dcpQJpE35kJ2w27SzFJsAB+oKGDucHwW1mlIL/KXQN4E8t
+        Wf4aEjeT7KdmYarQE0o9bu7BXPVKL8zVZWtaPVcQ7G6uxaw20SPZ7ih8McI6uCnkTg0n6Yx6BMd04
+        3UFRG/Fvp0JKgNdAOIPMhF6wJNoX+XzLM46OYLJTx8S1oOIJnNepiGSXqfNUdJgXcOPFylGAlXQnH
+        TLDhpV+f/EiqEYkmK6i4VQ/atrEf0ndvU7ptSXv1mJXKZQQGHFflGrHFzE6vO2drxVUStwdqcWpRQ
+        FJKpifxA==;
+Received: from 089144193201.atnat0002.highway.a1.net ([89.144.193.201] helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kY9Q6-0005M0-BQ; Thu, 29 Oct 2020 15:00:55 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Denis Efremov <efremov@linux.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Song Liu <song@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+        Finn Thain <fthain@telegraphics.com.au>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-raid@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-m68k@lists.linux-m68k.org
+Subject: simplify gendisk lookup and remove struct block_device aliases v4
+Date:   Thu, 29 Oct 2020 15:58:23 +0100
+Message-Id: <20201029145841.144173-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200508054644.GJ5877@pengutronix.de>
-User-Agent: NeoMutt/20180716
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Friday 08 May 2020 07:46:44 Sascha Hauer wrote:
-> From fcdcfa9e7a4ee4faf411de1df4f3c4e12c78545c Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Fri, 8 May 2020 07:28:19 +0200
-> Subject: [PATCH] ata: sata_nv: Fix retrieving of active qcs
-> 
-> ata_qc_complete_multiple() has to be called with the tags physically
-> active, that is the hw tag is at bit 0. ap->qc_active has the same tag
-> at bit ATA_TAG_INTERNAL instead, so call ata_qc_get_active() to fix that
-> up. This is done in the vein of 8385d756e114 ("libata: Fix retrieving of
-> active qcs").
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Hi all,
 
-I tested this second change on nforce4 box with sata_nv controllers:
+this series removes the annoying struct block_device aliases, which can
+happen for a bunch of old floppy drivers (and z2ram).  In that case
+multiple struct block device instances for different dev_t's can point
+to the same gendisk, without being partitions.  The cause for that
+is the probe/get callback registered through blk_register_regions.
 
-  00:07.0 IDE interface [0101]: NVIDIA Corporation CK804 Serial ATA Controller [10de:0054] (rev f3)
-  00:08.0 IDE interface [0101]: NVIDIA Corporation CK804 Serial ATA Controller [10de:0055] (rev f3)
+This series removes blk_register_region entirely, splitting it it into
+a simple xarray lookup of registered gendisks, and a probe callback
+stored in the major_names array that can be used for modprobe overrides
+or creating devices on demands when no gendisk is found.  The old
+remapping is gone entirely, and instead the 4 remaining drivers just
+register a gendisk for each operating mode.  In case of the two drivers
+that have lots of aliases that is done on-demand using the new probe
+callback, while for the other two I simply register all at probe time
+to keep things simple.
 
-Both disks are working fine, I do not see any regression or change, so
-you can add my:
+Note that the m68k drivers are compile tested only.
 
-Tested-by: Pali Rohár <pali@kernel.org>
+Changes since v3:
+ - keep kobj_map for char dev lookup for now, as the testbot found
+   some very strange and unexplained regressions, so I'll get back to
+   this later separately
+ - fix a commit message typo
 
-Ideally add also Fixes line:
+Changes since v2:
+ - fix a wrong variable passed to ERR_PTR in the floppy driver
+ - slightly adjust the del_gendisk cleanups to prepare for the next
+   series touching this area
 
-Fixes: 28361c403683 ("libata: add extra internal command")
+Changes since v1:
+ - add back a missing kobject_put in the cdev code
+ - improve the xarray delete loops
 
-Jens, do you need something more from me? Some special tests, etc?
-
-> ---
->  drivers/ata/sata_nv.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ata/sata_nv.c b/drivers/ata/sata_nv.c
-> index eb9dc14e5147..20190f66ced9 100644
-> --- a/drivers/ata/sata_nv.c
-> +++ b/drivers/ata/sata_nv.c
-> @@ -2100,7 +2100,7 @@ static int nv_swncq_sdbfis(struct ata_port *ap)
->  	pp->dhfis_bits &= ~done_mask;
->  	pp->dmafis_bits &= ~done_mask;
->  	pp->sdbfis_bits |= done_mask;
-> -	ata_qc_complete_multiple(ap, ap->qc_active ^ done_mask);
-> +	ata_qc_complete_multiple(ap, ata_qc_get_active(ap) ^ done_mask);
->  
->  	if (!ap->qc_active) {
->  		DPRINTK("over\n");
-> -- 
-> 2.26.2

@@ -2,92 +2,82 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C826B2A076E
-	for <lists+linux-ide@lfdr.de>; Fri, 30 Oct 2020 15:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 152922A08F6
+	for <lists+linux-ide@lfdr.de>; Fri, 30 Oct 2020 16:01:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbgJ3OIL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 30 Oct 2020 10:08:11 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:51740 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725939AbgJ3OIL (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 30 Oct 2020 10:08:11 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBk6rL151547;
-        Fri, 30 Oct 2020 11:51:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=s3tHlzB0xCGIK7yOwzACZQHeo2e//7rXl3a/1W9LG3w=;
- b=mji+/CqxaWQs11hQK+l6m0G8jy49CU8lI5i+d1zteXyQUiK2/qxKfqhlzcHEf7xfhRqS
- DRwbRhB0YrtrsIVDDWWloDSs7CkCnMjJv2Oa3DYuVAisqvcJmJSnBSs2IXGtg8hjjVel
- gP++V2gjn2zO6xrqankqNXe7xhK7DSRAlN7P8jgRnRGhNZQmaq2pvJWBVJCQohYfki5Y
- PHgZ3iv7NUEwjhgZezPwVazzL+z79agaslzKpn0uNxfNmOWaHy6lmBdLpbG8EMqqAHin
- ES/B08Zdw+amU/azdKk1BOnhuQYMloqo91sew1w/JNfMUiIOZJ+Qxup2ZYa690RGFQjm Kw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 34c9sb9fc8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 30 Oct 2020 11:51:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 09UBjVOF008711;
-        Fri, 30 Oct 2020 11:51:10 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 34cx70m4mh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 30 Oct 2020 11:51:10 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 09UBp9iE024367;
-        Fri, 30 Oct 2020 11:51:09 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 30 Oct 2020 04:51:08 -0700
-Date:   Fri, 30 Oct 2020 14:51:02 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Bartlomiej Zolnierkiewicz <bzolnier@gmail.com>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ide: Prevent some negative shifts in ide_set_ignore_cable()
-Message-ID: <20201030115102.GE3251003@mwanda>
+        id S1726837AbgJ3PAa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 30 Oct 2020 11:00:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39368 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726713AbgJ3PAa (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 30 Oct 2020 11:00:30 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46A1C0613D8
+        for <linux-ide@vger.kernel.org>; Fri, 30 Oct 2020 07:59:35 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id w25so7004334edx.2
+        for <linux-ide@vger.kernel.org>; Fri, 30 Oct 2020 07:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=TjZDjTDUyG5IOPAjtKhDz6bJNm6DqwPh3GYjQnJOtk58Qe+VS+LrjG9D+UJTL89L5a
+         hPszd6YttBU2gVDN4Hgd0nVvKmUsgBGa0RfR9y4dU1VG6wqrOSeXXlqa/jT4b2a91QjD
+         sT+ma7QKBtdbME0ZKxl0kc6DEI2BSZsRxuMkNkQsvOWxO6URWAKkh65L3Tk879AJ4LqG
+         Bj9eXYFDUcjXqha9S32esb82rsLCjf9rEdFYrDoZfWxC18Um3HNxqbzetSufrWkdrmWB
+         Hgfuw2XlX0g8ZkLr3paRT5DvZbKL3ccSJq24BaLzNsiQWn1tArC4uUyPSHMQ3hVqPZo6
+         Sb9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=l1AElsJkLfVJ3VbHiwwEjvNFpfKIZ+8yuPyXRJOuGaVUfYgpFsNzh5iYIGzsq0kPT3
+         ubHgvf6X8qtRRHNVGLLtfrOE5fw/cHPqlcA39BRhYhLCyYiaJzeswnp8WIHAZsy1aI0w
+         jtTFO8c1qSK951/ie3NW7VymnLy23u2AkX2ky7Y5nDo8hnti/KkIbBoWqHTEq5NVuge5
+         F++SDA6PlGXUA1oB1ttOws6HC76cLz9yYWMaGvAj7L4QHWTUjBy4MdCZ1rCWxSgOoehI
+         rYsqaZEZ3IcMfrP5uQ/YtwCJdjSCFLbI8a9/xgZTclFuDsBlN7LrWAw29x7bsUN2Xcz0
+         G2eg==
+X-Gm-Message-State: AOAM533yFeFaKEGKdY5NmXGT5rPN4rqoZw9Kf5rKtbnQjf8EpNMl71g/
+        ETNZfD1Y5YOOs2aC75t+LGcP1y4NQuiqYMDYLA==
+X-Google-Smtp-Source: ABdhPJz0XXuJnPS5g3+lbBiW+XXmkDUqYoNBDu76t3os6QvlPQSI6Onyl30CWs+Md1o+E0r28qs03HXLpOQosKz8YWo=
+X-Received: by 2002:a50:f307:: with SMTP id p7mr2761574edm.235.1604069974505;
+ Fri, 30 Oct 2020 07:59:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 spamscore=0
- bulkscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
- definitions=main-2010300091
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9789 signatures=668682
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 bulkscore=0
- priorityscore=1501 spamscore=0 phishscore=0 clxscore=1011 suspectscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2010300091
+Received: by 2002:a50:f14c:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 07:59:34
+ -0700 (PDT)
+Reply-To: li.anable85@gmail.com
+From:   Liliane Abel <k.griest04@gmail.com>
+Date:   Fri, 30 Oct 2020 15:59:34 +0100
+Message-ID: <CABAZL7=b-NWks3DKb=fdDjnu_xt_-CcJCqf-F5s0yQCFVH73-A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Shifting by a negative number is undefined.  These values come from the
-module parameter, so it's not a big deal from a practical perspective.
+Dearest
 
-Fixes: 9fd91d959f1a ("ide: add "ignore_cable" parameter (take 2)")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/ide/ide.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Greeting my dear, I am Liliane Abel by name, The only daughter of late
+Mr.Benson Abel. My father is one of the top Politician in our country
+and my mother is a farmers and cocoa merchant when they were both
+alive. After the death of my mother, long ago, my father was
+controlling their business until he was poisoned by his business
+associates which he suffered and died.
 
-diff --git a/drivers/ide/ide.c b/drivers/ide/ide.c
-index 9a9c64fd1032..dcfb8a187c46 100644
---- a/drivers/ide/ide.c
-+++ b/drivers/ide/ide.c
-@@ -338,7 +338,7 @@ static int ide_set_ignore_cable(const char *s, const struct kernel_param *kp)
- 	if (sscanf(s, "%d:%d", &i, &j) != 2 && sscanf(s, "%d", &i) != 1)
- 		return -EINVAL;
- 
--	if (i >= MAX_HWIFS || j < 0 || j > 1)
-+	if (i < 0 || i >= MAX_HWIFS || j < 0 || j > 1)
- 		return -EINVAL;
- 
- 	if (j)
--- 
-2.28.0
-
+Before the death of my father, He told me about (two million five
+hundred thousand united states dollars) which he deposited in the bank
+in Lome-Togo, It was the money he intended to transfer overseas for
+investment before he was poisoned. He also instructed me that I should
+seek for foreign partners in any country of my choice who will assist
+me transfer this money in overseas account where the money will be
+wisely invested.
+I am seeking for your kind assistance in the following ways:  (1) to
+provide a safe bank account into where the money will be transferred
+for investment. (2) To serve as a guardian of this fund since I am a
+girl of 19 years old. (3) To make arrangement for me to come over to
+your country to further my education. This is my reason for writing to
+you. Please if you are willing to assist me I will offer you 25% of
+the total money. Reply if  you are interested
+Best regards.
+Liliane Abel.

@@ -2,339 +2,157 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3012A612C
-	for <lists+linux-ide@lfdr.de>; Wed,  4 Nov 2020 11:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E932A6891
+	for <lists+linux-ide@lfdr.de>; Wed,  4 Nov 2020 16:56:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728522AbgKDKGZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 4 Nov 2020 05:06:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60420 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728066AbgKDKGZ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 4 Nov 2020 05:06:25 -0500
-Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDA41C0613D3
-        for <linux-ide@vger.kernel.org>; Wed,  4 Nov 2020 02:06:24 -0800 (PST)
-Received: by mail-io1-xd35.google.com with SMTP id r9so21615491ioo.7
-        for <linux-ide@vger.kernel.org>; Wed, 04 Nov 2020 02:06:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=QAzmKD/KL9lLJWbEU2h+TuELpjYFjjcQoXkre/kpTzo=;
-        b=mEKTFHG5p5EOrYxUvCVvzcI8WCdhdfqujdKq4jgdI5xXK+IWOBurM5A9Ko9ziI1wtK
-         PvPHyq2iwOIng+N/n5RLqyTOWt3TkiZkEXG7vIoAJdNnQ+gFu0+1As4AXwO+SJLDuiHr
-         lIupbUKIh0o+/hvDkeJyNYRe4QBAHjiSX6FFe1j5JkFU9P27g0fJ8V2QW1xBiNBRK+Ds
-         AsAwYar9l6siPGMs7dnGmONBIZYeQXM7BCeJJ6mZcM5hVwC2w0dE/R4VYHBW6H8OmDmY
-         ZS4RhVlcoatDpSn0OCTPR5sFKUWrifyJR7+eaqefv0uQb42Y83WqT9XD7993opKNOOuH
-         mkyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc
-         :content-transfer-encoding;
-        bh=QAzmKD/KL9lLJWbEU2h+TuELpjYFjjcQoXkre/kpTzo=;
-        b=MY0OX2EzNxWpfaGXDs9e/7XbaXgTfFH+qz4jNO/h2PRjSIYc4uTJsTMeZXz4/GnpS0
-         C4Iki6+PwF67KMIdmbHlbxxjcKKcO3LyqpWgD/cnFwk3oloR7nmJM+cM9qT7roPi/WvT
-         atzGXt6OpcgOcTTig84KbGlj4pP4RdKInzG4dBLiVLbij3F3ac7En1t3eBCTzPgE4ei5
-         AsE05V7Z6c1NX+ytgLg03bPv5DAzOok8KC4pSdEuVwopH4vzRPRakmnf4lVl/tNvqhAf
-         TsPAAxxwN9Lu121MSBBZxFBPlfIcFjCC4yp+neMV6JQ2gbRDumBvV91JQ6XKVJSm/t9L
-         KO+g==
-X-Gm-Message-State: AOAM530USWKJjw8YGSnBnhHt8AEQ5jKqYIDGYcFZzbOZ+amUAMZZiOj9
-        8QAx9jKJAfPuK2dKsQOLBnzl4t1Ith2cJB1ki1E=
-X-Google-Smtp-Source: ABdhPJxGpcS46yvvDENgRPaP9hfJvs7Ecvdf+RqzM8IUYLIq7WZgzVZiZCotRLeWhxb2A/1gk+WnUhAYLHy7vIe6nq4=
-X-Received: by 2002:a6b:148e:: with SMTP id 136mr17311716iou.60.1604484384189;
- Wed, 04 Nov 2020 02:06:24 -0800 (PST)
+        id S1730957AbgKDPwt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 4 Nov 2020 10:52:49 -0500
+Received: from mail-eopbgr10117.outbound.protection.outlook.com ([40.107.1.117]:28320
+        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730939AbgKDPws (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 4 Nov 2020 10:52:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=WJOHukirbSK3njrPBlMEYYSnLZwqsRRVKqMqp4vVL0zE254B/KyD79/fRhRWzf+kHHZ1tFZHuIZdgu9k1BIOT3th4TVtGG49LdyOMXg4u3rDynBP0tzHnKJDfveGCg0KwbnUh84/CAqtTFyLvC4IspxbQ4cr9A8ZjDYsEGk5y/VzCehhL28cG7U+6uMtLQOBPQlrmwH+uY5qNTAa5dlsPpoDFPr6Ls7FTIAyDNLYwm08Bq8RFyVYYQGNkrCOIIpcfXRWYKQn59nvT3hjMqrYu2lvWxFVmd4qyCkKpMXkiL6YRLpiCAwuBVxquR1drhLuS3/53habzdL/jufezogCOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ot9EscGPUlyy2wMyDW+lzmwM3CCokGpFFvcyPsrqVA=;
+ b=DOy4aoao8IvjFaaMdQFsG3oHXjmDnct2y6RlwYUM0T4pz4k94Vp7teyrYEDn+cjSqhWCQsaj/bw9HU+8Yz9rcc7NRW+7mjbi/GDjF0PmpCzXcCevioCaWp2QPPwLpAM2AJw7fiyF168Q5I7C/rBf8495slW7Lpak5lmDaacrYe4JM+Lfc4hLLw6QDTed9ST7M0zk2+ePhrkW8mJrtqji89ZWBW7Dpf0Jf6iaBVhiYa0y6xYl7F37FhBgaKMV9JgtvLakaa/cUZp0ZgdlM25EKGKT3R5FI+vxKSXzUgvBkNuZ2/ixiRRtr0ws9UqsEM/Zz1LEFrqFV1OBMhCc9VRcLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=voleatech.de; dmarc=pass action=none header.from=voleatech.de;
+ dkim=pass header.d=voleatech.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=voleatech.de;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0ot9EscGPUlyy2wMyDW+lzmwM3CCokGpFFvcyPsrqVA=;
+ b=j+bghGNeQ6LHuZBKgNQvV8XKNMH2p7TCqTvypLsI+8J6RS/f4/XBzHaEG1qGJtEDdvQZ2gPwbojJZOXdR85NPwTbhImyCtRK0I+qgHEf7jPY8uS6itbUZCMB5hk/FWVcq1BN06nypUEeMW0RomuLo+2tbjvF0xACgnfhegbXwCc=
+Authentication-Results: kernel.dk; dkim=none (message not signed)
+ header.d=none;kernel.dk; dmarc=none action=none header.from=voleatech.de;
+Received: from AM8PR05MB7251.eurprd05.prod.outlook.com (2603:10a6:20b:1d4::23)
+ by AM0PR05MB5075.eurprd05.prod.outlook.com (2603:10a6:208:d0::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.29; Wed, 4 Nov
+ 2020 15:52:40 +0000
+Received: from AM8PR05MB7251.eurprd05.prod.outlook.com
+ ([fe80::f132:2cc:34f2:5e4]) by AM8PR05MB7251.eurprd05.prod.outlook.com
+ ([fe80::f132:2cc:34f2:5e4%7]) with mapi id 15.20.3499.032; Wed, 4 Nov 2020
+ 15:52:40 +0000
+From:   sven.auhagen@voleatech.de
+To:     axboe@kernel.dk, hdegoede@redhat.com, robh+dt@kernel.org,
+        tglx@linutronix.de, maz@kernel.org, gregory.clement@bootlin.com
+Cc:     linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        devicetree@vger.kernel.org, jason@lakedaemon.net, andrew@lunn.ch,
+        rjw@rjwysocki.net, viresh.kumar@linaro.org,
+        antoine.tenart@bootlin.com, maxime.chevallier@bootlin.com,
+        thomas.petazzoni@bootlin.com, miquel.raynal@bootlin.com
+Subject: [PATCH v2 0/9] Armada8k enable per-port SATA interrupts and drop a hack in the IRQ subsystem
+Date:   Wed,  4 Nov 2020 16:52:28 +0100
+Message-Id: <20201104155237.77772-1-sven.auhagen@voleatech.de>
+X-Mailer: git-send-email 2.24.3 (Apple Git-128)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [109.193.235.168]
+X-ClientProxiedBy: AM8P190CA0030.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:219::35) To AM8PR05MB7251.eurprd05.prod.outlook.com
+ (2603:10a6:20b:1d4::23)
 MIME-Version: 1.0
-From:   Sam Sankoorikal <sam.ks.2000@gmail.com>
-Date:   Wed, 4 Nov 2020 15:36:08 +0530
-Message-ID: <CAAjC+DoQ12oB39y=G99PvQ9rWrWJRFmdw4ox4QHRsnOqTsFgRw@mail.gmail.com>
-Subject: [Query] Help understanding logs from libata-eh.c
-To:     tj@kernel.org, htejun@gmail.com
-Cc:     linux-ide@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost.localdomain (109.193.235.168) by AM8P190CA0030.EURP190.PROD.OUTLOOK.COM (2603:10a6:20b:219::35) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3499.19 via Frontend Transport; Wed, 4 Nov 2020 15:52:39 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 70c81fe3-7732-47d2-aa3e-08d880d9a8f6
+X-MS-TrafficTypeDiagnostic: AM0PR05MB5075:
+X-Microsoft-Antispam-PRVS: <AM0PR05MB50755D3D82402E73E6C6C8F4EFEF0@AM0PR05MB5075.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: /CWKpASKF5BgfjHNYTLbd44prYZDOSnKx1HAQO3B6fVCkzq2qjA8HkXfy8so1olmOMJ/ZxcpQ4r14rynWJm5SOQoU4SI9OPmt0eKHz1gIvgFSWureKVTSiT+Sr7YaUtK05KNepqxCB6RC/ssCRFyQjDFDvwibCgifWekrdisGk5HtkZG79/7uiZYEndmrR7YTrRJpDXsm4+7PaV/4IRnDUCnQPz0rHRwNwBckkOAAsmrFAITMdS4I+s/Z+HkCtO/sxezlbzJjvn4f79zULuklfNdSvAjZMgJzhq4Cv0DHc7+uyiH08UqB0tG+9YkEV2+Fvl13tqf51HB2cWgQrYn5RPHnc38uxJluk1p7xwqAmVjmE1YACThYIdNOYYxaJNj
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR05MB7251.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39830400003)(346002)(376002)(136003)(396003)(366004)(8676002)(956004)(2906002)(52116002)(6666004)(316002)(4326008)(2616005)(5660300002)(8936002)(1076003)(6486002)(66574015)(478600001)(66476007)(66556008)(6512007)(83380400001)(9686003)(66946007)(86362001)(186003)(36756003)(7416002)(16526019)(26005)(6506007)(32563001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: tgLayRdzXo2dYZ4Gi+rWUloqmvlknUFJqanSuQdP3x57gAOC/lItSLfAWrKqxl+RvBlVNIFgPkAmKXTfAM9G9X8Sv9ufQ9zEbeTgxr0cRWHr6TYodd3CLw7xRo1K9nOx/mvP0qSrfF1cFiCi+xS8F9OwSKmxoH0bjQKZa69uWYkyR84iv76aDDkMSp/TcymqTCFFvLo1rEwaOkZRZZHakEp07CyrDEBodtq7XZWJIAvT+GSIQKv5iEi+PwH3u38Q1GH8M4EB0mkdobZTlIDhXscss9B9LRP2iy8rjE2nmIwV666IcAORaLdJb4bBoTvIJ+iDSy2TEIgR83T8TsM2vEzfpBZMY7lNs+i7IAnymdY5osK8Q1aPcouu6gYiZc6K4ciy/orV60XC92hfTDzkXi82TzJdfQEyqhbxL6y6fVZXHc/mPrnbITvj4/G2hgg2LuhinpeURmrxsiG1DFfRSzV4McEvsgpL0xE88Au9/HT+OX5xM/xW/XFUih/J3Gek1LxnL1epObMac132JD6lSPjpfzVwWFqROnmQncjGAs8evdkWRhtP8ORYkWtXtHOLSd1za52E0A0T5V2WqeLz4YWHZQsHzS/fR1CNBfkV+8vwvO6QRV94bGkhsHOby5nsxbMT0uN6hd92u5ic8rfYpQ==
+X-OriginatorOrg: voleatech.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 70c81fe3-7732-47d2-aa3e-08d880d9a8f6
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR05MB7251.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2020 15:52:40.5972
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: b82a99f6-7981-4a72-9534-4d35298f847b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oMmmwTpxz1eAU1iLUgn2FHi356NF0bvDqgCqK8xhtF5qOMYVCCb/JWdVJ6liXYS1cIckjmsr7R1SAOQnW6Kb19BlRZWSftTmi6mnJHbvHBM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB5075
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Folks,
+From: Sven Auhagen <sven.auhagen@voleatech.de>
+
+Hello,
+
+There were already 4 versions of this series from Miquèl.
+I talked to Miquèl and I fixed up the last comments from v4.
+I am looking for feedback if this patch series is now ready to be merged
+and what should be further changed.
+
+Here is the original cover letter:
+
+Some time ago, when the initial support for Armada CP110 was
+contributed, the SATA core was not able to handle per-port
+interrupts. Despite the hardware reality, the device tree only
+represents one main interrupt for the two ports. Having both SATA
+ports enabled at the same time has been achieved by a hack in the ICU
+driver(1) that faked the use of the two interrupts, no matter which
+SATA port was in use.
+
+Now that the SATA core is ready to handle more than one interrupt,
+this series adds support for it in the libahci_platform code. The
+CP110 device tree must be updated to reflect the two SATA ports
+available and their respective interrupts. To do not break DT backward
+compatibility, the ahci_platform driver now embeds a special quirk
+which checks if the DT is valid (only for A8k compatible) and, if
+needed, creates the two missing sub-nodes, and assign them the
+relevant "reg" and "interrupts" properties, before removing the main
+SATA node "interrupts" one.
+
+(1) The ICU is an irqchip aggregating the CP110 (south-bridge)
+interrupts into MSIs for the AP806 (north-bridge).
+
+Best
+Sven
+
+Change from v1:
+  * Add a patch to enable custom irq initialization in 
+    plattform init host
+  * Add multi_irq_host_ack callback for the msi irq handler
+  * Rework the ahci mvebu patch to initiate the irq and use
+    the new multi_irq_host_ack to handle the custom irq code.
+    Remove the custom irq handler and duplicate code.
+  * Fix the armada8k backwards compatibility code
+  * Rename AHCI_PLATFORM_A8K_QUIRK to AHCI_PLATFORM_ARMADA8K_QUIRK
+
+Miquel Raynal (5):
+  ata: ahci: mvebu: Rename a platform data flag
+  ata: ahci: mvebu: Support A8k compatible
+  irqchip/irq-mvebu-icu: Remove the double SATA ports interrupt hack
+  dt-bindings: ata: Update ahci bindings with possible per-port
+    interrupts
+  dt-bindings: ata: Update ahci_mvebu bindings
+
+Sven Auhagen (4):
+  ata: ahci: custom irq init for host init
+  ata: ahci: add ack callback to multi irq handler
+  ata: ahci: mvebu: Add support for A8k legacy DT bindings
+  arm64: dts: marvell: armada-cp110: Switch to per-port SATA interrupts
+
+ .../devicetree/bindings/ata/ahci-platform.txt |   7 +
+ arch/arm64/boot/dts/marvell/armada-cp11x.dtsi |   6 +-
+ drivers/ata/ahci.h                            |   2 +
+ drivers/ata/ahci_mvebu.c                      | 143 ++++++++++++++++--
+ drivers/ata/libahci.c                         |   4 +
+ drivers/ata/libahci_platform.c                |  19 ++-
+ drivers/irqchip/irq-mvebu-icu.c               |  18 ---
+ include/linux/ahci_platform.h                 |   1 +
+ 8 files changed, 160 insertions(+), 40 deletions(-)
+
+-- 
+2.20.1
 
-I'm trying to understand the following logs for my sata drive. These
-logs are seen immediately after 'reboot -f'. This is not seen
-everytime a reboot is performed. A power-cycle ensures that it is
-boots up fine.
-Please help explain the reason for the 'timeout'. Please suggest what
-needs to be done to ensure that reboot succeeds without hitting this
-error?
-
--x-
-
-reboot -f
-
-Failed to read reboot parameter file: No such file or directory
-
-Rebooting.
-
-[  929.916076] ata6.00: exception Emask 0x0 SAct 0x1 SErr 0x0 action 0x6 fr=
-ozen
-
-[  930.007059] ata6.00: failed command: READ FPDMA QUEUED
-
-[  930.072375] ata6.00: cmd 60/20:00:00:08:00/00:00:00:00:00/40 tag 0
-ncq dma 16384 in
-
-[  930.072375]          res 40/00:00:00:00:00/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  930.264519] ata6.00: status: { DRDY }
-
-[  930.312264] ata1.00: exception Emask 0x0 SAct 0x6fffffff SErr 0x0
-action 0x6 frozen
-
-[  930.409971] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  930.476424] ata1.00: cmd 61/08:00:fc:d5:82/00:00:05:00:00/40 tag 0
-ncq dma 4096 out
-
-[  930.476424]          res 40/00:01:00:00:00/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  930.668747] ata1.00: status: { DRDY }
-
-
-
-=E2=80=A6
-
-[  930.668747] ata1.00: status: { DRDY }
-
-[  930.716506] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  930.782810] ata1.00: cmd 61/08:08:8c:d9:82/00:00:05:00:00/40 tag 1
-ncq dma 4096 out
-
-[  930.782810]          res 40/00:01:00:00:00/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  930.975100] ata1.00: status: { DRDY }
-
-[  931.022813] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  931.089110] ata1.00: cmd 61/08:10:e4:d9:82/00:00:05:00:00/40 tag 2
-ncq dma 4096 out
-
-[  931.089110]          res 40/00:01:00:4f:c2/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  931.281454] ata1.00: status: { DRDY }
-
-[  931.329235] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  931.395489] ata1.00: cmd 61/08:18:9c:da:82/00:00:05:00:00/40 tag 3
-ncq dma 4096 out
-
-[  931.395489]          res 40/00:01:09:4f:c2/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  931.587634] ata1.00: status: { DRDY }
-
-[  931.635372] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  931.701645] ata1.00: cmd 61/08:20:34:db:82/00:00:05:00:00/40 tag 4
-ncq dma 4096 out
-
-[  931.701645]          res 40/00:01:00:00:00/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  931.893804] ata1.00: status: { DRDY }
-
-[  931.941531] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  932.007820] ata1.00: cmd 61/08:28:4c:e0:82/00:00:05:00:00/40 tag 5
-ncq dma 4096 out
-
-[  932.007820]          res 40/00:01:00:00:00/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  932.199990] ata1.00: status: { DRDY }
-
-[  932.247731] ata1.00: failed command: WRITE FPDMA QUEUED
-
-
-
-=E2=80=A6
-
-
-
-[  939.308610] ata1.00: failed command: WRITE FPDMA QUEUED
-
-[  939.374853] ata1.00: cmd 61/08:f0:2c:d2:82/00:00:05:00:00/40 tag 30
-ncq dma 4096 out
-
-[  939.374853]          res 40/00:01:06:4f:c2/00:00:00:00:00/00 Emask
-0x4 (timeout)
-
-[  939.567957] ata1.00: status: { DRDY }
-
-[  945.265210] ata6.00: revalidation failed (errno=3D-5)
-
-[  945.327849] ata1.00: revalidation failed (errno=3D-5)
-
-[  956.017398] ata1.00: revalidation failed (errno=3D-5)
-
-[  956.080070] ata6.00: revalidation failed (errno=3D-5)
-
-[  986.737616] ata6.00: revalidation failed (errno=3D-5)
-
-[  986.800288] ata1.00: revalidation failed (errno=3D-5)
-
-[  987.167188] blk_update_request: I/O error, dev sdb, sector 2048
-
-[  987.167265] blk_update_request: I/O error, dev sda, sector 92459564
-
-
-
-lspci -vvv | grep -i sata
-00:1f.2 SATA controller: Intel Corporation C610/X99 series chipset
-6-Port SATA Controller [AHCI mode] (rev 05) (prog-if 01 [AHCI 1.0])
-        Subsystem: Intel Corporation C610/X99 series chipset 6-Port
-SATA Controller [AHCI mode]
-        Capabilities: [a8] SATA HBA v1.0 BAR4 Offset=3D00000004
-pcilib: sysfs_read_vpd: read failed: Input/output error
-
-smartctl -a /dev/sda
-smartctl 6.5 2016-05-07 r4318
-[x86_64-linux-4.8.28-WR2.2.1_standard-gf2ab372] (local build)
-Copyright (C) 2002-16, Bruce Allen, Christian Franke, www.smartmontools.org
-
-=3D=3D=3D START OF INFORMATION SECTION =3D=3D=3D
-Device Model:     StorFly VSFBM8CC200G-JUN
-Serial Number:    P1T14005214001280074
-Firmware Version: 0202-000
-User Capacity:    200,049,647,616 bytes [200 GB]
-Sector Size:      512 bytes logical/physical
-Rotation Rate:    Solid State Device
-Device is:        Not in smartctl database [for details use: -P showall]
-ATA Version is:   ACS-2 (minor revision not indicated)
-SATA Version is:  SATA 3.1, 6.0 Gb/s (current: 6.0 Gb/s)
-Local Time is:    Wed Nov  4 01:59:20 2020 PST
-SMART support is: Available - device has SMART capability.
-SMART support is: Enabled
-
-=3D=3D=3D START OF READ SMART DATA SECTION =3D=3D=3D
-SMART overall-health self-assessment test result: PASSED
-
-General SMART Values:
-Offline data collection status:  (0x00) Offline data collection activity
-                                        was never started.
-                                        Auto Offline Data Collection: Disab=
-led.
-Self-test execution status:      (   0) The previous self-test routine comp=
-leted
-                                        without error or no self-test has e=
-ver
-                                        been run.
-Total time to complete Offline
-data collection:                (    0) seconds.
-Offline data collection
-capabilities:                    (0x71) SMART execute Offline immediate.
-                                        No Auto Offline data collection sup=
-port.
-                                        Suspend Offline collection upon new
-                                        command.
-                                        No Offline surface scan supported.
-                                        Self-test supported.
-                                        Conveyance Self-test supported.
-                                        Selective Self-test supported.
-SMART capabilities:            (0x0002) Does not save SMART data before
-                                        entering power-saving mode.
-                                        Supports SMART auto save timer.
-Error logging capability:        (0x01) Error logging supported.
-                                        General Purpose Logging supported.
-Short self-test routine
-recommended polling time:        (   1) minutes.
-Extended self-test routine
-recommended polling time:        (   1) minutes.
-Conveyance self-test routine
-recommended polling time:        (   1) minutes.
-
-SMART Attributes Data Structure revision number: 1
-Vendor Specific SMART Attributes with Thresholds:
-ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE
-UPDATED  WHEN_FAILED RAW_VALUE
-  1 Raw_Read_Error_Rate     0x0000   100   100   070    Old_age
-Offline      -       0
-  5 Reallocated_Sector_Ct   0x0000   100   100   000    Old_age
-Offline      -       0
-  9 Power_On_Hours          0x0000   100   100   000    Old_age
-Offline      -       240
- 12 Power_Cycle_Count       0x0000   100   100   000    Old_age
-Offline      -       88
-160 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       0
-161 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       537
-163 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       49
-164 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       249797
-165 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       156
-166 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       54
-167 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       121
-168 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       3000
-177 Wear_Leveling_Count     0x0000   100   100   050    Old_age
-Offline      -       114
-178 Used_Rsvd_Blk_Cnt_Chip  0x0000   100   100   000    Old_age
-Offline      -       0
-181 Program_Fail_Cnt_Total  0x0000   100   100   000    Old_age
-Offline      -       0
-182 Erase_Fail_Count_Total  0x0000   100   100   000    Old_age
-Offline      -       0
-187 Reported_Uncorrect      0x0000   100   100   000    Old_age
-Offline      -       0
-192 Power-Off_Retract_Count 0x0000   100   100   000    Old_age
-Offline      -       48
-194 Temperature_Celsius     0x0000   100   100   000    Old_age
-Offline      -       31
-195 Hardware_ECC_Recovered  0x0000   100   100   000    Old_age
-Offline      -       322712
-196 Reallocated_Event_Count 0x0000   100   100   016    Old_age
-Offline      -       0
-198 Offline_Uncorrectable   0x0000   100   100   000    Old_age
-Offline      -       0
-199 UDMA_CRC_Error_Count    0x0000   100   100   050    Old_age
-Offline      -       0
-232 Available_Reservd_Space 0x0000   100   100   000    Old_age
-Offline      -       100
-241 Total_LBAs_Written      0x0000   100   100   000    Old_age
-Offline      -       541894
-242 Total_LBAs_Read         0x0000   100   100   000    Old_age
-Offline      -       68407
-248 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       96
-249 Unknown_Attribute       0x0000   100   100   000    Old_age
-Offline      -       100
-
-SMART Error Log Version: 1
-No Errors Logged
-
-SMART Self-test log structure revision number 1
-No self-tests have been logged.  [To run self-tests, use: smartctl -t]
-
-SMART Selective self-test log data structure revision number 1
- SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS
-    1        0        0  Not_testing
-    2        0        0  Not_testing
-    3        0        0  Not_testing
-    4        0        0  Not_testing
-    5        0        0  Not_testing
-    6        0    65535  Read_scanning was never started
-Selective self-test flags (0x0):
-  After scanning selected spans, do NOT read-scan remainder of disk.
-If Selective self-test is pending on power-up, resume after 0 minute delay.
--x-
-
-Regards.
--sam

@@ -2,72 +2,70 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E716E2ADAB9
-	for <lists+linux-ide@lfdr.de>; Tue, 10 Nov 2020 16:46:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B4E142AE44F
+	for <lists+linux-ide@lfdr.de>; Wed, 11 Nov 2020 00:47:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729909AbgKJPqY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 10 Nov 2020 10:46:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44532 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726721AbgKJPqW (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Nov 2020 10:46:22 -0500
-Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65A6C0613CF
-        for <linux-ide@vger.kernel.org>; Tue, 10 Nov 2020 07:46:21 -0800 (PST)
-Received: from ramsan.of.borg ([84.195.186.194])
-        by laurent.telenet-ops.be with bizsmtp
-        id qfmH2300b4C55Sk01fmHkR; Tue, 10 Nov 2020 16:46:19 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1kcVqb-001DMN-DH; Tue, 10 Nov 2020 16:46:17 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1kcVqa-00DmdO-Qo; Tue, 10 Nov 2020 16:46:16 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>, Li Yang <leoyang.li@nxp.com>
-Subject: [PATCH v2] ahci: qoriq: Add platform dependencies
-Date:   Tue, 10 Nov 2020 16:46:15 +0100
-Message-Id: <20201110154615.3285171-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+        id S1727275AbgKJXrC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 10 Nov 2020 18:47:02 -0500
+Received: from server.hostvarna.com ([185.219.69.50]:40021 "EHLO
+        mail.hostvarna.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726706AbgKJXrC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Nov 2020 18:47:02 -0500
+Received: from localhost (localhost [127.0.0.1])
+        by mail.hostvarna.com (Postfix) with ESMTP id 8AD62D6A40D;
+        Sat,  7 Nov 2020 14:58:30 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hostvarna.com; h=
+        x-mailer:content-transfer-encoding:content-type:content-type
+        :mime-version:date:date:subject:subject:from:from:reply-to; s=
+        dkim; t=1604753907; x=1606568308; bh=m3pASy53GgfFwHppvIPHJghbzAH
+        QviKN6bgk+M/PrtE=; b=Z1hLZwM57N/xpf2b660tSG4jRwt9qrF03v81BXDUI1z
+        lSg90I2oKu6oniO6u40ZRGqO5S5Sh+ZfyUrTLypvXszJxlGTI4L50dt/4zDduSRX
+        F8Rc34N9/kB+PxvKq3gQ0xEVT3UxIrVnmQm7BK8nGOqlSjiuKydbH17v6kUBNPE8
+        =
+X-Virus-Scanned: Debian amavisd-new at server.hostvarna.com
+Received: from mail.hostvarna.com ([127.0.0.1])
+        by localhost (mail.hostvarna.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id VjKTq61iS5oh; Sat,  7 Nov 2020 14:58:27 +0200 (EET)
+Received: from User (unknown [176.32.23.85])
+        (Authenticated sender: simona@hostvarna.com)
+        by mail.hostvarna.com (Postfix) with ESMTPA id 6AF0DD6A410;
+        Sat,  7 Nov 2020 09:52:42 +0200 (EET)
+Reply-To: <maviswanczyko@aol.com>
+From:   "L.  Wanczyk." <simona@hostvarna.com>
+Subject:  DONATION                                                                 .50
+Date:   Sat, 7 Nov 2020 08:51:36 -0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+Message-Id: <20201107125830.8AD62D6A40D@mail.hostvarna.com>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The Freescale QorIQ AHCI SATA controller is only present on Freescale
-Layerscape SoCs.  Add platform dependencies to the AHCI_QORIQ config
-symbol, to avoid asking the user about it when configuring a kernel
-without Layerscape support.
+Hello,
 
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Li Yang <leoyang.li@nxp.com>
----
-v2:
-  - Add Acked-by.
----
- drivers/ata/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
+Jackpot, I am donating to 5 random individuals if you get this email then
+your email was selected after a spin ball. I have spread most of my wealth
+over a number of charities and organizations. I have voluntarily decided to
+donate the sum of $ 10 Million USD to you as one of the selected , to verify
+my
+winnings via YouTube page below.
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 030cb32da980fc47..9ec6bce27c91511b 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -264,6 +264,7 @@ config AHCI_XGENE
- config AHCI_QORIQ
- 	tristate "Freescale QorIQ AHCI SATA support"
- 	depends on OF
-+	depends on SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
- 	select SATA_HOST
- 	help
- 	  This option enables support for the Freescale QorIQ AHCI SoC's
--- 
-2.25.1
+WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
 
+THIS IS YOUR DONATION CODE: F207162
+Kindly send your direct telephone and fax number to enable me to reach you
+
+Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
+
+Hope to make you and your family happy.
+
+Regards,
+Mrs. Mavis L. Wanczyk.

@@ -2,42 +2,42 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F13A2AC29A
-	for <lists+linux-ide@lfdr.de>; Mon,  9 Nov 2020 18:40:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAFC72AC29F
+	for <lists+linux-ide@lfdr.de>; Mon,  9 Nov 2020 18:40:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732069AbgKIRkK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 9 Nov 2020 12:40:10 -0500
-Received: from mail-eopbgr150099.outbound.protection.outlook.com ([40.107.15.99]:6659
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
+        id S1732110AbgKIRkM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 9 Nov 2020 12:40:12 -0500
+Received: from mail-db8eur05on2090.outbound.protection.outlook.com ([40.107.20.90]:23136
+        "EHLO EUR05-DB8-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731962AbgKIRkJ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 9 Nov 2020 12:40:09 -0500
+        id S1732040AbgKIRkL (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 9 Nov 2020 12:40:11 -0500
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ny7re9RLreeQwIq1SyuadiVjbzzrWGp5JSaEVBQuDavd+4a+nWsO+W1KpfhoN2PiaWXMNnbRp9AA/FkZHPNJFTgPaYr6utn6Gbo7Q0VKjmg8zJTYLT/mpxY17eiYy9J0Kbo3E/wD8bCYM3YWrizXqEKjJH/UQ8BLjap775PhuThJgrh/jSRQ94D00nIxss+gc/bGUJD5j0hkcFDvOdjmbmUiylNVKAHPoWI44YOn4giMR6PWkx1z2EjX6cvjYhq12XUKfSEM/p16jhPxHia98SmJ7sRTExRTbkMzmJ+asD8Co6MklDYB4QA9ERURBxP/rslxwts0AgTsF6tHUqwefQ==
+ b=J9CVrLY3SRXJcnTJhJ/EZjiPI2zQXu4jHUyo7ODJvJ2DZexh+IwlIz2ji+75uHqeoF5Aem7rutjQ4JCGGztDE+ioignIHuV9SQcQy6xlUPza8tOuEbfDNafQ3bDAhCqAy0hia7F3NZKoCTbG/5NgXPhjKTCbm2nOXY1gWsc7BnwXvaFMrBn68Sy4KWyhC8YJz1jL7fYoL+kx9+k+rNkUqU0AUJu5sn5NVqfn6zs4vjV/yWYM6fBSKxFRN2b9DOJkenaj2I3RxS4+uPyYisnKAO2dW9lTlahaxsTHy1RQacvdvUlKYzYD2mQWRsawFC+IOeevFnxLFDEPg9IEPrrQcw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tASzEdDMG8gJV427A0F/Ybc3XjatDlkF3KHobqVVyOk=;
- b=lhJoJl5pVvP+5zcdpkfXjz1RrcpeyCre8RCeA5+MDJOHhyNQiUm46e6LYt/4hpkvvMlagSUX0xmeRQ8QXjzT91mwpO+jxGTNzuQ4CYen+TuL++a+r7JYqfr83YqWOkwFlxV34ZTkP5k0pIS6kC9q/BINhRXxmJ5aG34quqwhS+poOipBVoKrtvRY8aIsS1Tq935E1ptFUjLIYciFDTX2aBeTyxopVX2OUJFuRJChlU7dLjvr45DQUCztV7zXYcVL7Ahz+5o3EHuFi6IKim6ZpylKc1P76OO9zKIuKG4wPpNdo27Zr0+4Qoe+cnoNjwmHe5CZmVKPRO8yTjkp3xEwww==
+ bh=t6owgh1Jmkf4KJRh5HqXTdxRQXgqy2bKyEbNmGmbSlg=;
+ b=jAjejhuI2beNbfOc9DvujKcGjWCzltj6FcKtLbgAN5XwTGXIUXZJt0Ijw/EI0EQT8bW+4GPX+Ao42z1YyJ6teTDgC1aRkkwCfzN2w833CFwYeOZDUbVrSgqxBPwx6yjTskFrK+Pej7BaF2yr5SHUvo+66FuJNWPbQQaHUew8WNh9/vCTooDnxxnj5dxR26r6Pg7NP5m88+KalYTRtqqb+9+wHioYFqezuG1u9mBoSfKRsfWGrcueux2n1UdQS+lvRD8AK8CfR9u7Vd0GYb8Y8hOKt3R0tYdh3LAswulOdbxU9HNPaPPfQhEU1gges1NcC+leBf3hEbCKMJcamepb5w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=voleatech.de; dmarc=pass action=none header.from=voleatech.de;
  dkim=pass header.d=voleatech.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=voleatech.de;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tASzEdDMG8gJV427A0F/Ybc3XjatDlkF3KHobqVVyOk=;
- b=FQlsYThf6AsevhGhRGMHVhC8kPbBLoT1SIjUkgWwW++whjvkh28A3S0a8b6MSzQmB7TxJZ7k9hWXYIM3sP+ZAoEr5z6oPPFlCkIpuGnECnFSVphifSfFortlH2h7TGA2HcT6RuQfce6tFqcw/rOLQutpaeAjGQhjoIWJ7rw7A7M=
+ bh=t6owgh1Jmkf4KJRh5HqXTdxRQXgqy2bKyEbNmGmbSlg=;
+ b=iwJxkmjosEA+RFc/4+ZVPKKo09e1KV3ibhfWcqBuirF0FzboFL/SjDamdHvE0UwTfykCPAlBRBkdbuyC/qiRsQyaB2B5YQkCUMDGjF7MCVRhYiY8jfdMXjNXEUieLHWDOv2Yd3dMYPUOLSiAC+O+wn+F+QtVpvtTB3TUJ133t9c=
 Authentication-Results: kernel.dk; dkim=none (message not signed)
  header.d=none;kernel.dk; dmarc=none action=none header.from=voleatech.de;
 Received: from AM8PR05MB7251.eurprd05.prod.outlook.com (2603:10a6:20b:1d4::23)
  by AM0PR05MB5362.eurprd05.prod.outlook.com (2603:10a6:208:ea::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21; Mon, 9 Nov
- 2020 17:39:56 +0000
+ 2020 17:39:57 +0000
 Received: from AM8PR05MB7251.eurprd05.prod.outlook.com
  ([fe80::f132:2cc:34f2:5e4]) by AM8PR05MB7251.eurprd05.prod.outlook.com
  ([fe80::f132:2cc:34f2:5e4%7]) with mapi id 15.20.3541.025; Mon, 9 Nov 2020
- 17:39:56 +0000
+ 17:39:57 +0000
 From:   sven.auhagen@voleatech.de
 To:     axboe@kernel.dk, hdegoede@redhat.com, robh+dt@kernel.org,
         tglx@linutronix.de, maz@kernel.org, gregory.clement@bootlin.com
@@ -46,9 +46,9 @@ Cc:     linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         rjw@rjwysocki.net, viresh.kumar@linaro.org,
         antoine.tenart@bootlin.com, maxime.chevallier@bootlin.com,
         thomas.petazzoni@bootlin.com, miquel.raynal@bootlin.com
-Subject: [PATCH v3 6/9] irqchip/irq-mvebu-icu: Remove the double SATA ports interrupt hack
-Date:   Mon,  9 Nov 2020 18:39:45 +0100
-Message-Id: <20201109173948.96663-7-sven.auhagen@voleatech.de>
+Subject: [PATCH v3 7/9] dt-bindings: ata: Update ahci bindings with possible per-port interrupts
+Date:   Mon,  9 Nov 2020 18:39:46 +0100
+Message-Id: <20201109173948.96663-8-sven.auhagen@voleatech.de>
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 In-Reply-To: <20201109173948.96663-1-sven.auhagen@voleatech.de>
 References: <20201109173948.96663-1-sven.auhagen@voleatech.de>
@@ -60,27 +60,27 @@ X-ClientProxiedBy: AM0PR04CA0135.eurprd04.prod.outlook.com
  (2603:10a6:20b:1d4::23)
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from localhost.localdomain (109.193.235.168) by AM0PR04CA0135.eurprd04.prod.outlook.com (2603:10a6:208:55::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21 via Frontend Transport; Mon, 9 Nov 2020 17:39:55 +0000
+Received: from localhost.localdomain (109.193.235.168) by AM0PR04CA0135.eurprd04.prod.outlook.com (2603:10a6:208:55::40) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3541.21 via Frontend Transport; Mon, 9 Nov 2020 17:39:56 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 866f7931-cb74-4400-f2e7-08d884d678f5
+X-MS-Office365-Filtering-Correlation-Id: 156959d8-f131-4ae9-a9a7-08d884d6796d
 X-MS-TrafficTypeDiagnostic: AM0PR05MB5362:
-X-Microsoft-Antispam-PRVS: <AM0PR05MB5362F833D0C3D642A49C61C6EFEA0@AM0PR05MB5362.eurprd05.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
+X-Microsoft-Antispam-PRVS: <AM0PR05MB53626B80A94583539AC3AB61EFEA0@AM0PR05MB5362.eurprd05.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
 X-MS-Exchange-SenderADCheck: 1
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Gp25IUKmGi568Uk0khixOaWL4HxiOlhAqlLiLMKPO6EHB4hvWT0s+49Gl60h7E75VXp0IEviAqsxjCW3SSu/P7XNScfaULtIrqLoPRkwJ1qCxl/Ar+YF/jY8PTI6R85wk+Sh8nr4+sRoP0jTTiuGtp4K9nY6zYd109pZvz0DAmm46CcvNvWOMCaGpchNiYbVDiGceJqAket1+SOsuScn66ccgkpWQq6/RL4+/Y6H1hzh6xtDJm2YrOOeMeAinZbxYmQ/C9S4TQd6G0IlKSEsVH2UCacSE365+Wvlkdz6vSrM9OjpeeOEUeA0b6ydlP4qEHI9nmKCYe9BODe34HpiAiH+BZXWsORXUiAhKehkSftaaZGA3cnGk9q+mrJXi3qx
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR05MB7251.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(396003)(136003)(366004)(39840400004)(52116002)(69590400008)(66946007)(5660300002)(1076003)(66476007)(66556008)(26005)(2906002)(478600001)(316002)(9686003)(6506007)(6512007)(86362001)(6666004)(16526019)(8936002)(956004)(4326008)(36756003)(7416002)(186003)(83380400001)(2616005)(8676002)(6486002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData: QNopq2QnRwKsHOFo6ikF2i7H9F9Tw25xgi+uKrWsmmmK9f0gZYJ1iLXmPl0UHvXNnjBveV32dSAxwn1Yv2nb0ZQF9DYY2JsCXxd9SfZ9saLkdedxjkP1M940jgvvd3EAth4WETdmtXXrr4K15h/EfjGQS7nwl9dLSCGriGBphHcv7b+HM4kh688s6wKPZR14wrdYZwJQ8LTGqPx8RhlI+z/PWWGBIbeysvTQXvOvHs6q2zoMHDzSpDhBXL89/ervyCc4fuTYdTeXAb4bwpD3647IF8EDX8rJGOStXimFJAnEWVivEr8Ch9mb6qfLVShDvp8jUPKAGL74xUOky0aeQ+QpAIVKOx+yog5cHpTSKwgsnKKT6RHDm/81FsX4QCQEEvu+iS48OEThhGtIyaO2MUdzZcNTKZEbNiRWslXtxr/tvyEsqIGTSnbo8wAo0Pwd7Xo3dCNESR96zQsaS5B9j4w6e0WHnX9O1X528UcGxUVCPq4KBAckPhudQCFaPqs80xsb3GikRr8ci3IBvVttVqV3N5wtaLog1zBl31KWsr6ahzAtw+L6ndV+btDrtn6veCxNMnSvxGaHyIvIHxC0LxhoS3PJbza7RABU2uTyMWETS2aUYC1w6LjVqXawlV9YqKnB9upLmoJ4MBm0IH22HA==
+X-Microsoft-Antispam-Message-Info: iCpHVG5WyYwSDu9w+IxuJZ4Izh9lJ4qAn0tyCTmGobKQ+9M9gfcZPhTkdQuQkqJG1IAmLUR4fHnPlutRZYKkZuRBPA5Rhn9cDpIwZ2BKAgmOMxM4ysFJj7UvGdHTUemoDwRHZMq4MFKEIkqYrlrdtcVTvDr8sonozVIIcO7V33f1opEYvPF67ZLCwEeaT3yY3dO/wAifV88W+awusVqGRn+1yysGQBKIo+B0LeLb2fEY2jNkopc+77BUEb44o3kyk7zZdD+cw5g8ZwJcFnIdKBbuX65vtwS5iOVDLb7PcNMS6AyoGBl610CKpCkF/O05GEkdbXtNBL6b5Wsjrp3xM1kT6egdJS7KSN5TfVjthILAgy6Z2uX80/kT3K43wkoR
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR05MB7251.eurprd05.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(376002)(346002)(396003)(136003)(366004)(39840400004)(15650500001)(52116002)(69590400008)(66946007)(5660300002)(1076003)(66476007)(66556008)(26005)(2906002)(478600001)(316002)(9686003)(6506007)(6512007)(86362001)(6666004)(16526019)(8936002)(956004)(4326008)(36756003)(7416002)(186003)(83380400001)(2616005)(8676002)(6486002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData: rvv1SYHsA5yNSwBcBqB/bufY0K5Wmzac7VGaEDaN8olwxWz4TbHNuXPBr7qbTOPXJkvwlbyHQYW6wSWryBiB3HrBTG5UgUkLQDg5mNvLMhJlPCTKKJF3q3AlchmQWYqFdP3eUu5kj15g6Ulg5kH5Q491jXihloGMB3gr386bYgZNmFhNMdn+y/3k6LT8cB9OiLE+G4YhcnmPYBT9o8bIGvCoJ+AvZXSaPRwLCfxwJhkfKhp0QZgF9RJ56AB720EynSc11rMRANcdZcRNsLWfguExhpeUvm+QF/sERV6m/ouVOX/xglBdnnQOyB68+0Dc86FPOIuV8VcDerELSg0QpSXQQfwkB2Ny54ydX/Vl0/hvWWSFOnB44aq+e6lyKGBj0zdSx+o7X94nupkt3cy6PFwPTWcECpIrZ+/KefnrZfeHrscjPJFURxkIVDiuFmN8+YEcwhj0CB7cfE4pHMKFIDkBm3UJ+XaCSIiOwWgkEyhUMG8K9L4rib8rRUeKhaGqP61Sbp1s07sUm/zyJhX5pPMgAvlkbQv2cR3bcIBAs4RpXve/on+g33yVpircbQDvXzbywUyVE6q2XOzoegdP855AOE0lM+fFGW7SBsQk16bWvfPfPPXoB8vQLvqJCwsbXVQtEsXHT9+t3JAIDdYt0g==
 X-OriginatorOrg: voleatech.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 866f7931-cb74-4400-f2e7-08d884d678f5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 156959d8-f131-4ae9-a9a7-08d884d6796d
 X-MS-Exchange-CrossTenant-AuthSource: AM8PR05MB7251.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2020 17:39:56.1292
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2020 17:39:56.9834
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: b82a99f6-7981-4a72-9534-4d35298f847b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OevWdlihMAF0xNWyvm/jCkpqPHsZtwx4jqJlnX18Ft/Wrwtwik5Ev6T8ItD43bfwuRmD9WXdYBPjKJkjxD72xM1plvEW4UGMkep9/DJsByc=
+X-MS-Exchange-CrossTenant-UserPrincipalName: ipgPbij0xzn0zha2nraKUuVzC3qjBmStQeqJ618m6VRisnG8Y22w6pQlghb178hrkKeC64oEOoRgf94P6Wp/MKxQUopZagCLUn2H58Zzm0I=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB5362
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
@@ -88,56 +88,38 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-When writing the driver, a hack was introduced to configure both SATA
-interrupts regardless of the port in use to overcome a limitation in
-the SATA core. Now that this limitation has been addressed and the
-hack moved in the (historically) responsible SATA driver,
-ahci_{platform,mvebu}.c, let's clean this driver section.
+Update bindings to reflect the fact that a SATA IP can either have:
+- only one interrupt: in this case an 'interrupts' property is
+  declared at the root of the node;
+or
+- each SATA port can have their own interrupt: in this case there is
+  one 'interrupts' property per port/sub-node and none at the root.
 
-Acked-by: Marc Zyngier <marc.zyngier@arm.com>
 Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sven Auhagen <sven.auhagen@voleatech.de>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
- drivers/irqchip/irq-mvebu-icu.c | 18 ------------------
- 1 file changed, 18 deletions(-)
+ Documentation/devicetree/bindings/ata/ahci-platform.txt | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/irqchip/irq-mvebu-icu.c b/drivers/irqchip/irq-mvebu-icu.c
-index 91adf771f185..3e29f8d5b33b 100644
---- a/drivers/irqchip/irq-mvebu-icu.c
-+++ b/drivers/irqchip/irq-mvebu-icu.c
-@@ -38,8 +38,6 @@
+diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+index 77091a277642..83d715cbcecd 100644
+--- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
++++ b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+@@ -49,6 +49,12 @@ And at least one of the following properties:
+ - phys		    : reference to the SATA PHY node
+ - target-supply     : regulator for SATA target power
  
- /* ICU definitions */
- #define ICU_MAX_IRQS		207
--#define ICU_SATA0_ICU_ID	109
--#define ICU_SATA1_ICU_ID	107
- 
- struct mvebu_icu_subset_data {
- 	unsigned int icu_group;
-@@ -111,22 +109,6 @@ static void mvebu_icu_write_msg(struct msi_desc *desc, struct msi_msg *msg)
- 	}
- 
- 	writel_relaxed(icu_int, icu->base + ICU_INT_CFG(d->hwirq));
--
--	/*
--	 * The SATA unit has 2 ports, and a dedicated ICU entry per
--	 * port. The ahci sata driver supports only one irq interrupt
--	 * per SATA unit. To solve this conflict, we configure the 2
--	 * SATA wired interrupts in the south bridge into 1 GIC
--	 * interrupt in the north bridge. Even if only a single port
--	 * is enabled, if sata node is enabled, both interrupts are
--	 * configured (regardless of which port is actually in use).
--	 */
--	if (d->hwirq == ICU_SATA0_ICU_ID || d->hwirq == ICU_SATA1_ICU_ID) {
--		writel_relaxed(icu_int,
--			       icu->base + ICU_INT_CFG(ICU_SATA0_ICU_ID));
--		writel_relaxed(icu_int,
--			       icu->base + ICU_INT_CFG(ICU_SATA1_ICU_ID));
--	}
- }
- 
- static struct irq_chip mvebu_icu_nsr_chip = {
++Sub-nodes optional properties:
++- interrupts        : <interrupt mapping for SATA ports IRQ>, please
++                      note that either the root SATA node has the
++                      interrupts property, or there is one per SATA
++                      port, but not both at the same time.
++
+ Examples:
+         sata@ffe08000 {
+ 		compatible = "snps,spear-ahci";
 -- 
 2.20.1
 

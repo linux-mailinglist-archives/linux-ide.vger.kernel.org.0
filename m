@@ -2,70 +2,48 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4E142AE44F
-	for <lists+linux-ide@lfdr.de>; Wed, 11 Nov 2020 00:47:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F027E2AE9EE
+	for <lists+linux-ide@lfdr.de>; Wed, 11 Nov 2020 08:24:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727275AbgKJXrC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 10 Nov 2020 18:47:02 -0500
-Received: from server.hostvarna.com ([185.219.69.50]:40021 "EHLO
-        mail.hostvarna.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726706AbgKJXrC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Nov 2020 18:47:02 -0500
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hostvarna.com (Postfix) with ESMTP id 8AD62D6A40D;
-        Sat,  7 Nov 2020 14:58:30 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=hostvarna.com; h=
-        x-mailer:content-transfer-encoding:content-type:content-type
-        :mime-version:date:date:subject:subject:from:from:reply-to; s=
-        dkim; t=1604753907; x=1606568308; bh=m3pASy53GgfFwHppvIPHJghbzAH
-        QviKN6bgk+M/PrtE=; b=Z1hLZwM57N/xpf2b660tSG4jRwt9qrF03v81BXDUI1z
-        lSg90I2oKu6oniO6u40ZRGqO5S5Sh+ZfyUrTLypvXszJxlGTI4L50dt/4zDduSRX
-        F8Rc34N9/kB+PxvKq3gQ0xEVT3UxIrVnmQm7BK8nGOqlSjiuKydbH17v6kUBNPE8
-        =
-X-Virus-Scanned: Debian amavisd-new at server.hostvarna.com
-Received: from mail.hostvarna.com ([127.0.0.1])
-        by localhost (mail.hostvarna.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id VjKTq61iS5oh; Sat,  7 Nov 2020 14:58:27 +0200 (EET)
-Received: from User (unknown [176.32.23.85])
-        (Authenticated sender: simona@hostvarna.com)
-        by mail.hostvarna.com (Postfix) with ESMTPA id 6AF0DD6A410;
-        Sat,  7 Nov 2020 09:52:42 +0200 (EET)
-Reply-To: <maviswanczyko@aol.com>
-From:   "L.  Wanczyk." <simona@hostvarna.com>
-Subject:  DONATION                                                                 .50
-Date:   Sat, 7 Nov 2020 08:51:36 -0800
+        id S1726338AbgKKHYG convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Wed, 11 Nov 2020 02:24:06 -0500
+Received: from sw73-70-41.adsl.seed.net.tw ([203.73.70.41]:43724 "EHLO
+        oa.trendtek.com.tw" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1726698AbgKKHYF (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 11 Nov 2020 02:24:05 -0500
+X-Greylist: delayed 68741 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Nov 2020 02:24:05 EST
+Received: from [156.96.44.214] ([156.96.44.214])
+        (authenticated bits=0)
+        by oa.trendtek.com.tw (8.13.8/8.13.1) with ESMTP id 0AB7NwND024732
+        for <linux-ide@vger.kernel.org>; Wed, 11 Nov 2020 15:24:00 +0800
+Message-Id: <202011110724.0AB7NwND024732@oa.trendtek.com.tw>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2800.1081
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
-Message-Id: <20201107125830.8AD62D6A40D@mail.hostvarna.com>
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Corporate and Personal Loan *
+To:     linux-ide@vger.kernel.org
+From:   "Investment  Corporate" <financialcapability6@gmail.com>
+Date:   Wed, 11 Nov 2020 00:31:12 -0800
+Reply-To: hmurrah39@gmail.com
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello,
+Hello linux-ide@vger.kernel.org
 
-I'm Mrs. Mavis Wanczyk, the mega winner of $758 Million in Mega Millions
-Jackpot, I am donating to 5 random individuals if you get this email then
-your email was selected after a spin ball. I have spread most of my wealth
-over a number of charities and organizations. I have voluntarily decided to
-donate the sum of $ 10 Million USD to you as one of the selected , to verify
-my
-winnings via YouTube page below.
 
-WATCH ME HERE: https://www.youtube.com/watch?v=7kWnqvJM1mM
+We are Base Investment Company offering Corporate and Personal Loan at 3% Interest Rate for a duration of 10Years.
 
-THIS IS YOUR DONATION CODE: F207162
-Kindly send your direct telephone and fax number to enable me to reach you
 
-Reply with the DONATION CODE to this email: maviswanczykoo@aol.com
+We also pay 1% commission to brokers, who introduce project owners for finance or other opportunities.
 
-Hope to make you and your family happy.
 
-Regards,
-Mrs. Mavis L. Wanczyk.
+Please get back to me if you are interested for more
+
+details.
+
+
+Yours faithfully,
+
+Hashim Murrah

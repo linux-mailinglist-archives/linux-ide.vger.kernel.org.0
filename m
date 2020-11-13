@@ -2,196 +2,152 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89B7D2B249D
-	for <lists+linux-ide@lfdr.de>; Fri, 13 Nov 2020 20:37:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 853FD2B2580
+	for <lists+linux-ide@lfdr.de>; Fri, 13 Nov 2020 21:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726340AbgKMTg7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 13 Nov 2020 14:36:59 -0500
-Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:17905 "EHLO
-        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726300AbgKMTg6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 13 Nov 2020 14:36:58 -0500
-Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
-        id <B5faee0620000>; Fri, 13 Nov 2020 11:37:06 -0800
-Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL105.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 13 Nov
- 2020 19:36:57 +0000
-Received: from skomatineni-linux.nvidia.com (10.124.1.5) by mail.nvidia.com
- (172.20.187.12) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
- Transport; Fri, 13 Nov 2020 19:36:57 +0000
-From:   Sowjanya Komatineni <skomatineni@nvidia.com>
-To:     <skomatineni@nvidia.com>, <thierry.reding@gmail.com>,
-        <jonathanh@nvidia.com>, <robh+dt@kernel.org>
-CC:     <devicetree@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2 6/6] ata: ahci_tegra: Add AHCI support for Tegra186
-Date:   Fri, 13 Nov 2020 11:36:58 -0800
-Message-ID: <1605296218-2510-7-git-send-email-skomatineni@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1605296218-2510-1-git-send-email-skomatineni@nvidia.com>
+        id S1725981AbgKMU3L (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 13 Nov 2020 15:29:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725941AbgKMU3L (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 13 Nov 2020 15:29:11 -0500
+Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33706C0613D1;
+        Fri, 13 Nov 2020 12:29:11 -0800 (PST)
+Received: by mail-wm1-x341.google.com with SMTP id h62so10995508wme.3;
+        Fri, 13 Nov 2020 12:29:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=igMifKHgyPeJyPXUD0uDFjowF0SfdlH6rgYO1UwX6e4=;
+        b=WeuZgmRfVP9TAwvm0Jm1GwaYOD2yvqJ7us86vi8a7CoLxYWvNLj0UhKJnBKxaOr3Wg
+         ASjywrSKxvc0flz2ku3OaGd+7VP+qUCM5SIRaA8aI4HFq9/K0rMQSzKx91wcJMr5x0bZ
+         KD1r98fj99nXhQzcxiw3eK0Zk6245vjyRE/s3nByo50vaAUA1U8wvmhY3acFTxs0rsl3
+         Rcc6m8TyaVC5NFyxG2ANJ1h3I+tkYoJSTfwZnHtVfqVeQhd1GehiGnGJF3b8x7UcUYin
+         B2Jtkd63M/FJre34cosbstkNKL3W7f6D9oF21BUHGgTZy5ruBhQL+NtMu6c/cI5+0OPP
+         f/EA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=igMifKHgyPeJyPXUD0uDFjowF0SfdlH6rgYO1UwX6e4=;
+        b=uW745ydjvY9rOG2OKfmr9K0N+GquHE8zXHuFcWXW8Z9p0A57ae0GeCOQTKdqAmc4NK
+         cfWUBKTU9+bFagLDOPH26z81Zv+gZN5nP43yXE5gCZCe+gRuN5UK4FL23tIRjER19KjG
+         JLhJysG3FvNcrxhGfdh29EBi2o1NgXBRVB0PWJhDOL/6sp5UsgxElD5ywqZ8CtymKuK9
+         pG+U9Ty2hYCOz6F1b6eP20+dn4ycokXvq8YQ9WFrKd+H6HCF/wJoSMeoJ3gExOAlQZ+G
+         R2G2crlXtOQmjecLqhq0BaH8Vl71sAx4uPnXvqXdbUQGAvdIh9G5faYQgyM9rBut0ZXc
+         VWvg==
+X-Gm-Message-State: AOAM5310Mp6+7gE3HFMMwKDsQVXHDBMiX0W0TbWUm5eRIgpuUFN6+Unz
+        4sZ+DmUnFqzxZ9kY2t6I3MU=
+X-Google-Smtp-Source: ABdhPJzUcHCZA7Sn4cDPF10c/tIrH3b06O/vUhaYVJ/7aFSSdfBVJd461cmw9SWioZY5ue79HSKYNA==
+X-Received: by 2002:a1c:bc08:: with SMTP id m8mr4457702wmf.137.1605299349844;
+        Fri, 13 Nov 2020 12:29:09 -0800 (PST)
+Received: from localhost ([217.111.27.204])
+        by smtp.gmail.com with ESMTPSA id c185sm11830161wma.44.2020.11.13.12.29.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2020 12:29:08 -0800 (PST)
+Date:   Fri, 13 Nov 2020 21:29:04 +0100
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Sowjanya Komatineni <skomatineni@nvidia.com>,
+        Preetham Chandru <pchandru@nvidia.com>
+Cc:     jonathanh@nvidia.com, robh+dt@kernel.org,
+        devicetree@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/6] Add AHCI support for Tegra186
+Message-ID: <20201113202904.GC1416567@ulmo>
 References: <1605296218-2510-1-git-send-email-skomatineni@nvidia.com>
-X-NVConfidentiality: public
 MIME-Version: 1.0
-Content-Type: text/plain
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
-        t=1605296226; bh=bqvYhM4gfczmD1UkOCBSQi6kCpayixLg2a8u43aYS8U=;
-        h=From:To:CC:Subject:Date:Message-ID:X-Mailer:In-Reply-To:
-         References:X-NVConfidentiality:MIME-Version:Content-Type;
-        b=aZ+jQqCxEUboM6XMeiPKoCEOuxVDCK2qK9ZYY91Lrurh0i8Qk0zZIAJxChDhmABuY
-         wXBWGDaWuVwKxEiDZ0UekIUuRxAGfImLtrueFb2MR4UYmvyNsO8N87GzOz+lnWO+95
-         LF+Ei/Mco1X34nwfxN/Mj/pRrRPKWW7Ia8BQn3TXA6w/X4QD74xCSDqcR1twyThBoT
-         ZsHikWXhsfPzIMAv70mHNK6O/KpY/3MSKw73UKsFTBung5xXQAhJUMK+Fl5aiQY0iP
-         Nhk8KOJS5nkhYkoOjf8IQB/xLVfhiB1vB+cWhHCLaTAFPlY30MGEq8KEmW5AaGH7go
-         imu80vOPrKDzg==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="NU0Ex4SbNnrxsi6C"
+Content-Disposition: inline
+In-Reply-To: <1605296218-2510-1-git-send-email-skomatineni@nvidia.com>
+User-Agent: Mutt/1.14.7 (2020-08-29)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-This patch adds support for AHCI-compliant Serial ATA controller
-on Tegra186 SoC.
 
-Tegra186 does not have sata-oob reset.
-Tegra186 SATA_NVOOB register filed COMMA_CNT position and width are
-different compared to Tegra210 and prior.
+--NU0Ex4SbNnrxsi6C
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So, this patch adds a flag has_sata_oob_rst and tegra_ahci_regs to
-SoC specific strcuture tegra_ahci_soc and updated their implementation
-accordingly.
+On Fri, Nov 13, 2020 at 11:36:52AM -0800, Sowjanya Komatineni wrote:
+> This series adds support for AHCI-compliant SATA to Tegra186 SoC.
+>=20
+> This series includes patches for
+> - Converting text based dt-binding document to YAML.
+> - Adding dt-bindings for Tegra186.
+> - Enabling AHCI-compliance SATA for Jetson TX2.
+> - Adding Tegra186 support to Tegra AHCI driver.
+>=20
+> Delta between patch versions:
+> [v2]:	v1 feedback related to yaml dt-binding.
+> 	Removed conditional reset order in yaml and updated dts files
+> 	to maintain same order for commonly available resets across
+> 	Tegra124 thru Tegra186.
+>=20
+>=20
+> Sowjanya Komatineni (6):
+>   arm: tegra: Change order of SATA resets for Tegra124
+>   arm64: tegra: Change order of SATA resets for Tegra132 and Tegra210
+>   dt-bindings: ata: tegra: Convert binding documentation to YAML
+>   dt-binding: ata: tegra: Add dt-binding documentation for Tegra186
+>   arm64: tegra: Enable AHCI on Jetson TX2
+>   ata: ahci_tegra: Add AHCI support for Tegra186
+>=20
+>  .../devicetree/bindings/ata/nvidia,tegra-ahci.yaml | 175 +++++++++++++++=
+++++++
+>  .../bindings/ata/nvidia,tegra124-ahci.txt          |  44 ------
+>  arch/arm/boot/dts/tegra124.dtsi                    |   6 +-
+>  arch/arm64/boot/dts/nvidia/tegra132.dtsi           |   6 +-
+>  arch/arm64/boot/dts/nvidia/tegra186-p2771-0000.dts |   4 +
+>  arch/arm64/boot/dts/nvidia/tegra186.dtsi           |  28 ++++
+>  arch/arm64/boot/dts/nvidia/tegra210.dtsi           |   6 +-
+>  drivers/ata/ahci_tegra.c                           |  60 +++++--
+>  8 files changed, 263 insertions(+), 66 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra-ah=
+ci.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra124=
+-ahci.txt
 
-Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
----
- drivers/ata/ahci_tegra.c | 60 +++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 47 insertions(+), 13 deletions(-)
+Preetham,
 
-diff --git a/drivers/ata/ahci_tegra.c b/drivers/ata/ahci_tegra.c
-index cb55ebc1..56612af 100644
---- a/drivers/ata/ahci_tegra.c
-+++ b/drivers/ata/ahci_tegra.c
-@@ -59,8 +59,6 @@
- #define T_SATA0_CFG_PHY_1_PAD_PLL_IDDQ_EN		BIT(22)
- 
- #define T_SATA0_NVOOB                                   0x114
--#define T_SATA0_NVOOB_COMMA_CNT_MASK                    (0xff << 16)
--#define T_SATA0_NVOOB_COMMA_CNT                         (0x07 << 16)
- #define T_SATA0_NVOOB_SQUELCH_FILTER_MODE_MASK          (0x3 << 24)
- #define T_SATA0_NVOOB_SQUELCH_FILTER_MODE               (0x1 << 24)
- #define T_SATA0_NVOOB_SQUELCH_FILTER_LENGTH_MASK        (0x3 << 26)
-@@ -154,11 +152,18 @@ struct tegra_ahci_ops {
- 	int (*init)(struct ahci_host_priv *hpriv);
- };
- 
-+struct tegra_ahci_regs {
-+	unsigned int nvoob_comma_cnt_mask;
-+	unsigned int nvoob_comma_cnt_val;
-+};
-+
- struct tegra_ahci_soc {
- 	const char *const		*supply_names;
- 	u32				num_supplies;
- 	bool				supports_devslp;
-+	bool				has_sata_oob_rst;
- 	const struct tegra_ahci_ops	*ops;
-+	const struct tegra_ahci_regs	*regs;
- };
- 
- struct tegra_ahci_priv {
-@@ -240,11 +245,13 @@ static int tegra_ahci_power_on(struct ahci_host_priv *hpriv)
- 	if (ret)
- 		return ret;
- 
--	ret = tegra_powergate_sequence_power_up(TEGRA_POWERGATE_SATA,
--						tegra->sata_clk,
--						tegra->sata_rst);
--	if (ret)
--		goto disable_regulators;
-+	if (!tegra->pdev->dev.pm_domain) {
-+		ret = tegra_powergate_sequence_power_up(TEGRA_POWERGATE_SATA,
-+							tegra->sata_clk,
-+							tegra->sata_rst);
-+		if (ret)
-+			goto disable_regulators;
-+	}
- 
- 	reset_control_assert(tegra->sata_oob_rst);
- 	reset_control_assert(tegra->sata_cold_rst);
-@@ -330,10 +337,10 @@ static int tegra_ahci_controller_init(struct ahci_host_priv *hpriv)
- 	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA_CFG_PHY_0);
- 
- 	val = readl(tegra->sata_regs + SCFG_OFFSET + T_SATA0_NVOOB);
--	val &= ~(T_SATA0_NVOOB_COMMA_CNT_MASK |
-+	val &= ~(tegra->soc->regs->nvoob_comma_cnt_mask |
- 		 T_SATA0_NVOOB_SQUELCH_FILTER_LENGTH_MASK |
- 		 T_SATA0_NVOOB_SQUELCH_FILTER_MODE_MASK);
--	val |= (T_SATA0_NVOOB_COMMA_CNT |
-+	val |= (tegra->soc->regs->nvoob_comma_cnt_val |
- 		T_SATA0_NVOOB_SQUELCH_FILTER_LENGTH |
- 		T_SATA0_NVOOB_SQUELCH_FILTER_MODE);
- 	writel(val, tegra->sata_regs + SCFG_OFFSET + T_SATA0_NVOOB);
-@@ -449,15 +456,35 @@ static const struct tegra_ahci_ops tegra124_ahci_ops = {
- 	.init = tegra124_ahci_init,
- };
- 
-+static const struct tegra_ahci_regs tegra124_ahci_regs = {
-+	.nvoob_comma_cnt_mask = GENMASK(30, 28),
-+	.nvoob_comma_cnt_val = (7 << 28),
-+};
-+
- static const struct tegra_ahci_soc tegra124_ahci_soc = {
- 	.supply_names = tegra124_supply_names,
- 	.num_supplies = ARRAY_SIZE(tegra124_supply_names),
- 	.supports_devslp = false,
-+	.has_sata_oob_rst = true,
- 	.ops = &tegra124_ahci_ops,
-+	.regs = &tegra124_ahci_regs,
- };
- 
- static const struct tegra_ahci_soc tegra210_ahci_soc = {
- 	.supports_devslp = false,
-+	.has_sata_oob_rst = true,
-+	.regs = &tegra124_ahci_regs,
-+};
-+
-+static const struct tegra_ahci_regs tegra186_ahci_regs = {
-+	.nvoob_comma_cnt_mask = GENMASK(23, 16),
-+	.nvoob_comma_cnt_val = (7 << 16),
-+};
-+
-+static const struct tegra_ahci_soc tegra186_ahci_soc = {
-+	.supports_devslp = false,
-+	.has_sata_oob_rst = false,
-+	.regs = &tegra186_ahci_regs,
- };
- 
- static const struct of_device_id tegra_ahci_of_match[] = {
-@@ -469,6 +496,10 @@ static const struct of_device_id tegra_ahci_of_match[] = {
- 		.compatible = "nvidia,tegra210-ahci",
- 		.data = &tegra210_ahci_soc
- 	},
-+	{
-+		.compatible = "nvidia,tegra186-ahci",
-+		.data = &tegra186_ahci_soc
-+	},
- 	{}
- };
- MODULE_DEVICE_TABLE(of, tegra_ahci_of_match);
-@@ -518,10 +549,13 @@ static int tegra_ahci_probe(struct platform_device *pdev)
- 		return PTR_ERR(tegra->sata_rst);
- 	}
- 
--	tegra->sata_oob_rst = devm_reset_control_get(&pdev->dev, "sata-oob");
--	if (IS_ERR(tegra->sata_oob_rst)) {
--		dev_err(&pdev->dev, "Failed to get sata-oob reset\n");
--		return PTR_ERR(tegra->sata_oob_rst);
-+	if (tegra->soc->has_sata_oob_rst) {
-+		tegra->sata_oob_rst = devm_reset_control_get(&pdev->dev,
-+							     "sata-oob");
-+		if (IS_ERR(tegra->sata_oob_rst)) {
-+			dev_err(&pdev->dev, "Failed to get sata-oob reset\n");
-+			return PTR_ERR(tegra->sata_oob_rst);
-+		}
- 	}
- 
- 	tegra->sata_cold_rst = devm_reset_control_get(&pdev->dev, "sata-cold");
--- 
-2.7.4
+I vaguely recall discussing this with you previously and I think you had
+mentioned that we may need changes to the XUSB pad controller to add
+support for the SATA lanes on Tegra186 and later.
 
+I've tested this patch and it does seem to work fine, so I wonder if
+we're just getting lucky and the power on defaults are just right for
+this use-case (I've only tested on Jetson TX2) or if we don't need any
+support in the XUSB pad controller driver after all.
+
+I'm not sure if you're subscribed to linux-tegra, but if not, here's a
+link to this complete patchset:
+
+	http://patchwork.ozlabs.org/project/linux-tegra/list/?series=3D214338
+
+Thierry
+
+--NU0Ex4SbNnrxsi6C
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIyBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl+u7IsACgkQ3SOs138+
+s6E9QA/4i5KdCng+Ib/Kdpm0U0jnEdqiR60hXPVRLC1SpwTFZJ5/TPoab47/m8Y/
+ca0Qw5F4cmfcWlwiSJ8VTj+F/6gxFWE8VT7oWNm9wBbql6rYCUoD77naEDjvYu0W
+y4mZ1KHkqjO3bMgc9cSIljQ9MXZN6AEE62a+QlcwPPz5KAZaV6UkVizOhQRL0Fr1
+DVDQGuLzY2b2mz6ymQT/25RL/F/3jnk6RK/y/UjuTWg8lYkAklGy2wlMTS0K5fPD
+U172R5+byiHE2dn6UguzO159FAyERSQWLgPeHDhy7Opxm34/luTsGCV4sCqan1Zy
+utctf518BXHs2X5UYt+l3Y2Zv6kF/rAMzvisnQg6QDKiKT0RN8LzKu1xvWEyq6O6
+Xye3m2MquHds/Xp6pMOfKNmUyo3qC3c6y9G0eZ/HJwq8CYCDLGny8MkUmkFZGiul
+ntlAQWrkWUFM4FFjRjAw1il0ATxRyBUAsn5wnqVFZz4+rfqbSrPCw3y53+rfMBs2
+u8xnTFRcUrqTSuwEevCK6ihZMt396Yj1Tcn8+fhGnkwdmUTDNFPKC+o4boaR1LOt
+5gxgxglGHiXu8gTUIpUGearql/bPDpoBfX9cUFtq0KXuJy1kTv9hrC5L/wX022Ot
+oRKyedhVg42TX8541q1745iSXQ0k9puKRclcpRu9R4jqwQcMBw==
+=0f5C
+-----END PGP SIGNATURE-----
+
+--NU0Ex4SbNnrxsi6C--

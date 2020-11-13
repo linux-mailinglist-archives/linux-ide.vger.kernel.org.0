@@ -2,86 +2,84 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE5DF2B205A
-	for <lists+linux-ide@lfdr.de>; Fri, 13 Nov 2020 17:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEEB62B24AD
+	for <lists+linux-ide@lfdr.de>; Fri, 13 Nov 2020 20:37:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726840AbgKMQZQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 13 Nov 2020 11:25:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49106 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726741AbgKMQZP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 13 Nov 2020 11:25:15 -0500
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93827C0613D1
-        for <linux-ide@vger.kernel.org>; Fri, 13 Nov 2020 08:25:15 -0800 (PST)
-Received: by mail-io1-xd43.google.com with SMTP id p7so10342232ioo.6
-        for <linux-ide@vger.kernel.org>; Fri, 13 Nov 2020 08:25:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=GA093gnnU3rSgn9lMSWAJzb5ryLJdITJQ6w1CN85AWw=;
-        b=ejf2gPfB/QaA/XCHHD6owmegG3aLYdT0xIx+al8Bq4hJ4fEnyFxZ4fYKh7Ly0cnxTp
-         f0QMwEgl+6fvAiw+ZojtkbmbfEmqafz/9NZh+xOyKjfJxAcHTztgDfiE0JpPHE3TF10D
-         0greeSY9fc0cOTXzu0ZRiXL0rnf0tZmPOVVewDNNS7gBWibDuepHCjGa1SLjbDrCcWe7
-         4HTzwpHDHs12mpQSNlsinLANRhbfBOicK4Z2fZgOo7Q063r6r1CcDgyqrntJxl4dKXj5
-         wko5jzrnMmLTp/tlYClXjH+Z250S6TXFJ+rKRuHVaaAzTCbwjecxhEK7d1UyOYrPPxH2
-         GQfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=GA093gnnU3rSgn9lMSWAJzb5ryLJdITJQ6w1CN85AWw=;
-        b=dvK59D9VwHm5QY3d/t0NxqYHbuoJOHB1gM5FBUL44BFCB7XtAB1qEmsJ4Vd3TF9HE3
-         RY4fQoaw5p9JF9KgOel3bR0IuwMjTJ2BK/HM+vFiL0eEwl9lV3LP5zja6IUiNHwVFVJH
-         uAQv6imhhiM9Nz2IWtFD+68QjDJkHWo57CBtSTcuax+nAftax7ckuy5Wrhjex2ALvLyX
-         ThL0OY9hlLsRh808PmMNNWgWk6zE4Swp+t6BJJGQ3ON8tvEMJ330v3DkYx70LU/+W7sj
-         ZFvLRhEpRPldr2kXY3nkXRtgJQ8/8ZH3SanzVqZKUhRizInhaBAiyRZfHa67uCp7OuVH
-         8Pzg==
-X-Gm-Message-State: AOAM531/I415bYpeRDUGovzcRkbAKpTFkfQyF8ijSeVkfIMF9raEbRD1
-        wQU3/dOrfNeKhno06euhZRWnIKlbdhHaeg==
-X-Google-Smtp-Source: ABdhPJzl18it5pTjIBUKEb/rvQyaKjzeavbVGFQuX9QfSoTFIzpbEQp6IHLWev3u7df1mWFkdV0TUA==
-X-Received: by 2002:a5e:9e07:: with SMTP id i7mr438662ioq.46.1605284709886;
-        Fri, 13 Nov 2020 08:25:09 -0800 (PST)
-Received: from [192.168.1.30] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id y9sm5260286ily.85.2020.11.13.08.25.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Nov 2020 08:25:08 -0800 (PST)
-Subject: Re: [PATCH 0/2] ide: Remove in_interrupt()
-To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        linux-ide@vger.kernel.org
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20201113161021.2217361-1-bigeasy@linutronix.de>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <81acdb73-be79-98ae-f736-ae70f14f02f7@kernel.dk>
-Date:   Fri, 13 Nov 2020 09:25:08 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726156AbgKMTgy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 13 Nov 2020 14:36:54 -0500
+Received: from hqnvemgate24.nvidia.com ([216.228.121.143]:17898 "EHLO
+        hqnvemgate24.nvidia.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726028AbgKMTgy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 13 Nov 2020 14:36:54 -0500
+Received: from hqmail.nvidia.com (Not Verified[216.228.121.13]) by hqnvemgate24.nvidia.com (using TLS: TLSv1.2, AES256-SHA)
+        id <B5faee05e0000>; Fri, 13 Nov 2020 11:37:02 -0800
+Received: from HQMAIL105.nvidia.com (172.20.187.12) by HQMAIL101.nvidia.com
+ (172.20.187.10) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Fri, 13 Nov
+ 2020 19:36:54 +0000
+Received: from skomatineni-linux.nvidia.com (10.124.1.5) by mail.nvidia.com
+ (172.20.187.12) with Microsoft SMTP Server id 15.0.1473.3 via Frontend
+ Transport; Fri, 13 Nov 2020 19:36:53 +0000
+From:   Sowjanya Komatineni <skomatineni@nvidia.com>
+To:     <skomatineni@nvidia.com>, <thierry.reding@gmail.com>,
+        <jonathanh@nvidia.com>, <robh+dt@kernel.org>
+CC:     <devicetree@vger.kernel.org>, <linux-ide@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/6] Add AHCI support for Tegra186
+Date:   Fri, 13 Nov 2020 11:36:52 -0800
+Message-ID: <1605296218-2510-1-git-send-email-skomatineni@nvidia.com>
+X-Mailer: git-send-email 2.7.4
+X-NVConfidentiality: public
 MIME-Version: 1.0
-In-Reply-To: <20201113161021.2217361-1-bigeasy@linutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nvidia.com; s=n1;
+        t=1605296222; bh=mhFqHEDQm14ydpJ90cQFJG0t5wKwiepPStGAkF4xtuU=;
+        h=From:To:CC:Subject:Date:Message-ID:X-Mailer:X-NVConfidentiality:
+         MIME-Version:Content-Type;
+        b=KMSZSn/tKTUBWB/AFJu2qQd1Mwp/20jm3ZCjR3Fp0alPCLp9clDJvLLytdidWwp1a
+         IF87JzJuvqaQF6V9WKqODHMISPJ/ezayiRtr1CsDb5N009UAz9xtQi5+wCHF63yVyy
+         XWepCw/3Qy+0aO23V7uQuPYDOin1SqjeVHSQrsZAjYsWt8JrkY/KkFEKNVbKNwuAY2
+         Dtn1CFXXYK7twRT93mPOqYXYD6ywxbMC/uSzrB2f3EZ0i8DLbVYmN5SC96qRVxKT29
+         g0BKyBbSHC7jd/NtylRFLSrsPsLBztaF8AilzvMS/s5n3//Mru7hyMvoEltwGyhnuu
+         La4/ZILaTbq/Q==
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 11/13/20 9:10 AM, Sebastian Andrzej Siewior wrote:
-> In the discussion about preempt count consistency across kernel
-> configurations:
-> 
->  https://lore.kernel.org/r/20200914204209.256266093@linutronix.de/
-> 
-> it was concluded that the usage of in_interrupt() and related context
-> checks should be removed from non-core code.
-> 
-> This ide subsystem has two in_interrupts() checks before mutex/wait-event
-> invocations.
+This series adds support for AHCI-compliant SATA to Tegra186 SoC.
 
-Acked-by: Jens Axboe <axboe@kernel.dk>
+This series includes patches for
+- Converting text based dt-binding document to YAML.
+- Adding dt-bindings for Tegra186.
+- Enabling AHCI-compliance SATA for Jetson TX2.
+- Adding Tegra186 support to Tegra AHCI driver.
+
+Delta between patch versions:
+[v2]:	v1 feedback related to yaml dt-binding.
+	Removed conditional reset order in yaml and updated dts files
+	to maintain same order for commonly available resets across
+	Tegra124 thru Tegra186.
+
+
+Sowjanya Komatineni (6):
+  arm: tegra: Change order of SATA resets for Tegra124
+  arm64: tegra: Change order of SATA resets for Tegra132 and Tegra210
+  dt-bindings: ata: tegra: Convert binding documentation to YAML
+  dt-binding: ata: tegra: Add dt-binding documentation for Tegra186
+  arm64: tegra: Enable AHCI on Jetson TX2
+  ata: ahci_tegra: Add AHCI support for Tegra186
+
+ .../devicetree/bindings/ata/nvidia,tegra-ahci.yaml | 175 +++++++++++++++++++++
+ .../bindings/ata/nvidia,tegra124-ahci.txt          |  44 ------
+ arch/arm/boot/dts/tegra124.dtsi                    |   6 +-
+ arch/arm64/boot/dts/nvidia/tegra132.dtsi           |   6 +-
+ arch/arm64/boot/dts/nvidia/tegra186-p2771-0000.dts |   4 +
+ arch/arm64/boot/dts/nvidia/tegra186.dtsi           |  28 ++++
+ arch/arm64/boot/dts/nvidia/tegra210.dtsi           |   6 +-
+ drivers/ata/ahci_tegra.c                           |  60 +++++--
+ 8 files changed, 263 insertions(+), 66 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra-ahci.yaml
+ delete mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra124-ahci.txt
 
 -- 
-Jens Axboe
+2.7.4
 

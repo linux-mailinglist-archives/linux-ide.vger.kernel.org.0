@@ -2,95 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E7CBA2B4806
-	for <lists+linux-ide@lfdr.de>; Mon, 16 Nov 2020 16:07:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B44F2B5EEF
+	for <lists+linux-ide@lfdr.de>; Tue, 17 Nov 2020 13:15:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731213AbgKPPAi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 16 Nov 2020 10:00:38 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:38065 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731147AbgKPPAY (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 16 Nov 2020 10:00:24 -0500
-Received: by mail-ot1-f66.google.com with SMTP id a15so16276689otf.5;
-        Mon, 16 Nov 2020 07:00:24 -0800 (PST)
+        id S1726791AbgKQMPC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 17 Nov 2020 07:15:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49220 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725355AbgKQMPC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 17 Nov 2020 07:15:02 -0500
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC154C0613CF
+        for <linux-ide@vger.kernel.org>; Tue, 17 Nov 2020 04:15:00 -0800 (PST)
+Received: by mail-ej1-x634.google.com with SMTP id i19so29073936ejx.9
+        for <linux-ide@vger.kernel.org>; Tue, 17 Nov 2020 04:15:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
+        b=C1xAcGgVRyAC/z/XhArxVeHqxapOufhXsH8p9Wls+yO/lzPTZejNt2gPdEHFq9bZjj
+         ROxeB3UgfsokLvQlKBzmMWQE1MH5Pzn5IZyLnmvZLn+2qqE2NFMegx8XbYxXFdopjsF7
+         HbGO/5wrFf0eau2xrwoH13oFmKDGJwrffNmVWeJVc8NCyUbJ65I952U5FQ1mXqf9VrOA
+         Ab5opJZMLpS9r4nZQYQDHLwaonJO8My2UgmHIKdJFGJn2JLb5HxNlxo2xlkTwKUyweYV
+         QQ6JZRZNyUouHpRP1urzdoXDDV3qgkuigKH0D5O0Q8J9Rzh4uBKhr+4kvi76AYLlA340
+         C6Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=mmkzgNSoeEUQq9ZJSPSCkP5fe2eYf8fnvdnTvX3FQ9o=;
-        b=SiPxBCi3i/uY0jIYI/T1JMFd1eJw2nNv10aG4fz03bQdYA+Z9YYCeHWkSM8bz7OioF
-         +DE5l92nsP2b58tRHNEH/Y1mAJkeM26Hu/rmxthmRU4/LF07opvZp3i8CW19/bN435VP
-         mQLBBRmcySv6LD/myVcPwB/0v78zgJapOjWxW7RyjUlhENVmMZ0pNZKk/1TA2VtAyhYK
-         yf0i0wZ5VtT+AYyh7sgODV/LGT5O+0YWRF/v/WhXkrbLexcnWcJn1XzRNp+JeGdoSbE3
-         13Zpm0ItO71hebc44KyuwDh1K+ZMbbXtrpEHElkzDAvyI6FVJ5PbLt7+aD2TskvO/4Tr
-         mgiA==
-X-Gm-Message-State: AOAM5312UmnHLe81O69/culHfRseuex/APPPVMGZuu2oVBLJ172ycfxw
-        0KsIa36ngvQvO1hANlclOA==
-X-Google-Smtp-Source: ABdhPJwvG0kAayLRkygCXMCLVdZADmD40ITyYLucvzOzIYkakNUFC8ID4apKoUygBywvx1BB4tJteQ==
-X-Received: by 2002:a9d:12b2:: with SMTP id g47mr10353352otg.354.1605538823702;
-        Mon, 16 Nov 2020 07:00:23 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id h8sm4872162otm.72.2020.11.16.07.00.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2020 07:00:22 -0800 (PST)
-Received: (nullmailer pid 1643194 invoked by uid 1000);
-        Mon, 16 Nov 2020 15:00:22 -0000
-Date:   Mon, 16 Nov 2020 09:00:22 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     linux-kernel@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-ide@vger.kernel.org, thierry.reding@gmail.com,
-        devicetree@vger.kernel.org, jonathanh@nvidia.com,
-        robh+dt@kernel.org
-Subject: Re: [PATCH v2 3/6] dt-bindings: ata: tegra: Convert binding
- documentation to YAML
-Message-ID: <20201116150022.GA1642318@bogus>
-References: <1605296218-2510-1-git-send-email-skomatineni@nvidia.com>
- <1605296218-2510-4-git-send-email-skomatineni@nvidia.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
+        b=MlovscqrXZqFOwiKLxzGsRqx2hN84O6rHqr7uM5vdnwzDKZOktScfXwd/YAovsALzC
+         PSA/57yGdsXvhWk/DUXlhunAFS2HyOTBA3HjEX9dAII+ukgPnn0g6JuEC8hj+uQRrHwU
+         gmBFC9yAohG1cs+Jymy558FeL24V1hMK/WVZA5cCtMGWx8qoa8qWtXbgc/h2Fk4VG6/v
+         aEtHRTnskiKJ8EDYSfmD33pAw3xU1PI3bvp7edJfiYik+gM7607gHEZMscqk1T8jLfh6
+         9pvsNmKSyU9RFvM/0ABeXCApBheJMHOkaPvzeEcdhw436u6xr3Rssx0hg7VXAR+1KwXc
+         RLZg==
+X-Gm-Message-State: AOAM530YFCeT6V0KJCih52SVemvnQc54QaGlF3pudvRKy/rRiQyEZEoH
+        WTOWaQnUpN2IFdUqFH7UlCtVjfTx+OlN09ybWp8=
+X-Google-Smtp-Source: ABdhPJzqaU0WlmDkf3i2VoVksC2mBacbNrcqxXiHjugX6M4E/IZbSQQ5s70DYiA7gInLc6GyP+Yug/esD1ZYvnE63PY=
+X-Received: by 2002:a17:906:7f19:: with SMTP id d25mr990020ejr.0.1605615299267;
+ Tue, 17 Nov 2020 04:14:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1605296218-2510-4-git-send-email-skomatineni@nvidia.com>
+Received: by 2002:a50:3a83:0:0:0:0:0 with HTTP; Tue, 17 Nov 2020 04:14:58
+ -0800 (PST)
+Reply-To: barrkouevi@gmail.com
+From:   Issaka Assande <assandeissaka@gmail.com>
+Date:   Tue, 17 Nov 2020 12:14:58 +0000
+Message-ID: <CAHEZViubH1uZML2Ank5V1c4AhGzUp1fvVnomaaaLLi=Dmuev1w@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Fri, 13 Nov 2020 11:36:55 -0800, Sowjanya Komatineni wrote:
-> This patch converts text based dt-binding document to YAML based
-> dt-binding document.
-> 
-> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
-> ---
->  .../devicetree/bindings/ata/nvidia,tegra-ahci.yaml | 137 +++++++++++++++++++++
->  .../bindings/ata/nvidia,tegra124-ahci.txt          |  44 -------
->  2 files changed, 137 insertions(+), 44 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra-ahci.yaml
->  delete mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra124-ahci.txt
-> 
-
-
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-Error: Documentation/devicetree/bindings/ata/nvidia,tegra-ahci.example.dts:27.31-32 syntax error
-FATAL ERROR: Unable to parse input tree
-make[1]: *** [scripts/Makefile.lib:342: Documentation/devicetree/bindings/ata/nvidia,tegra-ahci.example.dt.yaml] Error 1
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:1364: dt_binding_check] Error 2
-
-
-See https://patchwork.ozlabs.org/patch/1400065
-
-The base for the patch is generally the last rc1. Any dependencies
-should be noted.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit.
-
+Hi,I have not hear from you,Do you read my message?

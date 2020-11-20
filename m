@@ -2,90 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 336002BA605
-	for <lists+linux-ide@lfdr.de>; Fri, 20 Nov 2020 10:26:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8D72BA7CC
+	for <lists+linux-ide@lfdr.de>; Fri, 20 Nov 2020 11:54:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbgKTJYc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 20 Nov 2020 04:24:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41140 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727206AbgKTJYa (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 20 Nov 2020 04:24:30 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD98C0617A7;
-        Fri, 20 Nov 2020 01:24:30 -0800 (PST)
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1605864269;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UZK1ZQAJK0YFuKDRqLDBqeq+cdk+V8TA2LiKuEK4hA0=;
-        b=QdQkoXLdDw+CnWlsb27giYSPgEhQFYBU94hVTEYcpN0n0dmiidPjZoWh63+U2VzjCLqHzQ
-        T0DZsru432UHNUEEUcQ3k4d4IVDEZezwL2tO6L1sRZRb/YX9BXW2A9X7pCuMbUYA1zm3gg
-        9ydjex1VHwCWLW41kt+UqdMVdug1YhZDAetRAI0zLh/oyx1+1mcwEFJDsJGhIDEia4P6DF
-        d/vKLu3H1gCGirmVF6+eFS0l5LAfWyTlMcmt0gEIaDAIWIQeFku3uCj685VAF3TAZ+iCpT
-        yAwu7W+JIpEEHWEZTHb5hjxjQkV77tGO7nghEJtl6jVKEUUsglO0ps83SrGOTw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1605864269;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UZK1ZQAJK0YFuKDRqLDBqeq+cdk+V8TA2LiKuEK4hA0=;
-        b=BLdvAgn5pWIEsv2E4BTGgH03VHGCL2Cvir0i273ARp5LtnySylOtzxGwCxWBjqk5Umme6J
-        +qZiuTdqJ3iczMDQ==
-To:     linux-ide@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Jens Axboe <axboe@kernel.dk>,
-        Andrew Morton <akpm@linux-foundation.org>, tglx@linutronix.de,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v2 2/2] ide: Remove BUG_ON(in_interrupt() || irqs_disabled()) from ide_unregister()
-Date:   Fri, 20 Nov 2020 10:24:21 +0100
-Message-Id: <20201120092421.1023428-3-bigeasy@linutronix.de>
-In-Reply-To: <20201120092421.1023428-1-bigeasy@linutronix.de>
-References: <20201120092421.1023428-1-bigeasy@linutronix.de>
+        id S1725766AbgKTKxO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 20 Nov 2020 05:53:14 -0500
+Received: from mga17.intel.com ([192.55.52.151]:15551 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727241AbgKTKxO (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Fri, 20 Nov 2020 05:53:14 -0500
+IronPort-SDR: 2WwdtXtW8eKeB3u9o+M76FSHIW82Rpo4DMFB/aopp4Ca4LXlY/xa7J4IhSGzpjTrAlvSyvtmAb
+ KQ7WQLhNh24A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9810"; a="151301061"
+X-IronPort-AV: E=Sophos;i="5.78,356,1599548400"; 
+   d="scan'208";a="151301061"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2020 02:53:14 -0800
+IronPort-SDR: Io0GS1nmVTLUmjjQGghAGdotfI6h7Niot7/0qdiFIY6ZUQuJXW/h6tLqfESfitJSu1ER9fU/eX
+ fJlo5CPPxvDA==
+X-IronPort-AV: E=Sophos;i="5.78,356,1599548400"; 
+   d="scan'208";a="545402225"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Nov 2020 02:53:11 -0800
+Received: by lahna (sSMTP sendmail emulation); Fri, 20 Nov 2020 12:53:09 +0200
+Date:   Fri, 20 Nov 2020 12:53:09 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Christoph Hellwig <hch@infradead.org>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
+Subject: Re: [PATCH] ahci: Add Intel Emmitsburg PCH RAID PCI IDs
+Message-ID: <20201120105309.GR2495@lahna.fi.intel.com>
+References: <20201119104318.79297-1-mika.westerberg@linux.intel.com>
+ <20201119165022.GA3582@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20201119165022.GA3582@infradead.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Both BUG_ON() were introduced in commit
-   4015c949fb465 ("[PATCH] update ide core")
+On Thu, Nov 19, 2020 at 04:50:22PM +0000, Christoph Hellwig wrote:
+> On Thu, Nov 19, 2020 at 01:43:18PM +0300, Mika Westerberg wrote:
+> > Add Intel Emmitsburg PCH RAID PCI IDs to the list of supported
+> > controllers.
+> 
+> Stupid question: what would it to get Intel to finally report the
+> correct classcode after all the time?  The amount of IDs we need to list
+> is getting ridiculous.
 
-when ide_unregister() was extended with semaphore based locking. Both
-checks won't complain about disabled preemption which is also wrong.
+What is the correct class code in this case that it works with the AHCI
+driver?
 
-The might_sleep() in today's mutex_lock() will complain about the
-missuses.
-
-Remove the BUG_ON() statements.
-
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: linux-ide@vger.kernel.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Acked-by: Jens Axboe <axboe@kernel.dk>
----
- drivers/ide/ide-probe.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/ide/ide-probe.c b/drivers/ide/ide-probe.c
-index 1c1567bb51942..aefd74c0d8628 100644
---- a/drivers/ide/ide-probe.c
-+++ b/drivers/ide/ide-probe.c
-@@ -1539,9 +1539,6 @@ EXPORT_SYMBOL_GPL(ide_port_unregister_devices);
-=20
- static void ide_unregister(ide_hwif_t *hwif)
- {
--	BUG_ON(in_interrupt());
--	BUG_ON(irqs_disabled());
--
- 	mutex_lock(&ide_cfg_mtx);
-=20
- 	if (hwif->present) {
---=20
-2.29.2
-
+I think (not 100% sure) it reports standard AHCI class code when it is
+not in RAID mode but these PCI IDs are for the RAID mode.

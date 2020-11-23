@@ -2,81 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 772FA2C04B0
-	for <lists+linux-ide@lfdr.de>; Mon, 23 Nov 2020 12:40:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17B1E2C091E
+	for <lists+linux-ide@lfdr.de>; Mon, 23 Nov 2020 14:17:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728696AbgKWLiE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 23 Nov 2020 06:38:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47784 "EHLO
+        id S2388345AbgKWNEU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 23 Nov 2020 08:04:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728305AbgKWLiE (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 23 Nov 2020 06:38:04 -0500
+        with ESMTP id S1733296AbgKWMvR (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 23 Nov 2020 07:51:17 -0500
 Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585EFC0613CF
-        for <linux-ide@vger.kernel.org>; Mon, 23 Nov 2020 03:38:04 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD667C061A4E
+        for <linux-ide@vger.kernel.org>; Mon, 23 Nov 2020 04:51:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
         References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
         Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=jf4y1vN5lHGoArc9lJpu/JTgexGWEG8kjM0RZOTtf+E=; b=lHjY4EryTjRlElFaq7QVZp79ff
-        vYQZbf8Zme5Wmvv6M1WUIbARRl9xJzyx/p+M8tuy4AtQcqWeYjYGHxjfC2huJqSf2bQidnowY/Iyu
-        A+Gdncju3sg2vUFhNRiFpsWKxCv5H99coxoMPNGUIO+TNgg9zmEoc/8jB40vSVqcM0UfH5aNR27O4
-        eXloEbCuqGE8/Jpud0IQyzmNGEGKMb40qodmc5YwvEz2+GjzT3hUtk4Fn2sDtctIpuGx1XJGsJE21
-        VRZ/DcGVl7JqbNYOJmosF861iPa4h3M8rYifj6ZQTaJf6wfh2Q8wW0X7VSy4g5QC9NmcPeKBxvyN5
-        tnfCB0Og==;
+        bh=hGwFFxZDkfTKMpVUin8IwCyLR1ox8ZPJ5jRaHO73hOQ=; b=iSoNo6kWPZojll+FQV7dP7Wa+u
+        8ttxGdC1m8/nivfbbenIuaQdQNCecojUwkypaLqaZU4AEmgF6YqkK2omqBMcdbacqQZ01Wr7y01SZ
+        eEv0Rb+vGtgM9i52mj/JcFs6R3P+QWwK3Lv1l2DIZHcZj6X/M5yeIrBdNDJJ41f/Jr4lXjFcPsjoE
+        d5aRJ/pD2a025qydKZQIFFTxT1inDDTN62mxU3xXDRzYlVM362ESUtK2y3gV6Y+BdUNcgul37Wmsl
+        2oJOVlUlkdCDyVE6iw54pQRNo6ZTTKKGQd9mw2KbKxM/9HCvfp+58XFFCIpI1UMzt04V/gXv/QNpV
+        k2A66cow==;
 Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1khAAU-00047E-15; Mon, 23 Nov 2020 11:38:02 +0000
-Date:   Mon, 23 Nov 2020 11:38:01 +0000
+        id 1khBJK-00017g-Nq; Mon, 23 Nov 2020 12:51:14 +0000
+Date:   Mon, 23 Nov 2020 12:51:14 +0000
 From:   Christoph Hellwig <hch@infradead.org>
 To:     Mika Westerberg <mika.westerberg@linux.intel.com>
 Cc:     Christoph Hellwig <hch@infradead.org>,
         Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
 Subject: Re: [PATCH] ahci: Add Intel Emmitsburg PCH RAID PCI IDs
-Message-ID: <20201123113801.GA15759@infradead.org>
+Message-ID: <20201123125114.GA4264@infradead.org>
 References: <20201119104318.79297-1-mika.westerberg@linux.intel.com>
  <20201119165022.GA3582@infradead.org>
  <20201120105309.GR2495@lahna.fi.intel.com>
  <20201123100917.GA26718@infradead.org>
  <20201123112622.GB2495@lahna.fi.intel.com>
+ <20201123113801.GA15759@infradead.org>
+ <20201123122820.GD2495@lahna.fi.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201123112622.GB2495@lahna.fi.intel.com>
+In-Reply-To: <20201123122820.GD2495@lahna.fi.intel.com>
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, Nov 23, 2020 at 01:26:22PM +0200, Mika Westerberg wrote:
-> On Mon, Nov 23, 2020 at 10:09:17AM +0000, Christoph Hellwig wrote:
-> > On Fri, Nov 20, 2020 at 12:53:09PM +0200, Mika Westerberg wrote:
-> > > On Thu, Nov 19, 2020 at 04:50:22PM +0000, Christoph Hellwig wrote:
-> > > > On Thu, Nov 19, 2020 at 01:43:18PM +0300, Mika Westerberg wrote:
-> > > > > Add Intel Emmitsburg PCH RAID PCI IDs to the list of supported
-> > > > > controllers.
-> > > > 
-> > > > Stupid question: what would it to get Intel to finally report the
-> > > > correct classcode after all the time?  The amount of IDs we need to list
-> > > > is getting ridiculous.
-> > > 
-> > > What is the correct class code in this case that it works with the AHCI
-> > > driver?
-> > > 
-> > > I think (not 100% sure) it reports standard AHCI class code when it is
-> > > not in RAID mode but these PCI IDs are for the RAID mode.
-> > 
-> > The right class code is the AHCI one.  The so called RAID mode doesn't
-> > change the operation of the device at all (except for sometimes hiding
-> > NVMe devices that are a different PCIe function to start with).
+On Mon, Nov 23, 2020 at 02:28:20PM +0200, Mika Westerberg wrote:
+> On Mon, Nov 23, 2020 at 11:38:01AM +0000, Christoph Hellwig wrote:
+> > The point is: these AHCI controllers do not support RAID in form
+> > despite the confusing naming.
 > 
-> Thanks. I looked at the AHCI spec (1.3.1) and it says this regarding the
-> class code (CC) field:
+> Are you sure?
 > 
->   Informative Note: For HBAs that support RAID, the Sub Class Code reset
->   value should be 04h and the Programming Interface reset value should be
->   00h.
-> 
-> I think this is what the controller is doing when in "RAID mode".
+> I looked at the Emmitsburg data sheet and it actually seems to support
+> some sort of RAID but it requires some special Rapid Storage Technology
+> [1] drivers from Intel. Probably the idea is that when in "RAID mode"
+> the thing, as AHCI spec says, does not announce itself to be AHCI
+> compliant which makes Windows inbox AHCI driver to not to load, and this
+> allows the Intel propriatery driver to load that then takes advantage of
+> this somehow.
 
-The point is: these AHCI controllers do not support RAID in form
-despite the confusing naming.
+Yes, and that is purely (badly implemented) software RAID.

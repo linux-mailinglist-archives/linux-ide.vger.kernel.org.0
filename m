@@ -2,75 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EE2E2C4259
-	for <lists+linux-ide@lfdr.de>; Wed, 25 Nov 2020 15:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF45D2C44F9
+	for <lists+linux-ide@lfdr.de>; Wed, 25 Nov 2020 17:27:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729918AbgKYOon (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 25 Nov 2020 09:44:43 -0500
-Received: from mga12.intel.com ([192.55.52.136]:11342 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727611AbgKYOon (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 25 Nov 2020 09:44:43 -0500
-IronPort-SDR: Y5iJjzCYA0iqGsBunusALX99iI4X2Jcz0bpexHQ/a5Byvm+aFuHAVH5JculoCTjorrl38ZXymi
- PaZg9D+drwsw==
-X-IronPort-AV: E=McAfee;i="6000,8403,9815"; a="151399631"
-X-IronPort-AV: E=Sophos;i="5.78,369,1599548400"; 
-   d="scan'208";a="151399631"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 06:44:42 -0800
-IronPort-SDR: e7BjFFVt8bbKsbQ0YAstytJcYbB9G3T9SU+TeRanMEPxgBM1KxxPiKiEGSCJgOlsrEPT5aCi92
- wcKl+/a/Gs/w==
-X-IronPort-AV: E=Sophos;i="5.78,369,1599548400"; 
-   d="scan'208";a="547309478"
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2020 06:44:39 -0800
-Received: by lahna (sSMTP sendmail emulation); Wed, 25 Nov 2020 16:44:35 +0200
-Date:   Wed, 25 Nov 2020 16:44:35 +0200
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org
-Subject: Re: [PATCH] ahci: Add Intel Emmitsburg PCH RAID PCI IDs
-Message-ID: <20201125144435.GC5246@lahna.fi.intel.com>
-References: <20201119104318.79297-1-mika.westerberg@linux.intel.com>
- <20201119165022.GA3582@infradead.org>
- <20201120105309.GR2495@lahna.fi.intel.com>
- <20201123100917.GA26718@infradead.org>
- <20201123112622.GB2495@lahna.fi.intel.com>
- <20201123113801.GA15759@infradead.org>
- <20201123122820.GD2495@lahna.fi.intel.com>
- <20201123125114.GA4264@infradead.org>
+        id S1730980AbgKYQZL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 25 Nov 2020 11:25:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57958 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729690AbgKYQZL (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 25 Nov 2020 11:25:11 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0399C0613D4
+        for <linux-ide@vger.kernel.org>; Wed, 25 Nov 2020 08:25:10 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id k1so3131104eds.13
+        for <linux-ide@vger.kernel.org>; Wed, 25 Nov 2020 08:25:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
+        b=P8bDSNG3TenmsHOWr8sJpoUhrUC8pfc6mpcEwEohyd7s45nJXGZbhUlXJSpH1ji2A+
+         r3dsuO+wlwAbtN6VYnNfiWlTkb2jSNcS4QTcog5Uyqq2R2u39y3IMs6cEkvxkND3zIg6
+         RFRk+k2+tCjdfI0ivZWmHRWkhHfNrzXuUweTqRrIaLPGmaMa6P4WjtiSWZNzmc5WJ7ar
+         fmyMvCDA2Vf60EJ0g8xnm3LmSXhZN2JLZ2ytHTKyhdqOVNb0nimDnHDGm9F7I7KMH1ku
+         O3tSPV9TyYLQkS1xvBThz+Cw63lHf4qnCQ7guEGap1HaSxIQaW7WzGaHx3nl+4wv69B/
+         yddA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=PXxwCBJdTG5sNp7kazVZnDyiOFVScUSybkI34T0iWR8=;
+        b=d0Sc8FezUdgA+U1Q1vi+t27PWSZ1BugWH/UTK+Kj7rfUCAGxHRv38VJVVJ0Ii5q0gS
+         9r2veQw5TKkvrNq2kGLqiw+A04Gf66yMBseirELnY2W5iZQAX0wnuT+GfWDz3okvyLAn
+         uCmh4gN+Ayy6EWvJzq7ypnpU/VqTNqCmD7hJAD9PO4IzQKMZAViNU9XCiAzDoMapJVbP
+         qjBVkovcFKKHD4l0eKx+SmxSC6ZluzJdU+ixrOCE35bC72rwN3nxwbqKkvN1TnUYyw+8
+         DYYT3/75W2gVxGOsJLb4SYRwEFLMOKItU4HkoEnNQXzgslV87Dn1yGYUFHAsau1G6EdZ
+         E6cw==
+X-Gm-Message-State: AOAM531tA+zLEnzlRCAqRGRTvHod7SzRMLqtRdEFyNCUZ5gdfAqM26F4
+        iBGhuelh3VquCZT5asjxTmKRrjJHkFnDBhbqzs7Ie7GWXOtx3A==
+X-Google-Smtp-Source: ABdhPJwWkGipIszSkOYzxY7WoxosdGQop+FFEHziIoZL0ig9iBsMUyfSLRTskWtzazfo5UIB6dl7MmGsTfDRdFTyDHA=
+X-Received: by 2002:a05:6402:22ab:: with SMTP id cx11mr4122479edb.98.1606321508806;
+ Wed, 25 Nov 2020 08:25:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20201123125114.GA4264@infradead.org>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Received: by 2002:ab4:a572:0:0:0:0:0 with HTTP; Wed, 25 Nov 2020 08:25:08
+ -0800 (PST)
+Reply-To: barrkouevi@gmail.com
+From:   Djebi Sidi <sididjebi@gmail.com>
+Date:   Wed, 25 Nov 2020 16:25:08 +0000
+Message-ID: <CAMQaTdx+DZpW+srQ0cknSBZnrMMd8_uDOEgsnn+35WGDL8xm=w@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, Nov 23, 2020 at 12:51:14PM +0000, Christoph Hellwig wrote:
-> On Mon, Nov 23, 2020 at 02:28:20PM +0200, Mika Westerberg wrote:
-> > On Mon, Nov 23, 2020 at 11:38:01AM +0000, Christoph Hellwig wrote:
-> > > The point is: these AHCI controllers do not support RAID in form
-> > > despite the confusing naming.
-> > 
-> > Are you sure?
-> > 
-> > I looked at the Emmitsburg data sheet and it actually seems to support
-> > some sort of RAID but it requires some special Rapid Storage Technology
-> > [1] drivers from Intel. Probably the idea is that when in "RAID mode"
-> > the thing, as AHCI spec says, does not announce itself to be AHCI
-> > compliant which makes Windows inbox AHCI driver to not to load, and this
-> > allows the Intel propriatery driver to load that then takes advantage of
-> > this somehow.
-> 
-> Yes, and that is purely (badly implemented) software RAID.
-
-Sorry for the delay. I'm trying to find the AHCI owners at Intel and
-forward this request to them. I would not hold my breath though that
-anything will change but I'll try :)
-
-Even if that would change, Emmitsburg still needs these PCI IDs so hope
-this patch if fine for you.
+Hi,I have not hear from you,Do you read my message?

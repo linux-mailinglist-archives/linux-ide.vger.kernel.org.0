@@ -2,46 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BA35E2CA9C9
-	for <lists+linux-ide@lfdr.de>; Tue,  1 Dec 2020 18:35:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E024B2CC04A
+	for <lists+linux-ide@lfdr.de>; Wed,  2 Dec 2020 16:05:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387811AbgLARdb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 1 Dec 2020 12:33:31 -0500
-Received: from vps.thesusis.net ([34.202.238.73]:50792 "EHLO vps.thesusis.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387716AbgLARda (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 1 Dec 2020 12:33:30 -0500
-X-Greylist: delayed 479 seconds by postgrey-1.27 at vger.kernel.org; Tue, 01 Dec 2020 12:33:30 EST
-Received: from localhost (localhost [127.0.0.1])
-        by vps.thesusis.net (Postfix) with ESMTP id C28C62705F
-        for <linux-ide@vger.kernel.org>; Tue,  1 Dec 2020 12:24:50 -0500 (EST)
-Received: from vps.thesusis.net ([127.0.0.1])
-        by localhost (vps.thesusis.net [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id D3Q6uwCqpWt9 for <linux-ide@vger.kernel.org>;
-        Tue,  1 Dec 2020 12:24:50 -0500 (EST)
-Received: by vps.thesusis.net (Postfix, from userid 1000)
-        id 6DEEF27063; Tue,  1 Dec 2020 12:24:50 -0500 (EST)
-User-agent: mu4e 1.5.6; emacs 26.3
-From:   Phillip Susi <phill@thesusis.net>
-To:     linux-ide@vger.kernel.org
-Subject: Drive reset as an EH strategy when write cache is enabled
-Date:   Tue, 01 Dec 2020 12:24:50 -0500
-Message-ID: <87r1o9phgd.fsf@vps.thesusis.net>
+        id S1730337AbgLBPEN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 2 Dec 2020 10:04:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47974 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726620AbgLBPEN (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Dec 2020 10:04:13 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786B9C0613CF
+        for <linux-ide@vger.kernel.org>; Wed,  2 Dec 2020 07:03:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=KUd2MGSuYreFWMP9cWnBDUzNnqjWTM/tN5m0Gr247Gg=; b=F1RkZWD6LHZTm+DkaDZDmPxNob
+        kQN9+cSwMzvFUVzYm3BmO8SvHouBmdWzxQqswVOxwTC/5L7aU/vSr+VaqU9AXHaaXKvAUQmVTfns8
+        8RMwtY96EOtpPIZOSiEni+Y0gP4bCuM6gVJgXE0zj0+W4uqHLARnlZ+TiSzwM/yZhgzIOzkb4BE26
+        fecAnFSS+ls6kBjsObHJmXGGobC7gKtd+G4af/rVCUhtghl/zYNLaFemevx+dqB0fjD15LNGWvO10
+        Hhbvtl9yDUen8igmmHpjI6Uljc3VvyENQfoKOFzWgcbMExtHxpal3rB0ZlKthGh0dwmQ9QzB8crcx
+        vmaKOMhw==;
+Received: from hch by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kkTfG-0006dc-Ux; Wed, 02 Dec 2020 15:03:31 +0000
+Date:   Wed, 2 Dec 2020 15:03:30 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Phillip Susi <phill@thesusis.net>
+Cc:     linux-ide@vger.kernel.org
+Subject: Re: Drive reset as an EH strategy when write cache is enabled
+Message-ID: <20201202150330.GA25031@infradead.org>
+References: <87r1o9phgd.fsf@vps.thesusis.net>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87r1o9phgd.fsf@vps.thesusis.net>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-A while back I noticed lines in my syslog indicating that a FLUSH CACHE
-command timed out and the drive was hard reset to recover.  That made me
-wonder if such a thing makes any sense as a valid EH strategy.  Any
-previous writes that returned successfully but are still sitting in the
-drive's write cache will be silently invalidated by resetting the drive
-won't they?  Then the FLUSH CACHE command is retried, and of course,
-succeeds because it is now a NOOP.  Then fsync() returns and postfix
-thinks my new email has been committed to the disk, when in fact, it has
-not.
+On Tue, Dec 01, 2020 at 12:24:50PM -0500, Phillip Susi wrote:
+> A while back I noticed lines in my syslog indicating that a FLUSH CACHE
+> command timed out and the drive was hard reset to recover.  That made me
+> wonder if such a thing makes any sense as a valid EH strategy.  Any
+> previous writes that returned successfully but are still sitting in the
+> drive's write cache will be silently invalidated by resetting the drive
+> won't they?  Then the FLUSH CACHE command is retried, and of course,
+> succeeds because it is now a NOOP.  Then fsync() returns and postfix
+> thinks my new email has been committed to the disk, when in fact, it has
+> not.
+> 
+> Am I mistaken somewhere or is the kernel really doing the wrong thing
+> here?
 
-Am I mistaken somewhere or is the kernel really doing the wrong thing
-here?
+If the device drops the content of the volatile write on a reset we'll
+have much problems than that..

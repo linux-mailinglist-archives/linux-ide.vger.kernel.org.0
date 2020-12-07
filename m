@@ -2,70 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AD662D1DC5
-	for <lists+linux-ide@lfdr.de>; Mon,  7 Dec 2020 23:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BD402D1F5E
+	for <lists+linux-ide@lfdr.de>; Tue,  8 Dec 2020 01:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727832AbgLGWwC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 7 Dec 2020 17:52:02 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:45839 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726605AbgLGWwB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 7 Dec 2020 17:52:01 -0500
-Received: by mail-ot1-f65.google.com with SMTP id h18so10172377otq.12;
-        Mon, 07 Dec 2020 14:51:46 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=oGKTxegR211Y4pxTw/c6D3ElM1Y9Rkhy1L6nJUtWY5o=;
-        b=dLwmYPkhqETrGNPB/OkWivsDqSFvxqzzlf55ESlapw83I0jhy4zt9GYEG4sPa1mjFK
-         1wAixU9EnA1b4+pXEDuaWCC9wb4Y1ruJ/cT3g+Znmm2Th+Nwaurvxr6UP3Q8LL7FTutv
-         mQP8dQoMGZXQhrZ/pysj+qnlQhlZjd1R97SQnMpV174Aj/Lipx6BE7Fu5HcrEFHWwuVL
-         k9ZcFdsl6RXPMrlLNZxX8GOnJxd040VN+s/MKf/q1sr6lefg6G0XfILEZbM0UO+hpwdE
-         Dse2pLPczMXHmT92eyS/VsFtjP8SGRoOqiUSoqxg1dLe69eNL9/bz9Ki+20GolMgUy6C
-         t/+A==
-X-Gm-Message-State: AOAM531XRLcIQOg5WvmxePlNWEn15lq9lhE1nXYxixeJixUElFprnfhg
-        xExdEgxvxRacTShxuxANsTM83RnQ3w==
-X-Google-Smtp-Source: ABdhPJzAEyFWBw8aRWodf+kbRFrizaA2A6sKnSxzif1vg6tYA4do5tJjEUn6/sY2OabGg1xZ8r/f8g==
-X-Received: by 2002:a9d:7411:: with SMTP id n17mr14433439otk.262.1607381480806;
-        Mon, 07 Dec 2020 14:51:20 -0800 (PST)
-Received: from xps15 (24-155-109-49.dyn.grandenetworks.net. [24.155.109.49])
-        by smtp.gmail.com with ESMTPSA id u10sm2993855otj.31.2020.12.07.14.51.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Dec 2020 14:51:19 -0800 (PST)
-Received: (nullmailer pid 991883 invoked by uid 1000);
-        Mon, 07 Dec 2020 22:51:18 -0000
-Date:   Mon, 7 Dec 2020 16:51:18 -0600
-From:   Rob Herring <robh@kernel.org>
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     linux-ide@vger.kernel.org, robh+dt@kernel.org,
-        thierry.reding@gmail.com, linux-kernel@vger.kernel.org,
-        pchandru@nvidia.com, linux-tegra@vger.kernel.org,
-        jonathanh@nvidia.com, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] dt-bindings: ata: tegra: Convert binding
- documentation to YAML
-Message-ID: <20201207225118.GA991823@robh.at.kernel.org>
-References: <1606162645-22326-1-git-send-email-skomatineni@nvidia.com>
- <1606162645-22326-4-git-send-email-skomatineni@nvidia.com>
+        id S1728829AbgLHAvk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 7 Dec 2020 19:51:40 -0500
+Received: from vsm-gw.hyogo-dai.ac.jp ([202.244.76.12]:35012 "EHLO
+        vsm-gw.hyogo-dai.ac.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727744AbgLHAvi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 7 Dec 2020 19:51:38 -0500
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [202.244.77.11])
+        by vsm-gw.hyogo-dai.ac.jp (Postfix) with ESMTP id CBA0F1A606C;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
+Received: from humans-kc.hyogo-dai.ac.jp (humans-kc.hyogo-dai.ac.jp [127.0.0.1])
+        by postfix.imss71 (Postfix) with ESMTP id 71FC683826D;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
+Received: from hyogo-dai.ac.jp (unknown [202.244.77.11])
+        by humans-kc.hyogo-dai.ac.jp (Postfix) with SMTP id 426EA83825B;
+        Tue,  8 Dec 2020 04:09:26 +0900 (JST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1606162645-22326-4-git-send-email-skomatineni@nvidia.com>
+Message-ID: <20201207190926.000057A2.0664@hyogo-dai.ac.jp>
+Date:   Tue, 08 Dec 2020 04:09:26 +0900
+From:   "Raymond " <hozumi@hyogo-dai.ac.jp>
+To:     <infocarferw1@aim.com>
+Reply-To: <infocarfer@aim.com>
+Subject: I am Vice Chairman of Hang Seng Bank, Dr. Raymond Chien
+         Kuo Fung I have Important Matter to Discuss with you concerning
+         my late client. Died without a NEXT OF KIN. Send me your private
+         email for full details information.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MAILER: Active! mail
+X-TM-AS-MML: disable
+X-TM-AS-Product-Ver: IMSS-7.1.0.1808-8.2.0.1013-25446.007
+X-TM-AS-Result: No--2.951-5.0-31-10
+X-imss-scan-details: No--2.951-5.0-31-10
+X-TM-AS-User-Approved-Sender: No
+X-TMASE-MatchedRID: X41QhRrT5f5ITndh1lLRASsOycAMAhSTkCM77ifYafsBLhz6t76Ce6P0
+        clhHAFPyJA6GJqxAEzL554DD9nXlqqPFjJEFr+olfeZdJ1XsoriOub3SYcq1hJf7eAx/Ae/AbQo
+        eraIcZBRw7u01FqNA2K1Ia4IbeAdLm9ukrtqhno/rIUidklntLAP5zT0d393cymsk/wUE4hoZaR
+        NzIP3XI5u3uLPgwbAMH5RdHnhWfwyq9gpuf+A6coDeeVSgzszVDx5n520Z3eZyT7DDRtYlKaWBy
+        ZE9nSaC/rhfyjvqkZu/pNa4BidtZEMMprcbiest
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, 23 Nov 2020 12:17:22 -0800, Sowjanya Komatineni wrote:
-> This patch converts text based dt-binding document to YAML based
-> dt-binding document.
-> 
-> Signed-off-by: Sowjanya Komatineni <skomatineni@nvidia.com>
-> ---
->  .../devicetree/bindings/ata/nvidia,tegra-ahci.yaml | 138 +++++++++++++++++++++
->  .../bindings/ata/nvidia,tegra124-ahci.txt          |  44 -------
->  2 files changed, 138 insertions(+), 44 deletions(-)
->  create mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra-ahci.yaml
->  delete mode 100644 Documentation/devicetree/bindings/ata/nvidia,tegra124-ahci.txt
-> 
+email:kraymond75@aol.com
 
-Reviewed-by: Rob Herring <robh@kernel.org>
+
+

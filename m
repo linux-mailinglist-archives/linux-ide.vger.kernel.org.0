@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 976672EA2AA
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Jan 2021 02:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E542EA284
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Jan 2021 02:10:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728485AbhAEBFQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 4 Jan 2021 20:05:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39222 "EHLO mail.kernel.org"
+        id S1726605AbhAEBDG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 4 Jan 2021 20:03:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40000 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728248AbhAEBA5 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 4 Jan 2021 20:00:57 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BB5C322AAA;
-        Tue,  5 Jan 2021 00:59:50 +0000 (UTC)
+        id S1728461AbhAEBBY (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 4 Jan 2021 20:01:24 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EA84422582;
+        Tue,  5 Jan 2021 01:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609808392;
-        bh=pTIdcrwkvZgEdO66i/HtbyLLaYKRtoOCSfmIah1EcTQ=;
+        s=k20201202; t=1609808405;
+        bh=WfWOdvixaL7PMa865MGcKoM8DolWpq728REn/AuPaYQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m2R/bIFkcoI35fUT0ZgYGesbkWJqno3FJaoXPeaA7iPJiZF1YxWQ73rgS5AsGsWmC
-         QZLuNqqv1H/MqNJkS+CE4q/SAf/4uw0b5ictWpoPK/7wMIcR0uzJUclDzJwoOwWCJ/
-         WR1Zqhfvvh9Mo6lWDCqmC8nmCTKl1F1cqDisKZ1dsSEP5NsrsBNyaIPFeDktoS/8n9
-         EMi56Z5APY9ZOWSV/DxWnvTU9Nj4sYumR4kbrIJBJJSbjr6HWS+89veIEI6P+QtssU
-         C79nmocLJmmsC2sAgOX1UuVAugt4lylnueVdmKvVKGymkB/eUzbFzzFaV/7sy68c0R
-         9fCH7aLmBUAgw==
+        b=dEnKyc97TIUF3oqf49aZAhu0hmuRciHyBAbNU+VJkLVoa8gdG7g3Gw8/cKiJcc5YT
+         lPwCgh9WuioAC/uWKRM1Zs5CSKF9nbiWYzuim/9nEOcEofCPI/Emd0VGQlbnl77+ft
+         wRmp8ZXx+GIR9uTC2+SsQ2E5OL+MMPQLBwZukZbJ6UR4dnUOX4sgZ8vV7s69Ee4ys9
+         NYv//hqOFg8dk90s6QizUw3raRTaPq8Fgb4cKUIZQOJs/MfOj0C3QzCduT39NhfGZd
+         5LvhFHJ8LJgm/pzy8tzQLrJBjh/SmTAQJVg6cQcmuwINNYmGmbcooPyzt00tOAV/T/
+         v7giLrsi0qoFA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Bart Van Assche <bvanassche@acm.org>,
@@ -38,12 +38,12 @@ Cc:     Bart Van Assche <bvanassche@acm.org>,
         Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.4 4/8] scsi: ide: Do not set the RQF_PREEMPT flag for sense requests
-Date:   Mon,  4 Jan 2021 19:59:41 -0500
-Message-Id: <20210105005946.3954395-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 4/8] scsi: ide: Do not set the RQF_PREEMPT flag for sense requests
+Date:   Mon,  4 Jan 2021 19:59:55 -0500
+Message-Id: <20210105005959.3954510-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210105005946.3954395-1-sashal@kernel.org>
-References: <20210105005946.3954395-1-sashal@kernel.org>
+In-Reply-To: <20210105005959.3954510-1-sashal@kernel.org>
+References: <20210105005959.3954510-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -105,10 +105,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 6 deletions(-)
 
 diff --git a/drivers/ide/ide-atapi.c b/drivers/ide/ide-atapi.c
-index 80bc3bf82f4d7..775fd34132abb 100644
+index 8b2b72b938857..4224c4dd89635 100644
 --- a/drivers/ide/ide-atapi.c
 +++ b/drivers/ide/ide-atapi.c
-@@ -223,7 +223,6 @@ void ide_prep_sense(ide_drive_t *drive, struct request *rq)
+@@ -213,7 +213,6 @@ void ide_prep_sense(ide_drive_t *drive, struct request *rq)
  	sense_rq->rq_disk = rq->rq_disk;
  	sense_rq->cmd_flags = REQ_OP_DRV_IN;
  	ide_req(sense_rq)->type = ATA_PRIV_SENSE;
@@ -117,10 +117,10 @@ index 80bc3bf82f4d7..775fd34132abb 100644
  	req->cmd[0] = GPCMD_REQUEST_SENSE;
  	req->cmd[4] = cmd_len;
 diff --git a/drivers/ide/ide-io.c b/drivers/ide/ide-io.c
-index b137f27a34d58..b32a013d827a0 100644
+index 0d93e0cfbeaf9..4381760846109 100644
 --- a/drivers/ide/ide-io.c
 +++ b/drivers/ide/ide-io.c
-@@ -512,11 +512,6 @@ blk_status_t ide_issue_rq(ide_drive_t *drive, struct request *rq,
+@@ -527,11 +527,6 @@ void do_ide_request(struct request_queue *q)
  		 * above to return us whatever is in the queue. Since we call
  		 * ide_do_request() ourselves, we end up taking requests while
  		 * the queue is blocked...

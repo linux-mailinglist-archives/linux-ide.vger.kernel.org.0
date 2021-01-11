@@ -2,46 +2,74 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EC22F1F51
-	for <lists+linux-ide@lfdr.de>; Mon, 11 Jan 2021 20:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBA52F20C5
+	for <lists+linux-ide@lfdr.de>; Mon, 11 Jan 2021 21:27:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403802AbhAKT3G convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Mon, 11 Jan 2021 14:29:06 -0500
-Received: from mail.univ-alger.dz ([193.194.83.97]:37288 "EHLO
-        mail.univ-alger.dz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390937AbhAKT3F (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Jan 2021 14:29:05 -0500
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.univ-alger.dz (Postfix) with ESMTP id B22B14D45D2B;
-        Mon, 11 Jan 2021 13:18:07 +0100 (CET)
-Received: from mail.univ-alger.dz ([127.0.0.1])
-        by localhost (mail.univ-alger.dz [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id uYTJokgK2drs; Mon, 11 Jan 2021 13:18:07 +0100 (CET)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.univ-alger.dz (Postfix) with ESMTP id D19414D629CE;
-        Mon, 11 Jan 2021 13:08:17 +0100 (CET)
-X-Virus-Scanned: amavisd-new at mail.univ-alger.dz
-Received: from mail.univ-alger.dz ([127.0.0.1])
-        by localhost (mail.univ-alger.dz [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id hrsudEcJqZ6j; Mon, 11 Jan 2021 13:08:17 +0100 (CET)
-Received: from MACBOOK341C.localdomain (unknown [209.216.92.203])
-        by mail.univ-alger.dz (Postfix) with ESMTPSA id D715C4D06EFF;
-        Mon, 11 Jan 2021 12:55:48 +0100 (CET)
-Content-Type: text/plain; charset="utf-8"
+        id S1728813AbhAKU1o (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 11 Jan 2021 15:27:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58466 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728701AbhAKU1o (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Jan 2021 15:27:44 -0500
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F002FC061794
+        for <linux-ide@vger.kernel.org>; Mon, 11 Jan 2021 12:27:03 -0800 (PST)
+Received: by mail-il1-x142.google.com with SMTP id x15so514730ilk.3
+        for <linux-ide@vger.kernel.org>; Mon, 11 Jan 2021 12:27:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XE7VwTakcUhCepRTXoc3v17PAdoqlceWdddGcl2J/D8=;
+        b=MXXdf4wIfUGYkSN/pMqGwuAuwCB17QDNYV41tLGu1Lyl1alwY7eQbmG0Bfj2yAkSo0
+         BchLKmJHHmn75BJSL6D03Fz9gnve3Db0R726TI4pngnfenMQIoZNY6faJwP6b9f1e2vC
+         IkBkF/giqdnGjHjP8GHNkFxY72kVNv9ZmQQv8ISfdpV8VxQpAkorQSKy/cbsK0xnYEuS
+         9aXZ7VrzFlBBHkwBk+kesJlrGyFr7VmUwbpmjEtcxOsStcsay/jRXelMo7f8IvdaCVqA
+         O8CDHUeDqFYR+xys80Z3FU8IbHZnrVPEPO99/RcfP7iFeS0XTR/V94FFjicArfGnhDrN
+         0B1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XE7VwTakcUhCepRTXoc3v17PAdoqlceWdddGcl2J/D8=;
+        b=NF5CcfHKvZozN0Z+E21XQvc8ihIWtwhXeVMszZjFVp3ZMojNtZ4saun+SOXRRdji7C
+         Amkj3MReDxzvVXgnV4E8Gvr8RVqkGDUo0imcDQHcIcusaICNMVf/BrRGeUrUEPi/yziH
+         d4LyzRRX4QXydAMh/wyg+nbM8botZdF1GNFELCyz9Ut3SjM/azGixuA3I3hrzTyYJmzi
+         3svoTNK0IYrdejoh13FQRwSzqcV4ZxyN0Mtd3UhQhnB1ZXSkM8Q5/+cc4lhxQrWt7VHD
+         HJGSZ2a0YLCbR1FvLg4Rxhwpwrp78+rxjGDTtJwxXaRMgovBe+L98pNkT4Wl9CBsf0WG
+         /mSA==
+X-Gm-Message-State: AOAM532x3BPiFnoWU94FTwBhDSoEFsrpC6r1dhTh5Q4oZr8fIJG1utsD
+        ZTFBADPHGE7GzeR+QJbLXIUX0zyZw/zKyXVCh2M=
+X-Google-Smtp-Source: ABdhPJy+d+RKTEpqzGNfRF/4EE3E9iGd3ceBU50ZiE7sKVIiOToFXt6q4BDkNJLtnKyie4bcFOjzlMexP59csQ2CA/8=
+X-Received: by 2002:a92:360a:: with SMTP id d10mr844301ila.198.1610396823420;
+ Mon, 11 Jan 2021 12:27:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Sie_haben_eine_Spende_von_=E2=82=AC_5=2E800=2E000=2C00=2E?=
-To:     Recipients <z.benamor@univ-alger.dz>
-From:   "Mrs. Mavis" <z.benamor@univ-alger.dz>
-Date:   Mon, 11 Jan 2021 03:55:36 -0800
-Reply-To: wanczykm61@gmail.com
-Message-Id: <20210111115548.D715C4D06EFF@mail.univ-alger.dz>
+Received: by 2002:a92:3506:0:0:0:0:0 with HTTP; Mon, 11 Jan 2021 12:27:02
+ -0800 (PST)
+Reply-To: officefile04161956@gmail.com
+From:   "Hon. George Harry" <juliacullen1976@gmail.com>
+Date:   Mon, 11 Jan 2021 21:27:02 +0100
+Message-ID: <CAMEH4KHwuZB71+MibR-WdgYrxaRnYJr7E6Tceo1f-i4y7zYZJw@mail.gmail.com>
+Subject: REPLY FOR MORE DETAILS
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Sie haben eine Spende von € 5.800.000,00. von Mavis Wanczyk antworten Sie mit diesem Code [MW530342019], um die Spende zu erhalten
+-- 
+Good day to you,
 
+I'm a brand ambassador of ( D.C.I ), It's an investment platform for
+people who want to either save money for business purposes or those
+that want to increase their income, whatever you invest you gain
+10.00% of it Daily, 50.00% Weekly, 100.00% Monthly and 5.00% Hourly,
+no referral needed. It's not a scam, and they trade in crypto-currency
+exchange so they share profits with investors. The minimum amount to
+start with is $50.00 and
+above.
 
-Vous avez un don de 5 800 000,00 €. de Mavis Wanczyk répondez avec ce code [MW530342019] pour recevoir le don
+Get back to me if you are interested for more details.
+
+Yours Sincerely
+Hon. George Harry
+Email: officefile04161956@gmail.com

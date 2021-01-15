@@ -2,96 +2,95 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0E6C2F70BA
-	for <lists+linux-ide@lfdr.de>; Fri, 15 Jan 2021 03:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C232F7898
+	for <lists+linux-ide@lfdr.de>; Fri, 15 Jan 2021 13:19:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732212AbhAOCvu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 14 Jan 2021 21:51:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55520 "EHLO
+        id S1727719AbhAOMS7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 15 Jan 2021 07:18:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732180AbhAOCvu (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 14 Jan 2021 21:51:50 -0500
-Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72746C061575;
-        Thu, 14 Jan 2021 18:51:10 -0800 (PST)
-Received: by mail-pg1-x541.google.com with SMTP id n25so5110916pgb.0;
-        Thu, 14 Jan 2021 18:51:10 -0800 (PST)
+        with ESMTP id S1727357AbhAOMS6 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 15 Jan 2021 07:18:58 -0500
+Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E1AC0613C1
+        for <linux-ide@vger.kernel.org>; Fri, 15 Jan 2021 04:18:15 -0800 (PST)
+Received: by mail-ot1-x329.google.com with SMTP id i20so508534otl.7
+        for <linux-ide@vger.kernel.org>; Fri, 15 Jan 2021 04:18:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
+        h=mime-version:reply-to:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=TJG+6kgfjZjK189KqMiGV0hwONF59DnMbu1jbDOMzZ8=;
-        b=gqk5SvNWsJauD8t2n1R0I7d0ylZI8NQyTKbPkaketoQ4c//ObudvxVa4C/67jZjKg9
-         1brkuQXv3sOhUdpzLEUDj0GjP8eNf9Jfwn3GlPs8L/DpOVnnUMaI3Ic1ksvG9Hu3nRw5
-         3A5RI1ux3sZqwICDELrYZVs7Ug+0JekwD+N/LKaLwWRg/8F8nvjtKx5GvDlXx6JVyiuH
-         uwsWUfos6+ibFL1e2fPp6TEbV6w3s6niVq9pcUbNx7LNe0XwtUWo54n5XHXxhKzWyzbu
-         GVu/pn3MpC4jrTGdclYmHAXVvMANmIJhfn1/2r14svb4QxPwGKU0phA97oh3VBN6W7Xh
-         ux0w==
+        bh=TaHxnKsVVUjjlYWbb5WM8lULkRobrhCkf872o49hI5Y=;
+        b=uJ6AN+4JaxmMp6vcPRxSoScYISXIhei100d7+CTFQ5KdDEZUjPGNvb//86G9Jdqir6
+         S71mdeeLCorcgCnnMq/g90vmbYvmJfXEPIl3cUZNxH/4G9xXaqYvRHj011UoeRC2/lx5
+         AMR1DskdM+AaSxrtmH5MhQPUA41MAhrYL9644tCM0NRo0oTpssotIqPTIQs6GPwU1ipw
+         KVZ8tGzqv3upjQWMg4XJkFD9RQTZC0rC7SZ7qkSDwNusCeyx4lYgwM/nTFLUkjNUOv5h
+         oNf7EMQfIuak7A7G3+etI93IQ7qRrn1gPlkInDwjfoYUQpIquwxaU7YjXvmZSK7HuNTM
+         yqrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=TJG+6kgfjZjK189KqMiGV0hwONF59DnMbu1jbDOMzZ8=;
-        b=VkcGKRXzhR3p0nNYe760+oT5UBCZrPI8M5Dq/KzDr75LZ8d1ZYTpTDAo2IX0TMKXpS
-         UtrxmBrHQG7PMjDsSnERZZwKRZ2nnAx5vgzYh87ANqHNd72Do4PrJe0HP+d3L4H8NDDV
-         L9xdccFb2UiepPNGQeOAMGDaSeuiUoLJYVMtnmxF1YJv4+AEJkFghTz1l25oHIwWZclf
-         By5+PFTN9A+je3nPifE6XGUpiH+KdPEMoR4yYJesSY+G5Qm09bA9iBvJ51VEb3rZpbAx
-         tTxpKXnfSD/gMPAFYK34kbTeal1PeRNIiXjD34OmBwNvRqzoL8LxWyGhIfqj5GWCKgp8
-         CRBA==
-X-Gm-Message-State: AOAM531mPw30cnof6xujza3pGdqIZfIEUoBqvoyJD0OwYjZYv8rB6co/
-        BHoQpWHTY4fPUABTDmyBOyMqQ5S5qfM=
-X-Google-Smtp-Source: ABdhPJzVnky1wYd5Zm0EKEQs7K4mN7cwuFs1QMcl+Ww9tXIiG69Db1cNgKufSu+PIxMDMR64dxrzFw==
-X-Received: by 2002:a63:445a:: with SMTP id t26mr10475355pgk.402.1610679070006;
-        Thu, 14 Jan 2021 18:51:10 -0800 (PST)
-Received: from localhost.localdomain ([178.236.46.205])
-        by smtp.gmail.com with ESMTPSA id gf23sm6671302pjb.48.2021.01.14.18.51.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Jan 2021 18:51:09 -0800 (PST)
-From:   menglong8.dong@gmail.com
-X-Google-Original-From: dong.menglong@zte.com.cn
-To:     axboe@kernel.dk
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Menglong Dong <dong.menglong@zte.com.cn>
-Subject: [PATCH v2] pata_rb532_cf: remove redundant error print in probe() method
-Date:   Thu, 14 Jan 2021 18:51:04 -0800
-Message-Id: <20210115025104.5033-1-dong.menglong@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=TaHxnKsVVUjjlYWbb5WM8lULkRobrhCkf872o49hI5Y=;
+        b=RCwUiFiGN6J6D2KELYn2jnPzgeCBK5+1iFFXM4mKe2moCjuYL+prMNEgdPNy3vUN4z
+         qiROrzOMuqwJlNUJmsQAUtT8fLI2lbhMNaHpJc2rzKKHSgYA60ptBor5oE9m+VDRT+PV
+         BsvDlq2Eh/JSB5ZzvHQl3okvQYgcpTyRBo5yBBADCQqCmvI8SOpOmEtCahF75POn9rVl
+         kuP6O5rZlWTPQm5UpgVeS8Rd3dLYvfQp5Eni4i53k2ddz6RoOXefNMS3Jy/SlSXlJxt5
+         HPer7tjKClrYXvMy+wKLbVxIJ/8CgxUBD6VJIYengXlq/bopsL7uFF1GjtpLoFSu6ysM
+         Ks/w==
+X-Gm-Message-State: AOAM530LZLUQZG8/eeFo7/FNN6U3DctfHEya2du40Vk4BEZVuNXbs+HF
+        1kYLsP/DexZxR42Osj2FVoaezGB1AgELZ41wHc0=
+X-Google-Smtp-Source: ABdhPJzyZeiSijHfeRzspySVQl2p2rRlUPge9bqaCbxGNxzjyQ3MzpgF61BzgR7h/G7qRCpADFZgwEjZQbKiJSQJ9H4=
+X-Received: by 2002:a9d:4816:: with SMTP id c22mr7790384otf.358.1610713095046;
+ Fri, 15 Jan 2021 04:18:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ac9:56a4:0:0:0:0:0 with HTTP; Fri, 15 Jan 2021 04:18:14
+ -0800 (PST)
+Reply-To: laurentgaborit747@yahoo.com
+From:   Laurent Gaborit <universitelavalcanada2@gmail.com>
+Date:   Fri, 15 Jan 2021 13:18:14 +0100
+Message-ID: <CAAMPQKNsbC+5u5TNkWtSUvaib3EbD-kZ=yxy4ktkrnj-QwZ2jw@mail.gmail.com>
+Subject: OFFRE DE PRET
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Menglong Dong <dong.menglong@zte.com.cn>
-
-Coccinelle reports a redundant error print in rb532_pata_driver_probe.
-As 'platform_get_irq' already prints the error message, error print
-here is redundant and can be removed.
-
-Signed-off-by: Menglong Dong <dong.menglong@zte.com.cn>
----
-v2:
-- change patch summary.
----
- drivers/ata/pata_rb532_cf.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/ata/pata_rb532_cf.c b/drivers/ata/pata_rb532_cf.c
-index 479c4b29b856..dcde84f571c4 100644
---- a/drivers/ata/pata_rb532_cf.c
-+++ b/drivers/ata/pata_rb532_cf.c
-@@ -115,10 +115,8 @@ static int rb532_pata_driver_probe(struct platform_device *pdev)
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq <= 0) {
--		dev_err(&pdev->dev, "no IRQ resource found\n");
-+	if (irq <= 0)
- 		return -ENOENT;
--	}
- 
- 	gpiod = devm_gpiod_get(&pdev->dev, NULL, GPIOD_IN);
- 	if (IS_ERR(gpiod)) {
--- 
-2.25.1
-
+Hallo,
+Sie brauchten Geldkredite zwischen Einzelpersonen, um damit fertig zu werde=
+n
+finanzielle Schwierigkeiten, um endlich die Sackgasse zu durchbrechen
+provozieren Sie die Banken, indem Sie Ihre Bewerbungsunterlagen f=C3=BCr ab=
+lehnen
+Credits?
+Ich bin ein franz=C3=B6sischer Staatsb=C3=BCrger, der Sie dazu bringen kann
+ein Darlehen von 5.000 Euro zu 2.000.000 Euro mit einem Zinssatz von
+2% und unter Bedingungen, die Sie
+wird das Leben leichter machen. Hier sind die Bereiche, in denen ich
+Ihnen helfen kann
+Hilfe:
+* Finanziell
+* Immobilienkredit
+* Investitionsdarlehen
+* Autokredit
+* Konsolidierungsschulden
+* Kreditlinie
+* Zweite Hypothek
+* Kreditr=C3=BCckkauf
+* Privat Darlehen
+Sie stecken fest, sind vom Bankgesch=C3=A4ft ausgeschlossen und haben nicht
+die Gunst von
+Banken oder besser Sie haben ein Projekt und ben=C3=B6tigen eine Finanzieru=
+ng, a
+schlechte Kredit oder brauchen Geld, um Rechnungen zu bezahlen,
+Mittel, um in Unternehmen zu investieren.
+Wenn Sie also Geldkredite ben=C3=B6tigen, z=C3=B6gern Sie nicht, mich zu ko=
+ntaktieren
+Kontakt per E-Mail: laurentgaborit747@yahoo.com, um mehr dar=C3=BCber zu er=
+fahren
+meine sehr g=C3=BCnstigen Bedingungen.
+NB: Person, die es nicht ernst meint, sich zu enthalten
+Mit freundlichen Gr=C3=BC=C3=9Fen ...
+Laurent GABORIT.

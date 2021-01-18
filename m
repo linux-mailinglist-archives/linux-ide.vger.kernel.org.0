@@ -2,95 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C232F7898
-	for <lists+linux-ide@lfdr.de>; Fri, 15 Jan 2021 13:19:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E67BA2FA056
+	for <lists+linux-ide@lfdr.de>; Mon, 18 Jan 2021 13:49:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727719AbhAOMS7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 15 Jan 2021 07:18:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35824 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727357AbhAOMS6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 15 Jan 2021 07:18:58 -0500
-Received: from mail-ot1-x329.google.com (mail-ot1-x329.google.com [IPv6:2607:f8b0:4864:20::329])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7E1AC0613C1
-        for <linux-ide@vger.kernel.org>; Fri, 15 Jan 2021 04:18:15 -0800 (PST)
-Received: by mail-ot1-x329.google.com with SMTP id i20so508534otl.7
-        for <linux-ide@vger.kernel.org>; Fri, 15 Jan 2021 04:18:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=TaHxnKsVVUjjlYWbb5WM8lULkRobrhCkf872o49hI5Y=;
-        b=uJ6AN+4JaxmMp6vcPRxSoScYISXIhei100d7+CTFQ5KdDEZUjPGNvb//86G9Jdqir6
-         S71mdeeLCorcgCnnMq/g90vmbYvmJfXEPIl3cUZNxH/4G9xXaqYvRHj011UoeRC2/lx5
-         AMR1DskdM+AaSxrtmH5MhQPUA41MAhrYL9644tCM0NRo0oTpssotIqPTIQs6GPwU1ipw
-         KVZ8tGzqv3upjQWMg4XJkFD9RQTZC0rC7SZ7qkSDwNusCeyx4lYgwM/nTFLUkjNUOv5h
-         oNf7EMQfIuak7A7G3+etI93IQ7qRrn1gPlkInDwjfoYUQpIquwxaU7YjXvmZSK7HuNTM
-         yqrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=TaHxnKsVVUjjlYWbb5WM8lULkRobrhCkf872o49hI5Y=;
-        b=RCwUiFiGN6J6D2KELYn2jnPzgeCBK5+1iFFXM4mKe2moCjuYL+prMNEgdPNy3vUN4z
-         qiROrzOMuqwJlNUJmsQAUtT8fLI2lbhMNaHpJc2rzKKHSgYA60ptBor5oE9m+VDRT+PV
-         BsvDlq2Eh/JSB5ZzvHQl3okvQYgcpTyRBo5yBBADCQqCmvI8SOpOmEtCahF75POn9rVl
-         kuP6O5rZlWTPQm5UpgVeS8Rd3dLYvfQp5Eni4i53k2ddz6RoOXefNMS3Jy/SlSXlJxt5
-         HPer7tjKClrYXvMy+wKLbVxIJ/8CgxUBD6VJIYengXlq/bopsL7uFF1GjtpLoFSu6ysM
-         Ks/w==
-X-Gm-Message-State: AOAM530LZLUQZG8/eeFo7/FNN6U3DctfHEya2du40Vk4BEZVuNXbs+HF
-        1kYLsP/DexZxR42Osj2FVoaezGB1AgELZ41wHc0=
-X-Google-Smtp-Source: ABdhPJzyZeiSijHfeRzspySVQl2p2rRlUPge9bqaCbxGNxzjyQ3MzpgF61BzgR7h/G7qRCpADFZgwEjZQbKiJSQJ9H4=
-X-Received: by 2002:a9d:4816:: with SMTP id c22mr7790384otf.358.1610713095046;
- Fri, 15 Jan 2021 04:18:15 -0800 (PST)
+        id S2404258AbhARMta (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 18 Jan 2021 07:49:30 -0500
+Received: from mga17.intel.com ([192.55.52.151]:59140 "EHLO mga17.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2404281AbhARMs0 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 18 Jan 2021 07:48:26 -0500
+IronPort-SDR: E0xCD3XH6qKM7p1Wtqmdt7Grpfee8nvYfWpg+ATex54PSX/P1Uyn5S2oGd7kxiXuwQoq+wYMCa
+ gsInaVaxHdnw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9867"; a="158571069"
+X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
+   d="scan'208";a="158571069"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2021 04:46:39 -0800
+IronPort-SDR: M5mTnnJ5XgAz+wwhDzmlbCyCYL+XJQ2nQ5zdB1FlJPdOfz4pCO4pdYe2gYQKrToZK7q69weakh
+ LkVs4RZzs8ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.79,356,1602572400"; 
+   d="scan'208";a="466362381"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 18 Jan 2021 04:46:38 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+        id 4451511E; Mon, 18 Jan 2021 14:46:37 +0200 (EET)
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Christoph Hellwig <hch@infradead.org>, linux-ide@vger.kernel.org,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH RESEND] ahci: Add Intel Emmitsburg PCH RAID PCI IDs
+Date:   Mon, 18 Jan 2021 15:46:36 +0300
+Message-Id: <20210118124637.69206-1-mika.westerberg@linux.intel.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Received: by 2002:ac9:56a4:0:0:0:0:0 with HTTP; Fri, 15 Jan 2021 04:18:14
- -0800 (PST)
-Reply-To: laurentgaborit747@yahoo.com
-From:   Laurent Gaborit <universitelavalcanada2@gmail.com>
-Date:   Fri, 15 Jan 2021 13:18:14 +0100
-Message-ID: <CAAMPQKNsbC+5u5TNkWtSUvaib3EbD-kZ=yxy4ktkrnj-QwZ2jw@mail.gmail.com>
-Subject: OFFRE DE PRET
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hallo,
-Sie brauchten Geldkredite zwischen Einzelpersonen, um damit fertig zu werde=
-n
-finanzielle Schwierigkeiten, um endlich die Sackgasse zu durchbrechen
-provozieren Sie die Banken, indem Sie Ihre Bewerbungsunterlagen f=C3=BCr ab=
-lehnen
-Credits?
-Ich bin ein franz=C3=B6sischer Staatsb=C3=BCrger, der Sie dazu bringen kann
-ein Darlehen von 5.000 Euro zu 2.000.000 Euro mit einem Zinssatz von
-2% und unter Bedingungen, die Sie
-wird das Leben leichter machen. Hier sind die Bereiche, in denen ich
-Ihnen helfen kann
-Hilfe:
-* Finanziell
-* Immobilienkredit
-* Investitionsdarlehen
-* Autokredit
-* Konsolidierungsschulden
-* Kreditlinie
-* Zweite Hypothek
-* Kreditr=C3=BCckkauf
-* Privat Darlehen
-Sie stecken fest, sind vom Bankgesch=C3=A4ft ausgeschlossen und haben nicht
-die Gunst von
-Banken oder besser Sie haben ein Projekt und ben=C3=B6tigen eine Finanzieru=
-ng, a
-schlechte Kredit oder brauchen Geld, um Rechnungen zu bezahlen,
-Mittel, um in Unternehmen zu investieren.
-Wenn Sie also Geldkredite ben=C3=B6tigen, z=C3=B6gern Sie nicht, mich zu ko=
-ntaktieren
-Kontakt per E-Mail: laurentgaborit747@yahoo.com, um mehr dar=C3=BCber zu er=
-fahren
-meine sehr g=C3=BCnstigen Bedingungen.
-NB: Person, die es nicht ernst meint, sich zu enthalten
-Mit freundlichen Gr=C3=BC=C3=9Fen ...
-Laurent GABORIT.
+Add Intel Emmitsburg PCH RAID PCI IDs to the list of supported
+controllers.
+
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+---
+ drivers/ata/ahci.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 00ba8e5a1ccc..0b39f0e7fd8f 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -398,6 +398,8 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x2823), board_ahci }, /* Lewisburg AHCI*/
+ 	{ PCI_VDEVICE(INTEL, 0x2826), board_ahci }, /* Lewisburg RAID*/
+ 	{ PCI_VDEVICE(INTEL, 0x2827), board_ahci }, /* Lewisburg RAID*/
++	{ PCI_VDEVICE(INTEL, 0x282b), board_ahci }, /* Emmitsburg RAID */
++	{ PCI_VDEVICE(INTEL, 0x282f), board_ahci }, /* Emmitsburg RAID */
+ 	{ PCI_VDEVICE(INTEL, 0xa182), board_ahci }, /* Lewisburg AHCI*/
+ 	{ PCI_VDEVICE(INTEL, 0xa186), board_ahci }, /* Lewisburg RAID*/
+ 	{ PCI_VDEVICE(INTEL, 0xa1d2), board_ahci }, /* Lewisburg RAID*/
+-- 
+2.29.2
+

@@ -2,91 +2,120 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5FD0302178
-	for <lists+linux-ide@lfdr.de>; Mon, 25 Jan 2021 05:54:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E576030442E
+	for <lists+linux-ide@lfdr.de>; Tue, 26 Jan 2021 18:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbhAYEyU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 24 Jan 2021 23:54:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34112 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727068AbhAYEyN (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 24 Jan 2021 23:54:13 -0500
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D15C7C061756
-        for <linux-ide@vger.kernel.org>; Sun, 24 Jan 2021 20:53:32 -0800 (PST)
-Received: by mail-pj1-x1032.google.com with SMTP id e9so421618pjj.0
-        for <linux-ide@vger.kernel.org>; Sun, 24 Jan 2021 20:53:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=yCVXNmnkbukJI6FbnBMkRVDM8J/Lut2yGB3GCl5tMhk=;
-        b=mUc+2GmhUCQFtGXsbDdMUePaHUC70SqcjIvNUGzmQAMRmDih05IYA/pLKTv5cpBUJg
-         8D4F5NWSJKzdXYHX3tUo/gpur6bsvJgO0jl+aDqenyGk4M3crlQnK9+R3fse9TDvl9Kg
-         PDvjAjdRxv7sEQky3VyreBHgThr+GzpCJW1XuWOAUmcO51X0t91JXgwFck88xc5IXzZ7
-         kcZMpDwGdq/6TX1yaFTbsmRuAy8Q+Bd9qAymHynKCsDAhhvlHsCRTzF+gutiHWy4k037
-         tg1DroGlhRJAHLuCAeOG6dOO/t8s4/8RlUz8Nd7VLJNZUmhsSiwItgtDZcoPgaKB9O6D
-         PMFQ==
+        id S1729646AbhAZGCK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 26 Jan 2021 01:02:10 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55439 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728726AbhAYNRG (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 25 Jan 2021 08:17:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611580538;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zk+cDfpXiHs1Bh3TfFQZWkcbmPZsVlpZuvJJS/EQ6Po=;
+        b=i6hbh4mMS4PU+aIxz46QU1p07dlBkJj9MUqdJLwJss1h6a+OO0RVLSa+rZUP8IoyCH894Y
+        MFDDegHdw/tYd16Rzt63Woz8LCiavakVbCvKAeoMzSnqxwVHVT7dq6ckyP6DXlI6U5Szm8
+        zSss/TImBbRHKUMofw0kxnjLOuxWAi0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-151-N8zEnbyZOSKRkl2ujBVJtA-1; Mon, 25 Jan 2021 08:15:36 -0500
+X-MC-Unique: N8zEnbyZOSKRkl2ujBVJtA-1
+Received: by mail-ej1-f71.google.com with SMTP id ox17so3738769ejb.2
+        for <linux-ide@vger.kernel.org>; Mon, 25 Jan 2021 05:15:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=yCVXNmnkbukJI6FbnBMkRVDM8J/Lut2yGB3GCl5tMhk=;
-        b=cSrjl8r6+aYT9rOKx0Wwx8ue1gy2XvVx0MWWI439JPCW3OBqi8TtFregdivKAciXP3
-         gMIL2RvJgGEGjeKOnt+aZLvK5PJrZ2Nv3Gm3z9XpEeHGsTAF5MoKWx1E9qaouA0jfTjz
-         yO0IxG1FDzPU+sC7imua22Pjbi2Whit8xweeiuNZyI0GyXfRcEkyisWzfCMStwdPI/6x
-         y2rsHggo/pLGSl2Rju67t090LkqgkdmFDTz/BjmvffNa1xd+LKckLp5zydywS0EzzJpC
-         pPxji1RJwvMKA9W8PssvwNNeVBj5w4e+ou/EkIFLVEurIIUB6ieeWyMSegKjWVYo5Ugm
-         M1GA==
-X-Gm-Message-State: AOAM533yi4wHJw82/c+LXmRNFCf+iKcm/7Q/E/NfQ4Iq1/MrUFpGVp94
-        UQNVjqrKPIxmye8eUBp5+O6/1A==
-X-Google-Smtp-Source: ABdhPJxH9fkoQGdpf2yTn0S6RVjDGgTIT95lILem9Ftm+wTQRagGEoMXbOUbGd2ZD+OyyhreIN7wUA==
-X-Received: by 2002:a17:902:b285:b029:de:a0a3:f3b9 with SMTP id u5-20020a170902b285b02900dea0a3f3b9mr336676plr.34.1611550412389;
-        Sun, 24 Jan 2021 20:53:32 -0800 (PST)
-Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
-        by smtp.gmail.com with ESMTPSA id 68sm14877443pfe.33.2021.01.24.20.53.30
+        bh=zk+cDfpXiHs1Bh3TfFQZWkcbmPZsVlpZuvJJS/EQ6Po=;
+        b=lU32PTfYaExX/Kvx03XlV7Qz9uHu5bO5LVlPyrfu7QqHfPnJZcl6GNpixLAAlyvL+Q
+         PMoBYNEoyIn4G98B+QZ85ZpodfZCqoPOgP0euhnc84ugzE+nDZMNVoCDMRTH3NPBAqI0
+         RWHJ/QsLjFwI4bloFVlL/mAvd0ju9RD5Nn9HAoZvMOjnfS8511bAU9JJ0FjLL8UdVYlT
+         fCPBlxaUSIi8XphAwl683qwIdva63iyH7n4pK/ZHRWCC4oZB9JftPHWoOHA6/tftr0hc
+         m4Xu0Mbcr/Ye+R1y8iT87DrOQgC3DZCs7PXfuOw4bvIU60NtoVMjeY/U++xDMx+LCS7A
+         9AlQ==
+X-Gm-Message-State: AOAM530fxNNXshdXsCJXHXeVNdhG9y10KtrjdIn591IzmMpDNW0Mn3bP
+        XDiqduPTSZTNuVffNOksMgdNFCCaiWYjSRgTz4mWqax9rOBRDCAlVRGQ83itzORFAU64vIqLZTp
+        TrhS8j+fXkiwkVGFNOi0N
+X-Received: by 2002:a17:906:b1c8:: with SMTP id bv8mr354519ejb.208.1611580535373;
+        Mon, 25 Jan 2021 05:15:35 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyvQdimcsf4hmIorymsHFeWn5I8TSKTGJ63eSmv/qM83Gr9092hZygNLpR0RqnI3yHtfgV5tQ==
+X-Received: by 2002:a17:906:b1c8:: with SMTP id bv8mr354504ejb.208.1611580535234;
+        Mon, 25 Jan 2021 05:15:35 -0800 (PST)
+Received: from x1.localdomain (2001-1c00-0c1e-bf00-37a3-353b-be90-1238.cable.dynamic.v6.ziggo.nl. [2001:1c00:c1e:bf00:37a3:353b:be90:1238])
+        by smtp.gmail.com with ESMTPSA id bc6sm10636598edb.52.2021.01.25.05.15.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 24 Jan 2021 20:53:31 -0800 (PST)
-Subject: Re: [PATCH V3 0/2] remove unused argument from blk_execute_rq_nowait
- and blk_execute_rq
-To:     Guoqing Jiang <guoqing.jiang@cloud.ionos.com>
-Cc:     linux-block@vger.kernel.org, linux-scsi@vger.kernel.org,
-        virtualization@lists.linux-foundation.org,
-        linux-ide@vger.kernel.org, linux-mmc@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org,
-        hch@infradead.org
-References: <1611550198-17142-1-git-send-email-guoqing.jiang@cloud.ionos.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <50c4cdb5-b5ea-5431-c319-a6784f33f8b6@kernel.dk>
-Date:   Sun, 24 Jan 2021 21:53:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        Mon, 25 Jan 2021 05:15:34 -0800 (PST)
+Subject: Re: 5.11 new lockdep warning related to led-class code (also may
+ involve ata / piix controller)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Pavel Machek <pavel@ucw.cz>
+Cc:     Jens Axboe <axboe@kernel.dk>, Dan Murphy <dmurphy@ti.com>,
+        linux-ide@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <b204637d-3b72-8320-8a62-f075467d8681@redhat.com>
+ <20210112223015.GB28214@duo.ucw.cz>
+ <f344f1db-1a7a-0a80-1cb1-f9c3fbf83abd@redhat.com>
+Message-ID: <0ec34bca-f7e0-8954-c253-d07ed6b71b80@redhat.com>
+Date:   Mon, 25 Jan 2021 14:15:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <1611550198-17142-1-git-send-email-guoqing.jiang@cloud.ionos.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <f344f1db-1a7a-0a80-1cb1-f9c3fbf83abd@redhat.com>
+Content-Type: text/plain; charset=windows-1252
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/24/21 9:49 PM, Guoqing Jiang wrote:
-> V3 changes:
-> 1. rebase with for-5.12/block branch.
-> 2. add Ulf's Acked-by.
-> 
-> V2 changes:
-> 1. update commit header per Christoph's comment.
-> 
-> Hi Jens,
-> 
-> This series remove unused 'q' from blk_execute_rq_nowait and blk_execute_rq.
-> Also update the comment for blk_execute_rq_nowait.
-> 
+Hi,
 
-Applied, thanks.
+On 1/13/21 9:59 AM, Hans de Goede wrote:
+> Hi,
+> 
+> On 1/12/21 11:30 PM, Pavel Machek wrote:
+>> Hi!
+>>
+>>> Booting a 5.11-rc2 kernel with lockdep enabled inside a virtualbox vm (which still
+>>> emulates good old piix ATA controllers) I get the below lockdep splat early on during boot:
+>>>
+>>> This seems to be led-class related but also seems to have a (P)ATA
+>>> part to it. To the best of my knowledge this is a new problem in
+>>> 5.11 .
+>>
+>> This is on my for-next branch:
+>>
+>> commit 9a5ad5c5b2d25508996f10ee6b428d5df91d9160 (HEAD -> for-next, origin/for-next)
+>>
+>>     leds: trigger: fix potential deadlock with libata
+>>     
+>>     We have the following potential deadlock condition:
+>>     
+>>      ========================================================
+>>      WARNING: possible irq lock inversion dependency detected
+>>      5.10.0-rc2+ #25 Not tainted
+>>      --------------------------------------------------------
+>>      swapper/3/0 just changed the state of lock:
+>>      ffff8880063bd618 (&host->lock){-...}-{2:2}, at: ata_bmdma_interrupt+0x27/0x200
+>>      but this lock took another, HARDIRQ-READ-unsafe lock in the past:
+>>       (&trig->leddev_list_lock){.+.?}-{2:2}
+>>
+>> If I'm not mistaken, that should fix your issue.
+> 
+> I can confirm that this fixes things, thanks.
+> 
+> I assume that this will be part of some future 5.11 fixes pull-req?
 
--- 
-Jens Axboe
+This *regression* fix seems to still have not landed in 5.11-rc5, can
+we please get this on its way to Linus ?
+
+Regards,
+
+Hans
 

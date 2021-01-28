@@ -2,99 +2,104 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 426FD307D68
-	for <lists+linux-ide@lfdr.de>; Thu, 28 Jan 2021 19:09:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08B4E307D6F
+	for <lists+linux-ide@lfdr.de>; Thu, 28 Jan 2021 19:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231407AbhA1SHW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 28 Jan 2021 13:07:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
+        id S231286AbhA1SHp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 28 Jan 2021 13:07:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231414AbhA1SEQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 13:04:16 -0500
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BDCC061356
-        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:54 -0800 (PST)
-Received: by mail-wr1-x431.google.com with SMTP id v15so6355273wrx.4
-        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:54 -0800 (PST)
+        with ESMTP id S231526AbhA1SFH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 13:05:07 -0500
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9952EC06121D
+        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:55 -0800 (PST)
+Received: by mail-wr1-x435.google.com with SMTP id s7so3347763wru.5
+        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=MvoGC7duOzp4QbVV73i8hwf4OtQFHAIOE3fctv618Vg=;
-        b=LCSL/fcwhlSrm7/lPGXpRlMQ0n2aJQsdeAOcuIr7kBIZyWGO4wpdPQ3TUqEgqrxZA0
-         UMkH9ME6yeqoYFSIQnabalTsyaacEnMVFhkVr1ipyzQsoI+JO5RNSw3V93yhVo6vn33h
-         G2OhqiZzDjzJVgIWhHhm0szCYXY4TBHp7P/G9LVdxZ/c0FZSEJjFEUyFSLNNtJiIEC6O
-         5B7SIsdJhLuG8JwhcDL1QYWQgXLcN+GMDFNV1TKFXEmFd4E+UzHQdmWrzTXDBkgnYvDJ
-         BZSKMH3/TfZg3sdClckaTszuFVK11UbU+Yber7oT1ea+wdx0+EcSrCutdlkh60sA2OWF
-         bHrA==
+        bh=sxf8NqRslTnnCXUblNlG5//kELg1DL3clvbNvmI4mXU=;
+        b=UntfUA2Vm6vrDU0WjZudlXKWSikByvxdHCdDF5CbmQw3+MSfBhMuBIX9Enta75PVUy
+         ZafVqU2JFFP2bgb/HB9XGStGpkBLCINlVTYcWr277dRkq3KHOHi8RpFY03XKOKFFZWQr
+         ugd8TxEpgC8eHyHl43kMeekO21MEKrYzyUYn+hrZX5eyGuJLtVrQqaoWaYwReXkffcAU
+         npHQo6LDWhX6wqeRMdzJ0F11GT0gYkcRECALKZXMgSprXWMMW1a3C0h2fmW+DhjzN1EP
+         D1sn+56xVrQJIbe5lRXBVSBWVEix2KyPEM5d1r4RRkGW8mk2q+t7ro/403rhrJNc0rg2
+         Jz5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=MvoGC7duOzp4QbVV73i8hwf4OtQFHAIOE3fctv618Vg=;
-        b=SyolQ4WGPVP/AEzYPEzDhuNu5Nq976rcDdiq0OeuCnJJbdQOFfqvz4DygjUDT/AkmH
-         E5ctx6LYPODcKBLK/5rItc1nZTLJ93NIxKryE4H/o8e84IqG06ImIvD/Dxxh/Slu/UIu
-         e0l7inCXlpy/aV98+EmN/z+5SHxVgD7ZtSjMhwXKbwiqb/ijXJ0XmJpT8bKx0HIZ4vK2
-         SUuTUEQwitbzoyK72Xo1SefAds8mwQmqwd9YM+Vv/xwN9XXgWxuSbnyJw8StqKGj0hDt
-         8bESCEqlR+21jXRt3FBPiecczWlIaN2UkEG4FYdSXVcgmq/S5lzMlOFv7Hbu7xjYceTg
-         +VHQ==
-X-Gm-Message-State: AOAM533PKwWieCUUxyiPj7CEv+yuZWMzVEUZ4SjI7++nh+0N0svW+0pa
-        P3mhxuNz5XSMokHsCpv8c0mZjw==
-X-Google-Smtp-Source: ABdhPJwlRmBQ0XlMBMJkoz0Jvfl43UE6ncweVPFdcFHqoMnwtYyXiwnmj5wsqPFr3KRph9ft58miLw==
-X-Received: by 2002:a5d:6884:: with SMTP id h4mr359995wru.106.1611856973290;
-        Thu, 28 Jan 2021 10:02:53 -0800 (PST)
+        bh=sxf8NqRslTnnCXUblNlG5//kELg1DL3clvbNvmI4mXU=;
+        b=EsaNlje3mH5G+axEX9HqrfYsHksviIS4eZWhp+pq/dLKHIdy+wOsSCBBun1eZuN+Hh
+         eRg3gkrb450yxGKvleSPPbZ3uqVahd1bommwmLM+ecjUIGt3oLulzp8MyXmEGSeBA4Cc
+         q0qlE28hcRq8DJ0WWTM9VCwMcEJBaWNcMaFIq4UpWghzeQLFYrPYdMuCYAgEjISUs+Qr
+         dXjMEimwhAyRxGE8UrD5+KuX+dHeYuW8wWpF2OCKDuEwQ/qmneHyIVLtXM+SrIQtnTvw
+         bPkYFyLc1M/8XOfRCLzVUURSiUzSQ9NvzG664aQX0BJiULnbZSI8ElKjwcOi27PFdK0R
+         fSgg==
+X-Gm-Message-State: AOAM532+VeVfVD/4dMK+B8pHjLo55SW977EIVqJxmDpWy3JuoqzdVW31
+        /vdh+DfK8XHcbfXxjZ2G++RFoQ==
+X-Google-Smtp-Source: ABdhPJx5KaLH/cy/rUYXXolnbXr9+dS6SYxaMQVUWhpOrqyckolzbwAaCpN7Ih3WkdcMbMbbGlfKww==
+X-Received: by 2002:a5d:6311:: with SMTP id i17mr264514wru.195.1611856974407;
+        Thu, 28 Jan 2021 10:02:54 -0800 (PST)
 Received: from dell.default ([91.110.221.188])
-        by smtp.gmail.com with ESMTPSA id u6sm8280794wro.75.2021.01.28.10.02.52
+        by smtp.gmail.com with ESMTPSA id u6sm8280794wro.75.2021.01.28.10.02.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 10:02:52 -0800 (PST)
+        Thu, 28 Jan 2021 10:02:53 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Andre Hedrick <andre@linux-ide.org>,
-        Thibaut VARENE <varenet@parisc-linux.org>,
-        Alessandro Zummo <alessandro.zummo@towertech.it>,
         linux-ide@vger.kernel.org
-Subject: [PATCH 08/20] ata: pata_artop: Fix a function name and parameter description
-Date:   Thu, 28 Jan 2021 18:02:27 +0000
-Message-Id: <20210128180239.548512-9-lee.jones@linaro.org>
+Subject: [PATCH 09/20] ata: acard-ahci: Ignore -Woverride-init
+Date:   Thu, 28 Jan 2021 18:02:28 +0000
+Message-Id: <20210128180239.548512-10-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210128180239.548512-1-lee.jones@linaro.org>
 References: <20210128180239.548512-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Some ATA drivers use the SCSI host template, a series of interwoven
+macros, to aid with initialisation.  Some of these macros conflict,
+resulting in the over-writing of previously set values.
+
+This is known behaviour and can be safely ignored.
+
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_artop.c:278: warning: expecting prototype for artop_6210_qc_defer(). Prototype was for artop6210_qc_defer() instead
- drivers/ata/pata_artop.c:359: warning: Function parameter or member 'id' not described in 'artop_init_one'
- drivers/ata/pata_artop.c:359: warning: Excess function parameter 'ent' description in 'artop_init_one'
+ In file included from drivers/ata/acard-ahci.c:33:
+ drivers/ata/ahci.h:387:16: warning: initialized field overwritten [-Woverride-init]
+ drivers/ata/acard-ahci.c:70:2: note: in expansion of macro ‘AHCI_SHT’
+ drivers/ata/ahci.h:387:16: note: (near initialization for ‘acard_ahci_sht.can_queue’)
+ drivers/ata/acard-ahci.c:70:2: note: in expansion of macro ‘AHCI_SHT’
+ drivers/ata/ahci.h:391:17: warning: initialized field overwritten [-Woverride-init]
+ drivers/ata/acard-ahci.c:70:2: note: in expansion of macro ‘AHCI_SHT’
+ drivers/ata/ahci.h:391:17: note: (near initialization for ‘acard_ahci_sht.sdev_attrs’)
+ drivers/ata/acard-ahci.c:70:2: note: in expansion of macro ‘AHCI_SHT’
 
 Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Andre Hedrick <andre@linux-ide.org>
-Cc: Thibaut VARENE <varenet@parisc-linux.org>
-Cc: Alessandro Zummo <alessandro.zummo@towertech.it>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/pata_artop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/pata_artop.c b/drivers/ata/pata_artop.c
-index 6bd2228bb6ffa..02e4fd5e3b934 100644
---- a/drivers/ata/pata_artop.c
-+++ b/drivers/ata/pata_artop.c
-@@ -344,7 +344,7 @@ static void atp8xx_fixup(struct pci_dev *pdev)
- /**
-  *	artop_init_one - Register ARTOP ATA PCI device with kernel services
-  *	@pdev: PCI device to register
-- *	@ent: Entry in artop_pci_tbl matching with @pdev
-+ *	@id: PCI device ID
-  *
-  *	Called from kernel PCI layer.
-  *
+diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
+index 79c59550c23a0..4542f101042ac 100644
+--- a/drivers/ata/Makefile
++++ b/drivers/ata/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
++CFLAGS_acard-ahci.o		= $(call cc-disable-warning, override-init)
+ CFLAGS_ahci_dm816.o		= $(call cc-disable-warning, override-init)
+ CFLAGS_ahci_mtk.o		= $(call cc-disable-warning, override-init)
+ CFLAGS_ahci_platform.o		= $(call cc-disable-warning, override-init)
 -- 
 2.25.1
 

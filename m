@@ -2,105 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6B8307D94
-	for <lists+linux-ide@lfdr.de>; Thu, 28 Jan 2021 19:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F93307DD2
+	for <lists+linux-ide@lfdr.de>; Thu, 28 Jan 2021 19:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231678AbhA1SPC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 28 Jan 2021 13:15:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32958 "EHLO
+        id S231876AbhA1SWy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 28 Jan 2021 13:22:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231436AbhA1SHV (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 13:07:21 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2003C061A2A
-        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:03:07 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id c12so6334146wrc.7
-        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:03:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=uLTjdVY72aKyqSF59N/uJRYV12gUSHg1TskoZb+zwxc=;
-        b=XxpSF2uP2v0W9RW2VCJqhChGAX6WSCAXs6w4ijZe6v+12yrVxLzHWT1Ec/Q+f/FtXI
-         9HqklksJde6eMBy/0MI4UQM5rIzajbYvZgaXfZv1WnfdVhfWIadYljnqt0OGCCgOgex4
-         kYi6InAkGU0oFT0kDeOzCT+T/eYaBP8f/ATqDzUoD2dJ8ZBTmZsjNw28UDwA2i30psU7
-         QjTanU5sTVW7sPPBj6jpc+3Ct+XEYM6sH+DrHzWoXx2ysWqds68bJPs1xsvqbBsqszxJ
-         ctswyt4WdjEGjUELBK2BBMQNfdqOv/aNhV7mWh0K0JpxUZbLVLQBV/OJPzqMr4dnsFdl
-         kXzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=uLTjdVY72aKyqSF59N/uJRYV12gUSHg1TskoZb+zwxc=;
-        b=RYbdgY29y4vwDOX5dKZd+pd+Vu4l8IvV4Hd0BUAht78smr3gF9ARo3yBBSmLztOpBj
-         YILnX5ylQSXxUMQM3cLDkN0nWuQWJZ3KgRyJtV+cHNcNSVRWRwn2ZeKP4WKIqHb7fJc/
-         Xc8S/ip63x4IVdv6p2+jH2VQ1pksbHmdP3pOyrPY81x8jyjUYAFFKrcjl6s07SBeJ3Yh
-         9GDBZ+4OIKt+wofoIwUk+S/aerSa2I6QN4kchMSmNdT9tcHXcLEoIzf0vKuC7cx0m40U
-         6dIn9HVeZI85dm6T4Qvve60e53+nEXH0jFB4jMu1x6aczVDlrGRvG3lSL8L4Tf+3hpJi
-         yBHQ==
-X-Gm-Message-State: AOAM5325a9dOyQ953YoU8i6i+UADcL1Syn01AQt2qyIPa6rulVJZH02U
-        qB+cp2pqfa0RvtqIHp3t9xx48A==
-X-Google-Smtp-Source: ABdhPJyWSuYrKMWdaIv71fSya9X1MGXlIYeadHHN2MFhUwF+tSJksHr5Ryna9O09obzzpWv9VnBglg==
-X-Received: by 2002:a5d:6044:: with SMTP id j4mr247434wrt.287.1611856986700;
-        Thu, 28 Jan 2021 10:03:06 -0800 (PST)
-Received: from dell.default ([91.110.221.188])
-        by smtp.gmail.com with ESMTPSA id u6sm8280794wro.75.2021.01.28.10.03.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 10:03:06 -0800 (PST)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     lee.jones@linaro.org
+        with ESMTP id S231688AbhA1SUu (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 13:20:50 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4E04C0613ED;
+        Thu, 28 Jan 2021 10:19:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=3/eVDrOgGzWcTNcMv+Ud5/gsGdeOlwuJYul3Zh/W0is=; b=obNEnAK5172fzMAmMOvKftW+uT
+        tgBeWfDHBa5niwyhQs0q9I31G0dB2+3JR+Ikwp0gdZtfg08x68hizv9xXyu2sdmwSDS+MkFEhd2i2
+        pqS9UgGkKKiQWEgDzUqjwxG0lckEhLvCEualYSBJjKhkrVJ1AMUAs0EXNsE/chEVzrBXh1UyHrEM2
+        O6QlgbuYNxFDJwT1nALipZA44aZvhw+gN50GZT0rKSe10vLwXU5STC3TCVvrlda2lP7CnuQcgpO33
+        SyHzDSdz1O1UWRhtUh1cwx+Ggz79xYFQmk1Y22B96WIBkaAS/IOaSPuT9846zYCAfg/Zds/CXfnG0
+        paHHtfyA==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1l5Bsl-008oGv-2n; Thu, 28 Jan 2021 18:19:04 +0000
+Date:   Thu, 28 Jan 2021 18:19:03 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Lee Jones <lee.jones@linaro.org>
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
         linux-ide@vger.kernel.org
-Subject: [PATCH 20/20] ata: ahci: Ignore -Woverride-init
-Date:   Thu, 28 Jan 2021 18:02:39 +0000
-Message-Id: <20210128180239.548512-21-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210128180239.548512-1-lee.jones@linaro.org>
+Subject: Re: [PATCH 01/20] ata: ahci_dm816: Ignore -Woverride-init
+Message-ID: <20210128181903.GA2099675@infradead.org>
 References: <20210128180239.548512-1-lee.jones@linaro.org>
+ <20210128180239.548512-2-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210128180239.548512-2-lee.jones@linaro.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Some ATA drivers use the SCSI host template, a series of interwoven
-macros, to aid with initialisation.  Some of these macros conflict,
-resulting in the over-writing of previously set values.
+On Thu, Jan 28, 2021 at 06:02:20PM +0000, Lee Jones wrote:
+> Some ATA drivers use the SCSI host template, a series of interwoven
+> macros, to aid with initialisation.  Some of these macros conflict,
+> resulting in the over-writing of previously set values.
 
-This is known behaviour and can be safely ignored.
-
-Fixes the following W=1 kernel build warning(s):
-
- In file included from drivers/ata/ahci.c:35:
- drivers/ata/ahci.h:387:16: warning: initialized field overwritten [-Woverride-init]
- drivers/ata/ahci.c:104:2: note: in expansion of macro ‘AHCI_SHT’
- drivers/ata/ahci.h:387:16: note: (near initialization for ‘ahci_sht.can_queue’)
- drivers/ata/ahci.c:104:2: note: in expansion of macro ‘AHCI_SHT’
- drivers/ata/ahci.h:391:17: warning: initialized field overwritten [-Woverride-init]
- drivers/ata/ahci.c:104:2: note: in expansion of macro ‘AHCI_SHT’
- drivers/ata/ahci.h:391:17: note: (near initialization for ‘ahci_sht.sdev_attrs’)
- drivers/ata/ahci.c:104:2: note: in expansion of macro ‘AHCI_SHT’
-
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-ide@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/ata/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index a6755a524efa0..4580a0306bf3d 100644
---- a/drivers/ata/Makefile
-+++ b/drivers/ata/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- CFLAGS_acard-ahci.o		= $(call cc-disable-warning, override-init)
-+CFLAGS_ahci.o			= $(call cc-disable-warning, override-init)
- CFLAGS_ahci_brcm.o		= $(call cc-disable-warning, override-init)
- CFLAGS_ahci_ceva.o		= $(call cc-disable-warning, override-init)
- CFLAGS_ahci_dm816.o		= $(call cc-disable-warning, override-init)
--- 
-2.25.1
-
+Please just disable this warning globally.  This is a sensible
+patter and we should not sprinkle per-file options for something
+that fundamental.

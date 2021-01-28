@@ -2,58 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA0F307D6E
-	for <lists+linux-ide@lfdr.de>; Thu, 28 Jan 2021 19:09:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 798AE307D70
+	for <lists+linux-ide@lfdr.de>; Thu, 28 Jan 2021 19:09:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbhA1SHm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 28 Jan 2021 13:07:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60624 "EHLO
+        id S231526AbhA1SHs (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 28 Jan 2021 13:07:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231262AbhA1SEw (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 13:04:52 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191BBC06178A
-        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:58 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id u14so5031984wml.4
-        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:58 -0800 (PST)
+        with ESMTP id S231534AbhA1SFJ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 13:05:09 -0500
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 143BAC061222
+        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:59 -0800 (PST)
+Received: by mail-wr1-x42a.google.com with SMTP id s7so3347925wru.5
+        for <linux-ide@vger.kernel.org>; Thu, 28 Jan 2021 10:02:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=psxck1KMWyXDOgBCEv3jYVYq9cj2r/nvdYNmqCZ8a8o=;
-        b=lBHSuYaf+ThEC3XoD0nFSMFQjdNXO6266Ggd88khh8AtoBXvl5UBglSmIvSRwJwD/P
-         IU+b4wERYdnenTF6z5UMj7tvpnI2dsyL4IgBsQpv5O0O8Fodim0dN50K9Is4SYp+x238
-         EHO/MnRTxnmFfSeI9jdmrzpL+a5AQzn2G2BuvDfXa7Ctui6GlQkZpxkp13i4VaKrl/en
-         wMa/Mm1CvgoWI9IFvVRU1EorTkSXe4SkFGacVGi+RiAWSYltYNF2/zEr5+ZrI1Vru+OU
-         xkDX6pGasijORHWcwHiMpzLFKoCevZIiJ4RPRx7IYiiUpkulawfPN0j1SZfCt188cWup
-         S8MQ==
+        bh=bku/TZDwGiY5vuh8zroI/7gSSOC7kKg9Wo8De+jk1lQ=;
+        b=Nurqslu0d9ZwZ10IWWGqE6G9xt1JePKcmpIrRynNCMdLIAc+57LzYLJKEL7PvrBXjw
+         6bGtME1fvy03oT7Jllc0teJLFoQrunhkSoJfyUIWryc3t0vG0CnlN7sFstoC6Ko9HM4x
+         /UzgUlxzWm9yrbEHJB8EcxTBGS/m98p7ZpId/OcKIhvBHeFPZ2tm4clYfnYWLSBw/DKE
+         yRmbLqUkhOlJ/BmotlqnwRtmPduKAJHrfOcNs2DsYl9yz5s3FNzw71H1HvDIznGpfL+b
+         vy4ulT08Wj2ss/C1JDa2ZnxFTJ3DiZ3PZhrdAPB0YttCZ83ZbVSp6dbRcqb0GldlIUq6
+         J5XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=psxck1KMWyXDOgBCEv3jYVYq9cj2r/nvdYNmqCZ8a8o=;
-        b=UfcHEEARiXyhiN10Fn1QsBShncWcOpIm/mwK8xS4sHBVG8T+syjHaIHNLq71fkfRYX
-         USrMcczPNFDstDNQGk+57/WRyX4TjDfdHKVSV+2fjvUemVFGdGzvnnGuV4jW1VHlK58h
-         nCU+GJOrtXFAo8cAqLXOqI94KaKWWGkNWSdpEwNYE7HWjn2UaZ4o2cljQ2xHyiyhgDcS
-         nHOw614HdFnh9YYNG/xpGEGJA0AuHg4fSaMjTKwC9pqSpU88S4nvkRuLNQfpBqpsiAx0
-         IH0uTNEMNgiqlhIMs8CykrcaFB6ypdfv/ypc/okZRFMytJtac8cANR9IRlphM9P69xp8
-         XP5Q==
-X-Gm-Message-State: AOAM530bcl2jidsJS1D+dwrusCQEaCGcWVCX4SCIyPO02PuF3jGV6ark
-        pccCLJknWh5DpruMOSUQg78WgA==
-X-Google-Smtp-Source: ABdhPJylmz84beCkITbxAGADN4SRcalxnpuBzHeS1s4xaAKVu0RnbM6Gdx3NAZPS52cxhsCp1GI+tA==
-X-Received: by 2002:a1c:b682:: with SMTP id g124mr473279wmf.10.1611856976813;
-        Thu, 28 Jan 2021 10:02:56 -0800 (PST)
+        bh=bku/TZDwGiY5vuh8zroI/7gSSOC7kKg9Wo8De+jk1lQ=;
+        b=HQ0SZr4CdsbWQCN0VM9jT5lEBRvOsL4YXxoNtmFO9P/L2yezV1SaehF9JpifD+jppy
+         KHNWP5Gc6JYuo9/a6qL1MHa6VS11sXkOrf5zjlHdCZMdR3tbIWjQyJW2ORaUWWrpybuN
+         ajY8CZZ+wcq8QNfVpYvn+mYjMvp+l3q4k5iCZMoOWwz6uWFQND7sfP7YXSRufnEP2Oq8
+         /kag3ZAoy89yrrBo7IKS/jA7I29iLTSXLCn2Q2DkkmYMys66NerHKuArVkFA9SALyPtH
+         cabz/W2TNg89WYR/4p2xw8blsH4Rjj79JZL0BpUDmc4evzlUFwPHGtQpj0L9k8YGIfuh
+         bBPA==
+X-Gm-Message-State: AOAM5333vrB18SCkUOogvVak98rQ/CkIYG8Of/1N0HAw+y5z5zUcYq1c
+        txx1PmaLM9Fgw93LsOJ3XXVD9g==
+X-Google-Smtp-Source: ABdhPJxrEupt53VzeI+7GcG+/MAFplgDc5K42e8phIxQ6WxAavhFiIMN6vtlA3P8N4zstFeBVpogiw==
+X-Received: by 2002:a5d:4e47:: with SMTP id r7mr323827wrt.312.1611856977884;
+        Thu, 28 Jan 2021 10:02:57 -0800 (PST)
 Received: from dell.default ([91.110.221.188])
-        by smtp.gmail.com with ESMTPSA id u6sm8280794wro.75.2021.01.28.10.02.55
+        by smtp.gmail.com with ESMTPSA id u6sm8280794wro.75.2021.01.28.10.02.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Jan 2021 10:02:56 -0800 (PST)
+        Thu, 28 Jan 2021 10:02:57 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH 11/20] ata: pata_amd: Remove superfluous, add missing and fix broken params
-Date:   Thu, 28 Jan 2021 18:02:30 +0000
-Message-Id: <20210128180239.548512-12-lee.jones@linaro.org>
+        Andre Hedrick <andre@linux-ide.org>, linux-ide@vger.kernel.org
+Subject: [PATCH 12/20] ata: pata_hpt366: Provide missing description for 'hpt366_filter()'s 'mask' param
+Date:   Thu, 28 Jan 2021 18:02:31 +0000
+Message-Id: <20210128180239.548512-13-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210128180239.548512-1-lee.jones@linaro.org>
 References: <20210128180239.548512-1-lee.jones@linaro.org>
@@ -65,40 +65,28 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_amd.c:179: warning: Excess function parameter 'adev' description in 'amd_fifo_setup'
- drivers/ata/pata_amd.c:331: warning: Function parameter or member 'link' not described in 'nv_pre_reset'
- drivers/ata/pata_amd.c:331: warning: Function parameter or member 'deadline' not described in 'nv_pre_reset'
- drivers/ata/pata_amd.c:331: warning: expecting prototype for nv_probe_init(). Prototype was for nv_pre_reset() instead
+ drivers/ata/pata_hpt366.c:200: warning: Function parameter or member 'mask' not described in 'hpt366_filter'
 
 Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Andre Hedrick <andre@linux-ide.org>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/pata_amd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ata/pata_hpt366.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/pata_amd.c b/drivers/ata/pata_amd.c
-index 987967f976cb2..75b830eb3c542 100644
---- a/drivers/ata/pata_amd.c
-+++ b/drivers/ata/pata_amd.c
-@@ -167,7 +167,6 @@ static int amd_cable_detect(struct ata_port *ap)
+diff --git a/drivers/ata/pata_hpt366.c b/drivers/ata/pata_hpt366.c
+index 2574d6fbb1ad3..06b7c4a9ec954 100644
+--- a/drivers/ata/pata_hpt366.c
++++ b/drivers/ata/pata_hpt366.c
+@@ -192,6 +192,7 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
  /**
-  *	amd_fifo_setup		-	set the PIO FIFO for ATA/ATAPI
-  *	@ap: ATA interface
-- *	@adev: ATA device
+  *	hpt366_filter	-	mode selection filter
+  *	@adev: ATA device
++ *	@mask: Current mask to manipulate and pass back
   *
-  *	Set the PCI fifo for this device according to the devices present
-  *	on the bus at this point in time. We need to turn the post write buffer
-@@ -321,7 +320,8 @@ static unsigned long nv_mode_filter(struct ata_device *dev,
- 
- /**
-  *	nv_probe_init	-	cable detection
-- *	@lin: ATA link
-+ *	@link: ATA link
-+ *	@deadline: deadline jiffies for the operation
-  *
-  *	Perform cable detection. The BIOS stores this in PCI config
-  *	space for us.
+  *	Block UDMA on devices that cause trouble with this controller.
+  */
 -- 
 2.25.1
 

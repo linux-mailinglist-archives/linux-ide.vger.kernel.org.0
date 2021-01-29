@@ -2,60 +2,56 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 722023082FC
-	for <lists+linux-ide@lfdr.de>; Fri, 29 Jan 2021 02:11:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A27130855C
+	for <lists+linux-ide@lfdr.de>; Fri, 29 Jan 2021 06:57:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231313AbhA2BIp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 28 Jan 2021 20:08:45 -0500
-Received: from vmh16998.hosting24.com.au ([223.27.28.158]:60803 "EHLO
-        vmh20853.hosting24.com.au" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S231713AbhA2BIV (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Jan 2021 20:08:21 -0500
-X-Greylist: delayed 7136 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 20:07:53 EST
-Received: from vmh20853.hosting24.com.au (localhost [IPv6:::1])
-        by vmh20853.hosting24.com.au (Postfix) with ESMTPSA id 72E39165F2A;
-        Fri, 29 Jan 2021 09:15:14 +1100 (AEDT)
-Received: from Adsl-41.66.45.80.aviso.ci (Adsl-41.66.45.80.aviso.ci
- [41.66.45.80]) by webmail.callentaxation.com.au (Horde Framework) with HTTP;
- Thu, 28 Jan 2021 22:15:14 +0000
-Date:   Thu, 28 Jan 2021 22:15:14 +0000
-Message-ID: <20210128221514.Horde.YkQnISVVnCTQ5SLLXuLqiiV@webmail.callentaxation.com.au>
-From:   DIANA MARKUS <test@callentaxation.com.au>
-Subject: DONATION FUND FROM MRS. DIANA MARKUS,
-Reply-to: dianamarkus07@gmail.com
-User-Agent: Horde Application Framework 5
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+        id S229463AbhA2FyK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 29 Jan 2021 00:54:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43552 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229459AbhA2FyJ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 29 Jan 2021 00:54:09 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39D6DC061573;
+        Thu, 28 Jan 2021 21:53:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=CzDvjW0PsVn2C/KV8egp8yfOHQE/Tji5vpufDPEiy+Q=; b=s/8aDS3xramd3dUVdb/vzacIyC
+        Jj5WXpgxm4/ZnT9cScIAb0sh0MKpEBa4AvZY5VBuRmoXF34eGO5R+GTbueOCO21tvXHioV8UNFwLO
+        eJs5SdpHdCSQjvbzJzHffD6pm9LmrnB0qfybrmL9gXaFBVcmmV1ucqliuz3qLhn3dWAF0y849l7tS
+        5pJ/lIqOTDeYqogShW7Bb2hXhK0P2nhJN0GC+DoFAtLoWP25oB+X6gPBghYZNl2ZbO9Az2JYbkmn+
+        bf+vUU1rk1NVDRXa5zasGKV8oiJTjUIKFY5p7Z1EZ8x9+uty8Oo5joBdDlnC7TTjT5QDnc+4RPTXI
+        AgRgFAFA==;
+Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1l5Mig-009Rs8-5J; Fri, 29 Jan 2021 05:53:22 +0000
+Date:   Fri, 29 Jan 2021 05:53:22 +0000
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, Alan Cox <alan@redhat.com>,
+        Alessandro Zummo <alessandro.zummo@towertech.it>,
+        ALWAYS copy <linux-ide@vger.kernel.org>,
+        and cc <htejun@gmail.com>, Andre Hedrick <andre@linux-ide.org>,
+        CJ <cjtsai@ali.com.tw>, Clear Zhang <Clear.Zhang@ali.com.tw>,
+        Jens Axboe <axboe@kernel.dk>, Loc Ho <lho@apm.com>,
+        Mark Lord <mlord@pobox.com>,
+        Suman Tripathi <stripathi@apm.com>, Tejun Heo <teheo@suse.de>,
+        Thibaut VARENE <varenet@parisc-linux.org>,
+        Tuan Phan <tphan@apm.com>
+Subject: Re: [PATCH 00/20] [Set 1] Rid W=1 warnings from ATA
+Message-ID: <20210129055322.GA2250604@infradead.org>
+References: <20210128180239.548512-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20210128180239.548512-1-lee.jones@linaro.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Everything except the individual CFLAGS flags looks fine to me,
+so for all the patches except for the CFLAGS changes:
 
-
--- 
-How are you and family.
-I am Mrs. Diana Markus. I have a (2,900,000.00 USD) MILLION fund that  
-I inherited from my late husband and want to donate through you for an  
-orphanage and charity project, but I have been suffering from cancer  
-for so long now that I was hospitalized for treatment. My fear now is  
-what the doctor informed me, after a series of tests on me that I may  
-not live long because of the disease and I am afraid of losing this  
-fund to the government because they don't care about the poor in  
-society.
-
-I will appreciate your honesty and courage to handle this fund to help  
-orphans and the charity home.
-As soon as I receive your message regarding your interest in this fund  
-to help the charity home and the less privileged, I will give you more  
-details regarding this fund.
-
-Please contact me immediately after reading this message for more  
-details regarding this humanitarian agenda.
-
-God bless you while I await your response.
-Your sister.
-
-Ms. Diana Markus
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>

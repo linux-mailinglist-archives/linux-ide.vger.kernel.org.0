@@ -2,64 +2,85 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9407A30CDAB
-	for <lists+linux-ide@lfdr.de>; Tue,  2 Feb 2021 22:10:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9117630A632
+	for <lists+linux-ide@lfdr.de>; Mon,  1 Feb 2021 12:09:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234081AbhBBVKX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 2 Feb 2021 16:10:23 -0500
-Received: from [20.39.40.203] ([20.39.40.203]:65313 "EHLO optinix.in"
-        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S231256AbhBBVKS (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 2 Feb 2021 16:10:18 -0500
-dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
-        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
-        b=TP5ImnyHcJd6ZOutD2G4fr5f8wWoUQwQgOLW2PI/280OHeTqlZLToIxAIofahXeo75Wu3EjCyPUkWCAvONVwZu0fevODO9NabCWAisW+z0dGu9MXtR6qZycknhfK+mQQvORufc2uJdOyxsLmIaqgju02ah6NTaY7MUrrDAsnypqV/dHvFc1ZCeNq9M9cnBgI6P8moRvB3Uy5b0Di8H1i0zAyCi2Ui0iRGfGkTkO0ugXob5Evs8zBCz+bQn
-        OGNJsvkyEuoIiGf1dhK8ZygeNRPTDeubCEGrI3iP2v+CePRDNJj0O+GADoZLV93dYARi5DbbBgbqte2GtdOqu1KHIrhw==
-Received: from User (Unknown [52.231.31.5])
-        by optinix.in with ESMTP
-        ; Sat, 30 Jan 2021 02:13:52 +0000
-Message-ID: <8F335769-7194-475D-8960-10F7C26454EB@optinix.in>
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <support@digitalsol.in>
-Subject: Re:read
-Date:   Sat, 30 Jan 2021 02:13:50 -0000
+        id S233554AbhBALHG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 1 Feb 2021 06:07:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44404 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233524AbhBALG5 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 1 Feb 2021 06:06:57 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 3778964E2C;
+        Mon,  1 Feb 2021 11:06:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1612177576;
+        bh=uI72NpzzrWRkbU0c3KrjWhstn+4P0H8+M35W3nbhojQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=j2gHrbgu+itZBUqYNCPL1l6h6Uq5mFBwQvpxw7NlVl1hXp0AHBmxY5q3E+khzWwu6
+         Ya8uPzOLTOjGAfWKzbIvf26k9tjATDomc97ek5JCehlbARDDzrYd9aiJCZOlxZjgAL
+         NoMOAuMoD1aipLyL0WBucagFapnt2z4Np7rvmlFhFYg1dQ41BsrOJ3t3aRU5tTkaA8
+         +GUIwVRhYIcJmCsnXINGmQ7I5kbtv/fAgi7+RYrblSNLhc7AFu+X3iiA2+ZJSV8fb8
+         XegLlolvyNgza8VunvjerCcIlhEaWPmCWuXMnsBeszXUatYA4/Ys9ePkvqOj67zgbf
+         OrYDqqtTf7DkQ==
+Received: by mail-oi1-f170.google.com with SMTP id d18so18378055oic.3;
+        Mon, 01 Feb 2021 03:06:16 -0800 (PST)
+X-Gm-Message-State: AOAM531al/xqZRUCuu/nzhvSN5t23MlHnDuq9w9r3i26PqXtfA4QJztA
+        1B4fMaTjDwS/aaI5g/5+R8ws67/inhtac3vge9g=
+X-Google-Smtp-Source: ABdhPJxeiBL+ktiVETssUC13apk5WtBacq2VYLqAaLKcSi8Ll+PcxRm1UL/L1xDAMaP+41uLYhqffl7hnXlNH+aCrGk=
+X-Received: by 2002:aca:d908:: with SMTP id q8mr9992933oig.67.1612177575431;
+ Mon, 01 Feb 2021 03:06:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+References: <20210128180239.548512-1-lee.jones@linaro.org> <20210128180239.548512-2-lee.jones@linaro.org>
+ <20210128181903.GA2099675@infradead.org> <20210128182713.GM4774@dell>
+In-Reply-To: <20210128182713.GM4774@dell>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Mon, 1 Feb 2021 12:05:59 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a3XgqD_bDreG_SPCfrjqLaduEpiwiWFVf73eNkrrMoBtw@mail.gmail.com>
+Message-ID: <CAK8P3a3XgqD_bDreG_SPCfrjqLaduEpiwiWFVf73eNkrrMoBtw@mail.gmail.com>
+Subject: Re: [PATCH 01/20] ata: ahci_dm816: Ignore -Woverride-init
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        IDE-ML <linux-ide@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello,
+On Thu, Jan 28, 2021 at 7:32 PM Lee Jones <lee.jones@linaro.org> wrote:
+>
+> On Thu, 28 Jan 2021, Christoph Hellwig wrote:
+>
+> > On Thu, Jan 28, 2021 at 06:02:20PM +0000, Lee Jones wrote:
+> > > Some ATA drivers use the SCSI host template, a series of interwoven
+> > > macros, to aid with initialisation.  Some of these macros conflict,
+> > > resulting in the over-writing of previously set values.
+> >
+> > Please just disable this warning globally.  This is a sensible
+> > patter and we should not sprinkle per-file options for something
+> > that fundamental.
+>
+> Will do.  Just as soon as I've figured out how. :)
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+I have a local patch series doing it like this
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 5f550eb27f81..4e4cc14a289e 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -1390,6 +1390,8 @@ extern struct device_attribute *ata_common_sdev_attrs[];
+  * edge driver's module reference, otherwise the driver can be unloaded
+  * even if the scsi_device is being accessed.
+  */
++__diag_ignore(GCC, 8, "-Woverride-init", "intentional override")
++__diag_ignore(CLANG, 9, "-Winitializer-overrides", "intentional override")
+ #define __ATA_BASE_SHT(drv_name)                               \
+        .module                 = THIS_MODULE,                  \
+        .name                   = drv_name,                     \
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
+I think this also requires a preparation patch to extend __diag_ignore to
+additional compiler versions, not sure if that was already merged.
 
-Regards,
-Ms. Reem.
-
+         Arnd

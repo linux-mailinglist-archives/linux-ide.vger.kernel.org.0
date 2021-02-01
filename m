@@ -2,86 +2,64 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F51D310B36
-	for <lists+linux-ide@lfdr.de>; Fri,  5 Feb 2021 13:41:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C6B131123A
+	for <lists+linux-ide@lfdr.de>; Fri,  5 Feb 2021 21:21:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232076AbhBEMk2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 5 Feb 2021 07:40:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231344AbhBEMiB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 5 Feb 2021 07:38:01 -0500
-Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B70C06178B;
-        Fri,  5 Feb 2021 04:37:20 -0800 (PST)
-Received: by mail-qk1-x735.google.com with SMTP id 19so6659330qkh.3;
-        Fri, 05 Feb 2021 04:37:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P//4NsTzgdVvgNpoG0rL3BUt1lW6VkCnGY/CD9Nmt9U=;
-        b=cma7FhwM++XEoZhbabUkCXjz6SJsR+hhT5F4ophOX2sl4ZL2abcmgJv+gOQP36KxI6
-         SDTmJpuJ0wYv0Rz0OqZW6RBOAmb687Q6/LV8tbKy5c/qGjWRsZuVdU5kit6G0qMYblSh
-         7lVj358poJfT2Xze9hvNbZ+YUNMLa8AIE9f7VaDD+m+0w9gngk6bWFI42OQ4Ld+gGM9Y
-         oJs1noz1m7A4ShgAeFY3PAapFtWcdQoxMo8UHSTUlEp4aCSyGz2OTzRp1KHy9oYkYaTC
-         fZ7XMmdYgItrqcXmuqzOTu8Kyw37LZ6E+EjxAzY/C1MZKYr5zOKce1QW3b7yrIRpUQCx
-         funw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=P//4NsTzgdVvgNpoG0rL3BUt1lW6VkCnGY/CD9Nmt9U=;
-        b=Aii1BMr4zKlJz0ZghalZ2bT9rc4dSBZnMgKNfUL+wJRZVSbiHcdsIT6ThpFrBvsPSM
-         o9zxxoxUsgTIZWjkXfSiu4/jKN1tz4CUb981oxKd+1E2jar9YuYALxoKGTgsZDiF2Ch5
-         6VrwTK8j0AN9MCzRQqufc0P6+0vKWrXeA6V0959g21xArf/EPTMNqW3kxdU2Uaq3YQJe
-         grOqkCuM/aLlF/76kbhv5w3I2MjSmEDJLIIYNoYXBGWLqqz8FBN1mOTNb2HpKqC26FZl
-         MHnaJLWztLCtq0IBA8muzoRkbNu3U5Pl7KPeu3+Ex8fPzQ9Wmq7AJlCMEMliYsXdrPiE
-         saLg==
-X-Gm-Message-State: AOAM530e2phX7FavAEq656ixDMa63TDAz5v0mxiyiDy/o70kNxCWOpd3
-        pRnLXhZMxVO0xjTuSObhf5o=
-X-Google-Smtp-Source: ABdhPJyRWVNKDoTPM4TQIKHB6RyFzf5Ar26jCLPXxTwMDArR3BL4YA3poNjcyHELjoh/L3MO78RRSw==
-X-Received: by 2002:a05:620a:9c3:: with SMTP id y3mr3867775qky.327.1612528639469;
-        Fri, 05 Feb 2021 04:37:19 -0800 (PST)
-Received: from localhost.localdomain ([138.199.10.106])
-        by smtp.gmail.com with ESMTPSA id v19sm8688002qkj.48.2021.02.05.04.37.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Feb 2021 04:37:17 -0800 (PST)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     davem@davemloft.net, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
-Subject: [PATCH] drivers: ide: Fixed a word by replacing a word in the file cmd640.c
-Date:   Fri,  5 Feb 2021 18:07:06 +0530
-Message-Id: <20210205123706.1375902-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.30.0
+        id S233719AbhBEShr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 5 Feb 2021 13:37:47 -0500
+Received: from [20.39.40.203] ([20.39.40.203]:54986 "EHLO optinix.in"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S233003AbhBEPJb (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Fri, 5 Feb 2021 10:09:31 -0500
+dkim-signature: v=1; a=rsa-sha256; d=digitalsol.in; s=dkim;
+        c=relaxed/relaxed; q=dns/txt; h=From:Reply-To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
+        bh=wK2neTcOXNiSQ+RBxrnFed+mRrGUU/ndLGEgvo8IMCc=;
+        b=UQEHlnVg5XQbvsB12U1Ol3bhaQI9w8E6XPoWFxWLZmrTEAjZvoQaEbrphRRSyBGIIWdRriBN1NgjJnIHHuwrDk7Jiepk7hcecgKlubZ8Cbf+eyLm3How+vKdkYfuxbESucRjBUGhM3uNAIEl+djc5YuHgus55Al0uLGG/w84VCgbq4C5haAYakmS1vYlSgFchzN2F++luNM29v8DFhI75uaDxJSrLZjsc+U9sEzNpAaOCR9pw2OgdpmsaX
+        RpEWSooLH5k7s+lJH9RwsRzupCIBYaSMrEgafQL+30fpkHM9MFjkLmthx4Z1XqGeg54bjdS4mLhUgJrpa/zvXopT6v+g==
+Received: from User (Unknown [52.231.31.5])
+        by optinix.in with ESMTP
+        ; Mon, 1 Feb 2021 08:49:51 +0000
+Message-ID: <7494048F-E4B5-4167-8C98-9021CA321467@optinix.in>
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <support@digitalsol.in>
+Subject: Re:read
+Date:   Mon, 1 Feb 2021 08:49:50 -0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hello,
 
-s/fucked/spoils/
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- drivers/ide/cmd640.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
 
-diff --git a/drivers/ide/cmd640.c b/drivers/ide/cmd640.c
-index f48decb9fac4..ac926653b826 100644
---- a/drivers/ide/cmd640.c
-+++ b/drivers/ide/cmd640.c
-@@ -12,7 +12,7 @@
-  *  This file provides support for the advanced features and bugs
-  *  of IDE interfaces using the CMD Technologies 0640 IDE interface chip.
-  *
-- *  These chips are basically fucked by design, and getting this driver
-+ *  These chips are basically spoils by design, and getting this driver
-  *  to work on every motherboard design that uses this screwed chip seems
-  *  bloody well impossible.  However, we're still trying.
-  *
---
-2.30.0
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
 

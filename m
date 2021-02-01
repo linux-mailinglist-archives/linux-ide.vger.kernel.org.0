@@ -2,58 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBA630AA0F
+	by mail.lfdr.de (Postfix) with ESMTP id C06C130AA10
 	for <lists+linux-ide@lfdr.de>; Mon,  1 Feb 2021 15:42:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230214AbhBAOma (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 1 Feb 2021 09:42:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59384 "EHLO
+        id S231309AbhBAOmg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 1 Feb 2021 09:42:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231309AbhBAOmB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Feb 2021 09:42:01 -0500
-Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 059F3C0611C1
+        with ESMTP id S231356AbhBAOmV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Feb 2021 09:42:21 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC8D3C0611C3
         for <linux-ide@vger.kernel.org>; Mon,  1 Feb 2021 06:40:04 -0800 (PST)
-Received: by mail-wm1-x32f.google.com with SMTP id f16so12847282wmq.5
-        for <linux-ide@vger.kernel.org>; Mon, 01 Feb 2021 06:40:03 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id m1so10118414wml.2
+        for <linux-ide@vger.kernel.org>; Mon, 01 Feb 2021 06:40:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=WJaD217hQSKXajKZh4odA4Ej+1+v0RwQsiQWigDD874=;
-        b=SG05VYxhmiATV5Ec3tvOkXLMrtpO6V14Fm3Zwv0mZhiDBH4OZFX5TaUa9sOHOjC+Tu
-         d10ZRrDCUN6tUnyWCTknGMLanH76OlM07HYXalx1cPDtjztamew6UjyupxXAgpe9Uj9b
-         RHsaF6AvlaoQbyIJqOYIfVBlVOFAFLYmn4fWjNmb0xG4/DIdg2fjrkeIj9vIgRJpolOu
-         029hZeLOkgBTeWwhiStraalAbZ2mGo8Qm7kKukpgOTgMvkBpJPf0fqvLtsutVVvIR9x4
-         wpu3bCQzEOyj/tv/aaZEjLyuRyU1lcHSQHESU/XWfFbDAsc6l/rK4Xtla45p1qX84lI1
-         nzlQ==
+        bh=em+gLbL0BxMKq+E5i1mocv9ySIOeHFQQcLtILPjRTbE=;
+        b=bYvX8DN6puR8b7BNSHbtD3EGzAX8GmRCTU9rZXqtMjFG8LsRvf5JgcpaN5Eg0SuSzD
+         v99HFxVFAj4ouotyGhhoykw4QRJfl/7p+A2qApaZbAHT1nHbG7qnrUZ9f4puKZ7LT1tw
+         IlB1YbGoj3a2T781/UyZ8YUsJmq92yP5RpBbBSWALaZ0a3O43XpW8mnCdZacEkinmW+3
+         voPWPhDAVw+bGAy/2SlDMcy9MUs1jlwLqRz/f9WZJJ+o+T4KCR8gWp0NpxbTDNVe3gMK
+         HtFGJNFUl3rO9Db476SSvjfd2gPKGcAR0ylzGjZJL2AZwnJcQ1ytaC/Bof4zUO577TxC
+         Qg4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=WJaD217hQSKXajKZh4odA4Ej+1+v0RwQsiQWigDD874=;
-        b=pHbvdokrccvXPbrUCsdQVu3SMW/18yf/EqTe/Nls3x+zW0a8KW4cJzmrRPEuCkqniE
-         aFTGfyG/FluqJp1XUTNxbYsDr4mskNWZ1EdoZX832UktW4gn9XZTxJG6pZnhAELvPt/o
-         qpVUhMfMgJwANt2/mESHUmSIVA08W5WyFgJ/az9cQBIDO5LYk1wRSHJPyZOKr4tG+h37
-         kT2eXZzoCcjcFB1oe2E0nMOpOr1ZFzL21jatSNcU0lmeEx2MvQh7/QNJc4+vcdIYQ/F6
-         +PSixcS+15w7DDeCsf11RyUsqfT7Be3qhZ0qXTJDUwUKgAbo/kzgoQV3Cl0El5XdluKL
-         rBRQ==
-X-Gm-Message-State: AOAM533iSZ4QX9UIROTlMMNnhXRKgVTYCw7Y2T1w7fsBvswhCH8XNQNz
-        A4QWhXzkXqnlejT1rnPwLYZXEg==
-X-Google-Smtp-Source: ABdhPJxypag9z0BgoaEL/svkoZORBrkuDUZgll+5UCqGmWHIy0AIcFk/35ta5jgAWFKrNRwwoacCAQ==
-X-Received: by 2002:a05:600c:358e:: with SMTP id p14mr15081905wmq.73.1612190402700;
-        Mon, 01 Feb 2021 06:40:02 -0800 (PST)
+        bh=em+gLbL0BxMKq+E5i1mocv9ySIOeHFQQcLtILPjRTbE=;
+        b=iIjaGJRAejjryrk3dmC7PDJ8+jwqCiUdmHscSIRK3V1Zfre3WZJRn03MHAEgpIlpDY
+         yHGYWvNREuI5Rl6IuMkQcTh5R/0ArhkImx56kByWBIcF/hg84g88c5JuEJiYGlPmpetj
+         6ms4Bt4iBpAO/UQkGALiXCi2fbgGbnCB4FRKUhljWM7ypb8FuWS0W3EZdyghnvYUwvL2
+         Y5maitno0JC+PToyQ/DYYk1Sil07y4jA5lqJMSuuU4+EzAhSXn5gaG23upouKv3I5ll4
+         2v7yOeQGzxf0KJlcqM/rvQokeGgQkkVt25r4tdPRg14VJ2JxwzUow4XOJ2psctSO+tca
+         UOqA==
+X-Gm-Message-State: AOAM532SxyCxWwWC4nf0x6hP/ANpuj6uI/338jG1EgdKLiB1FhtztQrp
+        YIEl0aObgcosb/d1MH+mBAEJYG4CT8HrNigJ
+X-Google-Smtp-Source: ABdhPJyc08NDT3zH5UVhJCpxD73EWT+WifUl/TRZitj6I91P0mVM4NzVQNWwyLo3J7Rjs8SPDueCtQ==
+X-Received: by 2002:a1c:e912:: with SMTP id q18mr15422813wmc.162.1612190403647;
+        Mon, 01 Feb 2021 06:40:03 -0800 (PST)
 Received: from dell.default ([91.110.221.188])
-        by smtp.gmail.com with ESMTPSA id h15sm27301359wrt.10.2021.02.01.06.40.01
+        by smtp.gmail.com with ESMTPSA id h15sm27301359wrt.10.2021.02.01.06.40.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Feb 2021 06:40:02 -0800 (PST)
+        Mon, 01 Feb 2021 06:40:03 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
         linux-ide@vger.kernel.org
-Subject: [PATCH 17/20] ata: pata_marvell: Fix incorrectly documented function parameter
-Date:   Mon,  1 Feb 2021 14:39:37 +0000
-Message-Id: <20210201143940.2070919-18-lee.jones@linaro.org>
+Subject: [PATCH 18/20] ata: pata_jmicron: Fix incorrectly documented function parameter
+Date:   Mon,  1 Feb 2021 14:39:38 +0000
+Message-Id: <20210201143940.2070919-19-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210201143940.2070919-1-lee.jones@linaro.org>
 References: <20210201143940.2070919-1-lee.jones@linaro.org>
@@ -65,25 +65,25 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_marvell.c:125: warning: Function parameter or member 'id' not described in 'marvell_init_one'
- drivers/ata/pata_marvell.c:125: warning: Excess function parameter 'ent' description in 'marvell_init_one'
+ drivers/ata/pata_jmicron.c:135: warning: Function parameter or member 'id' not described in 'jmicron_init_one'
+ drivers/ata/pata_jmicron.c:135: warning: Excess function parameter 'ent' description in 'jmicron_init_one'
 
 Cc: Jens Axboe <axboe@kernel.dk>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/pata_marvell.c | 2 +-
+ drivers/ata/pata_jmicron.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_marvell.c b/drivers/ata/pata_marvell.c
-index b066809ba9a11..361597d14c569 100644
---- a/drivers/ata/pata_marvell.c
-+++ b/drivers/ata/pata_marvell.c
-@@ -110,7 +110,7 @@ static struct ata_port_operations marvell_ops = {
+diff --git a/drivers/ata/pata_jmicron.c b/drivers/ata/pata_jmicron.c
+index c3dedd3e71fb7..d1b3ce8958ddc 100644
+--- a/drivers/ata/pata_jmicron.c
++++ b/drivers/ata/pata_jmicron.c
+@@ -120,7 +120,7 @@ static struct ata_port_operations jmicron_ops = {
  /**
-  *	marvell_init_one - Register Marvell ATA PCI device with kernel services
+  *	jmicron_init_one - Register Jmicron ATA PCI device with kernel services
   *	@pdev: PCI device to register
-- *	@ent: Entry in marvell_pci_tbl matching with @pdev
+- *	@ent: Entry in jmicron_pci_tbl matching with @pdev
 + *	@id: PCI device ID
   *
   *	Called from kernel PCI layer.

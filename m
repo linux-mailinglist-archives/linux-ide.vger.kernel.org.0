@@ -2,58 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DE7B30AA34
-	for <lists+linux-ide@lfdr.de>; Mon,  1 Feb 2021 15:48:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBA630AA0F
+	for <lists+linux-ide@lfdr.de>; Mon,  1 Feb 2021 15:42:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230350AbhBAOsW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 1 Feb 2021 09:48:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
+        id S230214AbhBAOma (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 1 Feb 2021 09:42:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231287AbhBAOlm (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Feb 2021 09:41:42 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811AFC061225
-        for <linux-ide@vger.kernel.org>; Mon,  1 Feb 2021 06:40:02 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id 6so16824863wri.3
-        for <linux-ide@vger.kernel.org>; Mon, 01 Feb 2021 06:40:02 -0800 (PST)
+        with ESMTP id S231309AbhBAOmB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Feb 2021 09:42:01 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 059F3C0611C1
+        for <linux-ide@vger.kernel.org>; Mon,  1 Feb 2021 06:40:04 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id f16so12847282wmq.5
+        for <linux-ide@vger.kernel.org>; Mon, 01 Feb 2021 06:40:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=c13mHJ9q4khjz3HwzXj0RVixkGCKPHZCZNKDXnyAPKA=;
-        b=WH4TudRdMpbtfWTgz3kZxyfD4xxbcAxrnxExnwv52RKJdsQciElU5atM3mvLIWKCo4
-         akyCXc3l1pwmQHiKrQ1TdBh5FirhGwBrhP/08yHl5/WYFOd3wQrynGBQ4WeiFchqLKEY
-         6SjClh99xFLDo7kGMUePuwCZx7K5wTVc/gs6LkO3Vays5jjTblnbgTSlsOiV0UNQHtWE
-         z8mpj0GpZ/3CkH2EA9oQNpMxR/SSTV6h9aDEAN4sqXNaIOBfdaCNeZbHR9UKsidX+Mkz
-         /lMM3WCQG2VuEqh9R61Ikh4k0eLqx0vatbWNy8P/xz4XQjGmQiCk57gTguUZQMGYskzJ
-         K0lA==
+        bh=WJaD217hQSKXajKZh4odA4Ej+1+v0RwQsiQWigDD874=;
+        b=SG05VYxhmiATV5Ec3tvOkXLMrtpO6V14Fm3Zwv0mZhiDBH4OZFX5TaUa9sOHOjC+Tu
+         d10ZRrDCUN6tUnyWCTknGMLanH76OlM07HYXalx1cPDtjztamew6UjyupxXAgpe9Uj9b
+         RHsaF6AvlaoQbyIJqOYIfVBlVOFAFLYmn4fWjNmb0xG4/DIdg2fjrkeIj9vIgRJpolOu
+         029hZeLOkgBTeWwhiStraalAbZ2mGo8Qm7kKukpgOTgMvkBpJPf0fqvLtsutVVvIR9x4
+         wpu3bCQzEOyj/tv/aaZEjLyuRyU1lcHSQHESU/XWfFbDAsc6l/rK4Xtla45p1qX84lI1
+         nzlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=c13mHJ9q4khjz3HwzXj0RVixkGCKPHZCZNKDXnyAPKA=;
-        b=GabM2VDWb/8JLAFgzggqkRpsW4ZVauCzdn12UniW5/7WGhWQEHcI+ps+e4PhmdsLYN
-         2U0uzn5VuWok/ceIbBT8F38YMCtldTn6vmhxPusejKPgu0LdjucT8Qsa/uSbMg05ftid
-         X6FEBcrB4Wfs43Jr2D3pRgXXhE01f9rDrtXaJ2k5hwPUqgV5vjwNu3+gt8GkLa3RaDBD
-         RfUKRfwxYl/jCSt+ONjXGNXIRnIRN+nTWImwDSaWIruk2u4ccBZZe1BDaAd3p0/6Nxf0
-         4dvWoQ0inTxGAc0SZD+qE8vvBwqKdasFlSdIHNLNV/zEf4F60sl/naojrY+5TYw+hc+Z
-         TXpA==
-X-Gm-Message-State: AOAM531161pjV3ndfzbUBtwLqL7JXgB/lr5zwDSIigqHDQqB9bRuVrPh
-        9RMG5xjd1Nl2uLIEZTN4/k8pD8fB46yASDwG
-X-Google-Smtp-Source: ABdhPJxmGE3JK7wr0XyMbiF60DgeRRAUKAjBPS36IT8pEnVa6IVYU7eGywYdD12qP9vrfvp1AAtmqw==
-X-Received: by 2002:a05:6000:234:: with SMTP id l20mr18427477wrz.212.1612190401316;
-        Mon, 01 Feb 2021 06:40:01 -0800 (PST)
+        bh=WJaD217hQSKXajKZh4odA4Ej+1+v0RwQsiQWigDD874=;
+        b=pHbvdokrccvXPbrUCsdQVu3SMW/18yf/EqTe/Nls3x+zW0a8KW4cJzmrRPEuCkqniE
+         aFTGfyG/FluqJp1XUTNxbYsDr4mskNWZ1EdoZX832UktW4gn9XZTxJG6pZnhAELvPt/o
+         qpVUhMfMgJwANt2/mESHUmSIVA08W5WyFgJ/az9cQBIDO5LYk1wRSHJPyZOKr4tG+h37
+         kT2eXZzoCcjcFB1oe2E0nMOpOr1ZFzL21jatSNcU0lmeEx2MvQh7/QNJc4+vcdIYQ/F6
+         +PSixcS+15w7DDeCsf11RyUsqfT7Be3qhZ0qXTJDUwUKgAbo/kzgoQV3Cl0El5XdluKL
+         rBRQ==
+X-Gm-Message-State: AOAM533iSZ4QX9UIROTlMMNnhXRKgVTYCw7Y2T1w7fsBvswhCH8XNQNz
+        A4QWhXzkXqnlejT1rnPwLYZXEg==
+X-Google-Smtp-Source: ABdhPJxypag9z0BgoaEL/svkoZORBrkuDUZgll+5UCqGmWHIy0AIcFk/35ta5jgAWFKrNRwwoacCAQ==
+X-Received: by 2002:a05:600c:358e:: with SMTP id p14mr15081905wmq.73.1612190402700;
+        Mon, 01 Feb 2021 06:40:02 -0800 (PST)
 Received: from dell.default ([91.110.221.188])
-        by smtp.gmail.com with ESMTPSA id h15sm27301359wrt.10.2021.02.01.06.40.00
+        by smtp.gmail.com with ESMTPSA id h15sm27301359wrt.10.2021.02.01.06.40.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Feb 2021 06:40:00 -0800 (PST)
+        Mon, 01 Feb 2021 06:40:02 -0800 (PST)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Andre Hedrick <andre@linux-ide.org>, linux-ide@vger.kernel.org
-Subject: [PATCH 16/20] ata: pata_hpt3x2n: Fix possible doc-rotted function name
-Date:   Mon,  1 Feb 2021 14:39:36 +0000
-Message-Id: <20210201143940.2070919-17-lee.jones@linaro.org>
+        linux-ide@vger.kernel.org
+Subject: [PATCH 17/20] ata: pata_marvell: Fix incorrectly documented function parameter
+Date:   Mon,  1 Feb 2021 14:39:37 +0000
+Message-Id: <20210201143940.2070919-18-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210201143940.2070919-1-lee.jones@linaro.org>
 References: <20210201143940.2070919-1-lee.jones@linaro.org>
@@ -65,29 +65,29 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_hpt3x2n.c:247: warning: expecting prototype for hpt3x2n_bmdma_end(). Prototype was for hpt3x2n_bmdma_stop() instead
+ drivers/ata/pata_marvell.c:125: warning: Function parameter or member 'id' not described in 'marvell_init_one'
+ drivers/ata/pata_marvell.c:125: warning: Excess function parameter 'ent' description in 'marvell_init_one'
 
 Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Andre Hedrick <andre@linux-ide.org>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/pata_hpt3x2n.c | 2 +-
+ drivers/ata/pata_marvell.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_hpt3x2n.c b/drivers/ata/pata_hpt3x2n.c
-index 9cb2d50db8768..48eef338e0507 100644
---- a/drivers/ata/pata_hpt3x2n.c
-+++ b/drivers/ata/pata_hpt3x2n.c
-@@ -237,7 +237,7 @@ static void hpt3x2n_set_dmamode(struct ata_port *ap, struct ata_device *adev)
- }
- 
+diff --git a/drivers/ata/pata_marvell.c b/drivers/ata/pata_marvell.c
+index b066809ba9a11..361597d14c569 100644
+--- a/drivers/ata/pata_marvell.c
++++ b/drivers/ata/pata_marvell.c
+@@ -110,7 +110,7 @@ static struct ata_port_operations marvell_ops = {
  /**
-- *	hpt3x2n_bmdma_end		-	DMA engine stop
-+ *	hpt3x2n_bmdma_stop		-	DMA engine stop
-  *	@qc: ATA command
+  *	marvell_init_one - Register Marvell ATA PCI device with kernel services
+  *	@pdev: PCI device to register
+- *	@ent: Entry in marvell_pci_tbl matching with @pdev
++ *	@id: PCI device ID
   *
-  *	Clean up after the HPT3x2n and later DMA engine
+  *	Called from kernel PCI layer.
+  *
 -- 
 2.25.1
 

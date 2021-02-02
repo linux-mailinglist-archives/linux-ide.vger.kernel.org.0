@@ -2,132 +2,92 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EE51B30AA17
-	for <lists+linux-ide@lfdr.de>; Mon,  1 Feb 2021 15:44:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1F530BB03
+	for <lists+linux-ide@lfdr.de>; Tue,  2 Feb 2021 10:36:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbhBAOnB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 1 Feb 2021 09:43:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59398 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231294AbhBAOmg (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 1 Feb 2021 09:42:36 -0500
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E3E6C0611BE
-        for <linux-ide@vger.kernel.org>; Mon,  1 Feb 2021 06:40:07 -0800 (PST)
-Received: by mail-wr1-x42d.google.com with SMTP id g10so16847706wrx.1
-        for <linux-ide@vger.kernel.org>; Mon, 01 Feb 2021 06:40:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=QyQtn17PTBrcRsPcgHDOZTKxROdnGY6b4VlV5omsb8Y=;
-        b=Ypd5PZfSNYNiJAYSx+BZ9Vu97SLXnMdYKLrCGZ9szRSzrZ1Rdtn03RWttjlyxVJTEP
-         x1llYip6JKBwInGWquGAjb560vGHl7wDHBy7Oehttp2kBaOkOYYDswDAx1yoI7APC8tp
-         vS8kIq4zGoGmeAJlRPyGLWLukENBH8CfRM719g3o8TU7iheZQGGgMynx2+hfWCUj3l9Q
-         w1c59YWEum5h1/HYaFd4thKrhS1fSq3Nu6sNMjr/8UncUEY/6+E3k5oV69wEel2dfx5Z
-         vBSvfkhUurg85FpU//XAbzQ9txe8BDaJg2VdYSEJrc9UKrAKqGM84PftrPe08C38rapL
-         wKVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=QyQtn17PTBrcRsPcgHDOZTKxROdnGY6b4VlV5omsb8Y=;
-        b=iWViqgA3pXDocyrVUMwfSv9q8icuTfev+2qZLjGBjzvEJq8WETd00pVlzYlGEmevwr
-         0R0BtYkx96gBNBsioEVKeXi5lFIqL9dasILPvqsgBIYaRl1c29Xe5G1mHtFeyy797gal
-         ZJUJOk4TyRjcVB5tUCt3eYM4/uqzA1ZOiBVeanTlUHoFspSZSX0kehgn1JOE/VlyQZkY
-         XrgHWLRn5Iv1pBY1LDKhzIFqqJFiJQHc5vfi0Yv1yrukzkdM1cpgj6t9lg5Kpg+Psc4C
-         37zOCjFkY1OzBDubP/N/lfkf8FMY4hEllO9f4Y4FruJnJ7shLwkCj4Pdy7xr3GTszNe5
-         KhuQ==
-X-Gm-Message-State: AOAM531LtEf56ll0LVWDh26++7yxrO2/ZpMsT8tDtwQkKfSl1zUlMCvD
-        9T+lKel3cb3+PWoCm8LOOkTqIQ==
-X-Google-Smtp-Source: ABdhPJz8aTRKHvddtB5nncbPFCCIBsYnVI7a6DdrYz/XZgAQ2mtfhZTen/1AL1goK6IY5AAhRytGag==
-X-Received: by 2002:a5d:60d0:: with SMTP id x16mr18578011wrt.269.1612190405951;
-        Mon, 01 Feb 2021 06:40:05 -0800 (PST)
-Received: from dell.default ([91.110.221.188])
-        by smtp.gmail.com with ESMTPSA id h15sm27301359wrt.10.2021.02.01.06.40.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Feb 2021 06:40:05 -0800 (PST)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Albert Lee <albertcc@tw.ibm.com>,
-        Andre Hedrick <andre@linux-ide.org>,
-        Frank Tiernan <frankt@promise.com>, linux-ide@vger.kernel.org
-Subject: [PATCH 20/20] ata: pata_pdc2027x: Fix some incorrect function names and parameter docs
-Date:   Mon,  1 Feb 2021 14:39:40 +0000
-Message-Id: <20210201143940.2070919-21-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210201143940.2070919-1-lee.jones@linaro.org>
-References: <20210201143940.2070919-1-lee.jones@linaro.org>
+        id S232658AbhBBJdj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 2 Feb 2021 04:33:39 -0500
+Received: from jabberwock.ucw.cz ([46.255.230.98]:53684 "EHLO
+        jabberwock.ucw.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231601AbhBBJdM (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 2 Feb 2021 04:33:12 -0500
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id AEB9F1C0B76; Tue,  2 Feb 2021 10:32:29 +0100 (CET)
+Date:   Tue, 2 Feb 2021 10:32:29 +0100
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Hans de Goede <hdegoede@redhat.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Dan Murphy <dmurphy@ti.com>,
+        linux-ide@vger.kernel.org, linux-leds@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: 5.11 new lockdep warning related to led-class code (also may
+ involve ata / piix controller)
+Message-ID: <20210202093228.GA29131@amd>
+References: <b204637d-3b72-8320-8a62-f075467d8681@redhat.com>
+ <20210112223015.GB28214@duo.ucw.cz>
+ <f344f1db-1a7a-0a80-1cb1-f9c3fbf83abd@redhat.com>
+ <0ec34bca-f7e0-8954-c253-d07ed6b71b80@redhat.com>
+ <20210127220134.GC23419@amd>
+ <cc1cac99-e3de-9585-bfa0-db7b013e8a80@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="TB36FDmn/VVEgNH/"
+Content-Disposition: inline
+In-Reply-To: <cc1cac99-e3de-9585-bfa0-db7b013e8a80@redhat.com>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_pdc2027x.c:209: warning: expecting prototype for pdc2027x_pata_cable_detect(). Prototype was for pdc2027x_cable_detect() instead
- drivers/ata/pata_pdc2027x.c:262: warning: expecting prototype for pdc2720x_mode_filter(). Prototype was for pdc2027x_mode_filter() instead
- drivers/ata/pata_pdc2027x.c:513: warning: Function parameter or member 'board_idx' not described in 'pdc_adjust_pll'
- drivers/ata/pata_pdc2027x.c:513: warning: expecting prototype for adjust_pll(). Prototype was for pdc_adjust_pll() instead
- drivers/ata/pata_pdc2027x.c:599: warning: expecting prototype for detect_pll_input_clock(). Prototype was for pdc_detect_pll_input_clock() instead
+--TB36FDmn/VVEgNH/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Albert Lee <albertcc@tw.ibm.com>
-Cc: Andre Hedrick <andre@linux-ide.org>
-Cc: Frank Tiernan <frankt@promise.com>
-Cc: linux-ide@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/ata/pata_pdc2027x.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Hi!
 
-diff --git a/drivers/ata/pata_pdc2027x.c b/drivers/ata/pata_pdc2027x.c
-index de834fbb6dfe6..effc1a09444de 100644
---- a/drivers/ata/pata_pdc2027x.c
-+++ b/drivers/ata/pata_pdc2027x.c
-@@ -196,7 +196,7 @@ static inline void __iomem *dev_mmio(struct ata_port *ap, struct ata_device *ade
- }
- 
- /**
-- *	pdc2027x_pata_cable_detect - Probe host controller cable detect info
-+ *	pdc2027x_cable_detect - Probe host controller cable detect info
-  *	@ap: Port for which cable detect info is desired
-  *
-  *	Read 80c cable indicator from Promise extended register.
-@@ -251,7 +251,7 @@ static int pdc2027x_prereset(struct ata_link *link, unsigned long deadline)
- }
- 
- /**
-- *	pdc2720x_mode_filter	-	mode selection filter
-+ *	pdc2027x_mode_filter	-	mode selection filter
-  *	@adev: ATA device
-  *	@mask: list of modes proposed
-  *
-@@ -503,11 +503,11 @@ static long pdc_read_counter(struct ata_host *host)
- }
- 
- /**
-- * adjust_pll - Adjust the PLL input clock in Hz.
-+ * pdc_adjust_pll - Adjust the PLL input clock in Hz.
-  *
-- * @pdc_controller: controller specific information
-  * @host: target ATA host
-  * @pll_clock: The input of PLL in HZ
-+ * @board_idx: board identifier
-  */
- static void pdc_adjust_pll(struct ata_host *host, long pll_clock, unsigned int board_idx)
- {
-@@ -590,7 +590,7 @@ static void pdc_adjust_pll(struct ata_host *host, long pll_clock, unsigned int b
- }
- 
- /**
-- * detect_pll_input_clock - Detect the PLL input clock in Hz.
-+ * pdc_detect_pll_input_clock - Detect the PLL input clock in Hz.
-  * @host: target ATA host
-  * Ex. 16949000 on 33MHz PCI bus for pdc20275.
-  *     Half of the PCI clock.
--- 
-2.25.1
+> > Is it a regression? AFAIK it is a bug that has been there
+> > forever... My original plan was to simply wait for 5.12, so it gets
+> > full release of testing...
+>=20
+> It may have been a pre-existing bug which got triggered by libata
+> changes?
 
+Fixes tag suggests it is rather old.
+
+> I don't know. I almost always run all my locally build kernels with lockd=
+ep
+> enabled and as the maintainer of the vboxvideo, vboxguest and vboxsf guest
+> drivers in the mainline kernel I quite often boot local build kernels ins=
+ide
+> a vm.
+>=20
+> So I believe that lockdep tripping over this is new in 5.11, which is why
+> I called it a regression.
+>=20
+> And the fix seems very safe and simple, so IMHO it would be good to get
+> this into 5.11
+
+It is in 5.11 now, and also -stable kernels. (Which suprised me a
+bit).
+
+Testing would be welcome.
+
+Best regards,
+								Pavel
+--=20
+http://www.livejournal.com/~pavelmachek
+
+--TB36FDmn/VVEgNH/
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAmAZHCwACgkQMOfwapXb+vJIhwCffqEyb87hmw489lVr2xJf68p9
+s4gAnjqioizHCLkcak/HHiwFMBgzwn19
+=kcnu
+-----END PGP SIGNATURE-----
+
+--TB36FDmn/VVEgNH/--

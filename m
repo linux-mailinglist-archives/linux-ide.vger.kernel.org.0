@@ -2,67 +2,86 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 766F7310337
-	for <lists+linux-ide@lfdr.de>; Fri,  5 Feb 2021 04:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F51D310B36
+	for <lists+linux-ide@lfdr.de>; Fri,  5 Feb 2021 13:41:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229850AbhBEDJ3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 4 Feb 2021 22:09:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48492 "EHLO
+        id S232076AbhBEMk2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 5 Feb 2021 07:40:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbhBEDJT (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Feb 2021 22:09:19 -0500
-Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C6DC06178C;
-        Thu,  4 Feb 2021 19:08:32 -0800 (PST)
-Received: by mail-wr1-x433.google.com with SMTP id q7so5920372wre.13;
-        Thu, 04 Feb 2021 19:08:32 -0800 (PST)
+        with ESMTP id S231344AbhBEMiB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 5 Feb 2021 07:38:01 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B70C06178B;
+        Fri,  5 Feb 2021 04:37:20 -0800 (PST)
+Received: by mail-qk1-x735.google.com with SMTP id 19so6659330qkh.3;
+        Fri, 05 Feb 2021 04:37:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:sender:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=roDmxtRhMkm/M+rdoEt0Qt78NoV1kl723S0gA19soHTB6CWkiIDz2T11aOwbrMDY6V
-         Ys2/9vOeWv0+zEvNti813WvpHKjfnE0XfvI3o55lzYSr7FMS9pqd3g90b02x1u3JMwXv
-         jwm7vt6Z5cCdgHjJVZQwTlk6jYycGN4lmXW15t7CnWab1V8QrKNEtUGg2nxWlBFTAb7g
-         3tyTndX449mYvfhCtAQiOPotE52eq+ceAAEmtvrmiAYxXOt34ojhq72eC7aXSQbxViap
-         14gtHDNN0EAX6KfZDbdhAlBz6Ul96E/1Nt5Hdqk/v8F1BxcgEjoKqQSFFp4cmx1z4bPG
-         xWXA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P//4NsTzgdVvgNpoG0rL3BUt1lW6VkCnGY/CD9Nmt9U=;
+        b=cma7FhwM++XEoZhbabUkCXjz6SJsR+hhT5F4ophOX2sl4ZL2abcmgJv+gOQP36KxI6
+         SDTmJpuJ0wYv0Rz0OqZW6RBOAmb687Q6/LV8tbKy5c/qGjWRsZuVdU5kit6G0qMYblSh
+         7lVj358poJfT2Xze9hvNbZ+YUNMLa8AIE9f7VaDD+m+0w9gngk6bWFI42OQ4Ld+gGM9Y
+         oJs1noz1m7A4ShgAeFY3PAapFtWcdQoxMo8UHSTUlEp4aCSyGz2OTzRp1KHy9oYkYaTC
+         fZ7XMmdYgItrqcXmuqzOTu8Kyw37LZ6E+EjxAzY/C1MZKYr5zOKce1QW3b7yrIRpUQCx
+         funw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:sender:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
-        b=ebnRiC+XjDenmt3AvTWTyBPhL5wQxLY6XCu+Qf1r+7DH2IIlSgIQVbsxCiAB29J1yl
-         cf8WTyLO7J72aK1dtXBnH6HbOYZ6ZyZEggh0dvtiLZGNWtUS4yH8ivojHASUkXXXy/Bx
-         ge2vCjBTLK5oPbQ3kmtxfhahKSBaskx8C4HX2h5mcKmGPlsei9J/VZUyfYAveXS1n88y
-         rRU8Kxnfup4DLI/37n/AfhpIbxU/2c/pG9wIVNZ9YUUqdWlbUg9Q9A4i7R2mHfAmH66n
-         DsuaorOrIJmfSzQkEURu+enaECbvEbu0NpMbMAFeDm19Riug/6MO0h/Kph9u966nGExU
-         u1tg==
-X-Gm-Message-State: AOAM530AkMpoPqjroYTgZUgmTMai1vckbIDjx2/em0kdtLBWU7p1IMvP
-        s8kVIuknV7tYQoIm+X2AWsESY2cY2xdJNg==
-X-Google-Smtp-Source: ABdhPJx+5Qj2S9+z9ZpQu+EcE/DBxvDG3vinreZmPAS2rLR2ZAQah3cfUjrD6KET2IrCGEWluPw78w==
-X-Received: by 2002:adf:dd0a:: with SMTP id a10mr2434359wrm.424.1612494511485;
-        Thu, 04 Feb 2021 19:08:31 -0800 (PST)
-Received: from [192.168.1.6] ([154.124.28.35])
-        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.29
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 04 Feb 2021 19:08:30 -0800 (PST)
-Message-ID: <601cb6ae.1c69fb81.5ea54.2eaa@mx.google.com>
-Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
-From:   calantha camara <sgt.andersonskylar0@gmail.com>
-X-Google-Original-From: calantha camara
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P//4NsTzgdVvgNpoG0rL3BUt1lW6VkCnGY/CD9Nmt9U=;
+        b=Aii1BMr4zKlJz0ZghalZ2bT9rc4dSBZnMgKNfUL+wJRZVSbiHcdsIT6ThpFrBvsPSM
+         o9zxxoxUsgTIZWjkXfSiu4/jKN1tz4CUb981oxKd+1E2jar9YuYALxoKGTgsZDiF2Ch5
+         6VrwTK8j0AN9MCzRQqufc0P6+0vKWrXeA6V0959g21xArf/EPTMNqW3kxdU2Uaq3YQJe
+         grOqkCuM/aLlF/76kbhv5w3I2MjSmEDJLIIYNoYXBGWLqqz8FBN1mOTNb2HpKqC26FZl
+         MHnaJLWztLCtq0IBA8muzoRkbNu3U5Pl7KPeu3+Ex8fPzQ9Wmq7AJlCMEMliYsXdrPiE
+         saLg==
+X-Gm-Message-State: AOAM530e2phX7FavAEq656ixDMa63TDAz5v0mxiyiDy/o70kNxCWOpd3
+        pRnLXhZMxVO0xjTuSObhf5o=
+X-Google-Smtp-Source: ABdhPJyRWVNKDoTPM4TQIKHB6RyFzf5Ar26jCLPXxTwMDArR3BL4YA3poNjcyHELjoh/L3MO78RRSw==
+X-Received: by 2002:a05:620a:9c3:: with SMTP id y3mr3867775qky.327.1612528639469;
+        Fri, 05 Feb 2021 04:37:19 -0800 (PST)
+Received: from localhost.localdomain ([138.199.10.106])
+        by smtp.gmail.com with ESMTPSA id v19sm8688002qkj.48.2021.02.05.04.37.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Feb 2021 04:37:17 -0800 (PST)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     davem@davemloft.net, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org, Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Subject: [PATCH] drivers: ide: Fixed a word by replacing a word in the file cmd640.c
+Date:   Fri,  5 Feb 2021 18:07:06 +0530
+Message-Id: <20210205123706.1375902-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.30.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: hi dear
-To:     Recipients <calantha@vger.kernel.org>
-Date:   Fri, 05 Feb 2021 03:08:24 +0000
-Reply-To: calanthac20@gmail.com
-X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-do you speak Eglish
+
+s/fucked/spoils/
+
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ drivers/ide/cmd640.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/ide/cmd640.c b/drivers/ide/cmd640.c
+index f48decb9fac4..ac926653b826 100644
+--- a/drivers/ide/cmd640.c
++++ b/drivers/ide/cmd640.c
+@@ -12,7 +12,7 @@
+  *  This file provides support for the advanced features and bugs
+  *  of IDE interfaces using the CMD Technologies 0640 IDE interface chip.
+  *
+- *  These chips are basically fucked by design, and getting this driver
++ *  These chips are basically spoils by design, and getting this driver
+  *  to work on every motherboard design that uses this screwed chip seems
+  *  bloody well impossible.  However, we're still trying.
+  *
+--
+2.30.0
+

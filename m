@@ -2,72 +2,67 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B909C30FAC6
-	for <lists+linux-ide@lfdr.de>; Thu,  4 Feb 2021 19:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 766F7310337
+	for <lists+linux-ide@lfdr.de>; Fri,  5 Feb 2021 04:11:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238482AbhBDSIr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 4 Feb 2021 13:08:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
+        id S229850AbhBEDJ3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 4 Feb 2021 22:09:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238828AbhBDSDG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Feb 2021 13:03:06 -0500
-Received: from baptiste.telenet-ops.be (baptiste.telenet-ops.be [IPv6:2a02:1800:120:4::f00:13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3937C061793
-        for <linux-ide@vger.kernel.org>; Thu,  4 Feb 2021 10:02:20 -0800 (PST)
-Received: from ramsan.of.borg ([84.195.186.194])
-        by baptiste.telenet-ops.be with bizsmtp
-        id R62J2400E4C55Sk0162Jxs; Thu, 04 Feb 2021 19:02:19 +0100
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1l7im7-003Fgj-Jt; Thu, 04 Feb 2021 18:50:39 +0100
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1l7del-006syv-Mo; Thu, 04 Feb 2021 13:22:43 +0100
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     linux-ide@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Arnd Bergmann <arnd@arndb.de>, Li Yang <leoyang.li@nxp.com>
-Subject: [PATCH resend v2] ahci: qoriq: Add platform dependencies
-Date:   Thu,  4 Feb 2021 13:22:42 +0100
-Message-Id: <20210204122242.1641273-1-geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229692AbhBEDJT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Feb 2021 22:09:19 -0500
+Received: from mail-wr1-x433.google.com (mail-wr1-x433.google.com [IPv6:2a00:1450:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C6DC06178C;
+        Thu,  4 Feb 2021 19:08:32 -0800 (PST)
+Received: by mail-wr1-x433.google.com with SMTP id q7so5920372wre.13;
+        Thu, 04 Feb 2021 19:08:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=message-id:sender:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=roDmxtRhMkm/M+rdoEt0Qt78NoV1kl723S0gA19soHTB6CWkiIDz2T11aOwbrMDY6V
+         Ys2/9vOeWv0+zEvNti813WvpHKjfnE0XfvI3o55lzYSr7FMS9pqd3g90b02x1u3JMwXv
+         jwm7vt6Z5cCdgHjJVZQwTlk6jYycGN4lmXW15t7CnWab1V8QrKNEtUGg2nxWlBFTAb7g
+         3tyTndX449mYvfhCtAQiOPotE52eq+ceAAEmtvrmiAYxXOt34ojhq72eC7aXSQbxViap
+         14gtHDNN0EAX6KfZDbdhAlBz6Ul96E/1Nt5Hdqk/v8F1BxcgEjoKqQSFFp4cmx1z4bPG
+         xWXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:sender:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=hqf55dXwvcYwwL4sAkoYuOM6RPu6wxeec88n5sMRYiY=;
+        b=ebnRiC+XjDenmt3AvTWTyBPhL5wQxLY6XCu+Qf1r+7DH2IIlSgIQVbsxCiAB29J1yl
+         cf8WTyLO7J72aK1dtXBnH6HbOYZ6ZyZEggh0dvtiLZGNWtUS4yH8ivojHASUkXXXy/Bx
+         ge2vCjBTLK5oPbQ3kmtxfhahKSBaskx8C4HX2h5mcKmGPlsei9J/VZUyfYAveXS1n88y
+         rRU8Kxnfup4DLI/37n/AfhpIbxU/2c/pG9wIVNZ9YUUqdWlbUg9Q9A4i7R2mHfAmH66n
+         DsuaorOrIJmfSzQkEURu+enaECbvEbu0NpMbMAFeDm19Riug/6MO0h/Kph9u966nGExU
+         u1tg==
+X-Gm-Message-State: AOAM530AkMpoPqjroYTgZUgmTMai1vckbIDjx2/em0kdtLBWU7p1IMvP
+        s8kVIuknV7tYQoIm+X2AWsESY2cY2xdJNg==
+X-Google-Smtp-Source: ABdhPJx+5Qj2S9+z9ZpQu+EcE/DBxvDG3vinreZmPAS2rLR2ZAQah3cfUjrD6KET2IrCGEWluPw78w==
+X-Received: by 2002:adf:dd0a:: with SMTP id a10mr2434359wrm.424.1612494511485;
+        Thu, 04 Feb 2021 19:08:31 -0800 (PST)
+Received: from [192.168.1.6] ([154.124.28.35])
+        by smtp.gmail.com with ESMTPSA id n9sm10836813wrq.41.2021.02.04.19.08.29
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Thu, 04 Feb 2021 19:08:30 -0800 (PST)
+Message-ID: <601cb6ae.1c69fb81.5ea54.2eaa@mx.google.com>
+Sender: Skylar Anderson <barr.markimmbayie@gmail.com>
+From:   calantha camara <sgt.andersonskylar0@gmail.com>
+X-Google-Original-From: calantha camara
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: hi dear
+To:     Recipients <calantha@vger.kernel.org>
+Date:   Fri, 05 Feb 2021 03:08:24 +0000
+Reply-To: calanthac20@gmail.com
+X-Mailer: cdcaafe51be8cdb99a1c85906066cad3d0e60e273541515a58395093a7c4e1f0eefb01d7fc4e6278706e9fb8c4dad093c3263345202970888b6b4d817f9e998c032e7d59
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The Freescale QorIQ AHCI SATA controller is only present on Freescale
-Layerscape SoCs.  Add platform dependencies to the AHCI_QORIQ config
-symbol, to avoid asking the user about it when configuring a kernel
-without Layerscape support.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Li Yang <leoyang.li@nxp.com>
----
-v2:
-  - Add Acked-by.
----
- drivers/ata/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 030cb32da980fc47..9ec6bce27c91511b 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -264,6 +264,7 @@ config AHCI_XGENE
- config AHCI_QORIQ
- 	tristate "Freescale QorIQ AHCI SATA support"
- 	depends on OF
-+	depends on SOC_LS1021A || ARCH_LAYERSCAPE || COMPILE_TEST
- 	select SATA_HOST
- 	help
- 	  This option enables support for the Freescale QorIQ AHCI SoC's
--- 
-2.25.1
-
+do you speak Eglish

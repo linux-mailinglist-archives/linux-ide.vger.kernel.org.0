@@ -2,66 +2,133 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5628B312E07
-	for <lists+linux-ide@lfdr.de>; Mon,  8 Feb 2021 10:56:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50E1F313C21
+	for <lists+linux-ide@lfdr.de>; Mon,  8 Feb 2021 19:03:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231633AbhBHJz2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 8 Feb 2021 04:55:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39066 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231797AbhBHJu0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 8 Feb 2021 04:50:26 -0500
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1D8EC061D7C
-        for <linux-ide@vger.kernel.org>; Mon,  8 Feb 2021 01:46:29 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id k13so2894546pfh.13
-        for <linux-ide@vger.kernel.org>; Mon, 08 Feb 2021 01:46:29 -0800 (PST)
+        id S234366AbhBHSC1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 8 Feb 2021 13:02:27 -0500
+Received: from mail-mw2nam12on2071.outbound.protection.outlook.com ([40.107.244.71]:50388
+        "EHLO NAM12-MW2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S235244AbhBHSAQ (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 8 Feb 2021 13:00:16 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=lquU7jSddqAhqTGIEDCaeYccU2hGZoDxh84o81HTBxOd1qQRaiS14pYdWqSozJrndi61OhKpUM3+vuM3xOB5/A/RsN2Bt7Y7hjaBjIFGJYhVKRXTffFNxcnunn6eOCCq7CHOw6HliJPzeqZOnH+ODxEgCjIbZEjZJn7IYandT7e6SbXfMk3KbuxTCyvxvPR3xLTXUrUfhZI1Z6VnIHHoXZdvSexaJJ8mZhe8JMEXVHgqFTT/LcYX/FHiEL1eiCZnwvxEEo0R6Rigdv1wVVZeSCOgapJhzzLjebR1XiV3MIphI7wbAWy+5ssNsPMxyhVxA2Jo7CfVHrFzXC5S5iChcw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iCuWH7vIF/MUa5y2uLt0by2pQAtTWRFX1eLhlmF9nGI=;
+ b=KrGMCAOrBSvrQAs7z6l2N0sNaI+Jg065w/jDqEvREUaXPBlp4K/pAHe0bXS7foyhXbLSzX0owkGYMkN2jjXwWGSr5vX7ZtM4xuvYa+1o+GrFI7svYgWxcJnkLxE5XVbzkailZJ7hG/tijlUXFzj19cYx+WxBjelVmjO2bnZxXQSzHqbFLvTW44KZrtcdhfDdP4MYVk57RNhdd5jBVx5lj5dOfYOwr1FyCZphJPTk3YdYfmeqDODN0XmzjntiZx8qjxGo73jnnkYc77+bX9DsumoRsBVZ6SMKnpJFWoUKwBdMFjaBaGDnOclm2l1bmIaYG9XZHQRtsRDDyqlRh2YYrQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.62.198) smtp.rcpttodomain=kernel.dk smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=z7Z/JdX0RhrlgqchmamXWMY47TIIKUp5Zm0+e0J1lMs=;
-        b=EBAN8kT/RdDTitIJIwHViEDhHzNJv4CIWk9rs6YltTkWZ458GA493YyOdSoiZ3kf2I
-         cdNbMkg2fZDvPvkuycg7WSARNJ/puPrDyOFIWKtgjChKMEIfkIP2Q2XVpBk+DA9Lhucn
-         6XQlMQaKQZVW2ZyZN5QBK8n9vbP0QwsOuCEl8YnAfifh/FxrfAzpfX38semmARrCGxh8
-         WFi+25A8lhFcplpes37lwhh0IayXXJWFPkoQ+knUplL4fyj/9WvmsAavsN2O11FqYU0q
-         sXGcgyuoksh1FLpl3IVpUWra/8A8W9zD+TSlCF6rCGoTQRx8E8R9VquYNvg3vN5bAAWe
-         XSXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=z7Z/JdX0RhrlgqchmamXWMY47TIIKUp5Zm0+e0J1lMs=;
-        b=krNL6nArLZOoE16pYjHZyQIM0RLgKPIZhmU1r5F2f1Ib6g9kdeSvJmgmcetwPXRIre
-         RJbWdnvH79FL3CIT7SPgWlVovwF2LIPn0S+SgMBB7IgJDyU3qclOlICs2wz/6SbTC5Lb
-         m2a3cJG4dtcM4zbg8PzcSYE1IQ5Chu06hWM6jNoPmEowEGuXBJ4VAHd/v8XYsgQmzi8u
-         scrlEwenWujT3vXN1N/n4HQlsQxDvdjfCODEOBwRErhtJKHt2mL/3EfZ3AdJ88AmwDKG
-         QiwJDeoNyjFJhpo+Sh19dYBI6hCQzyokVE8hGJ5z/Nlnh8w7h6lqj2TceH5s9xbr/OAj
-         U1ag==
-X-Gm-Message-State: AOAM532ug9auwbIXYQFWaj5VIQsq5KaMYu43emHD4I8iXlGFrCjMSL7D
-        IP3egjjlBxHEfaxcx28nMuHb10c0oMQiSgdO65I=
-X-Google-Smtp-Source: ABdhPJybDL+KhCvXPDIs57vnx74bKnUW7LRfIk9mtYaX6Td3ETIAJUIor6BltYlrl2tm2rDxnhIvTg/8Y9D/vq+/hVc=
-X-Received: by 2002:a63:c84a:: with SMTP id l10mr16253996pgi.159.1612777589348;
- Mon, 08 Feb 2021 01:46:29 -0800 (PST)
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iCuWH7vIF/MUa5y2uLt0by2pQAtTWRFX1eLhlmF9nGI=;
+ b=Ge9w+nKb183Hq2y/jAF4vazzO102by2S/GmzVP2TbgSBw4OFVdXFhlfxNsAbxURYf4ZypNJw75VVu3Cu4Wwkt+Ll/2At2tSkaEnFbRslm5P5xIn5KeaU9Kptr6EU/c4gCmIbJbXbXfh9CD64IoF8si1oYFH024dN9PTw4TegVVw=
+Received: from SA0PR12CA0001.namprd12.prod.outlook.com (2603:10b6:806:6f::6)
+ by SN6PR02MB5312.namprd02.prod.outlook.com (2603:10b6:805:73::27) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.23; Mon, 8 Feb
+ 2021 17:59:20 +0000
+Received: from SN1NAM02FT028.eop-nam02.prod.protection.outlook.com
+ (2603:10b6:806:6f:cafe::7b) by SA0PR12CA0001.outlook.office365.com
+ (2603:10b6:806:6f::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3825.19 via Frontend
+ Transport; Mon, 8 Feb 2021 17:59:20 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 149.199.62.198)
+ smtp.mailfrom=xilinx.com; kernel.dk; dkim=none (message not signed)
+ header.d=none;kernel.dk; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.62.198 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.62.198; helo=xsj-pvapexch02.xlnx.xilinx.com;
+Received: from xsj-pvapexch02.xlnx.xilinx.com (149.199.62.198) by
+ SN1NAM02FT028.mail.protection.outlook.com (10.152.72.105) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.3784.12 via Frontend Transport; Mon, 8 Feb 2021 17:59:20 +0000
+Received: from xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) by
+ xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1913.5; Mon, 8 Feb 2021 09:59:02 -0800
+Received: from smtp.xilinx.com (172.19.127.96) by
+ xsj-pvapexch02.xlnx.xilinx.com (172.19.86.41) with Microsoft SMTP Server id
+ 15.1.1913.5 via Frontend Transport; Mon, 8 Feb 2021 09:59:02 -0800
+Envelope-to: git@xilinx.com,
+ michal.simek@xilinx.com,
+ axboe@kernel.dk,
+ p.zabel@pengutronix.de,
+ robh+dt@kernel.org,
+ linux-ide@vger.kernel.org,
+ devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Received: from [10.140.6.35] (port=55682 helo=xhdsaipava40.xilinx.com)
+        by smtp.xilinx.com with esmtp (Exim 4.90)
+        (envelope-from <piyush.mehta@xilinx.com>)
+        id 1l9AoP-0001aF-Ih; Mon, 08 Feb 2021 09:59:02 -0800
+From:   Piyush Mehta <piyush.mehta@xilinx.com>
+To:     <axboe@kernel.dk>, <p.zabel@pengutronix.de>, <robh+dt@kernel.org>
+CC:     <linux-ide@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <git@xilinx.com>,
+        <sgoud@xilinx.com>, <michal.simek@xilinx.com>,
+        Piyush Mehta <piyush.mehta@xilinx.com>
+Subject: [PATCH V3 0/2] ata: ahci: ceva: Update the driver to support xilinx GT phy
+Date:   Mon, 8 Feb 2021 23:33:54 +0530
+Message-ID: <1612807436-5238-1-git-send-email-piyush.mehta@xilinx.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Received: by 2002:a17:90a:5d0a:0:0:0:0 with HTTP; Mon, 8 Feb 2021 01:46:29
- -0800 (PST)
-Reply-To: richadtomm@qq.com
-From:   "Mr.Richard Thomas" <tommiirrrch@gmail.com>
-Date:   Mon, 8 Feb 2021 01:46:29 -0800
-Message-ID: <CAGbSTZMAc0EF+BT96=ag5apRs+Aauw-A-2pin2QX1dEQy+tMew@mail.gmail.com>
-Subject: Re Thanks.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 7fa7e879-f29c-4413-3b0c-08d8cc5b42bd
+X-MS-TrafficTypeDiagnostic: SN6PR02MB5312:
+X-Microsoft-Antispam-PRVS: <SN6PR02MB5312F7B3AFEF6429CFFF2FF1D48F9@SN6PR02MB5312.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SaDKBlXo1CC2E7pqgodSGF0WDPSbjFYr/aUCfbbtT9arwTVjjP/ZrMqXMX2HUuIYGnkdzNvV92zaksi88T046HiGoniG5CMro4dXOamvWJD7bfttntnHz1Hbat/nd2pN0pRbsbR/EQqA36tn8b6rDvhEvXDMo+V73Gp3hiLirjnRa5cnMXaqh2+b3T5Qn6nT+wVe8o0Nrvjd3WBByhmkAiWw8ZQ1Jp0r9M6Z9mp+G1wjXfQHJFczHgRe2uYfWbnjQuT8dD+4kcDFv1d/i5Z0VoNYOwiDw7h95SUUEMoj7XmSTFyXLNx1XXSBlt4dDRLrhMZIH6G7HnPPnOAP70RIv7bFT6k7/WyxQoayTFi9gmB1qWtr7yJdmed9bp5iQf4BhdnMbnuLlXXHNP2wPPnyZlCm2M1CbcqIRPC4fUzGeGdvaHkS+lP245L/x54nXPpBbuIqs7mRYDa5AnDsqvxdarR6At2Kjs2VOTL4jODQDzXMZ5+qfAomj9f8B9Pres8R+kdUM6rwTbgd5vbJn39leX9CkPfAnQFWFu5bSMjwc6xlkoUDimg0rSgMsdPBT/obwdy+c5UCUQpfUIo4+GFoyD24pd2u0sxAfEALENYPfxHbBNAauUFBhGtxTlY7ioDRg1X0CPBXxxW6jHU38VOVLSIUf4X0SWfTrq/t2k1wb6eVBpNHTv7DWgzrJluBfFnF
+X-Forefront-Antispam-Report: CIP:149.199.62.198;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:xsj-pvapexch02.xlnx.xilinx.com;PTR:unknown-62-198.xilinx.com;CAT:NONE;SFS:(4636009)(346002)(396003)(39860400002)(136003)(376002)(36840700001)(46966006)(6666004)(83380400001)(356005)(8936002)(36906005)(9786002)(4326008)(70206006)(82310400003)(47076005)(5660300002)(316002)(107886003)(7636003)(15650500001)(8676002)(26005)(2616005)(82740400003)(186003)(4744005)(336012)(426003)(36756003)(70586007)(7696005)(36860700001)(54906003)(2906002)(44832011)(478600001)(110136005)(102446001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Feb 2021 17:59:20.5913
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fa7e879-f29c-4413-3b0c-08d8cc5b42bd
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.62.198];Helo=[xsj-pvapexch02.xlnx.xilinx.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1NAM02FT028.eop-nam02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR02MB5312
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Friend,
-I will be pleased if you can allow me to invest $104M Dollars in
-Estate Management,in your company or any area you best that will be
-of good profit to both of us
+This patch series updates the ceva driver to add support for Xilinx GT phy.
+This also updates the documentation with the device tree binding required
+for working with Xilinx GT phy.
 
-Please do well to respond including your information for more details.
+---
+Changes in V2:
+ - Added backward compatibility with the older sequence of the CEVA controller.
+ - Update dt-bindings document: To make phy and reset properties optional.
+ - Remove rst_names property.
 
-Thanks.
-Mr.Richard Thomas
+Changes in V3:
+ - Remove phy-names property.
+ - Validate backward compatibility with reset controller availability,
+   instead of a flag.
+---
+Piyush Mehta (2):
+  dt-bindings: ata: ahci: ceva: Update documentation for CEVA Controller
+  ata: ahci: ceva: Update the driver to support xilinx GT phy
+
+ .../devicetree/bindings/ata/ahci-ceva.txt          |  4 ++
+ drivers/ata/ahci_ceva.c                            | 43 ++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 3 deletions(-)
+
+-- 
+2.7.4
+

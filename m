@@ -2,60 +2,78 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D4D15314B2B
-	for <lists+linux-ide@lfdr.de>; Tue,  9 Feb 2021 10:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8CD2315A51
+	for <lists+linux-ide@lfdr.de>; Wed, 10 Feb 2021 00:55:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230257AbhBIJLQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 9 Feb 2021 04:11:16 -0500
-Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:42686 "EHLO
-        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230169AbhBIJA4 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Feb 2021 04:00:56 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=jefflexu@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0UOHYi.4_1612861211;
-Received: from admindeMacBook-Pro-2.local(mailfrom:jefflexu@linux.alibaba.com fp:SMTPD_---0UOHYi.4_1612861211)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 09 Feb 2021 17:00:11 +0800
-Subject: Re: [PATCH] ide: set missing QUEUE_FLAG_ADD_RANDOM
-To:     Christoph Hellwig <hch@infradead.org>
-Cc:     davem@davemloft.net, linux-ide@vger.kernel.org,
-        joseph.qi@linux.alibaba.com
-References: <20210209081013.38979-1-jefflexu@linux.alibaba.com>
- <20210209083220.GA1708073@infradead.org>
-From:   JeffleXu <jefflexu@linux.alibaba.com>
-Message-ID: <fde2f52d-48a4-b193-adfc-8abbaeb5c04f@linux.alibaba.com>
-Date:   Tue, 9 Feb 2021 17:00:11 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.7.0
+        id S234453AbhBIXwg convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Tue, 9 Feb 2021 18:52:36 -0500
+Received: from spam.auroraoh.com ([24.56.89.101]:44360 "EHLO
+        barracuda.auroraoh.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S234397AbhBIXmT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Feb 2021 18:42:19 -0500
+X-ASG-Debug-ID: 1612914032-112c0d6a799b870001-WJxGKN
+Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id 7mNMTpzSb8PrDioQ; Tue, 09 Feb 2021 18:40:32 -0500 (EST)
+X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
+Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
+ (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
+ 02:45:33 -0500
+Content-Type: text/plain; charset="iso-8859-1"
+X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
 MIME-Version: 1.0
-In-Reply-To: <20210209083220.GA1708073@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+To:     Recipients <januskad@auroraoh.com>
+X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
+ we also registered with the Turkish British Chamber of Commerce and Industry
+ (TBCCI) we have operations in Europe and Asia.
+From:   <januskad@auroraoh.com>
+Date:   Tue, 9 Feb 2021 15:44:47 +0800
+Reply-To: <cfolimiited@gmail.com>
+X-Priority: 1 (High)
+X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
+X-Antivirus-Status: Clean
+Message-ID: <04dad0e2-2f3b-46a3-bb30-cab23ca007d4@COASRV-MAIL2.auroraoh.loc>
+X-Originating-IP: [197.210.29.8]
+X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
+ COASRV-MAIL2.auroraoh.loc (10.3.1.15)
+X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
+X-Barracuda-Start-Time: 1612914032
+X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at auroraoh.com
+X-Barracuda-Scan-Msg-Size: 755
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-Spam-Score: 1.61
+X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87872
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------------------------
+        0.00 NO_REAL_NAME           From: does not include a real name
+        0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
+        0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
+                                   Address
+        1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
+
+We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
+
+Please contact us for more details;
 
 
-On 2/9/21 4:32 PM, Christoph Hellwig wrote:
-> On Tue, Feb 09, 2021 at 04:10:13PM +0800, Jeffle Xu wrote:
->> While the whole block layer has migrated to mq framework,
->> QUEUE_FLAG_ADD_RANDOM is not included in QUEUE_FLAG_MQ_DEFAULT as the
->> default flags.
-> 
-> If you are using the legacy ide code anywhere please switch to libata
-> ASAP as it is about to go away.
-> 
+Kind regards,
 
-Thanks for replying. I have not encountered any trouble in reality
-world. Actually I just find that this code can't work well when I'm
-search QUEUE_FLAG_ADD_RANDOM. I'm not familiar with ide world. Please
-let me know if I miss something.
-
-Also there are several device drivers still calling
-'blk_queue_flag_clear(QUEUE_FLAG_ADD_RANDOM, q)', though they have
-migrated to mq and have no need clearing QUEUE_FLAG_ADD_RANDOM.
+Paul McCann
 
 -- 
-Thanks,
-Jeffle
+This email has been checked for viruses by Avast antivirus software.
+https://www.avast.com/antivirus
+

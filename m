@@ -2,78 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8CD2315A51
-	for <lists+linux-ide@lfdr.de>; Wed, 10 Feb 2021 00:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8915315A50
+	for <lists+linux-ide@lfdr.de>; Wed, 10 Feb 2021 00:55:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234453AbhBIXwg convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Tue, 9 Feb 2021 18:52:36 -0500
-Received: from spam.auroraoh.com ([24.56.89.101]:44360 "EHLO
-        barracuda.auroraoh.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234397AbhBIXmT (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Feb 2021 18:42:19 -0500
-X-ASG-Debug-ID: 1612914032-112c0d6a799b870001-WJxGKN
-Received: from COASRV-MAIL2.auroraoh.loc (coasrv-mail2.auroraoh.loc [10.3.1.15]) by barracuda.auroraoh.com with ESMTP id 7mNMTpzSb8PrDioQ; Tue, 09 Feb 2021 18:40:32 -0500 (EST)
-X-Barracuda-Envelope-From: JanuskaD@auroraoh.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.3.1.15
-Received: from [172.20.10.5] (197.210.29.8) by COASRV-MAIL2.auroraoh.loc
- (10.3.1.15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5; Tue, 9 Feb 2021
- 02:45:33 -0500
-Content-Type: text/plain; charset="iso-8859-1"
-X-Barracuda-RBL-Trusted-Forwarder: 172.20.10.5
+        id S234375AbhBIXwZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 9 Feb 2021 18:52:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38186 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234453AbhBIW47 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Feb 2021 17:56:59 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFF61C061756
+        for <linux-ide@vger.kernel.org>; Tue,  9 Feb 2021 14:49:10 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id i9so211883wmq.1
+        for <linux-ide@vger.kernel.org>; Tue, 09 Feb 2021 14:49:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=oLOh/k1jA3CJY1GmzaYC2Ao6ZeWRTRhA3IPC5U+BM58=;
+        b=PeXUFRzftfie+5M70KFxeD4pDcmj41yQd2GNScAZuxgOfUoA7R/f8L8MFiyxwuZgQG
+         sERpbU7/kHcHxjT/D7OwMCFVDbrZGJlUlECh+736of7Y3vq+AhZlfJXQviaI8LODqM5F
+         0CDY70SFcZ8P/VsoiFS1KLBI1AVoTHTbeIzP0Gmg2QcSgRYbiHgOShv8nxXi0nwofQcC
+         NfEGSHnUSzLwEs4S6bB0Oc3x6/uA1zdDjyey6MmkkmJF9NallS5RqdzXznQQEAE64JIV
+         UNiKieaD0JaV+Y5qdlVUTBFoYyp2U/6RHDfKJx2jSREPBNLZyEvaGnuH11tnY8d+62I9
+         Nyxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=oLOh/k1jA3CJY1GmzaYC2Ao6ZeWRTRhA3IPC5U+BM58=;
+        b=EfikaDYCXXhalmnmScf8BBJNhQBZ5+lYCIhJr0/yjJPUJrTn/CT35E+iFPqd/lFLth
+         mTdq5fWXgB0ahNL1lH/1Wz4Xjfuq1OBOgtqTy7t8/OHL7DjF2hJ/foiUeugsJlfvn7DQ
+         DeWrWl0y41fwgL/Uj1oGl9eKWhoK9TBfUvGGtwP/CtDRUlr23T4/4j2SCWpnZy7U/I2m
+         kK7xbkNqU0E87xRTFom4YqxIZXYvb1zSJVC2NOsLRgQWU5xxbgBAyV+9iB3h0KTZsDSn
+         DT+/ENjFD2YGV7lvSSmESK1o8XjlCg900Du3p+KjaJjD498H0nOFT/xStCP02xVT0gaz
+         C+Rw==
+X-Gm-Message-State: AOAM53170q3xAX3hXOV4IKm0fSXBauJ010Mx2KhOaW9qH8ehUqlcG1WD
+        5Yi7hLC45kz+dnC0cmoic7Y7fzTjGzt6u6PRtaw=
+X-Google-Smtp-Source: ABdhPJzx34+VMgZs0Q5+XKCK+lYAO1tS7ADxeR8Ln7d9bdVesGTgYOhla0f/6gk+oCps+VpG2KHC92PUL6am3LWQH+E=
+X-Received: by 2002:a7b:cb05:: with SMTP id u5mr273550wmj.140.1612910949190;
+ Tue, 09 Feb 2021 14:49:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: We are a registered Private Loan Investment Company in the United Kingdom,
- we also registered with the Turkish British Chamber of Commerce and Industry
- (TBCCI) we have operations in Europe and Asia.
-To:     Recipients <januskad@auroraoh.com>
-X-ASG-Orig-Subj: We are a registered Private Loan Investment Company in the United Kingdom,
- we also registered with the Turkish British Chamber of Commerce and Industry
- (TBCCI) we have operations in Europe and Asia.
-From:   <januskad@auroraoh.com>
-Date:   Tue, 9 Feb 2021 15:44:47 +0800
-Reply-To: <cfolimiited@gmail.com>
-X-Priority: 1 (High)
-X-Antivirus: Avast (VPS 210207-2, 02/07/2021), Outbound message
-X-Antivirus-Status: Clean
-Message-ID: <04dad0e2-2f3b-46a3-bb30-cab23ca007d4@COASRV-MAIL2.auroraoh.loc>
-X-Originating-IP: [197.210.29.8]
-X-ClientProxiedBy: COASRV-MAIL3.auroraoh.loc (10.3.1.13) To
- COASRV-MAIL2.auroraoh.loc (10.3.1.15)
-X-Barracuda-Connect: coasrv-mail2.auroraoh.loc[10.3.1.15]
-X-Barracuda-Start-Time: 1612914032
-X-Barracuda-URL: https://10.3.1.12:443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at auroraoh.com
-X-Barracuda-Scan-Msg-Size: 755
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Spam-Score: 1.61
-X-Barracuda-Spam-Status: No, SCORE=1.61 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=5.0 tests=BSF_SC0_SA609_NRN, BSF_SC0_SA912_RP_FR, BSF_SC0_SA_TO_FROM_ADDR_MATCH, NO_REAL_NAME
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.87872
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------------------------
-        0.00 NO_REAL_NAME           From: does not include a real name
-        0.01 BSF_SC0_SA912_RP_FR    Custom Rule BSF_SC0_SA912_RP_FR
-        0.50 BSF_SC0_SA_TO_FROM_ADDR_MATCH Sender Address Matches Recipient
-                                   Address
-        1.10 BSF_SC0_SA609_NRN      Custom Rule SA609_NRN
+Sender: harrilynca88@gmail.com
+Received: by 2002:a5d:6b86:0:0:0:0:0 with HTTP; Tue, 9 Feb 2021 14:49:08 -0800 (PST)
+From:   DESMOND WILLIAMS <desmondwilliams735@gmail.com>
+Date:   Tue, 9 Feb 2021 14:49:08 -0800
+X-Google-Sender-Auth: 3Vd5P8h5sYBX6jrpi4h7xSm1ER4
+Message-ID: <CAH8Qkvaqr7jyok3okOLZWuWYypC0KbPpsmdv6R4P_X5HdkH02A@mail.gmail.com>
+Subject: Greetings
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-We are seeking for beneficiaries who source for fund to expand/relocating their business interest abroad. We are ready to fund projects outside Turkey and United Kingdom in the form of Soft Loan. We grant loans to both corporate and private entities at a low interest rate of 2% R.O.I per annul.
+Dear Friend,
 
-We like to grant loan in the following sectors: oil/Gas, banking, real estate, stock speculation and mining, transportation, health sector and tobacco, Communication Services, Agriculture Forestry & Fishing, thus any sector. The terms are very flexible and interesting.
+I am Mr. Desmond Williams an auditor in Credit & Debit Dept in Group
+Bank Of Africa (BOA), Ouagadougou; Burkina Faso. I contacted you as
+regards to a business proposal that will be of an immense benefit to
+both of us and the less privileged ones. Being the auditing manager, I
+discovered a sum of Ten Million Five Hundred Thousand United States
+Dollars [$10.5M] only in a Fixed Deposit Account belonging to one of
+our foreign customers Late Mr. Moses Saba Masri. He was a Jewish
+business man from Mexico that died on a helicopter crash event happen in
+earlier 2010. Mr. Saba was 47-years-old when both his wife, his only
+son Avraham (Albert) and his daughter-in-law died in a helicopter
+crash.
 
-Please contact us for more details;
+You can get more information's as regards to this on below website:
+http://www.ynetnews.com/articles/0,7340,L-3832556,00.html
+
+This will be shared 50% to me and 50% for you. Please, kindly provide
+me your full contact details as l stated below:
+
+1. Your full name.......?
+2. Direct Mobile Number.....?
+3. Contact Address........?
+4. Sex/Age.......?
+5. Marital Status.......
+6. Occupation.......?
+7. Country of Origin.....
+8. Attached any of Your Identification Copy?..
+
+As to enable us proceed immediately. Weave 14 working days to run this
+transaction successfully. Having gone through a methodical search, I
 
 
-Kind regards,
+decided to contact you hoping that you will find this proposal
+interesting. Please on your confirmation of this message and
+indicating your interest I will furnish you with more information's.
 
-Paul McCann
-
--- 
-This email has been checked for viruses by Avast antivirus software.
-https://www.avast.com/antivirus
-
+Your assent to this e-mail and business proposal will be highly appreciated.
+Thanks, and Have a great day.
+Yours Sincerely.
+Mr. Desmond Williams.

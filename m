@@ -2,105 +2,49 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 515C531E218
-	for <lists+linux-ide@lfdr.de>; Wed, 17 Feb 2021 23:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 329C8320344
+	for <lists+linux-ide@lfdr.de>; Sat, 20 Feb 2021 03:49:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232887AbhBQW3E (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 17 Feb 2021 17:29:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38366 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231925AbhBQW2r (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 17 Feb 2021 17:28:47 -0500
-Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FDE0C061756
-        for <linux-ide@vger.kernel.org>; Wed, 17 Feb 2021 14:28:06 -0800 (PST)
-Received: by mail-pf1-x42b.google.com with SMTP id m6so9380697pfk.1
-        for <linux-ide@vger.kernel.org>; Wed, 17 Feb 2021 14:28:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=to:cc:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=2lritnTFRDrDzmUeEe/JUrazWW1iIyYlZyx+TPAxq7w=;
-        b=avLtq4EFFcR4w4TBkn/A6L6tzBXKx5kahbw/f5UolAhcGTpAuEh1/+C89vYcxkABr1
-         KSxUp6EW69KY7aszCkgfFF2iJ6WqC5cgG7w+VHBZ1in2k6tTUXmSWZGyFX/v1CY7PbfB
-         OK0Mg/UsncGLjufs31r2oiOgiYebD5fiaxuvDjAMwyI6ZaD43tD75VWMzklGXm7843Hd
-         0XN+uLi7n+XXJEePz6AvQax47gZ8lbw1lUaxX42ZokGAoTk2TW2RCuZc5j0XDD/PDrsZ
-         T1JsVorcL6bxGbMJZRMKz8+Dt7EfBoDpoXyK1qNHhqb44+gZD2ba1ST8MVkyXPGBImcP
-         U3lg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=2lritnTFRDrDzmUeEe/JUrazWW1iIyYlZyx+TPAxq7w=;
-        b=qI01Qwr2wVep9UlpD7/skv58V4Y4UeijXv40TMpGU/shZVlJENMT6VsbTGF3ZUGqJp
-         CC18Ni/sQDCPYrrLfYlYKS3LP8FBkYA2xf0V9avlJ6wou/TFT3ZjETGIYVoVm31HMNgA
-         90dZbM1RP3fUvMS+0LE0cEXre+xJxOKA2Qsq0h5ghrBQA6E1aqhxCDhute7/m+YYOkRw
-         qsfNXuIjMEr/ToN7bLKzuvvsv9kcAjXbE8SYKKIaRiO9vwmxqnB7biaiy41ejjHx5/UC
-         ftwR7Arc3YoBFft+ySgN8XaSf/mzsh+2mKcRQDzSvBve5cwd1AAuNut9Vx+3bEUH5Afy
-         YdCA==
-X-Gm-Message-State: AOAM531DoItyClILRQNr7Z7bzGAMVKmun0vUlLbhJNo2L6B8S5B2fu8U
-        nPcoNruYuys2FYGOdOzscy2GFMQc9GI5Bg==
-X-Google-Smtp-Source: ABdhPJy7fCZFENeOAojU6E8cepX/gk/9+XRD7nGJkPVsvn+4pL4LZjpsf/AI2bBSro+drRw4W9qQOg==
-X-Received: by 2002:a65:480c:: with SMTP id h12mr1300522pgs.169.1613600885636;
-        Wed, 17 Feb 2021 14:28:05 -0800 (PST)
-Received: from ?IPv6:2620:10d:c085:21e1::19db? ([2620:10d:c090:400::5:5c48])
-        by smtp.gmail.com with ESMTPSA id 137sm3818852pgb.80.2021.02.17.14.28.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Feb 2021 14:28:05 -0800 (PST)
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     IDE/ATA development list <linux-ide@vger.kernel.org>
-From:   Jens Axboe <axboe@kernel.dk>
-Subject: [GIT PULL] libata changes for 5.12-rc
-Message-ID: <91a99b47-409c-024c-8e50-ce64fa662aad@kernel.dk>
-Date:   Wed, 17 Feb 2021 15:28:04 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S229844AbhBTCsi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 19 Feb 2021 21:48:38 -0500
+Received: from mail.mpcb.gov.in ([125.17.249.59]:50116 "EHLO
+        fortimail.email.mpcb.gov.in" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229796AbhBTCsi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 19 Feb 2021 21:48:38 -0500
+X-Greylist: delayed 69771 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Feb 2021 21:48:31 EST
+Received: from User (rain-197-185-102-182.rain.network [197.185.102.182])
+        (user=feedback.consent@mpcb.gov.in mech=LOGIN bits=0)
+        by fortimail.email.mpcb.gov.in  with ESMTP id 11J7IVmK031284-11J7IVmM031284;
+        Fri, 19 Feb 2021 12:48:34 +0530
+Message-Id: <202102190718.11J7IVmK031284-11J7IVmM031284@fortimail.email.mpcb.gov.in>
+Reply-To: <brightwayfinanceloan01@protonmail.com>
+From:   "Brightway Finance Loan" <brightwayfinanceloan@gmail.com>
+Subject: Apply for loan at 5% interest rate per year
+Date:   Fri, 19 Feb 2021 09:18:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain;
+        charset="Windows-1251"
 Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-FEAS-Auth-User: feedback.consent@mpcb.gov.in
+X-FE-Policy-ID: 0:1:2:SYSTEM
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Linus,
-
-Regulartors management addition from Florian, and a trivial change to
-avoid comma separated statements from Joe.
-
-Please pull!
+BrightWay Finance offers Loans ranging from (R10, 000.00 - R60, 000,000.00). Loan duration is from 1 to 20 years (Maximum) No collateral,
+No ITC CHECK and Blacklisted are welcome. If you wish to apply kindly send your full names, ID number, 
+email address and cellphone number to brightwayfinanceloan01@protonmail.com
 
 
-The following changes since commit 6ee1d745b7c9fd573fba142a2efdad76a9f1cb04:
+Yours in Service,
 
-  Linux 5.11-rc5 (2021-01-24 16:47:14 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.dk/linux-block.git tags/for-5.12/libata-2021-02-17
-
-for you to fetch changes up to e53d76e61ec0dbd52cf784993fde927cb9fe0fed:
-
-  ata: Avoid comma separated statements (2021-01-31 08:05:46 -0700)
-
-----------------------------------------------------------------
-for-5.12/libata-2021-02-17
-
-----------------------------------------------------------------
-Florian Fainelli (1):
-      ata: ahci_brcm: Add back regulators management
-
-Joe Perches (1):
-      ata: Avoid comma separated statements
-
- drivers/ata/ahci_brcm.c   | 14 +++++++++++++-
- drivers/ata/pata_icside.c | 21 +++++++++++++--------
- 2 files changed, 26 insertions(+), 9 deletions(-)
-
--- 
-Jens Axboe
-
-
--- 
-Jens Axboe
-
+Jane Cooper
+MARKETING TEAM
+Tel No: +27(0)622541582
+BrightWay Finance Loan(PTY) LTD.
+brightwayfinanceloan01@protonmail.com

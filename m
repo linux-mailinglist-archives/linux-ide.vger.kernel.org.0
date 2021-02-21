@@ -2,49 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 329C8320344
-	for <lists+linux-ide@lfdr.de>; Sat, 20 Feb 2021 03:49:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B292320D19
+	for <lists+linux-ide@lfdr.de>; Sun, 21 Feb 2021 20:16:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbhBTCsi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 19 Feb 2021 21:48:38 -0500
-Received: from mail.mpcb.gov.in ([125.17.249.59]:50116 "EHLO
-        fortimail.email.mpcb.gov.in" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229796AbhBTCsi (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 19 Feb 2021 21:48:38 -0500
-X-Greylist: delayed 69771 seconds by postgrey-1.27 at vger.kernel.org; Fri, 19 Feb 2021 21:48:31 EST
-Received: from User (rain-197-185-102-182.rain.network [197.185.102.182])
-        (user=feedback.consent@mpcb.gov.in mech=LOGIN bits=0)
-        by fortimail.email.mpcb.gov.in  with ESMTP id 11J7IVmK031284-11J7IVmM031284;
-        Fri, 19 Feb 2021 12:48:34 +0530
-Message-Id: <202102190718.11J7IVmK031284-11J7IVmM031284@fortimail.email.mpcb.gov.in>
-Reply-To: <brightwayfinanceloan01@protonmail.com>
-From:   "Brightway Finance Loan" <brightwayfinanceloan@gmail.com>
-Subject: Apply for loan at 5% interest rate per year
-Date:   Fri, 19 Feb 2021 09:18:30 +0200
-MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-X-FEAS-Auth-User: feedback.consent@mpcb.gov.in
-X-FE-Policy-ID: 0:1:2:SYSTEM
-To:     unlisted-recipients:; (no To-header on input)
+        id S230233AbhBUTPg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 21 Feb 2021 14:15:36 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34090 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230107AbhBUTPd (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 21 Feb 2021 14:15:33 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPS id CBF4D64DD3;
+        Sun, 21 Feb 2021 19:14:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1613934892;
+        bh=GvaimUz6cl6aRKpyFLmS9o66v96sR+pdhEfHPpi5tGE=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=daDTGF8vf3bUofA7zyjwGcK8Ty3C26sBqjwGgqcvuiglW5WQkiNNm8n9cost5ZzqY
+         OfO1P8OMea2KRQB+QKy9dR8fFRiHWcpYGNks29cLyzSGrP8qPFnjcEfbMCu7AL/hBh
+         Dwp/IyMlx/roMbDnWZ0mJKCGxHyeE8LOzDx6fIQBRLoeqv3Jgop4bHkzhLoI/FgsD4
+         qW0xh/RPTrqgJc8pBAw5LaLKhFo8OnP/c0KGs+EG8N+atMRSXl3U3Bwz2lNXIFSuLl
+         eGm9Vnmqg26k1fEISuc7nhJxsoIDK0FT7Dl17jdntKH0lMnZdtghzlvq3xfQDdjetU
+         giJmT7rVjFu5A==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id C716660967;
+        Sun, 21 Feb 2021 19:14:52 +0000 (UTC)
+Subject: Re: [GIT PULL] libata changes for 5.12-rc
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <91a99b47-409c-024c-8e50-ce64fa662aad@kernel.dk>
+References: <91a99b47-409c-024c-8e50-ce64fa662aad@kernel.dk>
+X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
+X-PR-Tracked-Message-Id: <91a99b47-409c-024c-8e50-ce64fa662aad@kernel.dk>
+X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git tags/for-5.12/libata-2021-02-17
+X-PR-Tracked-Commit-Id: e53d76e61ec0dbd52cf784993fde927cb9fe0fed
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: bd018bbaa58640da786d4289563e71c5ef3938c7
+Message-Id: <161393489280.9182.6175401189283934253.pr-tracker-bot@kernel.org>
+Date:   Sun, 21 Feb 2021 19:14:52 +0000
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        IDE/ATA development list <linux-ide@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-BrightWay Finance offers Loans ranging from (R10, 000.00 - R60, 000,000.00). Loan duration is from 1 to 20 years (Maximum) No collateral,
-No ITC CHECK and Blacklisted are welcome. If you wish to apply kindly send your full names, ID number, 
-email address and cellphone number to brightwayfinanceloan01@protonmail.com
+The pull request you sent on Wed, 17 Feb 2021 15:28:04 -0700:
 
+> git://git.kernel.dk/linux-block.git tags/for-5.12/libata-2021-02-17
 
-Yours in Service,
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/bd018bbaa58640da786d4289563e71c5ef3938c7
 
-Jane Cooper
-MARKETING TEAM
-Tel No: +27(0)622541582
-BrightWay Finance Loan(PTY) LTD.
-brightwayfinanceloan01@protonmail.com
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

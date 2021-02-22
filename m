@@ -2,60 +2,87 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61D843229F2
-	for <lists+linux-ide@lfdr.de>; Tue, 23 Feb 2021 13:01:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7460C322F60
+	for <lists+linux-ide@lfdr.de>; Tue, 23 Feb 2021 18:13:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232704AbhBWL4t (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 23 Feb 2021 06:56:49 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232501AbhBWLyb (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 23 Feb 2021 06:54:31 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
- 03:52:20 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Tue, 23 Feb 2021 11:52:34 +0000
+        id S233023AbhBWRNg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 23 Feb 2021 12:13:36 -0500
+Received: from mail.worldfibernet.net.np ([103.144.106.70]:38770 "EHLO
+        mail.worldfibernet.net.np" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232252AbhBWRNg (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 23 Feb 2021 12:13:36 -0500
+X-Greylist: delayed 23979 seconds by postgrey-1.27 at vger.kernel.org; Tue, 23 Feb 2021 12:13:32 EST
+Received: from localhost (localhost [127.0.0.1])
+        by mail.worldfibernet.net.np (Postfix) with ESMTP id C450A20739506;
+        Mon, 22 Feb 2021 20:29:53 +0545 (+0545)
+Received: from mail.worldfibernet.net.np ([127.0.0.1])
+        by localhost (mail.worldfibernet.net.np [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id ntv2_VVWIoal; Mon, 22 Feb 2021 20:29:53 +0545 (+0545)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.worldfibernet.net.np (Postfix) with ESMTP id 77C5D2094B662;
+        Mon, 22 Feb 2021 14:56:32 +0545 (+0545)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.worldfibernet.net.np 77C5D2094B662
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=worldfibernet.net.np; s=700753AA-41AD-11EA-BBC7-78DCB7EDED7F;
+        t=1613985092; bh=6XseK1V1eqk2BmiKGE5UdhT6M2NuE5+IKRBLN12v3t4=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Yo/a21gCDP94XN/u/VrwTZoROqJtBlCApQXUGXS9lSHX9EjASCe8D7xOWxPfXenxQ
+         5dfGq9uGazZ+KOfIbzwfRbymlq+VvawqThzUaYQmzJkc5MKN+s4cwOjIHs2hIGjXTd
+         xsObxapbLMmuVse5KzYqNrMeyA9dRG0uvFovMXdfnmywSj2qKS2JTBOgMeLqB6BcYl
+         Y/HYubQYNqMQ7sKeXQZYBprV4m3HNI4LjNTFJEg7dAC0ALKSKGAv3yHi4IA33UFWZt
+         BB5H20D/PUPv5dlszUHVTd3l2yybCocrL/uWsvsmldf935GtoIq6r6TehX8nkXll28
+         clTh9LWbRU0Ng==
+X-Virus-Scanned: amavisd-new at mail.worldfibernet.net.np
+Received: from mail.worldfibernet.net.np ([127.0.0.1])
+        by localhost (mail.worldfibernet.net.np [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id oXl0jEbC-nEE; Mon, 22 Feb 2021 14:56:32 +0545 (+0545)
+Received: from [192.168.1.39] (unknown [78.163.96.178])
+        by mail.worldfibernet.net.np (Postfix) with ESMTPSA id 364A92094BB5F;
+        Mon, 22 Feb 2021 08:58:09 +0545 (+0545)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: You won donation
+To:     Recipients <test@worldfibernet.net.np>
+From:   "Mr. Tayeb" <test@worldfibernet.net.np>
+Date:   Mon, 22 Feb 2021 06:35:13 +0300
+Reply-To: tayebsouami019@gmail.com
+X-Antivirus: AVG (VPS 210221-6, 21.02.2021), Outbound message
+X-Antivirus-Status: Clean
+Message-Id: <20210222031310.364A92094BB5F@mail.worldfibernet.net.np>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+
 Hello,
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
+My name is Tayeb Souami, I am an accountant and native of Little Ferry, New=
+ Jersey, United States. I am a winner of $ 315.3 million jackpot winner in =
+the USA Powerball=E2=84=A2 lottery. Your email was randomly selected from t=
+he world email database among many other emails and you have been selected =
+to receive $ 3,600,000.00. To confirm my winning, please visit:
 
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
 
-Regards,
-Ms. Reem.
+
+https://abcnews.go.com/US/lucky-jersey-man-wins-3153-million-powerball-jack=
+pot/story?id=3D55748114
+
+
+
+https://twitter.com/NJLottery/status/1005181676937531392
+
+
+
+https://www.youtube.com/watch?v=3D4YtG6HFQYmY
+
+
+
+You are very lucky too to be a beneficiary of $3,600,000.00.
+
+-- 
+This email has been checked for viruses by AVG.
+https://www.avg.com
+

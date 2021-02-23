@@ -2,64 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B3FB3226E0
-	for <lists+linux-ide@lfdr.de>; Tue, 23 Feb 2021 09:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 61D843229F2
+	for <lists+linux-ide@lfdr.de>; Tue, 23 Feb 2021 13:01:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232072AbhBWIH7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 23 Feb 2021 03:07:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60024 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232174AbhBWIGt (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 23 Feb 2021 03:06:49 -0500
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C31C061356
-        for <linux-ide@vger.kernel.org>; Tue, 23 Feb 2021 00:05:49 -0800 (PST)
-Received: by mail-pf1-x432.google.com with SMTP id x129so3564050pfx.7
-        for <linux-ide@vger.kernel.org>; Tue, 23 Feb 2021 00:05:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=rjFLgW1OULBXQlh3JS0FsFrrUu6RfNW+e5SQFjA5Djs=;
-        b=JxmO513c8N+mSXqGl2XKRQHcg76JR+bfZMPrf+vnxkWzkw3ft1KwYNxHS9vOEkgGiM
-         qBVoGUl1NcPB8WYCRemgEULGFhsYnDu5kKuOWrq27NuRV930Ezd7u789BhF9iHg+aVwC
-         mo/7nt25gCmBuXvwUJPkxT6lBte4JyLXRVjNLR3ZcZMPpmTWc0Egkiv42NUJQRVW98yu
-         LIH9HTaguYFBwcG+hh00ZoHEJvI5bk4QNHB0+Wg+uj3WBH/dcTsVhxSVtfEjlbUJ+Vem
-         acwlvY4dbyvzXFGW9iDsNNh7SdAKlrApFMWnZ0spVFacMbO3cLTxh8IDkZyfnGqpbFw2
-         kPuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=rjFLgW1OULBXQlh3JS0FsFrrUu6RfNW+e5SQFjA5Djs=;
-        b=sO3NrkgVV/3gnPyaD/nsPbKs3LiIeM/Q3ZujKRkhSd13DxZhVU0XZSPgbuZaoRKSeB
-         52zryBsQSr/MkEZD6KiZTPhyx2JfQj04jQm+QxIZX9kARSE+GY14XbGRqwtRjhyDAr1z
-         HQOOdkZhuEZRLd1eEU2lKLXAZX85SprQ4y12lL4kAGapRwaPLHPv8RMDg8SH8wh663j9
-         6rLX2XoGVxq/aWVF9KZ20/6wITlL13TnrolJy4A/xvIqVjT2k5idjdLlC5SEInpJ4E7U
-         8oRWT1s5BMVrrFFSfJftpBZAlYtZ+hY2MkHw8iJGMoBHtAwTnBwO/fAUNmkEb8UJf2ll
-         sueg==
-X-Gm-Message-State: AOAM531TD5c04aKrpci0oZs4aN067PtkeYYX4FuKfsdPvIKuTg/98GpQ
-        koQa0VHCI43az/AndIAPUIFttuwJ3+LUrFUy1UA=
-X-Google-Smtp-Source: ABdhPJyOt/exCAd6Wzt/hiCTFLx2ROh2g6hSsLUi9yKtwPelo0Sd4I7YubgfqVYw3V4/E4yTkHXvvlHAuThVLm5kMKM=
-X-Received: by 2002:a63:c349:: with SMTP id e9mr23264867pgd.20.1614067548579;
- Tue, 23 Feb 2021 00:05:48 -0800 (PST)
+        id S232704AbhBWL4t (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 23 Feb 2021 06:56:49 -0500
+Received: from mail.jvpinto.com ([65.49.11.60]:54491 "EHLO mail.JVPinto.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232501AbhBWLyb (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 23 Feb 2021 06:54:31 -0500
+Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
+ RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Tue, 23 Feb 2021 03:52:35 -0800
+Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
+ Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Tue, 23 Feb 2021
+ 03:52:20 -0800
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <johnpinto@jvpinto.com>
+Subject: Hello okay
+Date:   Tue, 23 Feb 2021 11:52:34 +0000
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:4753:0:0:0:0 with HTTP; Tue, 23 Feb 2021 00:05:48
- -0800 (PST)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   AbdWabbo Maddah <ffoundationcoca@gmail.com>
-Date:   Tue, 23 Feb 2021 09:05:48 +0100
-Message-ID: <CAJHqv63YECQgYUxF9t5MEGAd0fpY7OdQ1YKhb5p7JVagAhCqGw@mail.gmail.com>
-Subject: DID YOU RECEIVE MY MAIL?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-ID: <933f089f49b04946b97b7d0f2a305064@RW-EXC1.JVPinto.com>
+To:     Undisclosed recipients:;
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
+Hello,
 
-AbdWabbo Maddah
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.

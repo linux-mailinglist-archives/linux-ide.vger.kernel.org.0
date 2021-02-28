@@ -2,60 +2,44 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C250A326F4A
-	for <lists+linux-ide@lfdr.de>; Sat, 27 Feb 2021 23:36:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CBEC326FBA
+	for <lists+linux-ide@lfdr.de>; Sun, 28 Feb 2021 01:20:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbhB0WfD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 27 Feb 2021 17:35:03 -0500
-Received: from mail.jvpinto.com ([65.49.11.60]:42077 "EHLO mail.JVPinto.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230001AbhB0We7 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 27 Feb 2021 17:34:59 -0500
-Received: from RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) by
- RW-EXC1.JVPinto.com (2002:ac20:10d::ac20:10d) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Sat, 27 Feb 2021 14:33:46 -0800
-Received: from User (52.231.198.195) by RW-EXC1.JVPinto.com (172.32.1.13) with
- Microsoft SMTP Server id 15.0.1497.2 via Frontend Transport; Sat, 27 Feb 2021
- 14:33:32 -0800
-Reply-To: <ms.reem@yandex.com>
-From:   "Ms. Reem" <johnpinto@jvpinto.com>
-Subject: Hello okay
-Date:   Sat, 27 Feb 2021 22:33:46 +0000
+        id S230063AbhB1AUX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 27 Feb 2021 19:20:23 -0500
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:59690 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230010AbhB1AUW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 27 Feb 2021 19:20:22 -0500
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 96D2A23F62;
+        Sat, 27 Feb 2021 19:19:35 -0500 (EST)
+Date:   Sun, 28 Feb 2021 11:19:31 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Jens Axboe <axboe@kernel.dk>
+cc:     "David S. Miller" <davem@davemloft.net>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RESEND] ide/falconide: Fix module unload
+In-Reply-To: <5d7fd7bb-1bb8-a21c-61d8-4d1046f92ca8@kernel.dk>
+Message-ID: <d92db64-cfb8-9640-35a4-4f864dfc99a2@telegraphics.com.au>
+References: <63369c9b96673442a4bd653fe92acda99172123a.1605847196.git.fthain@telegraphics.com.au> <alpine.LNX.2.23.453.2101031017290.12@nippy.intranet> <5d7fd7bb-1bb8-a21c-61d8-4d1046f92ca8@kernel.dk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <837a988e66554c5d95b18ae85648d3d7@RW-EXC1.JVPinto.com>
-To:     Undisclosed recipients:;
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello,
+On Sun, 3 Jan 2021, Jens Axboe wrote:
 
-My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
-and Petroleum" also "Minister of State for International Cooperation"
-in UAE. I write to you on behalf of my other "three (3) colleagues"
-who has approved me to solicit for your "partnership in claiming of
-{us$47=Million}" from a Financial Home in Cambodia on their behalf and
-for our "Mutual Benefits".
+> > 
+> > This patch was sent in September and subsequently resent in November. 
+> > I've since learned that the maintainer has been ill. What's the best 
+> > way forward for fixes like this?
+> 
+> I can queue it up.
+> 
 
-The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
-deal with Cambodian/Vietnam Government within 2013/2014, however, we
-don't want our government to know about the fund. If this proposal
-interests you, let me know, by sending me an email and I will send to
-you detailed information on how this business would be successfully
-transacted. Be informed that nobody knows about the secret of this
-fund except us, and we know how to carry out the entire transaction.
-So I am compelled to ask, that you will stand on our behalf and
-receive this fund into any account that is solely controlled by you.
-
-We will compensate you with 15% of the total amount involved as
-gratification for being our partner in this transaction. Reply to:
-ms.reem@yandex.com
-
-Regards,
-Ms. Reem.
+That would be great.

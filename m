@@ -2,82 +2,75 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 016AA32C26A
+	by mail.lfdr.de (Postfix) with ESMTP id 7B46332C26E
 	for <lists+linux-ide@lfdr.de>; Thu,  4 Mar 2021 01:04:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1390133AbhCCWAU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 3 Mar 2021 17:00:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37970 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1843023AbhCCKYd (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 3 Mar 2021 05:24:33 -0500
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A40E9C0611C2;
-        Wed,  3 Mar 2021 00:39:56 -0800 (PST)
-Received: by mail-lj1-x22b.google.com with SMTP id q14so27575000ljp.4;
-        Wed, 03 Mar 2021 00:39:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:organization:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=UA1aKK/fRs4m/xf5JpwLYyb5RS0D/JsZVdjnQfO+6qg=;
-        b=rVf6BQqDdDevA3A9eN6Rdxnlo1WXarKhnXs7egnAc+Xtk2FNgvOpp0rNYSkkmYJnIw
-         iLPIZg0XiTkIg5miyxobje+pw7A/7Rqd+VYORMBGrDnQE5AtOruduzeB9BS7yUCqu/jv
-         zbaPAZq1qJBBvMRNZ//UYKb0k4j1J6Al3RZq3vNEK+w2+pEetsHTq/fS4KrlLcTjAAT7
-         iX8GAKSUI4LqecLu7QGBf76e4kI8BmoZOVD3Z/ZNqXDgsoqQZZ8jb3H74/paojcjT4i/
-         dDn8P+9vm6eksihveT4Hz2BQ3ESVAFOObXKos3TFyK410gaVBoep0Ky/e5eaY52UZEbz
-         sl1w==
+        id S1390137AbhCCWAs (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 3 Mar 2021 17:00:48 -0500
+Received: from mail-vs1-f43.google.com ([209.85.217.43]:33174 "EHLO
+        mail-vs1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231712AbhCCKa1 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 3 Mar 2021 05:30:27 -0500
+Received: by mail-vs1-f43.google.com with SMTP id b189so6357126vsd.0;
+        Wed, 03 Mar 2021 02:30:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=UA1aKK/fRs4m/xf5JpwLYyb5RS0D/JsZVdjnQfO+6qg=;
-        b=N1zWKaxhpX/4dPXITl+A6JODjWI/bcWaudj9OTd3CI1gEPWVybtOHfVNtRFTUaHMoh
-         CB2yqUxzbCJNximOxAPDrxXx/Nf1uptWBgIUD8UlTJU3HiCDQLzWQwI3VYI/xQWIJNpN
-         ucf0B4gWL3iBLT0h4c9BtVZgcjWJEcfK58Fyxai32esmCrDDi/9BfPOJAoXcKXlZqyRT
-         SeNNw1LDU4eyH5aCn/l/6OdvuLbqk20EjKPKoKuSI0bqELJ0PUYccdCs4jTrW9q+KVln
-         tKfyC1ieotpBxa2z2mohXXMBssuVkYU2DUMonq5b+qPeG9OqdvHoBcF0Rudtv3GvAMAW
-         gLTQ==
-X-Gm-Message-State: AOAM532M+nBZ0H6LjZ8mGuEgyRgJGp5XaLt6dYOz+tFXxBq/KkVKAveL
-        LnLQyXLdGRaH2FKiUWg28ynhRPEY088=
-X-Google-Smtp-Source: ABdhPJyR42jNsrIDLz1cVQ4OzYfNr99ht41Jnmd5a4XQLKQzeR6KGgQ+qRuX8msnfCCl6m1GgDTvKg==
-X-Received: by 2002:a2e:2f05:: with SMTP id v5mr15093700ljv.114.1614760794909;
-        Wed, 03 Mar 2021 00:39:54 -0800 (PST)
-Received: from [192.168.1.100] ([178.176.72.224])
-        by smtp.gmail.com with ESMTPSA id k18sm2892027lfm.88.2021.03.03.00.39.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Mar 2021 00:39:54 -0800 (PST)
-Subject: Re: Toshiba TC86C001 support
-To:     Christoph Hellwig <hch@lst.de>, linux-ide@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <20210303072708.GA8575@lst.de>
-From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Organization: Brain-dead Software
-Message-ID: <af1953de-d1d4-9573-2c3a-08da9ced429e@gmail.com>
-Date:   Wed, 3 Mar 2021 11:39:44 +0300
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=RWLoJKrST9SY284XzyZhaHgjO9L3hwsdopDdAp6+Qlo=;
+        b=chrzGNYs5n+BOENUpuq53FK1a4WsBrOMAbWQ+Ifa1JKwKwd/nvyBpa0Aeh6NtzTNtw
+         yeNd3PEFRhedZFzITcSitEIu+S31J0oOhkpafz02v+ZeF4zF650o76nIw/KqQ4Pg0KU+
+         miH4Ovs6Y2v+Azse5vv/zMTGxCz1eq7m1sAAe8Kf/2Lmls597/H8Lp76J79B/35FsnYq
+         DN4HWRwQOOAPuerh25BPxnRq19k57UqjosCHk0NhzgRXytzmAwdQXcncER9p7jh8VpSt
+         KCqfNugeefDDT7io+V2W6th+tKk7azLfDvQ766LaLEyFVnfHma6vX2yIqhb0k/0bTBRt
+         ia9w==
+X-Gm-Message-State: AOAM533QvLhBAfrHpNxXGurkWEJTPYfVSYqGW0lk7EMrT37QFjr976yh
+        LYeN8KwkD33BXvRMtYH/OeVISGCy8gcIYDzgp5ODce8HueI=
+X-Google-Smtp-Source: ABdhPJzpzQ3O9SZyCnmbtWEbsFfvCEjIhxXr0EwZ57EjV3/sxsysE7w38CMuqEzZWCrIK6RNljiUJq2fg3z/4NKTStE=
+X-Received: by 2002:a67:fb86:: with SMTP id n6mr5477431vsr.3.1614767385754;
+ Wed, 03 Mar 2021 02:29:45 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20210303072708.GA8575@lst.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20210303074107.GA8880@lst.de> <20210303.173122.1467075982540149385.anemo@mba.ocn.ne.jp>
+In-Reply-To: <20210303.173122.1467075982540149385.anemo@mba.ocn.ne.jp>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 3 Mar 2021 11:29:34 +0100
+Message-ID: <CAMuHMdXwD6Oi1a6mmrPUA20vMPd6jQ1816vtc_WxobX3TW3y4g@mail.gmail.com>
+Subject: Re: tx4938 and tx4939 ide drivers
+To:     Atsushi Nemoto <anemo@mba.ocn.ne.jp>,
+        Christoph Hellwig <hch@lst.de>
+Cc:     linux-ide@vger.kernel.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello!
+Hi Nemoto-san, Christoph,
 
-On 03.03.2021 10:27, Christoph Hellwig wrote:
+On Wed, Mar 3, 2021 at 9:31 AM Atsushi Nemoto <anemo@mba.ocn.ne.jp> wrote:
+>
+> On Wed, 3 Mar 2021 08:41:07 +0100, Christoph Hellwig <hch@lst.de> wrote:
+> > the tx4938 and tx4939 legacy ide drivers are some of the few that do
+> > not have libata equivalents, which is a bad thing given that CONFIG_IDE
+> > is planned to go away this year.  Are there any users of this hardware
+> > left, and if yes willing to help with the move to libata?
+>
+> I think nobody use these drivers now.
+>
+> As I wrote in
+> https://lore.kernel.org/lkml/20210107.101729.1936921832901251107.anemo@mba.ocn.ne.jp/
+> removal of these drivers does not break the only known user of TX49
+> boards. (i.e. Mr. Geert Uytterhoeven)
 
-> a lot of te mips defconfig enable CONFIG_BLK_DEV_TC86C001, which is
-> a legacy ide driver that has no libata equivalent.  We plan to
-> phase out the legacy ide driver this year, so I'm wondering if this
-> hardware is still in use by anyone, and if yes how we can get a libata
-> driver for it?
+Right. Feel free to remove tx4938ide support.
 
-    I used to have this piece of hardware while working for MontaVista 
-(2004-2013), and I have long lost any access to it...
+Gr{oetje,eeting}s,
 
-MBR, Sergei
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

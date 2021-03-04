@@ -2,63 +2,63 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C87B32C27C
-	for <lists+linux-ide@lfdr.de>; Thu,  4 Mar 2021 01:04:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EBE532C9BA
+	for <lists+linux-ide@lfdr.de>; Thu,  4 Mar 2021 02:19:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1390251AbhCCWBn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 3 Mar 2021 17:01:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59886 "EHLO
+        id S239183AbhCDBMA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 3 Mar 2021 20:12:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237139AbhCCSjF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 3 Mar 2021 13:39:05 -0500
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724FCC061756;
-        Wed,  3 Mar 2021 10:37:19 -0800 (PST)
-Received: by mail-lj1-x233.google.com with SMTP id r25so29029318ljk.11;
-        Wed, 03 Mar 2021 10:37:19 -0800 (PST)
+        with ESMTP id S1451794AbhCDAiJ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 3 Mar 2021 19:38:09 -0500
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F0BAC0613E9
+        for <linux-ide@vger.kernel.org>; Wed,  3 Mar 2021 16:35:49 -0800 (PST)
+Received: by mail-pf1-x42c.google.com with SMTP id a188so126663pfb.4
+        for <linux-ide@vger.kernel.org>; Wed, 03 Mar 2021 16:35:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=pt7Qq84uJD3NGZlgPolPLzdJ6R6eL8iRHjw/6ejjjHY=;
-        b=p4X5lvKDf27wpgOK3gj/2aFrVa7ILrUdNWOJa9IXI8ZMcsi3kCqTNE6PJwsCdiYZ5c
-         TxwU/hjZrTPfXuDK9xR4eROq3Ag62nxq3uMZPqNT2NZ6nD0dCHOvs1HOvX7FFabbpLm+
-         8WVGmI3y0+cTrG8DHNXrs5IkEL3Gc3CL8TNbW2T5fZW/+yz3Y/Nma4xMF0th4+I9lXUo
-         uX8gcolDO+D5n6BGVrYewUa2ki8EGjvNYZfhMeWxD7/6V5Y6GTG9G7We/CUHnHUoGO3e
-         6ISb/xL0U9Q8zpxkghTx8wO9CWlb/gEG+p2jL4HRZOKybs7i5eAsHgqTbsu0Zxa0iACn
-         NdqA==
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Rlj4D0v5bpekL9ZaI7FDQkL4vH4D+M9HhI76IRu/Vd8=;
+        b=vcidAvXUFJ5S3F/YYqF0IMaBhef7A9GhmSY50pMOvgDEDXJXVBEmw3Ag1eeyPR/Dh7
+         q3PK4MSEMxFsioI/cj5bI8w+OiqvsfnZ+47+p1/ymzKZXgZkM4x9K9Q3ijtr8STi20dS
+         48GpjPHezERblpAiwrVycGBbRDTlLUXSXn+Prkw1V6L1Q99DioRlHA5X7yfL441LVK4+
+         4NTrVzEG0eiRxOYMszBuNV2+7KsvBv+f2iCHeSSbKCw2+XKfwfL/lJwIpg1CYc46Qkph
+         7IHrkeXwpLU8TF/lnXGiA55aUitUBPA86uq7vOA2lpcFdl47RIjNS1EQRYg6t/4ylBo1
+         2mDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=pt7Qq84uJD3NGZlgPolPLzdJ6R6eL8iRHjw/6ejjjHY=;
-        b=tKIjty6a/t8zLOeOT4ryC32xNDyOD8Dek1WDdnVl7uo2r8aJy7wDFqjI6sarFOcUxa
-         dhsqGpCY59fvTEbESkorkJODl+ywaLefZjf9u1tIuOn7LahTq5HD4sZsKb34kFEYxl3U
-         xXY8FdXdph0TL3VvYkjTh4Ptx3Y2SJ2gg5mlwW6foz/OPJMc9aNa7H3WqiusQgPYdwYG
-         /hDxZZDiCBS5rGFnHGFZtpN7QnNTsLRa1O3lxCCaY1q4n5YCska9QK+9dIB/eK6g5tKi
-         hhBx2HLVSFGwbLsHYnAceHbVDrA8oPkxVjMdra3cVteMp6qbyBhnUEyqtAsSNUg68vEo
-         r5DQ==
-X-Gm-Message-State: AOAM532h0GOEzdskK7uMXyOR8tAZRKE6gk7j2SxQw14rEEGmILI0Lapg
-        mo1gBlYo/l0d5OzqVhWJlB5zof8IYRM=
-X-Google-Smtp-Source: ABdhPJz505TqHNlMWfMFMAWKMEVxII5n2Q4NZ2CI5tAncJnkZa1uHynNA+yYAJDm5fqRS/LCuKsL7g==
-X-Received: by 2002:a2e:8596:: with SMTP id b22mr151467lji.482.1614796637760;
-        Wed, 03 Mar 2021 10:37:17 -0800 (PST)
-Received: from [192.168.1.101] ([178.176.73.79])
-        by smtp.gmail.com with ESMTPSA id q3sm3226649ljb.64.2021.03.03.10.37.16
+        bh=Rlj4D0v5bpekL9ZaI7FDQkL4vH4D+M9HhI76IRu/Vd8=;
+        b=AM3pxyMhxhNUr7WJ6TjSpC8W9dOikOpGLXrKKEnj5sJVud7eBxviwr4CZGbxrXwEpO
+         zYKS2IohlD3QVxZOhEwGleqzuAugI6Q5qPkgHqyD3slwsHsoOGG9xOQMlkib7Qj1FOkc
+         uYIm+sOly0FKzexlvHGC8EbVdHWtdohcX2CafQT3Kv8n2dr8e72cdp+qM8OiSCfHhVSy
+         8dqdQMw0mwtpUvqsw0ImjzNxIcrSw8r0kiza7KvbukF9F1RuKOttbhesytjH5QJJZQT8
+         VzaRL17AMWdY19NwM27wpGBu4y0skiswk4BOLGogzXoIsLY3GhMn+HKYmCM0lc+RkjPo
+         VfIA==
+X-Gm-Message-State: AOAM531KClgUm5hHgLCR6Dm0g5AcsbhA8wXH/lnxsS1JB9azlSwejuaS
+        nr3m+6KYKvSuaxUWxoZd0RNt+g==
+X-Google-Smtp-Source: ABdhPJwRQAn94MhcX8TKlZS+MSRaKoYOW66JAkTdlFY0xdUVssxjuQJG7SXBUSlpXdVuyBdNO6bsYw==
+X-Received: by 2002:a63:c702:: with SMTP id n2mr1331072pgg.382.1614818148909;
+        Wed, 03 Mar 2021 16:35:48 -0800 (PST)
+Received: from ?IPv6:2600:380:7540:52b5:3f01:150c:3b2:bf47? ([2600:380:7540:52b5:3f01:150c:3b2:bf47])
+        by smtp.gmail.com with ESMTPSA id y8sm27901045pfe.36.2021.03.03.16.35.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Mar 2021 10:37:17 -0800 (PST)
-Subject: Re: Toshiba TC86C001 support
-To:     Christoph Hellwig <hch@lst.de>, linux-ide@vger.kernel.org,
-        linux-mips@vger.kernel.org
-References: <20210303072708.GA8575@lst.de>
-From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Message-ID: <98fb1689-0ae4-96a2-9e21-3d4178d5337d@gmail.com>
-Date:   Wed, 3 Mar 2021 21:37:15 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        Wed, 03 Mar 2021 16:35:48 -0800 (PST)
+Subject: Re: [PATCH] [v2] sata_dwc_460ex: Fix missing check in sata_dwc_isr
+To:     Dinghao Liu <dinghao.liu@zju.edu.cn>, kjlu@umn.edu
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210303073408.461-1-dinghao.liu@zju.edu.cn>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <0e734791-d008-eb93-c6f9-b054e9c6bb88@kernel.dk>
+Date:   Wed, 3 Mar 2021 17:35:46 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <20210303072708.GA8575@lst.de>
+In-Reply-To: <20210303073408.461-1-dinghao.liu@zju.edu.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -66,21 +66,14 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 3/3/21 10:27 AM, Christoph Hellwig wrote:
+On 3/3/21 12:34 AM, Dinghao Liu wrote:
+> The return value of ata_qc_from_tag() is checked in the whole
+> kernel except for two calls in sata_dwc_isr(), which may lead
+> to null-pointer-dereference. Add return value checks to avoid
+> such case.
 
-> a lot of te mips defconfig enable CONFIG_BLK_DEV_TC86C001, which is
+Applied, thanks.
 
-   Well, grep'ping in arch/mips/configs/ gave me a surprise! TC86C001
-is enabled in couple Malta configs and even in the Big Sur config, and
-not enabled in any TX39 or TX49 configs... :-/
+-- 
+Jens Axboe
 
-> a legacy ide driver that has no libata equivalent.  We plan to
-> phase out the legacy ide driver this year, so I'm wondering if this
-> hardware is still in use by anyone, and if yes how we can get a libata
-> driver for it?
-
-   There's hardly a lot of sense in using the Toshiba's PCI card on those
-platforms, so I think these configs should be easy to clean up of the TC86C001
-IDE option. :-)
-
-MBR, Sergei

@@ -2,64 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 446B132E587
-	for <lists+linux-ide@lfdr.de>; Fri,  5 Mar 2021 11:01:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A80A532F1E9
+	for <lists+linux-ide@lfdr.de>; Fri,  5 Mar 2021 18:55:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbhCEKAm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 5 Mar 2021 05:00:42 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45336 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229558AbhCEKAP (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 5 Mar 2021 05:00:15 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1491964ECF;
-        Fri,  5 Mar 2021 10:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1614938414;
-        bh=FOgtTrdDCEE26PV/Hl1URH07csPdNLIDlJ2AYc7h8ww=;
-        h=Date:From:To:Cc:Subject:From;
-        b=ZfG3ftniQGnEpTwnsBrwvnlRutQjhpfQhx4IpA77vRAKmucAqwLKGWU1JzyHZCJ6C
-         dlmD739IVcTRRk48Nni+FuOBZjYHhzyWGVdmqeZKxfMBRTP4Vdpi3TxmyvU+dS7zYm
-         Q14JB397bNcpuBgcPshYI2zMQhHcB6m0DEbSKNdbQNpQ1i2gQ9dbyHNCRSy/G6MrD7
-         rLEmXhR9Il2BSoIV4DNTixJv2nZN/7SpFZYRvjcmVzEa1JuVdu+lOKw7pOUiDKGYUQ
-         lZ1jImIxozKkcCTCUzo4DY/0hsREzAJxUC7vRmweOsegOtnieaY/0lZ178cqX4HzFF
-         E/LeOVPIz7ouw==
-Date:   Fri, 5 Mar 2021 04:00:12 -0600
-From:   "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        linux-hardening@vger.kernel.org
-Subject: [PATCH RESEND][next] ide: Fix fall-through warnings for Clang
-Message-ID: <20210305100012.GA142349@embeddedor>
+        id S229493AbhCERyq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 5 Mar 2021 12:54:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50260 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230052AbhCERy0 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 5 Mar 2021 12:54:26 -0500
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEE36C061574
+        for <linux-ide@vger.kernel.org>; Fri,  5 Mar 2021 09:54:25 -0800 (PST)
+Received: by mail-ua1-x92b.google.com with SMTP id v5so1046044uac.10
+        for <linux-ide@vger.kernel.org>; Fri, 05 Mar 2021 09:54:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=T4y7hsWkAfb8OBTEg3avGQFXXvthRmqSS1abQJErodQ=;
+        b=AD514f5Tm5Dxh1WbhGq6rClH3lh/at7tyteTTM3ZVUe5q/5x/dOzA+fpDkUm/wH5fh
+         YHr8758t1+4c3yMAoiA+vfjHxatX6B/n4Ty2aGMXW5KPTLQImsH3bY9QvIHLhUrdNgD0
+         PnbKcYejlODIj24cDBbdQGRHqSUlA8vOH3WoLRjtART1t2WBOXA2YvIT+nNzvgw5xJ0I
+         lQWBBULQvDLtUDzuwDpxPntyv2wrexVKqTFovdRyc4GcB451bYWLO57TqrO+xHIgnfx8
+         MOgBaztbhKkcqjLZY4T5XM/Q/i2reHGMqmdkW+Nl9uhbIAwPFilAoHEccSB0nxxI7/gX
+         0RPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=T4y7hsWkAfb8OBTEg3avGQFXXvthRmqSS1abQJErodQ=;
+        b=aDGX617kg2xlcfPHI3s68VhIcVtB8FrcoUEhs3VKLKCFJUa5Xe3405kQPI5Xpl4ln1
+         ygdoyLDAr6QDWTpNKFACLvxzVbW0LoL+NrvohMk4bOAofE1F9HYuz8aJgK28WVTAaFcR
+         /GTMeqQgwc2cyDogPf2uf+XVqQGFpuKR40PIm8A47xjbLdtbPg3gNAePjJpbuY+WIhjO
+         Gl1JfIViGGQPeahbxM3ED3IUxvqKHWRllRCw1ukVNcQxT0k6QwLKqh4GOpF6haJFdNxF
+         SAaQ5w5fXHgABRs9ba2BQrmCQUoBpAxqmCmaFl1ioJI6RFIKQyr865zp5xEtryUJBFgD
+         qdHg==
+X-Gm-Message-State: AOAM530OT/liIOvg4LZtUsbNcHzxIk/aSKpoe9yyhe1pNqenOKzFtvft
+        Zq3hZLCbACL1dG38B/s8lJX3CcKkk/MOl4wEpGo=
+X-Google-Smtp-Source: ABdhPJyaG2Hnot7oCcA5fjdlyGS0mS+j8gHt4/QUYCBhBGARCVp2CmLZQmrqcT7X14018I38SFuNa0lPW/iWEeftDLg=
+X-Received: by 2002:ab0:2142:: with SMTP id t2mr6994548ual.102.1614966865214;
+ Fri, 05 Mar 2021 09:54:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Received: by 2002:ab0:7c49:0:0:0:0:0 with HTTP; Fri, 5 Mar 2021 09:54:24 -0800 (PST)
+From:   Fofo Coucou <fofocoucou.fc@gmail.com>
+Date:   Fri, 5 Mar 2021 09:54:24 -0800
+Message-ID: <CADeoM3dgHVciptt7STyPuZEdQv+PAx3SOmpN5KN9dYzfaC7DOg@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-In preparation to enable -Wimplicit-fallthrough for Clang, fix a warning
-by explicitly adding a break statement instead of letting the code fall
-through to the next case.
-
-Link: https://github.com/KSPP/linux/issues/115
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/ide/siimage.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ide/siimage.c b/drivers/ide/siimage.c
-index 198847488cc6..c190dc6dfb50 100644
---- a/drivers/ide/siimage.c
-+++ b/drivers/ide/siimage.c
-@@ -493,6 +493,7 @@ static int init_chipset_siimage(struct pci_dev *dev)
- 	case 0x30:
- 		/* Clocking is disabled, attempt to force 133MHz clocking. */
- 		sil_iowrite8(dev, tmp & ~0x20, scsc_addr);
-+		break;
- 	case 0x10:
- 		/* On 133Mhz clocking. */
- 		break;
--- 
-2.27.0
-
+Hi
+You received my previous message? I contacted you before but the
+message failed back, so i decided to write again. Please confirm if
+you receive this so that i can proceed.
+Regards,
+petry

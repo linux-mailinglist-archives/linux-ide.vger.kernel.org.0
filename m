@@ -2,71 +2,63 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B5633B1AB
-	for <lists+linux-ide@lfdr.de>; Mon, 15 Mar 2021 12:47:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DE6FE33C11D
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Mar 2021 17:04:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229703AbhCOLrF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 15 Mar 2021 07:47:05 -0400
-Received: from mxout04.lancloud.ru ([45.84.86.114]:37714 "EHLO
-        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229813AbhCOLq5 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 15 Mar 2021 07:46:57 -0400
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru 08E0B212ED8E
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-From:   Sergey Shtylyov <s.shtylyov@omprussia.ru>
-Subject: [PATCH] pata_rb532_cf: fix deferred probing
-To:     Jens Axboe <axboe@kernel.dk>, <linux-ide@vger.kernel.org>
-Organization: Open Mobile Platform, LLC
-Message-ID: <771ced55-3efb-21f5-f21c-b99920aae611@omprussia.ru>
-Date:   Mon, 15 Mar 2021 14:46:53 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S234027AbhCOQDr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 15 Mar 2021 12:03:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43452 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230247AbhCOQDR (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 15 Mar 2021 12:03:17 -0400
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14D95C061762
+        for <linux-ide@vger.kernel.org>; Mon, 15 Mar 2021 09:03:17 -0700 (PDT)
+Received: by mail-yb1-xb33.google.com with SMTP id u3so33738695ybk.6
+        for <linux-ide@vger.kernel.org>; Mon, 15 Mar 2021 09:03:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=3+ww5Yzbg92TgKgh9x7XkqByPZC12NmpSrqavo1/r1s=;
+        b=PiIvHS84FTy2LKcsQi3Nwy69hijvHPIkJGGdfLEDVP7xtI47NWSElMWovkinO+364N
+         /cbihpgprSeknf6fUxieRLEejFph28s4wNpEoAMw9/BDukXatQhHNuekqn6zR0I6xz1z
+         BE5/LTx5+qGnfvz6nYzDxi0PBGiYb2jKRaz6BkH0wOUzsczJqP8GpjPhuJhNAriBWeYe
+         FtqcWkpy/b9zTxfW40Y9aUeTpXnTpsgXhVEO8gpAU6OzSlfzgUI/7XzCf2Q2wyOKnWqF
+         +AtL+1Wg8sZutGoRw1AcL+YRrcNwKJCHaZ8BH8vG5aWvCa2rSO/53IXDyJ5vrIqLTgjy
+         Bv6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=3+ww5Yzbg92TgKgh9x7XkqByPZC12NmpSrqavo1/r1s=;
+        b=lbQCWVyPsvmsWNTDGmKxmtjlZNj9AysIWaeRV4twWzeFgUEyP5QPlGjz9tXDgafPJJ
+         S2V/iDHT0OjWx/cgnAj0SwoQgBS9bq6kOL0z6tAZIIcXMTAfScung0zjhYlxG3I13wr0
+         wuLia5xUXmYomdS+hpTv0y99imDR6318kXplSPzte5ZwjBkxk1Z8rcEV51c7WyKgxlJ6
+         U5Zy12MxdxWtvGFcz7y+IlAtbZwjpBvgNuKsqYoV4B2FOZxZRKupUs1cEpdKvKeagz2h
+         bgrSxAIausRbCarpUwgMJ6HrhBzYja5FAS2X1jYuM3n9oh1UQBJz2HwMc9VcZAemNl3h
+         CWqA==
+X-Gm-Message-State: AOAM533vxvKfpA9sLeJQWweT6l/IY79qxXvsHCqsuUoE8DP9ZhpgN36H
+        0NEAGyEi2oG29DMXq+lLeQfKSwkmuBYjpYrBmSw=
+X-Google-Smtp-Source: ABdhPJz8Uz7SFURKDL1zQNEdyx93eqe7JLjiBxXJg2KpgKJUGO27pQgwpdpl/pQraL85ro832p1dP+rBJBymIWJzj08=
+X-Received: by 2002:a25:ab32:: with SMTP id u47mr604925ybi.46.1615824196327;
+ Mon, 15 Mar 2021 09:03:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
- LFEX1908.lancloud.ru (fd00:f066::208)
+Received: by 2002:a81:68b:0:0:0:0:0 with HTTP; Mon, 15 Mar 2021 09:03:15 -0700 (PDT)
+Reply-To: chrrismark11@yahoo.com
+From:   "MR.CHRIS MARK" <micheallamberson5@gmail.com>
+Date:   Mon, 15 Mar 2021 17:03:15 +0100
+Message-ID: <CAB5+k-8zSnzaOPJzPzGMmsk7SFxp-YUiDEaBvciUXsfugOzUZg@mail.gmail.com>
+Subject: Re:GreetinGs
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The driver overrides the error codes returned by platform_get_irq() to
--ENOENT, so if it returns -EPROBE_DEFER, the driver would fail the probe
-permanently instead of the deferred probing. Switch to propagating the
-error code upstream, still checking/overriding IRQ0 as libata regards it
-as "no IRQ" (thus polling) anyway...
+-- 
+Hello,
+             I have a project that will profit you and I, please reply
+ASAP with your Names and Mobile Phone for full details.
 
-Fixes: 9ec36cafe43b ("of/irq: do irq resolution in platform_get_irq")
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omprussia.ru>
 
----
-This patch is against the 'master' branch of Jens Axboe's 'linux-block.git'
-repo.
-
-drivers/ata/pata_rb532_cf.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-Index: linux-block/drivers/ata/pata_rb532_cf.c
-===================================================================
---- linux-block.orig/drivers/ata/pata_rb532_cf.c
-+++ linux-block/drivers/ata/pata_rb532_cf.c
-@@ -115,10 +115,12 @@ static int rb532_pata_driver_probe(struc
- 	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq <= 0) {
-+	if (irq < 0) {
- 		dev_err(&pdev->dev, "no IRQ resource found\n");
--		return -ENOENT;
-+		return irq;
- 	}
-+	if (!irq)
-+		return -EINVAL;
- 
- 	gpiod = devm_gpiod_get(&pdev->dev, NULL, GPIOD_IN);
- 	if (IS_ERR(gpiod)) {
+MR.CHRIS MARK

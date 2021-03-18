@@ -2,61 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1704934013F
-	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99FE634013E
+	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbhCRIwP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S229806AbhCRIwP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Thu, 18 Mar 2021 04:52:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38148 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229806AbhCRIv5 (ORCPT
+        with ESMTP id S229863AbhCRIv5 (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Mar 2021 04:51:57 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F38FC06174A
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:51:56 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id b2-20020a7bc2420000b029010be1081172so2849761wmj.1
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:51:56 -0700 (PDT)
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8763DC06175F
+        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:51:57 -0700 (PDT)
+Received: by mail-wm1-x333.google.com with SMTP id r15-20020a05600c35cfb029010e639ca09eso4913260wmq.1
+        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:51:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=oxZxF4hq2WUxPEWONl0C36ILOQnwGtK5Kgu+3CdOvGE=;
-        b=jgT7ilJ84tK2lz/jYCrcTsFWXdIQqjFrcSZO+wuwNCAxhhzUVWginn5lDvgg4pwc77
-         Rv44k5Pr08EeK23LgoIfQplCHraMOTZq4MGNYwJwEDTpECcqWBMrIXyRj+f6gqjCyyzC
-         TeY59hmaF6eLpObK8nZyr6KDNHHTELki6neenOBxx6cJgBqLnQ1Bl1nFsAVx6gQFLp57
-         W0kyqEL1cvI7M0lpJoOkLrpkRCClWTmBvCu8wYJTo/wY9hlGkh2MA8kj/CmDn9kP8YX3
-         rCPNVUEZTA76WCIoyPgXBnxdushlS2CsOGQtZwLohO4WTDZJ/zrt5HYaDAn3pQ+U0LCt
-         AMSw==
+        bh=aoLGrjaA86gEYNhPzBdhJFKTeunMjqb/nCBdLbMyrRo=;
+        b=P7fYXWggStTWJ87VH6ccWK9NEZNIsOaKORnKXyLJTqXez6COXfwcLnSnSE+ursORem
+         W2K+IED0ZIE7OoVpSVjUgHyif+UXHFSe/vVCviNpSRD5VdN4nxhNlXQchP5VBu8WOmqx
+         ViY3LKbNm3J3iDcxt1KfmQ/K9pirPDC93Ml1ualQCpOsII0L/dZ6cCXdpRy17M1DDDc8
+         ZIz1EhyDpnx4aD+irzAB3Lh9Yhwgt4WfWxnovtsk/Yjubor6xTWmTW5hlvgMk32Z1a5y
+         JywumIFxihRXZPJ3fpW5wWSLMncKmHSn+qsTcastNFZmgW62JUeaKxRhTxqCPGWi1EtX
+         LUOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=oxZxF4hq2WUxPEWONl0C36ILOQnwGtK5Kgu+3CdOvGE=;
-        b=AyJD8jIzBfvmk6gjy4qnVFcubT/siAEx9J2R/StnI+hQq37QSfGa7tjzUVvE+1csNe
-         y04JDGo1AkL3HoaeAM6JTQ86uxtQz9RXeHktQL5ZcnC6Qzid48AmMb3hMAXvwB3YYDx7
-         cJoq2BMLjGKRIDSNfn8t6VtS4XCig27o++3YEkv+Bq7oeGcCHpPbswsL71bQK8Aw0ggm
-         C0XCwvmAqMd7hMWEP6m18UQAG6BKmwicDAtRyOdp4Hz0CjWTWw7luy24R319wEDlLoaf
-         YniilwtUhZC4URJXgN3nur8GvlQgIe20Vtw7Ur587179bcD5y2MxpuPK64yH4mI3XwSR
-         o5Ag==
-X-Gm-Message-State: AOAM532JEuPuEzxANjC/g/qKR9VdFQ0MTpgJVfJWNNzHSku3ZHL1opx+
-        23WZtI9e0TLSvf1NRuukLFX13w==
-X-Google-Smtp-Source: ABdhPJwgIahBU2bvMS81hRPmVLgu9kQbD/3kXrFawRNphy1r7IwfrJ1vt+mGHm7VMPVbrmjhqKuc9g==
-X-Received: by 2002:a7b:cb89:: with SMTP id m9mr2554933wmi.27.1616057515445;
-        Thu, 18 Mar 2021 01:51:55 -0700 (PDT)
+        bh=aoLGrjaA86gEYNhPzBdhJFKTeunMjqb/nCBdLbMyrRo=;
+        b=pEAXovLbSUe+vhS3AU3mTKs4PwK/XDm3qrFhOIbROanRhvxbGXOgAsOvdPNSWKtMf3
+         PHp3fCtGABI3z7Gy8g0qWSXlc0RoY5Ik9SSX5i84zPgH/9p8+iQhRFZkKgeHZ1t8bq+7
+         ljFXR2k3Mhg+Pt9owGUPnxqduO43FPCDikiUkZKuvkV1NPbjbr1npotXRKSKJTwvk29G
+         hMgBnaMkbYQYenr6Mae2GmoP3727wAKInOYU+lRZ2u/A1a2UFKapMgvTT5PsAeZiEGeP
+         RLlKQoZehN2erIEecmzqV/pPLx21FspzsE9deUeJsLo/WSlps8e5h2wF7dsj8CcxnhXk
+         /CjA==
+X-Gm-Message-State: AOAM533TdassQ9o/VCBPWGeqaaG5owocmxRyOfd/JnpDu/9v4ffo+ijp
+        22OB6H4k+cods7hVmMbfDINwXosApuowvA==
+X-Google-Smtp-Source: ABdhPJwSvksHLUPPKG5u0cLbB8259uYmWTJcgL4zfB+XBygfRMGsA3fYXZfFeHbUs+uqn4X5byrctw==
+X-Received: by 2002:a1c:6309:: with SMTP id x9mr2547884wmb.62.1616057516258;
+        Thu, 18 Mar 2021 01:51:56 -0700 (PDT)
 Received: from dell.default ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.51.54
+        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.51.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 18 Mar 2021 01:51:55 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Andre Hedrick <andre@linux-ide.org>,
-        Lionel Bouton <Lionel.Bouton@inet6.fr>,
-        Vojtech Pavlik <vojtech@suse.cz>,
-        "L.C. Chang" <lcchang@sis.com.tw>, linux-ide@vger.kernel.org
-Subject: [PATCH 03/15] ata: pata_sis: Remove superfluous param description and supply another
-Date:   Thu, 18 Mar 2021 08:51:38 +0000
-Message-Id: <20210318085150.3131936-4-lee.jones@linaro.org>
+        Alan Cox <alan@lxorguk.ukuu.org.uk>,
+        Torben Mathiasen <torben.mathiasen@hp.com>,
+        linux-ide@vger.kernel.org
+Subject: [PATCH 04/15] ata: pata_triflex: Repair some misnamed functions and fix some param descriptions
+Date:   Thu, 18 Mar 2021 08:51:39 +0000
+Message-Id: <20210318085150.3131936-5-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210318085150.3131936-1-lee.jones@linaro.org>
 References: <20210318085150.3131936-1-lee.jones@linaro.org>
@@ -68,40 +67,44 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_sis.c:124: warning: Excess function parameter 'deadline' description in 'sis_133_cable_detect'
- drivers/ata/pata_sis.c:529: warning: Function parameter or member 'mask' not described in 'sis_133_mode_filter'
+ drivers/ata/pata_triflex.c:143: warning: expecting prototype for triflex_dma_start(). Prototype was for triflex_bmdma_start() instead
+ drivers/ata/pata_triflex.c:159: warning: Function parameter or member 'qc' not described in 'triflex_bmdma_stop'
+ drivers/ata/pata_triflex.c:159: warning: expecting prototype for triflex_dma_stop(). Prototype was for triflex_bmdma_stop() instead
 
 Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Andre Hedrick <andre@linux-ide.org>
-Cc: Lionel Bouton <Lionel.Bouton@inet6.fr>
-Cc: Vojtech Pavlik <vojtech@suse.cz>
-Cc: "L.C. Chang" <lcchang@sis.com.tw>
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: Torben Mathiasen <torben.mathiasen@hp.com>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/pata_sis.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_triflex.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/pata_sis.c b/drivers/ata/pata_sis.c
-index d7cd39a9888a9..b5b764e18adfc 100644
---- a/drivers/ata/pata_sis.c
-+++ b/drivers/ata/pata_sis.c
-@@ -114,7 +114,6 @@ static int sis_port_base(struct ata_device *adev)
+diff --git a/drivers/ata/pata_triflex.c b/drivers/ata/pata_triflex.c
+index 2a4d38b980261..8a033598e7e17 100644
+--- a/drivers/ata/pata_triflex.c
++++ b/drivers/ata/pata_triflex.c
+@@ -129,7 +129,7 @@ static void triflex_set_piomode(struct ata_port *ap, struct ata_device *adev)
+ }
+ 
  /**
-  *	sis_133_cable_detect - check for 40/80 pin
-  *	@ap: Port
-- *	@deadline: deadline jiffies for the operation
+- *	triflex_dma_start	-	DMA start callback
++ *	triflex_bmdma_start	-	DMA start callback
+  *	@qc: Command in progress
   *
-  *	Perform cable detection for the later UDMA133 capable
-  *	SiS chipset.
-@@ -521,6 +520,7 @@ static void sis_133_set_dmamode (struct ata_port *ap, struct ata_device *adev)
+  *	Usually drivers set the DMA timing at the point the set_dmamode call
+@@ -146,9 +146,8 @@ static void triflex_bmdma_start(struct ata_queued_cmd *qc)
+ }
+ 
  /**
-  *	sis_133_mode_filter - mode selection filter
-  *	@adev: ATA device
-+ *	@mask: received mask to manipulate and pass back
+- *	triflex_dma_stop	-	DMA stop callback
+- *	@ap: ATA interface
+- *	@adev: ATA device
++ *	triflex_bmdma_stop	-	DMA stop callback
++ *	@qc: ATA command
   *
-  *	Block UDMA6 on devices that do not support it.
-  */
+  *	We loaded new timings in dma_start, as a result we need to restore
+  *	the PIO timings in dma_stop so that the next command issue gets the
 -- 
 2.27.0
 

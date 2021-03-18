@@ -2,59 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3C38340146
-	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DEE334014B
+	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbhCRIwT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S229944AbhCRIwT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Thu, 18 Mar 2021 04:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229905AbhCRIwF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Mar 2021 04:52:05 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A123C06175F
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id r10-20020a05600c35cab029010c946c95easo2828415wmq.4
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
+        with ESMTP id S229913AbhCRIwG (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Mar 2021 04:52:06 -0400
+Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CD0CC06174A
+        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:06 -0700 (PDT)
+Received: by mail-wm1-x336.google.com with SMTP id b2-20020a7bc2420000b029010be1081172so2850043wmj.1
+        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=VwGRt156EdlfIcuKCMjM9ajk7y2qH3FZ5j2kkdApNlI=;
-        b=ZNLc1rmscy9Ufcs8ax9kjjJYActKRhTxjQl+CJeo5Z+wXmHIWr58HGrFeIxK17WLNJ
-         ZZeK53R+VbzfyDMJroa4R25E4EsQ0NM3ceZsYj9Uul2llUlIGdqxNXtVJB1EWhOKRiyX
-         k8qcxjdbyr5LrkIVK6p6HYGTDydAtDRS4WfYTWX4d4qw4bNn9WYXvx6S0Bnurw3OhgHt
-         vhNWDgyWjTGMXTVl4EZKOe3yhXtKspvt1mxQvcicD0f3XINahUn+xk5OTZRifJX6Z0SW
-         MgKXZAERdMrA8OeQ4FwLFeOZ5RjOYiw34gObUDKFthl24OsaLgffdrVbOMtVm1E96KQk
-         c8LQ==
+        bh=8THP7/U46oj2AdA7yORlA1l0cGJIRsmbqUZT9U01N10=;
+        b=owBn+xS4OiRerAuKPY02l2lKcDg4A7rfCxSZlOaV5n+p4Anewb0qiJgnRGois5rJ53
+         otiPAUHyB1hiJmM966DeXNQGH3Y/Vl5TNAyPGd9mNWF7yhCRp3LL9z4zkgLNfj40onmH
+         miY9VIe/aPvbVgMkUH65Qgxe8KEtSs9fkM3dMCrXUIpohGmfGfQvnKt/kVI0O8sZ2xDA
+         zVbl/T/SpSUdCh8n5+yuA3OZQfxRIBucBvs9ZHClC/zyv05YgKQla+7hTZLfoegwNwbr
+         8FDQsG7hBlEd6Fd42wAih5yRSgbFXMGjnHhTEbjb+RqqhmGBio7PbeRT1j4UlWgRWvQ0
+         tnfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=VwGRt156EdlfIcuKCMjM9ajk7y2qH3FZ5j2kkdApNlI=;
-        b=GjJPx1vcFSC8NW4R3KK+M0jZDYDxW8gai+7HzI6/WMc5BB/H4CILwImolVcqQfKUOV
-         8yNseRgJ5W0UPxvWiYIDcWorUwzQipmM+LsVu+5t7DDr+M4vn53s08DFQPT34Ef8aMxv
-         HJNAwTAXbbjlPYBWoHYU/u3EVmP0lqJ37R+1r0+78QraEWYiD+ua7tG9fDKeqIxmuwRG
-         QIVuBMoKldaEILO456qyBJxCc8SeAJok0Adk4kGgKW1FsIczx10piCrXwqPmKjHpl0cb
-         8i9BbGzllx7c/NDbWw8JjAVfRVAPd/G9wMo/dwuf0aNmcpHMthMY7GLTyteokX0qvxvZ
-         MWqw==
-X-Gm-Message-State: AOAM531b5W6iFcGorJRvvBRS8mTKbDb51jfX5Gm5yeVhxs2YTS2hGLuX
-        R3sfW2cY074QBAAVUJKysEJhig==
-X-Google-Smtp-Source: ABdhPJxZI+GUVBWWZ9xe0iTVmppX9sAmLpMzxVjISl/r1/8XtXHftByBvBuu6UbNTJ2x/RvJ+HvC8g==
-X-Received: by 2002:a05:600c:4fc2:: with SMTP id o2mr2467016wmq.25.1616057524149;
-        Thu, 18 Mar 2021 01:52:04 -0700 (PDT)
+        bh=8THP7/U46oj2AdA7yORlA1l0cGJIRsmbqUZT9U01N10=;
+        b=sJaydDKqnRH/NqwbRSeLtcs+JRRQLDpAyL4GU/DVimxeN3fQpR+AkrZ3pJgodqCnEW
+         fhuIpBcGan+YPRX1wDCa2kFxoMqbZtl4hrEVZyl3ytoLKfyoiBIiORNCOeQI6jN6f6wU
+         pwwCmexlj7C6SGknLtknDWb+gZh6AzbhIks9XZnCFdCBN41mtyI7BgNn13/88kR9Hb2w
+         9Siz3B8EQ+DopAONLjznCR1/e3yLSw8oTPlTmYcORGiWuMssdhGLi0Zwe0x9CkNyWS+r
+         9yrHsYLTQ0KE0MKDuq0FzFXUp++XMpnEYpVP0uvzw6AYuXPh3zG4FYuGX54F3QycwzoV
+         fGiw==
+X-Gm-Message-State: AOAM531HVWqyON2/3N1D2KQ961FZx9IIgNTjmT+jBb68AJ4MzyruyVyp
+        ZHl7Inmt8LUL/wG55bknTAyOTA==
+X-Google-Smtp-Source: ABdhPJx9R9zd3as8Zx677i6YSfsUD2ksgApi6t1IlIfShE3hBRcdI0WVmZkNaqTIURd+qmu0fXnifg==
+X-Received: by 2002:a05:600c:3541:: with SMTP id i1mr2521821wmq.97.1616057525014;
+        Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
 Received: from dell.default ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.52.03
+        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.52.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Mar 2021 01:52:03 -0700 (PDT)
+        Thu, 18 Mar 2021 01:52:04 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Mark Lord <mlord@pobox.com>,
-        ALWAYS copy <linux-ide@vger.kernel.org>
-Subject: [PATCH 13/15] ata: sata_mv: Fix misnaming of 'mv_bmdma_stop()'
-Date:   Thu, 18 Mar 2021 08:51:48 +0000
-Message-Id: <20210318085150.3131936-14-lee.jones@linaro.org>
+        linux-ide@vger.kernel.org
+Subject: [PATCH 14/15] ata: libata-acpi: Fix function name and provide description for 'prev_gtf'
+Date:   Thu, 18 Mar 2021 08:51:49 +0000
+Message-Id: <20210318085150.3131936-15-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210318085150.3131936-1-lee.jones@linaro.org>
 References: <20210318085150.3131936-1-lee.jones@linaro.org>
@@ -66,30 +65,37 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/sata_mv.c:1929: warning: expecting prototype for mv_bmdma_stop(). Prototype was for mv_bmdma_stop_ap() instead
+ drivers/ata/libata-acpi.c:493: warning: expecting prototype for ata_acpi_gtm_xfermode(). Prototype was for ata_acpi_gtm_xfermask() instead
+ drivers/ata/libata-acpi.c:648: warning: Function parameter or member 'prev_gtf' not described in 'ata_acpi_run_tf'
 
 Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Mark Lord <mlord@pobox.com>
-Cc: ALWAYS copy <linux-ide@vger.kernel.org>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/sata_mv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-acpi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index eafca46d8feb4..bd23d63435cb4 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -1917,7 +1917,7 @@ static void mv_bmdma_start(struct ata_queued_cmd *qc)
+diff --git a/drivers/ata/libata-acpi.c b/drivers/ata/libata-acpi.c
+index 224e3486e9a5d..7a7d6642edcc5 100644
+--- a/drivers/ata/libata-acpi.c
++++ b/drivers/ata/libata-acpi.c
+@@ -476,7 +476,7 @@ static int ata_dev_get_GTF(struct ata_device *dev, struct ata_acpi_gtf **gtf)
  }
  
  /**
-- *	mv_bmdma_stop - Stop BMDMA transfer
-+ *	mv_bmdma_stop_ap - Stop BMDMA transfer
-  *	@ap: port to stop
+- * ata_acpi_gtm_xfermode - determine xfermode from GTM parameter
++ * ata_acpi_gtm_xfermask - determine xfermode from GTM parameter
+  * @dev: target device
+  * @gtm: GTM parameter to use
   *
-  *	Clears the ATA_DMA_START flag in the bmdma control register
+@@ -624,6 +624,7 @@ static int ata_acpi_filter_tf(struct ata_device *dev,
+  * ata_acpi_run_tf - send taskfile registers to host controller
+  * @dev: target ATA device
+  * @gtf: raw ATA taskfile register set (0x1f1 - 0x1f7)
++ * @prev_gtf: previous command
+  *
+  * Outputs ATA taskfile to standard ATA host controller.
+  * Writes the control, feature, nsect, lbal, lbam, and lbah registers.
 -- 
 2.27.0
 

@@ -2,58 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DEFB834014C
-	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C38340146
+	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229942AbhCRIwT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S229934AbhCRIwT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Thu, 18 Mar 2021 04:52:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38214 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229903AbhCRIwF (ORCPT
+        with ESMTP id S229905AbhCRIwF (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Mar 2021 04:52:05 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3D7C06175F
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:04 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id x16so4605034wrn.4
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:04 -0700 (PDT)
+Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A123C06175F
+        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
+Received: by mail-wm1-x335.google.com with SMTP id r10-20020a05600c35cab029010c946c95easo2828415wmq.4
+        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=LyiarI8XI+wr4cdrUP10jrX5TiM2u+Q08u5Edv+SeZQ=;
-        b=UFMJn5wdi36JaAz2Mtjh0Yn3v4pMvV51lK4rgktPR83seHiknusOzEY081nZ0utH9E
-         XsBjfmNGLBWwL3IwX/rHlehaL5IOMB2hwQ93D6exxnriB3HyIzgE/6VqvH6oizTh6sIa
-         3zJ0kloQGxi/vSZOQejyRMLGFC+hURMKXakf5Dt96K3XV+uhioLxhl6QZXadfVAPX4p1
-         /AlXszKtCNVLnxxMgOWXc7FPboidwGsAsm/8HIGZ2si/gIL55PqndogUsMPaKFiH3Tcs
-         87tSbTDNEz6f7vxk1Iq+05iVhdNmxWoIBxRAWK5T6riqKsGZgshzwgBsU83NAyR4rO9f
-         TzRw==
+        bh=VwGRt156EdlfIcuKCMjM9ajk7y2qH3FZ5j2kkdApNlI=;
+        b=ZNLc1rmscy9Ufcs8ax9kjjJYActKRhTxjQl+CJeo5Z+wXmHIWr58HGrFeIxK17WLNJ
+         ZZeK53R+VbzfyDMJroa4R25E4EsQ0NM3ceZsYj9Uul2llUlIGdqxNXtVJB1EWhOKRiyX
+         k8qcxjdbyr5LrkIVK6p6HYGTDydAtDRS4WfYTWX4d4qw4bNn9WYXvx6S0Bnurw3OhgHt
+         vhNWDgyWjTGMXTVl4EZKOe3yhXtKspvt1mxQvcicD0f3XINahUn+xk5OTZRifJX6Z0SW
+         MgKXZAERdMrA8OeQ4FwLFeOZ5RjOYiw34gObUDKFthl24OsaLgffdrVbOMtVm1E96KQk
+         c8LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=LyiarI8XI+wr4cdrUP10jrX5TiM2u+Q08u5Edv+SeZQ=;
-        b=ku2CSo52c8bJXe+5rUeeVQBqSdOmcyuFLHLaNZ58y9nrLUTSew9rBWpN1J7bxFjeUW
-         15a0LBSfE+Z6ePuAr0jpRsNh2Br+Q51BqFyfwvNU+O/NU80f9b9cWGgbfyDNsQdFlVFy
-         FdIA5QzaDQQHpeBdMoSoyIbc1Bd/YWsLQK26Sv8CeGiSdQ7LuopWdDUpEqEv1wUxYFwE
-         9BrLGfaSzU1q/iTXfc/NCyKMO/reXfQMNe7mZODVQ4GPEyqjmSCaBHnmMYoeAYoGHEYa
-         5vlwrKRM4zQ1O11xfz7moQvWz2hIJKAaEw2rtBJndrysPEuNUET9dmqGVVxOe8RTPebl
-         w8+w==
-X-Gm-Message-State: AOAM5331kmNbjZfCh9ZZkkKAgh058DWkR8LHUW+KkAk6n+ZvF0dNKz9a
-        m5WBi+jtEEYCUNXazMHyurhe5g==
-X-Google-Smtp-Source: ABdhPJyxfLSduApCEQu/3N3aXkvQ4WqyvhVfStfESZlS6GN8wfK8Blsp+2pYr2Wqw5RKEWPWEdVMVg==
-X-Received: by 2002:a05:6000:11cd:: with SMTP id i13mr8292296wrx.417.1616057523266;
-        Thu, 18 Mar 2021 01:52:03 -0700 (PDT)
+        bh=VwGRt156EdlfIcuKCMjM9ajk7y2qH3FZ5j2kkdApNlI=;
+        b=GjJPx1vcFSC8NW4R3KK+M0jZDYDxW8gai+7HzI6/WMc5BB/H4CILwImolVcqQfKUOV
+         8yNseRgJ5W0UPxvWiYIDcWorUwzQipmM+LsVu+5t7DDr+M4vn53s08DFQPT34Ef8aMxv
+         HJNAwTAXbbjlPYBWoHYU/u3EVmP0lqJ37R+1r0+78QraEWYiD+ua7tG9fDKeqIxmuwRG
+         QIVuBMoKldaEILO456qyBJxCc8SeAJok0Adk4kGgKW1FsIczx10piCrXwqPmKjHpl0cb
+         8i9BbGzllx7c/NDbWw8JjAVfRVAPd/G9wMo/dwuf0aNmcpHMthMY7GLTyteokX0qvxvZ
+         MWqw==
+X-Gm-Message-State: AOAM531b5W6iFcGorJRvvBRS8mTKbDb51jfX5Gm5yeVhxs2YTS2hGLuX
+        R3sfW2cY074QBAAVUJKysEJhig==
+X-Google-Smtp-Source: ABdhPJxZI+GUVBWWZ9xe0iTVmppX9sAmLpMzxVjISl/r1/8XtXHftByBvBuu6UbNTJ2x/RvJ+HvC8g==
+X-Received: by 2002:a05:600c:4fc2:: with SMTP id o2mr2467016wmq.25.1616057524149;
+        Thu, 18 Mar 2021 01:52:04 -0700 (PDT)
 Received: from dell.default ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.52.02
+        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.52.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Mar 2021 01:52:02 -0700 (PDT)
+        Thu, 18 Mar 2021 01:52:03 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH 12/15] ata: pata_cs5530: Fix misspelling of 'cs5530_init_one()'s 'pdev' param
-Date:   Thu, 18 Mar 2021 08:51:47 +0000
-Message-Id: <20210318085150.3131936-13-lee.jones@linaro.org>
+        Mark Lord <mlord@pobox.com>,
+        ALWAYS copy <linux-ide@vger.kernel.org>
+Subject: [PATCH 13/15] ata: sata_mv: Fix misnaming of 'mv_bmdma_stop()'
+Date:   Thu, 18 Mar 2021 08:51:48 +0000
+Message-Id: <20210318085150.3131936-14-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20210318085150.3131936-1-lee.jones@linaro.org>
 References: <20210318085150.3131936-1-lee.jones@linaro.org>
@@ -65,29 +66,30 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ata/pata_cs5530.c:283: warning: Function parameter or member 'pdev' not described in 'cs5530_init_one'
- drivers/ata/pata_cs5530.c:283: warning: Excess function parameter 'dev' description in 'cs5530_init_one'
+ drivers/ata/sata_mv.c:1929: warning: expecting prototype for mv_bmdma_stop(). Prototype was for mv_bmdma_stop_ap() instead
 
 Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Mark Lord <mlord@pobox.com>
+Cc: ALWAYS copy <linux-ide@vger.kernel.org>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ata/pata_cs5530.c | 2 +-
+ drivers/ata/sata_mv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_cs5530.c b/drivers/ata/pata_cs5530.c
-index ad75d02b6dacf..a1b4aaccaa50a 100644
---- a/drivers/ata/pata_cs5530.c
-+++ b/drivers/ata/pata_cs5530.c
-@@ -271,7 +271,7 @@ static int cs5530_init_chip(void)
+diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+index eafca46d8feb4..bd23d63435cb4 100644
+--- a/drivers/ata/sata_mv.c
++++ b/drivers/ata/sata_mv.c
+@@ -1917,7 +1917,7 @@ static void mv_bmdma_start(struct ata_queued_cmd *qc)
+ }
  
  /**
-  *	cs5530_init_one		-	Initialise a CS5530
-- *	@dev: PCI device
-+ *	@pdev: PCI device
-  *	@id: Entry in match table
+- *	mv_bmdma_stop - Stop BMDMA transfer
++ *	mv_bmdma_stop_ap - Stop BMDMA transfer
+  *	@ap: port to stop
   *
-  *	Install a driver for the newly found CS5530 companion chip. Most of
+  *	Clears the ATA_DMA_START flag in the bmdma control register
 -- 
 2.27.0
 

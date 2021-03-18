@@ -2,115 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C9374340149
-	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 09:52:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 554D73402C1
+	for <lists+linux-ide@lfdr.de>; Thu, 18 Mar 2021 11:09:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229844AbhCRIwU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 18 Mar 2021 04:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38240 "EHLO
+        id S229844AbhCRKJN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 18 Mar 2021 06:09:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229919AbhCRIwH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Mar 2021 04:52:07 -0400
-Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20BDCC06175F
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:07 -0700 (PDT)
-Received: by mail-wm1-x32d.google.com with SMTP id r10-20020a05600c35cab029010c946c95easo2828467wmq.4
-        for <linux-ide@vger.kernel.org>; Thu, 18 Mar 2021 01:52:07 -0700 (PDT)
+        with ESMTP id S229600AbhCRKJC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 18 Mar 2021 06:09:02 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFF2C06175F;
+        Thu, 18 Mar 2021 03:09:02 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 75so3623920lfa.2;
+        Thu, 18 Mar 2021 03:09:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=tRryIhNUKwY1QYHRIg2sGv85PaIDusUy0ZBOcz1fZQo=;
-        b=DUUigHziSClduf61W1BDu9G+kg9n3s8DvQle1mFQ4sOdNetVpq5lyMJ7Hq3VbbXz7E
-         y84mzWnh2OP6GNb7qnpSDYgDRCzZdxxIHmeAab6v4OJfhG+gkVZALKG7QTiFr3cofUxU
-         +suMHKqSr8XogTRoVqH+CJi4mPU4nVRA/9h05QkCxEWCjBrn2n4xqq5hadR4ohImtXaH
-         PMcrrZQvS9X+kDxrqAr6JvLKSK3vnMUiZ/9MIw+5AfO0OjWnEjEZThLCtpsBnvqcV1v+
-         k6i4NiI1PMcFOh14P2ByM5BqyotkR1Ig3mcBCJn7nmF3V6KGZ+uqrIajVVkjxb5jbjpH
-         cZeA==
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=jMxhISu+COlRrHc/EVrqMnT5LVw2161ovhdA7IBtSGw=;
+        b=N+Q0LUNoyVaDPJ1eJrZ67FhUa77q/Fz02On4l9bg9QACSIgykCKqUmFdsf53Ojgnbf
+         eyumUdx/TwjbtDOLgwCYAB7RDOtR57TMCBeyNSAY//ay7Tl2lccP2Ssym94kRXjxfYRe
+         lulL4E/vgpp41CghUdWNrhQunOsNpbRkQh1Z5uA9cr4OPAdKTqKspV2wEkOPVcm1LmJR
+         yZKXoXYlgW/Aj82akuKLiTGE5Fox66wxjP6rcBsCJbwoniHR5/N5xRjjkVjAEfQdY1MW
+         wabHvQrtRlGBXU/oemiBE0fxxY0J0doyEwDn/K3ybrpVrl7lPm8K8TOwVCHW7Z8VfYJf
+         AzpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=tRryIhNUKwY1QYHRIg2sGv85PaIDusUy0ZBOcz1fZQo=;
-        b=F+zeNi+HkM4qvfFknADuZtDJfGkoB8jGG43xgl+3G5ioG8vyXGZcmRktVdTB0U2m6s
-         WE0lab9lXkSeZXdmIlyrnSa9tjAJXu+qYA58/eiaQVsIvsniZF8Kvm6Kppd8avclpkJF
-         R6vAAIkE2svzmXqdOshVd3wg+IdBi4YDlYzvixpXWsE6dGNb5yopcHn1gGr5HNW0RA0/
-         bYavHQjt8xygo443/Qyee2iv1FR+diwEybVYIYvdwtsgGx55+RJHY4JX0HekQaIAiPV8
-         0lNKx5VcaNouz/Ixboo6LHOtnNi/DfaUWrk62eGP4m6pxFIKSQaS+dYJuobvTYHjGhtL
-         IgGg==
-X-Gm-Message-State: AOAM533EqC2gPHlyf8DRAVgg3mZK3KL7TY9l9G1FJ4jfQVZQr41A7EpL
-        JB+VpGcNFuTcbjiOeRDtn4A8ug==
-X-Google-Smtp-Source: ABdhPJw2I2wmFHMlXj5ytsp5gjkUQJyefdh0nS4u5Qour/ISlcXWVPy5BA7e3K7YbbVUBJruqfZ+SQ==
-X-Received: by 2002:a05:600c:1553:: with SMTP id f19mr2520548wmg.33.1616057525892;
-        Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
-Received: from dell.default ([91.110.221.194])
-        by smtp.gmail.com with ESMTPSA id w131sm1526868wmb.8.2021.03.18.01.52.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Mar 2021 01:52:05 -0700 (PDT)
-From:   Lee Jones <lee.jones@linaro.org>
-To:     lee.jones@linaro.org
-Cc:     linux-kernel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-ide@vger.kernel.org
-Subject: [PATCH 15/15] ata: pata_acpi: Fix some incorrect function param descriptions
-Date:   Thu, 18 Mar 2021 08:51:50 +0000
-Message-Id: <20210318085150.3131936-16-lee.jones@linaro.org>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20210318085150.3131936-1-lee.jones@linaro.org>
-References: <20210318085150.3131936-1-lee.jones@linaro.org>
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=jMxhISu+COlRrHc/EVrqMnT5LVw2161ovhdA7IBtSGw=;
+        b=IG0AFNQ4WIC7kIb1oqhO0NDJK4IpvBYtQMoHOV9DKFOKi5oYNqDC/BV9Gtr3IoH2cm
+         FMs+fvSr2r42szRdjBPArkOki56V6+y780HZ3xrW6yfFyKEi0qH0qiSI896Z5F/SCDWD
+         ywvmmefUjva1eWKcciuSJvoS6NdenabVMNcsg1d8HYaxGNWsyi9Xt1aa+qEHr4TnD6wH
+         an9cXBxh/pCVUaM1/Pr6Aho5lINHP7y0Ugv7D63w2LHAIaFUmQ0Lp14Sbf7tY7fYwmtz
+         IdX2/sg635XMHgnoc2K33eKSEoNXkHFZ3pV+ht+R7Yd3WIRao7tSSwmpDuvelJQKDFD1
+         81fA==
+X-Gm-Message-State: AOAM533B0nqqsdjnFA3SuMjAMpcZxmYRRvil0HpuTdKptUaWI6YivoUR
+        nH2jPe16oyAGQmh2VUFkPZLMuey11I6fmA==
+X-Google-Smtp-Source: ABdhPJx2/i763YoZT8agJf/e8IcPTQBDi5fhHCqQUnQpQ0jOlOdRn9E3L+UaYKsqgqqx/61KeZhUWQ==
+X-Received: by 2002:a05:6512:32ab:: with SMTP id q11mr4934722lfe.106.1616062140994;
+        Thu, 18 Mar 2021 03:09:00 -0700 (PDT)
+Received: from [192.168.1.101] ([178.176.78.3])
+        by smtp.gmail.com with ESMTPSA id z21sm173661ljh.104.2021.03.18.03.08.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Mar 2021 03:09:00 -0700 (PDT)
+Subject: Re: [PATCH 07/10] MIPS: disable CONFIG_IDE in bigsur_defconfig
+To:     Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-ide@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+References: <20210318045706.200458-1-hch@lst.de>
+ <20210318045706.200458-8-hch@lst.de>
+From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Message-ID: <53035511-c140-b51a-dd1d-874b1041039a@gmail.com>
+Date:   Thu, 18 Mar 2021 13:08:58 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210318045706.200458-8-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Fixes the following W=1 kernel build warning(s):
+Hi!
 
- drivers/ata/pata_acpi.c:38: warning: Function parameter or member 'link' not described in 'pacpi_pre_reset'
- drivers/ata/pata_acpi.c:38: warning: Excess function parameter 'ap' description in 'pacpi_pre_reset'
- drivers/ata/pata_acpi.c:74: warning: Function parameter or member 'ap' not described in 'pacpi_discover_modes'
- drivers/ata/pata_acpi.c:74: warning: Excess function parameter 'mask' description in 'pacpi_discover_modes'
- drivers/ata/pata_acpi.c:239: warning: Function parameter or member 'id' not described in 'pacpi_init_one'
- drivers/ata/pata_acpi.c:239: warning: Excess function parameter 'ent' description in 'pacpi_init_one'
+On 3/18/21 7:57 AM, Christoph Hellwig wrote:
 
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-ide@vger.kernel.org
-Signed-off-by: Lee Jones <lee.jones@linaro.org>
----
- drivers/ata/pata_acpi.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> bigsur_defconfig enables CONFIG_IDE for the tc86c001 ide driver, which
+> is a Toshiba plug in card that does not make much sense to use on bigsur
+    ^ for
 
-diff --git a/drivers/ata/pata_acpi.c b/drivers/ata/pata_acpi.c
-index fa2bfc344a976..ade4c3eee2304 100644
---- a/drivers/ata/pata_acpi.c
-+++ b/drivers/ata/pata_acpi.c
-@@ -28,7 +28,7 @@ struct pata_acpi {
- 
- /**
-  *	pacpi_pre_reset	-	check for 40/80 pin
-- *	@ap: Port
-+ *	@link: ATA link
-  *	@deadline: deadline jiffies for the operation
-  *
-  *	Perform the PATA port setup we need.
-@@ -63,8 +63,8 @@ static int pacpi_cable_detect(struct ata_port *ap)
- 
- /**
-  *	pacpi_discover_modes	-	filter non ACPI modes
-+ *	@ap: ATA port
-  *	@adev: ATA device
-- *	@mask: proposed modes
-  *
-  *	Try the modes available and see which ones the ACPI method will
-  *	set up sensibly. From this we get a mask of ACPI modes we can use
-@@ -224,7 +224,7 @@ static struct ata_port_operations pacpi_ops = {
- /**
-  *	pacpi_init_one - Register ACPI ATA PCI device with kernel services
-  *	@pdev: PCI device to register
-- *	@ent: Entry in pacpi_pci_tbl matching with @pdev
-+ *	@id: PCI device ID
-  *
-  *	Called from kernel PCI layer.
-  *
--- 
-2.27.0
+   Else that doesn't make much sense. :-)
 
+> platforms.  For all other ATA cards libata support is already enabled.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+[...]
+
+MBR, Sergei

@@ -2,63 +2,79 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C20853428B1
-	for <lists+linux-ide@lfdr.de>; Fri, 19 Mar 2021 23:29:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E72EB342A37
+	for <lists+linux-ide@lfdr.de>; Sat, 20 Mar 2021 04:41:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230229AbhCSW2f (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 19 Mar 2021 18:28:35 -0400
-Received: from vps0.lunn.ch ([185.16.172.187]:38180 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230218AbhCSW21 (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Fri, 19 Mar 2021 18:28:27 -0400
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94)
-        (envelope-from <andrew@lunn.ch>)
-        id 1lNNbM-00BxWC-DN; Fri, 19 Mar 2021 23:28:16 +0100
-Date:   Fri, 19 Mar 2021 23:28:16 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Marcin Wojtas <mw@semihalf.com>
-Cc:     Mark Kettenis <mark.kettenis@xs4all.nl>, maz@kernel.org,
-        =?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
-        Sven Auhagen <sven.auhagen@voleatech.de>, axboe@kernel.dk,
-        Hans de Goede <hdegoede@redhat.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        devicetree@vger.kernel.org,
-        Antoine Tenart <antoine.tenart@bootlin.com>,
-        viresh.kumar@linaro.org, rjw@rjwysocki.net,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        linux-ide@vger.kernel.org,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        =?iso-8859-1?Q?Miqu=E8l?= Raynal <miquel.raynal@bootlin.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Grzegorz Jaszczyk <jaz@semihalf.com>,
-        Jon Nettleton <jon@solid-run.com>
-Subject: Re: [PATCH v3 0/9] Armada8k enable per-port SATA interrupts and drop
- a hack in the IRQ subsystem
-Message-ID: <YFUlgLlLG4yoQqwB@lunn.ch>
-References: <20201109173948.96663-1-sven.auhagen@voleatech.de>
- <20210227105723.7i42cw376qmnozcp@SvensMacBookAir-2.local>
- <CAPv3WKfH_-ydZ4GXW8UUNuvWyT7xAXjPOLGVxt+X2svXt=PYdg@mail.gmail.com>
- <87czvviok9.fsf@BL-laptop>
- <CAPv3WKfiuV5h2m=579-3UajwBFtHB2MP5tdSvzxTZo+0MPnZNA@mail.gmail.com>
- <87wnu3h4hw.wl-maz@kernel.org>
- <CAPv3WKdfywQpBx0HpeBTAZ2G5U+jFVQ6We8J_WeK7sYgWNiuJg@mail.gmail.com>
- <c1bcbd5402f4af12@bloch.sibelius.xs4all.nl>
- <YFUPTlR/pFjxoKiF@lunn.ch>
- <CAPv3WKct6PZq32-wLXrpwA+_0gU3nrA3ieMnvFWqda+GnQ2jyQ@mail.gmail.com>
+        id S229646AbhCTDlP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 19 Mar 2021 23:41:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56314 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229880AbhCTDki (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 19 Mar 2021 23:40:38 -0400
+Received: from mail-pg1-x52b.google.com (mail-pg1-x52b.google.com [IPv6:2607:f8b0:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFFA5C061761
+        for <linux-ide@vger.kernel.org>; Fri, 19 Mar 2021 20:40:38 -0700 (PDT)
+Received: by mail-pg1-x52b.google.com with SMTP id r17so4977795pgi.0
+        for <linux-ide@vger.kernel.org>; Fri, 19 Mar 2021 20:40:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6yPHmQYbRCahwR6DbdyU3HJljYpvQUvukibGq5GbUMU=;
+        b=CvNF9ToXNONeNu05W7GtDZvpVN8zzHat+1OcACbF8wzvixIeZ6JGpypv/TF15vGviK
+         JXUg68pvYoYpdK7IpAQOH/eY0b2rzSRI3o9p1ut7OGuqqMtFe4nCu2nIuIbvOeEvjhao
+         CUkDsM7hQQ8AQOjiq2ouRXb/hfkASmXRkf+x8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6yPHmQYbRCahwR6DbdyU3HJljYpvQUvukibGq5GbUMU=;
+        b=bn0RA3O8WoLYNfEq123t6VrmVPIn+IGxD6H5TKgSeCeGMFOlGBPFMma+ryjX3J758M
+         njClBAK0PJ+5HNCL+BA3qgRM/m08Nl5/H3ZYowAVvQAfsQSC+55inQiG3WLteDnX8jvh
+         WuAQvlY//j58uMtukRiq3XLFazM799yYabevBiiCX353fm43Yx63MCNonkJ7TCz46GzU
+         jRX4msyN21l1je78mSe24zyY4eURuDzS7Tp8Ola2o6hVB3D6DkaZt543PRPjM7G3QT8L
+         J7BQ+GUfBJewyl/TAUPouOqUgkTlIQtk7y86rA2vDK5lEnh6gAQH+jCYFkaLYevsbPq8
+         NWZg==
+X-Gm-Message-State: AOAM533BeiruzG/PDRYfsXwmQN7e4AqZz5BwsGcWuz7DP50ovNf0CcOP
+        8GbHkbHDUgdlPHrpencs61Hppw==
+X-Google-Smtp-Source: ABdhPJy8QnHbG8ssY10j3jlqpFWPRMeeyaPDflmiCv3ClShkBm9npKHi+cTuMGHDs608UG9osVerkw==
+X-Received: by 2002:aa7:8702:0:b029:200:50a8:2354 with SMTP id b2-20020aa787020000b029020050a82354mr12269261pfo.72.1616211638267;
+        Fri, 19 Mar 2021 20:40:38 -0700 (PDT)
+Received: from localhost ([2620:15c:202:201:3471:4d7:22d:5963])
+        by smtp.gmail.com with UTF8SMTPSA id b24sm6178830pgj.58.2021.03.19.20.40.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Mar 2021 20:40:37 -0700 (PDT)
+From:   Gwendal Grignou <gwendal@chromium.org>
+To:     tj@kernel.org, linux-ide@vger.kernel.org
+Cc:     Gwendal Grignou <gwendal@chromium.org>
+Subject: [PATCH 0/2] Disable SATA DPLM on Fizz chromebox
+Date:   Fri, 19 Mar 2021 20:40:31 -0700
+Message-Id: <20210320034033.396854-1-gwendal@chromium.org>
+X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPv3WKct6PZq32-wLXrpwA+_0gU3nrA3ieMnvFWqda+GnQ2jyQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-> I agree, however hopefully the MDIO + ACPI patchset, that currently
-> seems to be pretty advanced on the lists, will land
+On some chromebox, the CPU will hard freeze when the root SATA SSD link
+goes in minimal power powermode.
+Chromeboxes affected are of type Fizz, using Kabylake CPU.
+Using existing ahci_broken_lpm() function to set ATA_FLAG_NO_LPM for the
+controller which enables horkage ATA_HORKAGE_NOLPM for the SSD.
+Once set, it is guaranteed DLPM (Data Link Power Manegement) SATA feature is
+not enabled and DLPM can not be set to minimal power from user space.
 
-Well, it has not yet addressed the standing NACK. Which is why no
-networking people are reviewing it. We will have to wait and see if
-they can do what it needed to clear the NACK.
+The first patch allows disabling DLPM for all version of BIOSes,
+the second disable DLPM for Fizz.
 
-     Andrew
+Gwendal Grignou (2):
+  driver: ahci: Allow disabling dlpm for all bios version
+  driver: ahci: Disable DLPM on Fizz chromebox
+
+ drivers/ata/ahci.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+-- 
+2.31.0.291.g576ba9dcdaf-goog
+

@@ -2,92 +2,63 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C246342A35
-	for <lists+linux-ide@lfdr.de>; Sat, 20 Mar 2021 04:41:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA9B342A41
+	for <lists+linux-ide@lfdr.de>; Sat, 20 Mar 2021 04:45:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbhCTDlQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 19 Mar 2021 23:41:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56330 "EHLO
+        id S229913AbhCTDow (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 19 Mar 2021 23:44:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229884AbhCTDkl (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 19 Mar 2021 23:40:41 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB26C061761
-        for <linux-ide@vger.kernel.org>; Fri, 19 Mar 2021 20:40:41 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id w11so3820620ply.6
-        for <linux-ide@vger.kernel.org>; Fri, 19 Mar 2021 20:40:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=X95aZVgNRGIwLqcQ8UA5WLNr+sNfsuVjI+l5mnSJwWA=;
-        b=EerGc4l5obk9W416NNwM++d3y5fhgJ4WUMkDrMrATjhVW6IQ/e3+LSnqbkk+aGrdQo
-         YPTUs7HALBNjxNPs/Fhvv26/BYSQXHXK9zv8CYpxJ7NpLf4tS0VPpB4kHp3doCTjNs1d
-         ksQP4+cyZJdskZ7OiCvtDx4QMb5eVUv7RpCpw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=X95aZVgNRGIwLqcQ8UA5WLNr+sNfsuVjI+l5mnSJwWA=;
-        b=qbtEZMLPPOcdNspXKanARAzNUDnxMgS16udljUyS4x70ehuShZTvfgN8LrnzM/piT/
-         Ajqa8ASSn/O5ZpSpPWSYGiuaFwu9j4J+fUyiqQfNadlgTEvvso30ekUeNxFQD4gLDfSf
-         j2LgkcyXhCnYq9SSI6P3/PXnXSghEXTyzi4uHFEBxQTkKakGAyzsJ3+vrAp3O4MoSXDd
-         +PXPtJVwC7+6hYA/xre1Zkf0MfK0oIrw/zKRT3DGg+oqBGNrN8aRggewnl1wEx72JclM
-         qxfu5x/oLhQUjtNNMf/QvOAmadAm5VqFLI9slquDYs6SBZRT0NmRuTsKwek+DyyEq/uM
-         GSLw==
-X-Gm-Message-State: AOAM5300sZ+jOkK7Yz4S5+aVw5slPShx3OYppNRGyOSqJ3MboBVHiVHj
-        htARc/4vCc7PB8XElFwHh5y2Wg==
-X-Google-Smtp-Source: ABdhPJzRG3a8JaRVv2usAVXD9RaBhgFBHRLC8ngjV1Z6GGG/mk1YHXtfBYEn8TKYbIqOWofBnlPb5A==
-X-Received: by 2002:a17:90a:5898:: with SMTP id j24mr1699092pji.103.1616211641238;
-        Fri, 19 Mar 2021 20:40:41 -0700 (PDT)
-Received: from localhost ([2620:15c:202:201:3471:4d7:22d:5963])
-        by smtp.gmail.com with UTF8SMTPSA id i10sm11650541pjm.1.2021.03.19.20.40.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Mar 2021 20:40:40 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     tj@kernel.org, linux-ide@vger.kernel.org
-Cc:     Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH 2/2] driver: ahci: Disable DLPM on Fizz chromebox
-Date:   Fri, 19 Mar 2021 20:40:33 -0700
-Message-Id: <20210320034033.396854-3-gwendal@chromium.org>
-X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
-In-Reply-To: <20210320034033.396854-1-gwendal@chromium.org>
-References: <20210320034033.396854-1-gwendal@chromium.org>
+        with ESMTP id S229875AbhCTDou (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 19 Mar 2021 23:44:50 -0400
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [IPv6:2001:4190:8020::4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 694FCC061761;
+        Fri, 19 Mar 2021 20:44:50 -0700 (PDT)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+        id 26B2092009C; Sat, 20 Mar 2021 04:44:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by angie.orcam.me.uk (Postfix) with ESMTP id 1F63392009B;
+        Sat, 20 Mar 2021 04:44:46 +0100 (CET)
+Date:   Sat, 20 Mar 2021 04:44:46 +0100 (CET)
+From:   "Maciej W. Rozycki" <macro@orcam.me.uk>
+To:     Christoph Hellwig <hch@lst.de>
+cc:     "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-ide@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 10/10] ide: remove the legacy ide driver
+In-Reply-To: <20210318045706.200458-11-hch@lst.de>
+Message-ID: <alpine.DEB.2.21.2103200425360.21463@angie.orcam.me.uk>
+References: <20210318045706.200458-1-hch@lst.de> <20210318045706.200458-11-hch@lst.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Chromebox Fizz platform, (HP Chromebox G2, ASUS Chromebox 3, ...),
-hard CPU freeze were observed when the SSD DLPM is engaged at
-'min_power'.
+On Thu, 18 Mar 2021, Christoph Hellwig wrote:
 
-Ensure we can not change the |link_power_management_policy| of the host
-controller connected to the root SSD. (Operation not supported).
+> The legay ide driver has been replace with libata startin in 2003 and has
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- drivers/ata/ahci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ s/legay/legacy/;s/replace/replaced/;s/startin/startin/ (though I'd say 
+"back in" instead in the latter case).
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 9132201f1353e..4b932bb4ed570 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1270,6 +1270,12 @@ static bool ahci_broken_lpm(struct pci_dev *pdev)
- 			 */
- 			.driver_data = "20180310", /* 2.35 */
- 		},
-+		{
-+			.matches = {
-+				DMI_MATCH(DMI_BOARD_VENDOR, "Google"),
-+				DMI_MATCH(DMI_BOARD_NAME, "Fizz"),
-+			},
-+		},
- 		{ }	/* terminate list */
- 	};
- 	const struct dmi_system_id *dmi = dmi_first_match(sysids);
--- 
-2.31.0.291.g576ba9dcdaf-goog
+> been scheduled for removal for a while.  Finally kill it off so that we
+> can start cleaning up various bits of cruft it forced on the block layer.
 
+ You need to adjust Documentation/admin-guide/kernel-parameters.txt too, 
+i.e. remove all the `ide*' options, possibly more (I haven't checked in 
+detail).
+
+  Maciej

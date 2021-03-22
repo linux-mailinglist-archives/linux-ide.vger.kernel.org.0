@@ -2,94 +2,82 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74751343B4C
-	for <lists+linux-ide@lfdr.de>; Mon, 22 Mar 2021 09:09:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0750F34483E
+	for <lists+linux-ide@lfdr.de>; Mon, 22 Mar 2021 15:55:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbhCVIJO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 22 Mar 2021 04:09:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229872AbhCVIIp (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 22 Mar 2021 04:08:45 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB5CC061762
-        for <linux-ide@vger.kernel.org>; Mon, 22 Mar 2021 01:08:45 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id s21so7985046pjq.1
-        for <linux-ide@vger.kernel.org>; Mon, 22 Mar 2021 01:08:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=ceWIJkraNk4zg/iwScfPX26TgRjVfcMLFyh1eZXV7JM=;
-        b=F02NqvEbBpYoGKlemzhDNLk9mqNsPvWGB9TA6POHCKFxPBRmHqbZO/hyACWUFXEMca
-         DK8ysDpNm2HNfxe4Hb4d6QNWQZJPNnK90UFjGXokbvWWi/jKwnbFgoMu9VbTpie17ri/
-         eKv6AcVz7tbsjehrxEgC54JVsXHUQjWJlx1FE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=ceWIJkraNk4zg/iwScfPX26TgRjVfcMLFyh1eZXV7JM=;
-        b=kov1XXwT82ZivTtYaCl72HtaxeGRjtlY6n+QjY1gf9LfJmAR2M9sKmikuWrZRRl8Hj
-         tdeBZOQ7AqvxgJoZirWj7h3yqsnFwGPZ8320aDKdsA0gMI5M2ZxgMAUrpAdeWZyknwXe
-         Mgbs7LJPyFuam8JxvMnEAmXwrWA/uLTt51wfIZ2OSisLUZ0P+6I6fKnAQct1rmPOqDBt
-         HnSR8HONh6k5O14ShxJiO6dAv5sXi3MwnYaWO0OAqHCTkXz+y3ao9CenI4QFofIPFXrn
-         dTDHojrpGpdHgFn5cox/Pl0AuBG+ITTeINAzwMRAJ7kwWb8v+NnKMqQiVxupajEt4tPT
-         EeRQ==
-X-Gm-Message-State: AOAM5317nvEGrdlPEAvsT3q8jG+2z28YHU89YNSwq3WJsD3clDvGd7aG
-        i7AzJLcVxPDw++aKPO3PghwXXL5NRQP9cA==
-X-Google-Smtp-Source: ABdhPJzDbk6X4pTI4NCXvkM612xhOhHrbwRVTIoCm/aTaD/AVaVovzaw3xdN0IxHMI2JiEMk5/b1gg==
-X-Received: by 2002:a17:902:f20a:b029:e6:6d5b:88bf with SMTP id m10-20020a170902f20ab02900e66d5b88bfmr25942464plc.13.1616400524649;
-        Mon, 22 Mar 2021 01:08:44 -0700 (PDT)
-Received: from localhost ([2620:15c:202:201:90ec:f36d:f115:8c9e])
-        by smtp.gmail.com with UTF8SMTPSA id t1sm12960867pfc.173.2021.03.22.01.08.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Mar 2021 01:08:44 -0700 (PDT)
-From:   Gwendal Grignou <gwendal@chromium.org>
-To:     tj@kernel.org, sergei.shtylyov@gmail.com
-Cc:     linux-ide@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 2/2] driver: ahci: Disable DLPM on Fizz chromebox
-Date:   Mon, 22 Mar 2021 01:08:38 -0700
-Message-Id: <20210322080838.1640805-3-gwendal@chromium.org>
-X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
-In-Reply-To: <20210322080838.1640805-1-gwendal@chromium.org>
-References: <20210322080838.1640805-1-gwendal@chromium.org>
+        id S229771AbhCVOyi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 22 Mar 2021 10:54:38 -0400
+Received: from verein.lst.de ([213.95.11.211]:56129 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231366AbhCVOyI (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 22 Mar 2021 10:54:08 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id A32F268BEB; Mon, 22 Mar 2021 15:54:03 +0100 (CET)
+Date:   Mon, 22 Mar 2021 15:54:03 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jens Axboe <axboe@kernel.dk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-ide@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 02/10] ARM: disable CONFIG_IDE in footbridge_defconfig
+Message-ID: <20210322145403.GA30942@lst.de>
+References: <20210318045706.200458-1-hch@lst.de> <20210318045706.200458-3-hch@lst.de> <20210319170753.GV1463@shell.armlinux.org.uk> <20210319175311.GW1463@shell.armlinux.org.uk>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210319175311.GW1463@shell.armlinux.org.uk>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Chromebox Fizz platform, (HP Chromebox G2, ASUS Chromebox 3, ...),
-hard CPU freeze were observed when the SSD DLPM is engaged at
-'min_power'.
+On Fri, Mar 19, 2021 at 05:53:12PM +0000, Russell King - ARM Linux admin wrote:
+> If I extend the arch/arm/kernel/bios32.c code to kill BARs 2/3 (which
+> actually are not present on the CY82C693) then the IDE driver works
+> for me, but the PATA driver does not:
+> 
+> cy82c693 0000:00:06.1: IDE controller (0x1080:0xc693 rev 0x00)
+> cy82c693 0000:00:06.1: not 100% native mode: will probe irqs later
+> legacy IDE will be removed in 2021, please switch to libata
+> Report any missing HW support to linux-ide@vger.kernel.org
+>     ide0: BM-DMA at 0x1080-0x1087
+>     ide1: BM-DMA at 0x1088-0x108f
+> Probing IDE interface ide0...
+> hda: PIONEER DVD-RW DVR-105, ATAPI CD/DVD-ROM drive
+> hda: host max PIO4 wanted PIO255(auto-tune) selected PIO4
+> ...
+> 
+> (unbind Cypress_IDE and try binding pata_cypress)
+> 
+> pata_cypress 0000:00:06.1: no available native port
 
-Ensure we can not change the |link_power_management_policy| of the host
-controller connected to the root SSD. (Operation not supported).
+This comes from ata_pci_sff_init_host when it tails to initialize
+a port.  There are three cases why it can't initialize the port:
 
-Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
----
- No changes in v2.
+ 1) because it is marked as dummy, which is the case for the second
+    port of the cypress controller, but you're not using that even
+    with the old ide driver, and we'd still not get that message just
+    because of that second port.
+ 2) when ata_resources_present returns false because the BAR has
+    a zero start or length
+ 3) because pcim_iomap_regions() fails.  This prints a warning to the
+    log ("failed to request/iomap BARs for port %d (errno=%d)") that you
+    should have seen
 
- drivers/ata/ahci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+So the problem here has to be number two.  The legacy ide driver OTOH
+seems to lack a lot of these checks, although I'm not sure how it
+manages to actually work without those.
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 9132201f1353e..4b932bb4ed570 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1270,6 +1270,12 @@ static bool ahci_broken_lpm(struct pci_dev *pdev)
- 			 */
- 			.driver_data = "20180310", /* 2.35 */
- 		},
-+		{
-+			.matches = {
-+				DMI_MATCH(DMI_BOARD_VENDOR, "Google"),
-+				DMI_MATCH(DMI_BOARD_NAME, "Fizz"),
-+			},
-+		},
- 		{ }	/* terminate list */
- 	};
- 	const struct dmi_system_id *dmi = dmi_first_match(sysids);
--- 
-2.31.0.291.g576ba9dcdaf-goog
-
+Can you show how the BAR assignment for the device looks using lscpi
+or a tool of your choice?

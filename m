@@ -2,79 +2,91 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AB0343B4B
+	by mail.lfdr.de (Postfix) with ESMTP id BF9A6343B4D
 	for <lists+linux-ide@lfdr.de>; Mon, 22 Mar 2021 09:09:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229879AbhCVIJN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S229692AbhCVIJN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Mon, 22 Mar 2021 04:09:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51488 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbhCVIIm (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 22 Mar 2021 04:08:42 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B118C061574
-        for <linux-ide@vger.kernel.org>; Mon, 22 Mar 2021 01:08:42 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id u19so8105058pgh.10
-        for <linux-ide@vger.kernel.org>; Mon, 22 Mar 2021 01:08:42 -0700 (PDT)
+        with ESMTP id S229574AbhCVIIo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 22 Mar 2021 04:08:44 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B06C061756
+        for <linux-ide@vger.kernel.org>; Mon, 22 Mar 2021 01:08:43 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 32so1973744pgm.1
+        for <linux-ide@vger.kernel.org>; Mon, 22 Mar 2021 01:08:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6yPHmQYbRCahwR6DbdyU3HJljYpvQUvukibGq5GbUMU=;
-        b=fHNVbXVtMD6opk+9naGx8ocJLgwojxK1Z3o8STbxR7m1n+SDN+nFBsoBGAWOk+YAUB
-         AsRQAgehRLiLkJmLEcsAKhX5BeRMShR/OoHwA3HSAuUuxlggUCJSdon5X6DDfKiBv3bo
-         ZPTs/hcrT0BX3xSkOegywjvuYsWUQWuTsHgFo=
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Kh/xmFXhfHtNnqJEg2fD821X69nj58fO7kUzZqMc42Y=;
+        b=mlisv27tJfvboLmPEj1JWnpGIbJugxo3Agmmvfkxi+/5ARKINWIPHc7dt+WSC8nX9d
+         oejV3PK5oTscj446aBJVgdKZsbBdx+WlGyV2jX12cYuRR2iKTMTL8px2tVYo1ryofRGc
+         /r6BgJNiCswdx+n67KUDicklcE8OP8URigWeE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=6yPHmQYbRCahwR6DbdyU3HJljYpvQUvukibGq5GbUMU=;
-        b=XGHlphpgXrO+YXavZLolXtXhOYacZf6ASdwOl6ToxZG+lWlbh5OSwfJ+mZIsTVpFU5
-         ZBF/+J+P8SCRSQagFA/Ip5YhE2RXn2bsRzLvszNwxPKuL8AFW4UcmrROO0Hfhmiopz2O
-         wF6PLttpyRsiL9t6Xwd2q7/WHrx/ZZjOOguE3M0bro9Jj8TDkMkzTkEh30cT7pskSMti
-         5N8AtuzgN9acRZFsGwUGiNiivSp4t+l766ij6IhQJcJNTdUSyoRJUNVteG3OXmF3HpVm
-         ZuyMqdpN5V8RuiCOva+m8uXigSCZTFzU10w+e/ahSBDEJxK4009FmjF8AYm17jzjIFWr
-         8Ajg==
-X-Gm-Message-State: AOAM530e36h8waJdSwt4+pnpOKOMl62ShvrBHTdkqgHlNDWM5WGrlLep
-        9ionvkqqxzwv5YCuwPVyftXjvA==
-X-Google-Smtp-Source: ABdhPJw4YwD1WwjDrusYTCEngQ4tINoofb2heNgU5IAyhgl3VozLNoHAN4GUCGIX3NtJQUFwqbRsHg==
-X-Received: by 2002:a63:c901:: with SMTP id o1mr22242531pgg.232.1616400521879;
-        Mon, 22 Mar 2021 01:08:41 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Kh/xmFXhfHtNnqJEg2fD821X69nj58fO7kUzZqMc42Y=;
+        b=WXJSl7GDpMw99idHPkrEC3N6HjjPlHbiglfxk5xt8Df0hl+9FjYGXeBC0pzY03su6b
+         FaUt+OzQnFLIVRmJIgIvw6q02XDGxh2zjVVKjOpSl7ZdkjM0wBlMvnL4l21GtZbROscq
+         nNyNog2hIxjClHSzP7FCTe/pRhZlSTbSn8O3W6wx4usWbEFqFYBAAWU3rcFxBQbqQo/l
+         2R57J5dsPb2FMqm9xwhIsbqAIXc3RUp9tcedDYW8IqionJ6WLTsbz+Yyd7E501YDA1HR
+         6n1JlMFfI7ckX4EnWExlGLhS/VIvt2yVzqepy5KH9hNo7zUXD/wegSGiAAe0PRaW5KDW
+         YknA==
+X-Gm-Message-State: AOAM531zSycfY0Fsm3EyK1509BK2bweRN5TmUExKk6EworAVWG9jXtSt
+        aSrYECX3xy/1lILsHrSoqM98Ou4/cgrbkw==
+X-Google-Smtp-Source: ABdhPJxrjGOntJAWM/d1E6/2YCUkeyR+w5dUrpLdC/fp1IQLZ3qUhJ/N0nqxJxT+5UxdP592h6HZMA==
+X-Received: by 2002:a63:df09:: with SMTP id u9mr21704387pgg.64.1616400523274;
+        Mon, 22 Mar 2021 01:08:43 -0700 (PDT)
 Received: from localhost ([2620:15c:202:201:90ec:f36d:f115:8c9e])
-        by smtp.gmail.com with UTF8SMTPSA id q14sm13126714pff.94.2021.03.22.01.08.40
+        by smtp.gmail.com with UTF8SMTPSA id gm10sm12691994pjb.4.2021.03.22.01.08.42
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Mar 2021 01:08:41 -0700 (PDT)
+        Mon, 22 Mar 2021 01:08:42 -0700 (PDT)
 From:   Gwendal Grignou <gwendal@chromium.org>
 To:     tj@kernel.org, sergei.shtylyov@gmail.com
 Cc:     linux-ide@vger.kernel.org, Gwendal Grignou <gwendal@chromium.org>
-Subject: [PATCH v2 0/2] Disable SATA DPLM on Fizz chromebox
-Date:   Mon, 22 Mar 2021 01:08:36 -0700
-Message-Id: <20210322080838.1640805-1-gwendal@chromium.org>
+Subject: [PATCH v2 1/2] driver: ahci: Allow disabling dlpm for all bios version
+Date:   Mon, 22 Mar 2021 01:08:37 -0700
+Message-Id: <20210322080838.1640805-2-gwendal@chromium.org>
 X-Mailer: git-send-email 2.31.0.291.g576ba9dcdaf-goog
+In-Reply-To: <20210322080838.1640805-1-gwendal@chromium.org>
+References: <20210322080838.1640805-1-gwendal@chromium.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On some chromebox, the CPU will hard freeze when the root SATA SSD link
-goes in minimal power powermode.
-Chromeboxes affected are of type Fizz, using Kabylake CPU.
-Using existing ahci_broken_lpm() function to set ATA_FLAG_NO_LPM for the
-controller which enables horkage ATA_HORKAGE_NOLPM for the SSD.
-Once set, it is guaranteed DLPM (Data Link Power Manegement) SATA feature is
-not enabled and DLPM can not be set to minimal power from user space.
+In ahci_broken_lpm(), dmi->driver_data is encoded as a date: if the
+date of the current BIOS is older than driver_data, the LPM horkage is
+not applied.
+Allow dmi->driver_data to be empty in case a problem is not fixed in any
+BIOS version.
 
-The first patch allows disabling DLPM for all version of BIOSes,
-the second disable DLPM for Fizz.
+Signed-off-by: Gwendal Grignou <gwendal@chromium.org>
+---
+ Changes in v2:
+ Fix cut and paste error in commit message.
 
-Gwendal Grignou (2):
-  driver: ahci: Allow disabling dlpm for all bios version
-  driver: ahci: Disable DLPM on Fizz chromebox
+ drivers/ata/ahci.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- drivers/ata/ahci.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
-
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 5f1f049063dd2..9132201f1353e 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1279,6 +1279,9 @@ static bool ahci_broken_lpm(struct pci_dev *pdev)
+ 	if (!dmi)
+ 		return false;
+ 
++	if (!dmi->driver_data)
++		return true;
++
+ 	dmi_get_date(DMI_BIOS_DATE, &year, &month, &date);
+ 	snprintf(buf, sizeof(buf), "%04d%02d%02d", year, month, date);
+ 
 -- 
 2.31.0.291.g576ba9dcdaf-goog
 

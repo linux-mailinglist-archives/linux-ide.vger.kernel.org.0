@@ -2,58 +2,129 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D95F234D2BA
-	for <lists+linux-ide@lfdr.de>; Mon, 29 Mar 2021 16:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51AC134DDD4
+	for <lists+linux-ide@lfdr.de>; Tue, 30 Mar 2021 03:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231151AbhC2Osq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 29 Mar 2021 10:48:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49478 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231283AbhC2OsQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 29 Mar 2021 10:48:16 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E068EC061574
-        for <linux-ide@vger.kernel.org>; Mon, 29 Mar 2021 07:48:15 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 184so16219976ljf.9
-        for <linux-ide@vger.kernel.org>; Mon, 29 Mar 2021 07:48:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=5/8kk4ox/5Tuoi5bHBW9bZqDcQioEYzA8lrAMJq3ltE=;
-        b=JTN8X/faQRw3YkepKgtaO71mtAd/0EdYGRGq5hOXnqQ5XCR3z6WqWR7iPmZGkR5mf0
-         LjAZLzYlZpjDtPnP+almADd/mJA+iEF1aigvkvWdk+fmgAv6+GO++gLpEcLarOImLvpk
-         qGAH1OybwlPhsJe8I0jt0CUObOjIOS4Z6emfrUZOcrdEPMkt74mMZ+xJuY5U7vjWHCZY
-         nd/oMq3yk8yyowbwlCComm9weSyBNUpI23Fprq4Ifm3Q/5tQK2ImAlfhzOB4x+LLEonf
-         JcBiEnO3zfq5Ihu4k3zJPYsVJTbHoX9Vq7B1a2q7c+12MArJjfGivVVApqW2dgd7vDVe
-         82uQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=5/8kk4ox/5Tuoi5bHBW9bZqDcQioEYzA8lrAMJq3ltE=;
-        b=eCcbbgI4+26U+9xlIbp5rgq3TQQeUNn6Gh9ddTegW+K+DDeYFkom3rhAC5TDHFAwle
-         2xrD7GBFkwMCh5DZOyPcNZRMd24BSZGKJCjb7rudEFNdL5UjwJno18SafCeMkfcwR3Xs
-         863zoswEXSxm3zkv2PHS8lxkFsURctf28Mo3uJ9mfd9mJ6wTYsG6WArMo1adleyqU41V
-         qJjwoObXVPhq5hpXU8HyTGKCCl6sN0+c6qh6MlNzXffDHvLUwglVBeurOba9aMYCLjaA
-         d3A4PNy7DZIOqtrMyWfTQ6SkO2vrVcbxbSwKiWhxVF5JtZMj1JB4idE/Bb8qy+gltF2G
-         qjxg==
-X-Gm-Message-State: AOAM5302kPSubfwKvSERD5xNYTFl33iQB5fqokca0vGKTro2bopGJrPf
-        CYtFTLviEXwsvqWEmZVPgMzNYXgU5h/ia7mZTGyShpsWnw==
-X-Google-Smtp-Source: ABdhPJx6iAHh1mEOzhOsF/P/noG5oMItFhG//7SclqQI+COCfydVD2EqAKgcGEeiy2mzVaxPSVvThOWVuVU5zvafa7U=
-X-Received: by 2002:a2e:8283:: with SMTP id y3mr18112361ljg.422.1617029294498;
- Mon, 29 Mar 2021 07:48:14 -0700 (PDT)
+        id S230296AbhC3BzO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 29 Mar 2021 21:55:14 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:14950 "EHLO
+        szxga05-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229709AbhC3BzE (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 29 Mar 2021 21:55:04 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4F8XXB1gfLzyN9x;
+        Tue, 30 Mar 2021 09:52:58 +0800 (CST)
+Received: from [127.0.0.1] (10.40.193.166) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.498.0; Tue, 30 Mar 2021
+ 09:54:52 +0800
+Subject: Re: [PATCH] libata: Increase the timeout of command
+ ATA_CMD_READ_LOG_DMA_EXT
+To:     <axboe@kernel.dk>, <tj@kernel.org>
+References: <1602727060-200435-1-git-send-email-chenxiang66@hisilicon.com>
+CC:     <john.garry@huawei.com>, <linux-ide@vger.kernel.org>,
+        <linuxarm@openeuler.org>
+From:   "chenxiang (M)" <chenxiang66@hisilicon.com>
+Message-ID: <819eb46e-b430-7c30-67d5-15385b74453c@hisilicon.com>
+Date:   Tue, 30 Mar 2021 09:54:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Received: by 2002:a2e:924a:0:0:0:0:0 with HTTP; Mon, 29 Mar 2021 07:48:14
- -0700 (PDT)
-Reply-To: sgtmanthey1@gmail.com
-From:   kayla manthey <agbedarichard@gmail.com>
-Date:   Mon, 29 Mar 2021 14:48:14 +0000
-Message-ID: <CA+2Vjiu7ZyD624uWHJDyfENk8=OXimrbAYXAg2024Sjv0WORRw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1602727060-200435-1-git-send-email-chenxiang66@hisilicon.com>
+Content-Type: text/plain; charset="gbk"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.40.193.166]
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Vennligst jeg vil vite om du har mine tidligere meldinger.
+Ping....
+
+ÔÚ 2020/10/15 9:57, chenxiang Ð´µÀ:
+> From: Xiang Chen <chenxiang66@hisilicon.com>
+>
+> ATA_CMD_READ_LOG_DMA_EXT command normally uses the common internal command
+> default timeout (5s), and it is adequate in most situations. But it is not
+> enough for some disks such as ST4000NM0035 which causes qc timeout
+> sometimes as follows:
+> ...
+> [  157.284284] sas: Enter sas_scsi_recover_host busy: 0 failed: 0
+> [  157.290124] sas: ata8: end_device-4:0:2: dev error handler
+> [  157.290128] sas: ata9: end_device-4:0:8: dev error handler
+> [  157.290131] sas: ata10: end_device-4:0:11: dev error handler
+> [  164.588391] ata9.00: qc timeout (cmd 0x47)
+> [  164.588393] ata8.00: qc timeout (cmd 0x47)
+> [  164.588395] ata10.00: qc timeout (cmd 0x47)
+> [  166.582572] ata10.00: READ LOG DMA EXT failed, trying PIO
+> [  166.587960] ata10.00: NCQ Send/Recv Log not supported
+> [  166.592997] ata10.00: ATA-10: ST4000NM0035-1V4107, TN03, max UDMA/133
+> [  166.599414] ata10.00: 7814037168 sectors, multi 0: LBA48 NCQ (depth 32)
+> [  166.606011] ata10.00: failed to set xfermode (err_mask=0x40)
+> [  166.659253] ata8.00: READ LOG DMA EXT failed, trying PIO
+> [  166.664559] ata8.00: NCQ Send/Recv Log not supported
+> [  166.669506] ata8.00: ATA-10: ST4000NM0035-1V4107, TN03, max UDMA/133
+> [  166.675837] ata8.00: 7814037168 sectors, multi 0: LBA48 NCQ (depth 32)
+> [  166.682343] ata8.00: failed to set xfermode (err_mask=0x40)
+> [  166.743458] ata9.00: READ LOG DMA EXT failed, trying PIO
+> [  166.748765] ata9.00: NCQ Send/Recv Log not supported
+> [  166.753713] ata9.00: ATA-10: ST4000NM0035-1V4107, TN03, max UDMA/133
+> [  166.760045] ata9.00: 7814037168 sectors, multi 0: LBA48 NCQ (depth 32)
+> [  166.766553] ata9.00: failed to set xfermode (err_mask=0x40)
+> [  168.886378] ata10.00: configured for UDMA/133
+> [  168.999943] ata8.00: configured for UDMA/133
+> [  169.050801] ata9.00: configured for UDMA/133
+> [  169.055071] sas: --- Exit sas_scsi_recover_host: busy: 0 failed: 0 tries: 1
+> ...
+> Actually it may takes about 9s to complete the command for disk ST4000NM0035
+> sometimes. So to avoid the issue, increase the timeout of command
+> ATA_CMD_READ_LOG_DMA_EXT from 5s to 15s.
+>
+> Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+> Reviewed-by: John Garry <john.garry@huawei.com>
+> ---
+>   drivers/ata/libata-eh.c | 9 +++++++++
+>   include/linux/libata.h  | 2 +-
+>   2 files changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+> index 474c6c3..6db9474 100644
+> --- a/drivers/ata/libata-eh.c
+> +++ b/drivers/ata/libata-eh.c
+> @@ -100,6 +100,13 @@ static const unsigned long ata_eh_flush_timeouts[] = {
+>   	ULONG_MAX,
+>   };
+>   
+> +static const unsigned long ata_eh_read_log_ext_timeouts[] = {
+> +	15000,
+> +	15000,
+> +	30000,
+> +	ULONG_MAX,
+> +};
+> +
+>   static const unsigned long ata_eh_other_timeouts[] = {
+>   	 5000,	/* same rationale as identify timeout */
+>   	10000,	/* ditto */
+> @@ -139,6 +146,8 @@ ata_eh_cmd_timeout_table[ATA_EH_CMD_TIMEOUT_TABLE_SIZE] = {
+>   	  .timeouts = ata_eh_other_timeouts, },
+>   	{ .commands = CMDS(ATA_CMD_FLUSH, ATA_CMD_FLUSH_EXT),
+>   	  .timeouts = ata_eh_flush_timeouts },
+> +	{ .commands = CMDS(ATA_CMD_READ_LOG_DMA_EXT, ATA_CMD_READ_LOG_EXT),
+> +	  .timeouts = ata_eh_read_log_ext_timeouts },
+>   };
+>   #undef CMDS
+>   
+> diff --git a/include/linux/libata.h b/include/linux/libata.h
+> index b0bd30e..bcc68b3 100644
+> --- a/include/linux/libata.h
+> +++ b/include/linux/libata.h
+> @@ -390,7 +390,7 @@ enum {
+>   	/* This should match the actual table size of
+>   	 * ata_eh_cmd_timeout_table in libata-eh.c.
+>   	 */
+> -	ATA_EH_CMD_TIMEOUT_TABLE_SIZE = 6,
+> +	ATA_EH_CMD_TIMEOUT_TABLE_SIZE = 7,
+>   
+>   	/* Horkage types. May be set by libata or controller on drives
+>   	   (some horkage may be drive/controller pair dependent */
+
+

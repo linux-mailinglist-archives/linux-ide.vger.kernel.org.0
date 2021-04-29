@@ -2,60 +2,68 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CCB6C36E1AB
-	for <lists+linux-ide@lfdr.de>; Thu, 29 Apr 2021 01:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9A836E280
+	for <lists+linux-ide@lfdr.de>; Thu, 29 Apr 2021 02:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231610AbhD1WZl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 28 Apr 2021 18:25:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52820 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231607AbhD1WZk (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 28 Apr 2021 18:25:40 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 4FE456143D;
-        Wed, 28 Apr 2021 22:24:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1619648695;
-        bh=nVan7G1ch53kCV8IpWuQbmyPH7i0/QvhlV2WOGpybrY=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=oX/h32fsbA3hBYbPJ/uqM93VGvfAldDWiXYAaacUI9hfvbuy967U2kfU3jLK+7iBX
-         BwYOfDiO03wr+1PqPKgAg5fXOw7MP13yYyCg/x6zvaDsi8utnXEHHrbkAANXO4i2Ku
-         FLpUOvHncB5e7R44Rv0t4KGn4GcuaOWnfCXM4ZvJO6BaXpNaE4vehMS+e98bjORJ43
-         lufWX/Zjv5lR7hohMZ2LN+nZWlYbmRUwq8QbrapCZeDxtARnnoSFq9Do6cwQSQpxM4
-         PxnG9tUt02OkZ6yFVGnQSo/Ls3fX8qSI1AgJbvU8rL/vZVm6ehVl2aVfEuPKqs+r+f
-         Jq8+mN5lLnX1A==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 3B4E960A23;
-        Wed, 28 Apr 2021 22:24:55 +0000 (UTC)
-Subject: Re: [GIT PULL] libata changes for 5.13-rc
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <7a48da22-ec0b-f22a-bc0d-4ad76f712ef0@kernel.dk>
-References: <7a48da22-ec0b-f22a-bc0d-4ad76f712ef0@kernel.dk>
-X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
-X-PR-Tracked-Message-Id: <7a48da22-ec0b-f22a-bc0d-4ad76f712ef0@kernel.dk>
-X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git tags/for-5.13/libata-2021-04-27
-X-PR-Tracked-Commit-Id: e06abcc68cb555377efd5aa781c014d3d68498b6
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: c05a182bf45681c5529a58c71ce5647535b3ae7a
-Message-Id: <161964869517.18647.18031003209958254458.pr-tracker-bot@kernel.org>
-Date:   Wed, 28 Apr 2021 22:24:55 +0000
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        linux-ide@vger.kernel.org
+        id S231627AbhD2ARD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 28 Apr 2021 20:17:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231437AbhD2ARC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 28 Apr 2021 20:17:02 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07F85C06138B
+        for <linux-ide@vger.kernel.org>; Wed, 28 Apr 2021 17:16:16 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id lp8so3632951pjb.1
+        for <linux-ide@vger.kernel.org>; Wed, 28 Apr 2021 17:16:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=TvDH0Ufqq951p1SmGaor3zZZi0JBju1aRHwGT5Ex+6c=;
+        b=pV4z6nhvz5gSbR/WDuf+Xn9sQtj4zENpc8PW0qfxVWN4uPMq2FCfQx+4wKcHSc9P87
+         M6vyehn1lqy8poGME63YOBIBDd3U9C9mxQDYh01ENt7/OBv+MRRKrNE2PjyzBRsPQPf9
+         yoQmxN1teKriTP/A21tfX2BqRTySBAoFb4vl21f+3GjFz4PMDUdqdEu4WN0SfZCz/d2B
+         TXv0wx3HLcia9LpZxhOR0i3p6JXxHHc3k4QPmFoCbtWSq0FtmmhbjmJ9Pc6j8vjUiJxa
+         kRgJ7rWQlWferu353hzuKbTwsohU1hNdOUvb33HQStVbUJUtCVMErCMP2avJxEiDmcSk
+         5jVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=TvDH0Ufqq951p1SmGaor3zZZi0JBju1aRHwGT5Ex+6c=;
+        b=NqXBrXciU0BHTSbxo/MvQm1RDNatkzDKfg1suYotNMu7bKiLJbrVV+DWU3nrZKPzat
+         3qNDX9jreJw95k17ReVQ7fzPzfpQVxmNLtcYsDP464v4+A9HGxCRo+VVWiPluSPtKbhu
+         5ECXK+lPU8Ui3MGdFGIKy7isVJcbBAj4ZpfD7ncJyxXIg9N3A4K1XQEv/fsHa3s+pxvG
+         MXa0ooFjc7/h6EeE6dClkugP2blxX3dZbYkI5ekHrBdebZxkIRoDIi+QvlurlPovMc7B
+         HvejA0i6ftjhq6IxofJFQv7etBdF6FXnDQ6J/iDTliAO1+ngQ1QQ/nY4SIjjIYHb0zmf
+         ztVw==
+X-Gm-Message-State: AOAM531HdJDscbkdWc+37Pz0qA3LcLPcm/t50UsYYjj3qxM0RVKxjK7k
+        U5wayXjaMqPVW9nNhDKecTsJO3v4flpmN0rcTrM=
+X-Google-Smtp-Source: ABdhPJz3SxMkIJiD0u1tBBWr8QH2I2su9xUJFo7QGwrQK81DsO8qcAefujyx4LaS9SDa6koofd2EdrdWNt5oNcGOzEM=
+X-Received: by 2002:a17:902:ee11:b029:ed:7108:623e with SMTP id
+ z17-20020a170902ee11b02900ed7108623emr5706539plb.38.1619655375685; Wed, 28
+ Apr 2021 17:16:15 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:7300:6426:b029:19:764e:b00a with HTTP; Wed, 28 Apr 2021
+ 17:16:15 -0700 (PDT)
+Reply-To: bwalysam@gmail.com
+From:   Mr Kingsley Obiora <maryclove123@gmail.com>
+Date:   Thu, 29 Apr 2021 01:16:15 +0100
+Message-ID: <CAFBdPmfDEmXhDd9Ki4at1Qj0+DCa8ud6XiUTD2VQHp5-rJR46g@mail.gmail.com>
+Subject: Hello From Dr Kingsley Obiora
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Tue, 27 Apr 2021 11:00:09 -0600:
+Dear Sir,
 
-> git://git.kernel.dk/linux-block.git tags/for-5.13/libata-2021-04-27
+After our meeting held today based on your funds, the management want
+to bring to your notice that we are making a special arrangement to
+bring your said fund by cash through diplomatic Immunity to your
+country home. Further details of this arrangement will be given to you
+once you acknowledged this idea.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/c05a182bf45681c5529a58c71ce5647535b3ae7a
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Waiting for your soonest response.
+Kingsley Obiora

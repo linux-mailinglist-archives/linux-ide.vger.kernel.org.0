@@ -2,81 +2,69 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF421376CAB
-	for <lists+linux-ide@lfdr.de>; Sat,  8 May 2021 00:26:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A7C0379507
+	for <lists+linux-ide@lfdr.de>; Mon, 10 May 2021 19:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229893AbhEGW1h (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 7 May 2021 18:27:37 -0400
-Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
-        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGW1h (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 7 May 2021 18:27:37 -0400
-X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
-Received: from bosmailscan09.eigbox.net ([10.20.15.9])
-        by bosmailout01.eigbox.net with esmtp (Exim)
-        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
-        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
-        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
-        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
-        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
-        2gI+xJSw==;
-Received: from [10.115.3.32] (helo=bosimpout12)
-        by bosmailscan09.eigbox.net with esmtp (Exim)
-        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
-Received: from boswebmail06.eigbox.net ([10.20.16.6])
-        by bosimpout12 with 
-        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
-X-EN-SP-DIR: OUT
-X-EN-SP-SQ: 1
-Received: from [127.0.0.1] (helo=homestead)
-        by boswebmail06.eigbox.net with esmtp (Exim)
-        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
-Received: from [197.239.81.229]
- by emailmg.homestead.com
- with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
-MIME-Version: 1.0
-Date:   Fri, 07 May 2021 21:54:17 +0000
-From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
-To:     undisclosed-recipients:;
-Subject: URGENT REPLY NEEDED
-Reply-To: suzara2017malingwan@gmail.com
-Mail-Reply-To: suzara2017malingwan@gmail.com
-Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
-X-Sender: fast65@godsofu4.com
-User-Agent: Roundcube Webmail/1.3.14
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-EN-AuthUser: fast65@godsofu4.com
-Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
+        id S231562AbhEJRKF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 10 May 2021 13:10:05 -0400
+Received: from flippiebeckerswealth.xyz ([62.173.147.206]:58256 "EHLO
+        host.flippiebeckerswealth.xyz" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231434AbhEJRKE (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 10 May 2021 13:10:04 -0400
+X-Greylist: delayed 10370 seconds by postgrey-1.27 at vger.kernel.org; Mon, 10 May 2021 13:10:04 EDT
+Received: from flippiebeckerswealth.xyz (ec2-3-142-218-249.us-east-2.compute.amazonaws.com [3.142.218.249])
+        by host.flippiebeckerswealth.xyz (Postfix) with ESMTPA id DFE4C2311C0
+        for <linux-ide@vger.kernel.org>; Mon, 10 May 2021 17:06:49 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebeckerswealth.xyz DFE4C2311C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippiebeckerswealth.xyz; s=default; t=1620655611;
+        bh=Lxx5rGQCX/MQzrwE9epz1Mb5yPYRqDyEupWj6GReobo=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=NJyjhBDdJL+RNCx6+eura56+IUYbUFsiaAIpgXRVqLJysf5ciSIj9h0Ln75DFlQ3r
+         z1RXawg67fQZhVFDnKKesCpAsHy/aEXQTWtwqz0uLD3t852Kwj3TbOqQzVV/fnfMVr
+         sXVAF+P5Eg/0yTmBLVxruqd7vNs5jEBBjdtLlDw8=
+DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippiebeckerswealth.xyz DFE4C2311C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=flippiebeckerswealth.xyz; s=default; t=1620655611;
+        bh=Lxx5rGQCX/MQzrwE9epz1Mb5yPYRqDyEupWj6GReobo=;
+        h=Reply-To:From:To:Subject:Date:From;
+        b=NJyjhBDdJL+RNCx6+eura56+IUYbUFsiaAIpgXRVqLJysf5ciSIj9h0Ln75DFlQ3r
+         z1RXawg67fQZhVFDnKKesCpAsHy/aEXQTWtwqz0uLD3t852Kwj3TbOqQzVV/fnfMVr
+         sXVAF+P5Eg/0yTmBLVxruqd7vNs5jEBBjdtLlDw8=
+Reply-To: cpavlides@flippiebeckerwealthservices.com
+From:   Chris Pavlides <cpavlides@flippiebeckerswealth.xyz>
+To:     linux-ide@vger.kernel.org
+Subject: Personal
+Date:   10 May 2021 14:06:49 +0000
+Message-ID: <20210510140649.DC92A17065EB1A31@flippiebeckerswealth.xyz>
+Mime-Version: 1.0
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hello there,
 
+I hope this message finds you in good spirits especially during=20
+this challenging time of coronavirus pandemic. I hope you and=20
+your family are well and keeping safe. Anyway, I am Chris=20
+Pavlides, a broker working with Flippiebecker Wealth. I got your=20
+contact (along with few other contacts) through an online=20
+business directory and I thought I should contact you to see if=20
+you are interested in this opportunity. I am contacting you=20
+because one of my high profile clients is interested in investing=20
+abroad and has asked me to look for individuals and companies=20
+with interesting business ideas and projects that he can invest=20
+in. He wants to invest a substantial amount of asset abroad.
 
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
+Please kindly respond back to this email if you are interested in=20
+this opportunity. Once I receive your response, I will give you=20
+more details and we can plan a strategy that will be beneficial=20
+to all parties.
 
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
+Best regards
 
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
-
-With kind regards
-Mrs Suzara Maling Wan
+C Pavlides
+Flippiebecker Wealth

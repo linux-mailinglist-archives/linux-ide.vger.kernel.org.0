@@ -2,70 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E56D38ABC2
-	for <lists+linux-ide@lfdr.de>; Thu, 20 May 2021 13:26:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03033390DF3
+	for <lists+linux-ide@lfdr.de>; Wed, 26 May 2021 03:39:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241576AbhETL1f (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 20 May 2021 07:27:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43606 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S241832AbhETLZe (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 20 May 2021 07:25:34 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 16B7E61358
-        for <linux-ide@vger.kernel.org>; Thu, 20 May 2021 11:11:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1621509084;
-        bh=i0Jr8sCFbGP63vS2hf7EBqfRb/c4+XwxDzdpmfPGQZc=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=Ic8e/ZVqqtUnDv4XQVpR8xvEg55ih2WuwJYIeA4l7PN96pVYUw6GxE1dTfZ2n6k0o
-         hOGLmkJ4gmB1zBMyZJGsf+lXZ5X1FzA1Omch91ThrA4UGuapoSJ5xT7bOirCXT9T4v
-         0rkA5wFMjphmYgwrn7h0+N71xs+qF/hsWsIo1olZWppH9auyYfBCTxA7UengUwupcy
-         BBTOP+VcY5yGsVIgzHBsRfbnRgzVoDJVQMA3d5F/wYxTB+y8ZbbaUYbKs9ZF5UcUPs
-         IPnRiaLE0y1vqM7T/sByOO7hxDtfE3U6H14YRrhbAL5jUpkC9VxslLzbV5XRNIK1W4
-         03xHGbYlRwXHQ==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
-        id 0AE0D6128E; Thu, 20 May 2021 11:11:24 +0000 (UTC)
-From:   bugzilla-daemon@bugzilla.kernel.org
-To:     linux-ide@vger.kernel.org
-Subject: [Bug 213157] BUG: unable to handle page fault for address: fffbb000,
- Workqueue: ata_sff ata_sff_pio_task
-Date:   Thu, 20 May 2021 11:11:23 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo io_ide@kernel-bugs.osdl.org
-X-Bugzilla-Product: IO/Storage
-X-Bugzilla-Component: IDE
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: io_ide@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.created
-Message-ID: <bug-213157-11633-Ckmmih9EsV@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213157-11633@https.bugzilla.kernel.org/>
-References: <bug-213157-11633@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+        id S231175AbhEZBkb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 25 May 2021 21:40:31 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6710 "EHLO
+        szxga04-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230306AbhEZBka (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 25 May 2021 21:40:30 -0400
+Received: from dggems703-chm.china.huawei.com (unknown [172.30.72.60])
+        by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4FqYRS3dgzzpfSC;
+        Wed, 26 May 2021 09:35:16 +0800 (CST)
+Received: from dggeme756-chm.china.huawei.com (10.3.19.102) by
+ dggems703-chm.china.huawei.com (10.3.19.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
+ 15.1.2176.2; Wed, 26 May 2021 09:38:53 +0800
+Received: from localhost.localdomain (10.69.192.58) by
+ dggeme756-chm.china.huawei.com (10.3.19.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2176.2; Wed, 26 May 2021 09:38:52 +0800
+From:   chenxiang <chenxiang66@hisilicon.com>
+To:     <axboe@kernel.dk>, <tj@kernel.org>, <martin.petersen@oracle.com>
+CC:     <linux-ide@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        <linuxarm@openeuler.org>, <linuxarm@huawei.com>,
+        Xiang Chen <chenxiang66@hisilicon.com>
+Subject: [PATCH] libata: configure max sectors properly
+Date:   Wed, 26 May 2021 09:34:22 +0800
+Message-ID: <1621992862-114264-1-git-send-email-chenxiang66@hisilicon.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggeme756-chm.china.huawei.com (10.3.19.102)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213157
+From: Xiang Chen <chenxiang66@hisilicon.com>
 
---- Comment #1 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 296895
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D296895&action=3Dedit
-kernel .config (kernel 5.13-rc2, Shuttle XPC FS51, Pentium 4)
+Max sectors of limitations for scsi host can be set through
+scsi_host_template->max_sectors in scsi driver. But we find that max
+sectors may exceed scsi_host_template->max_sectors for SATA disk even
+if we set it. We find that it may be overwrote in some scsi drivers
+(which calls the callback slave_configure and also calls function
+ata_scsi_dev_config in it). The invoking relationship is as follows:
 
---=20
-You may reply to this email to add a comment.
+scsi_probe_and_add_lun
+    ...
+    scsi_alloc_sdev
+	scsi_mq_alloc_queue
+	    ...
+	    __scsi_init_queue
+		blk_queue_max_hw_sectors(q, shost->max_sectors) //max_sectors coming from sht->max_sectors
+	    scsi_change_queue_depth
+	    scsi_sysfs_device_initialize
+	    shost->hostt->slave_alloc()
+		xxx_salve_configure
+		    ...
+		    ata_scsi_dev_config
+			blk_queue_max_hw_sectors(q, dev->max_sectors) //max_sectors is overwrote by dev->max_sectors
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+To avoid the issue, set q->limits.max_sectors with the minimum value between
+dev->max_sectors and q->limits.max_sectors.
+
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+---
+ drivers/ata/libata-scsi.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 48b8934..fb7b243 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1026,12 +1026,15 @@ EXPORT_SYMBOL_GPL(ata_scsi_dma_need_drain);
+ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
+ {
+ 	struct request_queue *q = sdev->request_queue;
++	unsigned int max_sectors;
+ 
+ 	if (!ata_id_has_unload(dev->id))
+ 		dev->flags |= ATA_DFLAG_NO_UNLOAD;
+ 
+ 	/* configure max sectors */
+-	blk_queue_max_hw_sectors(q, dev->max_sectors);
++	max_sectors = min_t(unsigned int, dev->max_sectors,
++			q->limits.max_sectors);
++	blk_queue_max_hw_sectors(q, max_sectors);
+ 
+ 	if (dev->class == ATA_DEV_ATAPI) {
+ 		sdev->sector_size = ATA_SECT_SIZE;
+-- 
+2.8.1
+

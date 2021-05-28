@@ -2,70 +2,115 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 02CBE3935FA
-	for <lists+linux-ide@lfdr.de>; Thu, 27 May 2021 21:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE246393F29
+	for <lists+linux-ide@lfdr.de>; Fri, 28 May 2021 11:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232565AbhE0TLz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 27 May 2021 15:11:55 -0400
-Received: from mxout01.lancloud.ru ([45.84.86.81]:41790 "EHLO
-        mxout01.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229878AbhE0TLy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 27 May 2021 15:11:54 -0400
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 70E4F206FFD4
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Subject: Re: [PATCH v2] pata_ep93xx: fix deferred probing
-To:     Jens Axboe <axboe@kernel.dk>,
-        Sergey Shtylyov <s.shtylyov@omprussia.ru>,
-        <linux-ide@vger.kernel.org>
-References: <509fda88-2e0d-2cc7-f411-695d7e94b136@omprussia.ru>
- <946c838b-0a9f-dfd0-70ac-a0c67c57deea@omp.ru>
- <934957f3-ff80-ae1d-8839-d5ffe2a952d1@kernel.dk>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <200d3bdc-bc01-1635-ed2d-e92c0cf29787@omp.ru>
-Date:   Thu, 27 May 2021 22:10:18 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S235179AbhE1JGo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 28 May 2021 05:06:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44828 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235491AbhE1JGm (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 28 May 2021 05:06:42 -0400
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4954CC06174A
+        for <linux-ide@vger.kernel.org>; Fri, 28 May 2021 02:05:06 -0700 (PDT)
+Received: by mail-wr1-x435.google.com with SMTP id f11so2562177wrq.1
+        for <linux-ide@vger.kernel.org>; Fri, 28 May 2021 02:05:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x4wIuz1s2gqzP/x9A7F4zXqS69dsm+xjTMP8Z10m2eY=;
+        b=VgAkxOnEHVE33AmTNHtRtlTa7zzJjxyTD1gpG+b2Mavafk8F0338x5+4UXlrN4Zyz9
+         sGfeBIMiVQHNK1yousB7Ud7ByBjfgQgI1lnm3yoowYR/YjAMGbk2rTJu23fDc9mY1bR5
+         F77CD44p+DVYaMT4TkVmeCqsoKoBmwGtSE1hY+7Sil59GNuLEY3LForZOIu2I5esDYXR
+         hwNx+SI2bY15RHVuZ9CR5ev+qlMIsbsVV2IYWy+2Mr5ASr+tNuXmix6oesXecGOjq6hz
+         01mIQDVzPo+/joQ+obEucPWJq+dZlfhiLtyK0UJWTq3kWoo+oO4pYWyY5G/DP7MjRr2c
+         JlJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x4wIuz1s2gqzP/x9A7F4zXqS69dsm+xjTMP8Z10m2eY=;
+        b=qgUFuonqtuMFy/EEg1Lr5i1Ou0IJ9x21LMHHtUN9jTam/A+yNr3yYkbK6JiYK6T2Ts
+         +LVz9WfQe/FMUxy/IFMCU2pt7jMb18rk0SXaGa6ZrEcRXGIWmODGDcntuiaNOFhhvQL/
+         b6scRcvToWjmnENG7YjCV4slbcis5iMAwAllyG86awusKo3HhLL8IkCOJdNi8FSv7i5J
+         cxue0MpaH5NsUiun/bPs5HxLHgqaT3TKtcoiffBFdRkm3hE4rld9vJNGZB0xfaHHKhWa
+         6q5DvuQ/ZkWo1bW5Cd58eumHe9gf3sFobl4ndskLIS5u1gxzfiDCs+YfrdZcgKUL0lMA
+         GqPw==
+X-Gm-Message-State: AOAM532/+DAeATYYl9EWlxAvh1NW+/CApsnSE3fG5803K8Yllle9cb64
+        1Z8BykX+K0OVeAfj42VmSb/6Gg==
+X-Google-Smtp-Source: ABdhPJy6NC8fxoezbUSmaO5XCtCmwNj7bvGHW5AKd99pOPgdnngB+i8JCHjpvpXdFLGhZ1bdwlTt/Q==
+X-Received: by 2002:a5d:5052:: with SMTP id h18mr7482638wrt.365.1622192704884;
+        Fri, 28 May 2021 02:05:04 -0700 (PDT)
+Received: from dell.default ([91.110.221.223])
+        by smtp.gmail.com with ESMTPSA id q11sm7193937wrx.80.2021.05.28.02.05.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 May 2021 02:05:04 -0700 (PDT)
+From:   Lee Jones <lee.jones@linaro.org>
+To:     lee.jones@linaro.org
+Cc:     linux-kernel@vger.kernel.org, Alan Cox <alan@lxorguk.ukuu.org.uk>,
+        ALWAYS copy <linux-ide@vger.kernel.org>,
+        Andre Hedrick <andre@linux-ide.org>, ATI Inc <hyu@ati.com>,
+        benh@kernel.crashing.org, Jens Axboe <axboe@kernel.dk>,
+        Mark Lord <mlord@pobox.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Tejun Heo <tj@kernel.org>
+Subject: [PATCH 00/11] Rid W=1 warnings from ATA
+Date:   Fri, 28 May 2021 10:04:51 +0100
+Message-Id: <20210528090502.1799866-1-lee.jones@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <934957f3-ff80-ae1d-8839-d5ffe2a952d1@kernel.dk>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
- LFEX1908.lancloud.ru (fd00:f066::208)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 5/27/21 10:03 PM, Jens Axboe wrote:
+This set is part of a larger effort attempting to clean-up W=1
+kernel builds, which are currently overwhelmingly riddled with
+niggly little warnings.
 
-[...]
->>> The driver overrides the error codes returned by platform_get_irq() to
->>> -ENXIO, so if it returns -EPROBE_DEFER, the driver would fail the probe
->>> permanently instead of the deferred probing.  Propagate the error code
->>> upstream, as it should have been done from the start...
->>>
->>> Fixes: 2fff27512600 ("PATA host controller driver for ep93xx")
->>> Signed-off-by: Sergey Shtylyov <s.shtylyov@omprussia.ru>
->>
->>    Again, 2 months has passed and no feedback whatsoever... the patch has fell
->> thru the cracks?
+Lee Jones (11):
+  ata: include: libata: Move fields commonly over-written to separate
+    MACRO
+  ata: ahci: Ensure initialised fields are not overwritten in AHCI_SHT()
+  ata: sata_sil24: Do not over-write initialise fields in 'sil24_sht'
+  ata: sata_mv: Do not over-write initialise fields in 'mv6_sht'
+  ata: sata_nv: Do not over-write initialise fields in 'nv_adma_sht' and
+    'nv_swncq_sht'
+  ata: pata_atiixp: Avoid overwriting initialised field in 'atiixp_sht'
+  ata: pata_cs5520: Avoid overwriting initialised field in 'cs5520_sht'
+  ata: pata_cs5530: Avoid overwriting initialised field in 'cs5530_sht'
+  ata: pata_sc1200: sc1200_sht'Avoid overwriting initialised field in '
+  ata: pata_serverworks: Avoid overwriting initialised field in
+    'serverworks_osb4_sht
+  ata: pata_macio: Avoid overwriting initialised field in
+    'pata_macio_sht'
 
-   Sorry for the wrong tenses -- forgot to re-read after editing. :-)
+ drivers/ata/ahci.h             |  7 +++++--
+ drivers/ata/pata_atiixp.c      |  3 ++-
+ drivers/ata/pata_cs5520.c      |  3 ++-
+ drivers/ata/pata_cs5530.c      |  3 ++-
+ drivers/ata/pata_macio.c       |  5 ++++-
+ drivers/ata/pata_sc1200.c      |  3 ++-
+ drivers/ata/pata_serverworks.c |  3 ++-
+ drivers/ata/sata_mv.c          |  6 +++++-
+ drivers/ata/sata_nv.c          | 10 ++++++++--
+ drivers/ata/sata_sil24.c       |  5 ++++-
+ include/linux/libata.h         | 13 ++++++++-----
+ 11 files changed, 44 insertions(+), 17 deletions(-)
 
-> It'd help if you sent out patches like this in a series, instead of
-> individual ones, when they are addressing the same issue across
-> multiple drivers. Makes the risk of them getting lost much smaller.
+Cc: Alan Cox <alan@lxorguk.ukuu.org.uk>
+Cc: ALWAYS copy <linux-ide@vger.kernel.org>
+Cc: Andre Hedrick <andre@linux-ide.org>
+Cc: ATI Inc <hyu@ati.com>
+Cc: benh@kernel.crashing.org
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: linux-ide@vger.kernel.org
+Cc: Mark Lord <mlord@pobox.com>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Tejun Heo <tj@kernel.org>
+-- 
+2.31.1
 
-   That's what I try to do,. generally. Not sure how these 3 patches
-ended up being all on their own... :-/
-
-> That said, I'll apply this one, thanks.
-
-   Thanx! :-)
-
-MBR, Sergey

@@ -2,63 +2,62 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A3D398638
-	for <lists+linux-ide@lfdr.de>; Wed,  2 Jun 2021 12:18:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 217EE39863F
+	for <lists+linux-ide@lfdr.de>; Wed,  2 Jun 2021 12:19:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232578AbhFBKUN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 2 Jun 2021 06:20:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38018 "EHLO
+        id S232827AbhFBKUX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 2 Jun 2021 06:20:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232576AbhFBKTn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Jun 2021 06:19:43 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98754C06138D
-        for <linux-ide@vger.kernel.org>; Wed,  2 Jun 2021 03:17:51 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id a20so1764162wrc.0
-        for <linux-ide@vger.kernel.org>; Wed, 02 Jun 2021 03:17:51 -0700 (PDT)
+        with ESMTP id S232594AbhFBKTo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Jun 2021 06:19:44 -0400
+Received: from mail-wr1-x42a.google.com (mail-wr1-x42a.google.com [IPv6:2a00:1450:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460BAC06134C
+        for <linux-ide@vger.kernel.org>; Wed,  2 Jun 2021 03:17:52 -0700 (PDT)
+Received: by mail-wr1-x42a.google.com with SMTP id h8so1699032wrz.8
+        for <linux-ide@vger.kernel.org>; Wed, 02 Jun 2021 03:17:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=gKWfoEYc79d/DZOeZ8NSwXdjHyPPS/zrdGTYbV6jFgI=;
-        b=t9c3Ok2U2XnbkvwgO1ViAtbEPfPg8i++Io7jx1sRwNxylsOdhobN8W3brVzyhGDdQy
-         rivI7LgW3aIcixtJ/Q3Ehm24HetEMmOwZHVOGT/1ePMuyclfalyLIVs38nLEG3EpoMi7
-         zGNr38BFeFx0xmWW4rjBlebzSYikORdn0JH1alk8TgqmHfhBBujThpYzUf1kjbk/nf7T
-         rYo2fgGE9MBSMwXtJUvOnpJlIpjuLM36wSxbXC/Y6HWJnec1I5FcIun1384JwCTH795m
-         s5r6UA9OOCNWYdVkH8lzAq4PdqNX7ptpVPTf8OC9a5T7XDX1R75sgeawq0+YW0+mFLx7
-         LP5w==
+        bh=hghg5eiTw+XcFBcIuWtxfTHWZai/nFkGzTUoTFHy7tQ=;
+        b=YZ50AN5U3jBUZLeLdk7DDuN3K2pMrIbrP2OHxpOHagH6mjsZMPmeQDsP5T2ltLpkqK
+         jyb6gYRUE+7u9ExtFV15pSYX8tbD+1umFd/Hg8eP1mBac1Ltzedrfm/6gfD7OfHR+3nb
+         gqyVpZM/tGwNkGDcOy3t0u9hAA6B3vnFnlsPNhUm9a69uhYauQp+PF7rqCIQ8hpjSrKx
+         WaVNka9st+UOsX1NAM9B4S5QJ8FwsNarQeBSPFpAkWM/9LQIHjZ4cuQGKT1p/98hdI5S
+         ZuOT0MskdJg1ZF8ErA3UzdDJNUxMAqIHvZB+vJ8whbQocROtF5g2WW8MiIijMITA9Qmp
+         3Hhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=gKWfoEYc79d/DZOeZ8NSwXdjHyPPS/zrdGTYbV6jFgI=;
-        b=EsrKiosjp9xFNmQ8SMG1pOigextQM25FgeZx4y8VwE4F1sBZBbzZ1XE1EJusn8j1q+
-         MIsUI+KEo2fTq2keKCQ0m0tZ457AGt6gXli96E3lp1NfAVaolKK0r3SSobg0Mk+BQ14C
-         HhK7xTQpyxIEryh8936gtxz7AClaQZcSAr910n62XgyDjZ66Wdv9dC/7VecHkyjtXSRq
-         +2T24Vmif4utTZTu8nsJybUqtOLbmq979DnuNzKUSCMbsnBf4JxWpoJpuWZF+OQfnUPO
-         rurVxOaF+R2xkZakVOFfmoCnaEkByCvx/smTX1SrLlHEkepIYMb0papdbM9vOr1ZuuXv
-         /oYA==
-X-Gm-Message-State: AOAM531PM4RisIah6mtbIBf7OvVyHySdoNTwfOqYRAC9cHbqXxtmAbPs
-        8tmcVc64o/tMVxq5379Kvc9MoA==
-X-Google-Smtp-Source: ABdhPJzgaX9hoMdjBzbQoxzSpt/nMKR1xURv7VlgQLgZOWH3wZ9ZF5Mt6cvMf7q+P6QLZhHeEVc8mg==
-X-Received: by 2002:a5d:4610:: with SMTP id t16mr4022764wrq.324.1622629070173;
+        bh=hghg5eiTw+XcFBcIuWtxfTHWZai/nFkGzTUoTFHy7tQ=;
+        b=MJyRfY2LTG+s96CU/kslS6nMw03TBpztv9htopY13x/we4W0dZ9TOJLrlouAHg544A
+         VcB0zTI6zkuFXFcbIF4X+YNYBRBcj0ZSaUs4Hf6dH3rTPlrGHXu20cEC3GQuw8GFn0O3
+         bqtSdw4UIHqs5aks+DBBlMj3tXwGonkM+qKnV2Pys5utj5kS4X2p7WF/1ECB5loxIgHE
+         LvTmzdlR5WtMZe1mGm96xb1QnBjx1QA+6TbvzTjn4ZpOMSHq7770U4bj29Wqbk1L4SD2
+         wc0e9jWpkWZm/Sr4SB+A0u8eKVDxhqVO1i2CAwwWJCN0+w8ODefeoH4a+BOH+J3vyOQk
+         quCA==
+X-Gm-Message-State: AOAM5310YZYiPmhWsQ/xLQmQ/LCjfrYMWFJp2xdKfuDuraw2w6mBtqHl
+        dD8QumkP/naMrL8jQVESzU0YYQ==
+X-Google-Smtp-Source: ABdhPJwNaESo8dgf3KZKl5D5IQxpN86T+b+Vg1TYMkBROXmXd/GZTTNXjRq21dG0p1Brd60StOt6NA==
+X-Received: by 2002:adf:a489:: with SMTP id g9mr20930775wrb.103.1622629070953;
         Wed, 02 Jun 2021 03:17:50 -0700 (PDT)
 Received: from dell.default ([91.110.221.214])
-        by smtp.gmail.com with ESMTPSA id q11sm1593265wmq.1.2021.06.02.03.17.49
+        by smtp.gmail.com with ESMTPSA id q11sm1593265wmq.1.2021.06.02.03.17.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jun 2021 03:17:49 -0700 (PDT)
+        Wed, 02 Jun 2021 03:17:50 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>, linux-ide@vger.kernel.org
-Subject: [PATCH 17/21] ide: ide-acpi: Mark debugging variable 'bus' as __maybe_unused
-Date:   Wed,  2 Jun 2021 11:17:18 +0100
-Message-Id: <20210602101722.2276638-18-lee.jones@linaro.org>
+Subject: [PATCH 18/21] ide: ide-io: Document ide_intr()'s param 'irq'
+Date:   Wed,  2 Jun 2021 11:17:19 +0100
+Message-Id: <20210602101722.2276638-19-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210602101722.2276638-1-lee.jones@linaro.org>
 References: <20210602101722.2276638-1-lee.jones@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
@@ -66,30 +65,27 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ide/ide-acpi.c: In function ‘ide_get_dev_handle’:
- drivers/ide/ide-acpi.c:126:15: warning: variable ‘bus’ set but not used [-Wunused-but-set-variable]
+ drivers/ide/ide-io.c:775: warning: Function parameter or member 'irq' not described in 'ide_intr'
 
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ide/ide-acpi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ide/ide-io.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ide/ide-acpi.c b/drivers/ide/ide-acpi.c
-index 9a4ec281b9854..816ebbbf699b5 100644
---- a/drivers/ide/ide-acpi.c
-+++ b/drivers/ide/ide-acpi.c
-@@ -123,7 +123,8 @@ static int ide_get_dev_handle(struct device *dev, acpi_handle *handle,
- 			       u64 *pcidevfn)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev);
--	unsigned int bus, devnum, func;
-+	unsigned int __maybe_unused bus;
-+	unsigned int devnum, func;
- 	u64 addr;
- 	acpi_handle dev_handle;
- 	acpi_status status;
+diff --git a/drivers/ide/ide-io.c b/drivers/ide/ide-io.c
+index bd3e78985bcc7..129d036645f85 100644
+--- a/drivers/ide/ide-io.c
++++ b/drivers/ide/ide-io.c
+@@ -750,6 +750,7 @@ static void unexpected_intr(int irq, ide_hwif_t *hwif)
+ 
+ /**
+  *	ide_intr	-	default IDE interrupt handler
++ *	@irq: IRQ number
+  *	@dev_id: hwif
+  *
+  *	This is the default IRQ handler for the IDE layer. You should
 -- 
 2.31.1
 

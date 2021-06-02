@@ -2,64 +2,65 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF93939862D
-	for <lists+linux-ide@lfdr.de>; Wed,  2 Jun 2021 12:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA694398632
+	for <lists+linux-ide@lfdr.de>; Wed,  2 Jun 2021 12:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230390AbhFBKTt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 2 Jun 2021 06:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
+        id S232693AbhFBKUG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 2 Jun 2021 06:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232547AbhFBKTc (ORCPT
+        with ESMTP id S232555AbhFBKTc (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Jun 2021 06:19:32 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12651C061346
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6659C061348
         for <linux-ide@vger.kernel.org>; Wed,  2 Jun 2021 03:17:45 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id m18so938744wmq.0
-        for <linux-ide@vger.kernel.org>; Wed, 02 Jun 2021 03:17:44 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id n17-20020a7bc5d10000b0290169edfadac9so3427770wmk.1
+        for <linux-ide@vger.kernel.org>; Wed, 02 Jun 2021 03:17:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=O9iIf6zIMattTW/alV/9VT7gtBfDmu2Z2RdNdHc+834=;
-        b=ONIgXmYJd1qjLKOTGHrbCG3Urp/fw+Op4avACr5zJQCxd60DT/K8uer8Y20+742e+6
-         9KJZb5lnFhuN1eE6sb/NimLHBWLg6L/fypednUQq8Ir4LWI9lSQzcpgexTJDG0HMA9C3
-         yRopcrYziW+Eai2VyR2J/YVyO7p0x0f2wtIgzmlZN83cdQ9p9iK1iaiaCnVukMFP81EE
-         ouF0nr9yBSitL0XvK4lxHxuYgRtFiG2aSUSIGf8AgBigEUvNqX6kup6JIvUZKMBC39r1
-         VmdqgUWFstZsj0rJnJLA9LtLRKiBH7vDLUZDR6XkFVEEGRzzvmw4qYrrUsMobvvSlL9L
-         ROgA==
+        bh=T5FEzmO9RZgKtbCHPkiUM3cWX79WWEVOe+3S3XV/eYg=;
+        b=C2GCEG54UusFDC++LW8FQGhMV9Ae2/NdAiCrbnLSn8Dfc9HJl+/4P0+sz06JqzuqWm
+         /QbsnbxardHjL/6AaH8fWYkB2yByRBcs4tJxiB7fVwBPGf1SUddsjDEpdmUV1HN17SPY
+         hIfBZzGerb0kFyltrpIhV0t+K1sNRmYOieTWrjQZGgSNu6/PJHfj5PHkYIr2JUgIYeCX
+         uRoJNNonKzF5LGjgs45qE8gZkQyILHHaH74MneW1jnQ00vRJ9DGo5ycXZU2JQMG136rU
+         UtxvuZE6+utEsPcNZmXCEusQFKdXGlnFXPHnG/IlFcBic8QHpVKgX+HjD0MWYtjmG1wD
+         kIcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=O9iIf6zIMattTW/alV/9VT7gtBfDmu2Z2RdNdHc+834=;
-        b=aIg4KCzis9Hc9nVu15PI7c0fla5Sm0eaZDeJNlqsdqGwNAzpbEE2Z6Sx8pUWZ6mucU
-         2985rTjSfoPODHu/xS7QThQmWCg8SDw/M29TK2LGYQwCNrX6UnnSTIGcEc6N7+vuVH+Y
-         XmDB8rIRs9L0IgTh7iN47iIX+A8UYUojeTmMM6EDbGs6CBUAjIHypB7+oYXgDa6iJp3r
-         tPsRuczRhyifENwZYAjjWDTAoDh6fa3t4gUX89DjpgMc7NBHc42xiIT6JYK7Xnh+I5Yg
-         mObnAw7lfWpDF9ily75ymXaQ6YlDmxv+4zOyODaiQiyG0UfGL8WVO74ZzY4lW1lwbxjw
-         8sGg==
-X-Gm-Message-State: AOAM531vHSsQJtcJV/ZZgg286/gq8kScTaehVDmqVmF+TMuXXckQ3EJh
-        zud18YmrEbmkAmwcCVtiLc9qWA==
-X-Google-Smtp-Source: ABdhPJwRdQ1H5GkOhiTpyCUEjoVrQCMIlPxMLgxh17oU9dl1M2Cdmlw57RsVhL8ZO/wJ3//pVi98jA==
-X-Received: by 2002:a1c:ed14:: with SMTP id l20mr4328451wmh.20.1622629063711;
-        Wed, 02 Jun 2021 03:17:43 -0700 (PDT)
+        bh=T5FEzmO9RZgKtbCHPkiUM3cWX79WWEVOe+3S3XV/eYg=;
+        b=ubO2n40Rq3NXJP7KQ4sMJU36a2KFfoS/+Qifg06XbM5wkohPZaVMqknDfH6ZgNli0q
+         S3XMxct6oxO84nMKQziqUIU3e378DjwIsWSSjOSkXCEgy1mvkuyU2wwX5DzTjPTF+fZG
+         i6kj9qF4fipYGjFYGUSm/KoRGNArqqNHSPJO7R4mEVs7LV3j11mWUSyJJz2yW5lF4eTM
+         CUAQNHIcbVCaRLsZVtBvVM1Qzx6a/XnDDAJ8yv/h5zqfmKPvBMKrc8+olRBqW6ri0LQs
+         QxZ/e7ur3gvVEYXrANUnQUvcJZTIE8bWGRR8AD/mmugFaoDiHL1WBaK9+AWRFs0F/5CJ
+         S8GQ==
+X-Gm-Message-State: AOAM532HIArXoucge5/qauGh+Qy5FC8pKnxKO9k1DdIpPkOZ2RhNidQ5
+        80MpevEyzDvckFozogbI8MvgOw==
+X-Google-Smtp-Source: ABdhPJxL98eynQkJFFkPBCCkEwJ33W9JN6L7a5MWz5uDvW4J9kyCTOJk0pF9VP0/RZ3Cq3Hp/W4C4Q==
+X-Received: by 2002:a7b:cf23:: with SMTP id m3mr4526415wmg.24.1622629064563;
+        Wed, 02 Jun 2021 03:17:44 -0700 (PDT)
 Received: from dell.default ([91.110.221.214])
-        by smtp.gmail.com with ESMTPSA id q11sm1593265wmq.1.2021.06.02.03.17.42
+        by smtp.gmail.com with ESMTPSA id q11sm1593265wmq.1.2021.06.02.03.17.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Jun 2021 03:17:43 -0700 (PDT)
+        Wed, 02 Jun 2021 03:17:44 -0700 (PDT)
 From:   Lee Jones <lee.jones@linaro.org>
 To:     lee.jones@linaro.org
 Cc:     linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Andre Hedrick <andre@linux-ide.org>,
-        Frank Tiernan <frankt@promise.com>, linux-ide@vger.kernel.org
-Subject: [PATCH 10/21] ide: pdc202xx_new: Supply missing description for 'set_indexed_reg()'s 'value' param
-Date:   Wed,  2 Jun 2021 11:17:11 +0100
-Message-Id: <20210602101722.2276638-11-lee.jones@linaro.org>
+        "Software, Inc" <source@mvista.com>, linux-ide@vger.kernel.org
+Subject: [PATCH 11/21] ide: slc90e66: Remove unused variable 'sitre'
+Date:   Wed,  2 Jun 2021 11:17:12 +0100
+Message-Id: <20210602101722.2276638-12-lee.jones@linaro.org>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210602101722.2276638-1-lee.jones@linaro.org>
 References: <20210602101722.2276638-1-lee.jones@linaro.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
@@ -67,29 +68,37 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Fixes the following W=1 kernel build warning(s):
 
- drivers/ide/pdc202xx_new.c:84: warning: Function parameter or member 'value' not described in 'set_indexed_reg'
+ drivers/ide/slc90e66.c: In function ‘slc90e66_set_dma_mode’:
+ drivers/ide/slc90e66.c:80:6: warning: variable ‘sitre’ set but not used [-Wunused-but-set-variable]
 
 Cc: "David S. Miller" <davem@davemloft.net>
 Cc: Andre Hedrick <andre@linux-ide.org>
-Cc: Frank Tiernan <frankt@promise.com>
+Cc: "Software, Inc" <source@mvista.com>
 Cc: linux-ide@vger.kernel.org
 Signed-off-by: Lee Jones <lee.jones@linaro.org>
 ---
- drivers/ide/pdc202xx_new.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ide/slc90e66.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/ide/pdc202xx_new.c b/drivers/ide/pdc202xx_new.c
-index 7c276b8aeb5fe..537521213e148 100644
---- a/drivers/ide/pdc202xx_new.c
-+++ b/drivers/ide/pdc202xx_new.c
-@@ -79,6 +79,7 @@ static u8 get_indexed_reg(ide_hwif_t *hwif, u8 index)
-  * set_indexed_reg - Set indexed register
-  * @hwif: for the port address
-  * @index: index of the indexed register
-+ * @value: value of the indexed register
-  */
- static void set_indexed_reg(ide_hwif_t *hwif, u8 index, u8 value)
+diff --git a/drivers/ide/slc90e66.c b/drivers/ide/slc90e66.c
+index cd47445fda1ff..0b06c74dddf36 100644
+--- a/drivers/ide/slc90e66.c
++++ b/drivers/ide/slc90e66.c
+@@ -77,13 +77,12 @@ static void slc90e66_set_dma_mode(ide_hwif_t *hwif, ide_drive_t *drive)
  {
+ 	struct pci_dev *dev	= to_pci_dev(hwif->dev);
+ 	u8 maslave		= hwif->channel ? 0x42 : 0x40;
+-	int sitre = 0, a_speed	= 7 << (drive->dn * 4);
++	int a_speed		= 7 << (drive->dn * 4);
+ 	int u_speed = 0, u_flag = 1 << drive->dn;
+ 	u16			reg4042, reg44, reg48, reg4a;
+ 	const u8 speed		= drive->dma_mode;
+ 
+ 	pci_read_config_word(dev, maslave, &reg4042);
+-	sitre = (reg4042 & 0x4000) ? 1 : 0;
+ 	pci_read_config_word(dev, 0x44, &reg44);
+ 	pci_read_config_word(dev, 0x48, &reg48);
+ 	pci_read_config_word(dev, 0x4a, &reg4a);
 -- 
 2.31.1
 

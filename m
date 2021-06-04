@@ -2,107 +2,56 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B5939B462
-	for <lists+linux-ide@lfdr.de>; Fri,  4 Jun 2021 09:54:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EADBD39B8E2
+	for <lists+linux-ide@lfdr.de>; Fri,  4 Jun 2021 14:16:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229955AbhFDH41 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 4 Jun 2021 03:56:27 -0400
-Received: from mail-ua1-f52.google.com ([209.85.222.52]:42605 "EHLO
-        mail-ua1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229925AbhFDH41 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 4 Jun 2021 03:56:27 -0400
-Received: by mail-ua1-f52.google.com with SMTP id w5so4789648uaq.9;
-        Fri, 04 Jun 2021 00:54:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NFZRarEn438WqVAwH8CuVhNSuLb9OLw9t9DmZUYwag8=;
-        b=cvvppxElnnl9Eqx1TGgHdRsLw55yj3/2UH+3rHD5YTqRh74b/crjZ/+0rlMrbcnvaG
-         OwRKi4Qw1WFzakdpV4oKFpxKayIdrO+ePbZRFsTb7C8GyJIZadVYSclZmze7IkPZdH5A
-         k7DLflw08a/JkA5JTyORWlkBctOlSvleZ9BlEK62EsnpAGU8GZX//4uSuWf99zbCJ5te
-         C/iYqEYLwMrpTHB5GFcHSrfcrtwKqqrFXPwD3MVyG/HNGUxZ57yBRCMyEXhr+NxvJ9sa
-         AnPSDMazaK3fPzAUzX1Xzn8x0W0F3CERBgSmJaeEET91+i1Pfi2CtK/msVj0ztO3oCfV
-         rwJw==
-X-Gm-Message-State: AOAM531uRpJiLo6pdsEASFInfq8IeCqlcjbKBrxeKhUSHCLz8JNH0TSL
-        nRWLR3Pr8R50zxtkPnVn67uqLpIQObdbDjjxpCs=
-X-Google-Smtp-Source: ABdhPJyzlgHq+vn5+jKQ0d98Gcqtt7cVokb6Dd/c8UX2ICEr0e8+8lhOGRr/BUqfnjPyFLLCa7F9Wy7lhUFx6O4d/IU=
-X-Received: by 2002:ab0:26d8:: with SMTP id b24mr2244219uap.58.1622793280699;
- Fri, 04 Jun 2021 00:54:40 -0700 (PDT)
+        id S230162AbhFDMSc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Fri, 4 Jun 2021 08:18:32 -0400
+Received: from linode.pasteur.edu.uy ([50.116.35.230]:52688 "EHLO
+        linode.pasteur.edu.uy" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230142AbhFDMSa (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 4 Jun 2021 08:18:30 -0400
+Received: from smtp.pasteur.edu.uy (coltrane.pasteur.edu.uy [164.73.118.254])
+        by linode.pasteur.edu.uy (Postfix) with ESMTP id 0EAD41E800;
+        Fri,  4 Jun 2021 09:15:30 -0300 (UYT)
+Received: from cris-PC.wifi (unknown [105.9.153.138])
+        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by smtp.pasteur.edu.uy (Postfix) with ESMTP id 2C08FD500;
+        Fri,  4 Jun 2021 09:15:20 -0300 (UYT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <CAMuHMdUskb3oicq8Kbf6MY_4mn4-Y1pJ-om4fny7k48gndscgg@mail.gmail.com>
- <1622611267-15825-1-git-send-email-schmitzmic@gmail.com> <1622611267-15825-2-git-send-email-schmitzmic@gmail.com>
- <25ab336d-e0e0-41a8-d468-ecbf8d83d2b@linux-m68k.org> <143313da-d294-f89b-d285-235230514c5a@gmail.com>
-In-Reply-To: <143313da-d294-f89b-d285-235230514c5a@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 4 Jun 2021 09:54:29 +0200
-Message-ID: <CAMuHMdU5ebmsErLdy6EykCHNULsBVFCpVsz0H3gpTLUmH1tt7g@mail.gmail.com>
-Subject: Re: [PATCH RFC 1/2] m68k: io_mm.h: conditionalize ISA address
- translation on Atari
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     Finn Thain <fthain@linux-m68k.org>,
-        "Linux/m68k" <linux-m68k@vger.kernel.org>,
-        linux-ide@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: spende von 2,000,000 euro
+To:     Recipients <apittini@pasteur.edu.uy>
+From:   ''Tayeb souami'' <apittini@pasteur.edu.uy>
+Date:   Fri, 04 Jun 2021 14:15:12 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20210604121521.2C08FD500@smtp.pasteur.edu.uy>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Michael,
 
-On Fri, Jun 4, 2021 at 2:19 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> On 3/06/21 8:23 pm, Finn Thain wrote:
-> > On Wed, 2 Jun 2021, Michael Schmitz wrote:
-> >> --- a/arch/m68k/include/asm/io_mm.h
-> >> +++ b/arch/m68k/include/asm/io_mm.h
-> >> @@ -52,7 +52,11 @@
-> >>   #define Q40_ISA_MEM_B(madr)  (q40_isa_mem_base+1+4*((unsigned long)(madr)))
-> >>   #define Q40_ISA_MEM_W(madr)  (q40_isa_mem_base+  4*((unsigned long)(madr)))
-> >>
-> >> +#ifdef CONFIG_ATARI
-> >> +#define MULTI_ISA 1
-> >> +#else
-> >>   #define MULTI_ISA 0
-> >> +#endif /* Atari */
-> >>   #endif /* Q40 */
-> >>
-> > I have to wonder whether there is a nice simple definition for MULTI_ISA.
->
-> As I understand it, MULTI_ISA means that different byte orders and/or
-> different address translations need to be used in the same kernel, so
-> all that cannot be decided at build time.
->
-> As long as there is only a single platform that will use this code (ISA
-> only used on a single platform, and neither Atari IDE nor EtherNEC
-> used), MULTI_ISA is not needed.
->
-> If we have Kconfig symbols for 'single platform only', and
-> 'multi-platform ISA use', that might be shorter to write and easier to
-> understand. Geert?
+Lieber Freund,
 
-It would be nice to have that automatically, like with the current
-MULTI_ISA define (and all the MACH_* in arch/m68k/include/asm/setup.h).
-Perhaps we should extend kconfig syntax to define a group of
-related symbols, and to automatically generate CONFIG_FOO_MULTI or
-CONFIG_FOO_SINGLE (and even CONFIG_BAR_ONLY?) symbols?
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-group ISA
-     item ATARI_ROM_ISA
-     item AMIGA_PCMCIA
-     item Q40
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
-=> CONFIG_ISA_MULTI or CONFIG_ISA_SINGLE (+ e.g. ATARI_ROM_ISA_ONLY
-   if appropriate).
 
-Are there other users who can benefit from this?
 
-Gr{oetje,eeting}s,
+Das ist dein Spendencode: [TS530342018]
 
-                        Geert
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Antworten Sie mit dem SPENDE-CODE an diese
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami

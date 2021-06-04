@@ -2,56 +2,122 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EADBD39B8E2
-	for <lists+linux-ide@lfdr.de>; Fri,  4 Jun 2021 14:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1378339C28D
+	for <lists+linux-ide@lfdr.de>; Fri,  4 Jun 2021 23:36:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230162AbhFDMSc convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Fri, 4 Jun 2021 08:18:32 -0400
-Received: from linode.pasteur.edu.uy ([50.116.35.230]:52688 "EHLO
-        linode.pasteur.edu.uy" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230142AbhFDMSa (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 4 Jun 2021 08:18:30 -0400
-Received: from smtp.pasteur.edu.uy (coltrane.pasteur.edu.uy [164.73.118.254])
-        by linode.pasteur.edu.uy (Postfix) with ESMTP id 0EAD41E800;
-        Fri,  4 Jun 2021 09:15:30 -0300 (UYT)
-Received: from cris-PC.wifi (unknown [105.9.153.138])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by smtp.pasteur.edu.uy (Postfix) with ESMTP id 2C08FD500;
-        Fri,  4 Jun 2021 09:15:20 -0300 (UYT)
-Content-Type: text/plain; charset="utf-8"
+        id S229755AbhFDViU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 4 Jun 2021 17:38:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229665AbhFDViU (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 4 Jun 2021 17:38:20 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86913C061767;
+        Fri,  4 Jun 2021 14:36:19 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id m13-20020a17090b068db02901656cc93a75so8172169pjz.3;
+        Fri, 04 Jun 2021 14:36:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:cc:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding;
+        bh=wGqdV4bNNz4VAcdMHyar3DhYCaMKnNzMvXRq2H+IWtI=;
+        b=Yj3sYkqVhkpnvdu0jr0bWdQcYU9ZRNr5W+Y/Nqg/bbj7rsCFrD+nsOg8ujfNBMAvYY
+         9Hmif3zF3KpJyh59w+74a1e4K6qfmmEOdaDKoAqWVFyGNhlGMinH4dmDOmssmDYhgBEz
+         eFD4geLksXcNYoBPGTJuQXKFPqAeFJMvbdrixH3Xxac1j5UzdzDlyTPsRY3DM/2ELuHv
+         q7yqhna0+h+2vEKzoiN3oEOZWXqchs0TNwPKKC8Sw24EaOmKT9FC3KsCZrwW6jlY/jxt
+         oI8tOUAEMjs2SL217Dx2mvIkg81/NH3pFxQpKNkE5Ndo8ilx8dlHEAnmuYvtAeIY7Ib1
+         +7lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=wGqdV4bNNz4VAcdMHyar3DhYCaMKnNzMvXRq2H+IWtI=;
+        b=UvxDAnnt2i5N5gJ8+7kIabG9855yM9O4Pyfa784QjCSxLDKxmjkCHmuyJNlqATOBGN
+         K751pzfHBbF0WGeBI+7Nh4kO3xcQFF8LhszZ33s/NA6VmHMEZ5gKToO0h1Fopp44nGue
+         awGbPQAlloRo5Fcg9E9YZn/Q7siccVmbt3MSEsHuY/vXAreNIOGfpdsvMMQjP32lT8oE
+         uX2JKJnEeT2JbN7hc67csinloKoguFb99GsYIWmrvIRdjedxbrZ3VA7gsDLeDI8wOXIy
+         J5zjSirYUH0O7RLz3Xi6Wy6MR4Q1kFuPfGuNlTtuNa6vuF4Sm8D8akV075o8mJhtIoWR
+         BUGA==
+X-Gm-Message-State: AOAM531oivQr7K8VFrvGuuj0512hsdwtsX02nbWDNTRkXLpGWI01Ovvg
+        WpyTzI2QfWbPdIhAtTNwT6PxOrAcqVM=
+X-Google-Smtp-Source: ABdhPJzzhDuAKOdhODAvipxYTxxL6SC278eYPRwX9XeJiKiEWRZfGMD803btqx7HfIc3s3RQdGiisg==
+X-Received: by 2002:a17:90a:aa96:: with SMTP id l22mr18683537pjq.173.1622842578852;
+        Fri, 04 Jun 2021 14:36:18 -0700 (PDT)
+Received: from [10.1.1.25] (222-152-189-137-fibre.sparkbb.co.nz. [222.152.189.137])
+        by smtp.gmail.com with ESMTPSA id r4sm2344685pff.197.2021.06.04.14.36.15
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 04 Jun 2021 14:36:18 -0700 (PDT)
+Subject: Re: [PATCH RFC 1/2] m68k: io_mm.h: conditionalize ISA address
+ translation on Atari
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <CAMuHMdUskb3oicq8Kbf6MY_4mn4-Y1pJ-om4fny7k48gndscgg@mail.gmail.com>
+ <1622611267-15825-1-git-send-email-schmitzmic@gmail.com>
+ <1622611267-15825-2-git-send-email-schmitzmic@gmail.com>
+ <25ab336d-e0e0-41a8-d468-ecbf8d83d2b@linux-m68k.org>
+ <143313da-d294-f89b-d285-235230514c5a@gmail.com>
+ <CAMuHMdU5ebmsErLdy6EykCHNULsBVFCpVsz0H3gpTLUmH1tt7g@mail.gmail.com>
+Cc:     Finn Thain <fthain@linux-m68k.org>,
+        Linux/m68k <linux-m68k@vger.kernel.org>,
+        linux-ide@vger.kernel.org
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <28042fd1-4a54-af21-347f-165b8e4e63b4@gmail.com>
+Date:   Sat, 5 Jun 2021 09:36:13 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: spende von 2,000,000 euro
-To:     Recipients <apittini@pasteur.edu.uy>
-From:   ''Tayeb souami'' <apittini@pasteur.edu.uy>
-Date:   Fri, 04 Jun 2021 14:15:12 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210604121521.2C08FD500@smtp.pasteur.edu.uy>
+In-Reply-To: <CAMuHMdU5ebmsErLdy6EykCHNULsBVFCpVsz0H3gpTLUmH1tt7g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hi Geert,
 
-Lieber Freund,
+Am 04.06.2021 um 19:54 schrieb Geert Uytterhoeven:
+>>> I have to wonder whether there is a nice simple definition for MULTI_ISA.
+>>
+>> As I understand it, MULTI_ISA means that different byte orders and/or
+>> different address translations need to be used in the same kernel, so
+>> all that cannot be decided at build time.
+>>
+>> As long as there is only a single platform that will use this code (ISA
+>> only used on a single platform, and neither Atari IDE nor EtherNEC
+>> used), MULTI_ISA is not needed.
+>>
+>> If we have Kconfig symbols for 'single platform only', and
+>> 'multi-platform ISA use', that might be shorter to write and easier to
+>> understand. Geert?
+>
+> It would be nice to have that automatically, like with the current
+> MULTI_ISA define (and all the MACH_* in arch/m68k/include/asm/setup.h).
+> Perhaps we should extend kconfig syntax to define a group of
+> related symbols, and to automatically generate CONFIG_FOO_MULTI or
+> CONFIG_FOO_SINGLE (and even CONFIG_BAR_ONLY?) symbols?
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+I take it this is not supported by our current Kconfig syntax?
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+>
+> group ISA
+>      item ATARI_ROM_ISA
+>      item AMIGA_PCMCIA
+>      item Q40
+>
+> => CONFIG_ISA_MULTI or CONFIG_ISA_SINGLE (+ e.g. ATARI_ROM_ISA_ONLY
+>    if appropriate).
+>
+> Are there other users who can benefit from this?
+
+Nothing comes to mind immediately. But there will be other drivers 
+shared between different architectures (Mac / PowerPC?) that might benefit.
+
+Cheers,
+
+	Michael
 
 
-
-Das ist dein Spendencode: [TS530342018]
-
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+>
+> Gr{oetje,eeting}s,
+>
+>                         Geert
+>

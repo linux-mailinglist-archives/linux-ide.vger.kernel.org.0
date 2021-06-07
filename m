@@ -2,133 +2,81 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 659AB39D393
-	for <lists+linux-ide@lfdr.de>; Mon,  7 Jun 2021 05:41:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01A8A39D48C
+	for <lists+linux-ide@lfdr.de>; Mon,  7 Jun 2021 07:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230252AbhFGDnj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 6 Jun 2021 23:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51138 "EHLO
+        id S229993AbhFGF6N (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 7 Jun 2021 01:58:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230127AbhFGDni (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 6 Jun 2021 23:43:38 -0400
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82E2C061789;
-        Sun,  6 Jun 2021 20:41:33 -0700 (PDT)
-Received: by mail-pl1-x636.google.com with SMTP id h1so228974plt.1;
-        Sun, 06 Jun 2021 20:41:33 -0700 (PDT)
+        with ESMTP id S229578AbhFGF6M (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 7 Jun 2021 01:58:12 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFEE6C061787
+        for <linux-ide@vger.kernel.org>; Sun,  6 Jun 2021 22:56:21 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id m21so8555154lfg.13
+        for <linux-ide@vger.kernel.org>; Sun, 06 Jun 2021 22:56:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:references:cc:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding;
-        bh=VtFXrsX8w0w0nf24oPfhWOTgY39JrMcR9uKyv6wE2u4=;
-        b=KGEqwqgWOH1l9hDKlXq8r54KBUTCvmqWXEyyuJCdLyCSyq0yDDiXwaGqy5XbwARN2G
-         WYmTgQkFYk+VoyRxO8TrSU30Gf2EdKgyU6hwG/UufRBLMAJ5Y/CNIlgXU/45ypYDl4ad
-         I9y7xs/TZhf2c+PuNf+7GvyV+ti/1dmExnN7OT7FDlUGTxVOnHcVuAUzaPE8+wHYCKDy
-         9l5yF2SAkEJM9vOU/JMV0MJno6lsFTzIGSSwNXys2rqemmYulCOpUCdWBvBI7qdfBOs8
-         rUOLivULMaKtGz5MtWpCGvihgTuy8v2gsvhYEKGmYLmeKeGeZAHvcRoqYa3k9gqLx+CF
-         W6+Q==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=/wBNVO8p0L0MwynFVGAli8Yo7FoOthJf6Cs8txsgWCg=;
+        b=r3pW5xMN6mUfkByE6K1UlB4Mi8NNgVfRet1HD/PeFG71ABzAkm+XHp1l2yRBHEH6EP
+         pFYJktJpzQ7L7QjNpqlc8HncQYy9YcsmXHIEqRut1C/THKK1NEz8d2BzjIHiyOJBqC7E
+         4gXbdmgmvb1NrWVB1G/4KsWcm8CdD2qPayKovcsKPuQQalOEV+e6TN6u/XPVVE3GWsvG
+         TL0bxHgAnDUA8Y/NoR+iJvn+VL0eFli4Aoj+heb29EUR2JMKzsY5oMNA/0xF3Y/Vz7jI
+         wkqurCOdJ/V+illV3JYxfsVqUzI5BsgsZfomALbJb5CGA0PzFxfHoQp7it1Zue3dlBKc
+         j9bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:cc:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
-        bh=VtFXrsX8w0w0nf24oPfhWOTgY39JrMcR9uKyv6wE2u4=;
-        b=N0m+QcdLHbPdIpISBe4y8MmIY63K7q/u6oUKPcU8purYfc9bN4b22fEn6RJ9tl0N6L
-         t5aRKn71czepc45Y6Pen9pbeuYUfzrDpIkOhvggzNWMoMaElusJhdqXYBn80FG34spmE
-         HW0EJjtR5fvYZIJeBv8Won4/r8uqvP5A5J6SPdQxht8eK/3T2PWEocOgETDCvWwoQhh8
-         qtIEf4wOLX3H2ZXikGz8rWvsH00bZYRRNVpqv8htCxx1xO4qSM+ydSaW6kz3ToVnf6f1
-         GQxnFehE2qqTUKnMoyYa1TDwJbrPAHSrPCmdhMvbeAMTVbZITqup47CZyOd8Y8SPtBjs
-         N+SQ==
-X-Gm-Message-State: AOAM533XFapfUsjnZzhkXh9jYqAhpsAJxfteyJjpF2GSrTG7QVJJLstn
-        zu8Ij/A+zwR97HgFKYpbV7hH8oIVT7H4NQ==
-X-Google-Smtp-Source: ABdhPJynmMpcDyU4FEBZOVJAayjiYV2j6daSl8h9v6E/kElpAojuRaW/7p+UpjZ9dGPXVZGxjr5Syg==
-X-Received: by 2002:a17:90b:124a:: with SMTP id gx10mr18655057pjb.214.1623037292916;
-        Sun, 06 Jun 2021 20:41:32 -0700 (PDT)
-Received: from [10.1.1.25] (222-152-189-137-fibre.sparkbb.co.nz. [222.152.189.137])
-        by smtp.gmail.com with ESMTPSA id p7sm7019372pfb.45.2021.06.06.20.41.28
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 06 Jun 2021 20:41:32 -0700 (PDT)
-Subject: Re: [PATCH] m68k/q40: Replace q40ide with pata_falcon and falconide
-To:     Finn Thain <fthain@linux-m68k.org>
-References: <352239036981177050c296ca3deb84a102d9faa2.1622970906.git.fthain@linux-m68k.org>
- <e250cffb-9edd-1b84-3826-58079758b35a@gmail.com>
- <4a32d59-ebb-9dc-fec7-ad172547d9a3@linux-m68k.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Richard Zidlicky <rz@linux-m68k.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <a665b3ff-1dec-48b6-d8b1-a9966e1c1bf0@gmail.com>
-Date:   Mon, 7 Jun 2021 15:41:25 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=/wBNVO8p0L0MwynFVGAli8Yo7FoOthJf6Cs8txsgWCg=;
+        b=iWUy4mtEbFMKyPeNxqhF1N1KLe4i0v8WEtYI6s5HqBaqsGMZ7XDJwg6Fc2rrSDKRRQ
+         uwVSA/ndjZW95XfbMiaAOiwyBQOkSaEI4hYYhOtP0XR/ebkgZ0xdKSwlJqeygGbacSi6
+         UeF4oLyGULeBygHXo3HNuTsCzuoujylIpzmX1IGAX4pHEBoF6vArr7Qu/tlYHLAid/eP
+         bGrbO45KblYjnNN/PhGf4HKUPIOIU/UtbHSXA7Ucb5gKUQX//Or+5/2hON2SmcUlcyld
+         mluSFLdA3WoN4ubu+M7EOPt5QPOmE8jEGyGz58pBiy0i1KI4jNJ4o327Ey+vAcETmCpi
+         teqw==
+X-Gm-Message-State: AOAM533eKeiKxMLawfqUV7Ik4zxvrPFtgV/dBJFDwRaSKdZJKGc6yKC3
+        cma1I9c7NaQ+bCSNuqhyGGRCZsa29PoeqV8hd6Q=
+X-Google-Smtp-Source: ABdhPJwI0IL/4ZGElGxAuTwjuJHqJswr1lONq2q75toWBYcUU1ByNLVorGFC6G/J/y0xWCCZc8HDg8UlrIiI11AIy5s=
+X-Received: by 2002:a19:ed1a:: with SMTP id y26mr10545700lfy.120.1623045379111;
+ Sun, 06 Jun 2021 22:56:19 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <4a32d59-ebb-9dc-fec7-ad172547d9a3@linux-m68k.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
+Received: by 2002:ab3:61ae:0:0:0:0:0 with HTTP; Sun, 6 Jun 2021 22:56:17 -0700 (PDT)
+Reply-To: rita44303@yahoo.co.jp
+From:   Rita Williams <rw4577756@gmail.com>
+Date:   Mon, 7 Jun 2021 06:56:17 +0100
+Message-ID: <CAN-dn=FaWgjOZVOqMV27MUh3uVuN+2C59KZmH5q5MsYvLuRbxQ@mail.gmail.com>
+Subject: Von Frau Rita Williams
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Finn
+860 / 5000
+Translation results
+Liebster in Christus,
 
-Am 07.06.2021 um 14:07 schrieb Finn Thain:
->> are there any substantial changes from what I'd tested before?
->
-> The request_region() stuff is new, and I reworked the host->get_lock and
-> host->release_lock changes. So you may want to review it again.
+Ich bin Frau Rita Williams, ich habe Herrn David Williams 19 Jahre
+ohne Kind geheiratet und mein Mann ist 2007 gestorben von meinem
+verstorbenen Ehemann an eine Wohlt=C3=A4tigkeitsorganisation, derzeit ist
+der Fonds noch auf der Bank. K=C3=BCrzlich sagte mir mein Arzt, dass ich
+eine schwere Krankheit habe, die ein Krebsproblem ist und dass ich die
+n=C3=A4chsten 2 Monate nicht durchhalten werde.
+Ich m=C3=B6chte eine Person, die diesen Fonds f=C3=BCr Waisenh=C3=A4user, S=
+chulen,
+Kirchen, Witwen verwendet, um das Wort Gottes in seinem Land zu
+verbreiten.
+Antworten Sie mir f=C3=BCr weitere Informationen und senden Sie mir auch
+die folgenden Informationen, wie unten beschrieben.
+Ihren vollst=C3=A4ndigen Namen ..........
+Adresse ...........
+Foto ................
+Bleib gesegnet
+Deine Schwester in Christus
 
-I'll do that (and test the old falconide driver with your patch - never 
-got around to that, and I now remember there was something fishy in that 
-driver in relation to registering the IDE interrupt that I need to 
-re-check).
-
->
->> Your patch conflicts with (I think) the Mac IDE patches now in Geert's
->> tree, and I'd rather avoid hand-patching the lot if at all possible:
->>
->> m68k_q40_Replace_q40ide_with_pata_falcon_and_falconide
->> Applying: m68k/q40: Replace q40ide with pata_falcon and falconide
->> error: patch failed: arch/m68k/configs/multi_defconfig:351
->> error: arch/m68k/configs/multi_defconfig: patch does not apply
->> error: patch failed: drivers/ide/Kconfig:731
->> error: drivers/ide/Kconfig: patch does not apply
->> error: patch failed: drivers/ide/Makefile:29
->> error: drivers/ide/Makefile: patch does not apply
->>
->
-> I should have sent these as a two-part series. Sorry about that.
-> You'll need to apply this patch first:
-> https://lore.kernel.org/linux-ide/3de9a93d-2f7-a650-1fa-c2129a4a765b@nippy.intranet/T/
-
-Looks like that's commit e4ab3dc4eb88f53730061a3976c1e63523c5567d which 
-fixed the conflict for me, thanks.
-
-
->
->> What's your baseline for this patch?
->>
->
-> I've used v5.12 and v5.13-rc5, but mostly I develop on the mac68k branch
-> in my github repository.
->
->> (In the alternative: just add my Tested-by if nothing changed aside from the
->> IO region reservation)
->>
->
-> I have tested these patches in Aranym (including a multi-platform
-> atari/q40 build which required your ISA fix) but I don't have any way to
-> test the q40-only code.
->
-
-Neither have I, but I'd like to verify that the falconide driver still 
-works with SCSI after this patch (can't see from the diff what the 
-ramifications are for locking and request_irq() ... as I said, I 
-remember something odd about the IDE interrupt that I need to verify).
-
-Cheers,
-
-	Michael
-
-
+Frau Rita Williams

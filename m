@@ -2,69 +2,88 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 172103A15C0
-	for <lists+linux-ide@lfdr.de>; Wed,  9 Jun 2021 15:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41A33A1959
+	for <lists+linux-ide@lfdr.de>; Wed,  9 Jun 2021 17:24:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236457AbhFINiO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 9 Jun 2021 09:38:14 -0400
-Received: from flippie-beckerswealth-sa.xyz ([62.173.147.2]:33688 "EHLO
-        host.flippie-beckerswealth-sa.xyz" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236450AbhFINiO (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Jun 2021 09:38:14 -0400
-X-Greylist: delayed 4078 seconds by postgrey-1.27 at vger.kernel.org; Wed, 09 Jun 2021 09:38:13 EDT
-Received: from flippie-beckerswealth-sa.xyz (ec2-3-131-99-163.us-east-2.compute.amazonaws.com [3.131.99.163])
-        by host.flippie-beckerswealth-sa.xyz (Postfix) with ESMTPA id B14BF3120A45
-        for <linux-ide@vger.kernel.org>; Wed,  9 Jun 2021 15:10:27 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz B14BF3120A45
+        id S233039AbhFIP0D (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 9 Jun 2021 11:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51118 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235549AbhFIPZz (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Jun 2021 11:25:55 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32070C06175F
+        for <linux-ide@vger.kernel.org>; Wed,  9 Jun 2021 08:24:00 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id p13so9072869pfw.0
+        for <linux-ide@vger.kernel.org>; Wed, 09 Jun 2021 08:24:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240629;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=g8hc8ThyvQD02I4O2JNNvhfakgtlF1fyWKpmvIUDjClue+RJF9XxYR+8tlE2y3Ssz
-         oHtVZjQKHPPx9cUsPKT4gbJbYbF1AZegrfeGCvjCi1D3PCk8QJSq1I0IVIIZ8qI0gE
-         p6TQC0LzxBBnsqbYMpqy5rSsuIBfT3ORA/zANdLY=
-DKIM-Filter: OpenDKIM Filter v2.11.0 host.flippie-beckerswealth-sa.xyz B14BF3120A45
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=flippie-beckerswealth-sa.xyz; s=default; t=1623240629;
-        bh=h0ivQLrZuUWuyEKz/TWb+FP9AASpHhVqOsJtRcwKQV4=;
-        h=Reply-To:From:To:Subject:Date:From;
-        b=g8hc8ThyvQD02I4O2JNNvhfakgtlF1fyWKpmvIUDjClue+RJF9XxYR+8tlE2y3Ssz
-         oHtVZjQKHPPx9cUsPKT4gbJbYbF1AZegrfeGCvjCi1D3PCk8QJSq1I0IVIIZ8qI0gE
-         p6TQC0LzxBBnsqbYMpqy5rSsuIBfT3ORA/zANdLY=
-Reply-To: jmasuku40@flippiebeckerwealthservices.com
-From:   Jotham Masuku <jmasuku40@flippie-beckerswealth-sa.xyz>
-To:     linux-ide@vger.kernel.org
-Subject: Proposal
-Date:   09 Jun 2021 12:10:27 +0000
-Message-ID: <20210609121027.176432F75FF56D9D@flippie-beckerswealth-sa.xyz>
-Mime-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Cr+10Kcfl8befxhqRoI8l0gcA3LyZMDypV8e112mfEc=;
+        b=AH3D/1geZxNQ9z7YrsuVfHmFRcc4zb4CpT+zCT2VTLWK7G9ov5dEiDrmCxGSG8WNEI
+         CPKRyZAnTx5UhqiHuh9oP61Lf2HYLn1vfm7NAqmkXes4zrBEooiVkMIT7VCxU+tBdrvp
+         472ChJEtwnijTmR8BIU2Yqnlb+yIvnzCH5gU2ECzmgNPbuxMeMj0agfTrNQIktqBoh5g
+         SU+2uO640bMJwQ31gultXLG2asZrqrBzEoxRuE5a/swDwHss9x3BfPTGaSnItw4Taz+P
+         TslHN48bkywfy31FZUQY9o18326L4QmCwCFfwOjgDdPmU7zA9qKvwg2uTR5kEIw9RdmL
+         szkw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Cr+10Kcfl8befxhqRoI8l0gcA3LyZMDypV8e112mfEc=;
+        b=UBEK5t14nTpneDBSd+eaFC24CucxxZ2mKZsX6MePKMDZb7R3xGsGcksgGd5O+cV0WP
+         Lc9udTJ9L34N1K+RNchGj8toUxgH4bLunysAaNi/415UKYpYmJYrR9G4Je+kuVfG/3JH
+         hnLaUXHTPszlXddQPb5zKbmmwj7RZBU/sVHaECburCG4ZVtUIEHCOXlqtKjNqG9IZ0Ar
+         GBvStWIFJBMPJRWAOyWbc+ZLmHYIqix6iSnnL7kMTsXZHlDV1lAxreb/2nLMD0mb8ux9
+         XnCbElV4AMa4HJvgOxgVjAGEYQoxT/3qWqcT2U4XAKh6sCQ3GLp3SZWMOPqjqdwsaWIj
+         VXjA==
+X-Gm-Message-State: AOAM533gPJAl23b29PJ5OrZ72zeF/06SlzX9aFu1MYd5IPs3uWvBkUpH
+        LxHpPWVbEph5D2j667g+uDrDzA==
+X-Google-Smtp-Source: ABdhPJz4JFxHF5HT/Sf/16gK3QpUtzsWvDwelmezplwVTNeYf4CgjXeF5D6OGEv3bKFwzB3+WtKvdA==
+X-Received: by 2002:a05:6a00:b8a:b029:2ec:761e:33e3 with SMTP id g10-20020a056a000b8ab02902ec761e33e3mr375293pfj.35.1623252239567;
+        Wed, 09 Jun 2021 08:23:59 -0700 (PDT)
+Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
+        by smtp.gmail.com with ESMTPSA id k7sm5424258pjj.46.2021.06.09.08.23.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Jun 2021 08:23:59 -0700 (PDT)
+Subject: Re: [PATCH v2 0/2] Use libata platform drivers to replace deprecated
+ m68k IDE drivers
+To:     Michael Schmitz <schmitzmic@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Finn Thain <fthain@linux-m68k.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Joshua Thompson <funaho@jurai.org>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        Richard Zidlicky <rz@linux-m68k.org>
+References: <cover.1623131194.git.fthain@linux-m68k.org>
+ <YL+AqIEPjMgG519L@infradead.org>
+ <d3c70f7a-368a-ad9a-6575-8289234b0ce0@kernel.dk>
+ <36f7519d-698f-1284-551a-0dbd82e2a0d8@gmail.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <aca5ed6b-f54d-1a3e-b905-920be85d51d8@kernel.dk>
+Date:   Wed, 9 Jun 2021 09:23:56 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <36f7519d-698f-1284-551a-0dbd82e2a0d8@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello there,
+On 6/8/21 3:50 PM, Michael Schmitz wrote:
+> Hi Jens,
+> 
+> please note that Finn's patch depends on one of mine currently under 
+> review. Without that one, Q40 support may break in certain cases.
 
-I hope this message finds you in good spirits especially during=20
-this challenging time of coronavirus pandemic. I hope you and=20
-your family are well and keeping safe. Anyway, I am Jotham=20
-Masuku, a broker working with Flippiebecker Wealth. I got your=20
-contact (along with few other contacts) through an online=20
-business directory and I thought I should contact you to see if=20
-you are interested in this opportunity. I am contacting you=20
-because one of my high profile clients is interested in investing=20
-abroad and has asked me to look for individuals and companies=20
-with interesting business ideas and projects that he can invest=20
-in. He wants to invest a substantial amount of asset abroad.
+Can you point me at it?
 
-Please kindly respond back to this email if you are interested in=20
-this opportunity. Once I receive your response, I will give you=20
-more details and we can plan a strategy that will be beneficial=20
-to all parties.
+-- 
+Jens Axboe
 
-Best regards
-
-J Masuku
-Flippiebecker Wealth

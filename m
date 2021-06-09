@@ -2,101 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BDACC3A0679
-	for <lists+linux-ide@lfdr.de>; Tue,  8 Jun 2021 23:56:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 081763A0AE3
+	for <lists+linux-ide@lfdr.de>; Wed,  9 Jun 2021 05:53:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234501AbhFHV6A (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 8 Jun 2021 17:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45814 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234404AbhFHV57 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Jun 2021 17:57:59 -0400
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 522DDC061574;
-        Tue,  8 Jun 2021 14:56:06 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id t17so1113564pga.5;
-        Tue, 08 Jun 2021 14:56:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=mr9J0RXtCDZq3pRoOBycR1dqunNt6hX8FuEJsnSVmro=;
-        b=IO63RfGZ69ZgM942TEJFeYP5OftLiQp7RB3prmowsyo7ABGi4wwT2lNf/cekvvBQ16
-         gRN9oHb2ETn3gUHwaZBPDFqGoJ0iVL3IOyefwqitQTn1DtDHLxXjaibRizAfKnBLKVEY
-         OgA0ZzSQRUPycn+KGpf/q0X9ccWY4MNFkluG2sd5qNR0BpjAw/RdeW4Wrz2BPUpKGy8z
-         XqNTJL4fipB8ydUqXrH81olOKLawWWINtzyy4eJI/YDssdC+62HtIDmykkmPTxJCGFeq
-         8+1HSPaTVY/zsjAcvcIJZl7ONyE6VroBZGi8lI1e0wE983mP4oaX9qnV7UR6VPj9ShMm
-         679g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=mr9J0RXtCDZq3pRoOBycR1dqunNt6hX8FuEJsnSVmro=;
-        b=khzKOVWHPhj6xstao9Bh/G37Rm5VyRqzUn93PpawsLRoRAaz79+5cTZVoV2Z5U94vE
-         kfJ8AjubTfLcBrymc4lsHp2dYmvIeoZuLdtmnhi+ESpjFbwdV1ZuwbQFdaBTVHmFCyPq
-         23ZG5kL887iruYy2zFnRp1x149BAowuJaZCtBfSyB0DR98hFtGIf2byOs3+LxOE7NaS2
-         c1YIR20IK2S4N0C690V6I50poB/62VqddG4A3iLGQ42/zQtax/OPP+zhLZVfh7CYPDc7
-         VAL8fKw5nuupIPPI9MTiIhRDUpJTWg375o6RGuVZwJ99Cae1v1aE1yHJMSAiE8IqWQUg
-         Jwqw==
-X-Gm-Message-State: AOAM5327UbxBQflPYE5Gnb2RkpHA4UcFGT31EYBGAGwF9BQ5OtPZ1irH
-        rlnLwPWqUtzPNKU1CFsuhBNqQEkgd9o=
-X-Google-Smtp-Source: ABdhPJyY17wt2L23v5ox7iYCDQIIRUJ3jI7hGfRDf1VkuPj/83v4GO/ajw2Pa6akByn7yny+/+QB3Q==
-X-Received: by 2002:a62:2901:0:b029:28e:ef3d:10d2 with SMTP id p1-20020a6229010000b029028eef3d10d2mr1865168pfp.45.1623189365520;
-        Tue, 08 Jun 2021 14:56:05 -0700 (PDT)
-Received: from ?IPv6:2001:df0:0:200c:6c1b:b1ca:5501:207d? ([2001:df0:0:200c:6c1b:b1ca:5501:207d])
-        by smtp.gmail.com with ESMTPSA id m129sm11488816pfb.7.2021.06.08.14.56.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Jun 2021 14:56:05 -0700 (PDT)
-Subject: Re: [PATCH RFC 1/2] m68k: io_mm.h - add APNE 100 MBit support
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux/m68k <linux-m68k@vger.kernel.org>, linux-ide@vger.kernel.org,
-        Finn Thain <fthain@linux-m68k.org>, ALeX Kazik <alex@kazik.de>
-References: <20210605060447.GA18461@allandria.com>
- <1622958877-2026-1-git-send-email-schmitzmic@gmail.com>
- <1622958877-2026-2-git-send-email-schmitzmic@gmail.com>
- <CAMuHMdX1cD_zt6hU-6CUZi=uyYdk_xgW+hTCXvxSTRFPy_qn5w@mail.gmail.com>
- <b2943f57-396c-cfd7-7064-4a1351585fa3@gmail.com>
- <CAMuHMdXDXSh2VkpFyFDXpPFDS+f2JGhU-x1gn2dTCSub=9gw8w@mail.gmail.com>
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <617eb8d2-7cd3-e6c5-7c9c-bb32ef35fb2c@gmail.com>
-Date:   Wed, 9 Jun 2021 09:56:00 +1200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S233234AbhFIDzG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 8 Jun 2021 23:55:06 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:34192 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233144AbhFIDzG (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Jun 2021 23:55:06 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 56E4029DD2;
+        Tue,  8 Jun 2021 23:53:10 -0400 (EDT)
+Date:   Wed, 9 Jun 2021 13:53:27 +1000 (AEST)
+From:   Finn Thain <fthain@linux-m68k.org>
+To:     Michael Schmitz <schmitzmic@gmail.com>
+cc:     Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Joshua Thompson <funaho@jurai.org>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        Richard Zidlicky <rz@linux-m68k.org>
+Subject: Re: [PATCH v2 0/2] Use libata platform drivers to replace deprecated
+ m68k IDE drivers
+In-Reply-To: <36f7519d-698f-1284-551a-0dbd82e2a0d8@gmail.com>
+Message-ID: <1016d48a-a276-f7b0-49a8-4571f4f75a61@linux-m68k.org>
+References: <cover.1623131194.git.fthain@linux-m68k.org> <YL+AqIEPjMgG519L@infradead.org> <d3c70f7a-368a-ad9a-6575-8289234b0ce0@kernel.dk> <36f7519d-698f-1284-551a-0dbd82e2a0d8@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdXDXSh2VkpFyFDXpPFDS+f2JGhU-x1gn2dTCSub=9gw8w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Geert,
+On Wed, 9 Jun 2021, Michael Schmitz wrote:
 
-On 8/06/21 6:42 pm, Geert Uytterhoeven wrote:
-> +#define isa_inb(port)      ((ISA_TYPE == ISA_TYPE_AG100) ? ((port) & 1 ? isa_inw((port) - 1) & 0xff : isa_inw(port) >> 8) : in_8(isa_itb(port))
->>> This fails to compile due to a missing closing parenthesis.
->> Sorry - looks like brown paper bag time today. (I did say 'entirely
->> untested'? Didn't expect such a thorough review for a first RFC patch ...)
-> Sorry, I missed that part in the cover letter ;-)
+> please note that Finn's patch depends on one of mine currently under review.
+> Without that one, Q40 support may break in certain cases.
+> 
 
-I'll put it more prominently next time.
+AFAIK, that's only true for a configuration that enables both CONFIG_Q40 
+and CONFIG_ATARI. In my tests with stock v5.12, such a configuration 
+presently doesn't work correctly on Atari.
 
-Ran all patches through checkpatch now, and I still get warnings and 
-even a few errors ('trailing statements should be on the next line'). 
-All due to my keeping to the code style used in io_mm.h, as far as I 
-could see.
+This patch series doesn't make this issue any worse.
 
-What's your preference - additions in new style, or keep the old style?
+Besides, I think it is a non-issue because the problem is so rare that 
+no-one noticed it before I did, and the workaround for CONFIG_Q40 users is 
+trivial anyway (disable CONFIG_ATARI).
 
-Cheers,
-
-     Michael
-
-
->
-> Gr{oetje,eeting}s,
->
->                          Geert
->
+Is there really some benefit in holding up this patch series?

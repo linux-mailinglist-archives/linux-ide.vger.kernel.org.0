@@ -2,161 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DA193A2226
-	for <lists+linux-ide@lfdr.de>; Thu, 10 Jun 2021 04:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B2A63A2483
+	for <lists+linux-ide@lfdr.de>; Thu, 10 Jun 2021 08:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbhFJCMQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 9 Jun 2021 22:12:16 -0400
-Received: from mail-pg1-f177.google.com ([209.85.215.177]:36823 "EHLO
-        mail-pg1-f177.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbhFJCMP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Jun 2021 22:12:15 -0400
-Received: by mail-pg1-f177.google.com with SMTP id 27so21313234pgy.3;
-        Wed, 09 Jun 2021 19:10:20 -0700 (PDT)
+        id S229823AbhFJG3J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 10 Jun 2021 02:29:09 -0400
+Received: from mail-wm1-f43.google.com ([209.85.128.43]:36610 "EHLO
+        mail-wm1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229725AbhFJG3J (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 10 Jun 2021 02:29:09 -0400
+Received: by mail-wm1-f43.google.com with SMTP id h11-20020a05600c350bb02901b59c28e8b4so5272296wmq.1;
+        Wed, 09 Jun 2021 23:26:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=x3vxfoigo83sshUyO8P1oaAvHedMM0FfePK8OA+A7B8=;
-        b=X/ktL3nCyrN1tXx7R1VVaAqdxZsKhBl5yx98xe4GMC/AJwOQ+xYMkMVFGddbHAX5AU
-         gQHDumBrd1MUQFh3UJtg+xXt2Hgpo8YsnsyaysbUH9Q+4D3xRbQcbHhfgRdkOwcvVqcu
-         N1YwZFwP0YqX4K2IXsgS2MLEE0wx0BlHMKO0U4XZeWbgeTVLOfbQOdZ9prso0ylik0hs
-         RqITagGsMyQUuQNObhBr+Aft/8zMRy1Gc9BOIzoQ+i0EiYi2PuQaHVvr5QIr7WrOPhoT
-         RjDojxmuWq4hyzAr1N4ghkiEgyAYRfVdgaG4KT03zyY9IotqqPrMRXUKZSawJJgckl/j
-         03kw==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition;
+        bh=YrivazYwkr91Xd/9+WFVv/iP2qA8QwOcCFwtvnhPSIM=;
+        b=NCwzIZfpPwXIlXu6flWD/EM27Vwp1YAV6K0fyywFmmsMceE90hPRC9UBrd1aL18KYv
+         uDxcV9/k7kSWpDB7s6N2m+RjQ1ECeltGX4+OWI3U72Y3PvGXQfTsGfQenDZ859sqo+MH
+         7f8TNNzJSh5h29KxeZAo/eSZCmFKQv+iMJdOH1oi0+ntq+Bm7isRzH4R+uUP69G0K6L4
+         wZYG5CYN2KRzaTdeYcPj9mSg0CZflzGbPJm7LSaFOeVV0Q44uhDJ0/Flta7jlVLWjGRD
+         8dZt4d2pQwGSsWPF+4tpTmZnIgLu6w3Q7+GuhiBGRqTIl8YAmGu8teDVukYj7SV9Kb0i
+         wGPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=x3vxfoigo83sshUyO8P1oaAvHedMM0FfePK8OA+A7B8=;
-        b=dqqj0FgNPYk8NENmzqAocWJprO67Mk72JpSPlpSHgUFffG5PfZqJe8QF+iJTMgAxoI
-         8f7mO20bOgPHTI3WqeAz5WPN9R/VBUmcPBjMpinPignl63j3eCoO9EjxU9jocWJ/GjWX
-         UCUliDVORT2QjBBqKDSidZG+bz6k+msQkpT0a+zBchsnievPec6EYShPh6/gpL3GJl+h
-         JluaQLRdsr36UNU+TI/5r7cbAtekKCSpg/z3B0cHlOGVlNs+E6VKhIXF+r0UoCxnnG09
-         Ag5pJJLarzo2lwfFwD4y2aT0H5W9Z5PfbGDpFS4C2dXSrucuDDqJBDSNP0MoPZ+V7wje
-         uauQ==
-X-Gm-Message-State: AOAM532ZkV8RAgiJKCsQhN0MRoco6vnCK8WcDoZUKYeHAbigtlCWhfRA
-        eYVvIqWqemfr26l7jlnLh88=
-X-Google-Smtp-Source: ABdhPJxuY1pFEfQzlV7e93GvPmzbBQJiT7iKAeW6YFRvFGbKAaQj3KSMbDqwjavAJvbRTCBir7aKnQ==
-X-Received: by 2002:a62:cdc6:0:b029:2ec:8ee0:57bd with SMTP id o189-20020a62cdc60000b02902ec8ee057bdmr676332pfg.78.1623290960375;
-        Wed, 09 Jun 2021 19:09:20 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (222-152-189-137-fibre.sparkbb.co.nz. [222.152.189.137])
-        by smtp.gmail.com with ESMTPSA id 15sm722309pfy.15.2021.06.09.19.09.19
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 09 Jun 2021 19:09:19 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id 9A8BA3603E0; Thu, 10 Jun 2021 14:09:16 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     linux-m68k@vger.kernel.org, geert@linux-m68k.org
-Cc:     linux-ide@vger.kernel.org, fthain@linux-m68k.org, alex@kazik.de,
-        Michael Schmitz <schmitzmic@gmail.com>
-Subject: [PATCH v2 2/2] net/8390: apne.c - add 100 Mbit support to apne.c driver
-Date:   Thu, 10 Jun 2021 14:09:13 +1200
-Message-Id: <1623290953-18000-3-git-send-email-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1623290953-18000-1-git-send-email-schmitzmic@gmail.com>
-References: <1623224214-4836-1-git-send-email-schmitzmic@gmail.com>
- <1623290953-18000-1-git-send-email-schmitzmic@gmail.com>
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition;
+        bh=YrivazYwkr91Xd/9+WFVv/iP2qA8QwOcCFwtvnhPSIM=;
+        b=HmO8HdnvETuSUpwxlaSEK2rLVxgsLrI1/SbkdTM8yKoFu1y4Y9AQruTSjA+knvG9mj
+         s8z4OY0nCT1WjQD09a+V9dsxAb+qsElUAcZNxZQTLHbZ11AnsHD7z6zXE2UJeTdG7xPI
+         dnJIffbv20GWfkGTOnXRGwv8KaS2gv4lYS68qdHYeXGhNV4mSZr82EEhZKlHP28BfYUI
+         sDIlcaVojwwoD2lfYqrLAv7qcIoC7JAOUQJIKMT5+idfBVasR9UwD0AbeWYVVnk7auEj
+         NzlApUYTsx9JO7DZ16U62GtFvVgM9twTuLIC/qMYyW9Mkw4WtJ38VJXxRJEQ7kPxK4hp
+         aUqw==
+X-Gm-Message-State: AOAM531/ds+j2KAgFHdXX5bDuOkdw+lm2hrCVmM9C8dmnWI/YiRc8Spo
+        xotQkAuH4DU2DZ8EHUufTcS8aoApajs=
+X-Google-Smtp-Source: ABdhPJzIxfi8yEfk+pXW0scEHANgddg+SkoYG17mAJHDsaPNZD4npmxfJmbvjx/zzVkAJiT5uE3Ndw==
+X-Received: by 2002:a1c:e10b:: with SMTP id y11mr3372482wmg.45.1623306356709;
+        Wed, 09 Jun 2021 23:25:56 -0700 (PDT)
+Received: from Red ([2a01:cb1d:3d5:a100:264b:feff:fe03:2806])
+        by smtp.googlemail.com with ESMTPSA id b15sm2096986wru.64.2021.06.09.23.25.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jun 2021 23:25:56 -0700 (PDT)
+Date:   Thu, 10 Jun 2021 08:25:54 +0200
+From:   Corentin Labbe <clabbe.montjoie@gmail.com>
+To:     linux-ide@vger.kernel.org, davem@davemloft.net
+Cc:     linux-kernel@vger.kernel.org
+Subject: ide: ali14xx: intent to convert driver
+Message-ID: <YMGwciP+Sm9y+u5r@Red>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Add Kconfig option, module parameter and PCMCIA reset code
-required to support 100 Mbit PCMCIA ethernet cards on Amiga.
+Hello
 
-10 Mbit and 100 Mbit mode are supported by the same module.
-A module parameter switches Amiga ISA IO accessors to word
-access by changing isa_type at runtime. Additional code to
-reset the PCMCIA hardware is also added to the driver probe.
+I just booted my 486 with Linux add see:
+[    2.118009] Uniform Multi-Platform E-IDE driver
+[    2.124262] legacy IDE will be removed in 2021, please switch to libata
+[    2.124262] Report any missing HW support to linux-ide@vger.kernel.org
+[    2.395244] hda: ST31720A, ATA DISK drive
+[    3.550069] ide0 at 0x1f0-0x1f7,0x3f6 on irq 14
+[    3.555100] ide1 at 0x170-0x177,0x376 on irq 15
+[    3.559085] ide-gd driver 1.18
+[    3.562115] hda: max request size: 128KiB
+[    3.564174] hda: 3329424 sectors (1704 MB), CHS=3303/16/63
+[    3.565513] hda: cache flushes not supported
+[    3.623033]  hda: hda1
 
-Patch modified after patch "[PATCH RFC net-next] Amiga PCMCIA
-100 MBit card support" submitted to netdev 2018/09/16 by Alex
-Kazik <alex@kazik.de>.
+So I plan to convert ali14xx to libata.
 
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Do you know some ""recent"" ide->libata conversion from which I can learn something ?
 
---
-Changes from RFC:
-
-Geert Uytterhoeven:
-- change APNE_100MBIT to depend on APNE
-- change '---help---' to 'help' (former no longer supported)
-- fix whitespace errors
-- fix module_param_named() arg count
-- protect all added code by #ifdef CONFIG_APNE_100MBIT
----
- drivers/net/ethernet/8390/Kconfig | 12 ++++++++++++
- drivers/net/ethernet/8390/apne.c  | 21 +++++++++++++++++++++
- 2 files changed, 33 insertions(+)
-
-diff --git a/drivers/net/ethernet/8390/Kconfig b/drivers/net/ethernet/8390/Kconfig
-index 9f4b302..8ff8da6 100644
---- a/drivers/net/ethernet/8390/Kconfig
-+++ b/drivers/net/ethernet/8390/Kconfig
-@@ -143,6 +143,18 @@ config APNE
- 	  To compile this driver as a module, choose M here: the module
- 	  will be called apne.
- 
-+config APNE100MBIT
-+	bool "PCMCIA NE2000 100MBit support"
-+	depends on APNE
-+	default n
-+	help
-+	  This changes the driver to support 10/100Mbit cards (e.g. Netgear
-+	  FA411, CNet Singlepoint). 10 MBit cards and 100 MBit cards are
-+	  supported by the same driver.
-+
-+	  To activate 100 Mbit support at runtime, use the apne100 module
-+	  parameter.
-+
- config PCMCIA_PCNET
- 	tristate "NE2000 compatible PCMCIA support"
- 	depends on PCMCIA
-diff --git a/drivers/net/ethernet/8390/apne.c b/drivers/net/ethernet/8390/apne.c
-index fe6c834..cd99cc3 100644
---- a/drivers/net/ethernet/8390/apne.c
-+++ b/drivers/net/ethernet/8390/apne.c
-@@ -120,6 +120,12 @@ static u32 apne_msg_enable;
- module_param_named(msg_enable, apne_msg_enable, uint, 0444);
- MODULE_PARM_DESC(msg_enable, "Debug message level (see linux/netdevice.h for bitmap)");
- 
-+#ifdef CONFIG_APNE100MBIT
-+static u32 apne_100_mbit;
-+module_param_named(apne_100_mbit_msg, apne_100_mbit, uint, 0);
-+MODULE_PARM_DESC(apne_100_mbit_msg, "Enable 100 Mbit support");
-+#endif
-+
- struct net_device * __init apne_probe(int unit)
- {
- 	struct net_device *dev;
-@@ -139,6 +145,11 @@ struct net_device * __init apne_probe(int unit)
- 	if ( !(AMIGAHW_PRESENT(PCMCIA)) )
- 		return ERR_PTR(-ENODEV);
- 
-+#ifdef CONFIG_APNE100MBIT
-+	if (apne_100_mbit)
-+		isa_type = ISA_TYPE_AG16;
-+#endif
-+
- 	pr_info("Looking for PCMCIA ethernet card : ");
- 
- 	/* check if a card is inserted */
-@@ -590,6 +601,16 @@ static int init_pcmcia(void)
- #endif
- 	u_long offset;
- 
-+#ifdef CONFIG_APNE100MBIT
-+	/* reset card (idea taken from CardReset by Artur Pogoda) */
-+	{
-+		u_char  tmp = gayle.intreq;
-+
-+		gayle.intreq = 0xff;    mdelay(1);
-+		gayle.intreq = tmp;     mdelay(300);
-+	}
-+#endif
-+
- 	pcmcia_reset();
- 	pcmcia_program_voltage(PCMCIA_0V);
- 	pcmcia_access_speed(PCMCIA_SPEED_250NS);
--- 
-2.7.4
-
+Regards

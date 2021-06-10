@@ -2,84 +2,106 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C0953A259A
-	for <lists+linux-ide@lfdr.de>; Thu, 10 Jun 2021 09:38:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C9543A2585
+	for <lists+linux-ide@lfdr.de>; Thu, 10 Jun 2021 09:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229910AbhFJHko (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 10 Jun 2021 03:40:44 -0400
-Received: from mail.chalver.com.ec ([186.3.12.10]:27864 "EHLO
-        mail.chalver.com.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbhFJHkn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 10 Jun 2021 03:40:43 -0400
-X-Greylist: delayed 4043 seconds by postgrey-1.27 at vger.kernel.org; Thu, 10 Jun 2021 03:40:43 EDT
-Received: from mail.chalver.com.ec (localhost.localdomain [127.0.0.1])
-        by mail.chalver.com.ec (Postfix) with ESMTPS id 27B641F22BDF;
-        Thu, 10 Jun 2021 00:56:10 -0500 (ECT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.chalver.com.ec (Postfix) with ESMTP id A150A1F22BDC;
-        Thu, 10 Jun 2021 00:36:17 -0500 (ECT)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.chalver.com.ec A150A1F22BDC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=chalver.com.ec;
-        s=E2A417BC-DDA7-11E6-85F6-38495636B764; t=1623303377;
-        bh=PxMh0SAMbBGlctefOH2OhvTlJNlHw25bONEEE7Ldp0I=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=i8s6DaMs+ZGfRizJoNQz5DK0zhSvar+7WyOugmMSxZtaUdjZK99/25XcNoBqhlHqW
-         mqHamuh58dZnS0ST7FNh2+V66dBbETCfLombFhmo8rvoIVNzepafOdl3VnER9i07Qz
-         Snfnak83aH8+xf1e/TXG+UNUovWwcMX2QgYOfUI97r6vFrqDGJMtTvl7M+VMbfgG16
-         PODCdxImegK4qyZhiqJsHhkqzkjQRL7AX9qdy6jvU3PqYLt1Rp+rBXV3KWFxIQLt2u
-         M7FwhBZwo1KthpwK6mTyJTRDgn9l8DyEiAlV5MoAu7vo4FjaE7qTNuuthZQhNeIu3E
-         hbGsvMr9wn7AQ==
-X-Virus-Scanned: amavisd-new at chalver.com.ec
-Received: from mail.chalver.com.ec ([127.0.0.1])
-        by localhost (mail.chalver.com.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 3KMLErQZ0c4H; Thu, 10 Jun 2021 00:36:17 -0500 (ECT)
-Received: from cris-PC.wifi (unknown [105.9.120.116])
-        by mail.chalver.com.ec (Postfix) with ESMTPSA id 7BE4F1F231D3;
-        Thu, 10 Jun 2021 00:36:04 -0500 (ECT)
-Content-Type: text/plain; charset="utf-8"
+        id S230144AbhFJHe0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 10 Jun 2021 03:34:26 -0400
+Received: from mail-vs1-f42.google.com ([209.85.217.42]:40933 "EHLO
+        mail-vs1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229845AbhFJHeZ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 10 Jun 2021 03:34:25 -0400
+Received: by mail-vs1-f42.google.com with SMTP id b1so1343885vsh.7;
+        Thu, 10 Jun 2021 00:32:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=fdGJLD0xMRGMgyQF1c4UXbWGQ2I6telSHqN2LHSb7rA=;
+        b=MinX2JY9WfiSnzvQXnwdXnXXKz2KD3ULu7bprQzo2lj9XXwAHk2cGAZh6XWiOxnLxl
+         RFuO+uUikdHwkdkWrqNFfOnX+W7Flfau+bqXSo9Uf9DKIy2Ml49yt98FS6hs1R8ZEnzK
+         GNUe86CPk40Ali+thVnX0aef6uVrpvHpPyMx/ueczqIt7YVuNJCcJl/mNB4Kz5nQqaL6
+         IcTQtB9kAYUxIihlM/OtBS9pqti1W26BCmh8fSQrNl9q4j87QfKwCTabw4UDTQcwI1cl
+         VHSbkzvTvs/FT/g9dga8fjlP+bVCv2lBEtfc+CEr9ZbhJrCfauy0UUmSyPqIRXnGnuu9
+         Qs9w==
+X-Gm-Message-State: AOAM531kiuNVAFpQVy5C5GmAubm/DUOEfzTx+0iR3GRisf6XIT8gtYxR
+        qEfE0fJE2FUuSCGRTC3KKrSgzEz2LfKnXG3O8is=
+X-Google-Smtp-Source: ABdhPJzDrUH4euPzGbK01E5oUeCXoIQZpVU9Y5ema5ViscqKJrpuQuc9YumPb7XKf41xrT0hMCxEHMGx0HVahwgNTr4=
+X-Received: by 2002:a05:6102:c4c:: with SMTP id y12mr3304703vss.18.1623310349028;
+ Thu, 10 Jun 2021 00:32:29 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
-To:     Recipients <mpaucar@chalver.com.ec>
-From:   ''Tayeb souami'' <mpaucar@chalver.com.ec>
-Date:   Thu, 10 Jun 2021 07:43:20 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210610053605.7BE4F1F231D3@mail.chalver.com.ec>
-X-Laboratorios-Chalver-MailScanner-Information: Please contact the ISP for more information
-X-Laboratorios-Chalver-MailScanner-ID: 7BE4F1F231D3.A204F
-X-Laboratorios-Chalver-MailScanner: Not scanned: please contact your Internet E-Mail Service Provider for details
+References: <1622958877-2026-1-git-send-email-schmitzmic@gmail.com>
+ <1623224214-4836-1-git-send-email-schmitzmic@gmail.com> <1623224214-4836-2-git-send-email-schmitzmic@gmail.com>
+ <87zgvzzcp6.fsf@igel.home> <e3643beb-7d61-e39f-83ca-f44a927b69db@gmail.com> <c8306197-1342-6924-9d46-ba61f1ee7112@linux-m68k.org>
+In-Reply-To: <c8306197-1342-6924-9d46-ba61f1ee7112@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 10 Jun 2021 09:32:17 +0200
+Message-ID: <CAMuHMdVGoUhs3N3bdOQ2OxQa+69LcK0YOG2HASbFNhD4Qpc2+Q@mail.gmail.com>
+Subject: Re: [PATCH v1 1/2] m68k: io_mm.h - add APNE 100 MBit support
+To:     Finn Thain <fthain@linux-m68k.org>
+Cc:     Michael Schmitz <schmitzmic@gmail.com>,
+        Andreas Schwab <schwab@linux-m68k.org>,
+        "Linux/m68k" <linux-m68k@vger.kernel.org>,
+        linux-ide@vger.kernel.org, ALeX Kazik <alex@kazik.de>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hi Finn,
 
-Lieber Freund,
+On Thu, Jun 10, 2021 at 3:09 AM Finn Thain <fthain@linux-m68k.org> wrote:
+> On Thu, 10 Jun 2021, Michael Schmitz wrote:
+> > On 9/06/21 8:04 pm, Andreas Schwab wrote:
+> > > On Jun 09 2021, Michael Schmitz wrote:
+> > >
+> > > > @@ -136,6 +141,9 @@ static inline u8 __iomem *isa_itb(unsigned long addr)
+> > > >       case ISA_TYPE_Q40: return (u8 __iomem *)Q40_ISA_IO_B(addr);
+> > > >   #endif
+> > > >   #ifdef CONFIG_AMIGA_PCMCIA
+> > > > +#ifdef CONFIG_APNE100MBIT
+> > > > +    case ISA_TYPE_AG16: fallthrough;
+> > > > +#endif
+> > > >       case ISA_TYPE_AG: return (u8 __iomem *)AG_ISA_IO_B(addr);
+> > > Is the fallthrough annotation really needed?
+> >
+> > Just to shut up compiler warnings, and even that I haven't seen myself.
+> >
+> > I have seen a number of patches adding either comments or this annotation in
+> > the core NCR5380 driver (which Finn maintains, who suggested this annotation
+> > to an earlier version of the Q40/Atari io_mm.h patch), so adding annotations
+> > appears to be encouraged now.
+> >
+> > I personally think these annotations are over the top generally, but I've
+> > learned to program when computed goto statements were still en vogue.
+> >
+> > In this particular case, there can be no doubt that the fallthrough is
+> > intentional, so on balance, I'll remove those annotations as well (unless Finn
+> > strongly objects?).
+> >
+>
+> I don't object to removing it. On the contrary, in a previous message I
+> also questioned adding this particular 'fallthrough' (though I did
+> recommended adding a different one).
+>
+> In general, there's no way to predict which static checkers are going to
+> complain about any given line of code. They don't all agree about
+> correctness and they are a moving target, just like fashion or reviewers'
+> preferred code styles.
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der =
-Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zu=
-f=C3=A4llige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Ma=
-il nach einem Spinball ausgew=C3=A4hlt.Ich habe den gr=C3=B6=C3=9Ften Teil =
-meines Verm=C3=B6gens auf eine Reihe von Wohlt=C3=A4tigkeitsorganisationen =
-und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die =
-Summe von =E2=82=AC 2.000.000,00 an Sie als eine der ausgew=C3=A4hlten 5 zu=
- spenden, um meine Gewinne zu =C3=BCberpr=C3=BCfen, sehen Sie bitte meine Y=
-ou Tube Seite unten.
+AFAIK, they only complain when the switch() operates on an enum,
+and not all enum values are handled.
 
-UHR MICH HIER: https://www.youtube.com/watch?v=3DZ6ui8ZDQ6Ks
+When operating on an int, there's not enough address space on
+32-bit machines to handle all cases ;-)
 
+Gr{oetje,eeting}s,
 
+                        Geert
 
-Das ist dein Spendencode: [TS530342018]
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-
-Antworten Sie mit dem SPENDE-CODE an diese
-
-E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie gl=C3=BCcklich zu machen.
-
-Gr=C3=BC=C3=9Fe
-Herr Tayeb Souami
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

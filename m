@@ -2,352 +2,253 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6DBE3A21E4
-	for <lists+linux-ide@lfdr.de>; Thu, 10 Jun 2021 03:34:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1730A3A221F
+	for <lists+linux-ide@lfdr.de>; Thu, 10 Jun 2021 04:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbhFJBga (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 9 Jun 2021 21:36:30 -0400
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:56106 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbhFJBg3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Jun 2021 21:36:29 -0400
-Received: by kvm5.telegraphics.com.au (Postfix, from userid 502)
-        id CCF442A93C; Wed,  9 Jun 2021 21:34:29 -0400 (EDT)
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        "Michael Schmitz" <schmitzmic@gmail.com>,
-        "Joshua Thompson" <funaho@jurai.org>,
-        linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org
-Message-Id: <11a56b3317df3bb2ddc15fd29b40b6820e9c7444.1623287706.git.fthain@linux-m68k.org>
-In-Reply-To: <cover.1623287706.git.fthain@linux-m68k.org>
-References: <cover.1623287706.git.fthain@linux-m68k.org>
-From:   Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v3 1/2] m68k/mac: Replace macide driver with generic platform
- drivers
-Date:   Thu, 10 Jun 2021 11:15:06 +1000
+        id S229943AbhFJCHF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 9 Jun 2021 22:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229507AbhFJCHD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Jun 2021 22:07:03 -0400
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75394C061574;
+        Wed,  9 Jun 2021 19:04:52 -0700 (PDT)
+Received: by mail-pf1-x42c.google.com with SMTP id p13so324768pfw.0;
+        Wed, 09 Jun 2021 19:04:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=HHAxP0hOGSJ1IRyI1cn4uIcL8e4bANLQWvBJcz4lwSM=;
+        b=sPF33VxBIajWoEsxIAsBFvh3dFjlJWAVuaeVALLjX5UY9srSNbzrsKESQWLUXkKji7
+         sT+GXojOtxHPYZ/dt6TtR/l1bys7EyMVf//AbyMauX6u/ptOwFAXphhD/WQfP5apKZKt
+         ZVS8xsKYpI8kgw44G9R3qxBCiqHAK9eVlraN1SUYa/hzNI1ERm9kahCU5KE1RDu21nKu
+         pwIt706VZtMqr7pBZfpoEORixlKNGXtxtrhwBk751pUQMv3ExmxTRjVVqkOG9zXtMMd5
+         +0uVQuqxh/76jXeyk8Y0o80yHotz1ZpNOBQCIqXdv5NzLS6RTTEkN3XjsX2bJe28UWnu
+         tLSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=HHAxP0hOGSJ1IRyI1cn4uIcL8e4bANLQWvBJcz4lwSM=;
+        b=djGyUzPA+azstdpnhtDKVSdhyEpSVlhyNYJnUUtn9oV+oL5d4Lei+60UL1eeKNJPuZ
+         6gi3rgFy2AhDC3C4ZggwYMjCNcEgdpCHvQib1x13l7QVFn9Izox7CyaH15AxxPQJrZhY
+         Cqzi60f7Bt55UqTBpj7jlGYYvOeyScUt5GAf6VNolIt+7+BGlYgApqnxOqZFrbQ95u4m
+         VvxWVdzFiTIbZ4dVykaFTP8XxcCbF+Dg5W8++PNoA/JNVEpWEV+rQS+7psetBrbccxNP
+         gbyS0r6gK0xfNJTslid+0Sx+rPFcAMaaRY9zx4aPVlntsfN8+MTFvjvhkMWNA1rnQoBC
+         G3Xg==
+X-Gm-Message-State: AOAM533zkFMi9m6SD+GGkZnYcBx51DzxXh59eZ0XCa2a9I4NJbuWQixt
+        R4501CZguJ5j2aAJSa+ivBg=
+X-Google-Smtp-Source: ABdhPJwtmfzqbTg6P/3lMxVWtEdJb8FyZWtDlrquvEFvhpAafkcUl3DqawR2piogf5tygehVgeWHiA==
+X-Received: by 2002:a63:4b0f:: with SMTP id y15mr2554460pga.227.1623290690596;
+        Wed, 09 Jun 2021 19:04:50 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (222-152-189-137-fibre.sparkbb.co.nz. [222.152.189.137])
+        by smtp.gmail.com with ESMTPSA id f13sm668667pfa.207.2021.06.09.19.04.49
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 09 Jun 2021 19:04:49 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id B42B83603D8; Thu, 10 Jun 2021 14:04:45 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     linux-m68k@vger.kernel.org, geert@linux-m68k.org
+Cc:     linux-ide@vger.kernel.org, fthain@linux-m68k.org,
+        Michael Schmitz <schmitzmic@gmail.com>
+Subject: [PATCH v3] m68k: io_mm.h: conditionalize ISA address translation on Atari
+Date:   Thu, 10 Jun 2021 14:04:43 +1200
+Message-Id: <1623290683-17859-1-git-send-email-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1623223322-4242-1-git-send-email-schmitzmic@gmail.com>
+References: <1623223322-4242-1-git-send-email-schmitzmic@gmail.com>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-This allows m68k mac systems to switch from the deprecated IDE subsystem
-to libata.
+Current io_mm.h uses address translation and ROM port IO primitives when
+port addresses are below 1024, and raw untranslated MMIO IO primitives
+else when CONFIG_ATARI_ROM_ISA is set. This is done regardless of the
+m68k machine type a multi-platform kernel runs on. As a consequence,
+the Q40 IDE driver in multiplatform kernels cannot work.
+Conversely, the Atari IDE driver uses wrong address translation if a
+multiplatform Q40 and Atari kernel does _not_ set CONFIG_ATARI_ROM_ISA.
 
-This was tested on my Quadra 630. I haven't tested it on my PowerBook 150
-because I don't have a RAM adapter board for it. It appears that the
-hardware I tested doesn't need macide_clear_irq() or macide_test_irq().
-If it did, the generic driver would not have worked. It's possible that
-those routines are needed for the PowerBook 150 but we can cross that
-bridge if and when we come to it.
+Replace MMIO by ISA IO primitives for addresses > 1024 (if isa_type
+is ISA_TYPE_ENEC), and change the ISA address translation used for
+Atari to a no-op for those addresses.
 
-BTW, macide_clear_irq() appears to suffer from a race condition. The write
-to the interrupt flags register could have unintended side effects as it
-may alter other flag bits. Fortunately, all of the other bits are unused
-by Linux. When tested on my Quadra 630, the assignment *ide_ifr &= ~0x20
-was observed to have no effect on bit 5, so it may be redundant anyway.
+Switch readb()/writeb() and readw()/writew() to their ISA equivalents
+also. Change the address translation functions to return the identity
+translation if CONFIG_ATARI_ROM_ISA is not defined, and set MULTI_ISA
+for kernels where Q40 and Atari are both configured so this can actually
+work (isa_type set to Q40 at compile time else).
 
-Cc: Michael Schmitz <schmitzmic@gmail.com>
-Cc: Joshua Thompson <funaho@jurai.org>
-Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Fixes:  84b16b7b0d5c818f ("m68k/atari: ROM port ISA adapter support")
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+
+--
+Changes from v2:
+
+Andreas Schwab:
+- drop misleading default return comment
+
+Changes from v1:
+
+Geert Uytterhoeven;
+- fix Fixes tag
+- remove comment about isa_sex zero initialization
+- move default return outside switch statement in address
+  translation functions to allow other code to break to default.
+- fix indentation in switch statement
+
+Changes from RFC:
+
+Geert Uytterhoeven;
+- drop setup_mm.c patch
+
+Finn Thain:
+- Add 'Fixes' tag
+- Annotate rationale for MULTI_ISA setting on Atari
+- Use fallthrough macro annotation in Atari address translation
 ---
- arch/m68k/configs/mac_defconfig   |   1 -
- arch/m68k/configs/multi_defconfig |   1 -
- arch/m68k/mac/config.c            |  24 +++--
- drivers/ide/Kconfig               |  14 ---
- drivers/ide/Makefile              |   1 -
- drivers/ide/macide.c              | 161 ------------------------------
- 6 files changed, 14 insertions(+), 188 deletions(-)
- delete mode 100644 drivers/ide/macide.c
+ arch/m68k/include/asm/io_mm.h | 66 +++++++++++++++++++++++++++----------------
+ 1 file changed, 41 insertions(+), 25 deletions(-)
 
-diff --git a/arch/m68k/configs/mac_defconfig b/arch/m68k/configs/mac_defconfig
-index bf15e6c1c939..c72a85a084cc 100644
---- a/arch/m68k/configs/mac_defconfig
-+++ b/arch/m68k/configs/mac_defconfig
-@@ -319,7 +319,6 @@ CONFIG_IDE=y
- CONFIG_IDE_GD_ATAPI=y
- CONFIG_BLK_DEV_IDECD=y
- CONFIG_BLK_DEV_PLATFORM=y
--CONFIG_BLK_DEV_MAC_IDE=y
- CONFIG_RAID_ATTRS=m
- CONFIG_SCSI=y
- CONFIG_BLK_DEV_SD=y
-diff --git a/arch/m68k/configs/multi_defconfig b/arch/m68k/configs/multi_defconfig
-index 5466d48fcd9d..9ee6d2b4d1f4 100644
---- a/arch/m68k/configs/multi_defconfig
-+++ b/arch/m68k/configs/multi_defconfig
-@@ -351,7 +351,6 @@ CONFIG_BLK_DEV_PLATFORM=y
- CONFIG_BLK_DEV_GAYLE=y
- CONFIG_BLK_DEV_BUDDHA=y
- CONFIG_BLK_DEV_FALCON_IDE=y
--CONFIG_BLK_DEV_MAC_IDE=y
- CONFIG_BLK_DEV_Q40IDE=y
- CONFIG_RAID_ATTRS=m
- CONFIG_SCSI=y
-diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
-index 1cdac959bd91..5d16f9b47aa9 100644
---- a/arch/m68k/mac/config.c
-+++ b/arch/m68k/mac/config.c
-@@ -933,13 +933,15 @@ static const struct resource mac_scsi_ccl_rsrc[] __initconst = {
- 	},
- };
+diff --git a/arch/m68k/include/asm/io_mm.h b/arch/m68k/include/asm/io_mm.h
+index d41fa48..9c521b0 100644
+--- a/arch/m68k/include/asm/io_mm.h
++++ b/arch/m68k/include/asm/io_mm.h
+@@ -52,7 +52,11 @@
+ #define Q40_ISA_MEM_B(madr)  (q40_isa_mem_base+1+4*((unsigned long)(madr)))
+ #define Q40_ISA_MEM_W(madr)  (q40_isa_mem_base+  4*((unsigned long)(madr)))
  
--static const struct resource mac_ide_quadra_rsrc[] __initconst = {
--	DEFINE_RES_MEM(0x50F1A000, 0x104),
-+static const struct resource mac_pata_quadra_rsrc[] __initconst = {
-+	DEFINE_RES_MEM(0x50F1A000, 0x38),
-+	DEFINE_RES_MEM(0x50F1A038, 0x04),
- 	DEFINE_RES_IRQ(IRQ_NUBUS_F),
- };
++#ifdef CONFIG_ATARI
++#define MULTI_ISA 1	/* Need MULTI_ISA if Atari drivers (IDE) present !! */
++#else
+ #define MULTI_ISA 0
++#endif /* Atari */
+ #endif /* Q40 */
  
--static const struct resource mac_ide_pb_rsrc[] __initconst = {
--	DEFINE_RES_MEM(0x50F1A000, 0x104),
-+static const struct resource mac_pata_pb_rsrc[] __initconst = {
-+	DEFINE_RES_MEM(0x50F1A000, 0x38),
-+	DEFINE_RES_MEM(0x50F1A038, 0x04),
- 	DEFINE_RES_IRQ(IRQ_NUBUS_C),
- };
+ #ifdef CONFIG_AMIGA_PCMCIA
+@@ -135,10 +139,13 @@ static inline u8 __iomem *isa_itb(unsigned long addr)
+     case ISA_TYPE_AG: return (u8 __iomem *)AG_ISA_IO_B(addr);
+ #endif
+ #ifdef CONFIG_ATARI_ROM_ISA
+-    case ISA_TYPE_ENEC: return (u8 __iomem *)ENEC_ISA_IO_B(addr);
++    case ISA_TYPE_ENEC:
++	if (addr < 1024)
++		return (u8 __iomem *)ENEC_ISA_IO_B(addr);
++	break; /* not ROM port? fallback below! */
+ #endif
+-    default: return NULL; /* avoid warnings, just in case */
+     }
++    return (u8 __iomem *)(addr);
+ }
+ static inline u16 __iomem *isa_itw(unsigned long addr)
+ {
+@@ -151,10 +158,13 @@ static inline u16 __iomem *isa_itw(unsigned long addr)
+     case ISA_TYPE_AG: return (u16 __iomem *)AG_ISA_IO_W(addr);
+ #endif
+ #ifdef CONFIG_ATARI_ROM_ISA
+-    case ISA_TYPE_ENEC: return (u16 __iomem *)ENEC_ISA_IO_W(addr);
++    case ISA_TYPE_ENEC:
++	if (addr < 1024)
++		return (u16 __iomem *)ENEC_ISA_IO_W(addr);
++	break; /* not ROM port? fallback below! */
+ #endif
+-    default: return NULL; /* avoid warnings, just in case */
+     }
++    return (u16 __iomem *)(addr);
+ }
+ static inline u32 __iomem *isa_itl(unsigned long addr)
+ {
+@@ -163,8 +173,8 @@ static inline u32 __iomem *isa_itl(unsigned long addr)
+ #ifdef CONFIG_AMIGA_PCMCIA
+     case ISA_TYPE_AG: return (u32 __iomem *)AG_ISA_IO_W(addr);
+ #endif
+-    default: return 0; /* avoid warnings, just in case */
+     }
++    return 0; /* avoid warnings, just in case */
+ }
+ static inline u8 __iomem *isa_mtb(unsigned long addr)
+ {
+@@ -177,10 +187,13 @@ static inline u8 __iomem *isa_mtb(unsigned long addr)
+     case ISA_TYPE_AG: return (u8 __iomem *)addr;
+ #endif
+ #ifdef CONFIG_ATARI_ROM_ISA
+-    case ISA_TYPE_ENEC: return (u8 __iomem *)ENEC_ISA_MEM_B(addr);
++    case ISA_TYPE_ENEC:
++	if (addr < 1024)
++		return (u8 __iomem *)ENEC_ISA_MEM_B(addr);
++	break; /* not ROM port? fallback below! */
+ #endif
+-    default: return NULL; /* avoid warnings, just in case */
+     }
++    return (u8 __iomem *)(addr);
+ }
+ static inline u16 __iomem *isa_mtw(unsigned long addr)
+ {
+@@ -193,10 +206,13 @@ static inline u16 __iomem *isa_mtw(unsigned long addr)
+     case ISA_TYPE_AG: return (u16 __iomem *)addr;
+ #endif
+ #ifdef CONFIG_ATARI_ROM_ISA
+-    case ISA_TYPE_ENEC: return (u16 __iomem *)ENEC_ISA_MEM_W(addr);
++    case ISA_TYPE_ENEC:
++	if (addr < 1024)
++		return (u16 __iomem *)ENEC_ISA_MEM_W(addr);
++	break; /* not ROM port? fallback below! */
+ #endif
+-    default: return NULL; /* avoid warnings, just in case */
+     }
++    return (u16 __iomem *)(addr);
+ }
  
-@@ -949,7 +951,7 @@ static const struct resource mac_pata_baboon_rsrc[] __initconst = {
- 	DEFINE_RES_IRQ(IRQ_BABOON_1),
- };
  
--static const struct pata_platform_info mac_pata_baboon_data __initconst = {
-+static const struct pata_platform_info mac_pata_data __initconst = {
- 	.ioport_shift = 2,
- };
+@@ -344,31 +360,31 @@ static inline void isa_delay(void)
+  * ROM port ISA and everything else regular ISA for IDE. read,write defined
+  * below.
+  */
+-#define inb(port)	((port) < 1024 ? isa_rom_inb(port) : in_8(port))
+-#define inb_p(port)	((port) < 1024 ? isa_rom_inb_p(port) : in_8(port))
+-#define inw(port)	((port) < 1024 ? isa_rom_inw(port) : in_le16(port))
+-#define inw_p(port)	((port) < 1024 ? isa_rom_inw_p(port) : in_le16(port))
++#define inb(port)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_inb(port) : isa_inb(port))
++#define inb_p(port)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_inb_p(port) : isa_inb_p(port))
++#define inw(port)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_inw(port) : isa_inw(port))
++#define inw_p(port)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_inw_p(port) : isa_inw_p(port))
+ #define inl		isa_inl
+ #define inl_p		isa_inl_p
  
-@@ -1067,17 +1069,19 @@ int __init mac_platform_init(void)
+-#define outb(val, port)	((port) < 1024 ? isa_rom_outb((val), (port)) : out_8((port), (val)))
+-#define outb_p(val, port) ((port) < 1024 ? isa_rom_outb_p((val), (port)) : out_8((port), (val)))
+-#define outw(val, port)	((port) < 1024 ? isa_rom_outw((val), (port)) : out_le16((port), (val)))
+-#define outw_p(val, port) ((port) < 1024 ? isa_rom_outw_p((val), (port)) : out_le16((port), (val)))
++#define outb(val, port)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_outb((val), (port)) : isa_outb((val), (port)))
++#define outb_p(val, port) (((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_outb_p((val), (port)) : isa_outb_p((val), (port)))
++#define outw(val, port)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_outw((val), (port)) : isa_outw((val), (port)))
++#define outw_p(val, port) (((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_outw_p((val), (port)) : isa_outw_p((val), (port)))
+ #define outl		isa_outl
+ #define outl_p		isa_outl_p
  
- 	switch (macintosh_config->ide_type) {
- 	case MAC_IDE_QUADRA:
--		platform_device_register_simple("mac_ide", -1,
--			mac_ide_quadra_rsrc, ARRAY_SIZE(mac_ide_quadra_rsrc));
-+		platform_device_register_resndata(NULL, "pata_platform", -1,
-+			mac_pata_quadra_rsrc, ARRAY_SIZE(mac_pata_quadra_rsrc),
-+			&mac_pata_data, sizeof(mac_pata_data));
- 		break;
- 	case MAC_IDE_PB:
--		platform_device_register_simple("mac_ide", -1,
--			mac_ide_pb_rsrc, ARRAY_SIZE(mac_ide_pb_rsrc));
-+		platform_device_register_resndata(NULL, "pata_platform", -1,
-+			mac_pata_pb_rsrc, ARRAY_SIZE(mac_pata_pb_rsrc),
-+			&mac_pata_data, sizeof(mac_pata_data));
- 		break;
- 	case MAC_IDE_BABOON:
- 		platform_device_register_resndata(NULL, "pata_platform", -1,
- 			mac_pata_baboon_rsrc, ARRAY_SIZE(mac_pata_baboon_rsrc),
--			&mac_pata_baboon_data, sizeof(mac_pata_baboon_data));
-+			&mac_pata_data, sizeof(mac_pata_data));
- 		break;
- 	}
+-#define insb(port, buf, nr)	((port) < 1024 ? isa_rom_insb((port), (buf), (nr)) : isa_insb((port), (buf), (nr)))
+-#define insw(port, buf, nr)	((port) < 1024 ? isa_rom_insw((port), (buf), (nr)) : isa_insw((port), (buf), (nr)))
++#define insb(port, buf, nr)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_insb((port), (buf), (nr)) : isa_insb((port), (buf), (nr)))
++#define insw(port, buf, nr)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_insw((port), (buf), (nr)) : isa_insw((port), (buf), (nr)))
+ #define insl			isa_insl
+-#define outsb(port, buf, nr)	((port) < 1024 ? isa_rom_outsb((port), (buf), (nr)) : isa_outsb((port), (buf), (nr)))
+-#define outsw(port, buf, nr)	((port) < 1024 ? isa_rom_outsw((port), (buf), (nr)) : isa_outsw((port), (buf), (nr)))
++#define outsb(port, buf, nr)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_outsb((port), (buf), (nr)) : isa_outsb((port), (buf), (nr)))
++#define outsw(port, buf, nr)	(((port) < 1024 && ISA_TYPE == ISA_TYPE_ENEC) ? isa_rom_outsw((port), (buf), (nr)) : isa_outsw((port), (buf), (nr)))
+ #define outsl			isa_outsl
  
-diff --git a/drivers/ide/Kconfig b/drivers/ide/Kconfig
-index 19abf11c84c8..8ce4a5878d0c 100644
---- a/drivers/ide/Kconfig
-+++ b/drivers/ide/Kconfig
-@@ -739,20 +739,6 @@ config BLK_DEV_FALCON_IDE
- 	  disks, CD-ROM drives, etc.) that are connected to the on-board IDE
- 	  interface.
+-#define readb(addr)		in_8(addr)
+-#define writeb(val, addr)	out_8((addr), (val))
+-#define readw(addr)		in_le16(addr)
+-#define writew(val, addr)	out_le16((addr), (val))
++#define readb   isa_readb
++#define readw   isa_readw
++#define writeb  isa_writeb
++#define writew  isa_writew
+ #endif /* CONFIG_ATARI_ROM_ISA */
  
--config BLK_DEV_MAC_IDE
--	tristate "Macintosh Quadra/Powerbook IDE interface support"
--	depends on MAC
--	help
--	  This is the IDE driver for the on-board IDE interface on some m68k
--	  Macintosh models, namely Quadra/Centris 630, Performa 588 and
--	  Powerbook 150. The IDE interface on the Powerbook 190 is not
--	  supported by this driver and requires BLK_DEV_PLATFORM or
--	  PATA_PLATFORM.
--
--	  Say Y if you have such an Macintosh model and want to use IDE
--	  devices (hard disks, CD-ROM drives, etc.) that are connected to the
--	  on-board IDE interface.
--
- config BLK_DEV_Q40IDE
- 	tristate "Q40/Q60 IDE interface support"
- 	depends on Q40
-diff --git a/drivers/ide/Makefile b/drivers/ide/Makefile
-index 2605b3cdaf47..45a1c0463bed 100644
---- a/drivers/ide/Makefile
-+++ b/drivers/ide/Makefile
-@@ -29,7 +29,6 @@ obj-$(CONFIG_BLK_DEV_4DRIVES)		+= ide-4drives.o
- 
- obj-$(CONFIG_BLK_DEV_GAYLE)		+= gayle.o
- obj-$(CONFIG_BLK_DEV_FALCON_IDE)	+= falconide.o
--obj-$(CONFIG_BLK_DEV_MAC_IDE)		+= macide.o
- obj-$(CONFIG_BLK_DEV_Q40IDE)		+= q40ide.o
- obj-$(CONFIG_BLK_DEV_BUDDHA)		+= buddha.o
- 
-diff --git a/drivers/ide/macide.c b/drivers/ide/macide.c
-deleted file mode 100644
-index 8d2bf73bc548..000000000000
---- a/drivers/ide/macide.c
-+++ /dev/null
-@@ -1,161 +0,0 @@
--/*
-- *  Macintosh IDE Driver
-- *
-- *     Copyright (C) 1998 by Michael Schmitz
-- *
-- *  This driver was written based on information obtained from the MacOS IDE
-- *  driver binary by Mikael Forselius
-- *
-- *  This file is subject to the terms and conditions of the GNU General Public
-- *  License.  See the file COPYING in the main directory of this archive for
-- *  more details.
-- */
--
--#include <linux/types.h>
--#include <linux/mm.h>
--#include <linux/interrupt.h>
--#include <linux/blkdev.h>
--#include <linux/delay.h>
--#include <linux/ide.h>
--#include <linux/module.h>
--#include <linux/platform_device.h>
--
--#include <asm/macintosh.h>
--
--#define DRV_NAME "mac_ide"
--
--#define IDE_BASE 0x50F1A000	/* Base address of IDE controller */
--
--/*
-- * Generic IDE registers as offsets from the base
-- * These match MkLinux so they should be correct.
-- */
--
--#define IDE_CONTROL	0x38	/* control/altstatus */
--
--/*
-- * Mac-specific registers
-- */
--
--/*
-- * this register is odd; it doesn't seem to do much and it's
-- * not word-aligned like virtually every other hardware register
-- * on the Mac...
-- */
--
--#define IDE_IFR		0x101	/* (0x101) IDE interrupt flags on Quadra:
--				 *
--				 * Bit 0+1: some interrupt flags
--				 * Bit 2+3: some interrupt enable
--				 * Bit 4:   ??
--				 * Bit 5:   IDE interrupt flag (any hwif)
--				 * Bit 6:   maybe IDE interrupt enable (any hwif) ??
--				 * Bit 7:   Any interrupt condition
--				 */
--
--volatile unsigned char *ide_ifr = (unsigned char *) (IDE_BASE + IDE_IFR);
--
--int macide_test_irq(ide_hwif_t *hwif)
--{
--	if (*ide_ifr & 0x20)
--		return 1;
--	return 0;
--}
--
--static void macide_clear_irq(ide_drive_t *drive)
--{
--	*ide_ifr &= ~0x20;
--}
--
--static void __init macide_setup_ports(struct ide_hw *hw, unsigned long base,
--				      int irq)
--{
--	int i;
--
--	memset(hw, 0, sizeof(*hw));
--
--	for (i = 0; i < 8; i++)
--		hw->io_ports_array[i] = base + i * 4;
--
--	hw->io_ports.ctl_addr = base + IDE_CONTROL;
--
--	hw->irq = irq;
--}
--
--static const struct ide_port_ops macide_port_ops = {
--	.clear_irq		= macide_clear_irq,
--	.test_irq		= macide_test_irq,
--};
--
--static const struct ide_port_info macide_port_info = {
--	.port_ops		= &macide_port_ops,
--	.host_flags		= IDE_HFLAG_MMIO | IDE_HFLAG_NO_DMA,
--	.irq_flags		= IRQF_SHARED,
--	.chipset		= ide_generic,
--};
--
--static const char *mac_ide_name[] =
--	{ "Quadra", "Powerbook", "Powerbook Baboon" };
--
--/*
-- * Probe for a Macintosh IDE interface
-- */
--
--static int mac_ide_probe(struct platform_device *pdev)
--{
--	struct resource *mem, *irq;
--	struct ide_hw hw, *hws[] = { &hw };
--	struct ide_port_info d = macide_port_info;
--	struct ide_host *host;
--	int rc;
--
--	if (!MACH_IS_MAC)
--		return -ENODEV;
--
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!mem)
--		return -ENODEV;
--
--	irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!irq)
--		return -ENODEV;
--
--	if (!devm_request_mem_region(&pdev->dev, mem->start,
--				     resource_size(mem), DRV_NAME)) {
--		dev_err(&pdev->dev, "resources busy\n");
--		return -EBUSY;
--	}
--
--	printk(KERN_INFO "ide: Macintosh %s IDE controller\n",
--			 mac_ide_name[macintosh_config->ide_type - 1]);
--
--	macide_setup_ports(&hw, mem->start, irq->start);
--
--	rc = ide_host_add(&d, hws, 1, &host);
--	if (rc)
--		return rc;
--
--	platform_set_drvdata(pdev, host);
--	return 0;
--}
--
--static int mac_ide_remove(struct platform_device *pdev)
--{
--	struct ide_host *host = platform_get_drvdata(pdev);
--
--	ide_host_remove(host);
--	return 0;
--}
--
--static struct platform_driver mac_ide_driver = {
--	.driver = {
--		.name = DRV_NAME,
--	},
--	.probe  = mac_ide_probe,
--	.remove = mac_ide_remove,
--};
--
--module_platform_driver(mac_ide_driver);
--
--MODULE_ALIAS("platform:" DRV_NAME);
--MODULE_LICENSE("GPL");
+ #define readl(addr)      in_le32(addr)
 -- 
-2.26.3
+2.7.4
 

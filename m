@@ -2,43 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75F4B3A4D5B
-	for <lists+linux-ide@lfdr.de>; Sat, 12 Jun 2021 09:25:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A58F73A5B53
+	for <lists+linux-ide@lfdr.de>; Mon, 14 Jun 2021 03:28:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230440AbhFLH1A (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 12 Jun 2021 03:27:00 -0400
-Received: from 126991.cloudwaysapps.com ([104.131.119.179]:55776 "EHLO
-        126991.cloudwaysapps.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S229446AbhFLH07 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 12 Jun 2021 03:26:59 -0400
-Received: from 127.0.0.1 (126991.cloudwaysapps.com [127.0.0.1])
-        by 126991.cloudwaysapps.com (Postfix) with SMTP id 769178207F;
-        Fri, 11 Jun 2021 21:56:44 +0000 (UTC)
-Received: from [221.9.41.224] by 127.0.0.1 with ESMTP id ED540B8AA46; Fri, 11 Jun 2021 19:55:04 -0300
-Message-ID: <f-ot5-678n149g--9$l96174$tt@x6y2.rljxsa8>
-From:   "HOFFMA" <hgredmuller@emailn.de>
-Reply-To: "HOFFMA" <hgredmuller@emailn.de>
-To:     braurede@free.fr
-Subject: "" WHY I WRITE YOU""
-Date:   Fri, 11 Jun 21 19:55:04 GMT
-X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+        id S232287AbhFNBaI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 13 Jun 2021 21:30:08 -0400
+Received: from mail-1.ca.inter.net ([208.85.220.69]:47995 "EHLO
+        mail-1.ca.inter.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232257AbhFNBaH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 13 Jun 2021 21:30:07 -0400
+Received: from mp-mx11.ca.inter.net (mp-mx11.ca.inter.net [208.85.217.19])
+        by mail-1.ca.inter.net (Postfix) with ESMTP id 48A8A2EA0D3;
+        Sun, 13 Jun 2021 21:28:05 -0400 (EDT)
+Received: from mail-1.ca.inter.net ([208.85.220.69])
+        by mp-mx11.ca.inter.net (mp-mx11.ca.inter.net [208.85.217.19]) (amavisd-new, port 10024)
+        with ESMTP id 3LHZ4TsT1zIa; Sun, 13 Jun 2021 21:28:04 -0400 (EDT)
+Received: from [192.168.48.23] (host-45-58-219-4.dyn.295.ca [45.58.219.4])
+        (using TLSv1 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: dgilbert@interlog.com)
+        by mail-1.ca.inter.net (Postfix) with ESMTPSA id A39472EA0C2;
+        Sun, 13 Jun 2021 21:28:04 -0400 (EDT)
+Reply-To: dgilbert@interlog.com
+To:     linux-scsi <linux-scsi@vger.kernel.org>, linux-ide@vger.kernel.org,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Hannes Reinecke <hare@suse.de>,
+        Tony Asleson <tasleson@redhat.com>
+From:   Douglas Gilbert <dgilbert@interlog.com>
+Subject: libata: big endian bug in VPD page 89 (ATA Information)
+Message-ID: <f0d1073e-b4a0-c255-41a3-ff52f1553c0f@interlog.com>
+Date:   Sun, 13 Jun 2021 21:28:03 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary=".3_C_7.95.FD9"
-X-Priority: 3
-X-MSMail-Priority: Normal
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-CA
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+In drivers/ata/libata-scsi.c in function ata_scsiop_inq_89() there is
+this line, just before the return:
+        memcpy(&rbuf[60], &args->id[0], 512);
 
---.3_C_7.95.FD9
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+args->id[0] is the first u16 word of an array from the ATA IDENTIFY
+DEVICE response while rbuf is an array of u8 that will become the
+response to a SCSI INQUIRY(VPD=89h). Given the definition of VPD
+page 89h:
+    byte 60+0:  ATA IDENTIFY DEVICE data word 0 bits 7:0
+    byte 60+1:  ATA IDENTIFY DEVICE data word 0 bits 15:8
+    byte 60+2:  ATA IDENTIFY DEVICE data word 1 bits 7:0
+    ........
 
-Hello, you have been chosen to distribute a Palliative to those who lost t=
-heir jobs or business during the pandemic period to establish them back ag=
-ain within your community. Reply Mr. Rein Hoffman
+then that memcpy is just fine and dandy on a little endian machine.
+On a big endian machine, not so much.
 
---.3_C_7.95.FD9--
+Would this call after the memcpy fix things?
+     swap_buf_le16((u16 *)(rbuf + 60), ATA_ID_WORDS);
 
+That function (in libata-core.c) only swaps bytes in 16 bit words
+on big endian machines.
+
+Doug Gilbert

@@ -2,64 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B14663ADB7E
-	for <lists+linux-ide@lfdr.de>; Sat, 19 Jun 2021 21:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ECB83ADD8F
+	for <lists+linux-ide@lfdr.de>; Sun, 20 Jun 2021 10:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234985AbhFSTa2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 19 Jun 2021 15:30:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60542 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231601AbhFSTa1 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 19 Jun 2021 15:30:27 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E0EDC061574
-        for <linux-ide@vger.kernel.org>; Sat, 19 Jun 2021 12:28:16 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id f30so22767517lfj.1
-        for <linux-ide@vger.kernel.org>; Sat, 19 Jun 2021 12:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=sxyW/D7JhalJ0kE2dzP8Eh7tIwtvLhAmxWVNiNwQI0Y=;
-        b=Kd8+Pkhjp9LacoLM1CwA0P0uFmK/BwxJKH5NEFP4kKVh0uPCCDrRALFZoTF/XCRIv1
-         dbnyUQiaX76mpbao60ZleneGmlp6MCxAP9nhqN27Yd4H2DCPykWEvJf/7L3S/fv0NEEy
-         bfsR6XOzRuzLmsWbhZEnI9j4yCeojf7qSvAlcFB3+O4dXbt7JRrBtcjn9TI6QqDfx8NR
-         UuP/vozTvMlnEQM81CD3u1V320isdlhBLFjmCumkMS0cpYCVFjK6+fGSjWrcilmsPUtK
-         AKXjUkY0hCz1yuIKJnoa70V3JlLCF7AHq717yr1E7j1pXi6lok58j7KAkDdEjU1HTAI5
-         W8pQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=sxyW/D7JhalJ0kE2dzP8Eh7tIwtvLhAmxWVNiNwQI0Y=;
-        b=ddaQHiS4p1wTRgTlcbDs4qFhdRUbFOQglXg4JV7XvS2T3Cpq79TzF3BvzaQNGHuv6H
-         /Svn/hELpjcvbyuVygXffioPegeYLBCOP7GUsiJYxIRqzjr1GnAss41DsI+u7Q91aec/
-         2wEvCIpD8h4dBWnhOezzBvIC2iNuM3MRaZjnQwrYxWoDnA2khdZF6lKfrsxyWn8MObKG
-         APDtZ4k6DnW8RdzlPJa0ADGn4AT+CXiZ0p6du3Hj9uTJtX694fjTphlwUs5VRSs8d4TL
-         tXUimgR+GA1ImRSMdVeepvb/kYL5zzCJKYPGyHF4KIZUdjk5aHmGvJD1qI4eNk+oiF7Y
-         HdvA==
-X-Gm-Message-State: AOAM530ik7yYjejja4hsMReBp9G0z2h9prnNeyDiF8uKkFl1LnHXFgwF
-        sLcVkGggzeh/uVE3yQnkd9boW73bPlwsATZ5yUw=
-X-Google-Smtp-Source: ABdhPJy+/Wcw16t2Ce8ibzRh83HpvLCYhR2xbdeIR7URD+2sCdH0hmoYCp+H+6P3V49J3BXsns2AYjHpdqUvqfPWevE=
-X-Received: by 2002:a19:8c58:: with SMTP id i24mr7930499lfj.121.1624130894191;
- Sat, 19 Jun 2021 12:28:14 -0700 (PDT)
+        id S229618AbhFTIHv convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Sun, 20 Jun 2021 04:07:51 -0400
+Received: from 6-200-5-45.rpnnetprovedor.com.br ([45.5.200.6]:59251 "EHLO
+        srv01.rpnnetprovedor.com.br" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229637AbhFTIHl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 20 Jun 2021 04:07:41 -0400
+Received: from [84.38.130.143] (helo=IP-130-143.dataclub.eu)
+        by srv01.rpnnetprovedor.com.br with esmtpa (Exim 4.92.2)
+        (envelope-from <robertnellsona@citromail.hu>)
+        id 1lusSN-0005tw-Cz
+        for linux-ide@vger.kernel.org; Sun, 20 Jun 2021 05:05:27 -0300
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:ac2:4470:0:0:0:0:0 with HTTP; Sat, 19 Jun 2021 12:28:13
- -0700 (PDT)
-Reply-To: tracymedicinemed3@gmail.com
-From:   Dr Tracy William <drtracywills5011@gmail.com>
-Date:   Sat, 19 Jun 2021 21:28:13 +0200
-Message-ID: <CAHhC4arJ1FBLJnfFfFf0QV0grB3AzrvL=DnduW9NXo7aGtvxbw@mail.gmail.com>
-Subject: From Dr Tracy from United States
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: CAN YOU INVEST WITH ME?...6
+To:     linux-ide@vger.kernel.org
+From:   "Mr.  Robert" <robertnellsona@citromail.hu>
+Date:   Sun, 20 Jun 2021 11:05:26 +0300
+Reply-To: robertnellsona@citromail.hu
+Message-Id: <E1lusSN-0005tw-Cz@srv01.rpnnetprovedor.com.br>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Hello Dear,
-I want to make a new and special friend,I hope you don't mind.
-My name is Tracy William from the United States, Am an English and
-French nationalities. I will give you
-pictures and more details about my self as soon as i hear from you.
-Tracy
+
+ATTENTION; linux-ide@vger.kernel.org,
+
+IMPORTANT INVESTMENT INFORMATION
+
+We have a good investment program going on now.
+We have $95m USD for Investment in your Country.
+We use this opportunity to invest you to join the investment program and you will never regret it.
+Please kindly invest with us and you will be receiving monthly income/return/profit every month.
+We can also give you Loan, 
+
+We have: 
+
+1. Short Term Loan, 
+
+2. Medium Term Loan 
+
+3. and Long Term Loan, 
+
+There is no need of collateral security. We will use our company to sign agreement and guarantee on your behalf and our Lawyer will sign on your behalf.
+
+Reply for more detail.
+
+Thank you Sir.
+
+Robert Nellson.
+INVESTMENT MANAGER.

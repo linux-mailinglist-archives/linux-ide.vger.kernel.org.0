@@ -2,71 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E8D6F3B1208
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Jun 2021 05:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC33C3B142A
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Jun 2021 08:47:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbhFWDOi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 22 Jun 2021 23:14:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48240 "EHLO
+        id S229950AbhFWGtq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 23 Jun 2021 02:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229890AbhFWDOi (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Jun 2021 23:14:38 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC13C061574
-        for <linux-ide@vger.kernel.org>; Tue, 22 Jun 2021 20:12:20 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id h15so1528864lfv.12
-        for <linux-ide@vger.kernel.org>; Tue, 22 Jun 2021 20:12:20 -0700 (PDT)
+        with ESMTP id S229952AbhFWGtp (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Jun 2021 02:49:45 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AACDC061766
+        for <linux-ide@vger.kernel.org>; Tue, 22 Jun 2021 23:47:27 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id p7so2311279lfg.4
+        for <linux-ide@vger.kernel.org>; Tue, 22 Jun 2021 23:47:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=Aauu7gYvMaBruI9Zt1CgTlkxSZ8evQwPBhKOMH6jf8s=;
-        b=d4J39SDHP7mgEK8jwuBnk88NNfQy+0PGAp7xV0CK8DaUJMEffiPAkKPxcs77xpLooF
-         mep+HWXkBs9XXbhIR+SS7M8e9l+52/iAUOvWrp5C0ob0nv/rr/WIm2kaYk132tE+Ipsc
-         OJzi3zv9zrjz9i1JfOjkFYd5DVebi95Cz67v9a75Q9wWIF3C7SduhdYU9XCnc5dYTfnF
-         2Kca4/EUXC+nOJatmqJ+xfecdKfnnLCBrIwl6gHu47mkHE54DfVu45hIYPSe7zBVRlR6
-         Kp1vvq6qMw8j1l104o7UThr0OPw26lSQxLJ0oOTsVOo6QHyVGO2bPewVqaAB6M/0f6tW
-         Tkug==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=L0V3tEWU6RXdv4sHk2WURUiKYv8hNk/3Vb4RrbCcOlY=;
+        b=NNIzqOYwBynenFN8vdGe7ySNHqpxvPYp40UtycV+u8T0/DzkDVfGebaNJZTiaaxs+m
+         JU6BZtFEM+HuMoMcE39KG4wkvyg47pX2Ig/bJUMkQJysrHm190UO9m0ELxSjtzgBoDFH
+         LllrbCzSCCPP5t7i9+O3zUpTdOkbvrEVjh7cFRiAL7/gcTbCRRnHL6xVysl7hiJc6uI7
+         9KerAOtBaoDnpJ58zK82F2gZpU5aph+Gqik30tAJYLZO7bfKAVPjV67u2Os3OFylcSWY
+         0pugdGNSNUzyJ+g6yGZSYsGJWIlHafV+8X7hs5Iuoly01+Awvd11KQ8phRHUdf9fzjD3
+         FGPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=Aauu7gYvMaBruI9Zt1CgTlkxSZ8evQwPBhKOMH6jf8s=;
-        b=DdMrXEtEuPVv6pIu9xyffw/YIR5BEvy2cNpzgDdM9LgE9+m9PkmaAVdPFag8W0YJ0j
-         J+me368u0z0n3qo5Xn1Mo5bzeQONMFvRO43jWr45x60coVUD9aFe/r4LS+2KIQjsP0EJ
-         kpeDNr7j3Axq69rzA+LVbRu84YUgVpQAcV+cV19hll3NW5FNNwSg/ObW8IiZleOC4gyN
-         WPcYVcUGicthoJNxhMeR9HKXMoSiRHJHvbAyIcPM4rYtnNisV5lfX5SX7Y+EJwsnHyK6
-         u0rkgNrxGkfRWQspIbCZ1YTuvMsc3ZIs4uaDuH4+gRFT8/iYtY18w6RR8acp91Ewh3I0
-         s4bA==
-X-Gm-Message-State: AOAM530yiDfsw0FkcC33ITIUGNux0qfiIk5/exDBwWtOToDqlYT9janx
-        +328dPLrLLwF5TvqWap2Ea2wGb8wbsK0Lvu6d9M=
-X-Google-Smtp-Source: ABdhPJxn4Bpe8krFXAjSGTDOvS0DpugrSTn4Zd8BhWSWzbEAjPobzpO9afh/WJjC+wkRpiDkxtSB8jFFMhflegCpru4=
-X-Received: by 2002:a19:4086:: with SMTP id n128mr5306317lfa.464.1624417938489;
- Tue, 22 Jun 2021 20:12:18 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=L0V3tEWU6RXdv4sHk2WURUiKYv8hNk/3Vb4RrbCcOlY=;
+        b=f5Y9IZXzBXPMKQ3G0/yhi5s5hNhIAAbyCAZOsZ8p5cGb9m6dnpUfFt4MldR4pYB90L
+         8ssw5BcZibkUZmC/ltsCJ4MAQm+RNTEDBgjAD8JPaIbd0vFUe16sUJR0j/iN4SFCxlr9
+         z9we6jMlGaWG83UIrxN/NtUTfNoafAQhtT9D1YZ+bof+IdjMKvdfGMfqr4QxIEPYgMEz
+         S4+kFQ88LGRU64UrD2ZooY9E8E+3M2hQqgOMyA8+oZSSKUv9LROfWDsgY0CVCqyWzKa0
+         Hx/NmabIYBPB4DkF/VPts1R3F991XvlWgJ11mBeJAApX+Ma9taYUW6fJ+eHbm3Kih5xG
+         hu/g==
+X-Gm-Message-State: AOAM533PB3hWlXOLx+sqMWrb5yaM8nluTXxVLNkU8B/KZZxGVpN4IIcr
+        7jnac7ncDB12v1YsOpLZPqTViwvBYhfT+m78GMI=
+X-Google-Smtp-Source: ABdhPJy9apBlfTn2BeeCKJqE69QfF6t+fc5zVTWNpl9YEMabMnNCtaqklFziqU3NEPkK+ry8npgV2bfHEOdbzSAis7g=
+X-Received: by 2002:a19:e301:: with SMTP id a1mr1615623lfh.468.1624430845089;
+ Tue, 22 Jun 2021 23:47:25 -0700 (PDT)
 MIME-Version: 1.0
-Reply-To: godwinppter@gmail.com
-Sender: mrpkabore1@gmail.com
-Received: by 2002:ab3:5a06:0:0:0:0:0 with HTTP; Tue, 22 Jun 2021 20:12:17
+Received: by 2002:a05:6512:31c2:0:0:0:0 with HTTP; Tue, 22 Jun 2021 23:47:24
  -0700 (PDT)
-From:   Godwin Pete <godwinnpeter@gmail.com>
-Date:   Tue, 22 Jun 2021 20:12:17 -0700
-X-Google-Sender-Auth: ydmkHAW6Q1putOKwshOk48n4pmk
-Message-ID: <CAEspYAoWY5vuaL8PTi3JfyB+ghME_8d8cFpccwLP-vB1dFWGWQ@mail.gmail.com>
-Subject: I'm waiting for your prompt response
+Reply-To: ayishagddafio@mail.ru
+From:   AISHA GADDAFI <mrmusakabore17@gmail.com>
+Date:   Tue, 22 Jun 2021 23:47:24 -0700
+Message-ID: <CA+jaZSAZ8KSVCZxAk9eGzynYbqM6ncQympNZqAH61KLkAEX+4w@mail.gmail.com>
+Subject: Liebster Freund,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-My good friend,
+--=20
+Liebster Freund,
 
-I just want to know if you, can help me to transfer the amount of
-($6Million). After the transfer we have to share it, 50% for me, and
-50% for you. Please let me know if you can help me for more
-information in regards with the transfer. I hope you can work with me
-honestly?
+Im Namen Gottes, des gn=C3=A4digsten, barmherzigsten.
 
+Friede sei mit dir und Barmherzigkeit sei mit dir und Segen sei mit dir.
+Ich habe die Summe von 27,5 Millionen USD f=C3=BCr Investitionen, ich
+interessiere mich f=C3=BCr Sie f=C3=BCr die Unterst=C3=BCtzung von
+Investitionsprojekten in Ihrem Land. Mein Name ist Aisha Gaddafi und
+lebe derzeit im Oman, ich bin eine Witwe und alleinerziehende Mutter
+mit drei Kindern, die einzige leibliche Tochter des verstorbenen
+libyschen Pr=C3=A4sidenten (dem verstorbenen Oberst Muammar Gaddafi) und
+stehe derzeit unter politischem Asylschutz der omanischen Regierung.
 
-Thanks.
+Bitte antworten Sie dringend f=C3=BCr weitere Details.
 
-Godwin Peter,
+Vielen Dank
+Mit freundlichen Gr=C3=BC=C3=9Fen Aisha

@@ -2,77 +2,66 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BC33C3B142A
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Jun 2021 08:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EE0B3B1DFD
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Jun 2021 17:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229950AbhFWGtq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 23 Jun 2021 02:49:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229952AbhFWGtp (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Jun 2021 02:49:45 -0400
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AACDC061766
-        for <linux-ide@vger.kernel.org>; Tue, 22 Jun 2021 23:47:27 -0700 (PDT)
-Received: by mail-lf1-x132.google.com with SMTP id p7so2311279lfg.4
-        for <linux-ide@vger.kernel.org>; Tue, 22 Jun 2021 23:47:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=L0V3tEWU6RXdv4sHk2WURUiKYv8hNk/3Vb4RrbCcOlY=;
-        b=NNIzqOYwBynenFN8vdGe7ySNHqpxvPYp40UtycV+u8T0/DzkDVfGebaNJZTiaaxs+m
-         JU6BZtFEM+HuMoMcE39KG4wkvyg47pX2Ig/bJUMkQJysrHm190UO9m0ELxSjtzgBoDFH
-         LllrbCzSCCPP5t7i9+O3zUpTdOkbvrEVjh7cFRiAL7/gcTbCRRnHL6xVysl7hiJc6uI7
-         9KerAOtBaoDnpJ58zK82F2gZpU5aph+Gqik30tAJYLZO7bfKAVPjV67u2Os3OFylcSWY
-         0pugdGNSNUzyJ+g6yGZSYsGJWIlHafV+8X7hs5Iuoly01+Awvd11KQ8phRHUdf9fzjD3
-         FGPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=L0V3tEWU6RXdv4sHk2WURUiKYv8hNk/3Vb4RrbCcOlY=;
-        b=f5Y9IZXzBXPMKQ3G0/yhi5s5hNhIAAbyCAZOsZ8p5cGb9m6dnpUfFt4MldR4pYB90L
-         8ssw5BcZibkUZmC/ltsCJ4MAQm+RNTEDBgjAD8JPaIbd0vFUe16sUJR0j/iN4SFCxlr9
-         z9we6jMlGaWG83UIrxN/NtUTfNoafAQhtT9D1YZ+bof+IdjMKvdfGMfqr4QxIEPYgMEz
-         S4+kFQ88LGRU64UrD2ZooY9E8E+3M2hQqgOMyA8+oZSSKUv9LROfWDsgY0CVCqyWzKa0
-         Hx/NmabIYBPB4DkF/VPts1R3F991XvlWgJ11mBeJAApX+Ma9taYUW6fJ+eHbm3Kih5xG
-         hu/g==
-X-Gm-Message-State: AOAM533PB3hWlXOLx+sqMWrb5yaM8nluTXxVLNkU8B/KZZxGVpN4IIcr
-        7jnac7ncDB12v1YsOpLZPqTViwvBYhfT+m78GMI=
-X-Google-Smtp-Source: ABdhPJy9apBlfTn2BeeCKJqE69QfF6t+fc5zVTWNpl9YEMabMnNCtaqklFziqU3NEPkK+ry8npgV2bfHEOdbzSAis7g=
-X-Received: by 2002:a19:e301:: with SMTP id a1mr1615623lfh.468.1624430845089;
- Tue, 22 Jun 2021 23:47:25 -0700 (PDT)
+        id S231459AbhFWP4i convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ide@lfdr.de>); Wed, 23 Jun 2021 11:56:38 -0400
+Received: from [183.90.58.236] ([183.90.58.236]:51606 "EHLO ns1.zackeruz.tk"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S231463AbhFWP4h (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Wed, 23 Jun 2021 11:56:37 -0400
+Received: from johnlewis.com (unknown [192.168.20.1])
+        by ns1.zackeruz.tk (Postfix) with ESMTPSA id 3A4AD84631D
+        for <linux-ide@vger.kernel.org>; Wed, 23 Jun 2021 23:54:17 +0800 (+08)
+Reply-To: robert_turner@johnlewis-trading.com,
+          pippawicks.sales@johnlewis-trading.com
+From:   John Lewis & Partnersip <robert.turner107@johnlewis.com>
+To:     linux-ide@vger.kernel.org
+Subject: 6/23/2021 Product Inquiry 
+Date:   23 Jun 2021 15:54:17 +0000
+Message-ID: <20210623094114.E2B97C4F220B3E32@johnlewis.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6512:31c2:0:0:0:0 with HTTP; Tue, 22 Jun 2021 23:47:24
- -0700 (PDT)
-Reply-To: ayishagddafio@mail.ru
-From:   AISHA GADDAFI <mrmusakabore17@gmail.com>
-Date:   Tue, 22 Jun 2021 23:47:24 -0700
-Message-ID: <CA+jaZSAZ8KSVCZxAk9eGzynYbqM6ncQympNZqAH61KLkAEX+4w@mail.gmail.com>
-Subject: Liebster Freund,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
---=20
-Liebster Freund,
+Dear linux-ide
 
-Im Namen Gottes, des gn=C3=A4digsten, barmherzigsten.
+The famous brand John Lewis Partnership, is UK's largest multi-
+channel retailer with over 126 shops and multiple expansion in 
+Africa furnished by European/Asian/American products. We are 
+sourcing new products to attract new customers and also retain 
+our existing ones, create new partnerships with companies dealing 
+with different kinds of goods globally.
 
-Friede sei mit dir und Barmherzigkeit sei mit dir und Segen sei mit dir.
-Ich habe die Summe von 27,5 Millionen USD f=C3=BCr Investitionen, ich
-interessiere mich f=C3=BCr Sie f=C3=BCr die Unterst=C3=BCtzung von
-Investitionsprojekten in Ihrem Land. Mein Name ist Aisha Gaddafi und
-lebe derzeit im Oman, ich bin eine Witwe und alleinerziehende Mutter
-mit drei Kindern, die einzige leibliche Tochter des verstorbenen
-libyschen Pr=C3=A4sidenten (dem verstorbenen Oberst Muammar Gaddafi) und
-stehe derzeit unter politischem Asylschutz der omanischen Regierung.
+Your company's products are of interest to our market as we have 
+an amazing market for your products.
 
-Bitte antworten Sie dringend f=C3=BCr weitere Details.
+Provide us your current catalog through email to review more. We 
+hope to be able to order with you and start a long-term friendly,
+respectable and solid business partnership. Please we would 
+appreciate it if you could send us your stock availability via 
+email if any.
 
-Vielen Dank
-Mit freundlichen Gr=C3=BC=C3=9Fen Aisha
+Our payment terms are 15 days net in Europe, 30 days Net in UK 
+and 30 days net in Asia/USA as we operate with over 5297 
+suppliers around the globe for the past 50 years now. For 
+immediate response Send your reply to robert_turner@johnlewis-
+trading.com for us to be able to 
+treat with care and urgency.
+
+
+Best Regards
+
+Rob Turner
+Head Of Procurement Operations
+John Lewis & Partners.
+robert_turner@johnlewis-trading.com
+Tel: +44-7451-274090
+WhatsApp: +447497483925
+www.johnlewis.com
+REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 

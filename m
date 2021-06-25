@@ -2,66 +2,79 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE0B3B1DFD
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Jun 2021 17:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E253B3A43
+	for <lists+linux-ide@lfdr.de>; Fri, 25 Jun 2021 02:49:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231459AbhFWP4i convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Wed, 23 Jun 2021 11:56:38 -0400
-Received: from [183.90.58.236] ([183.90.58.236]:51606 "EHLO ns1.zackeruz.tk"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231463AbhFWP4h (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 23 Jun 2021 11:56:37 -0400
-Received: from johnlewis.com (unknown [192.168.20.1])
-        by ns1.zackeruz.tk (Postfix) with ESMTPSA id 3A4AD84631D
-        for <linux-ide@vger.kernel.org>; Wed, 23 Jun 2021 23:54:17 +0800 (+08)
-Reply-To: robert_turner@johnlewis-trading.com,
-          pippawicks.sales@johnlewis-trading.com
-From:   John Lewis & Partnersip <robert.turner107@johnlewis.com>
-To:     linux-ide@vger.kernel.org
-Subject: 6/23/2021 Product Inquiry 
-Date:   23 Jun 2021 15:54:17 +0000
-Message-ID: <20210623094114.E2B97C4F220B3E32@johnlewis.com>
+        id S232903AbhFYAvq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 24 Jun 2021 20:51:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229521AbhFYAvq (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Jun 2021 20:51:46 -0400
+Received: from mail-io1-xd35.google.com (mail-io1-xd35.google.com [IPv6:2607:f8b0:4864:20::d35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36011C061574
+        for <linux-ide@vger.kernel.org>; Thu, 24 Jun 2021 17:49:26 -0700 (PDT)
+Received: by mail-io1-xd35.google.com with SMTP id v3so10567026ioq.9
+        for <linux-ide@vger.kernel.org>; Thu, 24 Jun 2021 17:49:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=3PR/UUWyRo3W86jHkTCrMGfl2K4mSiZxkeLBFZAP1Fk=;
+        b=zp1bHW9KUWJi4ZFV5WTYC81AR3omUkBmmTvp02R4K5SuzzL9ksQP/V2cIMR8kZVb6s
+         D1mYoyckpBqtKh7OAa0aniIP0CzD1qKNjmt/LusyOXdHyD2jjQhCOPnoXpAPnr8N2dSI
+         NqlYnAm/pSqaFCjQlVXQN2vZBEdI0UJ1i3WNpKmM4z/fdM+HV69bQTmo3VpbNBaocFfq
+         BiKSIq5wpFEb8w3aSeLguSW8mhc4vV5UBXeNYT7N7/0oRrPFpMYP3GALhw5gElYAH1pZ
+         rxqEqIVu3lzPOTNSAyBjKP3X9nelKqfUV7w820XEvJ7mRDR6qiyJhjbzzdshQztlfxWq
+         Cmrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=3PR/UUWyRo3W86jHkTCrMGfl2K4mSiZxkeLBFZAP1Fk=;
+        b=H/UsgauwZUnUkXaS+CjA75q3ioejB/3AUeVCxECURjuKQX70Y9VZYBFEOBcDmXnLyW
+         31jWHseGpwyP65FUp4j49/lS+AJnzByOMKe4J65u4kkSDmndcpvFEGesVmJfJkTOvN9L
+         c52+qY74LceQnQbpv0zuNrqTE9S9jOcDPIQ/RJQxUoyNXm19X/zzBas+g8lSTFlZhHzC
+         QOeH9LdWHVtUlb6HIrpNpfcGGoPzXKJ+IiIv/dculi6LoLAdhbXK4fMjfg/QIgIUIxE/
+         OuQ36C6oqhC32Kvz3Tx37Vs6BARHXhw9mbCUHs7zqdrimwCqunYmBaQuIwnfqoDPMgkn
+         CCsg==
+X-Gm-Message-State: AOAM53238YSOQTT5P9JzzEo5G40b977fkAwj3+NYtZVGmzqy3H4CHyyP
+        AKtLayDUFiamA02q+FB7EabP3Q==
+X-Google-Smtp-Source: ABdhPJzl3Ao3+69Nt+XJsgbEnmxvRKyJfWDOB6efG73px9/nSiJE70wm/ddnuIFkkRoTTREqJA1ejA==
+X-Received: by 2002:a05:6602:12:: with SMTP id b18mr6007226ioa.115.1624582165656;
+        Thu, 24 Jun 2021 17:49:25 -0700 (PDT)
+Received: from [192.168.1.134] ([198.8.77.61])
+        by smtp.gmail.com with ESMTPSA id h18sm2595750ilr.86.2021.06.24.17.49.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 24 Jun 2021 17:49:25 -0700 (PDT)
+Subject: Re: [PATCH] ata: rb532_cf: remove redundant codes
+To:     13145886936@163.com
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        gushengxian <gushengxian@yulong.com>
+References: <20210622115507.359017-1-13145886936@163.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <d69296c5-faf3-24f7-bf3a-faede4ed79e5@kernel.dk>
+Date:   Thu, 24 Jun 2021 18:49:24 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+In-Reply-To: <20210622115507.359017-1-13145886936@163.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear linux-ide
+On 6/22/21 5:55 AM, 13145886936@163.com wrote:
+> From: gushengxian <gushengxian@yulong.com>
+> 
+> The codes "dev_err(&pdev->dev, "no IRQ resource found\n");" is
+> redundant because platform_get_irq() already prints an error.
 
-The famous brand John Lewis Partnership, is UK's largest multi-
-channel retailer with over 126 shops and multiple expansion in 
-Africa furnished by European/Asian/American products. We are 
-sourcing new products to attract new customers and also retain 
-our existing ones, create new partnerships with companies dealing 
-with different kinds of goods globally.
+Applied, thanks.
 
-Your company's products are of interest to our market as we have 
-an amazing market for your products.
+-- 
+Jens Axboe
 
-Provide us your current catalog through email to review more. We 
-hope to be able to order with you and start a long-term friendly,
-respectable and solid business partnership. Please we would 
-appreciate it if you could send us your stock availability via 
-email if any.
-
-Our payment terms are 15 days net in Europe, 30 days Net in UK 
-and 30 days net in Asia/USA as we operate with over 5297 
-suppliers around the globe for the past 50 years now. For 
-immediate response Send your reply to robert_turner@johnlewis-
-trading.com for us to be able to 
-treat with care and urgency.
-
-
-Best Regards
-
-Rob Turner
-Head Of Procurement Operations
-John Lewis & Partners.
-robert_turner@johnlewis-trading.com
-Tel: +44-7451-274090
-WhatsApp: +447497483925
-www.johnlewis.com
-REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN 

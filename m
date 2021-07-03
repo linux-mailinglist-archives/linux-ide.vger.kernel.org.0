@@ -2,79 +2,64 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 12D693B7F1F
-	for <lists+linux-ide@lfdr.de>; Wed, 30 Jun 2021 10:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04E693BB53E
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Jul 2021 04:44:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233026AbhF3Ii1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 30 Jun 2021 04:38:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60090 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232984AbhF3Ii1 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 30 Jun 2021 04:38:27 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E895FC061756
-        for <linux-ide@vger.kernel.org>; Wed, 30 Jun 2021 01:35:57 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id g24so1265798pji.4
-        for <linux-ide@vger.kernel.org>; Wed, 30 Jun 2021 01:35:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Mozi9talEt/mI/l6KvxWbDISyLan2Xy8GUlPURIr5DU=;
-        b=Pe+M2MmrRAe5hEiOq3Nphtp3AberzDdKDqIs8pBO6h0Yqhl2NuYSAB4HcMf3N2hKU3
-         zDPTHw4mQp/xf1NQaM0+r2DPaJsyLrOdSHxZBj+TUAOqLPX60piysYpw6y9XCCIoY63p
-         TOHJd1dE+gowKKk/SkOe5EGBQHk0WK7xKefv9sOJicWnRRGZfbekIsNNxCb2Mdtxd6PP
-         l6AbEJ0Q3hkgDf8D68EZKqOdRtwqAfKHEmtFsHNT43+g8HTZPybaHlIv8cKskC70v+Gz
-         HljcuWDBDswmB101hrrv1ffsbAdPitRoFWwoJi0UTkLuuMTrdfQD5R/aYp7rQRSksA4r
-         jIng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Mozi9talEt/mI/l6KvxWbDISyLan2Xy8GUlPURIr5DU=;
-        b=TYX4E29Tx1XZbCOn/911uQhQ1DPHE2+5yBnooRtxEUpKDplTj4xeklMsAcYAdm50+A
-         PfbBpsMJblYV/CZHmkpjx/LSrUwuSXEsYwU7l54M/Cwo5VVB72H2BIbZusUeU2DH8lfl
-         BZ8aaMrlA2llvA+RJSD8yNM8yPKfztNKt5rQX/Fe5dYEnnVWpf81cg+gz1hyHYEN/Qxm
-         p6R01C5RE+LxlYG9fHn/0rQMf5b/4k5OjFQrU97ny5gjD4QHicXfa1YxCKDMnCKDehOV
-         iif5hs5ap1vtLDP2BwqRlxh0DvJHMawOBQ8oL1UOe+D9qvtTFOhWHL6JEd5tgeKYIGw+
-         MqEw==
-X-Gm-Message-State: AOAM5332V6GUFZm9WUDzWuhcj+ci65KCEtto6lywy5EtkbZIHXYAJ+YH
-        W5kfiL5nC6/SxpH3o2DHptpjdelCC5AhUmwMBpw=
-X-Google-Smtp-Source: ABdhPJytHNexhnwZMzfzHViaLl+RN7MPgvzZfSIGj23/e0EXRYq+3eaqej6RPPnRDu267sDoutZZT3I5I7iylxoTFhk=
-X-Received: by 2002:a17:902:bcca:b029:127:a4f2:845c with SMTP id
- o10-20020a170902bccab0290127a4f2845cmr27494386pls.29.1625042157552; Wed, 30
- Jun 2021 01:35:57 -0700 (PDT)
+        id S229652AbhGECqx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 4 Jul 2021 22:46:53 -0400
+Received: from static-190-25-223-138.static.etb.net.co ([190.25.223.138]:50800
+        "EHLO correo.hdv.gov.co" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S229549AbhGECqw (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 4 Jul 2021 22:46:52 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id E2DAD1F04090;
+        Sat,  3 Jul 2021 18:42:31 -0500 (-05)
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id MCq3NKiEfHSH; Sat,  3 Jul 2021 18:42:31 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id C38FE1866CB9;
+        Sat,  3 Jul 2021 12:52:08 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 correo.hdv.gov.co C38FE1866CB9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hdv.gov.co;
+        s=11DF984A-9D1F-11E6-B193-F2669FC4C452; t=1625334728;
+        bh=SKFadKgM92kiwue8eMLvzaTB0eiP/neKAp89ygsk9fM=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=fTG2ON8Z5/NnZaT5De+SAwu0PBeVItYXbA4rSpE8pKUqT9pxqTA8YQMjfURax0oFO
+         xitDIt33Zhz0IPDDECtDAv4U/uj/BqG4bcMi9C8ANL1jegVlQZ68ruFaZ2LO/aJhEf
+         R7maujiqRh8UEVbm1JsGOVBVzb98qUpbRf/3YobI=
+X-Virus-Scanned: amavisd-new at correo.hdv.gov.co
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id jAy5Vbb1trxP; Sat,  3 Jul 2021 12:52:08 -0500 (-05)
+Received: from [172.20.10.6] (unknown [41.147.1.129])
+        by correo.hdv.gov.co (Postfix) with ESMTPSA id 21806187CE28;
+        Sat,  3 Jul 2021 10:10:44 -0500 (-05)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Received: by 2002:a17:90a:b307:0:0:0:0 with HTTP; Wed, 30 Jun 2021 01:35:57
- -0700 (PDT)
-Reply-To: georgemike7031@gmail.com
-From:   george mike <joeakaba00@gmail.com>
-Date:   Wed, 30 Jun 2021 10:35:57 +0200
-Message-ID: <CAEoXQLwnEBUqNbOAUfgdehvPtXZHkeCYOQxm-1Vrm7WnWcwTow@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: my subject
+To:     Recipients <planeacion.arquitecto@hdv.gov.co>
+From:   planeacion.arquitecto@hdv.gov.co
+Date:   Sat, 03 Jul 2021 08:10:34 -0700
+Reply-To: callumfoundation05@outlook.com
+Message-Id: <20210703151045.21806187CE28@correo.hdv.gov.co>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hallo
+Hallo,
 
-Mein Name ist George Mike, ich bin von Beruf Rechtsanwalt. Ich m=C3=B6chte
-dir anbieten
-der n=C3=A4chste Angeh=C3=B6rige meines Klienten. Sie erben die Summe von (=
-8,5
-Millionen US-Dollar)
-Dollar, die mein Mandant vor seinem Tod auf der Bank hinterlie=C3=9F.
+ Sie haben eine Spende von 2.800.000,00 USD. Ich gewann die amerikanische L=
+otterie im Wert von 343 Millionen US-Dollar in Amerika und spendete einen T=
+eil davon an f=FCnf gl=FCckliche Menschen und Wohlt=E4tigkeitsorganisatione=
+n, die sich an meinen verstorbenen Enkel erinnern, der Anfang April vorzeit=
+ig geboren wurde und nur einen Tag lebte. F=FCr weitere Informationen wende=
+n Sie sich bitte an: callumfoundation05@outlook.com
 
-Mein Mandant ist ein B=C3=BCrger Ihres Landes, der mit seiner Frau bei
-einem Autounfall gestorben ist
-und einziger Sohn. Ich habe Anspruch auf 50% des Gesamtfonds, w=C3=A4hrend
-50% dies tun werden
-sein f=C3=BCr dich.
-Bitte kontaktieren Sie meine private E-Mail hier f=C3=BCr weitere
-Details:georgemike7031@gmail.com
+ =
 
-Vielen Dank im Voraus,
-Herr George Mike,
+
+Mit freundlichen Gr=FC=DFen
+Frau Lerynne West

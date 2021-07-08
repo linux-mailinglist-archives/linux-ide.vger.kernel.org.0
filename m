@@ -2,65 +2,45 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 522E43BE83B
-	for <lists+linux-ide@lfdr.de>; Wed,  7 Jul 2021 14:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBCAD3C148F
+	for <lists+linux-ide@lfdr.de>; Thu,  8 Jul 2021 15:42:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbhGGMul (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 7 Jul 2021 08:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45910 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbhGGMuk (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 7 Jul 2021 08:50:40 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAAACC061574
-        for <linux-ide@vger.kernel.org>; Wed,  7 Jul 2021 05:48:00 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id i125so1734477qke.12
-        for <linux-ide@vger.kernel.org>; Wed, 07 Jul 2021 05:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Yt62TszKcb4A7QGJ+yn+kt/XDSMoUeLI/qXsSaEOtik=;
-        b=XZolzyyq//1uOourzaBLcB+vgYZi2EadS0u/ztteHnXccYO5uYR0kJKkJoUOPEDnTf
-         ayjn9WRnpGGaG/f2F2K2ds+7+ssvN0/ey26c323YSuAe23IGQFadUe2CJjpLEZ1HMZiL
-         LTpBgjVlypLNQ4RSAUKHjLFLeAoki8p7ZzlCSXRiC+UiCQ5abW4nyXYRxuky1HMGzDD4
-         f95cKpPbOvjq772wuJg42iv7ag7238HNNnarCLj1Vh9eQVnEmxMDI301uqm1uQOrD7QF
-         P/eHeWRUlV0pZwXJ8Z8Qp6hKniGlIlO9TINiNfm/F6GI4W1ogqTq1B+7JBjydMU1h8tJ
-         SWIQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Yt62TszKcb4A7QGJ+yn+kt/XDSMoUeLI/qXsSaEOtik=;
-        b=fig+u0fH8zV4Zvu+0uPJ/CDdA33hD0O0iTsor0L9quRGvZ13Um31DSTBmtYtOapEVA
-         xYlKnVlu1jZdT9u5v4W6adJHX4x0dwac0t5+WU57wfddc5tyadnVr6GhMhEM2wkpgJGX
-         hUYHhTpzYlp2eiM41NwSA3uEYTKdZSke0qSVAHqirhADHylXRbGqHFt5fv+9gBFG4pM6
-         68eD56AAMAB2AYyTw8ocBHtd00GbKuTAgRUU8uAhAxMoRaaX/aqEa592uVG+jk6tVYg2
-         WY8jdLMt0xIr1WQLdpcRYPk9d0YC/dUhLRUtp2oXgmI7rK0UcHcoE16AOEEfHKjvnyRK
-         OyKA==
-X-Gm-Message-State: AOAM531zETryKcGjYvPIy9UEJ6ww7neIMn3Jk1Fxmxzsk4wyM7PCQpI2
-        +ji//BmDbP1ZRqo69gJ22z4iY8D9wr6WerDVZ/U=
-X-Google-Smtp-Source: ABdhPJzwsZz1VUUFwV6xluIPLXopgC38iOtJMFH38U/ciJR2N+lMeodhLrkLxGyFIoLeIGJ2Xtq67/vGE+Y2uz5bpZQ=
-X-Received: by 2002:a37:71c1:: with SMTP id m184mr25971597qkc.367.1625662079887;
- Wed, 07 Jul 2021 05:47:59 -0700 (PDT)
+        id S231944AbhGHNpY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 8 Jul 2021 09:45:24 -0400
+Received: from mx-n05.wc2.phx1.stabletransit.com ([207.246.242.251]:57446 "HELO
+        mx-n05.wc2.phx1.stabletransit.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with SMTP id S231852AbhGHNpX (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 8 Jul 2021 09:45:23 -0400
+Received: by mx-n05.wc2.phx1.stabletransit.com (Postfix, from userid 114)
+        id A9460CDBAA; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
+        mx-n05.wc2.phx1.stabletransit.com
+X-Spam-Level: **
+X-Spam-Status: No, score=2.6 required=6.0 tests=BAYES_50,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_SHORT,UNPARSEABLE_RELAY autolearn=no
+        autolearn_force=no version=3.4.2
+X-Spam-Virus: No
+Received: from php-v027.wc2.phx1.stabletransit.com (unknown [10.40.206.156])
+        by mx-n05.wc2.phx1.stabletransit.com (Postfix) with ESMTP id 29442CD4DC
+        for <linux-ide@vger.kernel.org>; Thu,  8 Jul 2021 08:32:30 -0500 (CDT)
+Received: from digilu (uid 2914979)
+        (envelope-from mabeljohnson@citromail.hu)
+        id 1ff60
+        by php-v027.wc2.phx1.stabletransit.com (DragonFly Mail Agent v0.11);
+        Thu, 08 Jul 2021 08:32:30 -0500
+To:     linux-ide@vger.kernel.org
+Subject: WORK OF GOD.
+X-PHP-Originating-Script: 2914979:class.engine.php(12) : runtime-created function
+Date:   Thu, 8 Jul 2021 08:32:30 -0500
+From:   MARY JOHNSON <mabeljohnson@citromail.hu>
+Reply-To: mj224294@gmail.com
+Message-ID: <58028c2a054f0b41f76c44ae43d56471@jackieleestudio.com>
 MIME-Version: 1.0
-Received: by 2002:a05:622a:1746:0:0:0:0 with HTTP; Wed, 7 Jul 2021 05:47:59
- -0700 (PDT)
-Reply-To: 123456officialnicole@gmail.com
-From:   Official Miss <nicolemilitary5@gmail.com>
-Date:   Wed, 7 Jul 2021 12:47:59 +0000
-Message-ID: <CAL849O=U2RNWj6--kD67mqSvChMApEbCZvAYGB90+hCZPGw_dw@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-SXTigJlzIG15IHBsZWFzdXJlIHRvIG1lZXQgeW91DQpJIGhhdmUgc2VudCB5b3UgYW4gZW1haWws
-IGRpZCB5b3UgcmVjZWl2ZSBpdD8gSSBoYXZlIHN1cnZpdmVkIHR3byBib21iDQphdHRhY2tzIHdo
-aWNoIHByb21wdGVkIG1lIHRvIHNlYXJjaCBvdXQgZm9yIGEgcmVsaWFibGUgYW5kIHRydXN0DQp3
-b3J0aHkgcGVyc29uIHRvIGhlbHAgbWUgSSB3b3VsZCBsaWtlIHRvIHZpc2l0IHlvdXIgaG9tZSBj
-b3VudHJ5DQpSZWdhcmRzDQpNaXNzIE5pY29sZQ0K44GC44Gq44Gf44Gv44GC44Gq44Gf44Gu6KiA
-6Kqe44Gn5pu444GP44GT44Go44GM44Gn44GN44G+44GZDQo=
+I am Mrs. Mary Johnson,78years,an aging widow suffering from cancer, I am on admission at a hospital.I would like to willfully entrust the rest of my monetary assets to you, Kindly reply back with your full Name, cellphone, address, to enable me to send you a letter of authorization to contact my bank first inland bank nigeria plc so that they can transfer my funds to your account for the purpose of helping the poor as indicated on my WILL.
+

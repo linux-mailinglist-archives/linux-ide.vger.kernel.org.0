@@ -2,56 +2,64 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 583F83C3CC5
-	for <lists+linux-ide@lfdr.de>; Sun, 11 Jul 2021 15:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17D8A3C5B4A
+	for <lists+linux-ide@lfdr.de>; Mon, 12 Jul 2021 13:44:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232658AbhGKNRQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Sun, 11 Jul 2021 09:17:16 -0400
-Received: from mail.07d05.mspz7.gob.ec ([186.46.59.139]:40128 "EHLO
-        mail.07d05.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbhGKNRP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 11 Jul 2021 09:17:15 -0400
-X-Greylist: delayed 1666 seconds by postgrey-1.27 at vger.kernel.org; Sun, 11 Jul 2021 09:17:15 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id 63EDA1821FFA;
-        Sun, 11 Jul 2021 07:35:35 -0500 (-05)
-Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id MhnqpreClwHC; Sun, 11 Jul 2021 07:35:35 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTP id 249791821E58;
-        Sun, 11 Jul 2021 07:35:35 -0500 (-05)
-X-Virus-Scanned: amavisd-new at 07d05.mspz7.gob.ec
-Received: from mail.07d05.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.07d05.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 9Q6H5aHBVLTX; Sun, 11 Jul 2021 07:35:35 -0500 (-05)
-Received: from cris-PC.wifi (unknown [105.9.79.139])
-        by mail.07d05.mspz7.gob.ec (Postfix) with ESMTPSA id 4E6F21821FE7;
-        Sun, 11 Jul 2021 07:35:26 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S234853AbhGLLKf (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 12 Jul 2021 07:10:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38762 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229726AbhGLLKe (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jul 2021 07:10:34 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0D61C0613DD
+        for <linux-ide@vger.kernel.org>; Mon, 12 Jul 2021 04:07:46 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id i18so28228435yba.13
+        for <linux-ide@vger.kernel.org>; Mon, 12 Jul 2021 04:07:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=gtVh8F3VOJEmwJsmYU4KV1Pmm5uwY76juULsGQB+Mq0=;
+        b=tZ2GeMqtRA5ROT3BkGGGo/dEdNYobbvzpMbGkR8k78xQGl57UTv4PXya86oCpu9WV/
+         cFXKKFhk8PHYxva60BrovgCfaf8k+nm4b8tHyypRs1CFKUro0eXC+X+xElaooRZqohx5
+         OZ5zVtjW1CC+PnTxHEvTn7heP30EbLCsozUYjyIh2u1/GfGillpH4RAl1/vCepat5731
+         8gDIzee6o47La5W9rNbwqnN/3mayE6/zTKmuQXFYQiDqee2IUKKKOtedzcaY2krS4I5L
+         vUVYFWTtLPdaMOz+v/pfAgrXqyiAUvXwL+VrUlJt76Jp7qF4VsCiwr4sU/Yr+0rLCqbL
+         5uYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=gtVh8F3VOJEmwJsmYU4KV1Pmm5uwY76juULsGQB+Mq0=;
+        b=ndWPlq0l4/qSo45i5BmfBS+ymcK2mXZfNevSoBQAiTA41Fkgpio7058pSYVLbu0JId
+         SeNZPiGg3jq1zRsAh3/mcYPG7JmU04IpEuzM7iWjWdNOQxBicH8OeoYQKQkbWfk6I+6W
+         8kHI+TQa7alDU+m63G7xNRDWvr4UPS5U33O7OL1gmfLD0g/KBP0ijK9zjWs/6n7Dnd/O
+         ehEWW6pduK00Ygb23A8RCoQvlXGxKDjWiX6lF5D0tXtPckmlLtORlMT+6wdbe4Xhagzd
+         AeoMCw/yr8mnsyBWReGeIyVw3xnYKG58ftEF9U3PF3bnqoCRvqnWqM27GroIsQan2tWE
+         +2uA==
+X-Gm-Message-State: AOAM5310RduWKEiqslQKs0Fs9O7kSiM10yk7Oer8+2mGDDKJXSngOu02
+        BJK1BTDn15wwqRZcWH+Lh9yRu86EnEC/zGT7fm8=
+X-Google-Smtp-Source: ABdhPJzxQbVnUldDmj3kF9J9BheMFX2ASxGhTPSURmmG1PjoUFJw5m5URhjsoUVYMNfebMrok8TCsK9SM51JY/QTxXs=
+X-Received: by 2002:a25:ca88:: with SMTP id a130mr21791401ybg.4.1626088066042;
+ Mon, 12 Jul 2021 04:07:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: spende von 2,000,000 euro
-To:     Recipients <maria.coronel@07d05.mspz7.gob.ec>
-From:   ''Tayeb souami'' <maria.coronel@07d05.mspz7.gob.ec>
-Date:   Sun, 11 Jul 2021 14:35:15 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20210711123527.4E6F21821FE7@mail.07d05.mspz7.gob.ec>
+Received: by 2002:a81:1613:0:0:0:0:0 with HTTP; Mon, 12 Jul 2021 04:07:45
+ -0700 (PDT)
+Reply-To: bkdirector5@gmail.com
+From:   John Collins <staffjohncollins@gmail.com>
+Date:   Mon, 12 Jul 2021 11:07:45 +0000
+Message-ID: <CADwgZ=k4DRqgc-v8Zy19qyCs2g2r4+nmF61=ojfBS=C6u_+RUw@mail.gmail.com>
+Subject: My pleasure
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hallo mein lieber Freund
-Mein Name ist Tayeb Souami aus New Jersey in Amerika und ich habe den America Lottery Jackpot von 315 Millionen Euro gewonnen. Ich habe mich entschlossen, die Summe von 2.000.000 Euro an fünf glückliche Personen zu spenden, und Sie wurden als einer der Begünstigten ausgewählt. Bitte klicken Sie auf diesen Link, um mehr über meinen Gewinn zu erfahren.
-
-
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
-
-Bitte kontaktieren Sie mich über diese E-Mail:Tayebsouam.spende@gmail.com
-
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami
+Greetings, I am Mr. John Collins, a banker from Lome Republic of Togo,
+I contacted you for a legitimate business deal, looking forward to
+establish long-term business relationship with you
+Looking forward to your urgent reply for more details
+Your urgent reply is highly needed
+Best Regards.
+Mr. John Collins

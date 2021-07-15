@@ -2,77 +2,76 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D31113C8254
-	for <lists+linux-ide@lfdr.de>; Wed, 14 Jul 2021 12:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 469153CA407
+	for <lists+linux-ide@lfdr.de>; Thu, 15 Jul 2021 19:25:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239007AbhGNKEm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 14 Jul 2021 06:04:42 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57264 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239044AbhGNKEg (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Wed, 14 Jul 2021 06:04:36 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPS id 19BE261358
-        for <linux-ide@vger.kernel.org>; Wed, 14 Jul 2021 10:01:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626256905;
-        bh=yB+Rsj/UD8YA/MsyyRAJBKiUJR3kbjDsKG09BrbHiys=;
-        h=From:To:Subject:Date:In-Reply-To:References:From;
-        b=eTm68UHnmJ8ZwZVRI/Lz0+PkkeXDMwrzaEgol1zAzVRVTDsPrCvARleC9TmeeQgmt
-         8bp4d2C31CQ0RuhVqo3/XrN97da3hFH+fANoqu6D3JYn25TABUAmpY0Zle1FWDyKAS
-         uLqM1w35wVVveJ0g9g5ezU0/rSz5m5wNels0i225kWgcXnO8L0cREcF1YfYDkxsXDX
-         SaNSLEKRPYHm9/Zmf4XSy+z1+jp8NqjPDGU3ZwnT5DIjJzYIhKnWCX7W7gEoVhxH84
-         k3WL8ON76qPTvU1i5cPhsWSC90qmbjtw4VZMgl/vsEkk7M0EIR4olQZCP8lXL15Sqq
-         /fdNz8WJbHJEA==
-Received: by pdx-korg-bugzilla-2.web.codeaurora.org (Postfix, from userid 48)
-        id 0D3D66128C; Wed, 14 Jul 2021 10:01:45 +0000 (UTC)
-From:   bugzilla-daemon@bugzilla.kernel.org
-To:     linux-ide@vger.kernel.org
-Subject: [Bug 213157] BUG: unable to handle page fault for address: fffbb000,
- Workqueue: ata_sff ata_sff_pio_task
-Date:   Wed, 14 Jul 2021 10:01:44 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo io_ide@kernel-bugs.osdl.org
-X-Bugzilla-Product: IO/Storage
-X-Bugzilla-Component: IDE
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: erhard_f@mailbox.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P1
-X-Bugzilla-Assigned-To: io_ide@kernel-bugs.osdl.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: attachments.isobsolete attachments.created
-Message-ID: <bug-213157-11633-BgdJs1SqTo@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-213157-11633@https.bugzilla.kernel.org/>
-References: <bug-213157-11633@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+        id S234635AbhGOR1z (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 15 Jul 2021 13:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234862AbhGOR1y (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 15 Jul 2021 13:27:54 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFAA1C061767
+        for <linux-ide@vger.kernel.org>; Thu, 15 Jul 2021 10:24:59 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id dj21so9320258edb.0
+        for <linux-ide@vger.kernel.org>; Thu, 15 Jul 2021 10:24:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=t9W6ZUbHNRJ0qNSUPxxJ7rwyS6/T47LB8+GEvcGcZS2vgBILYApln75Pntcxn5fpNm
+         CtF83dHhK1sI0unp5//UIaTiWHKSRWhdzbLUXmwOWE0siga3uT7o6KbbqJLCuXISRJEQ
+         al8pRwAY03/IaxE3qXnt42v0CTRaHD2tppbU0LS/FZIzL8IxPeIaPJ1YZkyHqWZX3beM
+         4+xYQxqDDYwD9dyjX1Mc60oWXcAcZdalOCke9n3oDr1w+I8lJlufH05RbTPxRhFGiMAD
+         BpEH+2hcDtItf0cKj4UhyaFm0jsA0qnOxoGC5g15c9fNdeV0dFm2Efrq/yuK05wZR73f
+         O6jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
+        b=oVoXYQD4JEtN9slHpSqU9Q1hHKFpXVj/gAKPTRk2tTPqdxe8MhLKoWVxQVtAcNsZGZ
+         8ffDqX/Rp5tVScMzegBL7v5zjtktrR9/0P36BZx2eH191xnLXVbp1ytDzE3LJ5V8CfKv
+         LS/2EHsdSGg9mVb2bckchUbhbBjaT3Yr7NUjkx+ir0Cr1qR3TG2MzDsk9M/6Q/p/OL6o
+         35NQrKLJb2iZMWtJS6/3NcMHVq2iMFGrcmL5FIxHLx8XwQySOMXqleRrf4RWXVIn9GRG
+         XiiqTYWYCccGZty2OUV63ASvvtxNIrHvtnJSKkYzhuyOjrD1qu9jNd1EGFsPcqmpagUl
+         h9XQ==
+X-Gm-Message-State: AOAM5333AvJrqoZW6CQPPdJBThfVCNmUmI2ls1+t9QsxRcmpLtrHE90c
+        K6kfOvM32zBjjzJ+Bv3KA6EYF+/wG22qO65JK3o=
+X-Google-Smtp-Source: ABdhPJyxueRlfHltyUCESR67vWAXcLtdouVP7pOna84WJs+57H00WkQ1yY0EfL0teWyNwd8lnwpCvuhD/ZS2cFmHFwA=
+X-Received: by 2002:a50:9faf:: with SMTP id c44mr8582001edf.197.1626369898073;
+ Thu, 15 Jul 2021 10:24:58 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:a54:2dcd:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:24:57
+ -0700 (PDT)
+Reply-To: faty.muhamad@gmail.com
+From:   Fatima Muhammad <matinscott.chambers@gmail.com>
+Date:   Thu, 15 Jul 2021 17:24:57 +0000
+Message-ID: <CAG26VvVWiHB2u8iO1e8bETcuSekW3UnVoiXKLwNZ2yh0MOiBWw@mail.gmail.com>
+Subject: Hello Dear
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D213157
+Hello Dear,
 
-Erhard F. (erhard_f@mailbox.org) changed:
+My name is Ms.Fatima Muhammad., Please forgive me for stressing you
+with my predicaments and I sorry to approach you through this media
+because is serves the fastest means of  my communication right now,
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
- Attachment #296895|0                           |1
-        is obsolete|                            |
+I came across your Email from my personal search and I decided to
+contact you believing you will be honest to fulfill my business
+proposal which I believe that will be a very good opportunity for both
+of us. Please it is my pleasure to contact you today for a business
+partnership investments projects worth $4.6 million USD which I intend
+to establish in your country..
 
---- Comment #3 from Erhard F. (erhard_f@mailbox.org) ---
-Created attachment 297839
-  --> https://bugzilla.kernel.org/attachment.cgi?id=3D297839&action=3Dedit
-kernel .config (kernel 5.14-rc1, Shuttle XPC FS51, Pentium 4)
+Pls If this business proposal offends your moral and ethic values do
+accept my apology. therefore kindly contact me immediately if you are
+interested for more details.
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+Thank you for your wiliness to help me
+Yours Sincerely Fatima Muhammad

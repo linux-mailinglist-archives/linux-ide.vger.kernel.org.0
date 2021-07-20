@@ -2,99 +2,44 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BAACC3D2B37
-	for <lists+linux-ide@lfdr.de>; Thu, 22 Jul 2021 19:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 256753D2D3C
+	for <lists+linux-ide@lfdr.de>; Thu, 22 Jul 2021 22:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230010AbhGVQyC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 22 Jul 2021 12:54:02 -0400
-Received: from smtp-out1.suse.de ([195.135.220.28]:51324 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229585AbhGVQyB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 22 Jul 2021 12:54:01 -0400
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 50B49226BC;
-        Thu, 22 Jul 2021 17:34:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1626975275; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UVNEB66lw00LZyjfdJubG4hiEl41mccx3vM8iqlnI0w=;
-        b=hXm2tvvB5f0k/HICDgBCVx77TSqhxhbWpzCQABH92Y2gXhT+8gp+i6SnWqLEg2luNEuIYo
-        fdiSZyQbG49YB0j8tOUtUWsbBR8DSfbgYSBrQzhvU6k2DV9n0lqcGJz7JuCfqevm/9X293
-        QxYRDaid1yFrLBFCTSpy+1ZdjDHYMkk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1626975275;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UVNEB66lw00LZyjfdJubG4hiEl41mccx3vM8iqlnI0w=;
-        b=uhiAxtW+A/GqLvhE4ZOGyMwubnlAU1B2xDO7msm1mzOrHuEePeTg3gG7UkxXo5LyPqpzv5
-        nMxg1b0icELnQyBA==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 27CD113C49;
-        Thu, 22 Jul 2021 17:34:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap1.suse-dmz.suse.de with ESMTPSA
-        id zcsECCus+WArNQAAGKfGzw
-        (envelope-from <hare@suse.de>); Thu, 22 Jul 2021 17:34:35 +0000
-Subject: Re: [PATCH 3/4] libata: support concurrent positioning ranges log
-To:     Damien Le Moal <damien.lemoal@wdc.com>,
-        linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-scsi@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-ide@vger.kernel.org
-References: <20210721104205.885115-1-damien.lemoal@wdc.com>
- <20210721104205.885115-4-damien.lemoal@wdc.com>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <a53b07da-f012-ccfe-05a9-88a79abe6721@suse.de>
-Date:   Thu, 22 Jul 2021 19:34:34 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S230495AbhGVT3D (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 22 Jul 2021 15:29:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230451AbhGVT3C (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 22 Jul 2021 15:29:02 -0400
+Received: from 68-252-206-104.staticrdns.eonix.net (unknown [IPv6:2607:ff28:b005:2a:ec52:75ff:fe50:d321])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8E586C06175F;
+        Thu, 22 Jul 2021 13:09:36 -0700 (PDT)
+Received: from User (localhost [IPv6:::1])
+        by 68-252-206-104.staticrdns.eonix.net (Postfix) with SMTP id D84C38F1F50;
+        Mon, 19 Jul 2021 22:13:39 -0400 (EDT)
+Reply-To: <mrs_hannah@rediffmail.com>
+From:   "Mrs. Hajia Hannah Ahmed" <info@247vidz.com>
+Subject: Re: I WANT TO INVESTMENT IN YOUR COUNTRY?
+Date:   Tue, 20 Jul 2021 05:13:12 -0700
 MIME-Version: 1.0
-In-Reply-To: <20210721104205.885115-4-damien.lemoal@wdc.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20210720021340.D84C38F1F50@68-252-206-104.staticrdns.eonix.net>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 7/21/21 12:42 PM, Damien Le Moal wrote:
-> Add support to discover if an ATA device supports the Concurrent
-> Positioning Ranges Log (address 0x47), indicating that the device is
-> capable of seeking to multiple different locations in parallel using
-> multiple actuators serving different LBA ranges.
-> 
-> Also add support to translate the concurrent positioning ranges log
-> into its equivalent Concurrent Positioning Ranges VPD page B9h in
-> libata-scsi.c.
-> 
-> The format of the Concurrent Positioning Ranges Log is defined in ACS-5
-> r9.
-> 
-> Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-> ---
->   drivers/ata/libata-core.c | 57 +++++++++++++++++++++++++++++++++++++++
->   drivers/ata/libata-scsi.c | 46 ++++++++++++++++++++++++-------
->   include/linux/ata.h       |  1 +
->   include/linux/libata.h    | 11 ++++++++
->   4 files changed, 106 insertions(+), 9 deletions(-)
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+Attn:
+ 
+I am Mrs. Hajia Hannah Ahmed I am a Widow and member of the contract award committee and 14 project allocation manager, of the Department of Minerals and Natural Resources in Syria;
+ 
+Due to the war in Syria, I am in search of an agent or company to assist me to invest my fund  (USD$35Million) and subsequent investment in properties in your country. You will be required to. If you decide to render your service to me in this regard, 30% of the total sum of USD$35M will be given to you for your service. 
+ 
+Yours Faithfully,
+Mrs. Hajia Hannah Ahmed

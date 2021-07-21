@@ -2,76 +2,103 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 469153CA407
-	for <lists+linux-ide@lfdr.de>; Thu, 15 Jul 2021 19:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EADBF3D0DB8
+	for <lists+linux-ide@lfdr.de>; Wed, 21 Jul 2021 13:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234635AbhGOR1z (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 15 Jul 2021 13:27:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37142 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234862AbhGOR1y (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 15 Jul 2021 13:27:54 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFAA1C061767
-        for <linux-ide@vger.kernel.org>; Thu, 15 Jul 2021 10:24:59 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id dj21so9320258edb.0
-        for <linux-ide@vger.kernel.org>; Thu, 15 Jul 2021 10:24:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=t9W6ZUbHNRJ0qNSUPxxJ7rwyS6/T47LB8+GEvcGcZS2vgBILYApln75Pntcxn5fpNm
-         CtF83dHhK1sI0unp5//UIaTiWHKSRWhdzbLUXmwOWE0siga3uT7o6KbbqJLCuXISRJEQ
-         al8pRwAY03/IaxE3qXnt42v0CTRaHD2tppbU0LS/FZIzL8IxPeIaPJ1YZkyHqWZX3beM
-         4+xYQxqDDYwD9dyjX1Mc60oWXcAcZdalOCke9n3oDr1w+I8lJlufH05RbTPxRhFGiMAD
-         BpEH+2hcDtItf0cKj4UhyaFm0jsA0qnOxoGC5g15c9fNdeV0dFm2Efrq/yuK05wZR73f
-         O6jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=oVoXYQD4JEtN9slHpSqU9Q1hHKFpXVj/gAKPTRk2tTPqdxe8MhLKoWVxQVtAcNsZGZ
-         8ffDqX/Rp5tVScMzegBL7v5zjtktrR9/0P36BZx2eH191xnLXVbp1ytDzE3LJ5V8CfKv
-         LS/2EHsdSGg9mVb2bckchUbhbBjaT3Yr7NUjkx+ir0Cr1qR3TG2MzDsk9M/6Q/p/OL6o
-         35NQrKLJb2iZMWtJS6/3NcMHVq2iMFGrcmL5FIxHLx8XwQySOMXqleRrf4RWXVIn9GRG
-         XiiqTYWYCccGZty2OUV63ASvvtxNIrHvtnJSKkYzhuyOjrD1qu9jNd1EGFsPcqmpagUl
-         h9XQ==
-X-Gm-Message-State: AOAM5333AvJrqoZW6CQPPdJBThfVCNmUmI2ls1+t9QsxRcmpLtrHE90c
-        K6kfOvM32zBjjzJ+Bv3KA6EYF+/wG22qO65JK3o=
-X-Google-Smtp-Source: ABdhPJyxueRlfHltyUCESR67vWAXcLtdouVP7pOna84WJs+57H00WkQ1yY0EfL0teWyNwd8lnwpCvuhD/ZS2cFmHFwA=
-X-Received: by 2002:a50:9faf:: with SMTP id c44mr8582001edf.197.1626369898073;
- Thu, 15 Jul 2021 10:24:58 -0700 (PDT)
+        id S237454AbhGUKwM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 21 Jul 2021 06:52:12 -0400
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:53605 "EHLO
+        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S238996AbhGUKBn (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 21 Jul 2021 06:01:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1626864137; x=1658400137;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bneDi9dHJOGIRkcB2WJhJfsaHO3P52JDhLKtxKgm0t4=;
+  b=oXQBrsYht4sSIHPz903hkd3etg2nerM3vbZOqe1KR1o0cOIVqI6VWOex
+   pzl+ODswVjtu2GbgVBZH7Ab84UiW6u6IAFoHD4VrkO3K3dBF8JoMe8Syp
+   4/lY2pc+FhYByD5th1aU84xpWqswlcYJbzEdVcB/lAaH1RFRR6shS4A5C
+   z7NGO1oBR7+BFynLHVKyZtdHPPleEpF83g4mWXyHFSxw3lZ0aLxsan//Q
+   MskQmoadUzkJdJj74iP8/vDpqOY7pVr/68FOu8pc/OW6jlI/OZxmJdUJy
+   FpHsnYskU2Tvl7gT+201YhNnBcLJaC/ZsRHNsZhxSYDjtpeH6rJKt0/Id
+   A==;
+X-IronPort-AV: E=Sophos;i="5.84,257,1620662400"; 
+   d="scan'208";a="179944859"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 21 Jul 2021 18:42:08 +0800
+IronPort-SDR: 75StO+yNg0nFz5qfZiw9VVBZZzorJMFjunXeVEGLiqVmA0pMKXEyDAlCTbMn4yLwYjxZ6PHJYf
+ zo7zBfBNKmCadNs8xRZSugU+MZWLuA9YfEfU5BRJHGOaQuqb2iZPHqkLOjl0s6E8WhMlzzZGwz
+ VjaxcYPcdCXxcsOfRY2XwiioN1DzyLE/Ctt7ukeFA1jKshmA2hH7iQMEkmzT/MtXg8sXidMg5O
+ WzC1j8azysUbvsTt6GWyb0yanGUzHMX6xck+qxzXd09YYHn9VNydU/bIx2M6TJf2w+wvGXpkpZ
+ 5tSozAuMzxy5eeWNOKOdWi65
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2021 03:20:02 -0700
+IronPort-SDR: qoIlJGm06X7y1x0YXibHr6XRp378xp3jvPlllfMJpvOaXpXj/PDqZStcauS/RlBKKushxD0zw6
+ 95032bGd3DEz3zzkOjOqwkTzZ2nYR9yzYxNyyH+D8Pnt3ePlCUw6+jl7M4ZsR2zD1oiXMIS0lh
+ SdzTEH/faexg9Vcx6lFPcfWOHINIk7WE4mZvNJLEzavEgEgj4fAWPJI48AEcWOjBzWhrV0Q1n0
+ IYkOyPrFq6oxf7pt7CkB37DPzzhSw85+t3pWqDCEo5gIAWMXJZmq1woAXQvy+Y6fk0P807yQdO
+ sXs=
+WDCIronportException: Internal
+Received: from washi.fujisawa.hgst.com ([10.149.53.254])
+  by uls-op-cesaip02.wdc.com with ESMTP; 21 Jul 2021 03:42:08 -0700
+From:   Damien Le Moal <damien.lemoal@wdc.com>
+To:     linux-block@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        linux-scsi@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-ide@vger.kernel.org
+Subject: [PATCH 0/4] Initial support for multi-actuator HDDs
+Date:   Wed, 21 Jul 2021 19:42:01 +0900
+Message-Id: <20210721104205.885115-1-damien.lemoal@wdc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: by 2002:a54:2dcd:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:24:57
- -0700 (PDT)
-Reply-To: faty.muhamad@gmail.com
-From:   Fatima Muhammad <matinscott.chambers@gmail.com>
-Date:   Thu, 15 Jul 2021 17:24:57 +0000
-Message-ID: <CAG26VvVWiHB2u8iO1e8bETcuSekW3UnVoiXKLwNZ2yh0MOiBWw@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello Dear,
+Single LUN multi-actuator hard-disks are cappable to seek and execute
+multiple commands in parallel. This capability is exposed to the host
+using the Concurrent Positioning Ranges VPD page (SCSI) and Log (ATA).
+Each positioning range describes the contiguous set of LBAs that an
+actuator serves.
 
-My name is Ms.Fatima Muhammad., Please forgive me for stressing you
-with my predicaments and I sorry to approach you through this media
-because is serves the fastest means of  my communication right now,
+This series adds support the scsi disk driver to retreive this
+information and advertize it to user space through sysfs. libata is also
+modified to handle ATA drives.
 
-I came across your Email from my personal search and I decided to
-contact you believing you will be honest to fulfill my business
-proposal which I believe that will be a very good opportunity for both
-of us. Please it is my pleasure to contact you today for a business
-partnership investments projects worth $4.6 million USD which I intend
-to establish in your country..
+The first patch adds the block layer plumbing to expose concurrent
+sector ranges of the device through sysfs as a sub-directory of the
+device sysfs queue directory. Patch 2 and 3 add support to sd and
+libata. Finally patch 4 documents the sysfs queue attributed changes.
 
-Pls If this business proposal offends your moral and ethic values do
-accept my apology. therefore kindly contact me immediately if you are
-interested for more details.
+This series does not attempt in any way to optimize accesses to
+multi-actuator devices (e.g. block IO scheduler or filesystems). This
+initial support only exposes the actuators information to user space
+through sysfs.
 
-Thank you for your wiliness to help me
-Yours Sincerely Fatima Muhammad
+Damien Le Moal (4):
+  block: Add concurrent positioning ranges support
+  scsi: sd: add concurrent positioning ranges support
+  libata: support concurrent positioning ranges log
+  doc: document sysfs queue/cranges attributes
+
+ Documentation/block/queue-sysfs.rst |  27 ++-
+ block/Makefile                      |   2 +-
+ block/blk-cranges.c                 | 286 ++++++++++++++++++++++++++++
+ block/blk-sysfs.c                   |  13 ++
+ block/blk.h                         |   3 +
+ drivers/ata/libata-core.c           |  57 ++++++
+ drivers/ata/libata-scsi.c           |  47 ++++-
+ drivers/scsi/sd.c                   |  80 ++++++++
+ drivers/scsi/sd.h                   |   1 +
+ include/linux/ata.h                 |   1 +
+ include/linux/blkdev.h              |  29 +++
+ include/linux/libata.h              |  11 ++
+ 12 files changed, 546 insertions(+), 11 deletions(-)
+ create mode 100644 block/blk-cranges.c
+
+-- 
+2.31.1
+

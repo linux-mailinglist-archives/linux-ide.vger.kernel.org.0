@@ -2,74 +2,92 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2734E3DCF58
-	for <lists+linux-ide@lfdr.de>; Mon,  2 Aug 2021 06:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0362B3DD280
+	for <lists+linux-ide@lfdr.de>; Mon,  2 Aug 2021 11:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232133AbhHBEYV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 2 Aug 2021 00:24:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43656 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbhHBEYV (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 2 Aug 2021 00:24:21 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91949C06179F
-        for <linux-ide@vger.kernel.org>; Sun,  1 Aug 2021 21:24:10 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id y7so20426835eda.5
-        for <linux-ide@vger.kernel.org>; Sun, 01 Aug 2021 21:24:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
-         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
-         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
-         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
-         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
-         G8fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
-        b=MBNj80h+NL9wyaEwjvH4+QiNWOgQScu3G7+YsWUKB6OvOrwlV3himmxEJDupEhYd5a
-         NisNKwXPdyR0syHo1QRv1v0mxGACO9B8uQYuGqzKfgnVaSPfVFtnRJXxqbAI5Z8RtBPh
-         YDCzAnPnE60UcWOTfrs3h3ZDnw0VFj8n+IDQzaMkKuyFmld34AdXUTxENWjQ61uSQ5vU
-         jeCtuFG/iA4LViTMmJeai4Q2snO0CWitUQg41WyYXvF9cgNgmojC2Wi4SZ61JmSj9+Me
-         g6Az04c4TQP03d0aV1iyaXOrwMGqNxH/lktj3Ev3GQIBTg5MjM+Itz9WuG6FfpXS3inO
-         NmVQ==
-X-Gm-Message-State: AOAM531a7PIOrC6o8urtiL/E60lPVpUdQFFsT9HXIPMQv6cexiOY/oTS
-        OCpm9VOuJZ4Z60sGNveMj9Tl2X6iUdB0jDnr+3Qvt6YWdy7Haw==
-X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
-X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
- Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
+        id S232888AbhHBJCz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 2 Aug 2021 05:02:55 -0400
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:6555 "EHLO
+        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232711AbhHBJCs (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 2 Aug 2021 05:02:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1627894957; x=1659430957;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Q0qi0MmsrsEfp9dtr19KJjoVUyafiktr3GhxDwTWet4=;
+  b=TfEZ+2/YRmY9ay08BK4xGHYPGDNbXzCFvRKC8hinZqwGiQA8xkq50wMN
+   pLtaNF6Ai9V+8hRNH+gMcTPoeWbTKX0LwkWonWW/k93qwT9vmkSSKJ0mv
+   7EVtLJplZaY4QMyRA4rbEWV8t4ojqVnSaaf6krK/oMSlkloELBN8djrsi
+   PSdSWO/nPiXaYksLPtcS3zNYW7rGUyeGF1XqPH/cz6pBD9EPnRrOoPHDp
+   lQZeS+CmvyK9AtTR7O8od4/N+qsp+BxD/pcm3WFxLmiuG4rBuXt2hOi17
+   OHhhhotUluZkXBzBh338WvLWMNKunVk1XXaKWc5BvkocqtvDiWIl3YYC6
+   g==;
+X-IronPort-AV: E=Sophos;i="5.84,288,1620662400"; 
+   d="scan'208";a="180887615"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 02 Aug 2021 17:02:33 +0800
+IronPort-SDR: /7eJNYOEH7Dybwfr9k8mF9Vr6IC19A+HORD3feFg1oObAA437AyKYmyjONyb2YVrNNkEj49Y4n
+ u/xj5ieaCPVldQCoxroinVrH4IBTe674E866IjTrx7DrSHX89JibD5Z7UecWr1iMmafdW8q08F
+ KGqqQS3YtwoHr3UzldsrVla4+E/LuV5Z2V2ZOmGj0ITkytPFglr+zCb1fY2/Ya3Xwi158iw4tG
+ HhEg7nIC/DdypovO7cPOQ5q3CLxI8kaND9wDqp+iU8cOD2RVbtDxnrus9+b9fEcvT68xjLWL/4
+ WLsVefdGZtEaYOrR+OxGOh8s
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Aug 2021 01:40:08 -0700
+IronPort-SDR: YJ1UWZNsR3Ufmh6thlc5JH78U2AyUnIaRmvgU9EsZWEMadN03/APgJ6mNSycLiOS0fo2SQMngD
+ gZEPNLa+Bj98fVv1Ure0s+gE8CC8oN18wItY/QkpT6PRV8hFiI1EHmUWpZqPrLK/9CR/CVmU7v
+ fxgB5LId0JLJL9NwUFrpUlJk5GxIUwQ6sKMlY34xLjAO8+tvpoK6hcrpYoURcxBHQi5goHv4Qb
+ zYS9t+B9gkbRo+Ly4Vr3g1TqHkNNlSE6j/baQLIIfOYFk1htDIXQJcSLM/Q7+t1MPxgjhzM5mk
+ jvg=
+WDCIronportException: Internal
+Received: from washi.fujisawa.hgst.com ([10.149.53.254])
+  by uls-op-cesaip02.wdc.com with ESMTP; 02 Aug 2021 02:02:33 -0700
+From:   Damien Le Moal <damien.lemoal@wdc.com>
+To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+        linux-ide@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>
+Subject: [PATCH 0/7] libata cleanups and improvements
+Date:   Mon,  2 Aug 2021 18:02:25 +0900
+Message-Id: <20210802090232.1166195-1-damien.lemoal@wdc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
- -0700 (PDT)
-Reply-To: ablahikazabl67@gmail.com
-From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
-Date:   Mon, 2 Aug 2021 05:24:08 +0100
-Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
-Subject: More Authentic Information
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+The first three patches of this series cleanup libata-core code in the
+area of device configuration (ata_dev_configure() function).
+Patch 4 improves ata_read_log_page() handling to avoid unnecessary
+warning messages and patch 5 adds an informational message on device
+scan to advertize the features supported by a device.
+
+Path 6 adds the new sysfs ahci device attribute ncq_prio_supported to
+indicate that a disk supports NCQ priority. Patch 7 does the same for
+the mpt3sas driver, adding the sas_ncq_prio_supported device attribute.
+
+Damien Le Moal (7):
+  libata: cleanup device sleep capability detection
+  libata: cleanup ata_dev_configure()
+  libata: cleanup NCQ priority handling
+  libata: fix ata_read_log_page() warning
+  libata: print feature list on device scan
+  libahci: Introduce ncq_prio_supported sysfs sttribute
+  scsi: mpt3sas: Introduce sas_ncq_prio_supported sysfs sttribute
+
+ drivers/ata/libahci.c              |   1 +
+ drivers/ata/libata-core.c          | 249 +++++++++++++++--------------
+ drivers/ata/libata-sata.c          |  61 ++++---
+ drivers/scsi/mpt3sas/mpt3sas_ctl.c |  20 +++
+ include/linux/libata.h             |   5 +
+ 5 files changed, 191 insertions(+), 145 deletions(-)
+
 -- 
-Dear Partner,
+2.31.1
 
-I am soliciting your partnership to relocate $12.5 Million to your
-country for investment on my behalf and you will be entitled to 30% of
-the sum once the transaction is successful made.
-
-Please indicate your genuine interest if you are capable so that i
-will send you the authentic details and documents of the transaction
-in awareness with some of my fellow Directors in the bank.
-
-If you are interested, here is my private Email address:
-(ablahikazabl67@gmail.com)
-For more authentic and legit information.
-
-
-Regards :  Abdoulahi Kazim

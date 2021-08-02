@@ -2,74 +2,74 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 01D343DC93F
-	for <lists+linux-ide@lfdr.de>; Sun,  1 Aug 2021 03:25:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2734E3DCF58
+	for <lists+linux-ide@lfdr.de>; Mon,  2 Aug 2021 06:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229761AbhHABZU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 31 Jul 2021 21:25:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54766 "EHLO
+        id S232133AbhHBEYV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 2 Aug 2021 00:24:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229467AbhHABZU (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 31 Jul 2021 21:25:20 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70278C0613CF
-        for <linux-ide@vger.kernel.org>; Sat, 31 Jul 2021 18:25:13 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id 48-20020a9d0bb30000b02904cd671b911bso13949930oth.1
-        for <linux-ide@vger.kernel.org>; Sat, 31 Jul 2021 18:25:13 -0700 (PDT)
+        with ESMTP id S232063AbhHBEYV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 2 Aug 2021 00:24:21 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91949C06179F
+        for <linux-ide@vger.kernel.org>; Sun,  1 Aug 2021 21:24:10 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id y7so20426835eda.5
+        for <linux-ide@vger.kernel.org>; Sun, 01 Aug 2021 21:24:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xATIZzNOWUHfSRY972NDCZ7Hg62XGqDEraHaMlAnRXw=;
-        b=hF4/FpFqVoYXMM4cpE0Pt5D46opEHR7xLsRblK5aAgkKtT0ab9BxpvBoQXqwocTApX
-         nbCEzeNjJKTRyxBXHqfapGQSQIWdH4b27Q0QOP/N9F8hk/BqT90PCpHMsG8Z1Kz8y7th
-         5ZZqZ1CvsT6Kj3Z5qA9a8JYiJ/rfDvjRX3bykdrrYf2VVjFEG3I13D8i88QlZ4X9SJZp
-         HcrWubp04AGSTEOT8tIHLcfWbwOS56+Wa15tdmkdnh9qpZpzv7EBF6w4iYv+NiyYehDb
-         BYTc3RHDy0XD+TfcYbCZ0jXDU0g3wPIAUQjDG5IpIJcXodhetLduvrOaIsAHggPK/c8A
-         4DLQ==
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
+         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
+         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
+         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
+         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
+         G8fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
          :subject:to;
-        bh=xATIZzNOWUHfSRY972NDCZ7Hg62XGqDEraHaMlAnRXw=;
-        b=eftq1Rm6Mm0RqKehuBMEJ9s5C7H7cXMhuJWSd94HyHY2Ao53cBZIuxbqwOW296DnsO
-         7aqrmakJ3eAKl1i4ZXWhwiYy0N98W45Wcgnk/TkyFmHdlzs3Tl0/ESkAvtVSjfLvrEM8
-         KKDdwxjqoDjUagU+IITU3FsyV4iL1gV4C9MCaT6tnyNH7ZSsCF2wuY5zMGRivsFo6Dgg
-         ULrj0cO5ggMyFgCDFuCDem1V5YQi/JynHY/Vl5dzVUq1m471qflwGBeObztWyVtJDXJL
-         D7WCFfYK0acbT7I4cxXKP0+SrieWgxXzSwcS+vt5bkr0F92wsV5PFz33f4VhyLphEXNX
-         6FUg==
-X-Gm-Message-State: AOAM530RadU2wMFxUYK7sK5E32bacwlYudunEKozh+rK2LUNZ7wCuNkf
-        hlygYd+sxEue+53GO9g3K2zw04yMVRIrt2hzCWo=
-X-Google-Smtp-Source: ABdhPJzmyTah0SwZ3rcr0KAVfOsDLQkvSaYZ6uOqDHWMlrYykez6n/wh1WLHe3WntfLCA8fT01EsYR2j3pvHqwoxfmw=
-X-Received: by 2002:a9d:4f02:: with SMTP id d2mr6970682otl.254.1627781111909;
- Sat, 31 Jul 2021 18:25:11 -0700 (PDT)
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=MBNj80h+NL9wyaEwjvH4+QiNWOgQScu3G7+YsWUKB6OvOrwlV3himmxEJDupEhYd5a
+         NisNKwXPdyR0syHo1QRv1v0mxGACO9B8uQYuGqzKfgnVaSPfVFtnRJXxqbAI5Z8RtBPh
+         YDCzAnPnE60UcWOTfrs3h3ZDnw0VFj8n+IDQzaMkKuyFmld34AdXUTxENWjQ61uSQ5vU
+         jeCtuFG/iA4LViTMmJeai4Q2snO0CWitUQg41WyYXvF9cgNgmojC2Wi4SZ61JmSj9+Me
+         g6Az04c4TQP03d0aV1iyaXOrwMGqNxH/lktj3Ev3GQIBTg5MjM+Itz9WuG6FfpXS3inO
+         NmVQ==
+X-Gm-Message-State: AOAM531a7PIOrC6o8urtiL/E60lPVpUdQFFsT9HXIPMQv6cexiOY/oTS
+        OCpm9VOuJZ4Z60sGNveMj9Tl2X6iUdB0jDnr+3Qvt6YWdy7Haw==
+X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
+X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
+ Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a9d:d4d:0:0:0:0:0 with HTTP; Sat, 31 Jul 2021 18:25:11 -0700 (PDT)
-Reply-To: ms.lisahugh000@gmail.com
-From:   Ms Lisa Hugh <safi.kabore000@gmail.com>
-Date:   Sun, 1 Aug 2021 03:25:11 +0200
-Message-ID: <CAN7WVKPOcCYSsFxQgmECZ7uEJaXptQVdDCrN3KCVxB103dT6fQ@mail.gmail.com>
-Subject: WAITING FOR YOUR REPLY.
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:24:08 +0100
+Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
+Subject: More Authentic Information
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Friend,
+-- 
+Dear Partner,
 
-I am Ms Lisa Hugh, work in the department of Audit and accounting
-manager here in the Bank.
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
 
-I need your help for the transfer of this abandoned fund amount
-($4,500,000,00 ,U.S.DOLLARS)
-to your bank account with your co-operation.
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
 
-Please send the follow below, 1)AGE....2)TELEPHONE
-NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
 
-Note. reply me with this email as usual for quick check and reply back
-without delay ( ms.lisahugh000@gmail.com )
 
-Thanks.
-
-Ms Lisa Hugh,
+Regards :  Abdoulahi Kazim

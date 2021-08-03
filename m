@@ -2,36 +2,36 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF3EA3DECB0
-	for <lists+linux-ide@lfdr.de>; Tue,  3 Aug 2021 13:44:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CFF03DECEC
+	for <lists+linux-ide@lfdr.de>; Tue,  3 Aug 2021 13:45:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236355AbhHCLo6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 3 Aug 2021 07:44:58 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35422 "EHLO mail.kernel.org"
+        id S236220AbhHCLps (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 3 Aug 2021 07:45:48 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35598 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235897AbhHCLom (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Tue, 3 Aug 2021 07:44:42 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 20D5F61037;
-        Tue,  3 Aug 2021 11:44:31 +0000 (UTC)
+        id S236279AbhHCLou (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Tue, 3 Aug 2021 07:44:50 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id A72D361040;
+        Tue,  3 Aug 2021 11:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1627991071;
-        bh=//W2AOkZKarKR/m0ISvGsAjaLCFLauuC4u1WBYKVT2Q=;
+        s=k20201202; t=1627991079;
+        bh=omMAXG4dRWxGLguCkIGShrcPQhRs8LbeFch9vz0fYBg=;
         h=From:To:Cc:Subject:Date:From;
-        b=ZPGs5Gr+EWqYBgIY8lgmOLi5ZvthZgkRC19Ave2eeHw3HQBmOyjnfiqJfuJagABSC
-         9yJNnZgbiA32An+U9eatUAZjjnj6aBqVddP47J1pcyziuzqVBlUhgK93ZjZr3kIa9j
-         EsJeT1uYUnpMX/DYLabl0yI1Z+zoel73ITPCTU8vZEL0HUjW8rOoByc3EuhClaCQmh
-         9uO5+Ovcpzt0x7niuVKXbVCPJDxtU6SOJ8NuQEueRSpv3R4b3RYdw2X0buva/Mlqer
-         0SWrf5L4+NmrxDyDNBWjwpf67c7HyDZNyingwq9LEe1QQfPaIaa7q3Q9ojGigPjZ5v
-         MwvHBSKreaQTQ==
+        b=O1Vet6vWd7vpA+Dki5Xpksi9S07SxGX47oFBOnLahp4CijmElIdUSkYA+Fd8KqKm3
+         RSUpGXH72VgFs6Xy4al07j918eMSsryZEu4+IjPDDIJy++7/hW4vlxtPuuxwj9MjOm
+         k2jVP2eX1kFad0YbTog8TKmCiEcVtsc8p1pFT6LuTm3UxnqNcnqjrmX3bhGYdrPCUB
+         7A2K0lE3m53e+PVKdag9upWGU3xWRXwLdx4CmyO7RRFOFtb/DNHpac24xiMOL1Z2cD
+         reBNHmOG6+rjJfVHhEHA8B8WA+HCC+LdZb1r4ftuU4XcnpLcxiw31W8+9r6H8PcCuo
+         Mr+co2WH7tUIw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Christoph Hellwig <hch@lst.de>,
         kernel test robot <oliver.sang@intel.com>,
         Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>,
         linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 1/5] libata: fix ata_pio_sector for CONFIG_HIGHMEM
-Date:   Tue,  3 Aug 2021 07:44:25 -0400
-Message-Id: <20210803114429.2252944-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 1/5] libata: fix ata_pio_sector for CONFIG_HIGHMEM
+Date:   Tue,  3 Aug 2021 07:44:33 -0400
+Message-Id: <20210803114437.2253079-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 X-stable: review
@@ -62,7 +62,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 27 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 7484ffdabd54..ec62d26c32a9 100644
+index 7057630ccf52..1b4297ec3e87 100644
 --- a/drivers/ata/libata-sff.c
 +++ b/drivers/ata/libata-sff.c
 @@ -657,6 +657,20 @@ unsigned int ata_sff_data_xfer32(struct ata_queued_cmd *qc, unsigned char *buf,
@@ -84,9 +84,9 @@ index 7484ffdabd54..ec62d26c32a9 100644
 +}
 +
  /**
-  *	ata_pio_sector - Transfer a sector of data.
-  *	@qc: Command on going
-@@ -668,11 +682,9 @@ EXPORT_SYMBOL_GPL(ata_sff_data_xfer32);
+  *	ata_sff_data_xfer_noirq - Transfer data by PIO
+  *	@qc: queued command
+@@ -698,11 +712,9 @@ EXPORT_SYMBOL_GPL(ata_sff_data_xfer_noirq);
   */
  static void ata_pio_sector(struct ata_queued_cmd *qc)
  {
@@ -98,7 +98,7 @@ index 7484ffdabd54..ec62d26c32a9 100644
  
  	if (!qc->cursg) {
  		qc->curbytes = qc->nbytes;
-@@ -690,13 +702,20 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
+@@ -720,13 +732,20 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
  
  	DPRINTK("data %s\n", qc->tf.flags & ATA_TFLAG_WRITE ? "write" : "read");
  

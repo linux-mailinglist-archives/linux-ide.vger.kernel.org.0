@@ -2,118 +2,65 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 388C63E3339
-	for <lists+linux-ide@lfdr.de>; Sat,  7 Aug 2021 06:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C4D13E3493
+	for <lists+linux-ide@lfdr.de>; Sat,  7 Aug 2021 12:09:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231194AbhHGETk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 7 Aug 2021 00:19:40 -0400
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:14369 "EHLO
-        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231247AbhHGETg (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 7 Aug 2021 00:19:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1628309958; x=1659845958;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=v0axotK745BOmKq1hqhT1UMPhW1oSJVk5yL66WtuDMY=;
-  b=BB8/By+o0e4/B6z29KzwfC5z5obDG0XLhArYYRkeo7myZeHEIZgNWV9X
-   KztVOSO1QB7ddbOlnhAhnZk6SPqKRtELY1YLSyiY8JawqZDHgujXAXi0C
-   KIliX2zJI+Ip+YBacoog1CtTw+dLY0YwFotMzYOxkfp2nM4WUTyD9356M
-   GLfE3EUrfBWZyTsv6+QlA3Edk0lEi8izo8m7LgfyirxcR4Y2zWNa7aYiY
-   TDKuU58/BnIQ2gy12RnBIpOJichaPOkNCaN4W5cPvyBBsgnnB8xOAzGsd
-   GP3tSKm3Ce6COqKF9Hi/fULE+Sdp4xOmKotHUvfSkL06MggaC2FRJFRwH
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.84,301,1620662400"; 
-   d="scan'208";a="181363694"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 07 Aug 2021 12:19:16 +0800
-IronPort-SDR: zwxci9ZM89sg1h8Vu/whG5sAWRbWxnsDFVUVl3u/a+DjEMbI2mtlXmi+7WNOsGmjsFomua6gd3
- zloT3oSlD32oG+jk4x5G7PldyZk++PnIT1moKdsdn0auXytOnzquoILVexMtiYk3A5cUXUMm+F
- AETfb1dd56445qTdNzr9rtnyRrik/t0nYVQYQyWURQiEZgsRIgfuHScyAJ1L4r5eY973R/j/Su
- 7KeI+2U+Ecfhkid9i7zJB4vf/8TFgiWDnWdqhAizrjt2e7vtVcZizCk4UKhENEV040Onp/uY5L
- ucRRbCvgyGHXGtpYkCmQMoaz
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2021 20:56:45 -0700
-IronPort-SDR: voDHxoG7w99GokpiODviS6Bnk/ekEg4inL25ebaj4mmnPclmXaU1Mc+8AMvVCN2/jNa/u29CjN
- u4HVWit2l0ioZ9DrNHdu2DS20WHWull1uScOkstaLQhoMpuJY34f/piet1GJSUlkTAwBkdI17k
- Zv8in9dBkXU6La6UaCtlDLZig6k6IupWHbQ/bYND6Te90nmjmB2UI8LSQIPjC3t0YX3TaqeKuc
- uaB7cQBYIEN+sPPyEZw3PcHAx0vhrsQdX5RdEMGqj66Zpf6BLhQYqrlw6JlG+UHe6x+CUFrQkf
- fNo=
-WDCIronportException: Internal
-Received: from washi.fujisawa.hgst.com ([10.149.53.254])
-  by uls-op-cesaip01.wdc.com with ESMTP; 06 Aug 2021 21:19:16 -0700
-From:   Damien Le Moal <damien.lemoal@wdc.com>
-To:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        linux-ide@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
-        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>
-Subject: [PATCH v4 10/10] scsi: mpt3sas: Introduce sas_ncq_prio_supported sysfs sttribute
-Date:   Sat,  7 Aug 2021 13:18:59 +0900
-Message-Id: <20210807041859.579409-11-damien.lemoal@wdc.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210807041859.579409-1-damien.lemoal@wdc.com>
-References: <20210807041859.579409-1-damien.lemoal@wdc.com>
+        id S231775AbhHGKJO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 7 Aug 2021 06:09:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231640AbhHGKJK (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 7 Aug 2021 06:09:10 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF05C06179F
+        for <linux-ide@vger.kernel.org>; Sat,  7 Aug 2021 03:08:32 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id m11so8485386qtx.7
+        for <linux-ide@vger.kernel.org>; Sat, 07 Aug 2021 03:08:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=aiYv+ghkj1wcr5KlnL1ML71lfnXzfmxAeT1E5sMi1Qw=;
+        b=S3l4T9e2tP5pVS7ZuYdu+1Y0qbKkJYnejhs8S6oYuW6LYwueyDMIGlxr2QviX908pZ
+         9SPZJLnYHgJvYg3PLTI5fWJK5TkMxVO2qBa2FrvvgMmkTyowY9FDC29BPjsdhbPhxQLa
+         tYnwYex5seRxFiLy8EoSSBUznJBTlHeb/Bz5niZL/Il13kvDN2O2xOxWpnGH2uLwHscT
+         DoTFOxHdTymP4E3acGtQxboa5XPRRUPIM6mlAfcr7/ekHDJNJv4uG6dy2JtyqWn88ow0
+         hsiNGB55/AYboSktIHGsl5ebXsVnqzSR6R9ebR+QIoCvocI54gGy0g8VDA3p78wJouiN
+         BLYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=aiYv+ghkj1wcr5KlnL1ML71lfnXzfmxAeT1E5sMi1Qw=;
+        b=KWwox7kxQDxHTqF44EDtwMTroJMZpuJE5rDJwk2OW3YNtyR84U1FhUrvRWNFvm9rmj
+         pwyMMqAtX9PhMQxRR0E/jRoExVxXVjitOVdBwpLWdlEmfTyxA4PXtL1feR82TuNWgAXh
+         6MsjH//HotDdS7j5b2L347ZvkLxEE9v1LJBzpAeHU+KQzZ/XZJJq/a5aWoR4IWTr0aKv
+         +GMIJEydbIHLKZOaJ9ulZbXLp5fRn63fq9mc6m3lLynmJw+VezeL0pGKCDOcvL9I60hy
+         BIeR5A82RwUWfZeal9tO4as5Cnsdft4AztAjDsNQUlUbAq4nJBC1HwM78lJrUuXlpw6S
+         MIFw==
+X-Gm-Message-State: AOAM533Ob3SqhAeiWqgm7h3mMyeGxQDbUJOxroYO/OeLT/z+q3GtJeue
+        2Xh65xRULvCBVbJPckwgHNY9GOGoXGqdQHCTOmQ=
+X-Google-Smtp-Source: ABdhPJxgyuRRXsSMd0R6a3b0A3hI9pouiu6GtIO5W43J3txGTJtR81T+4t2OwT3S4z6DuFUIj52qGnoLd2PfTJY5Mrs=
+X-Received: by 2002:ac8:6611:: with SMTP id c17mr12282490qtp.392.1628330911954;
+ Sat, 07 Aug 2021 03:08:31 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:622a:112:0:0:0:0 with HTTP; Sat, 7 Aug 2021 03:08:31
+ -0700 (PDT)
+Reply-To: ssaar0101@gmail.com
+From:   Medinat Sherrif <do348911@gmail.com>
+Date:   Sat, 7 Aug 2021 10:08:31 +0000
+Message-ID: <CA+WgU6p7R+UtP_5FzWNKmG6hkPWxb7Kfk5rN4WNbAMA9+mot=Q@mail.gmail.com>
+Subject: Good morning,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Similarly to AHCI, introduce the device sysfs attribute
-sas_ncq_prio_supported to advertize if a SATA device supports the NCQ
-priority feature. Without this new attribute, the user can only
-discover if a SATA device supports NCQ priority by trying to enable
-the feature use with the sas_ncq_prio_enable sysfs device attribute,
-which fails when the device does not support high priroity commands.
+Greetings from here.
 
-Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
----
- drivers/scsi/mpt3sas/mpt3sas_ctl.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+My name is Medinat. M  Sherrif, I have something very confidential to
+discuss with you in my next mail. Reply to me with your private email
+address for confidential discussion.
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-index b66140e4c370..f83d4d32d459 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-@@ -3918,6 +3918,24 @@ sas_device_handle_show(struct device *dev, struct device_attribute *attr,
- }
- static DEVICE_ATTR_RO(sas_device_handle);
- 
-+/**
-+ * sas_ncq_prio_supported_show - Indicate if device supports NCQ priority
-+ * @dev: pointer to embedded device
-+ * @attr: sas_ncq_prio_supported attribute descriptor
-+ * @buf: the buffer returned
-+ *
-+ * A sysfs 'read-only' sdev attribute, only works with SATA
-+ */
-+static ssize_t
-+sas_ncq_prio_supported_show(struct device *dev,
-+			    struct device_attribute *attr, char *buf)
-+{
-+	struct scsi_device *sdev = to_scsi_device(dev);
-+
-+	return sysfs_emit(buf, "%d\n", scsih_ncq_prio_supp(sdev));
-+}
-+static DEVICE_ATTR_RO(sas_ncq_prio_supported);
-+
- /**
-  * sas_ncq_prio_enable_show - send prioritized io commands to device
-  * @dev: pointer to embedded device
-@@ -3960,6 +3978,7 @@ static DEVICE_ATTR_RW(sas_ncq_prio_enable);
- struct device_attribute *mpt3sas_dev_attrs[] = {
- 	&dev_attr_sas_address,
- 	&dev_attr_sas_device_handle,
-+	&dev_attr_sas_ncq_prio_supported,
- 	&dev_attr_sas_ncq_prio_enable,
- 	NULL,
- };
--- 
-2.31.1
-
+Best Regards.
+Medinat. M  Sherrif,

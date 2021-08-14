@@ -2,96 +2,64 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0907F3EC2F7
-	for <lists+linux-ide@lfdr.de>; Sat, 14 Aug 2021 15:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4B43EC31A
+	for <lists+linux-ide@lfdr.de>; Sat, 14 Aug 2021 16:09:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229974AbhHNNrk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 14 Aug 2021 09:47:40 -0400
-Received: from mout.kundenserver.de ([212.227.126.187]:36219 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237940AbhHNNrk (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 14 Aug 2021 09:47:40 -0400
-Received: from localhost ([98.128.181.94]) by mrelayeu.kundenserver.de
- (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MumVX-1n4fXh0dbn-00rnrJ; Sat, 14 Aug 2021 15:47:10 +0200
-From:   =?UTF-8?q?Reimar=20D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
-To:     linux-ide@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH] libata: add kernel parameter to force ATA_HORKAGE_NO_DMA_LOG
-Date:   Sat, 14 Aug 2021 15:47:09 +0200
-Message-Id: <20210814134709.16085-1-Reimar.Doeffinger@gmx.de>
-X-Mailer: git-send-email 2.32.0
+        id S238309AbhHNOJe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 14 Aug 2021 10:09:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44148 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231956AbhHNOJe (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 14 Aug 2021 10:09:34 -0400
+Received: from mail-yb1-xb41.google.com (mail-yb1-xb41.google.com [IPv6:2607:f8b0:4864:20::b41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC532C061764
+        for <linux-ide@vger.kernel.org>; Sat, 14 Aug 2021 07:09:05 -0700 (PDT)
+Received: by mail-yb1-xb41.google.com with SMTP id a93so24265972ybi.1
+        for <linux-ide@vger.kernel.org>; Sat, 14 Aug 2021 07:09:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=uRuJYnQr4q07JLSEYwH/yTioHcPDdzH4IkkOfqRXwAk=;
+        b=d+ybPxFqeLi5NfYYKO6ShShjjtJbsFVupjQsA6+Se6GqqPUZFlDJu/mdS4mSPiXUZO
+         zhe7W3+xljrITTcdNKvq3Ax9jVdKITvmrR7CLFdTS5dyayT55Kv6scHmcfSSXtJu5hJ3
+         x8Wcvl29bARxxBiN2jAHUi04Bx0h9QV8cJFRdYk6CLo12lC8vJz29cRZU5zGq6RtkhuC
+         bVJT6CLYsOiJovBLj81GKowgCVDm0Nu/d31uVmtg+mgp69NnjXOb7273wwU9wADHj+cG
+         00jcGgRHdy9+p8sllqwXUScHneGcbRi4gS+IAIideQ9MqBNetIMg2eKcvTCUgzgAAlSv
+         L7TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=uRuJYnQr4q07JLSEYwH/yTioHcPDdzH4IkkOfqRXwAk=;
+        b=EW+DNYgv0Dl2A7TBDmWmOxUlTkegOwQMXeIwFNTLZxxSdkM7IqMKowfuJTZ/958z+n
+         sHzVB0FRCdb4nkpeS+Bk9QZAiRWduJ4IqOKCcVBzHZl6rE5/z6RSnoiPVA6entlR1pgQ
+         0RGxATA6Mj1TGAAHPrCF0a83gTzPMce1XgaWTcs7S9Ovq2g5O+n0pqFESTdfLLtrM06r
+         HdX13oebqp5JyZREh7xzzdyDr1VV9tb/Ok/5aNNvHWcSHzh3byu9HkEKlYZmZnevSbO8
+         0Bj3F6XoUk7U44uOr4djtiF/2TsOFMIwxWOkNXfE6+jxt8UNMGuBHN/7k95atBlY2vGg
+         Hl9Q==
+X-Gm-Message-State: AOAM532uEj7sliyyKf4Qm7PC2iIkTiSVaemPZkmZaLGgwyzDbE6zwSRh
+        nlBjsZWN3gt6NEDFc5ya8V3bpsYZZG7zmx2gWdU=
+X-Google-Smtp-Source: ABdhPJxLmoS2L7mwwA/ssYEF+9vIrTP7HE2KxTp7P1r75gh3UzS+suvFjHbhYzua5Ci82dkmFQLbK1BOQ09qAGo4k4o=
+X-Received: by 2002:a25:d14e:: with SMTP id i75mr9690868ybg.243.1628950144823;
+ Sat, 14 Aug 2021 07:09:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:B6mywXOBh3vFVSToyV9byjs7fi7kDIWuobcMZme0u3ctnm14B8z
- DUpjL+GjxBCfzt672cQJivddJsjWJ59LlYEQ0X/yrVhI/JQIMYnrW56X5PPhLFlw4bNU/Rs
- NjSrA2T3AHq4valgRrL6duNwZhXQtUsq/+HfFJLfVK80YkqLUcRk29skD5b8/hWhAgxDfVl
- 9+wOGSikxVexARB5hPw1w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mY/8J2TiAgk=:HajxAIfaivpDRXWP8dfFWv
- eXMJN80P8UJCc5sUyIfA5QR75gMDBL2ya0tmClh2qmwpU3Y+rdKmIrNooEndB6X6rcya7nobB
- kUEoTyr4JW9770C1o7t/nmvXiCq1wam3MTRTHLgKG/R/GbhZftwZsX4eutmncXUCwuAG3Guit
- Hg5CBVSMi74EqHUo+Zwc8zQyOHVZzPE4ds8JFa1vmAF883P8KdRJQCsTyGWrnCMQHVLjGqeBt
- fJe1KshdoG5guFyhaAei3ETRv1X5lZd4RpalOKL1sP8olcWO88+4PSd22nzPTsiCVq3VQwieb
- Z0gHaiBnj1L/OjWZN1R/Os0vDJsKjntrdADUb4ROHf2UpbCtNKlmMDl5Q31m7KQVTYEeiKKkk
- XjWImuBS8/cpQzIzuuvYTrumBdHblE0e+M5pMXpdneOS+7DL0zXqjKM9yMi5Qtfn6cGXwth8g
- vdVGTVIRuklns8u6686vRo93Q2qY3gPDpTFqfy+dteTbHs9w/WN2B/d2mhRka28vm08nEGKTY
- llTq0hm/f3Mgq6TM5aQdSjPC105pCvmaAmIv60WaifdTgkpw3zE+iKskX5RYUzMj0rmO0JQZN
- ihkitqmx3EXfR8JUB1kwNtyVzD0W4OnPkauZnnA9gxPmYFu+F6ySdTwdM+g4W3XE7ltIpRahi
- ycljgV4yZc0BoR8qeehECGBxX7J5P6oCtBhGnU820eXSh13/LvkwA7w1UDmKyRTUxLal30Mk2
- Ek+9x9Q5as0eYrQq+32ItetWCRF4fXo75VLeo26TtJ7ID9mx8ghDeRf2JXPrtRxGkebWqv/oK
- wCHnHiwDn+ydZojn20sYpbIA0APa//N5HsaCgscNMTfxleSVIweWLk6CfkfNHqdgLLO1WBlHL
- RrQzLxKEFo9l+FVQtRgQ==
+Received: by 2002:a05:7000:9989:0:0:0:0 with HTTP; Sat, 14 Aug 2021 07:09:04
+ -0700 (PDT)
+Reply-To: mohamedkasim794@yahoo.com
+From:   Dr Kasim Mohamed <kasimmohamed50807@gmail.com>
+Date:   Sat, 14 Aug 2021 07:09:04 -0700
+Message-ID: <CAMj1Gphgqfym4VWRRbUmjvkjVmedUxqy8yYdV1AzOuqe=xwq+Q@mail.gmail.com>
+Subject: THE AMOUNT IS 27.5 MILLIOMS USD
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The ATA_CMD_READ_LOG_DMA_EXT can cause controller/device to
-become unresponsive until the next power cycle.
-This seems to particularly affect IDE to SATA adapters,
-possibly in combination with certain SATA SSDs, though
-there might be more/different cases.
-Comment 5 of https://bugzilla.kernel.org/show_bug.cgi?id=195895
-is an example.
-Having an option to disable its use allows booting systems affected,
-which besides being a useful workaround is also a necessary
-step to allow gathering more debug info on these systems.
-Existing workarounds like forcing PIO mode do not work
-(in addition to the performance issues) because READ_LOG_DMA
-is issued even if PIO mode is forced.
+I am Mr Kasim Mohamed
 
-Signed-off-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
----
- Documentation/admin-guide/kernel-parameters.txt | 2 ++
- drivers/ata/libata-core.c                       | 2 ++
- 2 files changed, 4 insertions(+)
-
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index bdb22006f713..191502e8fa74 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2551,6 +2551,8 @@
- 
- 			* [no]ncqtrim: Turn off queued DSM TRIM.
- 
-+			* [no]dmalog: Turn off use of ATA_CMD_READ_LOG_DMA_EXT (0x47) command
-+
- 			* nohrst, nosrst, norst: suppress hard, soft
- 			  and both resets.
- 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 61c762961ca8..7fb865333a38 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -6104,6 +6104,8 @@ static int __init ata_parse_force_one(char **cur,
- 		{ "ncq",	.horkage_off	= ATA_HORKAGE_NONCQ },
- 		{ "noncqtrim",	.horkage_on	= ATA_HORKAGE_NO_NCQ_TRIM },
- 		{ "ncqtrim",	.horkage_off	= ATA_HORKAGE_NO_NCQ_TRIM },
-+		{ "nodmalog",	.horkage_on	= ATA_HORKAGE_NO_DMA_LOG },
-+		{ "dmalog",	.horkage_off	= ATA_HORKAGE_NO_DMA_LOG },
- 		{ "dump_id",	.horkage_on	= ATA_HORKAGE_DUMP_ID },
- 		{ "pio0",	.xfer_mask	= 1 << (ATA_SHIFT_PIO + 0) },
- 		{ "pio1",	.xfer_mask	= 1 << (ATA_SHIFT_PIO + 1) },
--- 
-2.32.0
-
+Hi Friend I am a bank director of the UBA Bank Plc bf .I want to
+transfer an abandoned sum of 27.5 millions USD  to you through ATM
+VISA CARD .50% will be for you. No risk involved. Contact me for more
+details. Kindly reply me back to my alternative email
+address(mohamedkasim794@yahoo.com) Mr kasim mohamed

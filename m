@@ -2,184 +2,69 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75B733F19D5
-	for <lists+linux-ide@lfdr.de>; Thu, 19 Aug 2021 14:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 818733F28E4
+	for <lists+linux-ide@lfdr.de>; Fri, 20 Aug 2021 11:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbhHSM5J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 19 Aug 2021 08:57:09 -0400
-Received: from mout.kundenserver.de ([212.227.126.130]:57697 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229601AbhHSM5J (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 19 Aug 2021 08:57:09 -0400
-Received: from localhost ([98.128.181.94]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MGi6k-1mKZSn4BTW-00Dr8B; Thu, 19 Aug 2021 14:56:24 +0200
-From:   =?UTF-8?q?Reimar=20D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
-To:     Damien Le Moal <Damien.LeMoal@wdc.com>, linux-ide@vger.kernel.org,
-        Jens Axboe <axboe@kernel.dk>, hch@infradead.org
-Subject: [PATCH] libata: fix checking of DMA state
-Date:   Thu, 19 Aug 2021 14:56:23 +0200
-Message-Id: <20210819125623.22059-1-Reimar.Doeffinger@gmx.de>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210819081340.4362-1-Reimar.Doeffinger@gmx.de>
-References: <20210819081340.4362-1-Reimar.Doeffinger@gmx.de>
+        id S235278AbhHTJKY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 20 Aug 2021 05:10:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45304 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234461AbhHTJKT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 20 Aug 2021 05:10:19 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58AD4C061796
+        for <linux-ide@vger.kernel.org>; Fri, 20 Aug 2021 02:09:42 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id m21so10121140qkm.13
+        for <linux-ide@vger.kernel.org>; Fri, 20 Aug 2021 02:09:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=WuDQPRa1pRZEmgy3rMsrN6WxMhN/6RZwdTFnT+vP0Q4=;
+        b=hFJnYYN6W4CsDcIVyUx2ldgP3beMW4jLNH/SGyYzXZ7BCc0KGd1k2ND/ddXkVyFBzR
+         guIjkcbm1NmdCLbZe8HMFSijx65jRHp/SdEKwlTl1Wrrm5GfFB+4ZVS5sv8x1a29xP5U
+         THsPNWQYsSJ5yPuhXe5CCySbf3d8KHk4ieqNWU1QRBTQFpIYNevU0ISY6bHFs3nh/n2S
+         aeYB/F9nFQwaieLCZI54fOmj0REUKAHwNOHq6pxHqVkFNAYAR1ZrLiFgkhfJD1EtDH4X
+         GpetBqXCAI10TRHamsMBRTUQpFk6zzmcbkWEi4ufFi/59ztBcLqf45Sb9NTW5DLLfDf/
+         UjVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=WuDQPRa1pRZEmgy3rMsrN6WxMhN/6RZwdTFnT+vP0Q4=;
+        b=Sjhu22SqU2ITWFRYwoLKkH6VRsm7trlckYkj8ptof1Ey1TBY2wrSPVvelyucA/A2P8
+         wm+p0m4kvi+4YP0YRS9agNAtpMIblRxN2iAzkBUfiWn5O8nIdc1fc7l98nNLEPXCbbGR
+         uuiSMrBCIL1H2Yt7gmXyf/TsH1heLHXYCpOUGHsIbxjBruD5UAMkwinOKeTxWxLjsIvG
+         QDsFSswKNZ2YH+L4T0hKWCuRQ1PF5ywu2xNqvq3qzoAqwc1ZZPscQDCyaY6uvNL40/Et
+         z7mbrLsci9/GbKoyfhFuIUW151Mx+CtcbtqV0zhBm3pESAp6PvURbvgss2UiD4vESGq1
+         cnqw==
+X-Gm-Message-State: AOAM531lLNf8j6rRFvuV1oGn9hOn86N0h9CnOYGNr+lpWB6kfqXyNuFx
+        pTOsu23jl1LjytZoiNRr9aii3XILiIdcU0/8nV8=
+X-Google-Smtp-Source: ABdhPJyG2xEmxAYbVbw0iUlOEmdXfXcy24m7DXEexS/mITfNOxQp5Wtr3TQ/AKKjTgQq+sXNyeHYc24WCQSN0Ret/HU=
+X-Received: by 2002:a37:846:: with SMTP id 67mr7997191qki.167.1629450581284;
+ Fri, 20 Aug 2021 02:09:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:raIt20G29od/WIa2awOwv6xo90JFrXiAICAiqZrvI2f5OoCPuai
- dBsdnCo71IEuZtrETc23Lrdx5H6+kr+DC4kktMRruEWn2u/qFsGpIEEvaB3dxMHukM1XIKQ
- 4ZkkgQ4y0dQFg5Y7HAH3hMLmlyZdkZONYHjruvkZpDPWunlLYxYl9/b7R2Lg3LVaxWFXMtp
- AJ5TOMRGNY6+YfYz+r2oQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:FE0Cvb6R3RU=:EmyFDd3HdxoQp0iD77glAf
- ib5+8icPreENQyxNF8AxOOWQg+Dfk8mmwpCgCXhYJtEW/1gWzFEPY2Nt0uuCNGU2zwEoc/0ge
- yjnHXG9XQNJmB47pB6BaSQsXfEdGL6TqA+2jn86P4FQFs8eDXPg1gEJghTO7XZq9d0H09r9cJ
- 7aYRBGN8l00AcEZKbldkCEv3Ot613yTDYB4fzUZefs2oFQCbniCeg2OoHsL0ntHJlKVCPx164
- 3Zzm+mT+gt6RPHRT314m9dM+XZJ9TX6Gq3klEmKBsdSPH6Ct02ziBCzvACK7nz3o0GQ1DIUS1
- RMtKNDqs7JLLqkpLu1f6AC1Pky3DgIRxH/hUze+64ywV6iuUeFuP/GFNzDKvHKyuph+iPaYEe
- BX84o+U5JMZwb1bzxW4MZVJUiGH87qMx+3SVFiVkpaEGfoEs+qyk/PLKOhxDfQYlgWm+bnjvx
- IbCyt4xC3KA78XhGgYjfHVr4cD+t3AvfjMkJ5Kzjn6pDf+6KLIdbodwl4tfUqN8NPHCaQW0PK
- JXJJOkvScZ0Z1vGsJ/iPE3wC5kssWoBE1H82agtomQcw5ut23W32uPx5CtBVacUm+Y1yQlbOv
- RLMFGQetI1J5WqqAVeSPA2YSukoy/NTTAvPLYABQLBbfcxLf5ZLKjakITcQLFh41xAe0EMn7H
- ULbK+QUB1zNkWHj9Xw6ajKqSbqXwEyS8wG/VHBYJDcTQ0fJhlLUowTyivjx6XFipWpHyuHL3H
- fMwaV9LH/jdhH/Ck9fs2yUKxcBMw0IiHfqGl3m78SmbdC4y+Mxs0Phz+1eOyGGoWS9zuvYJRu
- +YCbcNvqqRFYRBWDs9ErToBaxqaR04nJlEAJFJg36HttBmXcmVPAFJwdgLAzWKYECQishRD1y
- LVshRq8a3gWkH7nlcs8A==
+Received: by 2002:ac8:5184:0:0:0:0:0 with HTTP; Fri, 20 Aug 2021 02:09:40
+ -0700 (PDT)
+Reply-To: geomic123@yahoo.com
+From:   George Micheal <philipowiredu77@gmail.com>
+Date:   Fri, 20 Aug 2021 10:09:40 +0100
+Message-ID: <CAGkcCGHZMGrNP48LcZn4sRuaLsMHSeJnxJjFCOZvC71-qdJ4xg@mail.gmail.com>
+Subject: Waiting for response
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Checking if DMA is enabled should be done via the
-ata_dma_enabled helper function, since the init state
-0xff indicates disabled.
-Only the libata-core logic is tested on actual devices,
-the other changes are based on code review only.
----
-Changes v3:
-- found and updated more cases in pata_ali, pata_amd and pata_radisys.
-Changes v2:
-- removed initialization change for SATA. I got confused by the
-  ping-pong between libata-eh and libata-core and thought SATA did not
-  set up xfermode
-- reviewed other cases that used dma_mode in boolean context and those
-  seemed to need changing as well, so added them to patch.
-  I did not see any places that would set dma_mode to 0 ever, so I
-  do think they were all indeed wrong.
-
- drivers/ata/libata-core.c  | 2 +-
- drivers/ata/libata-scsi.c  | 4 ++--
- drivers/ata/pata_ali.c     | 4 ++--
- drivers/ata/pata_amd.c     | 2 +-
- drivers/ata/pata_optidma.c | 4 ++--
- drivers/ata/pata_radisys.c | 4 ++--
- 6 files changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 9934f6c465f4..52469b39d424 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2004,7 +2004,7 @@ unsigned int ata_read_log_page(struct ata_device *dev, u8 log,
- 
- retry:
- 	ata_tf_init(dev, &tf);
--	if (dev->dma_mode && ata_id_has_read_log_dma_ext(dev->id) &&
-+	if (ata_dma_enabled(dev) && ata_id_has_read_log_dma_ext(dev->id) &&
- 	    !(dev->horkage & ATA_HORKAGE_NO_DMA_LOG)) {
- 		tf.command = ATA_CMD_READ_LOG_DMA_EXT;
- 		tf.protocol = ATA_PROT_DMA;
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index b9588c52815d..9e51251161e9 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -3023,7 +3023,7 @@ static unsigned int ata_scsi_pass_thru(struct ata_queued_cmd *qc)
- 	ata_qc_set_pc_nbytes(qc);
- 
- 	/* We may not issue DMA commands if no DMA mode is set */
--	if (tf->protocol == ATA_PROT_DMA && dev->dma_mode == 0) {
-+	if (tf->protocol == ATA_PROT_DMA && !ata_dma_enabled(dev)) {
- 		fp = 1;
- 		goto invalid_fld;
- 	}
-@@ -3173,7 +3173,7 @@ static unsigned int ata_scsi_write_same_xlat(struct ata_queued_cmd *qc)
- 	u8 unmap = cdb[1] & 0x8;
- 
- 	/* we may not issue DMA commands if no DMA mode is set */
--	if (unlikely(!dev->dma_mode))
-+	if (unlikely(!ata_dma_enabled(dev)))
- 		goto invalid_opcode;
- 
- 	/*
-diff --git a/drivers/ata/pata_ali.c b/drivers/ata/pata_ali.c
-index 557ecf466102..b7ff63ed3bbb 100644
---- a/drivers/ata/pata_ali.c
-+++ b/drivers/ata/pata_ali.c
-@@ -215,7 +215,7 @@ static void ali_set_piomode(struct ata_port *ap, struct ata_device *adev)
- 		struct ata_timing p;
- 		ata_timing_compute(pair, pair->pio_mode, &p, T, 1);
- 		ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
--		if (pair->dma_mode) {
-+		if (ata_dma_enabled(pair)) {
- 			ata_timing_compute(pair, pair->dma_mode, &p, T, 1);
- 			ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
- 		}
-@@ -264,7 +264,7 @@ static void ali_set_dmamode(struct ata_port *ap, struct ata_device *adev)
- 			struct ata_timing p;
- 			ata_timing_compute(pair, pair->pio_mode, &p, T, 1);
- 			ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
--			if (pair->dma_mode) {
-+			if (ata_dma_enabled(pair)) {
- 				ata_timing_compute(pair, pair->dma_mode, &p, T, 1);
- 				ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
- 			}
-diff --git a/drivers/ata/pata_amd.c b/drivers/ata/pata_amd.c
-index c8acba162d02..154748cfcc79 100644
---- a/drivers/ata/pata_amd.c
-+++ b/drivers/ata/pata_amd.c
-@@ -66,7 +66,7 @@ static void timing_setup(struct ata_port *ap, struct ata_device *adev, int offse
- 
- 	if (peer) {
- 		/* This may be over conservative */
--		if (peer->dma_mode) {
-+		if (ata_dma_enabled(peer)) {
- 			ata_timing_compute(peer, peer->dma_mode, &apeer, T, UT);
- 			ata_timing_merge(&apeer, &at, &at, ATA_TIMING_8BIT);
- 		}
-diff --git a/drivers/ata/pata_optidma.c b/drivers/ata/pata_optidma.c
-index f6278d9de348..ad1090b90e52 100644
---- a/drivers/ata/pata_optidma.c
-+++ b/drivers/ata/pata_optidma.c
-@@ -153,7 +153,7 @@ static void optidma_mode_setup(struct ata_port *ap, struct ata_device *adev, u8
- 	if (pair) {
- 		u8 pair_addr;
- 		/* Hardware constraint */
--		if (pair->dma_mode)
-+		if (ata_dma_enabled(pair))
- 			pair_addr = 0;
- 		else
- 			pair_addr = addr_timing[pci_clock][pair->pio_mode - XFER_PIO_0];
-@@ -301,7 +301,7 @@ static u8 optidma_make_bits43(struct ata_device *adev)
- 	};
- 	if (!ata_dev_enabled(adev))
- 		return 0;
--	if (adev->dma_mode)
-+	if (ata_dma_enabled(adev))
- 		return adev->dma_mode - XFER_MW_DMA_0;
- 	return bits43[adev->pio_mode - XFER_PIO_0];
- }
-diff --git a/drivers/ata/pata_radisys.c b/drivers/ata/pata_radisys.c
-index 8fde4a86401b..3aca8fe3fdb6 100644
---- a/drivers/ata/pata_radisys.c
-+++ b/drivers/ata/pata_radisys.c
-@@ -172,8 +172,8 @@ static unsigned int radisys_qc_issue(struct ata_queued_cmd *qc)
- 
- 	if (adev != ap->private_data) {
- 		/* UDMA timing is not shared */
--		if (adev->dma_mode < XFER_UDMA_0) {
--			if (adev->dma_mode)
-+		if (adev->dma_mode < XFER_UDMA_0 || !ata_dma_enabled(adev)) {
-+			if (ata_dma_enabled(adev))
- 				radisys_set_dmamode(ap, adev);
- 			else if (adev->pio_mode)
- 				radisys_set_piomode(ap, adev);
 -- 
-2.32.0
+Dear Sir/Madam
 
+My name is Mr George Michael,i am the Personal Aid to former
+President Baba Yahya Abdul-Aziz Jemus Jammeh the Republic of Gambia in
+west Africa, who is currently in exile with his farmily. I have been
+trying on how to get in touch with you over an important issue
+concerning a project that will be profitable. I anticipate hearing
+from you for more details.
+
+Yours faithfully
+Mr George Michael

@@ -2,69 +2,89 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 818733F28E4
-	for <lists+linux-ide@lfdr.de>; Fri, 20 Aug 2021 11:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 629093F47F4
+	for <lists+linux-ide@lfdr.de>; Mon, 23 Aug 2021 11:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235278AbhHTJKY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 20 Aug 2021 05:10:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45304 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234461AbhHTJKT (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 20 Aug 2021 05:10:19 -0400
-Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58AD4C061796
-        for <linux-ide@vger.kernel.org>; Fri, 20 Aug 2021 02:09:42 -0700 (PDT)
-Received: by mail-qk1-x743.google.com with SMTP id m21so10121140qkm.13
-        for <linux-ide@vger.kernel.org>; Fri, 20 Aug 2021 02:09:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=WuDQPRa1pRZEmgy3rMsrN6WxMhN/6RZwdTFnT+vP0Q4=;
-        b=hFJnYYN6W4CsDcIVyUx2ldgP3beMW4jLNH/SGyYzXZ7BCc0KGd1k2ND/ddXkVyFBzR
-         guIjkcbm1NmdCLbZe8HMFSijx65jRHp/SdEKwlTl1Wrrm5GfFB+4ZVS5sv8x1a29xP5U
-         THsPNWQYsSJ5yPuhXe5CCySbf3d8KHk4ieqNWU1QRBTQFpIYNevU0ISY6bHFs3nh/n2S
-         aeYB/F9nFQwaieLCZI54fOmj0REUKAHwNOHq6pxHqVkFNAYAR1ZrLiFgkhfJD1EtDH4X
-         GpetBqXCAI10TRHamsMBRTUQpFk6zzmcbkWEi4ufFi/59ztBcLqf45Sb9NTW5DLLfDf/
-         UjVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=WuDQPRa1pRZEmgy3rMsrN6WxMhN/6RZwdTFnT+vP0Q4=;
-        b=Sjhu22SqU2ITWFRYwoLKkH6VRsm7trlckYkj8ptof1Ey1TBY2wrSPVvelyucA/A2P8
-         wm+p0m4kvi+4YP0YRS9agNAtpMIblRxN2iAzkBUfiWn5O8nIdc1fc7l98nNLEPXCbbGR
-         uuiSMrBCIL1H2Yt7gmXyf/TsH1heLHXYCpOUGHsIbxjBruD5UAMkwinOKeTxWxLjsIvG
-         QDsFSswKNZ2YH+L4T0hKWCuRQ1PF5ywu2xNqvq3qzoAqwc1ZZPscQDCyaY6uvNL40/Et
-         z7mbrLsci9/GbKoyfhFuIUW151Mx+CtcbtqV0zhBm3pESAp6PvURbvgss2UiD4vESGq1
-         cnqw==
-X-Gm-Message-State: AOAM531lLNf8j6rRFvuV1oGn9hOn86N0h9CnOYGNr+lpWB6kfqXyNuFx
-        pTOsu23jl1LjytZoiNRr9aii3XILiIdcU0/8nV8=
-X-Google-Smtp-Source: ABdhPJyG2xEmxAYbVbw0iUlOEmdXfXcy24m7DXEexS/mITfNOxQp5Wtr3TQ/AKKjTgQq+sXNyeHYc24WCQSN0Ret/HU=
-X-Received: by 2002:a37:846:: with SMTP id 67mr7997191qki.167.1629450581284;
- Fri, 20 Aug 2021 02:09:41 -0700 (PDT)
+        id S235884AbhHWJxL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 23 Aug 2021 05:53:11 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:46589 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235802AbhHWJxI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 23 Aug 2021 05:53:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1629712346;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Rcf7ZbhkmpU4jxeIC6SCvGLuTy9wJXPCflo+vJTD3XI=;
+        b=CfIlP2udcDrh5kizgvOwTjVYHI28d4OckTeoLBSFYYKg8pz3hprovFgldHKmbxa3TAGMmp
+        qFfmkWDu7YikfHTQKrWdsKxOea6XNAdp0dlZqsq1pT1v0dUFMUsTHbVMixamfGvVz/YZPr
+        hhgm6cRtH04/BNjrN7ZM5YJIDvSY6KY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-14-w-8wv1IyNq-p8_mPHt2Q7g-1; Mon, 23 Aug 2021 05:52:24 -0400
+X-MC-Unique: w-8wv1IyNq-p8_mPHt2Q7g-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B11FD100E427;
+        Mon, 23 Aug 2021 09:52:23 +0000 (UTC)
+Received: from x1.localdomain.com (unknown [10.39.194.191])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 10DDC60CC9;
+        Mon, 23 Aug 2021 09:52:21 +0000 (UTC)
+From:   Hans de Goede <hdegoede@redhat.com>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-ide@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Kate Hsuan <hpa@redhat.com>
+Subject: [PATCH] libata: add ATA_HORKAGE_NO_NCQ_TRIM for Samsung 860 and 870 SSDs
+Date:   Mon, 23 Aug 2021 11:52:20 +0200
+Message-Id: <20210823095220.30157-1-hdegoede@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:ac8:5184:0:0:0:0:0 with HTTP; Fri, 20 Aug 2021 02:09:40
- -0700 (PDT)
-Reply-To: geomic123@yahoo.com
-From:   George Micheal <philipowiredu77@gmail.com>
-Date:   Fri, 20 Aug 2021 10:09:40 +0100
-Message-ID: <CAGkcCGHZMGrNP48LcZn4sRuaLsMHSeJnxJjFCOZvC71-qdJ4xg@mail.gmail.com>
-Subject: Waiting for response
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Commit ca6bfcb2f6d9 ("libata: Enable queued TRIM for Samsung SSD 860")
+limited the existing ATA_HORKAGE_NO_NCQ_TRIM quirk from "Samsung SSD 8*",
+covering all Samsung 800 series SSDs, to only apply to "Samsung SSD 840*"
+and "Samsung SSD 850*" series based on information from Samsung.
+
+But there is a large number of users which is still reporting issues
+with the Samsung 860 and 870 SSDs combined with Intel, ASmedia or
+Marvell SATA controllers and all reporters also report these problems
+going away when disabling queued trims.
+
+Note that with AMD SATA controllers users are reporting even worse
+issues and only completely disabling NCQ helps there, this will be
+addressed in a separate patch.
+
+Fixes: ca6bfcb2f6d9 ("libata: Enable queued TRIM for Samsung SSD 860")
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=203475
+Cc: stable@vger.kernel.org
+Cc: Kate Hsuan <hpa@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ drivers/ata/libata-core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 61c762961ca8..3eda3291952b 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -3950,6 +3950,10 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
+ 						ATA_HORKAGE_ZERO_AFTER_TRIM, },
+ 	{ "Samsung SSD 850*",		NULL,	ATA_HORKAGE_NO_NCQ_TRIM |
+ 						ATA_HORKAGE_ZERO_AFTER_TRIM, },
++	{ "Samsung SSD 860*",		NULL,	ATA_HORKAGE_NO_NCQ_TRIM |
++						ATA_HORKAGE_ZERO_AFTER_TRIM, },
++	{ "Samsung SSD 870*",		NULL,	ATA_HORKAGE_NO_NCQ_TRIM |
++						ATA_HORKAGE_ZERO_AFTER_TRIM, },
+ 	{ "FCCT*M500*",			NULL,	ATA_HORKAGE_NO_NCQ_TRIM |
+ 						ATA_HORKAGE_ZERO_AFTER_TRIM, },
+ 
 -- 
-Dear Sir/Madam
+2.31.1
 
-My name is Mr George Michael,i am the Personal Aid to former
-President Baba Yahya Abdul-Aziz Jemus Jammeh the Republic of Gambia in
-west Africa, who is currently in exile with his farmily. I have been
-trying on how to get in touch with you over an important issue
-concerning a project that will be profitable. I anticipate hearing
-from you for more details.
-
-Yours faithfully
-Mr George Michael

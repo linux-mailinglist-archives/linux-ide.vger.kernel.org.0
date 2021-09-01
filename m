@@ -2,74 +2,105 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 645A73FE047
-	for <lists+linux-ide@lfdr.de>; Wed,  1 Sep 2021 18:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC943FE197
+	for <lists+linux-ide@lfdr.de>; Wed,  1 Sep 2021 19:57:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237612AbhIAQql (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 1 Sep 2021 12:46:41 -0400
-Received: from mail.repatriados.gov.py ([168.90.176.63]:16294 "EHLO
-        mail.repatriados.gov.py" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231419AbhIAQqk (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 1 Sep 2021 12:46:40 -0400
-X-Greylist: delayed 7179 seconds by postgrey-1.27 at vger.kernel.org; Wed, 01 Sep 2021 12:46:40 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.repatriados.gov.py (Postfix) with ESMTP id 9008262BDC;
-        Wed,  1 Sep 2021 01:09:06 -0400 (-04)
-Received: from mail.repatriados.gov.py ([127.0.0.1])
-        by localhost (mail.repatriados.gov.py [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id rlX6EMKH7Uvc; Wed,  1 Sep 2021 01:09:04 -0400 (-04)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.repatriados.gov.py (Postfix) with ESMTP id 90C116C4D9;
-        Tue, 31 Aug 2021 23:33:34 -0400 (-04)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.repatriados.gov.py 90C116C4D9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=repatriados.gov.py;
-        s=66AB3A4C-4957-11E8-AF15-073A956E488A; t=1630467215;
-        bh=re+Bi7IjhFEavKutGVOnSLzHkgr9hnVuewhYSbG4AUw=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=FSCwH3wa5kL+yRP/Vn+KhDOVRBBcvWwsKe5aSDfuwH3Cf2eqarwSKRTcg1MgcSAQa
-         3EJKhVJj9tuHzlNE5XqWZssdlgGjkpalC/VIwddaJmsm1zsRDHt5ZZIhxkjeBxCeMc
-         vlsqikIJKP+R/nDBGy4FJkLbNe7sHqAjoZmKSR+tExHpZE/Sm3ir2bw+s9Tkr3RKrt
-         rE/zKxc+YJH9fQ4hiKwCGyDR1PM1JEgYm4bPkMELwzlLWSj7eGI7zsTc6NjblBXmpG
-         IVsIUqh/reLdL0NRo5RtSKWAiwUw5ing6MKiiaXH4Seq2tlN9HyGTZIRxDjIcC+sCR
-         g0iesBb6Koxow==
-X-Virus-Scanned: amavisd-new at repatriados.gov.py
-Received: from mail.repatriados.gov.py ([127.0.0.1])
-        by localhost (mail.repatriados.gov.py [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id bSWCeUZW1dxW; Tue, 31 Aug 2021 23:33:33 -0400 (-04)
-Received: from cris-PC.www.huaweimobilewifi.com (unknown [105.4.4.195])
-        by mail.repatriados.gov.py (Postfix) with ESMTPSA id 6CDD067E31;
-        Tue, 31 Aug 2021 21:56:58 -0400 (-04)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1344156AbhIAR6Q (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 1 Sep 2021 13:58:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50116 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235811AbhIAR6P (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 1 Sep 2021 13:58:15 -0400
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [IPv6:2001:67c:2050::465:103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8581C061575;
+        Wed,  1 Sep 2021 10:57:18 -0700 (PDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4H0BbH2L3szQjbT;
+        Wed,  1 Sep 2021 19:57:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mailbox.org; h=
+        content-transfer-encoding:content-language:content-type
+        :content-type:in-reply-to:mime-version:date:date:message-id:from
+        :from:references:subject:subject:received; s=mail20150812; t=
+        1630519032; bh=iiFuur+l1J/KhtNF4tWXIjcm5al7+tE31ONOdSHYhFA=; b=W
+        Ucl38QZkuNwOmjivRpl2Cw2BZY6AsWXuQq0LlrHRfjcnCdZjz04Sfa6fDUpWB3PB
+        XnyeEAo9F/yg17NOPt3np30Dmj1mdTCEUIIV7v0ZqFa6eqi7sq9QTaN25DKToYa1
+        bWlrgOr5e8aZk4/Q07kgRiNYalpO8LNNV0vI/LWK9rOur/zTzWRMysITj8TWoccT
+        xuh0YIiXFHfrIQ8xDmOoHfJGSxUDWRo0Pr/ZA/Wm5fJFmdYMCBYhjm4rNEYxnZAR
+        ZuD4ThNcjPhBT4vgNEYEhlGsk76+p7e2tz3QV/51HVS0hdDuSnMkIhULeiR8jwPD
+        FrOMhAalDsvdqtCsqkdOQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+        t=1630519033;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=FM1G0FVwaL8AnIvDuofXr9fZVFPakaZvOfxqNvVWMHE=;
+        b=cU9AGLR/+v2+rsGl/tn2zoiJpFLHdPEU6Xawx80W0uVQ1c9NUNSCb1zx8qxPpq57c9CJuU
+        8RguYsttycJ/gV2iI9elU1HGvaZOzmYAKzHRnzUXvKUQtuQ9JJ9QYyS53movMWfxAv1/ad
+        cRvm3L/NeS7r5HE7YNxkAVrwGes+EngY0to1dXarhcOMvCmJ3CsFVwQkEEWDON0R7mvajS
+        8IDvOddv3IZk4sja8YKvk+R/vgViI6ACj/QQHOiuGOGQjHW/u5mZUuXAvXfcnkfYAFCWfO
+        iz15Y07pcihW8dHIU1i+GbDVEjcTNcvFBh8TvMi02amyDr/xBIiDMylHyqCb9Q==
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Subject: Re: [PATCH v4] libata: Add ATA_HORKAGE_NO_NCQ_ON_AMD for Samsung 860
+ and 870 SSD.
+To:     Damien Le Moal <Damien.LeMoal@wdc.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "hpa@redhat.com" <hpa@redhat.com>
+Cc:     "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "axboe@kernel.dk" <axboe@kernel.dk>,
+        "hdegoede@redhat.com" <hdegoede@redhat.com>
+References: <1876334901.51676.1630481868266@office.mailbox.org>
+ <DM6PR04MB708115B43C231444AFB22DC2E7CD9@DM6PR04MB7081.namprd04.prod.outlook.com>
+From:   Tor Vic <torvic9@mailbox.org>
+Message-ID: <1e52352c-05e3-700a-58e7-462e1c0adbd1@mailbox.org>
+Date:   Wed, 1 Sep 2021 17:56:57 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Euro?=
-To:     Recipients <mdominguez@repatriados.gov.py>
-From:   ''Charles jackon'' <mdominguez@repatriados.gov.py>
-Date:   Wed, 01 Sep 2021 03:57:29 +0200
-Reply-To: charlesjacksonjr001@gmail.com
-Message-Id: <20210901015700.6CDD067E31@mail.repatriados.gov.py>
+In-Reply-To: <DM6PR04MB708115B43C231444AFB22DC2E7CD9@DM6PR04MB7081.namprd04.prod.outlook.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 6200D1898
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hallo
-
-Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Ameri=
-ka, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen =
-US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der H=
-ilfsgelder f=FCr das Corona-Virus.
-
-Dies ist Ihr Spendencode: [CJ530342019]
-
-www.youtube.com/watch?v=3DBSr8myiLPMQ
 
 
-Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
+On 01.09.21 08:13, Damien Le Moal wrote:
+> On 2021/09/01 16:38, torvic9@mailbox.org wrote:
+>> (Sorry for not doing a proper reply)
+>>
+>> Hello,
+>> Noob here.
+>> I have a Samsung 860 Pro connected to a AMD X570 chipset mainboard and
+>> it just works flawlessly on 5.13 and 5.14.
+>> Are you sure that *every* 860/870 is concerned by this problem on
+>> *every* AMD controller? Isn't this too restrictive?
+>> Or am I simply missing something?
+> 
+> Is you drive being initialized with NCQ enabled ?
+> 
+> cat /sys/block/sdX/device/queue_depth ?
 
-charlesjacksonjr001@gmail.com
+Samsung 860 Pro:
+$ cat /sys/block/sda/device/queue_depth
 
-Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+
+32
+
+Samsung 860 Evo:
+$ cat /sys/block/sdb/device/queue_depth
 
 
-Herr Charles Jackson
+32
+
+> 
+>>
+>> Thanks,
+>> Tor
+>>
+> 
+> 

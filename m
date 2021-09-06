@@ -2,76 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7D4401E64
-	for <lists+linux-ide@lfdr.de>; Mon,  6 Sep 2021 18:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F94D401F19
+	for <lists+linux-ide@lfdr.de>; Mon,  6 Sep 2021 19:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244261AbhIFQdu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 6 Sep 2021 12:33:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60674 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244188AbhIFQds (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 6 Sep 2021 12:33:48 -0400
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A5CC0613D9
-        for <linux-ide@vger.kernel.org>; Mon,  6 Sep 2021 09:32:43 -0700 (PDT)
-Received: by mail-il1-x134.google.com with SMTP id x5so7352484ill.3
-        for <linux-ide@vger.kernel.org>; Mon, 06 Sep 2021 09:32:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
-        b=AQXQzDCQYveoXX8TzTwuiAk/FEyR3wCuvC9VFUOgylxIOdg1EFZyjuPsYQnAcX6J45
-         hGQ/TLw/xoIRE4dR4duos/11L9nUC9pcUBl/RXv6WkJZOj9GF3K+dFgRBHNvOmD3hg/2
-         8aWexR+OCBkLd9FzUsmw6Mf2hXMKPJJYu5JOjAjvp1WIk7xCdh9mnYnLj+26R+tY7rgo
-         HJPLbs6wPd+nl87UvFskxFfDoXbe22pxgW1zf9L/3TdM0lyau7vB+LmM0EAyEmYoeoMO
-         ZhwZDLJwTAD2meT4nF7FnViJ3hJIW4496YAschcWJBrRRFI5yQJjoNMRwEQgQiqRwsUz
-         E0sQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
-        b=jaeHv6aJErZ1G2z3OiAZ2c+PtShpTSPrDYYl1xUQDsSkCl6r3vYgO0U5jVtXvk7yEj
-         CcBys40xGYtOYLbNhOhkcmOPJ6LDuVL+wya8gRJwqbMQLLon+d6KeClAH1AFqklfy+6A
-         Y37G1/UaTPgDG4DaQEKc7x2EsPCDWs8eB8RZLcZp+VjdXMUvUAEpanLcRcgRddH51H73
-         glq9OwhS5Zexdjt/0y8DBi05AJIEkpNHQ+6jGsuyAQhxHzJO3nl2hNu5HwsNgTs29J9I
-         qoffP2RztVvjXXyqWQaP1ejZ6YfWzQASDMQPTJua3UCnzCzUQ1rioq0iwiF4y8ybjjgg
-         doRA==
-X-Gm-Message-State: AOAM530Ga1x0plJ7aMcLLBwAZWFFGSJOeG+FsGwQ+Z0JYVKsuUK96Rzq
-        kouWsUTNySPuYnatOLpJ1/rk+tSTdL1+31/k6mA=
-X-Google-Smtp-Source: ABdhPJyNYLbPp58BcQ7mI7j8eL1xi4DRM/CVSKmP+XLlKZnpaM0c4B2zxnkjBdrMYYyKOgNolLHbsclwr0lft4or1UU=
-X-Received: by 2002:a05:6e02:1ca6:: with SMTP id x6mr8854675ill.86.1630945961991;
- Mon, 06 Sep 2021 09:32:41 -0700 (PDT)
-MIME-Version: 1.0
-Received: by 2002:a05:6e02:1d86:0:0:0:0 with HTTP; Mon, 6 Sep 2021 09:32:41
- -0700 (PDT)
-Reply-To: suzara.wans2021@gmail.com
-From:   Mrs Suzara Maling Wan <mr.brueshands4world@gmail.com>
-Date:   Mon, 6 Sep 2021 09:32:41 -0700
-Message-ID: <CABvx5tpkSnzTGw2hd3awtMaYZ6SrrR=GwA3X22LN=2t5+bDtOw@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S243874AbhIFRQa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 6 Sep 2021 13:16:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37648 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S243812AbhIFRQa (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Mon, 6 Sep 2021 13:16:30 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPS id 4E27661004;
+        Mon,  6 Sep 2021 17:15:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1630948525;
+        bh=NHszRdsEugz7z7nOZ9Ux5N0HWFK1Me9ttTcD1MhbnWo=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=IrFL8wE+dFfqNnVejAu9gT0dDrPqVdocQBOn3Tp6TL0u/dvABf5VSVAWc5uyqG3Q1
+         fCMziba+oZJi4XbzMn1Lbsp69T/z2IWdDafIFUC4YvoTaOiO4k9F4s3l1a1nwTXnGB
+         a+GWb+4GJYgRoy4kiLkKPDd4H+SJKU2iHz9dVZdna+LkK0dJCmlHvPPvBjBRShk/au
+         WlKCMjrsqJlEKi0fQski5QFRzK0lxhJVIYgHfntM8XsIsd766GDGrJYNdd17SFMuAm
+         8Ljrjkv2SCotXL4q6BuJMGIGiVgzysT3ijda77Jb2LL2OriQ9Mm/s9sG2ESkpYyp7r
+         3syqxi/+LhQQg==
+Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 48436608FA;
+        Mon,  6 Sep 2021 17:15:25 +0000 (UTC)
+Subject: Re: [GIT PULL] libata fixes for 5.15-rc1
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <9004cd72-d5a7-da36-10c0-7ef80d222950@kernel.dk>
+References: <9004cd72-d5a7-da36-10c0-7ef80d222950@kernel.dk>
+X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
+X-PR-Tracked-Message-Id: <9004cd72-d5a7-da36-10c0-7ef80d222950@kernel.dk>
+X-PR-Tracked-Remote: git://git.kernel.dk/linux-block.git tags/libata-5.15-2021-09-05
+X-PR-Tracked-Commit-Id: 7a8526a5cd51cf5f070310c6c37dd7293334ac49
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: eebb4159a2bf660b545ecb6ee318179971d610a2
+Message-Id: <163094852529.9377.11013413572782361337.pr-tracker-bot@kernel.org>
+Date:   Mon, 06 Sep 2021 17:15:25 +0000
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        ALWAYS copy <linux-ide@vger.kernel.org>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+The pull request you sent on Sun, 5 Sep 2021 12:57:29 -0600:
+
+> git://git.kernel.dk/linux-block.git tags/libata-5.15-2021-09-05
+
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/eebb4159a2bf660b545ecb6ee318179971d610a2
+
+Thank you!
+
 -- 
-My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
-of the Philippine presently base in West Africa B/F, dealing with
-exportation of Gold, I was diagnose of blood Causal decease, and my
-doctor have announce to me that I have few days to leave due to the
-condition of my sickness.
-
-I have a desire to build an orphanage home in your country of which i
-cannot execute the project myself due to my present health condition,
-I am willing to hand over the project under your care for you to help
-me fulfill my dreams and desire of building an orphanage home in your
-country.
-
-Reply in you are will to help so that I can direct you to my bank for
-the urgent transfer of the fund/money require for the project to your
-account as I have already made the fund/money available.
-
-With kind regards
-Mrs Suzara Maling Wan
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html

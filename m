@@ -2,39 +2,39 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 72BF940141E
+	by mail.lfdr.de (Postfix) with ESMTP id BBADB40141F
 	for <lists+linux-ide@lfdr.de>; Mon,  6 Sep 2021 03:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241113AbhIFBcY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S241146AbhIFBcY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Sun, 5 Sep 2021 21:32:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48680 "EHLO mail.kernel.org"
+Received: from mail.kernel.org ([198.145.29.99]:47772 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1351788AbhIFBbD (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sun, 5 Sep 2021 21:31:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 4325C61220;
-        Mon,  6 Sep 2021 01:24:25 +0000 (UTC)
+        id S1351880AbhIFBbM (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Sun, 5 Sep 2021 21:31:12 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 4448F6113B;
+        Mon,  6 Sep 2021 01:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1630891466;
-        bh=EH6zae6M1SVc1wJPqjJMdqsFNcQXuxHHyJatFnedv4M=;
+        s=k20201202; t=1630891482;
+        bh=z8Ja/ElGQ1hi6wVdgeJUHNWkMXKfTp5otZ9tFjR3EkU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tYTmyGI73vp23h1lCIzNNSDr+Ldat5Ro5MImAFYMrrldtIq3OBtv6tKuY2UKxx2RV
-         Z+SNNR7HYT7CPymTrkHXRg0aWmJ/jWzCTLwVwMTwJeVidDPXxgmfSujkiEhcETqNny
-         5Rd0XCHWFt0MmFSdQQzQsJAGnlvvBk6CQbw6QEzFn9UxXf0s7rrfSjfqqXEArES9rk
-         tCS78ssxoz8RUbEAWFfXVGp2dylWGfBRxFzgvDvfb/uiwTyeE99HZnKrwPAslVRAEB
-         TPvQg9KmkbpjtrUEdLfHZPDcVVCTfC57wcPWJL4QZz0pDvodepA8x8CVB0JFPSFiLu
-         Q8o7bciLMY7lw==
+        b=BvBRdI0pqrJ6coFzd5MkgVsb3R9eZnhRtk21V0dKXVOdc9lkKrt1ekhUhInxplI9W
+         tzSyYBEwbeL1rHKbIWeq7YOn0qmFsw2JCC4EwNpEcr9N/oZUfJO2mNKVuQV1NdrmNv
+         m1AMKZOD5UcxTmO3+2L+9YNabSRmuWOHBeF8zUscXDEnszvrPr97wqzNfQ2Yxk7Zky
+         jY3vW9KULlitOliZYJmnlDE2vnCOZ2yu2VgT6t2n3xyNIHXd8mCJly4q4muc5CXK2l
+         lZ+vJeO8OOUbH3vGGg/gPY3BV4WciV3IpIOuZJGfUtU9GnK7KHJ+k9tJ7bMlJdnOId
+         zeregy6JvEzvg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Damien Le Moal <damien.lemoal@wdc.com>,
         kernel test robot <lkp@intel.com>,
         Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>,
         Sasha Levin <sashal@kernel.org>, linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 08/14] libata: fix ata_host_start()
-Date:   Sun,  5 Sep 2021 21:24:09 -0400
-Message-Id: <20210906012415.931147-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 5/9] libata: fix ata_host_start()
+Date:   Sun,  5 Sep 2021 21:24:30 -0400
+Message-Id: <20210906012435.931318-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210906012415.931147-1-sashal@kernel.org>
-References: <20210906012415.931147-1-sashal@kernel.org>
+In-Reply-To: <20210906012435.931318-1-sashal@kernel.org>
+References: <20210906012435.931318-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -62,10 +62,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 228a4cfb0e7d..ea42840575ca 100644
+index 8ed3f6d75ff1..2ece0a65ccee 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -6213,7 +6213,7 @@ int ata_host_start(struct ata_host *host)
+@@ -6026,7 +6026,7 @@ int ata_host_start(struct ata_host *host)
  			have_stop = 1;
  	}
  

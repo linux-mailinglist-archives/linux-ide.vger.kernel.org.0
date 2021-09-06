@@ -2,101 +2,76 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32BDD40181E
-	for <lists+linux-ide@lfdr.de>; Mon,  6 Sep 2021 10:37:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7D4401E64
+	for <lists+linux-ide@lfdr.de>; Mon,  6 Sep 2021 18:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240625AbhIFIiq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 6 Sep 2021 04:38:46 -0400
-Received: from smtp-out2.suse.de ([195.135.220.29]:45764 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240795AbhIFIip (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 6 Sep 2021 04:38:45 -0400
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 83F5A20097;
-        Mon,  6 Sep 2021 08:37:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1630917460; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cDWTkN/8N4YbWG6A9aGwqWMdZM1Fue9ARJ1BdfJp51E=;
-        b=DZgNLRcfHylemuHQk9jhLJNru7VzIeyS/4JSNukBkFXTgpjO/2cbO0dL0R77YpO5sa7UIa
-        HwB8oLFewdXF0VUlsrcflXEMGdvMA6HFYe23g6EfZsoH1/Uc28OjXApC1MIE3TAY1PUAl9
-        TwEPJvrfECL70go96ofMpNBIJaVyyek=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1630917460;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cDWTkN/8N4YbWG6A9aGwqWMdZM1Fue9ARJ1BdfJp51E=;
-        b=BpZE0edEBNBC0qQpimgUQTWyra3WkVADC1+kuDSHczhDYrLkSSLSDK7vzE+xPPcY7PZZQJ
-        Xxlhz2f/w13iikCw==
-Received: from imap1.suse-dmz.suse.de (imap1.suse-dmz.suse.de [192.168.254.73])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap1.suse-dmz.suse.de (Postfix) with ESMTPS id 60B7713299;
-        Mon,  6 Sep 2021 08:37:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap1.suse-dmz.suse.de with ESMTPSA
-        id XVq7FVTTNWF1cAAAGKfGzw
-        (envelope-from <hare@suse.de>); Mon, 06 Sep 2021 08:37:40 +0000
-Subject: Re: [PATCH v7 5/5] doc: Fix typo in request queue sysfs documentation
-To:     Damien Le Moal <damien.lemoal@wdc.com>,
-        Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        linux-ide@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-References: <20210906015810.732799-1-damien.lemoal@wdc.com>
- <20210906015810.732799-6-damien.lemoal@wdc.com>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <c8c2ec8c-9c51-323d-913d-d9e20ecb8f16@suse.de>
-Date:   Mon, 6 Sep 2021 10:37:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S244261AbhIFQdu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 6 Sep 2021 12:33:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60674 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S244188AbhIFQds (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 6 Sep 2021 12:33:48 -0400
+Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A5CC0613D9
+        for <linux-ide@vger.kernel.org>; Mon,  6 Sep 2021 09:32:43 -0700 (PDT)
+Received: by mail-il1-x134.google.com with SMTP id x5so7352484ill.3
+        for <linux-ide@vger.kernel.org>; Mon, 06 Sep 2021 09:32:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
+        b=AQXQzDCQYveoXX8TzTwuiAk/FEyR3wCuvC9VFUOgylxIOdg1EFZyjuPsYQnAcX6J45
+         hGQ/TLw/xoIRE4dR4duos/11L9nUC9pcUBl/RXv6WkJZOj9GF3K+dFgRBHNvOmD3hg/2
+         8aWexR+OCBkLd9FzUsmw6Mf2hXMKPJJYu5JOjAjvp1WIk7xCdh9mnYnLj+26R+tY7rgo
+         HJPLbs6wPd+nl87UvFskxFfDoXbe22pxgW1zf9L/3TdM0lyau7vB+LmM0EAyEmYoeoMO
+         ZhwZDLJwTAD2meT4nF7FnViJ3hJIW4496YAschcWJBrRRFI5yQJjoNMRwEQgQiqRwsUz
+         E0sQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Hi0ERA05Hh6q+34+Ou3AtyiRWoG/jVLdZcB+Ekv+M3g=;
+        b=jaeHv6aJErZ1G2z3OiAZ2c+PtShpTSPrDYYl1xUQDsSkCl6r3vYgO0U5jVtXvk7yEj
+         CcBys40xGYtOYLbNhOhkcmOPJ6LDuVL+wya8gRJwqbMQLLon+d6KeClAH1AFqklfy+6A
+         Y37G1/UaTPgDG4DaQEKc7x2EsPCDWs8eB8RZLcZp+VjdXMUvUAEpanLcRcgRddH51H73
+         glq9OwhS5Zexdjt/0y8DBi05AJIEkpNHQ+6jGsuyAQhxHzJO3nl2hNu5HwsNgTs29J9I
+         qoffP2RztVvjXXyqWQaP1ejZ6YfWzQASDMQPTJua3UCnzCzUQ1rioq0iwiF4y8ybjjgg
+         doRA==
+X-Gm-Message-State: AOAM530Ga1x0plJ7aMcLLBwAZWFFGSJOeG+FsGwQ+Z0JYVKsuUK96Rzq
+        kouWsUTNySPuYnatOLpJ1/rk+tSTdL1+31/k6mA=
+X-Google-Smtp-Source: ABdhPJyNYLbPp58BcQ7mI7j8eL1xi4DRM/CVSKmP+XLlKZnpaM0c4B2zxnkjBdrMYYyKOgNolLHbsclwr0lft4or1UU=
+X-Received: by 2002:a05:6e02:1ca6:: with SMTP id x6mr8854675ill.86.1630945961991;
+ Mon, 06 Sep 2021 09:32:41 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210906015810.732799-6-damien.lemoal@wdc.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6e02:1d86:0:0:0:0 with HTTP; Mon, 6 Sep 2021 09:32:41
+ -0700 (PDT)
+Reply-To: suzara.wans2021@gmail.com
+From:   Mrs Suzara Maling Wan <mr.brueshands4world@gmail.com>
+Date:   Mon, 6 Sep 2021 09:32:41 -0700
+Message-ID: <CABvx5tpkSnzTGw2hd3awtMaYZ6SrrR=GwA3X22LN=2t5+bDtOw@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 9/6/21 3:58 AM, Damien Le Moal wrote:
-> Fix a typo (are -> as) in the introduction paragraph of
-> Documentation/block/queue-sysfs.rst.
-> 
-> Signed-off-by: Damien Le Moal <damien.lemoal@wdc.com>
-> ---
->   Documentation/block/queue-sysfs.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/block/queue-sysfs.rst b/Documentation/block/queue-sysfs.rst
-> index b6e8983d8eda..e8c74306f70a 100644
-> --- a/Documentation/block/queue-sysfs.rst
-> +++ b/Documentation/block/queue-sysfs.rst
-> @@ -4,7 +4,7 @@ Queue sysfs files
->   
->   This text file will detail the queue files that are located in the sysfs tree
->   for each block device. Note that stacked devices typically do not export
-> -any settings, since their queue merely functions are a remapping target.
-> +any settings, since their queue merely functions as a remapping target.
->   These files are the ones found in the /sys/block/xxx/queue/ directory.
->   
->   Files denoted with a RO postfix are readonly and the RW postfix means
-> 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-
-Cheers,
-
-Hannes
 -- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
+of the Philippine presently base in West Africa B/F, dealing with
+exportation of Gold, I was diagnose of blood Causal decease, and my
+doctor have announce to me that I have few days to leave due to the
+condition of my sickness.
+
+I have a desire to build an orphanage home in your country of which i
+cannot execute the project myself due to my present health condition,
+I am willing to hand over the project under your care for you to help
+me fulfill my dreams and desire of building an orphanage home in your
+country.
+
+Reply in you are will to help so that I can direct you to my bank for
+the urgent transfer of the fund/money require for the project to your
+account as I have already made the fund/money available.
+
+With kind regards
+Mrs Suzara Maling Wan

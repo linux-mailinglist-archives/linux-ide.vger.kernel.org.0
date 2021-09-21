@@ -2,101 +2,86 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E833B4134FD
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Sep 2021 16:05:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A70CA41396F
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Sep 2021 20:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233435AbhIUOHB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Sep 2021 10:07:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
+        id S232220AbhIUSFu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Sep 2021 14:05:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233233AbhIUOG6 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Sep 2021 10:06:58 -0400
-Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869B4C061574
-        for <linux-ide@vger.kernel.org>; Tue, 21 Sep 2021 07:05:29 -0700 (PDT)
-Received: by mail-lf1-x134.google.com with SMTP id i25so82646864lfg.6
-        for <linux-ide@vger.kernel.org>; Tue, 21 Sep 2021 07:05:29 -0700 (PDT)
+        with ESMTP id S232234AbhIUSFq (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Sep 2021 14:05:46 -0400
+Received: from mail-lf1-x144.google.com (mail-lf1-x144.google.com [IPv6:2a00:1450:4864:20::144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84996C061575
+        for <linux-ide@vger.kernel.org>; Tue, 21 Sep 2021 11:04:16 -0700 (PDT)
+Received: by mail-lf1-x144.google.com with SMTP id u18so765203lfd.12
+        for <linux-ide@vger.kernel.org>; Tue, 21 Sep 2021 11:04:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=RkjMpeIuQ6aVWCs6FPMVIVUmVZwq7aWhwwHDvLPHoTA=;
-        b=BGGjQqx2JpICLtdRRkcGftvVKBCtK9t3wAVuK7WIba4H0N9n9zqMXgKVHZOY8JQWZ4
-         hkGmMzbJua8libkiM7bCsbtJ/V+Etjd//3OVEjsAJw0P2rs9JjDjWHXyHnrEHnyztGX9
-         K9BnLSVr89xEPvwzaM+nojSwB1TGBV0NfAUZO0ApF2cQyYmpQ3h5w3HYpGchQ14X5k6I
-         b2ZXeWd+2CjN18/7dBN3NAD+/QxLO77MpQVB0TadM51CYWSG3FfRTa+DWvMNHPRGoO1T
-         fMB8IJX0Vikmnjz8/PNIat0r6WvFT5MX9WooGTwEDJhgJOQTQK9o12Q5aRtx336CmuJ8
-         J/yQ==
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=Qdp0SHs3xmfRjgLIyqNwEa9EGz3sQom2u8TOqtBT/Zc=;
+        b=O2SeaTDR0Td4wCHBeBh8DIZ1+VvcO2j8yCG6llPqk0yzbvDRAq9lK1DvV+Bo0Iwyjo
+         cyvRbzXCihC8v4coMrS1h0wG5inENyU6cPJ16tUvPkMlSCKVrXqsLRVh3+KJzB0l6D7L
+         cbtXzMmNOpv72i8U3eDkgKXmppn3a0pHhIG/yOwDrHFYo+RM8ZA3Bqyn6dbFo3bBQP4S
+         VTsYagNaLWqoYN4EawOYM/E9nXzEsf8g8IJMhJx7W+QmBsCOU5sbmYQz+6ck58DoslGG
+         FM4Uj3CTP4xiBnfWAlm5ZFfDDYUU5GZ2vh/ZSckVptr6dAZCZPKk9LSubEscTZIreOwv
+         j05g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=RkjMpeIuQ6aVWCs6FPMVIVUmVZwq7aWhwwHDvLPHoTA=;
-        b=C7zCayK6s/399b1GaWpE+NGvrpuISHxML2hohRwVSEM4+dMZZD1XZnfadyyQjjRSMx
-         3rudhO884qNZoYiXAiNTK81cbh8yQ9VRVoXfW9QOo7vbepyBD/KvY1pjvDK7j5n8vFQ0
-         l4nJo3NYewrP3Jtl/ekuHOt7GfQ8BCaGUWsYYum/vxmRuQjAIh0IkcRogwGJiWxMp/99
-         uzbJsMOhL/P9osqZwoWjEUrbtNdPa98bOWvOcN3ids3CcBVCUSiEhyXyiZNdlQeElPwI
-         jRx8UxEpQrzcrTB5NDKW3w3F0SKOuVIwDquJQ2/q51ZII7GgapTmJiL3ZnvHEQS7RJZG
-         U8+Q==
-X-Gm-Message-State: AOAM531DPS3mUBvx9m6xUYpsWLsuqq0E3bcKGqi0NtvJJjrndEaSIkEw
-        1GP8m+UOKu5galrjPqzMo5k+o69Ddpy67Jqwcb8=
-X-Google-Smtp-Source: ABdhPJxkuJ0SqtgHfL9/+qt5fiKjpteIcLd4dHaGUZDJsjsDUujkgekUkbjbP6g/EYSKmYelSu1jHfm8JwGMIu7E1S0=
-X-Received: by 2002:a2e:6808:: with SMTP id c8mr28182825lja.70.1632233125704;
- Tue, 21 Sep 2021 07:05:25 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=Qdp0SHs3xmfRjgLIyqNwEa9EGz3sQom2u8TOqtBT/Zc=;
+        b=7c0WCI79ZnW106KP5MZxeRi+MzrvJqurxndi5PEbcEiOMApDk2L4WOXEAWl/Si8sxX
+         FrrVsBPPKNcxAwKlodT6ZTe+dW6XmZMhcfCp8rl1UOHc1rP77WeS4J0lD7wiYEMND2CH
+         cIGJI7soJT1ki5aII2IKLIt+Cparg+UvCdKeXHQfXHCvEbjqE3yagt38vq4HjkpcCrBG
+         AflhUcrLwZ82wQNhh5hMp/0zblWl+RX2cU4yttIUVTdYG1qW/1sCYrPVc4CNsoL1ndGk
+         spnaxi8GAq9gX4hZ2SpoZarmR5D+pU9eDeWccqceuZ6EK7Tm/f9G/nu6HytfNreQoAZo
+         sSmg==
+X-Gm-Message-State: AOAM533myLdjbwj3+lrzYKEvOBzttRBV6swIGKawe62My38iHRBDUu2s
+        DIdCMcA4USvSBM1wBKoBwac1LBE8AeYYEBgJ5oM=
+X-Google-Smtp-Source: ABdhPJxeZaX5d3+LIS2gKm6aqbrdlhVJthvw906GUYjuPiflMRuCP3pbpKUwVWm1+D1WSO/GaaMD/+N69lwvVjncD7c=
+X-Received: by 2002:a2e:7f15:: with SMTP id a21mr28498054ljd.27.1632247454508;
+ Tue, 21 Sep 2021 11:04:14 -0700 (PDT)
 MIME-Version: 1.0
-Reply-To: mrsdaniella.kyle@yandex.com
-Sender: mrsrachealgoodluck1@gmail.com
-Received: by 2002:a9a:7f5c:0:b0:145:6a96:fed5 with HTTP; Tue, 21 Sep 2021
- 07:05:24 -0700 (PDT)
-From:   Mrs Daniella Kyle <mrsdaniellakyle6@gmail.com>
-Date:   Tue, 21 Sep 2021 07:05:24 -0700
-X-Google-Sender-Auth: Dy3KX4OzFBiYnZQPabgtkai-hRs
-Message-ID: <CAAQ9gCfhCXGs_t4Unci=0RhCjJKeHmujoqeaSmTW2uxDz0sSXQ@mail.gmail.com>
-Subject: Re:ATM Visa card compensation, Thanks for your past effort
+Sender: mrsnicolemarois8@gmail.com
+Received: by 2002:a2e:a803:0:0:0:0:0 with HTTP; Tue, 21 Sep 2021 11:04:13
+ -0700 (PDT)
+From:   "Mrs.Nicole  Marois" <nicole1563marois@gmail.com>
+Date:   Tue, 21 Sep 2021 18:04:13 +0000
+X-Google-Sender-Auth: V77XRsopHcZkWDSHk2g-jfNZoKo
+Message-ID: <CAAadsjtXzVK2Estdd=_udEZNb=ad3yfmkPunKN-bVML5Jwd15A@mail.gmail.com>
+Subject: Hello Dear,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Good Day,
+Hello Dear,
 
-This message may actually come to you as surprises today, To be very
-honest with you, It is a joyful moment for me and my family right now,
-so therefore am using this opportunity to inform you that have
-successfully move to Vietnam where am currently living with my
-business partner who assisted me to complete the transfer, but due to
-the willingness and acceptance you showed during my pain have decided
-to willingly compensated you and show my gratitude to you with these
-sum of $950,000.00 Nine Hundred and fifty Thousand US Dollars).
+Please do not feel disturbed for contacting you, based on the critical
+condition I find mine self though, it's not financial problem, but my
+health you might have know that cancer is not what to talk home about,
+I am married to Mr.Duclos Marois who worked with Tunisia embassy in
+Burkina Faso for nine years before he died in the year 2012.We were
+married for eleven years without a child. He died after a brief
+illness that lasted for five days.
 
-I want you to accept this amount it=E2=80=99s from the bottom of my heart,
-have issued the check and instructed the bank to roll the fund on a
-master card for security reasons, you can use the card to withdraw
-money from any ATM machine worldwide with a maximum of US$10,000 per
-day. My bank account manager said you can receive the card and use it
-anywhere in this global world.
+Since his death I decided not to remarry, When my late husband was
+alive he deposited the sum of US$ 9.2m (Nine million two hundred
+thousand dollars) in a bank in Burkina Faso, Presently this money is
+still in bank. And My Doctor told me that I don't have much time to
+live because of the cancer problem, Having known my condition I
+decided to hand you over this fond to take care of the less-privileged
+people, you will utilize this money the way I am going to instruct
+herein. I want you to take 30 Percent of the total money for your
+personal use While 70% of the money will go to charity" people and
+helping the orphanage.
 
- Go ahead contact the Global ATM Alliance directly with this below
-information. Email Address:   maastercarddeptme20@yahoo.com
+I don't want my husband's efforts to be used by the Government. I grew
+up as an Orphan and I don't have anybody as my family member,
 
-The Company Name: ........... ....... Global Alliance Burkina Faso
-Company Address; ...... 01BP 23 Rue Des Grands Moulins.Ouagadougou, Burkina=
- Faso
-Email Address: ..... [maastercarddeptme20@yahoo.com]
-Name of Manager In charge: Mrs Zoure Gueratou
+Regards,
 
-Presently, I am very busy here in Vietnam because of the investment
-projects which I and my new partner are having at hand, I have given
-instructions to the ATM Visa card office on your behalf to release the
-ATM card which I gave to you as compensation. Therefore feel free and
-get in touch with her and she will send the card and the pin code to
-you in your location in order for you to start withdrawing the
-compensation money without delay.
-
-Let me know as soon you received the card together with the pin code.
-
-Thank you
-Yours Sincerely
-Daniela Angelo Kyle
+Mrs.Nicole Marois.
+written from Hospital.

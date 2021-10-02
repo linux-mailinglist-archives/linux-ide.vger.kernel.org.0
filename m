@@ -2,102 +2,83 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D83B141F638
-	for <lists+linux-ide@lfdr.de>; Fri,  1 Oct 2021 22:18:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F5D41FB5C
+	for <lists+linux-ide@lfdr.de>; Sat,  2 Oct 2021 14:00:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231818AbhJAUTt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 1 Oct 2021 16:19:49 -0400
-Received: from mxout04.lancloud.ru ([45.84.86.114]:58576 "EHLO
-        mxout04.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230045AbhJAUTs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 1 Oct 2021 16:19:48 -0400
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru 7185420A58A3
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Subject: Re: [PATCH] drivers/ata: Fix kernel pointer leak
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Guo Zhi <qtxuning1999@sjtu.edu.cn>
-CC:     <linux-ide@vger.kernel.org>
-References: <20210929121618.1157415-1-qtxuning1999@sjtu.edu.cn>
- <265805eb-162e-4d2d-1e56-39aa16c87934@opensource.wdc.com>
- <baee2cee-3401-e8e4-efb3-432d48bb9589@omp.ru>
- <445ae4fd-46af-ba09-1921-2ccedcdcf4ce@opensource.wdc.com>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <b0176181-ae0d-f2d7-d9de-776c161b2ff9@omp.ru>
-Date:   Fri, 1 Oct 2021 23:18:01 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S232898AbhJBMCJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 2 Oct 2021 08:02:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232936AbhJBMCI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 2 Oct 2021 08:02:08 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD99FC061783
+        for <linux-ide@vger.kernel.org>; Sat,  2 Oct 2021 05:00:22 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id z184so1522672iof.5
+        for <linux-ide@vger.kernel.org>; Sat, 02 Oct 2021 05:00:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=DAO1bC92JOsdQ/NNexsSuEPMQkilehd80HK72Rw533l3nqgRLvVKlZ4YV3yD/WCheY
+         4oM2fGsJKCvHisgrawN73IUYlsBA00mFtxuEijoEieucGMttbEK51A9+6y1h1vfNYsSL
+         V+iO0/gGIhsADgxIDt87cycZICu4jv29F/5ETG1bQzrpIq8psSXZSsFuHD+2cbtRtNV/
+         5BovcK9ZTGyMKsheQu3wwH62Vg551soQeKVTlj9RzfHqVL5suo4MlDJx6GvxHWnDzFlb
+         x3+Zd8VPNJghIanrTHnG53Yxpt0043BQ7R/6Lfzl5vQ4F5mulm/cNLyIIEzRMo1ZftRF
+         8VCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
+        b=OIPusZ8ozPkzTXWvhefDiorDpgRgCGzvkdGEbCqVuTHL8Lib6om7witzPf9JcXsBYO
+         ehwpJuQMDBDM75ktVjoTr0mSlZ1nfighN/x1W8ZzJ10lYRVa+jnSa/wVeRTsSoQIvaSr
+         E5yBJY17iZwtveVyHzzNKvd9IrsmQwg+Q770QQoPRrSTQ8j/m2RXBxGVSjVUo6WcpXA4
+         m2oixklQu6nU3XoJLCyWm9tg9cDP3fJkuWbcRG1K71BHURl7l/+tDS5hxJceTW+f8Dvf
+         qIIbjJqKdb89VBowgZJTvYvsze2YoaOU5MRD3oILlJRFjpfkBMcqpR7kfGY8xnW1eLfF
+         0bdw==
+X-Gm-Message-State: AOAM531X2Ry7xzXqa73uEsGU2cz5s1YX4FWdRlpZ7H+ya9GMS3B02YcJ
+        Qp0mQSUB/KXngcpIHi6l3xJyeccpP7ihXiLxliY=
+X-Google-Smtp-Source: ABdhPJzaNlegqSNGaU2rEjcw7R82KLsQUybV5SJRnD84iDcFQAkNifcNUeBKLnoeSIPUqunFsYney56+JL5zHQvZr/g=
+X-Received: by 2002:a02:a18d:: with SMTP id n13mr2632357jah.132.1633176022067;
+ Sat, 02 Oct 2021 05:00:22 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <445ae4fd-46af-ba09-1921-2ccedcdcf4ce@opensource.wdc.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
- LFEX1907.lancloud.ru (fd00:f066::207)
+Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:00:21 -0700 (PDT)
+Reply-To: unitednnation0@gmail.com
+From:   "U.n" <wadebaye33@gmail.com>
+Date:   Sat, 2 Oct 2021 00:00:21 -1200
+Message-ID: <CACE0T5XpHfLe2aaSywgKNWk-y8sFt0sp3qnGdVPEMJnR3OjNpg@mail.gmail.com>
+Subject: Attention
+To:     unitednnation0@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 10/1/21 4:18 AM, Damien Le Moal wrote:
-
-[...]
->>>> Pointers should be printed with %p or %px rather than cast to
->>>> 'unsigned long' and pinted with %lx
->>>
->>> s/pinted/printed
->>>
->>>> Change %lx to %p to print the secured pointer.
->>>>
->>>> Signed-off-by: Guo Zhi <qtxuning1999@sjtu.edu.cn>
->>>> ---
->>>>   drivers/ata/pata_atp867x.c | 10 +++++-----
->>>>   1 file changed, 5 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/drivers/ata/pata_atp867x.c b/drivers/ata/pata_atp867x.c
->>>> index 2bc5fc81efe3..c32b95f48e50 100644
->>>> --- a/drivers/ata/pata_atp867x.c
->>>> +++ b/drivers/ata/pata_atp867x.c
->>>> @@ -447,11 +447,11 @@ static int atp867x_ata_pci_sff_init_host(struct ata_host *host)
->>>>   #ifdef	ATP867X_DEBUG
->>>>   		atp867x_check_ports(ap, i);
->>>>   #endif
->>>> -		ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
->>>> -			(unsigned long)ioaddr->cmd_addr,
->>>> -			(unsigned long)ioaddr->ctl_addr);
->>>> -		ata_port_desc(ap, "bmdma 0x%lx",
->>>> -			(unsigned long)ioaddr->bmdma_addr);
->>>> +		ata_port_desc(ap, "cmd 0x%p ctl 0x%p",
->>>> +			ioaddr->cmd_addr,
->>>> +			ioaddr->ctl_addr);
->>>> +		ata_port_desc(ap, "bmdma 0x%p",
->>>> +			ioaddr->bmdma_addr);
->>>>   
->>>>   		mask |= 1 << i;
->>>>   	}
->>>>
->>>
->>> Looks OK to me. But please fix the commit title to:
->>>
->>> "ata: atp867x: Fix pointer value print"
->>>
->>> "pointer leak" is too scary for what is only a simple printk problem.
->>
->>     It's not a simple printk() problem, it's an kernel info leak that he's 
->> fixing. But, as I said, this driver doesn't use MMIO, so "leaks" only I/O port 
->> addresses.
-> 
-> OK. I interpreted "leak" as memory leak... So the problem is print of pointer
-> addresses that are unused. But if they are, shouldn't the pointers be NULL ? (I
-> am absolutely not familiar with this driver, never looked at it).
-
-  They are used to map the I/O parts, so the driver can use ioread*()/iowrite()*.
-
-[...]
+--=20
 
 
-MBR, Sergey
+Attention Sir/Madam
+This is the United Nation (UN). We the United Nations (UN) Globally
+has approved (US$2.500,000)( two Million Five hundred thousand
+dollars) compensation as part of our responsibilities for humanitarian
+Aid for fighting against CoronaVirus and you are among the lucky ones.
 
+
+This compensation is for the most affected countries, communities and
+families across the global. Your funds were deposited with Bank in USA
+to transfer your funds to you via Internet Banking. You have to send
+your full details as state below:with this email Address
+  ( unitednnation0@gmail.com )
+Your full names:
+Address:
+Telephone:
+Occupation:
+
+
+
+Yours Sincerely
+Mr. Ant=C3=B3nio Guterres
+United Nations (UN).

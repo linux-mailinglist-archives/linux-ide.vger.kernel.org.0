@@ -2,83 +2,70 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F5D41FB5C
-	for <lists+linux-ide@lfdr.de>; Sat,  2 Oct 2021 14:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA0C6420153
+	for <lists+linux-ide@lfdr.de>; Sun,  3 Oct 2021 13:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbhJBMCJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 2 Oct 2021 08:02:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232936AbhJBMCI (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 2 Oct 2021 08:02:08 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD99FC061783
-        for <linux-ide@vger.kernel.org>; Sat,  2 Oct 2021 05:00:22 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id z184so1522672iof.5
-        for <linux-ide@vger.kernel.org>; Sat, 02 Oct 2021 05:00:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=DAO1bC92JOsdQ/NNexsSuEPMQkilehd80HK72Rw533l3nqgRLvVKlZ4YV3yD/WCheY
-         4oM2fGsJKCvHisgrawN73IUYlsBA00mFtxuEijoEieucGMttbEK51A9+6y1h1vfNYsSL
-         V+iO0/gGIhsADgxIDt87cycZICu4jv29F/5ETG1bQzrpIq8psSXZSsFuHD+2cbtRtNV/
-         5BovcK9ZTGyMKsheQu3wwH62Vg551soQeKVTlj9RzfHqVL5suo4MlDJx6GvxHWnDzFlb
-         x3+Zd8VPNJghIanrTHnG53Yxpt0043BQ7R/6Lfzl5vQ4F5mulm/cNLyIIEzRMo1ZftRF
-         8VCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=nsZbpm1YBoHMpWTnzHLuE/zYZ0yg4jBiKD5Q7oCTPBE=;
-        b=OIPusZ8ozPkzTXWvhefDiorDpgRgCGzvkdGEbCqVuTHL8Lib6om7witzPf9JcXsBYO
-         ehwpJuQMDBDM75ktVjoTr0mSlZ1nfighN/x1W8ZzJ10lYRVa+jnSa/wVeRTsSoQIvaSr
-         E5yBJY17iZwtveVyHzzNKvd9IrsmQwg+Q770QQoPRrSTQ8j/m2RXBxGVSjVUo6WcpXA4
-         m2oixklQu6nU3XoJLCyWm9tg9cDP3fJkuWbcRG1K71BHURl7l/+tDS5hxJceTW+f8Dvf
-         qIIbjJqKdb89VBowgZJTvYvsze2YoaOU5MRD3oILlJRFjpfkBMcqpR7kfGY8xnW1eLfF
-         0bdw==
-X-Gm-Message-State: AOAM531X2Ry7xzXqa73uEsGU2cz5s1YX4FWdRlpZ7H+ya9GMS3B02YcJ
-        Qp0mQSUB/KXngcpIHi6l3xJyeccpP7ihXiLxliY=
-X-Google-Smtp-Source: ABdhPJzaNlegqSNGaU2rEjcw7R82KLsQUybV5SJRnD84iDcFQAkNifcNUeBKLnoeSIPUqunFsYney56+JL5zHQvZr/g=
-X-Received: by 2002:a02:a18d:: with SMTP id n13mr2632357jah.132.1633176022067;
- Sat, 02 Oct 2021 05:00:22 -0700 (PDT)
+        id S230155AbhJCLbL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 3 Oct 2021 07:31:11 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:37723 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230145AbhJCLbI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 3 Oct 2021 07:31:08 -0400
+Received: from localhost ([217.85.124.89]) by mrelayeu.kundenserver.de
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1Ml3ym-1nDnf60Z8m-00lVtN; Sun, 03 Oct 2021 13:28:44 +0200
+From:   =?UTF-8?q?Reimar=20D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
+To:     Damien Le Moal <Damien.LeMoal@wdc.com>, linux-ide@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, hch@infradead.org,
+        Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: [PATCH v4] Fixes to DMA state check
+Date:   Sun,  3 Oct 2021 15:28:45 +0200
+Message-Id: <20211003132851.12574-1-Reimar.Doeffinger@gmx.de>
+X-Mailer: git-send-email 2.33.0
+In-Reply-To: <11506f71-80ea-a40f-1d5a-50c8005fcc42@opensource.wdc.com>
+References: <11506f71-80ea-a40f-1d5a-50c8005fcc42@opensource.wdc.com>
 MIME-Version: 1.0
-Received: by 2002:a4f:f90d:0:0:0:0:0 with HTTP; Sat, 2 Oct 2021 05:00:21 -0700 (PDT)
-Reply-To: unitednnation0@gmail.com
-From:   "U.n" <wadebaye33@gmail.com>
-Date:   Sat, 2 Oct 2021 00:00:21 -1200
-Message-ID: <CACE0T5XpHfLe2aaSywgKNWk-y8sFt0sp3qnGdVPEMJnR3OjNpg@mail.gmail.com>
-Subject: Attention
-To:     unitednnation0@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:thVHOPD9ZY8TJqgsy7OhznsUAAhUwzRgGAu+zBVaA2S4O8Vo76O
+ Hlpid1KMAPP/Johl4wxaCb5BbRbFfBw1rbiDh7eH7t0eFM/OQaBxSkrQYslwJI0iTdx8lOf
+ rgIKPqvhVnJLsmQChxf54J8W3jcdebjBm78PoSZDNNea7Nhrb8l6MbLF2EGYU+D4GxmEeyv
+ 2AjGCm1T2p4eu2TqdqOKw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:WtN3xFk2YHE=:Emoz8+c9lZp4I5FbshKw6p
+ OQTzjSJg+ZFmOpChqTLgynOY2TKZNDZwDYHvIRnviBqKdEio40PJw3YiQ6nv2hRGkGrZKyIZg
+ Vj6zD0XfMZmuAKqAPhi6Vill401klcyWiG/uhtBInklDI0GDS5YAlZMLJp8qwRri6B58oC9Jh
+ HoJxeJiWkUFcP8EUB3KvhoKjPdVpYCqCHal4FS9K4xD0gwJA9IN2ZePdGNj6Vjb1kaO4vLMpM
+ B2/r3K8JcTLaiBuoM2XlPzgyuD8LrZAWOHxnJBxGpWqYZr+Bw5DiUCwDzMSSVXvd2b3ibcQKl
+ 8Y1A/oZutZvTXMBNHoNu6NRILyyQnaTwLNmkSEvwqO9bG83VM4hR2Vwubf4xoIbVtxjwcap8L
+ 2bGZbxWTFjei+1wycYKbNp8of3th+pwfD2Inc/+SwxBVPNCnzcZtZ0NTfqwwkre4rEUaGYC/d
+ SGCodwu7c7XQn5hqx0Sif1Rv5Dbs7v6kHI4KGihyH+BRg3LQR/gO6wXNQHVlIXNRspzfEY+Pj
+ dYRp9c8qcPIp+Ld+hWxuchwDpZgp0rvqtF+yCowKJSyl6u4qxmXg3DWhQyXY1/gNJ4nLViLvU
+ uqKjNl8XVv3tVntRvhfkax7seYQwd7+r4XR7mDD9o1LmC8XOZwp1PZJXPRAgzeiAaCb5muuLk
+ Dv8PUJJuMDMpuVPMXaa3Pr1XmfgO/OIdMAxq2Q8dQ6w7leVNXDLTHQB3jg9efOCbHaX8ebCmM
+ 4pttqQGzAdCy8waXBXOdYpUnhpoAXodOmJ5b2m/nSt3KfHjM0aMUWLkwzss=
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
---=20
+Patch series to add ata_dma_enabled calls instead of incorrectly
+checking dev->dma_mode != 0.
+Only the first patch is confirmed to have caused real issues
+that it indeed fixes, rest based purely on code review.
+
+Changes v4:
+- split per file/driver
+- added Signed-off-by and Tested-by lines, improved commit messages
+Changes v3:
+- found and updated more cases in pata_ali, pata_amd and pata_radisys.
+Changes v2:
+- removed initialization change for SATA. I got confused by the
+  ping-pong between libata-eh and libata-core and thought SATA did not
+  set up xfermode
+- reviewed other cases that used dma_mode in boolean context and those
+  seemed to need changing as well, so added them to patch.
+  I did not see any places that would set dma_mode to 0 ever, so I
+  do think they were all indeed wrong.
 
 
-Attention Sir/Madam
-This is the United Nation (UN). We the United Nations (UN) Globally
-has approved (US$2.500,000)( two Million Five hundred thousand
-dollars) compensation as part of our responsibilities for humanitarian
-Aid for fighting against CoronaVirus and you are among the lucky ones.
 
-
-This compensation is for the most affected countries, communities and
-families across the global. Your funds were deposited with Bank in USA
-to transfer your funds to you via Internet Banking. You have to send
-your full details as state below:with this email Address
-  ( unitednnation0@gmail.com )
-Your full names:
-Address:
-Telephone:
-Occupation:
-
-
-
-Yours Sincerely
-Mr. Ant=C3=B3nio Guterres
-United Nations (UN).

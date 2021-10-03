@@ -2,25 +2,25 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F95420155
-	for <lists+linux-ide@lfdr.de>; Sun,  3 Oct 2021 13:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42334420151
+	for <lists+linux-ide@lfdr.de>; Sun,  3 Oct 2021 13:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230135AbhJCLbM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 3 Oct 2021 07:31:12 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:51071 "EHLO
+        id S230136AbhJCLbL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 3 Oct 2021 07:31:11 -0400
+Received: from mout.kundenserver.de ([212.227.126.131]:58913 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230149AbhJCLbI (ORCPT
+        with ESMTP id S230135AbhJCLbI (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Sun, 3 Oct 2021 07:31:08 -0400
 Received: from localhost ([217.85.124.89]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1McH1Q-1n4xyU3uaC-00clox; Sun, 03 Oct 2021 13:28:47 +0200
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MKsWr-1mE6Gw1bW1-00LHLR; Sun, 03 Oct 2021 13:28:47 +0200
 From:   =?UTF-8?q?Reimar=20D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
 To:     Damien Le Moal <Damien.LeMoal@wdc.com>, linux-ide@vger.kernel.org,
         Jens Axboe <axboe@kernel.dk>, hch@infradead.org,
         Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: [PATCH 3/6] pata_ali: fix checking of DMA state
-Date:   Sun,  3 Oct 2021 15:28:48 +0200
-Message-Id: <20211003132851.12574-4-Reimar.Doeffinger@gmx.de>
+Subject: [PATCH 4/6] pata_amd: fix checking of DMA state
+Date:   Sun,  3 Oct 2021 15:28:49 +0200
+Message-Id: <20211003132851.12574-5-Reimar.Doeffinger@gmx.de>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211003132851.12574-1-Reimar.Doeffinger@gmx.de>
 References: <11506f71-80ea-a40f-1d5a-50c8005fcc42@opensource.wdc.com>
@@ -28,23 +28,23 @@ References: <11506f71-80ea-a40f-1d5a-50c8005fcc42@opensource.wdc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:Cu3/hAxSJSAsso4OJfXMFLa889YsaldVd3cvQsDSDVnkB/Hbha3
- z5+74gqwub9GfZpABVonUr6z/n7WVZ0S8cNC5kI5pjUl155wyKTKdLny1dBCwI7TY4bWG12
- U7FyudjDTX4WjH4ELw3X2dzTKf+pq7jF0dWE5nyYj+mVHGbkE7kTPtgbGWlzoYc2FVsCm0V
- C3B5rsrJiYjjPtFj6QFxQ==
+X-Provags-ID: V03:K1:SVS4rPTkQfeL08z7wNxHsdDx0NsumBXfFAOMXuE4YgGpM+z2bci
+ 6q3h6LHQuAwrZ04DUlCImUOUlqVih5SumwJ4GlP0FUvqWVDXFGOFTcrH4Er4wpp0lF7LYxb
+ 82I11Eo/zSykqWo365A61uFxruqH7ci6hg4qElLgqFCqg6OuQG4UJju0a2WEgak505bAAoS
+ XA+l1SfLimZj0u2z1/S7Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Ds33yXKUQyI=:BdO4wxRkxcPSqPqI2BkShH
- 7m3lusXdSohZoZdVA2l0Mg+suZgX/diuAnVfX4mpHRZHlsPGbMXQMJjOQ183agSGlLFyHu1bR
- PbzX3tIUVJQ89NKHN5T2jL7QUVcTgoQolCSsMxo7u7vLnCgPBmKXg9q2Y7AO25p9bXfzYQG8i
- 6cmtcvpo6wiSmv+r0Yrpe7e3glk2Sn3SJhqMIZBO/A5dMFxxa5TBS2QThLTIKlq2yMY1NQVPb
- ydAGvr4TQ3ypCRS2Uhb1Lbwjn87+PNZAUgxs3Oa9d78n70JvE38alwahSWFAhAE1CLep+Mj6v
- 6fMovi9KdqE+WvUbMA9tP9Pr8kUcHHMb9TGCA6FAgWM/d9u8LwW2yW7zyzb48YI7hrtt+40NI
- 6IB+ZxVNhTnRj8jsgLID4FiiKg+RMtB7g03tg6ODQeoun/+/CMC2VDuH7hJMo4wwfksROScXC
- GSm7gQHUlOD590mt26F4/EOKzMhs+2LVINNgxjypHtvd0WuunmUIzXfffU9lt3O7M8EYtgEir
- ZCrFyildn3ytuB9VemrPGAZUcTRYTrF//TvvAP2i7zBFbonitFHYZgyQKwNKlXkq6XPzT7ZCh
- mRDDztVPB9Vs6qCBPrDHL7oDCsMIzazMqK4rLz4UqVjYA1r6YUgAn0A2e3x4pvjxNf+E0F2wa
- AXZDPZEmhAViCJ3ilDcqR8ZgjFsPsfyiEGtSqndrC1OHYZk55oAZSx0bnzZ9daAwq4+YM5mqr
- qzwKcyt3lb2p9AOGdjBwC9gjInBX4WvS6KejpT7+y0huK8eMv6QJ8ggHTKI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UkN8+b+RrZY=:m8gboBFbwTZeErg0UphD68
+ qISesJwqcn5KEOOBFiyRkeSadFNYsTa6A7eNtsi793eqRfOsDq/3/h+QcLm4bsRC6HI5nm95c
+ s1rZCNduPloT44U5OAX8nNHSQxAZN9EQiJa95sz5swah0kr21wLXoMgwcpjarNN/MwnKFEMiK
+ pTo+LAeFwEAWIZq6mcKEC+67I+K+ga+Ra7lH9A94ZhErSJpuKFzOlpxMK+8D8PK0AZ5NnvF1c
+ CBAcD5IftT42B95u0+Q6CmrdZb5ag9eS5gOQ2a2nwh72qR010/a6JbPpsLXGCMxVlJAmyvNgs
+ OsPnfh2llBY5DmkgdR8aUZ3sPUV2iZ/8XUK2tHkZtwOan7nQclwHd4b3rLewjHx4jIjPpECwa
+ /agqyvNyBu0/Kd6MV02CZ84BKtoo6OHgENTfEbVRWoGBe9LNKdjlx9QaLi/ne0PHyzAfEj3cx
+ 6dmDysBM+J6bTbaJWsYRZQ0zROnIubCmpogMPxRVde0IhvEx6Rk7sF95gnCpN6M7Cq4HCJfsG
+ eV/Dau5Qlv49wXUnL+ZQq9Nd49pcif2ecx+oD3mUTJFajvu58nHa/BBcxuJE03QaM2MN+TcPR
+ X58fgGJZIo3j38QE9ZZX6Vs6m7/77DoPt2Mou7Kxm1XVJv6kAQSz2zKwf48+Aj8ecJNr9d30K
+ RjVuQGmPxrcEztk5F6EsFjrOFl9HSSoxh5tihVsKh4N5bBnDUyQHdGK581qw/KTGsV1leZpRT
+ s8QNv2ipPm+5cGPssiHvO+wU3A3YlpmGy2J++Dc+Dbn28Td/QzJhnfoO+jM=
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
@@ -56,31 +56,22 @@ Change based on code review, not tested due to lack of hardware.
 
 Signed-off-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
 ---
- drivers/ata/pata_ali.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ata/pata_amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_ali.c b/drivers/ata/pata_ali.c
-index 557ecf466102..b7ff63ed3bbb 100644
---- a/drivers/ata/pata_ali.c
-+++ b/drivers/ata/pata_ali.c
-@@ -215,7 +215,7 @@ static void ali_set_piomode(struct ata_port *ap, struct ata_device *adev)
- 		struct ata_timing p;
- 		ata_timing_compute(pair, pair->pio_mode, &p, T, 1);
- 		ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
--		if (pair->dma_mode) {
-+		if (ata_dma_enabled(pair)) {
- 			ata_timing_compute(pair, pair->dma_mode, &p, T, 1);
- 			ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
+diff --git a/drivers/ata/pata_amd.c b/drivers/ata/pata_amd.c
+index c8acba162d02..154748cfcc79 100644
+--- a/drivers/ata/pata_amd.c
++++ b/drivers/ata/pata_amd.c
+@@ -66,7 +66,7 @@ static void timing_setup(struct ata_port *ap, struct ata_device *adev, int offse
+ 
+ 	if (peer) {
+ 		/* This may be over conservative */
+-		if (peer->dma_mode) {
++		if (ata_dma_enabled(peer)) {
+ 			ata_timing_compute(peer, peer->dma_mode, &apeer, T, UT);
+ 			ata_timing_merge(&apeer, &at, &at, ATA_TIMING_8BIT);
  		}
-@@ -264,7 +264,7 @@ static void ali_set_dmamode(struct ata_port *ap, struct ata_device *adev)
- 			struct ata_timing p;
- 			ata_timing_compute(pair, pair->pio_mode, &p, T, 1);
- 			ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
--			if (pair->dma_mode) {
-+			if (ata_dma_enabled(pair)) {
- 				ata_timing_compute(pair, pair->dma_mode, &p, T, 1);
- 				ata_timing_merge(&p, &t, &t, ATA_TIMING_SETUP|ATA_TIMING_8BIT);
- 			}
 -- 
 2.33.0
 

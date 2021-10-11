@@ -2,80 +2,93 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD5742894A
-	for <lists+linux-ide@lfdr.de>; Mon, 11 Oct 2021 10:59:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB94B428957
+	for <lists+linux-ide@lfdr.de>; Mon, 11 Oct 2021 11:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235325AbhJKJBu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 11 Oct 2021 05:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52770 "EHLO
+        id S235333AbhJKJFd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 11 Oct 2021 05:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235182AbhJKJBu (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Oct 2021 05:01:50 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 757B8C061570
-        for <linux-ide@vger.kernel.org>; Mon, 11 Oct 2021 01:59:50 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id g25so7239599wrb.2
-        for <linux-ide@vger.kernel.org>; Mon, 11 Oct 2021 01:59:50 -0700 (PDT)
+        with ESMTP id S235325AbhJKJFc (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Oct 2021 05:05:32 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066A9C061570
+        for <linux-ide@vger.kernel.org>; Mon, 11 Oct 2021 02:03:33 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id w14so13207572edv.11
+        for <linux-ide@vger.kernel.org>; Mon, 11 Oct 2021 02:03:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XkKROncgENSnRjTIrJAnQlc/JMhbx8Zp/rLJ67auIjU=;
-        b=eHqmxBoDnCHOYVIo7n7ckk0QA6+QHZm+NREFYxmbKIu+Wdr0eypxU/QYli1K0KlACU
-         CZH639oh53Dn2DMK6mt1qpwu1OCZIJMBppPo1Dq4b4qmHV4/gPKoEN8R8X+4YVT/KUTv
-         q3LPXJNfkJbqs1NRF3w4hgh++f3QwwrB3VrQelzaU8K0OJo0KcEkjlxgQ1wCxtjdXzD9
-         hwWsQDj8/TzCEHRTteh95m8qA0X4FwEIbIsr3vx41w2DJ46L65WvjCvhLi3G+Ou6uX2P
-         tiohOpoO2dnqG9E5MoamuIpH2c0ViwDcmE4dr4xZoLrjYdJFgdre3GlQH9cvkOhROlZn
-         XO0Q==
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=iTKf9DjdX7ML7oblVR6PfUkecF3hAuiXfMlow5WBY5M=;
+        b=fM3OFN1NcNSQHmhbZgC5OTj5gsEMcRzZ8HxHGbDp6wavW8C0zD2dZm0cAi3KnD+nTL
+         301EgNcohzawcxfJ6gAUIg9EmJeZ1lWlhp6bq4o6qpFAAag6cxKUn5lfKLmcAup/ivvw
+         UQcVHiX8zwq07/uquWvPtpFOheadrVZaNOJGFspj7HDG5lrsJQ5MKogpNxGrEQAnZpJj
+         kUdyAEBCGn3YF0gpM7eUf4SCsWY/IJO1rCNDHs/457hGb8XKQRQ6XCSQ6LBCsyzAXMG5
+         rQmJztyDwEdITkCtq6QYt4oXEUS9io6dAuFFebP9wL9bpHaD0tk3hKzMq2PooEkMqWsa
+         z/gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=XkKROncgENSnRjTIrJAnQlc/JMhbx8Zp/rLJ67auIjU=;
-        b=o0MwIEQamcc5YJGpMbQvuau3J1eb1LnOIZ6NGa7LEvSjEsRMucSfBJlfHlRCo9GDVJ
-         ZrC+2qjlRRs63W61AqBhRNwUYVBbqub9DgUi5wj3ySfdb4IhWx82Qw09OkP6S9NkRx6i
-         oAF4qlKH+wTnMk6Wj31aV6/7BoUZZKDOMCLiukLkXZjpx6Rgp3QC8xe2q/tHrSwYtHWe
-         66LFk5u1HQ7VNRrBpHUtWMW07q0IxzmY+JYlv6ngorHqT0cn53jDcxcAuG+RYjlCtilq
-         sHO0LsQt9Xy60+lFAAna55FqaRNMmfyAd9F9lm7SE1QVEqh7lhscPa8G3f+YN+3jM34X
-         MIHA==
-X-Gm-Message-State: AOAM530D+HqLt2GiWj5odYzukhSVAQrxlIXMOqMZxgGiYXavgMX7hXL8
-        Dxza4X/GT4oWR7WdfqFO523yRfUseHQ=
-X-Google-Smtp-Source: ABdhPJzeRHrpGTT5RLCqImrx8+Y2Atg12dyoWKNNVp2lBxTzFcvY34NkARlPHhegsB0sLzT9Zk7RXA==
-X-Received: by 2002:a05:600c:4f53:: with SMTP id m19mr19872449wmq.118.1633942788941;
-        Mon, 11 Oct 2021 01:59:48 -0700 (PDT)
-Received: from hal9001.startit.hu (hal9001.startit.hu. [213.134.5.39])
-        by smtp.googlemail.com with ESMTPSA id 25sm4072125wmo.18.2021.10.11.01.59.48
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=iTKf9DjdX7ML7oblVR6PfUkecF3hAuiXfMlow5WBY5M=;
+        b=n1LJa7PA5zTIe9+SYmjnK3ANkQtIjxE12TC1g6jQOwHBRyzP2zuzRiqqnpn3W9zyn3
+         zJCsXprWOVftIi5yjo1DqgRiZHO3NuPfPVTlK/ML8ZmiQBje91V9q6YhaVOvS79g0WKy
+         JZgiUoem0RQxa/FMgjm5Hr1u63I0cmD8GQZ5VZDovpewFIyH4eRZEIKkFwqxs0RsCtEU
+         6IVh3ZKnAWyilatbFDDSCJqreKNIqK3qlYEBUn3kj7Sc7z0w/Zw4q89ztzSfXSlLY3wo
+         nJ/6P0GKrWQrylGGDzqf6Ypc0zAYsreqWtIYA1N0y7UO2Xecf9vI5LjW+3xNaJGTiBQ6
+         HGiQ==
+X-Gm-Message-State: AOAM533GY6ap5i2auLEKow7UtBXT/7b9SBISlABM/3WUGcpqgrUQeznG
+        Snim02OugxYVb9PEX32in84=
+X-Google-Smtp-Source: ABdhPJz6ZsYwCQc6BtDG/MRzVsNGtWXc/Cp6f6vaGAxo4ubXBeDPRTdbUkYuhApi9iG3e0vJW9Q53g==
+X-Received: by 2002:a05:6402:b84:: with SMTP id cf4mr1395370edb.385.1633943011528;
+        Mon, 11 Oct 2021 02:03:31 -0700 (PDT)
+Received: from ipc5 (netacc-gpn-204-127-150.pool.telenor.hu. [5.204.127.150])
+        by smtp.googlemail.com with ESMTPSA id e11sm3911278edl.70.2021.10.11.02.03.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Oct 2021 01:59:48 -0700 (PDT)
-From:   =?UTF-8?q?Istv=C3=A1n=20Pongr=C3=A1cz?= <pongracz.istvan@gmail.com>
-To:     linux-ide@vger.kernel.org, damien.lemoal@opensource.wdc.com
-Cc:     =?UTF-8?q?Istv=C3=A1n=20Pongr=C3=A1cz?= <pongracz.istvan@gmail.com>
-Subject: [PATCH] Add AHCI support for (noname) PCIe sata cards based on ASM1062+JBM575 cards, usually 10 SATA ports or more. DeviceID: 0624 (rev 01)
-Date:   Mon, 11 Oct 2021 10:59:36 +0200
-Message-Id: <20211011085936.4307-1-pongracz.istvan@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 11 Oct 2021 02:03:30 -0700 (PDT)
+Message-ID: <88ba8f60e5b13b1708b189a7c798571929cd7657.camel@gmail.com>
+Subject: Re: Asmedia 0x0624 support in linux kernel - news, test results
+From:   =?ISO-8859-1?Q?Pongr=E1cz_Istv=E1n?= <pongracz.istvan@gmail.com>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Tejun Heo <tj@kernel.org>
+Cc:     linux-ide@vger.kernel.org
+Date:   Mon, 11 Oct 2021 11:03:29 +0200
+In-Reply-To: <42b5a0ad-3adf-83d1-1973-c50d8843e2dc@opensource.wdc.com>
+References: <8f4b17c763cb2742c6699d54d7577834b411722b.camel@gmail.com>
+         <ab2fde897de1bbbafcec8cf81e05346430c782a4.camel@gmail.com>
+         <YVx5aRInLEvV3eaQ@slm.duckdns.org>
+         <23d115f656a3834c24180621667ba87da4d6620f.camel@gmail.com>
+         <42b5a0ad-3adf-83d1-1973-c50d8843e2dc@opensource.wdc.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.36.5-0ubuntu1 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
----
- drivers/ata/ahci.c | 1 +
- 1 file changed, 1 insertion(+)
+>>     /* Asmedia */
+>>     { PCI_VDEVICE(ASMEDIA, 0x0601), board_ahci },   /* ASM1060 */
+>>     { PCI_VDEVICE(ASMEDIA, 0x0602), board_ahci },   /* ASM1060 */
+>>     { PCI_VDEVICE(ASMEDIA, 0x0611), board_ahci },   /* ASM1061 */
+>>     { PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },   /* ASM1062 */
+>>     { PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
+>>     { PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
+>> +   { PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci }, 
+> Similarly to the other entries above your addition, please add a
+> comment at the end of the line mentioning the adapter model.
+> And use "git send-email" to send the patch to me and to 
+> linux-ide@vger.kernel.org.
+> Feel free to let me know if you have any problem.
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 186cbf90c8ea..f8199f021ed4 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -592,6 +592,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(ASMEDIA, 0x0612), board_ahci },	/* ASM1062 */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
- 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
-+	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci },   /* ASMedia Technology Inc. Device 0624 (rev 01) based PCIe port multiplier cards (ex. 10 ports card with 1 x ASM1062 + 2 x JMB575 */
- 
- 	/*
- 	 * Samsung SSDs found on some macbooks.  NCQ times out if MSI is
--- 
-2.20.1
+Hi Damien,
+
+I sent the patch as you requested.
+Sorry for the duplicated patch, the first one probably went to the spam
+folder.
+
+Bye,
+István
+
 

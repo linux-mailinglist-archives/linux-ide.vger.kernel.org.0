@@ -2,48 +2,48 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2533D429DB3
-	for <lists+linux-ide@lfdr.de>; Tue, 12 Oct 2021 08:28:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE5D429DB0
+	for <lists+linux-ide@lfdr.de>; Tue, 12 Oct 2021 08:28:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232898AbhJLGao (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 12 Oct 2021 02:30:44 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:60679 "EHLO
+        id S232963AbhJLGai (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 12 Oct 2021 02:30:38 -0400
+Received: from mout.kundenserver.de ([217.72.192.74]:44597 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232941AbhJLGak (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 12 Oct 2021 02:30:40 -0400
+        with ESMTP id S231190AbhJLGag (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 12 Oct 2021 02:30:36 -0400
 Received: from localhost ([98.128.181.94]) by mrelayeu.kundenserver.de
  (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MmUDf-1n0PHl1Ip7-00iVdP; Tue, 12 Oct 2021 08:28:16 +0200
+ 1MYvPq-1mEEaG39tI-00UoSu; Tue, 12 Oct 2021 08:28:16 +0200
 From:   =?UTF-8?q?Reimar=20D=C3=B6ffinger?= <Reimar.Doeffinger@gmx.de>
 To:     Damien Le Moal <Damien.LeMoal@wdc.com>, linux-ide@vger.kernel.org,
         Jens Axboe <axboe@kernel.dk>, hch@infradead.org,
         Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: [PATCH 4/6] pata_amd: fix checking of DMA state
-Date:   Tue, 12 Oct 2021 08:27:47 +0200
-Message-Id: <20211012062749.4728-5-Reimar.Doeffinger@gmx.de>
+Subject: [PATCH 5/6] pata_optidma: fix checking of DMA state
+Date:   Tue, 12 Oct 2021 08:27:48 +0200
+Message-Id: <20211012062749.4728-6-Reimar.Doeffinger@gmx.de>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211012062749.4728-1-Reimar.Doeffinger@gmx.de>
 References: <20211012062749.4728-1-Reimar.Doeffinger@gmx.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:280TJQEtH0yKcNgrAGS4p7WhPJwlbMKkwwxDPUXGYTFNM42OPyE
- 4WbFgGMBTn8QSK3JhFxGcK1KkKdNUz01H7oyyE4u2Qr6lwYt/nfrNpbUPlnCkEFzW3UGrcK
- ElyOUgBYxyvjkk4xqfcMt1s/XyQKxP8TS/mXGrzFpU4itHKnuV+/bk+Qu3sWJ28vil7ggx/
- D48GL9kuAaf/x3316mutg==
+X-Provags-ID: V03:K1:b85dMji3/3R0FUsm5XLNwdcPVeCEciMnjXGP66mKoiNf5pp3C42
+ FZrRNXfYm779yUvasXdpTvhPoYbQE2qk1l9Yx/Vhx+PgXoIQCI1RZdrOkyGqn8/pb3MPQmn
+ 9tcJq8xcagt5kPUmiL0nbkNR3xYC/gwguI2PsiL/KLC7Qat2d/W3U1s7cuP+zjYb6/SGZWr
+ o0xEIDA8ARoV4/BI0IHZg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1hdlr00Qdpg=:bfzWAdri14Im4JLM1bBPpe
- +SscsIce9/JFaVTGo61hitV1Hzd8Ri5v3uU2zQOuxSN3Y8vC1RF1HKxitgjzs/2PDYlOISpOb
- rUuCBKXGBN+u/jy9y3faEd1qV+IhgCgAa3ZA7+GfqRCSm1LoCx0F4sTs1YUI+2CRVL6sLl/gg
- 9Iaov0YciWh5CkdU5kiEQAKVc5pR0RJUE+OHp1ARdcpTkPXbKd38i5wspnul11v9DNAwnLLkQ
- VSR6phg5eKpvspwmXluHuj4OENAR4sfJU9EgQTRCPXT3dX6YGc1pSSdi1px47K+o5jSKQ/hbr
- Zjs+VIy4Eu7XO/W2RQJqkuW6x759bJRGDDqkNWzGFceYvDIZ3dt+tox1Qmsqf1BKnNLYM3nsl
- YueHWJQFYyIlBNlHMyicLrGVjnIAHKSLIaEuVbdwLSiCbt241DJUjVNFl66gubSQVSYYYziUn
- YBLITyIC/YvqX51vxBm8uRKbORdEx/KZ7LYWhEvq6eE4rjNOeR1mUXDSpIuYeBOtMxC5kQohF
- 1kku9Pl683SyDvA2MSq9JvRl+2Kd5Sc7+aU4e2Ys9ifumB1AYGMUfLg1wHVlw9jNDOEC3oKN7
- DhLj9JkGUU8DZF3mmplOSnj/Pxqii5ldfVindvlaU7XGKiZB4A56imBubMX8Qs5qU8h1faLfb
- o6kZj034qsrKOAQbrUGZ+zcB6GQhUDOfkzEos+iEp+eXi8sIZnG0H/mT99O8aSnTPZJ7BQ5QU
- BxC5U0gUMQcNtyGSElCpP/pZHCuL61WvZOzkSc/VxxVcH1QWeGklzCADpM4=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:WpEHaBy0Hbg=:302Avo+f4Ux9QNxfVs5Oy8
+ 65cMgHsuJRLhyhpCqDJVcukj6YRid94ZBUaAz2/DiOuzyczVqx712/9UY+RnFualrmJvK4QQT
+ HbXqPCo782c2BAQPtsQIaGCo5LfoagubArfkfxmnEDfWQvJaAW4aUEZlCyN0UkR0W8T6hwZvt
+ OTnR2hOxj4CKbB848daC38n0xcyRRUBD7bgIerVi9IpgkSwvl+gP/I8NoZ78TCCegPBO08axL
+ zwtpLDzy6HeJMxPgMXcPf8qP2VG75NThTnrYlXHmw7uZxQvJbN29x1GsUyalO4XK45VR64/g9
+ +67yfjwBeDn1B2n3RlAH28yN+55CK1lQArUh25h7XGgppVRafn/IZDlIamGizRWycgO8MJDXI
+ IO5U5vd5pJmYfkMB3kK9gtROgME/4UAECOy+iuEf42Nuqh+CCekMsxV4gjYi/2adUXYU+YkGN
+ zZcxf71EguvNb0rln/TWgKsyGrGDrYrEHz+KDSl7EaygU9nuVb1s6rroEuK7X5UKvf1/A11cM
+ KBWe8D/25iWkBbeubTK09/Ntbe2slfrlF0BViW1lPTdJf9i1W702dPMY/67nd9Xq4dT8N8lym
+ Dy8kFhA6igvuZodqAB/oLwPywmxoKHvmsIIL4q5xVAG1c49WtsilBJWwFfcdRsEmJPkmIcn8W
+ d+0ft/n31xESM5cRarFyfl2w3KrrO9s9995iqm/2xNVDb2oTkQqD8/AkgF0nUgC7gZ8Zn6R1u
+ 2F8DajQIa/6f36AY4UeINbd5wwDVglfwrtvqbxnGtzMp18nONtQhBDQ3jg8=
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
@@ -55,22 +55,31 @@ Change based on code review, not tested due to lack of hardware.
 
 Signed-off-by: Reimar Döffinger <Reimar.Doeffinger@gmx.de>
 ---
- drivers/ata/pata_amd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_optidma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/pata_amd.c b/drivers/ata/pata_amd.c
-index c8acba162d02..154748cfcc79 100644
---- a/drivers/ata/pata_amd.c
-+++ b/drivers/ata/pata_amd.c
-@@ -66,7 +66,7 @@ static void timing_setup(struct ata_port *ap, struct ata_device *adev, int offse
- 
- 	if (peer) {
- 		/* This may be over conservative */
--		if (peer->dma_mode) {
-+		if (ata_dma_enabled(peer)) {
- 			ata_timing_compute(peer, peer->dma_mode, &apeer, T, UT);
- 			ata_timing_merge(&apeer, &at, &at, ATA_TIMING_8BIT);
- 		}
+diff --git a/drivers/ata/pata_optidma.c b/drivers/ata/pata_optidma.c
+index f6278d9de348..ad1090b90e52 100644
+--- a/drivers/ata/pata_optidma.c
++++ b/drivers/ata/pata_optidma.c
+@@ -153,7 +153,7 @@ static void optidma_mode_setup(struct ata_port *ap, struct ata_device *adev, u8
+ 	if (pair) {
+ 		u8 pair_addr;
+ 		/* Hardware constraint */
+-		if (pair->dma_mode)
++		if (ata_dma_enabled(pair))
+ 			pair_addr = 0;
+ 		else
+ 			pair_addr = addr_timing[pci_clock][pair->pio_mode - XFER_PIO_0];
+@@ -301,7 +301,7 @@ static u8 optidma_make_bits43(struct ata_device *adev)
+ 	};
+ 	if (!ata_dev_enabled(adev))
+ 		return 0;
+-	if (adev->dma_mode)
++	if (ata_dma_enabled(adev))
+ 		return adev->dma_mode - XFER_MW_DMA_0;
+ 	return bits43[adev->pio_mode - XFER_PIO_0];
+ }
 -- 
 2.33.0
 

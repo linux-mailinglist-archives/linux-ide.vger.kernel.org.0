@@ -2,89 +2,129 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F75F4376DA
-	for <lists+linux-ide@lfdr.de>; Fri, 22 Oct 2021 14:22:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE4F438C8B
+	for <lists+linux-ide@lfdr.de>; Mon, 25 Oct 2021 01:24:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231611AbhJVMYL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 22 Oct 2021 08:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53602 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbhJVMYK (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 22 Oct 2021 08:24:10 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FCCC061764
-        for <linux-ide@vger.kernel.org>; Fri, 22 Oct 2021 05:21:52 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id w14so2275099edv.11
-        for <linux-ide@vger.kernel.org>; Fri, 22 Oct 2021 05:21:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=opUIgqVWyZcHOIldu+LgQVfQLu2JLSm4eq0yRYoR8X3EkJ0jJdtgK1LJrEC4fAYG/u
-         x5QndCavFk6KrgrLKL2M04eWhmo9Ht5gsCUOTzm6BFmYlOhPKCnfQmAWRcGWJ3Kgd+Po
-         dxnzE1GzD0Fe/zdoRYGanqsnNZ7HZwcDd5jvb2P53Z7ySB2eUUW5eKcCwJjvHcLwQW3D
-         hmZMQ0WQ67mADARNZlQPTMDFACAa1pT2f55C5E+z5xU/0SGGI05AA1ys/nk/8Z7QRecx
-         rbFLK51ODld/urTp+hjZ3tCNNEiv03NL8R5n8H4ZVv1sIR3Pcfr4FSd/aUugOrtvCJBK
-         4QUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=EabbjzyBCsHP1Pqryzjhoy0dM3xlyxLmmpO8ACgMTo8=;
-        b=qzhJXcejUN72DGvor0qV6g4RQ6Ithj8FE6D0/SVke39DgzCn03A1HuEsplTbpTAYuB
-         O1GD8kpmZ93OW/NuM99hVneqBbkbDMhexTftcwdrTa8xoSoXeLXQzQdx0DB2IFF6FpBQ
-         iIh0VZapZXFa8XEAAJQy/64TmyZtTUGRV20HzdE5pEVPK0T1sKdKHyQGXUcA/P7u3ADd
-         GF6vTs5utlEB92eaoBrAvFxIJVz7HADnDhNmrfymvfDpLTZcOGdwdRYDJu4yLDpEXnX1
-         tuZsPCQ3pgj0w3/vN/ZTNwWyclmhG1hjX3zH8WaF1xEaA/X+yhBOTPUbRi1gvlnzB1Jx
-         SQCQ==
-X-Gm-Message-State: AOAM531eZhEZygBtkfV9cu0lIXLyT3/hMX3QjDptyJwR5fe4SZvxefk1
-        9HLjhzOmmA/i9H/u6bjOAF4IuUvZoND34+d6o/4=
-X-Google-Smtp-Source: ABdhPJy2Z+mCK6UsBedDHfuHLqHjOelryE6bx9xZ/OavTEghlxY+bPID2uQBe/oD5nVNF4jHf9BZTkpf3h9vpVXzB08=
-X-Received: by 2002:a17:907:1b0a:: with SMTP id mp10mr15488909ejc.29.1634905309828;
- Fri, 22 Oct 2021 05:21:49 -0700 (PDT)
+        id S229837AbhJXX06 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 24 Oct 2021 19:26:58 -0400
+Received: from esa1.hgst.iphmx.com ([68.232.141.245]:30047 "EHLO
+        esa1.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229533AbhJXX06 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 24 Oct 2021 19:26:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1635117877; x=1666653877;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=JSni6iXUGiVL+1tgcIkRcK5iNkHL92fz77zC9anEhZE=;
+  b=a2qPUOL1t1PP7JC3Q9tkXq1fZH8ym38OXsKOi9Dy5Qqjjhu5iDfPN6O1
+   zY//uSoO6CV5dscE2kIktOzuVml+lJDZZX6Ryv5KGAPsKSCyBZHuRU4Bn
+   lCIqbaq0xAWldqjYumUrND1NtoFq6aA7R+5eS2FPdLo9nXx/eIFXFS9gA
+   0eFu97Vl1NoA4OeFXUGmc6pcYhaGaMIHo6jYKDvkAERFZNpb49FmRnHjY
+   IW2Ixjo3m4Nne6N9Np+nVbT/L+M2Eonw65CvbgtHszJ+hGNcKImWbElYu
+   Nomw4xsqe7wp3hm7LFKVe2p3FsBUq56TTx75xZKy2scbnjx7tK5o7fVF5
+   w==;
+X-IronPort-AV: E=Sophos;i="5.87,179,1631548800"; 
+   d="scan'208";a="295458767"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 25 Oct 2021 07:24:36 +0800
+IronPort-SDR: OHvGJ4D7/IN2fG/GAfo3RbjnxNT7XD7dnVHZmKqlnHd2DjjKpLg0T6iyxEMQtZEy/i6WA5dAPR
+ JARvcGfARjQvWX2KTRi41ktLhNhJiw8+1gYFTAqF6GqqA9aX2ctw0q+2ltdvqKjiXrWeGmiaoQ
+ jyOe86TpbuoiszOOxadhLvunr7pkrLKfUr1h07h2ZqciQvuSvyLt5ptggoBfYZcit71FDanIl3
+ Hj/cu4ucBsEki0mRcoBgk7YLoSinDYEUawALsye9Q65oRADCl7Hn82NLYHrn1ZT3onZjY9c2+E
+ wg65/I+XbTCjq4DuFOK2CxtQ
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2021 16:00:08 -0700
+IronPort-SDR: wTXMtZ452Et76tZJNabBeuPKXPLf5v+r9848RwRZaQ0smlWL+YxEZGSMjjcH15Fcp5KfPWqqLC
+ YorOO4OHyghNN71HRgvuoPgebMml+DDMXdPgVoMZDQR9l8UcoDoOIqkVuwi5rKox5/bFuPl6SE
+ BjRymijRBT8yHK8Tm5RAuW2TkvdwUXeJzdXT85Yfjf6ILkevR5ipU7GazuOMlcVOL5PNxsYQZ8
+ gBkXaSOWIinwkGOlMyyow57KOte4Yeb3jDrSexy3xg31BdOLSrnshhEIcQ+SE2hxREx/cGxyMG
+ Se4=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2021 16:24:37 -0700
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4HcvLX2HqKz1RtVm
+        for <linux-ide@vger.kernel.org>; Sun, 24 Oct 2021 16:24:36 -0700 (PDT)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :in-reply-to:organization:from:references:to:content-language
+        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
+        1635117875; x=1637709876; bh=JSni6iXUGiVL+1tgcIkRcK5iNkHL92fz77z
+        C9anEhZE=; b=JZVk+DDg32P10gpbwUNYp6mURWcXEhDjBQJ5ZpYWUUviakSuBsh
+        VYiWCDeKv1bOKrmPIv+jWcRCVuTOEveVySVt1Jme1eXByiHZiOOkAkLdlY3TlD1r
+        7rPZXL6lq65Tc9J/Pr/Nn1LSR80OwKU9eudlZcXAi3PFqKfMAaE29oIZFyUg0TiS
+        6eBDR2Dy0sz3KOUe4zkPLLTqPFXxVVS2rHR5GV9fshr9UVrVflMqJ1pahZoagZ+3
+        N0qbhQGRD8fiHX1NXUEr88USFiY28NU4QDq/nVla46o5Wbtg+rMSpwkgwZYIcF4u
+        6nU1ZanOkOdw/1UhukVvSqzidxw23jRuwSg==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id qAZofnGN1-qL for <linux-ide@vger.kernel.org>;
+        Sun, 24 Oct 2021 16:24:35 -0700 (PDT)
+Received: from [10.225.54.48] (unknown [10.225.54.48])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4HcvLW2F9Dz1RtVl;
+        Sun, 24 Oct 2021 16:24:35 -0700 (PDT)
+Message-ID: <02571fc0-9c08-3e2b-124a-17fdb2262050@opensource.wdc.com>
+Date:   Mon, 25 Oct 2021 08:24:33 +0900
 MIME-Version: 1.0
-Received: by 2002:a17:907:7fa7:0:0:0:0 with HTTP; Fri, 22 Oct 2021 05:21:48
- -0700 (PDT)
-Reply-To: bahadur.rayanby@gmail.com
-From:   Ryan Bahadur <dr.philposman7@gmail.com>
-Date:   Fri, 22 Oct 2021 05:21:48 -0700
-Message-ID: <CAMOT=VQ19xGMh1Soq8rNHNKaBCqZh03d0u+Nrf_Ou9bAtd-seQ@mail.gmail.com>
-Subject: CAN I TRUST YOU
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.2.1
+Subject: Re: Potential null-pointer-dereference problem due to missing
+ null-checking for ata_timing_find_mode
+Content-Language: en-US
+To:     YE Chengfeng <cyeaa@connect.ust.hk>
+Cc:     "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <TYCP286MB1188D47BA1A976E4090AF2B88A829@TYCP286MB1188.JPNP286.PROD.OUTLOOK.COM>
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital
+In-Reply-To: <TYCP286MB1188D47BA1A976E4090AF2B88A829@TYCP286MB1188.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Greetings,
+On 2021/10/25 3:08, YE Chengfeng wrote:
+> Hi,
+>=20
+> I found that the function=C2=A0*ata_timing_find_mode *could return a nu=
+ll pointer in
+> some situattions, but some call sites of this function don't check whet=
+her the
+> return value is a null pointer. Could it be a potential null-pointer-de=
+reference
+> problem?=C2=A0
+> https://github.com/torvalds/linux/blob/master/drivers/ata/pata_acpi.c#L=
+145
+> <https://github.com/torvalds/linux/blob/master/drivers/ata/pata_acpi.c#=
+L145>
+> <https://github.com/torvalds/linux/blob/master/drivers/ata/pata_acpi.c#=
+L145>
+> =09
+> linux/pata_acpi.c at master =C2=B7 torvalds/linux
+> <https://github.com/torvalds/linux/blob/master/drivers/ata/pata_acpi.c#=
+L145>
+> Linux kernel source tree. Contribute to torvalds/linux development by c=
+reating
+> an account on GitHub.
+> github.com
+>=20
+>=20
+>=20
+> Best Regards,
+> - Chengfeng
 
-Firstly, I apologize for encroaching into your privacy in this manner
-as it may seem unethical though it is a matter of great importance.
+The ata_timing array last element is 0xff, which is the initial value of =
+pio/dma
+mode. So an entry will always be returned. I do not think the NULL return=
+ ever
+triggers.
 
-I am Mr.Ryan Bahadur, I work with Cayman National Bank (Cayman Islands).
-
-I am contacting you because my status would not permit me to do this
-alone as it is concerning our customer and an investment placed under
-our bank's management over 5 years ago.
-
-I have a proposal I would love to discuss with you which will be very
-beneficial to both of us. It's regarding my late client who has a huge
-deposit with my bank.
-
-He is from your country and shares the same last name with you.
-
-I want to seek your consent to present you as the next of kin to my
-late client who died and left a huge deposit with my bank.
-
-I would respectfully request that you keep the contents of this mail
-confidential and respect the integrity of the information you come by
-as a result of this mail.
-
-Please kindly get back to me for more details if I can TRUST YOU.{
-bahadur.rayanby@gmail.com}
-
-Regards
-Mr.Ryan Bahadur
-Treasury and Deposit Management,
-Cayman National Bank Cayman Islands.
+--=20
+Damien Le Moal
+Western Digital Research

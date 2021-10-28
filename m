@@ -2,73 +2,89 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE1843C98B
-	for <lists+linux-ide@lfdr.de>; Wed, 27 Oct 2021 14:23:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A59FE43DF54
+	for <lists+linux-ide@lfdr.de>; Thu, 28 Oct 2021 12:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241876AbhJ0M0L (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 27 Oct 2021 08:26:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43072 "EHLO
+        id S230250AbhJ1Kyu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 28 Oct 2021 06:54:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237471AbhJ0M0K (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 27 Oct 2021 08:26:10 -0400
-Received: from albert.telenet-ops.be (albert.telenet-ops.be [IPv6:2a02:1800:110:4::f00:1a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D381C061745
-        for <linux-ide@vger.kernel.org>; Wed, 27 Oct 2021 05:23:45 -0700 (PDT)
-Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:441:6c1a:bc30:46e])
-        by albert.telenet-ops.be with bizsmtp
-        id B0Pi260092hfXWm060PiQ5; Wed, 27 Oct 2021 14:23:43 +0200
-Received: from rox.of.borg ([192.168.97.57])
-        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1mfhy2-008TjQ-1t; Wed, 27 Oct 2021 14:23:42 +0200
-Received: from geert by rox.of.borg with local (Exim 4.93)
-        (envelope-from <geert@linux-m68k.org>)
-        id 1mfhy1-00Ds2w-CW; Wed, 27 Oct 2021 14:23:41 +0200
-From:   Geert Uytterhoeven <geert+renesas@glider.be>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Rob Herring <robh+dt@kernel.org>
-Cc:     linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Marian-Cristian Rotariu 
-        <marian-cristian.rotariu.rb@bp.renesas.com>,
-        Rob Herring <robh@kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] dt-bindings: ata: renesas,rcar-sata: Add r8a774e1 support
-Date:   Wed, 27 Oct 2021 14:23:39 +0200
-Message-Id: <ea685ebe4b82a37ed1bbbf0573d0b1089334ccc5.1635337305.git.geert+renesas@glider.be>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230202AbhJ1Kyt (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 28 Oct 2021 06:54:49 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BB69C061227
+        for <linux-ide@vger.kernel.org>; Thu, 28 Oct 2021 03:52:22 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id z20so23224429edc.13
+        for <linux-ide@vger.kernel.org>; Thu, 28 Oct 2021 03:52:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=MqgQiMnth4O6zLvpsYbAhVLW1BorpgoCleWwfkY0/i+i6OSDuXRZO1jIKzpTTrmehO
+         XtsLWdXiTcL+XCe4naFtf2tTUJnbwwmDpuUkpvRhLd+LEnuxY7nNr11hmTRUVX1WOHsO
+         bN0u1arCg4gm9LHdXRMZFcXOD22U5gDGuBOuhPo6qvWbt6nA2j/p/5IZ88XFHrEsiSW3
+         12hentYJMlWeUfa2lUQkLm+5/fvMSizrI7wGoF2taOa3dgGUV5HKZWb0yAAH7nAXVevJ
+         tDC/xbHNLzSn310XeD3Gkoobjl6MPBQzT5DSLzerNBdTKOdmyp3xvfvOyo80qVUTZIED
+         gaRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=vprh3gRT3Cegcj0K7Fy7tqOfLGKK384XjLMkCZvF/BY=;
+        b=O9991F1uZkqNgLU73lVqcScGc9HSR2ll2iNlroJZPfLhtzUSx1QWjM0aEdBGtSzjzn
+         cWW9aP8+IRvnyO0wixQQ03P12MuDEQN3beNA3tZPaCM+KYreSoBdIt4XHAwNVooVqPz2
+         BKaH3w5kVXjhHbJKCCoS0Tw8qOhToAsmvBMOodjqRSwWE+5yKyU6Xx/v3z0BqSnt1nCd
+         384NASsnUX6Myw/a3mmdRJRxI6INuXGaC6Aa8v3QZiDzbLrlAgmEvmaXTuqFGTJUIaAF
+         fnLpU3xPXklB8DDeZPWC5G8QkAmxzkNQp+K4N8Gc50bfCWGaYbh4TFg8+syrYZ9+8rqq
+         SfMw==
+X-Gm-Message-State: AOAM530x+hMRQnh+8Rj7XG/MirmqHTxRXtjsLirN01dgw3Ks43GPz1yv
+        BUl4tfldJZXBt2Ea5Qq5/TCK2dUJQyYkf2gGhmiNuyCHWD49bO00
+X-Google-Smtp-Source: ABdhPJw39EF9dJlXS9lAFrZ3adXxB8DVzXcygVzA3uRLiZxWlggxaB9ElCxkEB0P82xisoA6G442GD5iqMe2hCgLIt8=
+X-Received: by 2002:a2e:9a83:: with SMTP id p3mr3750290lji.145.1635418330269;
+ Thu, 28 Oct 2021 03:52:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:ab3:6f89:0:0:0:0:0 with HTTP; Thu, 28 Oct 2021 03:52:09
+ -0700 (PDT)
+Reply-To: aabdulwalialhashmi@gmail.com
+From:   Abdulwali Alhashmi <husamalsayed.hs@gmail.com>
+Date:   Thu, 28 Oct 2021 03:52:09 -0700
+Message-ID: <CAF6yYCeS=rm8=_71-kMjVo4oaVK57w9X52R_yv1HDrBe7vh-sA@mail.gmail.com>
+Subject: PLEASE GET BACK TO ME IF I CAN I TRUST YOU
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-
-Document SATA support for the RZ/G2H, no driver change required.
-
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Marian-Cristian Rotariu <marian-cristian.rotariu.rb@bp.renesas.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
----
- Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml b/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
-index c060c7914cae6573..c4e4a9eab658056d 100644
---- a/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
-+++ b/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
-@@ -26,6 +26,7 @@ properties:
-       - items:
-           - enum:
-               - renesas,sata-r8a774b1     # RZ/G2N
-+              - renesas,sata-r8a774e1     # RZ/G2H
-               - renesas,sata-r8a7795      # R-Car H3
-               - renesas,sata-r8a77965     # R-Car M3-N
-           - const: renesas,rcar-gen3-sata # generic R-Car Gen3 or RZ/G2
 -- 
-2.25.1
+Greetings,
 
+Firstly, I apologize for encroaching into your privacy in this manner
+as it may seem unethical though it is a matter of great importance.
+
+I am Abdulwali Alhashmi, I work with Cayman National Bank (Cayman Islands).
+
+I am contacting you because my status would not permit me to do this
+alone as it is concerning our customer and an investment placed under
+our bank's management over 5 years ago.
+
+I have a proposal I would love to discuss with you which will be very
+beneficial to both of us. It's regarding my late client who has a huge
+deposit with my bank.
+
+He is from your country and shares the same last name with you.
+
+I want to seek your consent to present you as the next of kin to my
+late client who died and left a huge deposit with my bank.
+
+I would respectfully request that you keep the contents of this mail
+confidential and respect the integrity of the information you come by
+as a result of this mail.
+
+Please kindly get back to me for more details if I can TRUST YOU.{
+aabdulwalialhashmi@gmail.com }
+
+Regards
+Abdulwali Alhashmi
+Treasury and Deposit Management,
+Cayman National Bank Cayman Islands

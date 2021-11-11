@@ -2,66 +2,115 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EEBC44CF05
-	for <lists+linux-ide@lfdr.de>; Thu, 11 Nov 2021 02:36:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C5CA44D06E
+	for <lists+linux-ide@lfdr.de>; Thu, 11 Nov 2021 04:32:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233661AbhKKBjG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 10 Nov 2021 20:39:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53010 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233109AbhKKBiv (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 Nov 2021 20:38:51 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F101C0797B1
-        for <linux-ide@vger.kernel.org>; Wed, 10 Nov 2021 17:35:43 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id s186so11010341yba.12
-        for <linux-ide@vger.kernel.org>; Wed, 10 Nov 2021 17:35:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/yJJ1eLjVEBxlbbxBTFqS43d212h+YIqOC0povopvFQ=;
-        b=e1saD3h8ZTiJz1WPc393lhDIWAvFZtOWzP/1iIN1KdicX4+NrvRlvNT+3PrCl1GqMN
-         hcyRC8y01agFcLW5+tsWKem8XisbU3NfgOVZTXj+yM8hm783rPU/i/YuMOt9WJM1GE4/
-         JRXGoJXzKJizIUuyrjE1Imm5mvbvZzUfUnW1ilSzedfFOByO23CsotOGz9ho9UMOpmPB
-         I35hgpS1ccJyAsx8SK8mX+7lwpZDhh/s7p2JF/JACrgRoEUXPKCti/8Mke+cScvETWuN
-         /H3UoZ8xmLIIfMcXfhtyxis8wgN5U5+dx/bvbJ1ofktMXKhL3cY0XXO1GPMja8d0F/uW
-         PaWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/yJJ1eLjVEBxlbbxBTFqS43d212h+YIqOC0povopvFQ=;
-        b=E0FKU601TguBvZQcZas3X/e0w+WgyiyzVv3gL1R2chUTgo9BlC/45ThL96myjVjWlO
-         lza5Z2/Mp2MNjiuiT1E1KP6K+ZCoeIAivNypIhZ9wbc7eiWdUy6Ou6Zd5FlK2ItKFlJj
-         5IoK5FAN0EVWD3ZbLV5VE+LRFKhzDSaHtnF2ExiRUjJOLWdCAT/FsrubreyYQfW5B777
-         OSRp7zdtHKmvQs/lvK7yn1IcEefLIyDV08W2CJzwv4RaM28hLdMjsaT+ZWGNnRAlYO3t
-         t/FIWdajKv3ECqDb/f0FrlBP30AHbHVLIlzOrurUxrxKpOFK1uHRSEPd2VDoQgtaNmrK
-         mRaA==
-X-Gm-Message-State: AOAM531j0dhvI1RYMuDnPxDgSN2igb3q30Hy8YA55T6WuMvaagR+SPi8
-        iK//SI6BXrBM71vSxKfmvHVclkXXsHk+wS1wRl0=
-X-Google-Smtp-Source: ABdhPJwSvDsl6dRjntKMicOLsqdOi/dG2sfAv7B/U6vR9uOw26VAk/4zCWUkhL/n3HO29hhdK1BtX8sl0L4QCQV/QNc=
-X-Received: by 2002:a25:b20f:: with SMTP id i15mr3989503ybj.539.1636594542572;
- Wed, 10 Nov 2021 17:35:42 -0800 (PST)
+        id S230356AbhKKDew (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 10 Nov 2021 22:34:52 -0500
+Received: from esa6.hgst.iphmx.com ([216.71.154.45]:37365 "EHLO
+        esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230256AbhKKDew (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 Nov 2021 22:34:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1636601524; x=1668137524;
+  h=message-id:date:mime-version:to:from:subject:
+   content-transfer-encoding;
+  bh=YSfVGQ8z6Z0weMtmITkzNe9e9ctABDRbwu6tDBFvrQo=;
+  b=RoLBKJgA8wT4U9F9P3Nb9NvUZTJwSAFhPPkaj4tQw14YNqqSBlpk50xk
+   du6gpzxh/ju9jsGw9GHlR/kbI31NIccVM7QyW1Tvb5YAFbbro19EhTMmo
+   fxz2RZr+Rn4GXkVdJWXgrT2J7vi/12xJSm+d4x5jnqLTmPup2dF/DRbA0
+   SRiThTlB5E89IYeSZnLAuinXJ4C8fBhiBZjDA36pzZWi/yNKtTCYAccZ3
+   l4y8AnHu+fU5ItSubpzKXL20Ywja+fJlSWTiJ15RZyammoaryPgqM8jrx
+   7OoEhMIQBIzRGaSoQQb1N2bam6ylJJkoz+ei0TysBsyzUARB9Ybz5u0CK
+   g==;
+X-IronPort-AV: E=Sophos;i="5.87,225,1631548800"; 
+   d="scan'208";a="186299208"
+Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 11 Nov 2021 11:32:02 +0800
+IronPort-SDR: mFqmiWTHAmxsIKNJePHfwDmqmjsEsQ34YxNplE+5vRlM+E4GxZ4GNGRtRDU8HZKQ2ZEkBVZUpb
+ JyZHyeiwzdQQQNGxzA15te/RqNOX8EwhdpEbHYzqCNnwr9jbrXStfOycYqZU8T6ro6SCNtC8ZK
+ bw44Gz6S6jFvF3djIwck4dTPHdduo2mfHZOmiveh3a9yeySDOEg0TCageK/BUXGK4yOdBW6LAW
+ Wv87eRQOdapwfW8p9RqAU4j61u7xsHnuxhvjdEHtQlBt9qxyOS47SmWG3o1n0cRpVAMKQtWWWd
+ icIkBwUvUh9Pdty8TCTof2Fx
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 19:05:38 -0800
+IronPort-SDR: mQ3EWo7EyW2aNCkatd8JNjkBN0nmUTCwXZMSsU7ZWA0k5aFi3KnyuPZkpEhpDQBKWxHI/lERC/
+ WC6OEzOwHeHzlcoRSe1uh4XhkUtewxF72drj0USKVTzOy9rLwGohHRGsRLzhGu2lBbIlgPC6ab
+ PZ+gHK0enydkn9aO/q5qoztMyMvHe/hLJjIPZhJOXQOvNEKbj+4taZy2EeVvLcJbkqRM2zvcDr
+ HPXW02JJk3uF5cC0/LgeX1jn2CsrQAaZ+gmDkGH2BZiC6elTwwff5ms1pVFfRzvKUg2Yk0VlaP
+ Ito=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2021 19:32:01 -0800
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4HqS290Cpcz1RtVm
+        for <linux-ide@vger.kernel.org>; Wed, 10 Nov 2021 19:32:01 -0800 (PST)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :organization:subject:from:to:content-language:user-agent
+        :mime-version:date:message-id; s=dkim; t=1636601520; x=
+        1639193521; bh=YSfVGQ8z6Z0weMtmITkzNe9e9ctABDRbwu6tDBFvrQo=; b=b
+        5PCCDUztiiaeWi3lgzPA/dt/wnD4/AU+P26JDdZdJvZg9qublcdPSk7W6TsGmh7x
+        u6skYW6Yzvn9GjeYU/vhUrqMAy4WqaVuLQISFhaYX7z77BIaUIWZB/uALUG/8+uL
+        gWfC1Yuy1GkABOruCRItAsrpZN1CzXunqA+B1bLL9FgXSKUwGyyvGq6f+cauoevM
+        Ziv91y0Th+YFwoOdeegN0wYqYBn06oIue7AgNfyhFX/7ukm4S+/26XznTj6vrGWv
+        fRMXL7Rb6WotSy5HgRZ462pE9MXc394+VB6Wt0usXgueflj9sXNbyme0Ct4pAJdq
+        41yE4w6kfsnKfZWhsytlQ==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id r_83YTiBxFN5 for <linux-ide@vger.kernel.org>;
+        Wed, 10 Nov 2021 19:32:00 -0800 (PST)
+Received: from [10.225.54.48] (unknown [10.225.54.48])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4HqS2772lbz1RtVl;
+        Wed, 10 Nov 2021 19:31:59 -0800 (PST)
+Message-ID: <4b3e8a72-0b48-95e3-6617-a685d42c08fb@opensource.wdc.com>
+Date:   Thu, 11 Nov 2021 12:31:58 +0900
 MIME-Version: 1.0
-Received: by 2002:a05:7010:5d89:b0:1df:17ca:e9e5 with HTTP; Wed, 10 Nov 2021
- 17:35:42 -0800 (PST)
-Reply-To: mrsambamalick@gmail.com
-From:   MR MALICK <aiolaras@gmail.com>
-Date:   Thu, 11 Nov 2021 02:35:42 +0100
-Message-ID: <CAKPiy1pxkL9E+t6fr2OcMGeiHjuYbwx6xEB+HwOuJAUpiUddcw@mail.gmail.com>
-Subject: NOTIFICATION
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.0
+Content-Language: en-US
+To:     Bart Van Assche <bvanassche@acm.org>,
+        "linux-scsi @ vger . kernel . org" <linux-scsi@vger.kernel.org>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Subject: Problem with scsi device sysfs attributes
+Organization: Western Digital
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-LOTTO WINNING AWARD,;,
+Bart,
 
-Your email won 2.6 million dollars, Contact Barrister Marcel Cremer
-through his email here ( cremerrsolicitors@gmail.com) to claim your
-winning fund with your details as follows, your full name, your
-country, your home address and your phone number.
+Your patch 92c4b58b15c5 ("scsi: core: Register sysfs attributes earlier")
+modified the scsi device sysfs attributes initialization to use the scsi
+template shost_groups and sdev_groups for adding attributes using groups instead
+of arrays of attrs. However, this patch completely removed the
+sysfs_create_groups() call to actually create the attributes listed in the groups.
 
-Regards,,
-Mr.  Malick Samba.
+As a result, I see many missing sysfs device attributes for at least ahci (e.g.
+ncq_prio_enavle, ncq_prio_supported), but I suspect other device types may have
+similar problems.
+
+I do not see where the attribute groups in the arrray sdev->gendev_attr_groups
+are registered with sysfs. In fact, it looks like sdev->gendev_attr_groups is
+referenced only in scsi_sysfs.c but only for initializing it. It is never used
+to actually register the attr groups... Am I missing something ?
+
+This is at least breaking NCQ priority support right now. Did your patch
+92c4b58b15c5 remove too much code ? Shouldn't we have a call to
+sysfs_create_groups() somewhere ? I think that should be in
+scsi_sysfs_device_initialize() but I am not 100% sure.
+
+
+
+-- 
+Damien Le Moal
+Western Digital Research

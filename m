@@ -2,63 +2,81 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BD2944F1CE
-	for <lists+linux-ide@lfdr.de>; Sat, 13 Nov 2021 07:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B892C44F1E4
+	for <lists+linux-ide@lfdr.de>; Sat, 13 Nov 2021 07:48:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229914AbhKMG3q (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 13 Nov 2021 01:29:46 -0500
-Received: from smtpbg128.qq.com ([106.55.201.39]:59865 "EHLO smtpbg587.qq.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S229487AbhKMG3o (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Sat, 13 Nov 2021 01:29:44 -0500
-X-QQ-mid: bizesmtp51t1636784777tgdf0y1a
-Received: from localhost.localdomain (unknown [125.69.41.88])
-        by esmtp6.qq.com (ESMTP) with 
-        id ; Sat, 13 Nov 2021 14:26:15 +0800 (CST)
-X-QQ-SSF: 01000000000000C0F000B00A0000000
-X-QQ-FEAT: 3uawQE1sH+291VbBBWnryed0ntvm7R6avfLrXgIcdCpjaQtx7yWViNbybxB31
-        uayKxrAeLP5YmUF3X5cba2dcLdT8r5bYWWE7vXZvC3i5OrUMXAwqvWD8vk7KyFDKMt5+pX2
-        CRgEZnAMH6BVSXL3M2C74xYSDKM56njRagvOfWYswjvgDn4G5DrkQJoVpfSGq8H5IVmbPa+
-        COLFF73PtitYD3hLUOHulzc/qMHi9DAnFmIv6ISaK/jaZMrOImJDzds1nPJ3XSaKrGeMYdp
-        LVSd5FOCt8F6Hy8iwoCpmu981Evs9p9gtnusWCHQ5Ps6ubrgWvVDEcHKltwytDdSo1cCPio
-        TExq5vZNffCiA+YSVC1X0R4Y/GZYQ==
-X-QQ-GoodBg: 0
-From:   Jason Wang <wangborong@cdjrlc.com>
-To:     damien.lemoal@opensource.wdc.com
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jason Wang <wangborong@cdjrlc.com>
-Subject: [PATCH] ata: pata_ali: no need to initialise statics to 0
-Date:   Sat, 13 Nov 2021 14:26:14 +0800
-Message-Id: <20211113062614.246352-1-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.33.0
+        id S234876AbhKMGvE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 13 Nov 2021 01:51:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33208 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235703AbhKMGvD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 13 Nov 2021 01:51:03 -0500
+Received: from mail-yb1-xb43.google.com (mail-yb1-xb43.google.com [IPv6:2607:f8b0:4864:20::b43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E327C0613F5
+        for <linux-ide@vger.kernel.org>; Fri, 12 Nov 2021 22:48:11 -0800 (PST)
+Received: by mail-yb1-xb43.google.com with SMTP id v7so29789613ybq.0
+        for <linux-ide@vger.kernel.org>; Fri, 12 Nov 2021 22:48:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=TpUnghcC4+tp5K9okRDj2DzlDVa84QSAUFcmOVzb4PQ=;
+        b=akbXMjXJ4Tym/Yq//ALdkVheHoFUcYd46Fsh9StgPAsLSr8qR59FMCLakNL3w3NPPM
+         LFjDgD63xuq9FjbDss/8jaVyEoft7PEs3ZsXhGmAoJEcNf4Wc7VhChW1wcltYhMJTX3p
+         v2Ktq2L2H5vnJ8MxliGcbkzhouepL0GYMToSwrWTQRWcXrsqW8tZuLK2omk0QhRe0yNO
+         Fd4QYPGwRT0ZJg8Jzlq5qAFd7VIQ2N9iU31xthhJPzsyD9G6bgbOQZvWHk4ie4KQBkJi
+         ypf3GOU01POLPTSOrxvAuc8E893NuX90FG1l8eKtOM1HbGv2YLm1tEz+j3/g6g7IHpEb
+         +uHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=TpUnghcC4+tp5K9okRDj2DzlDVa84QSAUFcmOVzb4PQ=;
+        b=k0PjsbMr49loFUaWnRcdeixi2j4GSbeGQHKY30Kj/WLJb0w0M1PBB3IONoBkaTonEB
+         KFDftzKwhavhXR9aBgGldFkecmiuJ5w0XlKiLxqhD0i75mrTV1QVNgUY85UU5FXcTFR5
+         aCYpgaAu/+LaR3ZUB1vSW6wU8SamWzFXWphNlTLNIjJVMZ4Ft6X/riemPaYbt8vDf2BJ
+         dEvIk/OyO1KHemAj685kHKE44OiuVtWlksx7hPHdn2xi2olavn32aZj25/JQ/1FHD8Si
+         /4x3k3hKUxvhuk/1I5pHND4WhU8eR5IjGP+lJrttiDj8FM8D/Ohcx+gk+aDSjckUXTti
+         3skQ==
+X-Gm-Message-State: AOAM532UXbv5pGZDLWafy3v0oM/zZgPZKx/NyeQgJdTY99iVeaitET3t
+        TAayzfyn5jieLsaLB0BohsZo+6O8xOm7Twd8ikI=
+X-Google-Smtp-Source: ABdhPJzv5tcda2n4VwXvDO+lU2rv4LXHcKHHmSWH2mWZIua5eGwjmWdecqhd2aSfdsgeAxpYMJ/QNnSmhFrWwz2r5T0=
+X-Received: by 2002:a25:3d6:: with SMTP id 205mr22510476ybd.480.1636786090724;
+ Fri, 12 Nov 2021 22:48:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam5
+Received: by 2002:a05:6900:b89:0:0:0:0 with HTTP; Fri, 12 Nov 2021 22:48:10
+ -0800 (PST)
+Reply-To: mariaelisabethdonation@outlook.com
+From:   MARIA ELISABETH <ramatuonline2017@gmail.com>
+Date:   Fri, 12 Nov 2021 22:48:10 -0800
+Message-ID: <CABCOmutLxd1TEGP9hbGp3a2Qq06=WdzWKTu1twSZPH3sJ7eR6w@mail.gmail.com>
+Subject: SPENDE
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Static variables do not need to be initialized to 0.
+--=20
+Hallo,
+Ich bin Maria Elisabeth Schaeffler, eine deutsche Unternehmerin, Investorin
+und CEO der Schaeffler Gruppe. Ich bin einer der Eigent=C3=BCmer der Schaef=
+fler
+Gruppe. Ich habe 25 Prozent meines pers=C3=B6nlichen Verm=C3=B6gens f=C3=BC=
+r wohlt=C3=A4tige
+Zwecke gespendet. Und ich habe auch versprochen, die restlichen 25% in
+diesem Jahr 2021 an Individual zu verschenken. Ich habe mich entschlossen,
+2.000.000,00 Euro an Sie zu spenden. Wenn Sie an meiner Spende interessiert
+sind, kontaktieren Sie mich bitte f=C3=BCr weitere Informationen.
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
----
- drivers/ata/pata_ali.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sie k=C3=B6nnen auch =C3=BCber den untenstehenden Link mehr =C3=BCber mich =
+lesen
 
-diff --git a/drivers/ata/pata_ali.c b/drivers/ata/pata_ali.c
-index b7ff63ed3bbb..ab28a6707b94 100644
---- a/drivers/ata/pata_ali.c
-+++ b/drivers/ata/pata_ali.c
-@@ -37,7 +37,7 @@
- #define DRV_NAME "pata_ali"
- #define DRV_VERSION "0.7.8"
- 
--static int ali_atapi_dma = 0;
-+static int ali_atapi_dma;
- module_param_named(atapi_dma, ali_atapi_dma, int, 0644);
- MODULE_PARM_DESC(atapi_dma, "Enable ATAPI DMA (0=disable, 1=enable)");
- 
--- 
-2.33.0
+https://en.wikipedia.org/wiki/Maria-Elisabeth_Schaeffler
 
+Mit freundlichen Gr=C3=BC=C3=9Fen,
+Frau Maria Elisabeth Schaeffler,
+CEO der
+Schaeffler-Gruppe.
+E-Mail: mariaelisabethdonation@outlook.com

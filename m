@@ -2,118 +2,68 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89EA6458860
-	for <lists+linux-ide@lfdr.de>; Mon, 22 Nov 2021 04:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54BC4458DA2
+	for <lists+linux-ide@lfdr.de>; Mon, 22 Nov 2021 12:42:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234054AbhKVDgK (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 21 Nov 2021 22:36:10 -0500
-Received: from szxga02-in.huawei.com ([45.249.212.188]:26346 "EHLO
-        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232868AbhKVDgJ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 21 Nov 2021 22:36:09 -0500
-Received: from dggpeml500020.china.huawei.com (unknown [172.30.72.54])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4HyCQW2BKczbhvx;
-        Mon, 22 Nov 2021 11:28:03 +0800 (CST)
-Received: from huawei.com (10.175.127.227) by dggpeml500020.china.huawei.com
- (7.185.36.88) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.20; Mon, 22 Nov
- 2021 11:33:01 +0800
-From:   Baokun Li <libaokun1@huawei.com>
-To:     <damien.lemoal@opensource.wdc.com>, <axboe@kernel.dk>,
-        <tj@kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <sergei.shtylyov@gmail.com>, <yebin10@huawei.com>,
-        <libaokun1@huawei.com>, <yukuai3@huawei.com>,
-        <stable@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next V3 2/2] sata_fsl: fix warning in remove_proc_entry when rmmod sata_fsl
-Date:   Mon, 22 Nov 2021 11:45:16 +0800
-Message-ID: <20211122034516.2280734-3-libaokun1@huawei.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20211122034516.2280734-1-libaokun1@huawei.com>
-References: <20211122034516.2280734-1-libaokun1@huawei.com>
+        id S238743AbhKVLpc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 22 Nov 2021 06:45:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35948 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236718AbhKVLpc (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 22 Nov 2021 06:45:32 -0500
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27809C061574
+        for <linux-ide@vger.kernel.org>; Mon, 22 Nov 2021 03:42:26 -0800 (PST)
+Received: by mail-io1-xd42.google.com with SMTP id x6so1144824iol.13
+        for <linux-ide@vger.kernel.org>; Mon, 22 Nov 2021 03:42:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Sw5sXMAC9IeBMeUt8/3lQb1uasIw729SIpXYRz+nt0k=;
+        b=Y3YImBC0r7slk3Dox/J4jbdbEc1+d8pcDKXJSUDamqaFzmktamHv4m44egAWjDTSDb
+         e0IdF67k/w+zpvuaL4gv3wChsqgUDOtchFoRrmrW13NAlH+6+jCZebcbQkibhQfj0OGk
+         66f1jv2FAojEWoYdc45FVirmkOjMI6hNvPB/9XbuCawjbS1hZDVMWuDYr3yX+kZTN6ZZ
+         KSiHydNsgAr7VfyjKQUQh3wGx6ErUasorNlTcW9RjVTt0l67FGmIrLxZL/v+dnLYN4sI
+         rmFaJmGrXHo2Y4co80HgbhoKtER8wHo1jWdvwXtDXC8M4ViCXU77YvvGKNQ7TpH2G3pN
+         g8aQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Sw5sXMAC9IeBMeUt8/3lQb1uasIw729SIpXYRz+nt0k=;
+        b=kDB5ZOtclS2VwojGwqDhhN1wFvhugeIdR8FHh0R0FFYvXyZjCuNjE4mBpUdeItvxZw
+         rm88EGFHn9ikJ9OU4tOTgZUsEHMr+2pOZXxTLQoJjC5ki3E8H/36gmI4uJZgbgh+zp+d
+         jsLUU93MC0OZeb92XX3GTbqv5MYudpjbCZpIzYYDu/RqmOYKG8DhujUUHaoQqyx9kATS
+         Yocn0z/5tfkLblH4CEIArjdi/2nsL6EdaZSldazeDwSQ9GvazUDl7HGGdBlwXk68Ev1J
+         4K8UpJy8bqk5bdEOikxhFan/MRD9fip5clPS14NWVHsRdSb/wYRQmYWKsfBWhiMjYb07
+         yHmg==
+X-Gm-Message-State: AOAM532pBs5n8pcMIXsXmscJVKZ1i3OEbtQZdfqtCar/Cy+/GWG9ppx5
+        NTzQ0kerTFG3h4KTszeEPT9jvWK3M0mL4ZZkK7E=
+X-Google-Smtp-Source: ABdhPJx+E9seThMAHdXW1F0cGfZ8h45cZG2FB2qSN8hixWQL6DbD7KFIozcqGqghOiFslxJMYsnB3N8NyjBYFbH35n8=
+X-Received: by 2002:a5d:8451:: with SMTP id w17mr21912567ior.139.1637581345613;
+ Mon, 22 Nov 2021 03:42:25 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.127.227]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml500020.china.huawei.com (7.185.36.88)
-X-CFilter-Loop: Reflected
+Received: by 2002:a05:6622:b34:0:0:0:0 with HTTP; Mon, 22 Nov 2021 03:42:25
+ -0800 (PST)
+Reply-To: wongleshiu@gmail.com
+From:   Wong Shiu <tinsleymeekinsjrn@gmail.com>
+Date:   Mon, 22 Nov 2021 13:42:25 +0200
+Message-ID: <CAEbty7AZtfg=-jPOgFo0FhSQPj1dkCnphJkScDzCT5jt6r1pQw@mail.gmail.com>
+Subject: Good Day
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Trying to remove the fsl-sata module in the PPC64 GNU/Linux
-leads to the following warning:
- ------------[ cut here ]------------
- remove_proc_entry: removing non-empty directory 'irq/69',
-   leaking at least 'fsl-sata[ff0221000.sata]'
- WARNING: CPU: 3 PID: 1048 at fs/proc/generic.c:722
-   .remove_proc_entry+0x20c/0x220
- IRQMASK: 0
- NIP [c00000000033826c] .remove_proc_entry+0x20c/0x220
- LR [c000000000338268] .remove_proc_entry+0x208/0x220
- Call Trace:
-  .remove_proc_entry+0x208/0x220 (unreliable)
-  .unregister_irq_proc+0x104/0x140
-  .free_desc+0x44/0xb0
-  .irq_free_descs+0x9c/0xf0
-  .irq_dispose_mapping+0x64/0xa0
-  .sata_fsl_remove+0x58/0xa0 [sata_fsl]
-  .platform_drv_remove+0x40/0x90
-  .device_release_driver_internal+0x160/0x2c0
-  .driver_detach+0x64/0xd0
-  .bus_remove_driver+0x70/0xf0
-  .driver_unregister+0x38/0x80
-  .platform_driver_unregister+0x14/0x30
-  .fsl_sata_driver_exit+0x18/0xa20 [sata_fsl]
- ---[ end trace 0ea876d4076908f5 ]---
-
-The driver creates the mapping by calling irq_of_parse_and_map(),
-so it also has to dispose the mapping. But the easy way out is to
-simply use platform_get_irq() instead of irq_of_parse_map(). Also
-we should adapt return value checking and propagate error values.
-
-In this case the mapping is not managed by the device but by
-the of core, so the device has not to dispose the mapping.
-
-Fixes: faf0b2e5afe7 ("drivers/ata: add support to Freescale 3.0Gbps SATA Controller")
-Cc: stable@vger.kernel.org
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
----
-V1->V2:
-	Adapt return value checking and propagate error values.
-V2->V3:
-	Add fixed and CC stable.
-
- drivers/ata/sata_fsl.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index 30759fd1c3a2..f850dfab72a6 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -1493,8 +1493,9 @@ static int sata_fsl_probe(struct platform_device *ofdev)
- 	host_priv->ssr_base = ssr_base;
- 	host_priv->csr_base = csr_base;
- 
--	irq = irq_of_parse_and_map(ofdev->dev.of_node, 0);
--	if (!irq) {
-+	irq = platform_get_irq(ofdev, 0);
-+	if (irq < 0) {
-+		retval = irq;
- 		dev_err(&ofdev->dev, "invalid irq from platform\n");
- 		goto error_exit_with_cleanup;
- 	}
-@@ -1570,8 +1571,6 @@ static int sata_fsl_remove(struct platform_device *ofdev)
- 
- 	ata_host_detach(host);
- 
--	irq_dispose_mapping(host_priv->irq);
--
- 	return 0;
- }
- 
 -- 
-2.31.1
+Good day
 
+I found your email in the Google database,
+
+Is your email address still valid? I have a good business proposal for you,
+
+If you are interested, please contact me for further information at:
+wongleshiu@gmail.com
+
+Wong  Shiu

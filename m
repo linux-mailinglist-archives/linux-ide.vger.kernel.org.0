@@ -2,109 +2,86 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1EEC45B5EE
-	for <lists+linux-ide@lfdr.de>; Wed, 24 Nov 2021 08:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AAD845B8F0
+	for <lists+linux-ide@lfdr.de>; Wed, 24 Nov 2021 12:11:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240005AbhKXHyt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 24 Nov 2021 02:54:49 -0500
-Received: from mail-ua1-f43.google.com ([209.85.222.43]:41760 "EHLO
-        mail-ua1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbhKXHyq (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 24 Nov 2021 02:54:46 -0500
-Received: by mail-ua1-f43.google.com with SMTP id p37so3238050uae.8;
-        Tue, 23 Nov 2021 23:51:37 -0800 (PST)
+        id S240785AbhKXLO6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 24 Nov 2021 06:14:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33004 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236160AbhKXLO5 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 24 Nov 2021 06:14:57 -0500
+Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38CCEC061574
+        for <linux-ide@vger.kernel.org>; Wed, 24 Nov 2021 03:11:48 -0800 (PST)
+Received: by mail-yb1-xb44.google.com with SMTP id v138so6171938ybb.8
+        for <linux-ide@vger.kernel.org>; Wed, 24 Nov 2021 03:11:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=zdkYmxB9znBgVJAl4+odHO8qB9fczXhqskn6pnD58SQ=;
+        b=pOyAWUAWT6xY398eEpG4jpCOdhN+JUAuSdIGDqb8dPCYPG5xSGucbQ7Znfb11YrN+a
+         3n0T2mgwIHXbUOfm+TpIK5RxmrS3cO4TMDHEEDLE7hAtp+qEa4WPefiatwDLi+hpqZNH
+         eC54kL/k/QRvAHpJ9rEZkKKlOz3xATTeywIHRjFBOAKiF8ZZxycsydrbJKQu2fpyCYcy
+         WBioWgInGDGnGptFh34r8vMo3SzrCDwYloTpL1zrfaPJUiRYQW6VeUiNjAqrgKNs+4kY
+         3649nXV4DqlJhnw0jwMqioAVpEkIVVpbEN9IoyXsV+KUuSt3eNV1gtgm7o1t2Yum+wd4
+         3Efw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1o7i2EeTnXlSwxgTkGX9jNcaWmEVbqja1xakXVbX7mI=;
-        b=5qZNp2mPso0rAibR116MA4bpaEKELwjl4bFLrqe3XXrY/8K0EVS6VXp66HMeICA71L
-         dr441Up9eculzwJSNZHrjVujwqdNUZDp+BiXZXuMtSmMfmAngOpmY/H3uSU6sSTOnSGA
-         X4iv/VrF0IWvAS9m19m7AEm/ZRxaUMfQI9k42AETvDHwZ/mgw3hMGnhjrZB3dcRk6Rgn
-         oYmarXxL3GfKsJFKYVH0VR3DpnNZBAMdZGPEXZ2GUrA/gfopez3PvZ2PuJbXR2zVTSue
-         x8b+VV/1SL6VIK7J6Gc0ZGPcixX8YdLzeRIIqOqvvuYczFggX8o5G7uQlp/hwTU/toye
-         WfJQ==
-X-Gm-Message-State: AOAM532uGpZaV8Us+yM/Y+dBuBGWtWcO6mGtikEEq4eRXM5y36JGHlZT
-        x6YK8vDT3Gp7i5Dn5Oiyi0U8IEDXgHF3fw==
-X-Google-Smtp-Source: ABdhPJy6nE0CJlpnmHUr+59nczBzEac3wMxD7rmJuv+XU2NzDsmgMg2BQIaIE3igTC5CBjaGkWh6dg==
-X-Received: by 2002:a9f:248b:: with SMTP id 11mr7136586uar.14.1637740296417;
-        Tue, 23 Nov 2021 23:51:36 -0800 (PST)
-Received: from mail-ua1-f49.google.com (mail-ua1-f49.google.com. [209.85.222.49])
-        by smtp.gmail.com with ESMTPSA id 17sm7730604uaq.10.2021.11.23.23.51.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Nov 2021 23:51:36 -0800 (PST)
-Received: by mail-ua1-f49.google.com with SMTP id j14so3215026uan.10;
-        Tue, 23 Nov 2021 23:51:35 -0800 (PST)
-X-Received: by 2002:a67:af0a:: with SMTP id v10mr19242969vsl.35.1637740295605;
- Tue, 23 Nov 2021 23:51:35 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=zdkYmxB9znBgVJAl4+odHO8qB9fczXhqskn6pnD58SQ=;
+        b=xKMS90ogLdiFc0iQeyUfXMohsVfxdnUVPHyULCw/Orol2id6IRDmq10zzCBrgwSSqz
+         YtAK4r/RMuEiIcEpVwkpWZmEOHVQ4QPkL0tRW8sp3wHnAkYNQvIxkyshpB51UovzJL3l
+         W6y/zxx3K2g9Y4h5me7AT/hlBvcWTYZuqMGty5avlgfcLtYSe2tuIxnY4Znp75XRkIlf
+         lJYGK1KCacirgxMqMvS1zhqoPyAJqw7uj2LpV/Zz1xV5HPMjLj0pCbL2pPRE6Pf2L8/n
+         1Z1wLo5ngqlBo+Bsj21H30i9O2kPBAMzxGatb4Jf/UXto3J/y9tuQAT6HUtKB7qspsoZ
+         kcnw==
+X-Gm-Message-State: AOAM5310GIkPstZLruAbtBG7m8hRfblypkSBuABED6o49l7exugZ8k1t
+        NXh4tGph2/xiVdx8xJf9+eo5aEAROq2NeqDfrxIuT6ad4Vqv5w==
+X-Google-Smtp-Source: ABdhPJxsx30ae+0Pui5XxG2jH8hbsFeC53RbmWFKGSriYjzFogfifBXBHZytBn9pXTuFodK5t+aq+fB/Tja6hJe8QpU=
+X-Received: by 2002:a25:37ce:: with SMTP id e197mr15880079yba.36.1637752294874;
+ Wed, 24 Nov 2021 03:11:34 -0800 (PST)
 MIME-Version: 1.0
-References: <44e0213a681f3c8ee4c6ab2ef9d61ce3ac00e368.1637727935.git.fthain@linux-m68k.org>
-In-Reply-To: <44e0213a681f3c8ee4c6ab2ef9d61ce3ac00e368.1637727935.git.fthain@linux-m68k.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 24 Nov 2021 08:51:24 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXTxTABOoVgC6fVR44dxUZZEbZV=ewSk9vKFY=U5u+fcw@mail.gmail.com>
-Message-ID: <CAMuHMdXTxTABOoVgC6fVR44dxUZZEbZV=ewSk9vKFY=U5u+fcw@mail.gmail.com>
-Subject: Re: [PATCH] pata_falcon: Add missing __iomem annotations
-To:     Finn Thain <fthain@linux-m68k.org>
-Cc:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Received: by 2002:a05:7010:123d:b0:1e1:46d0:a9e6 with HTTP; Wed, 24 Nov 2021
+ 03:11:34 -0800 (PST)
+Reply-To: cardoso.almeida1@outlook.com
+From:   Cardoso Almeida <ibranancy@gmail.com>
+Date:   Wed, 24 Nov 2021 03:11:34 -0800
+Message-ID: <CAFZDcwKtkzv2ka-HDgN=a_=PCTwmkThAYvnKq_DJCCBMW2f6Og@mail.gmail.com>
+Subject: Hi;
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Finn,
+ Greetings my dear,
 
-On Wed, Nov 24, 2021 at 8:36 AM Finn Thain <fthain@linux-m68k.org> wrote:
-> The zero day bot reported some sparse complaints in pata_falcon.c. E.g.
->
-> drivers/ata/pata_falcon.c:58:41: warning: cast removes address space '__iomem' of expression
-> drivers/ata/pata_falcon.c:58:41: warning: incorrect type in argument 1 (different address spaces)
-> drivers/ata/pata_falcon.c:58:41:    expected unsigned short volatile [noderef] [usertype] __iomem *port
-> drivers/ata/pata_falcon.c:58:41:    got unsigned short [usertype] *
->
-> The same thing shows up in 8 places, all told. Avoid this by use of
-> __iomem type casts.
->
-> Cc: Michael Schmitz <schmitzmic@gmail.com>
-> Cc: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+How are you?
 
-Thanks for your patch!
+My name is Cardoso Almeida. I am a Procurement Officer with the
+Angolan National Petroleum and Gas Agency (ANPG). I am writing to
+extend a business request for you to stand as an agent or middle-man
+in a crude oil supply contract.
 
-> --- a/drivers/ata/pata_falcon.c
-> +++ b/drivers/ata/pata_falcon.c
-> @@ -55,14 +55,14 @@ static unsigned int pata_falcon_data_xfer(struct ata_queued_cmd *qc,
->         /* Transfer multiple of 2 bytes */
->         if (rw == READ) {
->                 if (swap)
-> -                       raw_insw_swapw((u16 *)data_addr, (u16 *)buf, words);
-> +                       raw_insw_swapw((u16 __iomem *)data_addr, (u16 *)buf, words);
->                 else
-> -                       raw_insw((u16 *)data_addr, (u16 *)buf, words);
-> +                       raw_insw((u16 __iomem *)data_addr, (u16 *)buf, words);
->         } else {
->                 if (swap)
-> -                       raw_outsw_swapw((u16 *)data_addr, (u16 *)buf, words);
-> +                       raw_outsw_swapw((u16 __iomem *)data_addr, (u16 *)buf, words);
->                 else
-> -                       raw_outsw((u16 *)data_addr, (u16 *)buf, words);
-> +                       raw_outsw((u16 __iomem *)data_addr, (u16 *)buf, words);
+I am assuring you that good profits will be earned from the commission
+that will be paid to middle-persons. I will provide exclusive details
+to you upon your acceptance.
 
-Can't you just drop the casts? data_addr is an __iomem void *.
+Sincerely,
 
-Gr{oetje,eeting}s,
+Cardoso Almeida
+Procurement Officer.
 
-                        Geert
+ANPG - AG=C3=8ANCIA  NACIONAL DE PETR=C3=93LEO,
+G=C3=81S E  BIO-COMBUST=C3=8DVEIS
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Edif=C3=ADcio Torres do Carmo
+Tor-re 2, Rua Lopes de Lima,
+Dis-trito Urbano da Ingombota,
+Luanda - Rep=C3=BAblica de Angola
+Website: www.anpg.co.ao
+anpg@contractor.net

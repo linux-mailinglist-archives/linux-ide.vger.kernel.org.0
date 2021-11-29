@@ -2,72 +2,128 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED13A460173
-	for <lists+linux-ide@lfdr.de>; Sat, 27 Nov 2021 21:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EB4B460F82
+	for <lists+linux-ide@lfdr.de>; Mon, 29 Nov 2021 08:43:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1356202AbhK0Ub6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 27 Nov 2021 15:31:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58034 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1356114AbhK0U3z (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 27 Nov 2021 15:29:55 -0500
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0749C06174A
-        for <linux-ide@vger.kernel.org>; Sat, 27 Nov 2021 12:26:40 -0800 (PST)
-Received: by mail-vk1-xa35.google.com with SMTP id j1so8253686vkr.1
-        for <linux-ide@vger.kernel.org>; Sat, 27 Nov 2021 12:26:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=qWMLDC334a28uF2aOXUclG6/xl7HV/EnLkjmVIuz9NM=;
-        b=AqQ2Xl8ByB31YBOyuPoaVJ8xLemx2vaSMGubxZG229JgbGkIGQhNgXNctDaB47xF93
-         WRq9XnZcNEkqWDpWIaGEG9sr5gn6VW/Im6if/UsRoqIWcb5COCnJU43ibKYRz0DLFXU3
-         /8jQJZyAQOsc0MoEDaRnXvU66IvBqqVcW1wF6xn2zbZuzZji9aUYqW7Q299DZb8eQQeE
-         ChQZA+pto+fU0UdVZZ2206e9lLqiDR6nu1/k3sVm1w+VguLSnWlYoS8Na2ruCWgcPtkN
-         AnY6KHUy4n9nLdcosN+3hUuvYE03gxD/7FSSRnxadVLYNw6gJSW73K/KxgcBsmJ/vzWR
-         7wHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=qWMLDC334a28uF2aOXUclG6/xl7HV/EnLkjmVIuz9NM=;
-        b=jNM1s6owpQI6TO1DQ6B6uGkFi5uqI2o7lSBN6IgJ92cnMFhkr4UXpR7OMPYxyYtqBv
-         T3/Qo4zkwJHgAhSL2mBfPf+3HlAn7SIYllwvF66iBw5uiAX7xDrLzxQWVv97QBzzOJHb
-         fLB0XGlFb0W8zzwYPIllTOyWNmuGEEcQLPrZv9WWjp6e1Ty1jGv53JGwPuG4P8lgEIOc
-         nss8FyDYUde9+eX1SnMlbJp13kmcMVuu+a06d9veMbOgbUKQU4qvJa7USrCMxOAKdGzN
-         ESAVr4e2K6XBS/j8CmYsAB1OgF+ckktwlsW+FK68DSBx4PsQoC4Yf51CJXZl7LrzGvlR
-         HLQA==
-X-Gm-Message-State: AOAM533zK0B2Wjx/z+ahA8L6mg62wMAgLk83XUw6EoJ9C2+R4INjgmiz
-        2KbDzrhxYVEshiWdBLbGc+BsS95AvgTxqCiU7d8=
-X-Google-Smtp-Source: ABdhPJyEN8sTgAZ34YJb1tzl739Tzcols9T46t9STq8HbFttgYzR1qh4DUcLQXwDICpRdn9Phdj2FZ/FD1JluhmoGXY=
-X-Received: by 2002:a1f:ee07:: with SMTP id m7mr28507019vkh.27.1638044799367;
- Sat, 27 Nov 2021 12:26:39 -0800 (PST)
+        id S234755AbhK2HrJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 29 Nov 2021 02:47:09 -0500
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:27498 "EHLO
+        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240224AbhK2HpI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 29 Nov 2021 02:45:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1638171710; x=1669707710;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=kpZWgy1AvFSueydV91dF3ihwnnO96kRS+RploxrBq2w=;
+  b=Kzli4lj7VJEUvIHp5EVF6TcseUctytBSrk19vBjNUabUfnS9Y2c8UQ3A
+   xjFAP3ffR5H6EnnZLa8XxFmuOFAZ0X/LcnMY9MGRnp+dDlFlbGKRW/H+L
+   w+mzaJwObbTiT3rVTYvy0xT71vSzoicGQNk/knGJXhIAZiKu0zt1+Q2yS
+   D8X2Vf0+sNpxkF2ewrxc2nJoia8fwg9XiBvLVQwwu+9odl6O7B0BrThXe
+   4RablsOU6yt4wYeXq0jp7rRKXCtmq5ObE23pH9BUBeOsXxIEHv0ow1ONi
+   jntD7UsY+LAGGXtRMp2+E7NQ1HhbeaBAMhetYfEIPBBjTTN48h1KVMNDY
+   g==;
+X-IronPort-AV: E=Sophos;i="5.87,272,1631548800"; 
+   d="scan'208";a="191724030"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 29 Nov 2021 15:39:49 +0800
+IronPort-SDR: yUYLG+3UmjAYk4Ci0Hlkyo/f4804DdkyWNVZuzP1tZJtMZG3PJ39RG1RuwGPSSKYDDA/+MMtRy
+ atpsbpvPQuTsvW80QkZa0rTLZkrbtaVnTJwSbslgzdK7wFBZT/EN7kQhPP4PqbZpCA9I315o9l
+ nM9cDaXBHmhnGrM2WtUBWppjUWrhMTdm3dNBvQAmdpwgZsWc1DlHT2DBv8zCTsqPh15IKGsD2x
+ gg8vk/dqsPr8cFMH0Vi9vrzCV1A+HCFexkP7SY1TZN2A79vtUNWNLjm2zyakQ6zCfBSPSexSi7
+ HxA02xOwIo2iURbYzkLolx1q
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2021 23:14:37 -0800
+IronPort-SDR: oUSyj4L/8r5AHbqK59FyK3vZliCEmQy8Y/umeeewa17bA+ddii+HmW6pfEdFywL9KSbVqTe6fr
+ PxcFt/u1dFWmO2EbZ0cX0ZZQ8RSMC8l8S9/+XKwgRpKUqagkMUZFCvGsfQ0GLwpkmsLXz2w+1a
+ 5YVj3pZRVhcROSRi7/gJ7BV010tfVsZGChU/FQTlquj5HjBwSOSKckowG2jpub+HP38JyHWWlv
+ Hy1Odzv/Jw6CisgXtpnhACwAJthaf+nWPPAXKLufk6IVLq5Tjj1vI+u9hfJ/3/sYk9Hrlxfxl5
+ yhA=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2021 23:39:51 -0800
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4J2cgp6FDFz1RtVn
+        for <linux-ide@vger.kernel.org>; Sun, 28 Nov 2021 23:39:50 -0800 (PST)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :in-reply-to:organization:from:references:to:content-language
+        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
+        1638171590; x=1640763591; bh=kpZWgy1AvFSueydV91dF3ihwnnO96kRS+Rp
+        loxrBq2w=; b=FWvkO9gBPmVQ4jTCbbuSMl0QwYB4RKZcJnKxaY0kUOGm6D50gJ9
+        2z8G8g96BrbAJtAIBmrA0luIQomgLHaRpFtDzAawRAuUCvgu9csamV8wYUaU1Fds
+        RJdt8D8G/pKc9hIYiigHkplvCyLyI9u4YjMRgO6ios1wrB2bIFPMUb3pue9Uoac/
+        RHsyCPDPbmUODc6F4ni3k1DPm1HDYeuXSZ0ZFyHmYpC7BL1WiKoKRrIiTGJL4gyt
+        zYBa1hy8nBRVEmEyjkPFu3eHcaewP4ZigaGk9veUaoAks3lkFQMTmqajnYuNBx9E
+        DD7xWnoKjiTs5KuMsX4jKBuLetaPlrt91Rw==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id g9voHs4e_0My for <linux-ide@vger.kernel.org>;
+        Sun, 28 Nov 2021 23:39:50 -0800 (PST)
+Received: from [10.225.54.48] (unknown [10.225.54.48])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4J2cgn5SL2z1RtVl;
+        Sun, 28 Nov 2021 23:39:49 -0800 (PST)
+Message-ID: <6ecc0597-3b2b-d8df-1dd9-38a921c59d9a@opensource.wdc.com>
+Date:   Mon, 29 Nov 2021 16:39:48 +0900
 MIME-Version: 1.0
-Sender: saniumarm46@gmail.com
-Received: by 2002:a67:486:0:0:0:0:0 with HTTP; Sat, 27 Nov 2021 12:26:38 -0800 (PST)
-From:   "Mrs. Peninnah Ariel Benaiah" <mrspeninnaharielb01@gmail.com>
-Date:   Sat, 27 Nov 2021 12:26:38 -0800
-X-Google-Sender-Auth: xVaKl0eb2dXbnRrI7p459e7WRCQ
-Message-ID: <CAEBNbt79oOVRK97uq=9eiKAu0dZG1FMWuEu6CRsJ7dbY86V_Qw@mail.gmail.com>
-Subject: HELLO
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
+ Gecko/20100101 Thunderbird/91.3.2
+Subject: Re: PROBLEM: [drivers/ata] Read log page failed (boot error message)
+Content-Language: en-US
+To:     Nikolay Kyx <knv418@gmail.com>
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <YZABtvQab/M2CCQd@msi.localdomain>
+ <14b22c98-dc4c-fe3b-fa20-b3dd78afd5cc@opensource.wdc.com>
+ <CAMJR_v6igrNZMzXpio27PpA6rQvo+efAVd2nM5GNg2+agQa9=A@mail.gmail.com>
+ <b386bdc4-db27-3160-80ac-ecd9d8d69c9f@opensource.wdc.com>
+ <CAMJR_v7Y+o7sFh+ViM-hmZ-AqfEujcTSOYNf8ospvPHuk++wcQ@mail.gmail.com>
+ <8e55f354-0522-de56-2c1e-56557888602f@opensource.wdc.com>
+ <CAMJR_v4_3npqoTkFYW+2OVDHjj4-9WK70xASK6C1Mqn=S5z2Wg@mail.gmail.com>
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital
+In-Reply-To: <CAMJR_v4_3npqoTkFYW+2OVDHjj4-9WK70xASK6C1Mqn=S5z2Wg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello Friend,
-I'm "Mrs.Peninnah Ariel Benaiah I am a Norway Citizen" married to
-Mr.Benaiah jeremiah ( an International Contractor and Oil Merchant/
-jointly in Exposition of Agro Equipment ) who died in the Burkina Faso
-attack, and i diagnosed of cancer for about 2 years ago and my husband
-informed me that he deposited the sum of =E2=82=AC 8.5 Million Euro) Eight
-million, Five hundred thousand Euros in a bank in Brussels the capital
-city of Belgium in Europe I want you to help me to use this money for
-a charity project before I die, for the Poor, Less-privileged and
-ORPHANAGES in your country.  Please kindly respond quickly for further
-details.
-Yours fairly friend,
-Mrs. Peninnah Ariel Benaiah
+On 2021/11/27 19:34, Nikolay Kyx wrote:
+> On Tue, Nov 16, 2021 at 2:44 AM Damien Le Moal
+> <damien.lemoal@opensource.wdc.com> wrote:
+>> Latest kernel will not even print this warning since not having support for the
+>> IDENTIFY DEVICE log page with ATA-9 drives is expected. The patch fixing this
+>> will go to stable too.
+> While with 5.15.2 + patch there weren't errors from libata, with
+> vanilla 5.15.5 (in which patch 'libata: core: add missing
+> ata_identify_page_supported() calls'
+> was included) there are 2 other (new because it wasn't the case with
+> 5.15.4) error messages:
+> sd 5:0:0:0: [sda] Asking for cache data failed
+> sd 5:0:0:0: [sda] Assuming drive cache: write through
+> With the old warning (twice):
+> ata6.00: ATA Identify Device Log not supported
+> To summarize errors:
+> pre-5.15 kernels: no errors from libata.
+> 5.15 - 5.15.4 (twice): Read log page 0x08 failed, Emask 0x1
+> 5.15.5: Asking for cache data failed; Assuming drive cache: write through
+> Same hardware, just upgraded kernel to 5.15.5.
+> I still think that my HDD doesn't deserve error messages in dmesg.
+> Errors from the storage subsystem can be scary for someone.
+> 
+
+Please see:
+
+https://bugzilla.kernel.org/show_bug.cgi?id=215137
+
+Greg already queued up patch c749301ebee82eb5e97dec14b6ab31a4aabe37a6 into 5.15
+stable to fix this issue. 5.15.6 will be OK.
+
+-- 
+Damien Le Moal
+Western Digital Research

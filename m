@@ -2,95 +2,65 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EADA34628CD
-	for <lists+linux-ide@lfdr.de>; Tue, 30 Nov 2021 01:04:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E20A146309B
+	for <lists+linux-ide@lfdr.de>; Tue, 30 Nov 2021 11:05:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231180AbhK3AHm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 29 Nov 2021 19:07:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55488 "EHLO
+        id S235078AbhK3KIW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 30 Nov 2021 05:08:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231168AbhK3AHl (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 29 Nov 2021 19:07:41 -0500
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3E3CC061714;
-        Mon, 29 Nov 2021 16:04:23 -0800 (PST)
-Received: by mail-pl1-x632.google.com with SMTP id m24so13480529pls.10;
-        Mon, 29 Nov 2021 16:04:23 -0800 (PST)
+        with ESMTP id S234922AbhK3KIW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 30 Nov 2021 05:08:22 -0500
+Received: from mail-ua1-x92d.google.com (mail-ua1-x92d.google.com [IPv6:2607:f8b0:4864:20::92d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836FDC061574
+        for <linux-ide@vger.kernel.org>; Tue, 30 Nov 2021 02:05:03 -0800 (PST)
+Received: by mail-ua1-x92d.google.com with SMTP id r15so40206047uao.3
+        for <linux-ide@vger.kernel.org>; Tue, 30 Nov 2021 02:05:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9pNr1OrMIuWpwcubj+PM70XpS6JrRpbmtiPPGsXVKHM=;
-        b=chdKzV6Q4ln/wVoAza1s3xXLFZkBBVaP+xRRhodstSxfvR7HPqrTrRElHDrJtK/MtT
-         QMRhAlKjz6KjTyBUTjAcwHme7u/rqCmve8jIoqARak/gyePOyzrsdnFvDZmldqHn4Teh
-         NbVnIsNF3io2j441w5LA4/x1uOUArR7EbOx3W6NWJ+YzPQ755sDv3PaxXEhd6++pNv3Z
-         /tkS0V3vxIeZxqEeuYqNLr3Q5BSgY10ssXM+/S3YYpOrl65qsfE4gYhY33R0N65kesES
-         9ExoFsYLoksrGX7B/8fzjCbS3oupicuLJ2zjqCyGXrU9ttCcaDIOa+cMEIYrjC8huiAs
-         qGkA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=YYm62Oqzah+993ClMuw78e8Z6Og/dhaaCjbKBqM0amo=;
+        b=O3oDBN5S/+rYRfONnoZlj52g4Zb5Dd4R4DhJeEe6st9SZWwz6lFg29y0FOn6bHFqzt
+         TQVScK/eSLJS9uIe39ibX0T3ITr4TATEnY3KIgLCBBnchYG6VIEQyEtsW4wChUcX1Qzk
+         e84o2sJqhb3KwppjimZZzioWrg2EA8jEw0Bha9EV6dDiTco50rPUWapc0BCP1XzwQDIm
+         XfCNT5HNAJA9MQUCwZUYKAvXBatSXKrsQ2lFdI8WNFYrj1SQFH5FG1Q+1TE9gw1vKozM
+         BlcyFCPHVGYuGLzkqjuyq4KYKSziJRP/KUYKdC/hLOaihgFa1UMY0Gw0rfE9bO/siERH
+         0LYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9pNr1OrMIuWpwcubj+PM70XpS6JrRpbmtiPPGsXVKHM=;
-        b=the2ue8uUp3neHQGwWGqMzfxwXaHlYXlH4brfFh50bfq4IvyUp0hhGLKH7UFQkc+xg
-         hmZQg732F0SPpO1RhXwEIE2qeohf8Oc9VXWe3sAIyD8KIHsN9kaBHo32YH2Evz3xXEJi
-         2h4Dc+bGLH5cwY3vL2pQwE34ut9lGTGpnFoq2EKbkTI+0iAOHJJ+1jgHxzIzN4wC5ep3
-         flnTaklCd1bFzT3G5jwRz6vrHagPLm2mXDTBCQvFrB/9fIbSNgDsmM6G2NVKeLJNxdIE
-         VOHV5D79CV+DYhzViegUkv81cu91IZxJ+IGbQZZVlEMmXVO3Ad3uUeDVJsKvDZH9xB2b
-         8Hjg==
-X-Gm-Message-State: AOAM5309ykR4dWS/lEqDNtwcaIyUDW9no3ea2k6FkxJ8kDFkCyuQweVP
-        s5IbEXiA4OCnfDKq/sNhsvB7nHvIZ7s=
-X-Google-Smtp-Source: ABdhPJz9FJluBVQ/MraKVDVcpWDTgrQ2f9aWuGlUuFl+vFUrHgVuAe3oW0ewoak9x1vOJspCNOvJ3Q==
-X-Received: by 2002:a17:902:c3cc:b0:141:be17:405e with SMTP id j12-20020a170902c3cc00b00141be17405emr64624405plj.76.1638230663320;
-        Mon, 29 Nov 2021 16:04:23 -0800 (PST)
-Received: from debian11-dev-61.localdomain (192.243.120.180.16clouds.com. [192.243.120.180])
-        by smtp.gmail.com with ESMTPSA id j16sm20463257pfj.16.2021.11.29.16.04.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Nov 2021 16:04:22 -0800 (PST)
-From:   davidcomponentone@gmail.com
-X-Google-Original-From: yang.guang5@zte.com.cn
-To:     damien.lemoal@opensource.wdc.com
-Cc:     davidcomponentone@gmail.com, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yang Guang <yang.guang5@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH] ata: replace snprintf in show functions with sysfs_emit
-Date:   Tue, 30 Nov 2021 08:04:11 +0800
-Message-Id: <2fbce7707eff3bfebf38138899e900ee8c619931.1638155918.git.yang.guang5@zte.com.cn>
-X-Mailer: git-send-email 2.30.2
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=YYm62Oqzah+993ClMuw78e8Z6Og/dhaaCjbKBqM0amo=;
+        b=pkVJF3acXst1szlEE0NfFaDQBj6N4DQXBoXA4go9l1uWzyTP/6c8lBAgSClEXB0qsL
+         DxJmj/+o/lnGBvH7nRmGtXccNfqnRhmOd/JZXzZ2mxRQme/NRzAUJpk/Iioguvl8hNHZ
+         BDTfUS2A4OsgWU5/UGhzYFxPA1H5+XjH5rG6+qA2WlmJPef4/yeevpInYONmkFiV1zq+
+         OQ+QxaYj5NB1HlfU4ldC7i16sS1wf6becIMlLrQOt9fHjBMyf0G0MuGn9l2hEUygG3Sg
+         pwBvw3+/XXritV7o7Cpsybh2cjv4MZ3pd62e5gVSM+KSz1rxyNuUReSYxmMMDr1oqeVI
+         z69Q==
+X-Gm-Message-State: AOAM530HGMNSG/1aN+Co9BaXALggZMqjmoTMQcGuYfOM9K/mhVluBTh7
+        0YapLT4ujJ0XIeS6KAoYqzebi79oSVGYeDFzfss=
+X-Google-Smtp-Source: ABdhPJx+zDHsIGQJF9iO/Yy0foJ+9HBVL1T2gYdCGLnafUcObPryjnmQTZ16/nFNaoi/ViARMqG54Wt13TpPAOzPF/c=
+X-Received: by 2002:a67:1c44:: with SMTP id c65mr38817933vsc.78.1638266702533;
+ Tue, 30 Nov 2021 02:05:02 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a59:b184:0:b0:248:62ca:d6b1 with HTTP; Tue, 30 Nov 2021
+ 02:05:02 -0800 (PST)
+Reply-To: s7jamesl@gmail.com
+From:   "James L. Smith" <hammangoni@gmail.com>
+Date:   Tue, 30 Nov 2021 10:05:02 +0000
+Message-ID: <CAB2dg0h=fAmDrLyWQ8YyUoD3C9aSg7om2yZ=OFsX=aLpazRwSQ@mail.gmail.com>
+Subject: re:My greetings...
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Yang Guang <yang.guang5@zte.com.cn>
+Hello,
 
-coccinelle report：
-./drivers/ata/libata-sata.c:830:8-16: 
-WARNING: use scnprintf or sprintf
+My greetings to you. Please, kindly let me know your thoughts towards
+project funding.
 
-Use sysfs_emit instead of scnprintf or sprintf makes more sense.
-
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Yang Guang <yang.guang5@zte.com.cn>
----
- drivers/ata/libata-sata.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 5b78e86e3459..b9c77885b872 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -827,7 +827,7 @@ static ssize_t ata_scsi_lpm_show(struct device *dev,
- 	if (ap->target_lpm_policy >= ARRAY_SIZE(ata_lpm_policy_names))
- 		return -EINVAL;
- 
--	return snprintf(buf, PAGE_SIZE, "%s\n",
-+	return sysfs_emit(buf, "%s\n",
- 			ata_lpm_policy_names[ap->target_lpm_policy]);
- }
- DEVICE_ATTR(link_power_management_policy, S_IRUGO | S_IWUSR,
--- 
-2.30.2
-
+Best regards,
+James L. Smith
+Accredited Broker

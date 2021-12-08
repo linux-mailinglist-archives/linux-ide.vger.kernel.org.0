@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D02D46D85D
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7867046D857
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237022AbhLHQgu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:36:50 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:37724 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237023AbhLHQgh (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:37 -0500
+        id S230245AbhLHQgo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:36:44 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:40676 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237014AbhLHQge (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:34 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 919381FE17;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 98C3F21763;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1638981180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=avHZ2T3WtPXVtL0Evjazu33BoW7vuaczHJtBbNHwQhM=;
-        b=gcQs5INbnDfNKtrHei1uNZtLaH93udH/S3WHVtzh2jy+8k4hJA2pcYe4GvHZIneV3Hqz00
-        Frh6SNuzOewADNUbq1DBkiVaAiiMXYCmNvhszvh0bSNi/bW8/rKq95/fd8nCZiA3IwlQ91
-        eIj01LuYNKyMvN+btJ0i8wn4yxtdirk=
+        bh=HiZmv/QvahwRXoRBlxUFqBUStxno1ZwdMuCEj4y1jZ4=;
+        b=Wb0Kujg5wGuFC4PFEwIF2b4j1OvNrzMj8pcYJEy1d3yzU3EebXHu7N7ljevoJOQ3vS29X0
+        IknEyBkA+sKUbPdw4dscxtOkL7El8U2HxEDY4uOXQwF7uxJjx6LW1EwPsujuuZ1YCWqOl4
+        SGuIvpgmTK0smcZUdUtJT4pIRAaOrnY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1638981180;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=avHZ2T3WtPXVtL0Evjazu33BoW7vuaczHJtBbNHwQhM=;
-        b=e/zdadnVMHK82Db7PmrmnVFkRbt/YB+ghKf0+I+g1EBI7uQIiNe3RjC/5G8vSCl7Q3jlgR
-        D5dSbhR2t+gAS3Ag==
+        bh=HiZmv/QvahwRXoRBlxUFqBUStxno1ZwdMuCEj4y1jZ4=;
+        b=Ibo/BmHvSWlmZ/5dPc5g64ka20IZQCbnB4j6xddWGQg9y2Da7i1zdAp9RQ0+oiFi6lill4
+        2T0VHgGsX87HG+AQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 8EE15A3BB2;
+        by relay2.suse.de (Postfix) with ESMTP id 951D9A3BB3;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 8B68D5191F9B; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
+        id 919B45191F9D; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 31/73] ahci: Drop pointless VPRINTK() calls and convert the remaining ones
-Date:   Wed,  8 Dec 2021 17:32:13 +0100
-Message-Id: <20211208163255.114660-32-hare@suse.de>
+Subject: [PATCH 32/73] pdc_adma: Drop pointless VPRINTK() calls and convert the remaining ones
+Date:   Wed,  8 Dec 2021 17:32:14 +0100
+Message-Id: <20211208163255.114660-33-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211208163255.114660-1-hare@suse.de>
 References: <20211208163255.114660-1-hare@suse.de>
@@ -57,138 +57,54 @@ routines and convert the remaining calls to dev_dbg().
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/ahci.c       |  4 +---
- drivers/ata/ahci_xgene.c |  4 ----
- drivers/ata/libahci.c    | 18 ++++--------------
- 3 files changed, 5 insertions(+), 21 deletions(-)
+ drivers/ata/pdc_adma.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 6a867ef64c9c..e9fd09152a6b 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -683,7 +683,7 @@ static void ahci_pci_init_controller(struct ata_host *host)
- 
- 		/* clear port IRQ */
- 		tmp = readl(port_mmio + PORT_IRQ_STAT);
--		VPRINTK("PORT_IRQ_STAT 0x%x\n", tmp);
-+		dev_dbg(&pdev->dev, "PORT_IRQ_STAT 0x%x\n", tmp);
- 		if (tmp)
- 			writel(tmp, port_mmio + PORT_IRQ_STAT);
+diff --git a/drivers/ata/pdc_adma.c b/drivers/ata/pdc_adma.c
+index 2c910c4cd4de..5d6f460b2356 100644
+--- a/drivers/ata/pdc_adma.c
++++ b/drivers/ata/pdc_adma.c
+@@ -284,9 +284,6 @@ static int adma_fill_sg(struct ata_queued_cmd *qc)
+ 		*(__le32 *)(buf + i) =
+ 			(pFLAGS & pEND) ? 0 : cpu_to_le32(pp->pkt_dma + i + 4);
+ 		i += 4;
+-
+-		VPRINTK("PRD[%u] = (0x%lX, 0x%X)\n", i/4,
+-					(unsigned long)addr, len);
  	}
-@@ -1468,7 +1468,6 @@ static irqreturn_t ahci_thunderx_irq_handler(int irq, void *dev_instance)
- 	u32 irq_stat, irq_masked;
- 	unsigned int handled = 1;
+ 
+ 	if (likely(last_buf))
+@@ -302,8 +299,6 @@ static enum ata_completion_errors adma_qc_prep(struct ata_queued_cmd *qc)
+ 	u32 pkt_dma = (u32)pp->pkt_dma;
+ 	int i = 0;
  
 -	VPRINTK("ENTER\n");
- 	hpriv = host->private_data;
- 	mmio = hpriv->mmio;
- 	irq_stat = readl(mmio + HOST_IRQ_STAT);
-@@ -1485,7 +1484,6 @@ static irqreturn_t ahci_thunderx_irq_handler(int irq, void *dev_instance)
- 		irq_stat = readl(mmio + HOST_IRQ_STAT);
- 		spin_unlock(&host->lock);
- 	} while (irq_stat);
--	VPRINTK("EXIT\n");
+-
+ 	adma_enter_reg_mode(qc->ap);
+ 	if (qc->tf.protocol != ATA_PROT_DMA)
+ 		return AC_ERR_OK;
+@@ -379,8 +374,6 @@ static inline void adma_packet_start(struct ata_queued_cmd *qc)
+ 	struct ata_port *ap = qc->ap;
+ 	void __iomem *chan = ADMA_PORT_REGS(ap);
  
+-	VPRINTK("ENTER, ap %p\n", ap);
+-
+ 	/* fire up the ADMA engine */
+ 	writew(aPIOMD4 | aGO, chan + ADMA_CONTROL);
+ }
+@@ -502,14 +495,10 @@ static irqreturn_t adma_intr(int irq, void *dev_instance)
+ 	struct ata_host *host = dev_instance;
+ 	unsigned int handled = 0;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	spin_lock(&host->lock);
+ 	handled  = adma_intr_pkt(host) | adma_intr_mmio(host);
+ 	spin_unlock(&host->lock);
+ 
+-	VPRINTK("EXIT\n");
+-
  	return IRQ_RETVAL(handled);
- }
-diff --git a/drivers/ata/ahci_xgene.c b/drivers/ata/ahci_xgene.c
-index dffc432b9d54..4d8a186ec12a 100644
---- a/drivers/ata/ahci_xgene.c
-+++ b/drivers/ata/ahci_xgene.c
-@@ -588,8 +588,6 @@ static irqreturn_t xgene_ahci_irq_intr(int irq, void *dev_instance)
- 	void __iomem *mmio;
- 	u32 irq_stat, irq_masked;
- 
--	VPRINTK("ENTER\n");
--
- 	hpriv = host->private_data;
- 	mmio = hpriv->mmio;
- 
-@@ -612,8 +610,6 @@ static irqreturn_t xgene_ahci_irq_intr(int irq, void *dev_instance)
- 
- 	spin_unlock(&host->lock);
- 
--	VPRINTK("EXIT\n");
--
- 	return IRQ_RETVAL(rc);
- }
- 
-diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index ee7e63da0437..4deb5e9295c0 100644
---- a/drivers/ata/libahci.c
-+++ b/drivers/ata/libahci.c
-@@ -1234,12 +1234,12 @@ static void ahci_port_init(struct device *dev, struct ata_port *ap,
- 
- 	/* clear SError */
- 	tmp = readl(port_mmio + PORT_SCR_ERR);
--	VPRINTK("PORT_SCR_ERR 0x%x\n", tmp);
-+	dev_dbg(dev, "PORT_SCR_ERR 0x%x\n", tmp);
- 	writel(tmp, port_mmio + PORT_SCR_ERR);
- 
- 	/* clear port IRQ */
- 	tmp = readl(port_mmio + PORT_IRQ_STAT);
--	VPRINTK("PORT_IRQ_STAT 0x%x\n", tmp);
-+	dev_dbg(dev, "PORT_IRQ_STAT 0x%x\n", tmp);
- 	if (tmp)
- 		writel(tmp, port_mmio + PORT_IRQ_STAT);
- 
-@@ -1270,10 +1270,10 @@ void ahci_init_controller(struct ata_host *host)
- 	}
- 
- 	tmp = readl(mmio + HOST_CTL);
--	VPRINTK("HOST_CTL 0x%x\n", tmp);
-+	dev_dbg(host->dev, "HOST_CTL 0x%x\n", tmp);
- 	writel(tmp | HOST_IRQ_EN, mmio + HOST_CTL);
- 	tmp = readl(mmio + HOST_CTL);
--	VPRINTK("HOST_CTL 0x%x\n", tmp);
-+	dev_dbg(host->dev, "HOST_CTL 0x%x\n", tmp);
- }
- EXPORT_SYMBOL_GPL(ahci_init_controller);
- 
-@@ -1911,8 +1911,6 @@ static irqreturn_t ahci_multi_irqs_intr_hard(int irq, void *dev_instance)
- 	void __iomem *port_mmio = ahci_port_base(ap);
- 	u32 status;
- 
--	VPRINTK("ENTER\n");
--
- 	status = readl(port_mmio + PORT_IRQ_STAT);
- 	writel(status, port_mmio + PORT_IRQ_STAT);
- 
-@@ -1920,8 +1918,6 @@ static irqreturn_t ahci_multi_irqs_intr_hard(int irq, void *dev_instance)
- 	ahci_handle_port_interrupt(ap, port_mmio, status);
- 	spin_unlock(ap->lock);
- 
--	VPRINTK("EXIT\n");
--
- 	return IRQ_HANDLED;
- }
- 
-@@ -1938,9 +1934,7 @@ u32 ahci_handle_port_intr(struct ata_host *host, u32 irq_masked)
- 		ap = host->ports[i];
- 		if (ap) {
- 			ahci_port_intr(ap);
--			VPRINTK("port %u\n", i);
- 		} else {
--			VPRINTK("port %u (no irq)\n", i);
- 			if (ata_ratelimit())
- 				dev_warn(host->dev,
- 					 "interrupt on disabled port %u\n", i);
-@@ -1961,8 +1955,6 @@ static irqreturn_t ahci_single_level_irq_intr(int irq, void *dev_instance)
- 	void __iomem *mmio;
- 	u32 irq_stat, irq_masked;
- 
--	VPRINTK("ENTER\n");
--
- 	hpriv = host->private_data;
- 	mmio = hpriv->mmio;
- 
-@@ -1990,8 +1982,6 @@ static irqreturn_t ahci_single_level_irq_intr(int irq, void *dev_instance)
- 
- 	spin_unlock(&host->lock);
- 
--	VPRINTK("EXIT\n");
--
- 	return IRQ_RETVAL(rc);
  }
  
 -- 

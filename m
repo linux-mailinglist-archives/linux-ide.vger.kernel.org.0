@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F0FCE46D859
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BB7646D854
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237016AbhLHQgq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:36:46 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:37760 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237018AbhLHQge (ORCPT
+        id S237009AbhLHQgn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:36:43 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:40674 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237011AbhLHQge (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:34 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 7B62F1FE14;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 7F8E521958;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1638981180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VtlAyAn9YmcTUt33wVPTsEhwTfN1ElRhv02qacBJorw=;
-        b=D8lYjzqMeWaZ7mySxQHU1p2PTc0Pl1oiPWuAmVaHvZRdPtVVB9clKTOTEWJWiIqq97LJ4m
-        UJ5a1h3zZA0LQk5e3NwJW09TvBv3JjwJ/G+h+Q/Rc1b5hfW/vK3rPI4ao4QULVwLZH8795
-        0ANtaTJe2s+jvfBMYxzSCdFqip73ldk=
+        bh=fx0lNbafJTgIYjoVBCw18SjATvqY4RnscSQ2Z/azW/M=;
+        b=BxhXkUlnQTi2vAK3ks/bH1vksQ2r7iQsibezZKxWMHtzj0czizkRJb+SwMgkDOC2yptCTH
+        3A2cGafFJEK1TXqKs8fj7XPXQNVeUqWJOWJKorjmxp4WkUAnH3USgMMt7Tn3kWteQdMXCn
+        E6HfIxDi7Io1t9VGGrNOXA77wNThKO4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1638981180;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=VtlAyAn9YmcTUt33wVPTsEhwTfN1ElRhv02qacBJorw=;
-        b=SDnSLExq1HIT28b0YFjCqaxhc2XCe2tO/chVrintU1Y7vwdRJ+vQJZJRq1Yw54D+7UuicX
-        cycvuQz8GxDfMwCg==
+        bh=fx0lNbafJTgIYjoVBCw18SjATvqY4RnscSQ2Z/azW/M=;
+        b=W9P/nhTUx3MRiLIjvOyneGwjpn+YZwFijR6BiWiGQgl2/5pMEmuYPIOI989kzDyQMdoLC0
+        poOqxU26lEorasCw==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 77524A3BAE;
+        by relay2.suse.de (Postfix) with ESMTP id 7B6A6A3BAF;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 734265191F93; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
+        id 7832A5191F95; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 27/73] sata_rcar: replace DPRINTK() with ata_port_dbg()
-Date:   Wed,  8 Dec 2021 17:32:09 +0100
-Message-Id: <20211208163255.114660-28-hare@suse.de>
+Subject: [PATCH 28/73] sata_qstor: replace DPRINTK() with ata_port_dbg()
+Date:   Wed,  8 Dec 2021 17:32:10 +0100
+Message-Id: <20211208163255.114660-29-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211208163255.114660-1-hare@suse.de>
 References: <20211208163255.114660-1-hare@suse.de>
@@ -54,22 +54,24 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_rcar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/sata_qstor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/sata_rcar.c b/drivers/ata/sata_rcar.c
-index b4994d182eda..11e68e3854f8 100644
---- a/drivers/ata/sata_rcar.c
-+++ b/drivers/ata/sata_rcar.c
-@@ -679,7 +679,7 @@ static void sata_rcar_serr_interrupt(struct ata_port *ap)
- 	if (!serror)
- 		return;
+diff --git a/drivers/ata/sata_qstor.c b/drivers/ata/sata_qstor.c
+index ef00ab644afb..2b4ccdca71c6 100644
+--- a/drivers/ata/sata_qstor.c
++++ b/drivers/ata/sata_qstor.c
+@@ -374,8 +374,8 @@ static inline unsigned int qs_intr_pkt(struct ata_host *host)
+ 			struct qs_port_priv *pp = ap->private_data;
+ 			struct ata_queued_cmd *qc;
  
--	DPRINTK("SError @host_intr: 0x%x\n", serror);
-+	ata_port_dbg(ap, "SError @host_intr: 0x%x\n", serror);
- 
- 	/* first, analyze and record host port events */
- 	ata_ehi_clear_desc(ehi);
+-			DPRINTK("SFF=%08x%08x: sCHAN=%u sHST=%d sDST=%02x\n",
+-					sff1, sff0, port_no, sHST, sDST);
++			ata_dev_dbg(ap, "SFF=%08x%08x: sHST=%d sDST=%02x\n",
++				    sff1, sff0, sHST, sDST);
+ 			handled = 1;
+ 			if (!pp || pp->state != qs_state_pkt)
+ 				continue;
 -- 
 2.29.2
 

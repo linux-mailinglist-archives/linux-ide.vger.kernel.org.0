@@ -2,48 +2,48 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B7246D846
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0F4A46D845
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237028AbhLHQgh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:36:37 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:37604 "EHLO
+        id S236986AbhLHQgg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:36:36 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:37600 "EHLO
         smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236983AbhLHQgd (ORCPT
+        with ESMTP id S236982AbhLHQgd (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:33 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 3CDEB1FD5B;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 3DF171FD5D;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1638981180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MhkTFQTCRJ412Th5CbwFMgLgkHUTgRXyavybPzQlykM=;
-        b=HoAroIN274ylQxTJNrv6jAM9pBwOQyPbnkUbCEBNJRPoeZKe4Y5/sK2bBvfCLKan7lWgP9
-        n+gd8LEOMwFmbos/PU9HDhlXCPoucmTgzLKmeRzgMCmMjDuiqVD41/XxkrRTEa5FXyfTmB
-        yFX3rWmqItJBf6yr/Xg/JjRinWqIFco=
+        bh=P3DM/hKB0hRPPlhnRvPJ6JiZgJFQp98kiic9tOANGXY=;
+        b=IJQYLB1j2mKgndsmHtUWDy+Hv7CsZW5es1sOKccCGpZfx32BtECigBRoyuP9Fhr59466h3
+        3ilXdUqtRtQYGtdavNvShLLY6JeKN5Mm4Rveujuw0EEgbwKWlSfmm59lFbQZGRffY4evCM
+        GI875fAtGFw7sxmXMvJKuIJu9p2P0UA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1638981180;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=MhkTFQTCRJ412Th5CbwFMgLgkHUTgRXyavybPzQlykM=;
-        b=lVQPinZtDj3Xc+/gKFQ9jSvTY2Q0F2RjpZi2glgfs93QbuCnRbaZNR+P3NNBN3k5mPk/Vp
-        UMCy3Nh7F9gYpzCw==
+        bh=P3DM/hKB0hRPPlhnRvPJ6JiZgJFQp98kiic9tOANGXY=;
+        b=2XkQZ6g/fRYlgknJVyN3E9vKJKdMRvsFCRgkz8VKardd707iiFAp08VKBsC2qg375yk41T
+        jnX5cShhpoez0dDg==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 3198DA3B9F;
+        by relay2.suse.de (Postfix) with ESMTP id 313BAA3B9E;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 1C6745191F73; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
+        id 2170B5191F75; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Subject: [PATCH 11/73] pata_octeon_cf: add bmdma tracepoints and drop DPRINTK() calls
-Date:   Wed,  8 Dec 2021 17:31:53 +0100
-Message-Id: <20211208163255.114660-12-hare@suse.de>
+Subject: [PATCH 12/73] pata_arasan_cf: use generic tracepoints
+Date:   Wed,  8 Dec 2021 17:31:54 +0100
+Message-Id: <20211208163255.114660-13-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211208163255.114660-1-hare@suse.de>
 References: <20211208163255.114660-1-hare@suse.de>
@@ -53,51 +53,36 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Add missing bmdma tracepoints and drop the now pointless
-DPRINTK() calls.
+For completeness add generic tracepoints for bus-master DMA.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 ---
- drivers/ata/pata_octeon_cf.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/ata/pata_arasan_cf.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
-index 06468a1f4807..f86dabcecf9d 100644
---- a/drivers/ata/pata_octeon_cf.c
-+++ b/drivers/ata/pata_octeon_cf.c
-@@ -19,7 +19,7 @@
- #include <linux/of_platform.h>
- #include <linux/platform_device.h>
- #include <scsi/scsi_host.h>
--
+diff --git a/drivers/ata/pata_arasan_cf.c b/drivers/ata/pata_arasan_cf.c
+index 63f39440a9b4..24c3d5e1fca3 100644
+--- a/drivers/ata/pata_arasan_cf.c
++++ b/drivers/ata/pata_arasan_cf.c
+@@ -39,6 +39,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+ #include <linux/workqueue.h>
 +#include <trace/events/libata.h>
- #include <asm/byteorder.h>
- #include <asm/octeon/octeon.h>
  
-@@ -535,12 +535,10 @@ static void octeon_cf_dma_setup(struct ata_queued_cmd *qc)
- 	struct octeon_cf_port *cf_port;
- 
- 	cf_port = ap->private_data;
--	DPRINTK("ENTER\n");
- 	/* issue r/w command */
- 	qc->cursg = qc->sg;
- 	cf_port->dma_finished = 0;
- 	ap->ops->sff_exec_command(ap, &qc->tf);
--	DPRINTK("EXIT\n");
- }
- 
- /**
-@@ -792,8 +790,11 @@ static unsigned int octeon_cf_qc_issue(struct ata_queued_cmd *qc)
+ #define DRIVER_NAME	"arasan_cf"
+ #define TIMEOUT		msecs_to_jiffies(3000)
+@@ -703,9 +704,11 @@ static unsigned int arasan_cf_qc_issue(struct ata_queued_cmd *qc)
  	case ATA_PROT_DMA:
- 		WARN_ON(qc->tf.flags & ATA_TFLAG_POLLING);
+ 		WARN_ON_ONCE(qc->tf.flags & ATA_TFLAG_POLLING);
  
 +		trace_ata_tf_load(ap, &qc->tf);
- 		ap->ops->sff_tf_load(ap, &qc->tf);  /* load tf registers */
-+		trace_ata_bmdma_setup(ap, &qc->tf, qc->tag);
- 		octeon_cf_dma_setup(qc);	    /* set up dma */
+ 		ap->ops->sff_tf_load(ap, &qc->tf);
+ 		acdev->dma_status = 0;
+ 		acdev->qc = qc;
 +		trace_ata_bmdma_start(ap, &qc->tf, qc->tag);
- 		octeon_cf_dma_start(qc);	    /* initiate dma */
+ 		arasan_cf_dma_start(acdev);
  		ap->hsm_task_state = HSM_ST_LAST;
  		break;
 -- 

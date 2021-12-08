@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 105AE46D868
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 639E646D877
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237036AbhLHQg4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:36:56 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:40654 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236983AbhLHQgh (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:37 -0500
+        id S237045AbhLHQhH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:37:07 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:37724 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237021AbhLHQgu (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:50 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 2E24221B3F;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 3469D1FE2A;
         Wed,  8 Dec 2021 16:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1638981181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ahu3y33lLuAZvY+BNhUuCSu8/afzKK+S7NkLAoqSCTw=;
-        b=acc/tqZlu38ZEM1kH8rOxza4D3noiR6fB3980R79+F1VL+0SDv3YW/D1WmsbH3FnIM0/jP
-        SNGFtGhUUvJuY3rRKHSa5E33vCIATIt6yy5EXvUteSzCnqdY0zGnG63wkoPHYmGApxMZ2T
-        QBAK/wXyxJuMcNngsm/kghNXCJntfXc=
+        bh=09RVd+ozn0Tw+uSjvzd6JakwtFZAzGAVlxnvW7qH0JI=;
+        b=tQSok8DNKLT13m/UGGeOKhf0NSB07jYVhYTjZS3FudXuMUT4Jo7C8OmPyN9MSSQqvdgkAG
+        sHm31zLxL0f5qcrLVCGjdk7Uy1Qdylly+HG0GCCIUmYA9BIX7Reb8X38tp50yvy9MdmsYb
+        ootRQ6lgW0OKCZVN8bymK15KY5k5RCE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1638981181;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=ahu3y33lLuAZvY+BNhUuCSu8/afzKK+S7NkLAoqSCTw=;
-        b=4XSJfbTD6lJjPE6S0sfZnZua3uBvsDakNHL7bRXDxFwdtu63m+o+UyF3gHXuPlKud2CPzv
-        Ol5ImX7mAaWNP3Bg==
+        bh=09RVd+ozn0Tw+uSjvzd6JakwtFZAzGAVlxnvW7qH0JI=;
+        b=L8AkxQK2+XrklVQMI7+2FAfZSizSx6yhTBCbSeTG56SiRZe3dJ/cpc4vx9P92BrnY24vrk
+        JLO9G49CnmeS8fDg==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 2B534A3BCC;
+        by relay2.suse.de (Postfix) with ESMTP id 314CBA3BCD;
         Wed,  8 Dec 2021 16:33:01 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 2834B5191FCD; Wed,  8 Dec 2021 17:33:01 +0100 (CET)
+        id 2E33E5191FCF; Wed,  8 Dec 2021 17:33:01 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 56/73] pata_cmd64x: convert blank printk() calls
-Date:   Wed,  8 Dec 2021 17:32:38 +0100
-Message-Id: <20211208163255.114660-57-hare@suse.de>
+Subject: [PATCH 57/73] pata_cs5520: convert blank printk() calls
+Date:   Wed,  8 Dec 2021 17:32:39 +0100
+Message-Id: <20211208163255.114660-58-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211208163255.114660-1-hare@suse.de>
 References: <20211208163255.114660-1-hare@suse.de>
@@ -56,31 +56,28 @@ Convert blank printk() calls to structured logging.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_cmd64x.c | 4 ++--
+ drivers/ata/pata_cs5520.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/pata_cmd64x.c b/drivers/ata/pata_cmd64x.c
-index 1d74d89b5bed..5baa4a7819c1 100644
---- a/drivers/ata/pata_cmd64x.c
-+++ b/drivers/ata/pata_cmd64x.c
-@@ -116,7 +116,7 @@ static void cmd64x_set_timing(struct ata_port *ap, struct ata_device *adev, u8 m
- 	/* ata_timing_compute is smart and will produce timings for MWDMA
- 	   that don't violate the drives PIO capabilities. */
- 	if (ata_timing_compute(adev, mode, &t, T, 0) < 0) {
--		printk(KERN_ERR DRV_NAME ": mode computation failed.\n");
-+		ata_dev_err(adev, DRV_NAME ": mode computation failed.\n");
- 		return;
- 	}
- 	if (ap->port_no) {
-@@ -130,7 +130,7 @@ static void cmd64x_set_timing(struct ata_port *ap, struct ata_device *adev, u8 m
- 		}
+diff --git a/drivers/ata/pata_cs5520.c b/drivers/ata/pata_cs5520.c
+index 247c14702624..24ce8665b1f9 100644
+--- a/drivers/ata/pata_cs5520.c
++++ b/drivers/ata/pata_cs5520.c
+@@ -153,12 +153,12 @@ static int cs5520_init_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	/* Perform set up for DMA */
+ 	if (pci_enable_device_io(pdev)) {
+-		printk(KERN_ERR DRV_NAME ": unable to configure BAR2.\n");
++		dev_err(&pdev->dev, "unable to configure BAR2.\n");
+ 		return -ENODEV;
  	}
  
--	printk(KERN_DEBUG DRV_NAME ": active %d recovery %d setup %d.\n",
-+	ata_dev_dbg(adev, DRV_NAME ": active %d recovery %d setup %d.\n",
- 		t.active, t.recover, t.setup);
- 	if (t.recover > 16) {
- 		t.active += t.recover - 16;
+ 	if (dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32))) {
+-		printk(KERN_ERR DRV_NAME ": unable to configure DMA mask.\n");
++		dev_err(&pdev->dev, "unable to configure DMA mask.\n");
+ 		return -ENODEV;
+ 	}
+ 
 -- 
 2.29.2
 

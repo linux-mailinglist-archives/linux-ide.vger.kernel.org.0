@@ -2,131 +2,198 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C56F46D49D
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 14:44:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D733646D83E
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229648AbhLHNsJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 08:48:09 -0500
-Received: from mail-oi1-f170.google.com ([209.85.167.170]:37831 "EHLO
-        mail-oi1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234398AbhLHNsH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 08:48:07 -0500
-Received: by mail-oi1-f170.google.com with SMTP id bj13so4210216oib.4;
-        Wed, 08 Dec 2021 05:44:35 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:in-reply-to:references:subject:date
-         :message-id;
-        bh=AZBxD1twEMvgqXTIpZvt6tYC7fmZq91YhBKnG1gw4/g=;
-        b=Ctio7YKmVOvmIo2alUmlLxrFwZj+5ThytJlAoYT5Eo2vB6Up7mCWUAWVCnSAqL1AoZ
-         kUGHlUiaeCqqeS9NohO8VS8NukDe1VihtmfdtUlB1QWFhJtglT0HmZxTxxt/JcaNsm7Q
-         lEVx6lDOYwfxLq5Mlh3nu4bGh+QPxTQ0JRYAAXSwL5AKWQWxQRxRAOh8D5N00O1ksmph
-         TKWrv+sm79hKOoVTTgEI41xSQqy7ef4vaq+5UrJROGhJRiybacJx0Z4/szbp3zDzvS/m
-         LVYgEtjjKcAWqtuD6QFftT8/nWm1uTf+sIMJR7XRxdL3Bbrp546bqDxwndZq3dy5ek+/
-         RLWA==
-X-Gm-Message-State: AOAM530Dv2Chsg2D8+cKegheS8aOl9Sniucup+UxiPFzPAHAipNcX8sf
-        D5owCTKIxu2mCaglG/wWSA==
-X-Google-Smtp-Source: ABdhPJw4CWIcu/zTZI0dRGziIGXUDpc471o4rTBw285IjDnHYfSE7mTOtDyDKGZQGTPSbpBTZ+LVug==
-X-Received: by 2002:a05:6808:124d:: with SMTP id o13mr11998548oiv.91.1638971074539;
-        Wed, 08 Dec 2021 05:44:34 -0800 (PST)
-Received: from robh.at.kernel.org (66-90-148-213.dyn.grandenetworks.net. [66.90.148.213])
-        by smtp.gmail.com with ESMTPSA id n189sm602044oif.33.2021.12.08.05.44.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Dec 2021 05:44:33 -0800 (PST)
-Received: (nullmailer pid 3857736 invoked by uid 1000);
-        Wed, 08 Dec 2021 13:44:28 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Florian Fainelli <f.fainelli@gmail.com>
-Cc:     Alessandro Zummo <a.zummo@towertech.it>, linux-pwm@vger.kernel.org,
-        linux-mmc@vger.kernel.org, Markus Mayer <mmayer@broadcom.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Ray Jui <rjui@broadcom.com>, Amit Kucheria <amitk@kernel.org>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-pm@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
-        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Rob Herring <robh+dt@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ide@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Scott Branden <sbranden@broadcom.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Al Cooper <alcooperx@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Gregory Fong <gregory.0xf0@gmail.com>,
-        linux-rtc@vger.kernel.org,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-crypto@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        devicetree@vger.kernel.org
-In-Reply-To: <20211208003727.3596577-14-f.fainelli@gmail.com>
-References: <20211208003727.3596577-1-f.fainelli@gmail.com> <20211208003727.3596577-14-f.fainelli@gmail.com>
-Subject: Re: [PATCH v3 13/15] dt-bindings: ata: Convert Broadcom SATA to YAML
-Date:   Wed, 08 Dec 2021 07:44:28 -0600
-Message-Id: <1638971068.770579.3857735.nullmailer@robh.at.kernel.org>
+        id S237015AbhLHQgd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:36:33 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:37574 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230245AbhLHQgc (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:32 -0500
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out2.suse.de (Postfix) with ESMTP id 1278E1FD3E;
+        Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1638981180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=P6Prnv20miX/4xDb+oS9UDt51yzbfN2ii1KsSGaD35M=;
+        b=PIxPjCLsKVKGQEynOo3gV+YQhKNchPzclOdxMc+sKFYfevgnAWqPv7oMbTqoRBBpYGGU7z
+        0gQXAfCTEWDk2q3vCHZDjafyAR2DP5oyImBT7MFhvL9dCs0IndK8ZUSobn8YkF4sWNPiOL
+        Ohhwvfg7EcKwzkD4RT0mXpoPZrp3FA0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1638981180;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=P6Prnv20miX/4xDb+oS9UDt51yzbfN2ii1KsSGaD35M=;
+        b=W1KpAa2qGgTRlNVQweih7upG72PzcnbUv5nHFQexG5omeIpE43NQhDGw2q3Khsnp8A6bvw
+        z5PdkPuwnhYMjCCA==
+Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
+        by relay2.suse.de (Postfix) with ESMTP id D8994A3B93;
+        Wed,  8 Dec 2021 16:32:59 +0000 (UTC)
+Received: by adalid.arch.suse.de (Postfix, from userid 16045)
+        id CC99D5191F5D; Wed,  8 Dec 2021 17:32:59 +0100 (CET)
+From:   Hannes Reinecke <hare@suse.de>
+To:     Damien LeMoal <damien.lemoal@wdc.com>
+Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 00/73] libata: rework logging, take II
+Date:   Wed,  8 Dec 2021 17:31:42 +0100
+Message-Id: <20211208163255.114660-1-hare@suse.de>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Tue, 07 Dec 2021 16:37:24 -0800, Florian Fainelli wrote:
-> Convert the Broadcom SATA3 AHCI controller Device Tree binding to YAML
-> to help with validation.
-> 
-> Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
-> ---
->  .../bindings/ata/brcm,sata-brcm.txt           | 45 ---------
->  .../bindings/ata/brcm,sata-brcm.yaml          | 98 +++++++++++++++++++
->  2 files changed, 98 insertions(+), 45 deletions(-)
->  delete mode 100644 Documentation/devicetree/bindings/ata/brcm,sata-brcm.txt
->  create mode 100644 Documentation/devicetree/bindings/ata/brcm,sata-brcm.yaml
-> 
+Hi all,
 
-Running 'make dtbs_check' with the schema in this patch gives the
-following warnings. Consider if they are expected or the schema is
-incorrect. These may not be new warnings.
+after some prodding from individual persons I've resurrected my
+patchset to put libata logging on a even keel, and use structured
+logging for everything.
+So this patch does away with DPRINTK, ATA_DEBUG or ata_msg_XXX() calls,
+and moves everything over to structured logging (ie the dev_XXX()
+calls).
+Additionally I've added more tracepoints to trace command flow
+and EH, HSM, and other related things.
 
-Note that it is not yet a requirement to have 0 warnings for dtbs_check.
-This will change in the future.
+So everything is looking far saner now.
 
-Full log is available here: https://patchwork.ozlabs.org/patch/1565011
+As usual, comments and reviews are welcome.
 
+I know that the device names suck. Blame Tejun.
 
-ahci@41000: $nodename:0: 'ahci@41000' does not match '^sata(@.*)?$'
-	arch/arm/boot/dts/bcm958522er.dt.yaml
-	arch/arm/boot/dts/bcm958525er.dt.yaml
-	arch/arm/boot/dts/bcm958525xmc.dt.yaml
-	arch/arm/boot/dts/bcm958622hr.dt.yaml
-	arch/arm/boot/dts/bcm958623hr.dt.yaml
-	arch/arm/boot/dts/bcm958625hr.dt.yaml
-	arch/arm/boot/dts/bcm958625k.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64-a0.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64w-a0.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64w.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx65.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx65w.dt.yaml
-	arch/arm/boot/dts/bcm988312hr.dt.yaml
+Hannes Reinecke (73):
+  libata: remove pointless debugging messages
+  libata: Add ata_port_classify() helper
+  libata: move ata_dump_id() to dynamic debugging
+  libata: sanitize ATA_HORKAGE_DUMP_ID
+  sata_mv: replace DPRINTK with 'pci_dump' module parameter
+  sata_mv: kill 'port' argument in mv_dump_all_regs()
+  libata: add reset tracepoints
+  libata: drop DPRINTK() calls in reset
+  libata: tracepoints for bus-master DMA
+  libata: drop debugging statements for bus-master DMA
+  pata_octeon_cf: add bmdma tracepoints and drop DPRINTK() calls
+  pata_arasan_cf: use generic tracepoints
+  sata_dwc_460ex: use generic tracepoints
+  sata_nv: use generic tracepoints
+  libata-sff: tracepoints for HSM state machine
+  libata-sff: add tracepoints for ata_sff_flush_pio_task()
+  libata-scsi: drop DPRINTK calls for cdb translation
+  libata: add tracepoints for ATA error handling
+  libata: drop DPRINTK() calls during ATA error handling
+  libata-eh: remove DPRINTK() calls for request sense
+  libata: move ata_{port,link,dev}_dbg to standard dev_XXX() macros
+  libata: add qc_prep tracepoint
+  libata: move DPRINTK to ata debugging
+  pata_octeon_cf: remove DPRINTK() macro in interrupt context
+  pdc_adma: Remove DPRINTK call
+  sata_fsl: move DPRINTK to ata debugging
+  sata_rcar: replace DPRINTK() with ata_port_dbg()
+  sata_qstor: replace DPRINTK() with ata_port_dbg()
+  pata_pdc2027x: Replace PDPRINTK() with standard ata logging
+  libata: remove pointless VPRINTK() calls
+  ahci: Drop pointless VPRINTK() calls and convert the remaining ones
+  pdc_adma: Drop pointless VPRINTK() calls and convert the remaining
+    ones
+  pata_octeon_cf: Drop pointless VPRINTK() calls and convert the
+    remaining ones
+  pata_via: Drop pointless VPRINTK() calls
+  sata_promise: Drop pointless VPRINTK() calls and convert the remaining
+    ones
+  sata_qstor: Drop pointless VPRINTK() calls
+  sata_rcar: Drop pointless VPRINTK() calls
+  sata_inic162x: Drop pointless VPRINTK() calls
+  sata_mv: Drop pointless VPRINTK() call and convert the remaining one
+  sata_nv: drop pointless VPRINTK() calls and convert remaining ones
+  sata_fsl: convert VPRINTK() calls to ata_port_dbg()
+  sata_sil: Drop pointless VPRINTK() calls
+  sata_sx4: Drop pointless VPRINTK() calls and convert the remaining
+    ones
+  sata_sx4: add module parameter 'dimm_test'
+  libata: drop ata_msg_error() and ata_msg_intr()
+  libata: drop ata_msg_ctl()
+  libata: drop ata_msg_malloc()
+  libata: drop ata_msg_warn()
+  libata: drop ata_msg_probe()
+  libata: drop ata_msg_info()
+  libata: drop ata_msg_drv()
+  libata: remove 'new' ata message handling
+  libata: remove debug compilation switches
+  pata_atp867x: convert blank printk() calls
+  pata_cmd640: convert blank printk() calls
+  pata_cmd64x: convert blank printk() calls
+  pata_cs5520: convert blank printk() calls
+  pata_cs5536: convert blank printk() calls
+  pata_cypressx: convert blank printk() calls
+  pata_it821x: convert blank printk() calls
+  pata_marvell: convert blank printk() calls
+  pata_rz1000: convert blank printk() calls
+  pata_serverworks: convert blank printk() calls
+  pata_sil680: convert blank printk() calls
+  pdc_adma: remove disabled debugging messages
+  sata_sx4: convert blank printk() calls
+  sata_mv: convert remaining printk() to structured logging
+  pata_hpt37x: convert pr_XXX() calls
+  pata_octeon_cf: Replace pr_XXX() calls with structured logging
+  pata_hpt3x2n: convert pr_XXX() calls
+  pata_hpt3x2n: convert pr_err() calls
+  pata_hpt366: convert pr_warn() calls
+  libata-scsi: rework ata_dump_status to avoid using pr_cont()
 
-ahci@41000: Unevaluated properties are not allowed ('#address-cells', '#size-cells', 'sata-port@0', 'sata-port@1' were unexpected)
-	arch/arm/boot/dts/bcm958522er.dt.yaml
-	arch/arm/boot/dts/bcm958525er.dt.yaml
-	arch/arm/boot/dts/bcm958525xmc.dt.yaml
-	arch/arm/boot/dts/bcm958622hr.dt.yaml
-	arch/arm/boot/dts/bcm958623hr.dt.yaml
-	arch/arm/boot/dts/bcm958625hr.dt.yaml
-	arch/arm/boot/dts/bcm958625k.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64-a0.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64w-a0.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx64w.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx65.dt.yaml
-	arch/arm/boot/dts/bcm958625-meraki-mx65w.dt.yaml
-	arch/arm/boot/dts/bcm988312hr.dt.yaml
+ drivers/ata/acard-ahci.c        |   4 -
+ drivers/ata/ahci.c              |  13 +-
+ drivers/ata/ahci_qoriq.c        |   4 -
+ drivers/ata/ahci_xgene.c        |   4 -
+ drivers/ata/ata_piix.c          |   3 -
+ drivers/ata/libahci.c           |  33 +--
+ drivers/ata/libata-acpi.c       |  71 +++---
+ drivers/ata/libata-core.c       | 270 ++++++++--------------
+ drivers/ata/libata-eh.c         |  50 +++--
+ drivers/ata/libata-pmp.c        |   8 -
+ drivers/ata/libata-sata.c       |   5 -
+ drivers/ata/libata-scsi.c       | 111 ++-------
+ drivers/ata/libata-sff.c        |  86 +++----
+ drivers/ata/libata-trace.c      |  29 +++
+ drivers/ata/libata.h            |   1 -
+ drivers/ata/pata_arasan_cf.c    |   3 +
+ drivers/ata/pata_atp867x.c      |  29 +--
+ drivers/ata/pata_cmd640.c       |   2 +-
+ drivers/ata/pata_cmd64x.c       |   4 +-
+ drivers/ata/pata_cs5520.c       |   4 +-
+ drivers/ata/pata_cs5536.c       |   4 +-
+ drivers/ata/pata_cypress.c      |   2 +-
+ drivers/ata/pata_hpt366.c       |   4 +-
+ drivers/ata/pata_hpt37x.c       |  19 +-
+ drivers/ata/pata_hpt3x2n.c      |  11 +-
+ drivers/ata/pata_it821x.c       |  43 ++--
+ drivers/ata/pata_ixp4xx_cf.c    |   6 +-
+ drivers/ata/pata_marvell.c      |   9 +-
+ drivers/ata/pata_octeon_cf.c    |  48 +---
+ drivers/ata/pata_pdc2027x.c     |  71 +++---
+ drivers/ata/pata_pdc202xx_old.c |   2 -
+ drivers/ata/pata_rz1000.c       |   4 +-
+ drivers/ata/pata_serverworks.c  |   4 +-
+ drivers/ata/pata_sil680.c       |   9 +-
+ drivers/ata/pata_via.c          |  12 -
+ drivers/ata/pdc_adma.c          |  33 +--
+ drivers/ata/sata_dwc_460ex.c    |  71 +-----
+ drivers/ata/sata_fsl.c          | 165 ++++++--------
+ drivers/ata/sata_gemini.c       |   4 +-
+ drivers/ata/sata_inic162x.c     |   4 +-
+ drivers/ata/sata_mv.c           | 147 ++++++------
+ drivers/ata/sata_nv.c           |  53 ++---
+ drivers/ata/sata_promise.c      |  31 +--
+ drivers/ata/sata_qstor.c        |  15 +-
+ drivers/ata/sata_rcar.c         |  25 +--
+ drivers/ata/sata_sil.c          |   1 -
+ drivers/ata/sata_sil24.c        |   5 +-
+ drivers/ata/sata_sx4.c          | 148 +++++-------
+ include/linux/libata.h          |  99 ++------
+ include/trace/events/libata.h   | 387 +++++++++++++++++++++++++++++++-
+ 50 files changed, 992 insertions(+), 1178 deletions(-)
+
+-- 
+2.29.2
 

@@ -2,104 +2,62 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BBA446D1AF
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 12:09:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 636FF46D2CE
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 12:56:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232200AbhLHLNO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 06:13:14 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:58648 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232221AbhLHLNM (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 06:13:12 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 1775D1FD2A;
-        Wed,  8 Dec 2021 11:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638961780; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pmYcQTEDC/K9M1i0GyivJiiFVxRd65i9saUZOPaSUoc=;
-        b=MD3cOzwXCltTHu+igG5y+U1OVRu/E7uVnr0zKCyJhB64hr1OYERb6YxmNf99lsWuACmc0w
-        7JwrR0H2hwOzGtcX9BeMnKNIs3GwoVT0XV/HFmjeIUMxZYYuFJusY651VEptRnOrH2FFH4
-        cU/B0wCOrpKjBCSs9rNatYbIz+hmysY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638961780;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pmYcQTEDC/K9M1i0GyivJiiFVxRd65i9saUZOPaSUoc=;
-        b=x15MT9L9mfAkXeyZG12REJj685S8yD0phk1ICrwyXOKJPojzFlJ45IF8nii9+e6HMjp1d7
-        iQtmi7DFdaqdMPDQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 0AFD213C46;
-        Wed,  8 Dec 2021 11:09:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 879fAnSSsGE9QwAAMHmgww
-        (envelope-from <hare@suse.de>); Wed, 08 Dec 2021 11:09:40 +0000
-Subject: Re: [PATCH] libata: add horkage for ASMedia 1092
-To:     Damien Le Moal <Damien.LeMoal@wdc.com>
-Cc:     "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
-References: <20211208065853.5270-1-hare@suse.de>
- <DM6PR04MB7081F06F8B94345297B0267FE76F9@DM6PR04MB7081.namprd04.prod.outlook.com>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <731e355a-9365-3199-6db4-e9f07a79de8c@suse.de>
-Date:   Wed, 8 Dec 2021 12:09:39 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S232636AbhLHL7d (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 06:59:33 -0500
+Received: from wmx02.wadax.ne.jp ([202.189.181.194]:57134 "EHLO
+        wmx02.wadax.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232628AbhLHL7c (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 06:59:32 -0500
+X-Greylist: delayed 448 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Dec 2021 06:59:32 EST
+Received: from wx16.wadax.ne.jp (wx16.wadax.ne.jp [202.189.180.194])
+        by wmx02.wadax.ne.jp (Postfix) with ESMTP id C7065CA0622
+        for <linux-ide@vger.kernel.org>; Wed,  8 Dec 2021 20:48:29 +0900 (JST)
+Received: by wx16.wadax.ne.jp (Postfix, from userid 590)
+        id DA223C00F6; Wed,  8 Dec 2021 20:48:27 +0900 (JST)
+To:     linux-ide@vger.kernel.org
+Subject: =?ISO-2022-JP?B?GyRCJCpMZDlnJDskIiRqJCwkSCQmJDQkNiQkJF4kNyQ/ISMbKEI=?=
+X-PHP-Originating-Script: 590:class-phpmailer.php
+Date:   Wed, 8 Dec 2021 11:48:27 +0000
+From:   =?ISO-2022-JP?B?GyRCM3Q8MDJxPFIlbyUkJUQbKEI=?= <info@waitsu.com>
+Message-ID: <224001a9dd8aaaf610392d85cede7c04@waitsu.com>
+X-Mailer: PHPMailer 5.2.22 (https://github.com/PHPMailer/PHPMailer)
 MIME-Version: 1.0
-In-Reply-To: <DM6PR04MB7081F06F8B94345297B0267FE76F9@DM6PR04MB7081.namprd04.prod.outlook.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=ISO-2022-JP
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 12/8/21 11:57 AM, Damien Le Moal wrote:
-> On 2021/12/08 15:59, Hannes Reinecke wrote:
->> The ASMedia 1092 has a configuration mode which will present a
->> dummy device; sadly the implementation falsely claims to provide
->> a device with 100M which doesn't actually exist.
->> So disable this device to avoid errors during boot.
->>
->> Signed-off-by: Hannes Reinecke <hare@suse.de>
->> ---
->>  drivers/ata/libata-core.c | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
->> index 9c05177e09c2..f1a2f0a4ce05 100644
->> --- a/drivers/ata/libata-core.c
->> +++ b/drivers/ata/libata-core.c
->> @@ -4416,6 +4416,8 @@ static const struct ata_blacklist_entry ata_device_blacklist [] = {
->>  	{ "VRFDFC22048UCHC-TE*", NULL,		ATA_HORKAGE_NODMA },
->>  	/* Odd clown on sil3726/4726 PMPs */
->>  	{ "Config  Disk",	NULL,		ATA_HORKAGE_DISABLE },
->> +	/* Similar story with ASMedia 1092 */
->> +	{ "ASMT109x- Config",	NULL,		ATA_HORKAGE_DISABLE },
->>  
->>  	/* Weird ATAPI devices */
->>  	{ "TORiSAN DVD-ROM DRD-N216", NULL,	ATA_HORKAGE_MAX_SEC_128 },
->>
-> 
-> Doesn't this need a Cc stable ? I can add it.
-> 
-Possibly; device has never worked properly.
+$B!J$3$N%a!<%k$O3t<02q<R%o%$%D$N$*Ld$$9g$o$;%U%)!<%`$+$iAw?.$5$l$^$7$?!K(B
 
-Cheers,
+$B$*Ld$$9g$;$"$j$,$H$&$4$6$$$^$9!#0J2<$NFbMF$G%a%C%;!<%8$rAw?.$7$^$7$?!#(B
+$BFbMF$r3NG'8e$"$i$?$a$F$*JV;v$5$;$FD:$-$^$9!#(B
 
-Hannes
--- 
-Dr. Hannes Reinecke		           Kernel Storage Architect
-hare@suse.de			                  +49 911 74053 688
-SUSE Software Solutions Germany GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), GF: Felix Imendörffer
+$B>0!"(B3$BF|0J>e7P2a$7$F$bJV?.$,L5$$>l9g$O%a!<%k$,@5$7$/Aw?.$5$l$J$+$C$?>l9g$,$4$6$$$^$9!#62$lF~$j$^$9$,$*EEOC$^$?$O#F#A#X$K$F$*Ld$$9g$;2<$5$$$^$;!#(B
+
+
+$B$*L>A0!'(B?? Belinda want to meet you! Click Here: http://bit.do/fSPrf?7zu ?? 
+
+$B%U%j%,%J!'(B lsm3rbzw
+
+$BM9JXHV9f!'(B 578512064531
+
+$B=;=j!'(B t85ypc
+
+$BEEOCHV9f!'(B 578512064531
+
+$BAw?.FbMF!'(B[mail-subject]
+
+$B$*Ld9g$;FbMF(B:
+ij4217a
+
+-------------------------------------------------------
+$B$J$k$[$I%o%$%D$X$N$*Ld$$9g$;(B
+$B")(B636-0911$B!!F`NI8)@86p74J?72D.DX0f(B32-1
+TEL$B!'(B0745-45-7918
+FAX$B!'(B0745-45-7920
+E-mail:info@waitsu.com
+-------------------------------------------------------
+

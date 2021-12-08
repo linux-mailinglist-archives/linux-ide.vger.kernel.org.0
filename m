@@ -2,48 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E92546D856
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8492046D851
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237046AbhLHQgo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:36:44 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:37756 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbhLHQge (ORCPT
+        id S237006AbhLHQgl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:36:41 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:40666 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237002AbhLHQge (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:34 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 6AB651FE12;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 68D552191E;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1638981180; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P1XJKSdpgv1ISfOENKx+uJo+4ztBcYpYXurHD/OX7P8=;
-        b=hDUatdORCRd0phyZ24r16GGOqEa6TZmlU9v/oIXUr3A7/WhVIQdHrP4pB9azpDZXgSUlxI
-        lneLfbKYliMjnGvLDzjNgRE5Iu6s3OyIIukd4NY6MmojMmIPrbaHTEKe3VzCdtU4ZPz4OO
-        LnkYk0kdcA9G82YeK4OXGEgsury+qwk=
+        bh=vWz15oJAnrCCmFS46dTwPoqchTAa1H7GAPaoks9AMYc=;
+        b=il/QWQm/DWM3vcg9JsqhckgxagfiZ5JPUXj4kuevxzjMCAOx4pqXJda3iCvelfBYeHTFHw
+        wwpk2B7Qnl5/RYhdSPE22+AtSGrI1uRuJVFLKsNcTOg8MDa+Hln/SFX6ywAAqundSrVhaf
+        PzPTWBLSBgANpvVMghqGxdpl/MyUVwQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1638981180;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=P1XJKSdpgv1ISfOENKx+uJo+4ztBcYpYXurHD/OX7P8=;
-        b=UYBwluI1mi6Nckgi8buPPWJ2BCbmxDdg8s0QUXnP4F1EBjMFzkyCyE+arQpQWrHkp6D0oK
-        aLPfBAt+W1w/33Cg==
+        bh=vWz15oJAnrCCmFS46dTwPoqchTAa1H7GAPaoks9AMYc=;
+        b=YA7SYnO0znW1NVAhLMQiBu2d+26wi+9T8mavrjRwxJwebi4Oaxh4Mkei3OLS4uSlpeO+Ky
+        uzqqzqgXoq0dCNAw==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 62B8BA3BAA;
+        by relay2.suse.de (Postfix) with ESMTP id 65ED4A3BAB;
         Wed,  8 Dec 2021 16:33:00 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 5E6D15191F8B; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
+        id 626B75191F8D; Wed,  8 Dec 2021 17:33:00 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
-        Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 23/73] libata: move DPRINTK to ata debugging
-Date:   Wed,  8 Dec 2021 17:32:05 +0100
-Message-Id: <20211208163255.114660-24-hare@suse.de>
+Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 24/73] pata_octeon_cf: remove DPRINTK() macro in interrupt context
+Date:   Wed,  8 Dec 2021 17:32:06 +0100
+Message-Id: <20211208163255.114660-25-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211208163255.114660-1-hare@suse.de>
 References: <20211208163255.114660-1-hare@suse.de>
@@ -53,88 +52,32 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Hannes Reinecke <hare@suse.com>
-
-Replace all DPRINTK calls with the ata_XXX_dbg functions.
+There is only so much information to be glanced when the interrupt
+routine in called and exited, so remove these DPRINTK() calls.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-core.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ drivers/ata/pata_octeon_cf.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index a538840c652a..15ed4417bc68 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2011,7 +2011,7 @@ unsigned int ata_read_log_page(struct ata_device *dev, u8 log,
- 	unsigned int err_mask;
- 	bool dma = false;
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index f86dabcecf9d..7b80bbd9b1ed 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -668,7 +668,6 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
  
--	DPRINTK("read log page - log 0x%x, page 0x%x\n", log, page);
-+	ata_dev_dbg(dev, "read log page - log 0x%x, page 0x%x\n", log, page);
+ 	spin_lock_irqsave(&host->lock, flags);
  
- 	/*
- 	 * Return error without actually issuing the command on controllers
-@@ -3382,8 +3382,8 @@ static int ata_dev_set_mode(struct ata_device *dev)
- 			dev_err_whine = " (device error ignored)";
+-	DPRINTK("ENTER\n");
+ 	for (i = 0; i < host->n_ports; i++) {
+ 		u8 status;
+ 		struct ata_port *ap;
+@@ -722,7 +721,6 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
+ 		}
  	}
- 
--	DPRINTK("xfer_shift=%u, xfer_mode=0x%x\n",
--		dev->xfer_shift, (int)dev->xfer_mode);
-+	ata_dev_dbg(dev, "xfer_shift=%u, xfer_mode=0x%x\n",
-+		    dev->xfer_shift, (int)dev->xfer_mode);
- 
- 	if (!(ehc->i.flags & ATA_EHI_QUIET) ||
- 	    ehc->i.flags & ATA_EHI_DID_HARDRESET)
-@@ -4327,7 +4327,7 @@ static unsigned int ata_dev_set_xfermode(struct ata_device *dev)
- 	unsigned int err_mask;
- 
- 	/* set up set-features taskfile */
--	DPRINTK("set features - xfer mode\n");
-+	ata_dev_dbg(dev, "set features - xfer mode\n");
- 
- 	/* Some controllers and ATAPI devices show flaky interrupt
- 	 * behavior after setting xfer mode.  Use polling instead.
-@@ -4349,7 +4349,6 @@ static unsigned int ata_dev_set_xfermode(struct ata_device *dev)
- 	/* On some disks, this command causes spin-up, so we need longer timeout */
- 	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 15000);
- 
--	DPRINTK("EXIT, err_mask=%x\n", err_mask);
- 	return err_mask;
- }
- 
-@@ -4375,7 +4374,7 @@ unsigned int ata_dev_set_feature(struct ata_device *dev, u8 enable, u8 feature)
- 	unsigned long timeout = 0;
- 
- 	/* set up set-features taskfile */
--	DPRINTK("set features - SATA features\n");
-+	ata_dev_dbg(dev, "set features - SATA features\n");
- 
- 	ata_tf_init(dev, &tf);
- 	tf.command = ATA_CMD_SET_FEATURES;
-@@ -4389,7 +4388,6 @@ unsigned int ata_dev_set_feature(struct ata_device *dev, u8 enable, u8 feature)
- 			  ata_probe_timeout * 1000 : SETFEATURES_SPINUP_TIMEOUT;
- 	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, timeout);
- 
--	DPRINTK("EXIT, err_mask=%x\n", err_mask);
- 	return err_mask;
- }
- EXPORT_SYMBOL_GPL(ata_dev_set_feature);
-@@ -4417,7 +4415,7 @@ static unsigned int ata_dev_init_params(struct ata_device *dev,
- 		return AC_ERR_INVALID;
- 
- 	/* set up init dev params taskfile */
--	DPRINTK("init dev params \n");
-+	ata_dev_dbg(dev, "init dev params \n");
- 
- 	ata_tf_init(dev, &tf);
- 	tf.command = ATA_CMD_INIT_DEV_PARAMS;
-@@ -4433,7 +4431,6 @@ static unsigned int ata_dev_init_params(struct ata_device *dev,
- 	if (err_mask == AC_ERR_DEV && (tf.feature & ATA_ABORTED))
- 		err_mask = 0;
- 
--	DPRINTK("EXIT, err_mask=%x\n", err_mask);
- 	return err_mask;
+ 	spin_unlock_irqrestore(&host->lock, flags);
+-	DPRINTK("EXIT\n");
+ 	return IRQ_RETVAL(handled);
  }
  
 -- 

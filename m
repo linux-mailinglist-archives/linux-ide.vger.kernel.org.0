@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7351146D883
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D8146D866
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234460AbhLHQi6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:38:58 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:37746 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237096AbhLHQhB (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:37:01 -0500
+        id S237029AbhLHQgz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 11:36:55 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:40736 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236989AbhLHQgi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:38 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 824FC1FE39;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 86B0D21B40;
         Wed,  8 Dec 2021 16:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1638981181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z9Q2d8W9y/07HlGjKHcrCc44ZkfQaVojpO0B1Zl6p18=;
-        b=p1h0M94bYstOkqD7xCV8jOG3O1UYUpCaHBQvWBeul4c1PvkPBXo6kXC3iPwmuw8H71iJGd
-        2BSAabYxIRPXAZED7dG7aeqkTTISjbS7XggC2zIEJ5q5eMZiz5Fbc52k14fwFjj3FwC2OD
-        mcQXk8a8ha0xB0eiy0FfE42l//SDaQY=
+        bh=XPhnFIxjmBXt98cn096HoTLctBFVnctxo8xCa8drYKY=;
+        b=qf1PFG2gUqJveiMbmRKJCweKQxf5FJGWSq3D7Qwo77qZ4sxGePiY72iSQ2EUmXsIpUTORL
+        lBNMhpGokfWf0ccTVsiKjcRmXtBXaRo3SqnUv4LwWGqpKx8oPIyL8HLhSuZA5e9pXuvWjv
+        sPaQ2kdukbBEreTfSAlEPA4Nlo8FA8c=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1638981181;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=z9Q2d8W9y/07HlGjKHcrCc44ZkfQaVojpO0B1Zl6p18=;
-        b=A7DqDXOC2lgFeWcRH6tCZjpCooXpApZ0aPLjGgQ0yF1e1chomEeME0LXVwwKhdppfte3k+
-        YlkLsW+6cRfQ3oDQ==
+        bh=XPhnFIxjmBXt98cn096HoTLctBFVnctxo8xCa8drYKY=;
+        b=kh4Jln2GBIhlgQVUl4oo89IxWd2Pqah1puVXAZSGS/3g6RXAbvCNxKeqs7UsFO7tna00Ic
+        pm5an7C6YLVU/QAQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 7EEC7A3BDD;
+        by relay2.suse.de (Postfix) with ESMTP id 8365BA3BDE;
         Wed,  8 Dec 2021 16:33:01 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 7B5EE5191FED; Wed,  8 Dec 2021 17:33:01 +0100 (CET)
+        id 801DD5191FEF; Wed,  8 Dec 2021 17:33:01 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 72/73] pata_hpt366: convert pr_warn() calls
-Date:   Wed,  8 Dec 2021 17:32:54 +0100
-Message-Id: <20211208163255.114660-73-hare@suse.de>
+Subject: [PATCH 73/73] libata-scsi: rework ata_dump_status to avoid using pr_cont()
+Date:   Wed,  8 Dec 2021 17:32:55 +0100
+Message-Id: <20211208163255.114660-74-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211208163255.114660-1-hare@suse.de>
 References: <20211208163255.114660-1-hare@suse.de>
@@ -52,35 +52,89 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Convert pr_warn() calls to ata_dev_warn()
+pr_cont() has the problem that individual calls will be disrupted
+under high load, causing each call to end up on a single line and
+thereby mangling the output.
+So rework ata_dump_status() to have just one call to ata_port_warn()
+and avoid this problem.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_hpt366.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/ata/libata-scsi.c | 49 ++++++++++++++++++---------------------
+ 1 file changed, 22 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/ata/pata_hpt366.c b/drivers/ata/pata_hpt366.c
-index 06b7c4a9ec95..c29863038428 100644
---- a/drivers/ata/pata_hpt366.c
-+++ b/drivers/ata/pata_hpt366.c
-@@ -15,8 +15,6 @@
-  *	Look into engine reset on timeout errors. Should not be required.
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index bbbd0a06ffd2..aab648d20493 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -678,37 +678,32 @@ static void ata_qc_set_pc_nbytes(struct ata_queued_cmd *qc)
+  *	LOCKING:
+  *	inherited from caller
   */
+-static void ata_dump_status(unsigned id, struct ata_taskfile *tf)
++static void ata_dump_status(struct ata_port *ap, struct ata_taskfile *tf)
+ {
+ 	u8 stat = tf->command, err = tf->feature;
  
--#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-	pr_warn("ata%u: status=0x%02x { ", id, stat);
+ 	if (stat & ATA_BUSY) {
+-		pr_cont("Busy }\n");	/* Data is not valid in this case */
++		ata_port_warn(ap, "status=0x%02x {Busy} ", stat);
+ 	} else {
+-		if (stat & ATA_DRDY)	pr_cont("DriveReady ");
+-		if (stat & ATA_DF)	pr_cont("DeviceFault ");
+-		if (stat & ATA_DSC)	pr_cont("SeekComplete ");
+-		if (stat & ATA_DRQ)	pr_cont("DataRequest ");
+-		if (stat & ATA_CORR)	pr_cont("CorrectedError ");
+-		if (stat & ATA_SENSE)	pr_cont("Sense ");
+-		if (stat & ATA_ERR)	pr_cont("Error ");
+-		pr_cont("}\n");
 -
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-@@ -183,7 +181,7 @@ static int hpt_dma_blacklisted(const struct ata_device *dev, char *modestr,
- 
- 	i = match_string(list, -1, model_num);
- 	if (i >= 0) {
--		pr_warn("%s is not supported for %s\n", modestr, list[i]);
-+		ata_dev_warn(dev, "%s is not supported for %s\n", modestr, list[i]);
- 		return 1;
+-		if (err) {
+-			pr_warn("ata%u: error=0x%02x { ", id, err);
+-			if (err & ATA_ABORTED)	pr_cont("DriveStatusError ");
+-			if (err & ATA_ICRC) {
+-				if (err & ATA_ABORTED)
+-						pr_cont("BadCRC ");
+-				else		pr_cont("Sector ");
+-			}
+-			if (err & ATA_UNC)	pr_cont("UncorrectableError ");
+-			if (err & ATA_IDNF)	pr_cont("SectorIdNotFound ");
+-			if (err & ATA_TRK0NF)	pr_cont("TrackZeroNotFound ");
+-			if (err & ATA_AMNF)	pr_cont("AddrMarkNotFound ");
+-			pr_cont("}\n");
+-		}
++		ata_port_warn(ap, "status=0x%02x { %s%s%s%s%s%s%s} ", stat,
++			      stat & ATA_DRDY ? "DriveReady " : "",
++			      stat & ATA_DF ? "DeviceFault " : "",
++			      stat & ATA_DSC ? "SeekComplete " : "",
++			      stat & ATA_DRQ ? "DataRequest " : "",
++			      stat & ATA_CORR ? "CorrectedError " : "",
++			      stat & ATA_SENSE ? "Sense " : "",
++			      stat & ATA_ERR ? "Error " : "");
++		if (err)
++			ata_port_warn(ap, "error=0x%02x {%s%s%s%s%s%s", err,
++				      err & ATA_ABORTED ?
++				      "DriveStatusError " : "",
++				      err & ATA_ICRC ?
++				      (err & ATA_ABORTED ?
++				       "BadCRC " : "Sector ") : "",
++				      err & ATA_UNC ? "UncorrectableError " : "",
++				      err & ATA_IDNF ? "SectorIdNotFound " : "",
++				      err & ATA_TRK0NF ? "TrackZeroNotFound " : "",
++				      err & ATA_AMNF ? "AddrMarkNotFound " : "");
  	}
- 	return 0;
+ }
+ 
+@@ -1662,7 +1657,7 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
+ 		cmd->result = SAM_STAT_GOOD;
+ 
+ 	if (need_sense && !ap->ops->error_handler)
+-		ata_dump_status(ap->print_id, &qc->result_tf);
++		ata_dump_status(ap, &qc->result_tf);
+ 
+ 	ata_qc_done(qc);
+ }
 -- 
 2.29.2
 

@@ -2,139 +2,125 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D8146D866
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 17:33:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB9B46D9CB
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Dec 2021 18:33:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237029AbhLHQgz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 8 Dec 2021 11:36:55 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:40736 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236989AbhLHQgi (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 11:36:38 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 86B0D21B40;
-        Wed,  8 Dec 2021 16:33:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1638981181; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XPhnFIxjmBXt98cn096HoTLctBFVnctxo8xCa8drYKY=;
-        b=qf1PFG2gUqJveiMbmRKJCweKQxf5FJGWSq3D7Qwo77qZ4sxGePiY72iSQ2EUmXsIpUTORL
-        lBNMhpGokfWf0ccTVsiKjcRmXtBXaRo3SqnUv4LwWGqpKx8oPIyL8HLhSuZA5e9pXuvWjv
-        sPaQ2kdukbBEreTfSAlEPA4Nlo8FA8c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1638981181;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XPhnFIxjmBXt98cn096HoTLctBFVnctxo8xCa8drYKY=;
-        b=kh4Jln2GBIhlgQVUl4oo89IxWd2Pqah1puVXAZSGS/3g6RXAbvCNxKeqs7UsFO7tna00Ic
-        pm5an7C6YLVU/QAQ==
-Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 8365BA3BDE;
-        Wed,  8 Dec 2021 16:33:01 +0000 (UTC)
-Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 801DD5191FEF; Wed,  8 Dec 2021 17:33:01 +0100 (CET)
-From:   Hannes Reinecke <hare@suse.de>
-To:     Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 73/73] libata-scsi: rework ata_dump_status to avoid using pr_cont()
-Date:   Wed,  8 Dec 2021 17:32:55 +0100
-Message-Id: <20211208163255.114660-74-hare@suse.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20211208163255.114660-1-hare@suse.de>
-References: <20211208163255.114660-1-hare@suse.de>
+        id S235097AbhLHRhP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Dec 2021 12:37:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56834 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237956AbhLHRhO (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Dec 2021 12:37:14 -0500
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42AEDC0617A2;
+        Wed,  8 Dec 2021 09:33:42 -0800 (PST)
+Received: by mail-pj1-x1036.google.com with SMTP id np3so2409224pjb.4;
+        Wed, 08 Dec 2021 09:33:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=j51/wboThEFJzNlTL2/MvStE5Zhc5RgdP9nJ3GHQLi4=;
+        b=SbSD6mZJ015HeEhL/uBJxeceiYhXjXXX8O35V590Ke94L+Ypdy2WwxDQgcz/dz+vI1
+         9iApRbSY2daO38A2/c4VBdCm5/hoAefgOIeLm7P1O52CMdhCW27CIQQo7jkS6qbbrUPO
+         3WKj6PRExiHs43Nuk8VacP7HVUjibVx1bhNJbIiCWvhO4QqWIEn592JcsURU3789agcG
+         ncOxe6HUt2my0cYlDUL8RcSTK9JgX7BPA1pZ7AH8yULqG5uz/ZBHDwvocVsgM8St6ejv
+         1/1FST6raHCiQCFH3cNSEMmx22jHFteyEfVTMXXiJo2nr++5nPj6rqfaXIrTBjcOd4vi
+         jvTw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=j51/wboThEFJzNlTL2/MvStE5Zhc5RgdP9nJ3GHQLi4=;
+        b=2r2ZvMPjWwNnf4Uog3b8BzKL7PsJVAYqvAKUuh6M7dFIo79wT3R+a2XzPFsf4/YBX3
+         gcgsUxl5CIg5fZsESW6futNxVGEN5BrqPZZaN0tHg2VJqAUYuFQuG6+geP/drKtvOwEG
+         wD0FNIdYS2/4NxkO52kyD/QkSMHPkJv3AyGZW9YGLIJ6u0iw5K3OV0fD5F426SuGiXXN
+         80FJQFpxe2VTplfG42OVMyuFvxPnQFTYHWScymghZucYE7ACEN4aQuRH1oqVtxzAleVW
+         urQj5LyEiExxVdiyzNvvQavF3jI6VPlYoTLYiZQ+vVmNdDlXLV1OtRdQ2nu76Fv4kkRP
+         z9qQ==
+X-Gm-Message-State: AOAM530AfHmYwKR5Y/NbxYHgSnWiLWJV8pog4ejg+wA+452uS5wpDKDX
+        AFOLdm10Rps3an3MNx6fkGlpHLhRF9U=
+X-Google-Smtp-Source: ABdhPJyY3AKgLSvRqD8BVr8X+ATPHvvEnFQBIBZfXeEJiyOz1hIwOAXlFSUT2pXiD/r3MLJpe5zcrA==
+X-Received: by 2002:a17:90a:e012:: with SMTP id u18mr8961529pjy.103.1638984821458;
+        Wed, 08 Dec 2021 09:33:41 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id n31sm3801031pfv.176.2021.12.08.09.33.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Dec 2021 09:33:40 -0800 (PST)
+Subject: Re: [PATCH v3 13/15] dt-bindings: ata: Convert Broadcom SATA to YAML
+To:     Rob Herring <robh@kernel.org>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>, linux-pwm@vger.kernel.org,
+        linux-mmc@vger.kernel.org, Markus Mayer <mmayer@broadcom.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Ray Jui <rjui@broadcom.com>, Amit Kucheria <amitk@kernel.org>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-pm@vger.kernel.org, Doug Berger <opendmb@gmail.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Rob Herring <robh+dt@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Bartosz Golaszewski <brgl@bgdev.pl>, linux-usb@vger.kernel.org,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-ide@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Scott Branden <sbranden@broadcom.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Al Cooper <alcooperx@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Gregory Fong <gregory.0xf0@gmail.com>,
+        linux-rtc@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-crypto@vger.kernel.org, Zhang Rui <rui.zhang@intel.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        devicetree@vger.kernel.org
+References: <20211208003727.3596577-1-f.fainelli@gmail.com>
+ <20211208003727.3596577-14-f.fainelli@gmail.com>
+ <1638971068.770579.3857735.nullmailer@robh.at.kernel.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <dd170216-fedd-45a1-a3a5-efc99b9f6197@gmail.com>
+Date:   Wed, 8 Dec 2021 09:33:38 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1638971068.770579.3857735.nullmailer@robh.at.kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-pr_cont() has the problem that individual calls will be disrupted
-under high load, causing each call to end up on a single line and
-thereby mangling the output.
-So rework ata_dump_status() to have just one call to ata_port_warn()
-and avoid this problem.
+On 12/8/21 5:44 AM, Rob Herring wrote:
+> On Tue, 07 Dec 2021 16:37:24 -0800, Florian Fainelli wrote:
+>> Convert the Broadcom SATA3 AHCI controller Device Tree binding to YAML
+>> to help with validation.
+>>
+>> Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+>> Signed-off-by: Florian Fainelli <f.fainelli@gmail.com>
+>> ---
+>>  .../bindings/ata/brcm,sata-brcm.txt           | 45 ---------
+>>  .../bindings/ata/brcm,sata-brcm.yaml          | 98 +++++++++++++++++++
+>>  2 files changed, 98 insertions(+), 45 deletions(-)
+>>  delete mode 100644 Documentation/devicetree/bindings/ata/brcm,sata-brcm.txt
+>>  create mode 100644 Documentation/devicetree/bindings/ata/brcm,sata-brcm.yaml
+>>
+> 
+> Running 'make dtbs_check' with the schema in this patch gives the
+> following warnings. Consider if they are expected or the schema is
+> incorrect. These may not be new warnings.
+> 
+> Note that it is not yet a requirement to have 0 warnings for dtbs_check.
+> This will change in the future.
+> 
+> Full log is available here: https://patchwork.ozlabs.org/patch/1565011
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
----
- drivers/ata/libata-scsi.c | 49 ++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index bbbd0a06ffd2..aab648d20493 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -678,37 +678,32 @@ static void ata_qc_set_pc_nbytes(struct ata_queued_cmd *qc)
-  *	LOCKING:
-  *	inherited from caller
-  */
--static void ata_dump_status(unsigned id, struct ata_taskfile *tf)
-+static void ata_dump_status(struct ata_port *ap, struct ata_taskfile *tf)
- {
- 	u8 stat = tf->command, err = tf->feature;
- 
--	pr_warn("ata%u: status=0x%02x { ", id, stat);
- 	if (stat & ATA_BUSY) {
--		pr_cont("Busy }\n");	/* Data is not valid in this case */
-+		ata_port_warn(ap, "status=0x%02x {Busy} ", stat);
- 	} else {
--		if (stat & ATA_DRDY)	pr_cont("DriveReady ");
--		if (stat & ATA_DF)	pr_cont("DeviceFault ");
--		if (stat & ATA_DSC)	pr_cont("SeekComplete ");
--		if (stat & ATA_DRQ)	pr_cont("DataRequest ");
--		if (stat & ATA_CORR)	pr_cont("CorrectedError ");
--		if (stat & ATA_SENSE)	pr_cont("Sense ");
--		if (stat & ATA_ERR)	pr_cont("Error ");
--		pr_cont("}\n");
--
--		if (err) {
--			pr_warn("ata%u: error=0x%02x { ", id, err);
--			if (err & ATA_ABORTED)	pr_cont("DriveStatusError ");
--			if (err & ATA_ICRC) {
--				if (err & ATA_ABORTED)
--						pr_cont("BadCRC ");
--				else		pr_cont("Sector ");
--			}
--			if (err & ATA_UNC)	pr_cont("UncorrectableError ");
--			if (err & ATA_IDNF)	pr_cont("SectorIdNotFound ");
--			if (err & ATA_TRK0NF)	pr_cont("TrackZeroNotFound ");
--			if (err & ATA_AMNF)	pr_cont("AddrMarkNotFound ");
--			pr_cont("}\n");
--		}
-+		ata_port_warn(ap, "status=0x%02x { %s%s%s%s%s%s%s} ", stat,
-+			      stat & ATA_DRDY ? "DriveReady " : "",
-+			      stat & ATA_DF ? "DeviceFault " : "",
-+			      stat & ATA_DSC ? "SeekComplete " : "",
-+			      stat & ATA_DRQ ? "DataRequest " : "",
-+			      stat & ATA_CORR ? "CorrectedError " : "",
-+			      stat & ATA_SENSE ? "Sense " : "",
-+			      stat & ATA_ERR ? "Error " : "");
-+		if (err)
-+			ata_port_warn(ap, "error=0x%02x {%s%s%s%s%s%s", err,
-+				      err & ATA_ABORTED ?
-+				      "DriveStatusError " : "",
-+				      err & ATA_ICRC ?
-+				      (err & ATA_ABORTED ?
-+				       "BadCRC " : "Sector ") : "",
-+				      err & ATA_UNC ? "UncorrectableError " : "",
-+				      err & ATA_IDNF ? "SectorIdNotFound " : "",
-+				      err & ATA_TRK0NF ? "TrackZeroNotFound " : "",
-+				      err & ATA_AMNF ? "AddrMarkNotFound " : "");
- 	}
- }
- 
-@@ -1662,7 +1657,7 @@ static void ata_scsi_qc_complete(struct ata_queued_cmd *qc)
- 		cmd->result = SAM_STAT_GOOD;
- 
- 	if (need_sense && !ap->ops->error_handler)
--		ata_dump_status(ap->print_id, &qc->result_tf);
-+		ata_dump_status(ap, &qc->result_tf);
- 
- 	ata_qc_done(qc);
- }
+Likewise, those indicate that the preceding patch which renames the sata
+controller unit name has not been applied.
 -- 
-2.29.2
-
+Florian

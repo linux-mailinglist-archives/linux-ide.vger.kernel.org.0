@@ -2,63 +2,72 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E61E46EA18
-	for <lists+linux-ide@lfdr.de>; Thu,  9 Dec 2021 15:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B414846EA79
+	for <lists+linux-ide@lfdr.de>; Thu,  9 Dec 2021 15:59:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233550AbhLIOku (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 9 Dec 2021 09:40:50 -0500
-Received: from mga11.intel.com ([192.55.52.93]:56674 "EHLO mga11.intel.com"
+        id S239071AbhLIPDL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 9 Dec 2021 10:03:11 -0500
+Received: from mga05.intel.com ([192.55.52.43]:47029 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231363AbhLIOku (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Thu, 9 Dec 2021 09:40:50 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="235621907"
+        id S230312AbhLIPDK (ORCPT <rfc822;linux-ide@vger.kernel.org>);
+        Thu, 9 Dec 2021 10:03:10 -0500
+X-IronPort-AV: E=McAfee;i="6200,9189,10192"; a="324375277"
 X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
-   d="scan'208";a="235621907"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 06:37:16 -0800
+   d="scan'208";a="324375277"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Dec 2021 06:59:37 -0800
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.88,192,1635231600"; 
-   d="scan'208";a="612518972"
+   d="scan'208";a="503518966"
 Received: from black.fi.intel.com ([10.237.72.28])
-  by orsmga004.jf.intel.com with ESMTP; 09 Dec 2021 06:37:15 -0800
+  by orsmga007.jf.intel.com with ESMTP; 09 Dec 2021 06:59:33 -0800
 Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id 7E5F94C7; Thu,  9 Dec 2021 16:37:21 +0200 (EET)
+        id 2033015C; Thu,  9 Dec 2021 16:59:40 +0200 (EET)
 From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Subject: [PATCH v1 3/3] ata: sata_dwc_460ex: Remove unused forward declaration
-Date:   Thu,  9 Dec 2021 16:35:19 +0200
-Message-Id: <20211209143519.60498-3-andriy.shevchenko@linux.intel.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Subject: [PATCH v1 1/2] ata: libahci_platform: Get rid of dup message when IRQ can't be retrieved
+Date:   Thu,  9 Dec 2021 16:59:36 +0200
+Message-Id: <20211209145937.77719-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211209143519.60498-1-andriy.shevchenko@linux.intel.com>
-References: <20211209143519.60498-1-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-sata_dwc_port_stop() is not used before being defined,
-remove redundant forward declaration.
+platform_get_irq() will print a message when it fails.
+No need to repeat this.
+
+While at it, drop redundant check for 0 as platform_get_irq() spills
+out a big WARN() in such case.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/ata/sata_dwc_460ex.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/ata/libahci_platform.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/ata/sata_dwc_460ex.c b/drivers/ata/sata_dwc_460ex.c
-index 5421f74c0199..bd4859563796 100644
---- a/drivers/ata/sata_dwc_460ex.c
-+++ b/drivers/ata/sata_dwc_460ex.c
-@@ -185,7 +185,6 @@ static void sata_dwc_bmdma_start_by_tag(struct ata_queued_cmd *qc, u8 tag);
- static int sata_dwc_qc_complete(struct ata_port *ap, struct ata_queued_cmd *qc,
- 				u32 check_status);
- static void sata_dwc_dma_xfer_complete(struct ata_port *ap, u32 check_status);
--static void sata_dwc_port_stop(struct ata_port *ap);
- static void sata_dwc_clear_dmacr(struct sata_dwc_device_port *hsdevp, u8 tag);
+diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform.c
+index 0910441321f7..1af642c84e7b 100644
+--- a/drivers/ata/libahci_platform.c
++++ b/drivers/ata/libahci_platform.c
+@@ -579,13 +579,8 @@ int ahci_platform_init_host(struct platform_device *pdev,
+ 	int i, irq, n_ports, rc;
  
- #ifdef CONFIG_SATA_DWC_OLD_DMA
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0) {
+-		if (irq != -EPROBE_DEFER)
+-			dev_err(dev, "no irq\n");
++	if (irq < 0)
+ 		return irq;
+-	}
+-	if (!irq)
+-		return -EINVAL;
+ 
+ 	hpriv->irq = irq;
+ 
 -- 
 2.33.0
 

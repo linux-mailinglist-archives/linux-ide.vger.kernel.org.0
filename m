@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1CD46FB5C
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 348E446FB5A
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237555AbhLJHdE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 02:33:04 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:34974 "EHLO
+        id S237554AbhLJHdD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 02:33:03 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:34976 "EHLO
         smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237546AbhLJHcz (ORCPT
+        with ESMTP id S237547AbhLJHcz (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 02:32:55 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id A748621114;
+        by smtp-out1.suse.de (Postfix) with ESMTP id A956221115;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1639121358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=d2ckzW0QtfcyTr1wDqE+tW3iKzkid4NvdkoMMCyo+CY=;
-        b=qgQzRsx7SQ/WOj9NhfZq00Bi8RR5LLhvaQ3rahr9faVPdQB3QN+22TxLEw9U5poNBMXrud
-        YJ4y22vveZECK9jsB2fkgDg/7eXj9sWJke+jL7zsqpBP1H2342k4J+7B2Ph8Hh6K3Rv4/P
-        Yb2aG/6Xs+PkL1MTIO1ieRd6ZLk+x0Y=
+        bh=5wV3hf3x8NR/DQPf3a+5ft7miXcVQHomm/O7P0O07bs=;
+        b=ZtBdGmuqbjrwEirvlxjyPRCiPwstaehTjsIeSWzYcvjNYRt4QBQQmwppBGCSw1CSLaEpSa
+        yTlWsespWuSH1YsKJiNC9VblKzqyHdvvGObnDsJWyPoAFbTdKfWU0EdkUhmFS5vmJe3fPy
+        C38ebiMd0ZxkCFEnOn24zHcjHtQYvbQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1639121358;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=d2ckzW0QtfcyTr1wDqE+tW3iKzkid4NvdkoMMCyo+CY=;
-        b=QmRnamJHLieGjMTJuhT2frB/SKVu9Io7VEd3ad6xNPN7qoJSm1EhewhgO8Cli/OR2OVRfL
-        Ql+cHG1Tj4EvvTDA==
+        bh=5wV3hf3x8NR/DQPf3a+5ft7miXcVQHomm/O7P0O07bs=;
+        b=YwJd4qtcPFSfUC4gSLmT6P4Ch27b0ByEDLnj949DxMdMIi05jT9su0gxsqoAlR1uiN6WrM
+        QdxD3hgg4YUKgfBg==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id A17FCA3BA7;
+        by relay2.suse.de (Postfix) with ESMTP id A530EA3BA8;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 9F11A5192043; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
+        id A29EA5192045; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 17/68] pata_octeon_cf: remove DPRINTK() macro in interrupt context
-Date:   Fri, 10 Dec 2021 08:28:14 +0100
-Message-Id: <20211210072905.15666-18-hare@suse.de>
+Subject: [PATCH 18/68] pdc_adma: Remove DPRINTK call
+Date:   Fri, 10 Dec 2021 08:28:15 +0100
+Message-Id: <20211210072905.15666-19-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211210072905.15666-1-hare@suse.de>
 References: <20211210072905.15666-1-hare@suse.de>
@@ -52,34 +52,28 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-There is only so much information to be glanced when the interrupt
-routine is called and exited, so remove these DPRINTK() calls.
+The DPRINTK call doesn't print information which isn't already covered
+by tracepoints later on.
+Remove it.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_octeon_cf.c | 2 --
+ drivers/ata/pdc_adma.c | 2 --
  1 file changed, 2 deletions(-)
 
-diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
-index 1fe756af3268..07eda263b4c1 100644
---- a/drivers/ata/pata_octeon_cf.c
-+++ b/drivers/ata/pata_octeon_cf.c
-@@ -668,7 +668,6 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
+diff --git a/drivers/ata/pdc_adma.c b/drivers/ata/pdc_adma.c
+index 5db55e1e2a61..2c910c4cd4de 100644
+--- a/drivers/ata/pdc_adma.c
++++ b/drivers/ata/pdc_adma.c
+@@ -475,8 +475,6 @@ static inline unsigned int adma_intr_mmio(struct ata_host *host)
+ 			u8 status = ata_sff_check_status(ap);
+ 			if ((status & ATA_BUSY))
+ 				continue;
+-			DPRINTK("ata%u: protocol %d (dev_stat 0x%X)\n",
+-				ap->print_id, qc->tf.protocol, status);
  
- 	spin_lock_irqsave(&host->lock, flags);
- 
--	DPRINTK("ENTER\n");
- 	for (i = 0; i < host->n_ports; i++) {
- 		u8 status;
- 		struct ata_port *ap;
-@@ -723,7 +722,6 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
- 		}
- 	}
- 	spin_unlock_irqrestore(&host->lock, flags);
--	DPRINTK("EXIT\n");
- 	return IRQ_RETVAL(handled);
- }
- 
+ 			/* complete taskfile transaction */
+ 			pp->state = adma_state_idle;
 -- 
 2.29.2
 

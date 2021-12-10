@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C8F046FB60
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E1CD46FB5C
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237611AbhLJHdG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 02:33:06 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:34980 "EHLO
+        id S237555AbhLJHdE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 02:33:04 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:34974 "EHLO
         smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237558AbhLJHcz (ORCPT
+        with ESMTP id S237546AbhLJHcz (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 02:32:55 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id B1AA221117;
+        by smtp-out1.suse.de (Postfix) with ESMTP id A748621114;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1639121358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nQ/i/lSfSuUN+NBIwnNpb8mcXW/+zJQ82gaAeWv5UDU=;
-        b=nfvFEiAEPJYVF2ZrxGBSPbnE2de1TzvwMbMzfFEdFitnsxq6iOYz0d6o56e9KdaHS6mLPv
-        OJHbnhRN25XaD1v9u5qGLutCyDQNSXzepCth4AwYsb2zXqyBdkCNREU8Xpwjyj9SjVaKfL
-        1jNQ7blkbUjqj7n+KPw305pgPS26McI=
+        bh=d2ckzW0QtfcyTr1wDqE+tW3iKzkid4NvdkoMMCyo+CY=;
+        b=qgQzRsx7SQ/WOj9NhfZq00Bi8RR5LLhvaQ3rahr9faVPdQB3QN+22TxLEw9U5poNBMXrud
+        YJ4y22vveZECK9jsB2fkgDg/7eXj9sWJke+jL7zsqpBP1H2342k4J+7B2Ph8Hh6K3Rv4/P
+        Yb2aG/6Xs+PkL1MTIO1ieRd6ZLk+x0Y=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1639121358;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=nQ/i/lSfSuUN+NBIwnNpb8mcXW/+zJQ82gaAeWv5UDU=;
-        b=4gzuVS3JDOzc+qWtIcJvsi4/3WT/we9yHKxAEa2zftKYRRvqkhtoc56uNm1KidCF31eHY4
-        dsIoGxqBvna6GcCg==
+        bh=d2ckzW0QtfcyTr1wDqE+tW3iKzkid4NvdkoMMCyo+CY=;
+        b=QmRnamJHLieGjMTJuhT2frB/SKVu9Io7VEd3ad6xNPN7qoJSm1EhewhgO8Cli/OR2OVRfL
+        Ql+cHG1Tj4EvvTDA==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 9D213A3BA5;
+        by relay2.suse.de (Postfix) with ESMTP id A17FCA3BA7;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 9AB745192041; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
+        id 9F11A5192043; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 16/68] sata_mv: replace DPRINTK with dynamic debugging
-Date:   Fri, 10 Dec 2021 08:28:13 +0100
-Message-Id: <20211210072905.15666-17-hare@suse.de>
+Subject: [PATCH 17/68] pata_octeon_cf: remove DPRINTK() macro in interrupt context
+Date:   Fri, 10 Dec 2021 08:28:14 +0100
+Message-Id: <20211210072905.15666-18-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211210072905.15666-1-hare@suse.de>
 References: <20211210072905.15666-1-hare@suse.de>
@@ -52,137 +52,34 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Move the DPRINTK calls over to dynamic debugging.
+There is only so much information to be glanced when the interrupt
+routine is called and exited, so remove these DPRINTK() calls.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_mv.c | 74 +++++++++++++++++++++----------------------
- 1 file changed, 37 insertions(+), 37 deletions(-)
+ drivers/ata/pata_octeon_cf.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
-index c5b3d45a7c39..40a92c89e6d7 100644
---- a/drivers/ata/sata_mv.c
-+++ b/drivers/ata/sata_mv.c
-@@ -1248,42 +1248,43 @@ static int mv_stop_edma(struct ata_port *ap)
- 	return err;
- }
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 1fe756af3268..07eda263b4c1 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -668,7 +668,6 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
  
--#ifdef ATA_DEBUG
--static void mv_dump_mem(void __iomem *start, unsigned bytes)
-+static void mv_dump_mem(struct device *dev, void __iomem *start, unsigned bytes)
- {
--	int b, w;
-+	int b, w, o;
-+	unsigned char linebuf[38];
-+
- 	for (b = 0; b < bytes; ) {
--		DPRINTK("%p: ", start + b);
--		for (w = 0; b < bytes && w < 4; w++) {
--			printk("%08x ", readl(start + b));
-+		for (w = 0, o = 0; b < bytes && w < 4; w++) {
-+			o += snprintf(linebuf + o, 38 - o,
-+				      "%08x ", readl(start + b));
- 			b += sizeof(u32);
+ 	spin_lock_irqsave(&host->lock, flags);
+ 
+-	DPRINTK("ENTER\n");
+ 	for (i = 0; i < host->n_ports; i++) {
+ 		u8 status;
+ 		struct ata_port *ap;
+@@ -723,7 +722,6 @@ static irqreturn_t octeon_cf_interrupt(int irq, void *dev_instance)
  		}
--		printk("\n");
-+		dev_dbg(dev, "%s: %p: %s\n",
-+			__func__, start + b, linebuf);
  	}
- }
--#endif
--#if defined(ATA_DEBUG) || defined(CONFIG_PCI)
-+
- static void mv_dump_pci_cfg(struct pci_dev *pdev, unsigned bytes)
- {
--#ifdef ATA_DEBUG
--	int b, w;
-+	int b, w, o;
- 	u32 dw;
-+	unsigned char linebuf[38];
-+
- 	for (b = 0; b < bytes; ) {
--		DPRINTK("%02x: ", b);
--		for (w = 0; b < bytes && w < 4; w++) {
-+		for (w = 0, o = 0; b < bytes && w < 4; w++) {
- 			(void) pci_read_config_dword(pdev, b, &dw);
--			printk("%08x ", dw);
-+			o += snprintf(linebuf + o, 38 - o,
-+				      "%08x ", dw);
- 			b += sizeof(u32);
- 		}
--		printk("\n");
-+		dev_dbg(&pdev->dev, "%s: %02x: %s\n",
-+			__func__, b, linebuf);
- 	}
--#endif
- }
--#endif
-+
- static void mv_dump_all_regs(void __iomem *mmio_base,
- 			     struct pci_dev *pdev)
- {
--#ifdef ATA_DEBUG
- 	void __iomem *hc_base;
- 	void __iomem *port_base;
- 	int start_port, num_ports, p, start_hc, num_hcs, hc;
-@@ -1291,31 +1292,30 @@ static void mv_dump_all_regs(void __iomem *mmio_base,
- 	start_hc = start_port = 0;
- 	num_ports = 8;		/* should be benign for 4 port devs */
- 	num_hcs = 2;
--	DPRINTK("All registers for port(s) %u-%u:\n", start_port,
--		num_ports > 1 ? num_ports - 1 : start_port);
-+	dev_dbg(&pdev->dev,
-+		"%s: All registers for port(s) %u-%u:\n", __func__,
-+		start_port, num_ports > 1 ? num_ports - 1 : start_port);
- 
--	if (NULL != pdev) {
--		DPRINTK("PCI config space regs:\n");
--		mv_dump_pci_cfg(pdev, 0x68);
--	}
--	DPRINTK("PCI regs:\n");
--	mv_dump_mem(mmio_base+0xc00, 0x3c);
--	mv_dump_mem(mmio_base+0xd00, 0x34);
--	mv_dump_mem(mmio_base+0xf00, 0x4);
--	mv_dump_mem(mmio_base+0x1d00, 0x6c);
-+	dev_dbg(&pdev->dev, "%s: PCI config space regs:\n", __func__);
-+	mv_dump_pci_cfg(pdev, 0x68);
-+
-+	dev_dbg(&pdev->dev, "%s: PCI regs:\n", __func__);
-+	mv_dump_mem(&pdev->dev, mmio_base+0xc00, 0x3c);
-+	mv_dump_mem(&pdev->dev, mmio_base+0xd00, 0x34);
-+	mv_dump_mem(&pdev->dev, mmio_base+0xf00, 0x4);
-+	mv_dump_mem(&pdev->dev, mmio_base+0x1d00, 0x6c);
- 	for (hc = start_hc; hc < start_hc + num_hcs; hc++) {
- 		hc_base = mv_hc_base(mmio_base, hc);
--		DPRINTK("HC regs (HC %i):\n", hc);
--		mv_dump_mem(hc_base, 0x1c);
-+		dev_dbg(&pdev->dev, "%s: HC regs (HC %i):\n", __func__, hc);
-+		mv_dump_mem(&pdev->dev, hc_base, 0x1c);
- 	}
- 	for (p = start_port; p < start_port + num_ports; p++) {
- 		port_base = mv_port_base(mmio_base, p);
--		DPRINTK("EDMA regs (port %i):\n", p);
--		mv_dump_mem(port_base, 0x54);
--		DPRINTK("SATA regs (port %i):\n", p);
--		mv_dump_mem(port_base+0x300, 0x60);
-+		dev_dbg(&pdev->dev, "%s: EDMA regs (port %i):\n", __func__, p);
-+		mv_dump_mem(&pdev->dev, port_base, 0x54);
-+		dev_dbg(&pdev->dev, "%s: SATA regs (port %i):\n", __func__, p);
-+		mv_dump_mem(&pdev->dev, port_base+0x300, 0x60);
- 	}
--#endif
+ 	spin_unlock_irqrestore(&host->lock, flags);
+-	DPRINTK("EXIT\n");
+ 	return IRQ_RETVAL(handled);
  }
  
- static unsigned int mv_scr_offset(unsigned int sc_reg_in)
-@@ -2955,7 +2955,7 @@ static int mv_pci_error(struct ata_host *host, void __iomem *mmio)
- 
- 	dev_err(host->dev, "PCI ERROR; PCI IRQ cause=0x%08x\n", err_cause);
- 
--	DPRINTK("All regs @ PCI error\n");
-+	dev_dbg(host->dev, "%s: All regs @ PCI error\n", __func__);
- 	mv_dump_all_regs(mmio, to_pci_dev(host->dev));
- 
- 	writelfl(0, mmio + hpriv->irq_cause_offset);
 -- 
 2.29.2
 

@@ -2,201 +2,240 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC53F46FB4B
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C3E5346FB51
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232117AbhLJHcy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 02:32:54 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:34822 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237508AbhLJHcx (ORCPT
+        id S237571AbhLJHc7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 02:32:59 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:46996 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237517AbhLJHcx (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 02:32:53 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 9421B210EB;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 98D771F39F;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1639121358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=iKGAwfnPYMMneX9/rlSEcm09TjTstKOLXzEBTNSrT7A=;
-        b=tSM/RgFDKaDoI1lSTC+SbwGxaAwJxWtpSGGD8fH5zllMa/fNIFNbZJpvuyYL6SELjsl7rm
-        sxPSrYVPlGUrTJq8BwC717YNxG1W+C0lWpqqqPePIfAcVB0dHHV7I525TSRvTkpvG/Itqd
-        UW6Z1/5qAFrGRexIxQqwDWTN/uYFiqM=
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GH5+lZVkpS1MulCUiPiUk+NUqlseWVqpOhoOywfFa3o=;
+        b=BWG72Uz868OJSBwIre0JUGtoLcVc4Hehy2sMwxobgwr2Pn0EuZtwnW97SeEJ00/yr2gHoo
+        xi6EbZqM8UlkjqwnYdswbFR+2hhidQZl9gColyEP8m0E4BWjcZv8CCUI/pE3NE3zRmQlRx
+        nLpxc72Y5lQm9lOzC1OPv4KUY6L0hbE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1639121358;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-        bh=iKGAwfnPYMMneX9/rlSEcm09TjTstKOLXzEBTNSrT7A=;
-        b=M8H8ZicV5iKbiSvSm3k1jkmkXfQ14+vPZy5XbFpLQ3+/Ic3nifNuZIXSdTfnOGhk3u8v5p
-        EbWcKM8nOFBqKSAQ==
+         mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=GH5+lZVkpS1MulCUiPiUk+NUqlseWVqpOhoOywfFa3o=;
+        b=kw+XEj3v6spn9d4VePs1Oxau6XL8AGzEKMcELL/kti1FE6aIlN6vfBdytLh41dyw3MBeS8
+        sLUh3+T5h0icS2BQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 65920A3B92;
+        by relay2.suse.de (Postfix) with ESMTP id 6B4E0A3B94;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 583985192021; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
+        id 5BA905192023; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCHv2 00/68] libata: rework logging, take II
-Date:   Fri, 10 Dec 2021 08:27:57 +0100
-Message-Id: <20211210072905.15666-1-hare@suse.de>
+Subject: [PATCH 01/68] libata: remove pointless debugging messages
+Date:   Fri, 10 Dec 2021 08:27:58 +0100
+Message-Id: <20211210072905.15666-2-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20211210072905.15666-1-hare@suse.de>
+References: <20211210072905.15666-1-hare@suse.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi all,
+Debugging messages in pci init functions or sg setup are pretty
+much pointless, as the workflow pretty much decides what happened.
+So drop them.
 
-after some prodding from individual persons I've resurrected my
-patchset to put libata logging on a even keel, and use structured
-logging for everything.
-So this patch does away with DPRINTK, ATA_DEBUG or ata_msg_XXX()
-calls, and moves everything over to structured logging
-(ie the dev_XXX() calls).
-Additionally I've added tracepoints to trace command flow,
-error handling, host state machine etc.
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+---
+ drivers/ata/acard-ahci.c  |  4 ----
+ drivers/ata/ahci.c        |  2 --
+ drivers/ata/ata_piix.c    |  3 ---
+ drivers/ata/libahci.c     |  3 ---
+ drivers/ata/libata-core.c | 11 -----------
+ drivers/ata/libata-sff.c  |  2 --
+ drivers/ata/sata_nv.c     |  4 ----
+ 7 files changed, 29 deletions(-)
 
-So everything is looking far saner now.
-
-As usual, comments and reviews are welcome.
-
-I know that the device names suck. Blame Tejun.
-
-Changes to the original submission:
-- Converted all printk() and pr_XXX() calls, too
-- Included reviews from Damien
-- Included reviews from Sergey
-
-Hannes Reinecke (68):
-  libata: remove pointless debugging messages
-  libata: whitespace cleanup
-  libata: Add ata_port_classify() helper
-  libata: move ata_dump_id() to dynamic debugging
-  libata: sanitize ATA_HORKAGE_DUMP_ID
-  libata: add reset tracepoints
-  libata: add qc_prep tracepoint
-  libata: tracepoints for bus-master DMA
-  libata-sff: tracepoints for HSM state machine
-  libata-scsi: drop DPRINTK calls for cdb translation
-  libata: add tracepoints for ATA error handling
-  libata: move ata_{port,link,dev}_dbg to standard dev_XXX() macros
-  libata: revamp ata_get_cmd_descript()
-  libata: move DPRINTK to ata debugging
-  sata_mv: kill 'port' argument in mv_dump_all_regs()
-  sata_mv: replace DPRINTK with dynamic debugging
-  pata_octeon_cf: remove DPRINTK() macro in interrupt context
-  pdc_adma: Remove DPRINTK call
-  sata_fsl: move DPRINTK to ata debugging
-  sata_rcar: replace DPRINTK() with ata_port_dbg()
-  sata_qstor: replace DPRINTK() with ata_port_dbg()
-  pata_pdc2027x: Replace PDPRINTK() with standard ata logging
-  libata: remove pointless VPRINTK() calls
-  ahci: Drop pointless VPRINTK() calls and convert the remaining ones
-  pdc_adma: Drop pointless VPRINTK() calls and remove disabled NCQ
-    debugging
-  pata_octeon_cf: Drop pointless VPRINTK() calls and convert the
-    remaining one
-  pata_via: Drop pointless VPRINTK() calls
-  sata_promise: Drop pointless VPRINTK() calls and convert the remaining
-    ones
-  sata_qstor: Drop pointless VPRINTK() calls
-  sata_rcar: Drop pointless VPRINTK() calls
-  sata_inic162x: Drop pointless VPRINTK() calls
-  sata_mv: Drop pointless VPRINTK() call and convert the remaining one
-  sata_nv: drop pointless VPRINTK() calls and convert remaining ones
-  sata_fsl: convert VPRINTK() calls to ata_port_dbg()
-  sata_sil: Drop pointless VPRINTK() calls
-  sata_sx4: Drop pointless VPRINTK() calls and convert the remaining
-    ones
-  sata_sx4: add module parameter 'dimm_test'
-  libata: drop ata_msg_error() and ata_msg_intr()
-  libata: drop ata_msg_ctl()
-  libata: drop ata_msg_malloc()
-  libata: drop ata_msg_warn()
-  libata: drop ata_msg_probe()
-  libata: drop ata_msg_info()
-  libata: drop ata_msg_drv()
-  libata: remove 'new' ata message handling
-  libata: remove debug compilation switches
-  pata_atp867x: convert printk() calls
-  pata_cmd640: convert printk() calls
-  pata_cmd64x: convert printk() calls
-  pata_cs5520: convert printk() calls
-  pata_cs5536: convert printk() calls
-  pata_cypress: convert printk() calls
-  pata_it821x: convert printk() calls
-  pata_marvell: convert printk() calls
-  pata_rz1000: convert printk() calls
-  pata_serverworks: convert printk() calls
-  pata_sil680: convert printk() calls
-  sata_sx4: convert printk() calls
-  sata_mv: convert remaining printk() to structured logging
-  pata_hpt37x: convert pr_XXX() calls
-  pata_octeon_cf: Replace pr_XXX() calls with structured logging
-  pata_hpt3x2n: convert pr_XXX() calls
-  sata_gemini: convert pr_err() calls
-  pata_hpt366: convert pr_warn() calls
-  libata-scsi: rework ata_dump_status to avoid using pr_cont()
-  sata_dwc_460ex: drop DEBUG_NCQ
-  sata_dwc_460ex: remove 'checkstatus' argument
-  sata_dwc_460ex: Remove debug compile options
-
- drivers/ata/Kconfig             |  12 -
- drivers/ata/acard-ahci.c        |   4 -
- drivers/ata/ahci.c              |  13 +-
- drivers/ata/ahci_qoriq.c        |   4 -
- drivers/ata/ahci_xgene.c        |   4 -
- drivers/ata/ata_piix.c          |  11 +-
- drivers/ata/libahci.c           |  33 +--
- drivers/ata/libata-acpi.c       |  69 +++---
- drivers/ata/libata-core.c       | 225 ++++-------------
- drivers/ata/libata-eh.c         |  70 +++---
- drivers/ata/libata-pmp.c        |   8 -
- drivers/ata/libata-sata.c       |   5 -
- drivers/ata/libata-scsi.c       | 111 ++-------
- drivers/ata/libata-sff.c        |  88 +++----
- drivers/ata/libata-trace.c      |  47 ++++
- drivers/ata/libata-transport.c  |  45 +++-
- drivers/ata/libata.h            |   5 +-
- drivers/ata/pata_arasan_cf.c    |   3 +
- drivers/ata/pata_atp867x.c      |  29 +--
- drivers/ata/pata_cmd640.c       |   2 +-
- drivers/ata/pata_cmd64x.c       |   4 +-
- drivers/ata/pata_cs5520.c       |   4 +-
- drivers/ata/pata_cs5536.c       |   4 +-
- drivers/ata/pata_cypress.c      |   2 +-
- drivers/ata/pata_ep93xx.c       |   1 -
- drivers/ata/pata_hpt366.c       |   5 +-
- drivers/ata/pata_hpt37x.c       |  20 +-
- drivers/ata/pata_hpt3x2n.c      |  12 +-
- drivers/ata/pata_it821x.c       |  43 ++--
- drivers/ata/pata_ixp4xx_cf.c    |   6 +-
- drivers/ata/pata_marvell.c      |   9 +-
- drivers/ata/pata_octeon_cf.c    |  48 +---
- drivers/ata/pata_pdc2027x.c     |  71 +++---
- drivers/ata/pata_pdc202xx_old.c |   2 -
- drivers/ata/pata_rz1000.c       |   4 +-
- drivers/ata/pata_serverworks.c  |   4 +-
- drivers/ata/pata_sil680.c       |   9 +-
- drivers/ata/pata_via.c          |  12 -
- drivers/ata/pdc_adma.c          |  33 +--
- drivers/ata/sata_dwc_460ex.c    | 120 ++-------
- drivers/ata/sata_fsl.c          | 165 +++++--------
- drivers/ata/sata_gemini.c       |   4 +-
- drivers/ata/sata_inic162x.c     |   4 +-
- drivers/ata/sata_mv.c           | 130 +++++-----
- drivers/ata/sata_nv.c           |  54 ++---
- drivers/ata/sata_promise.c      |  31 +--
- drivers/ata/sata_qstor.c        |  15 +-
- drivers/ata/sata_rcar.c         |  26 +-
- drivers/ata/sata_sil.c          |   1 -
- drivers/ata/sata_sil24.c        |   5 +-
- drivers/ata/sata_sx4.c          | 148 ++++--------
- include/linux/libata.h          |  99 ++------
- include/trace/events/libata.h   | 416 +++++++++++++++++++++++++++++++-
- 53 files changed, 1049 insertions(+), 1250 deletions(-)
-
+diff --git a/drivers/ata/acard-ahci.c b/drivers/ata/acard-ahci.c
+index 2a04e8abd397..536d4cb8f08b 100644
+--- a/drivers/ata/acard-ahci.c
++++ b/drivers/ata/acard-ahci.c
+@@ -185,8 +185,6 @@ static unsigned int acard_ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
+ 	struct acard_sg *acard_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+ 	unsigned int si, last_si = 0;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	/*
+ 	 * Next, the S/G list.
+ 	 */
+@@ -362,8 +360,6 @@ static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id
+ 	struct ata_host *host;
+ 	int n_ports, i, rc;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	WARN_ON((int)ATA_MAX_QUEUE > AHCI_MAX_CMDS);
+ 
+ 	ata_print_version_once(&pdev->dev, DRV_VERSION);
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index d60f34718b5d..5fa8a12c6b3b 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1672,8 +1672,6 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	int n_ports, i, rc;
+ 	int ahci_pci_bar = AHCI_PCI_BAR_STANDARD;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	WARN_ON((int)ATA_MAX_QUEUE > AHCI_MAX_CMDS);
+ 
+ 	ata_print_version_once(&pdev->dev, DRV_VERSION);
+diff --git a/drivers/ata/ata_piix.c b/drivers/ata/ata_piix.c
+index 0b2fcf0d1d6c..eb6bf30bd2e3 100644
+--- a/drivers/ata/ata_piix.c
++++ b/drivers/ata/ata_piix.c
+@@ -1345,7 +1345,6 @@ static void piix_init_pcs(struct ata_host *host,
+ 	new_pcs = pcs | map_db->port_enable;
+ 
+ 	if (new_pcs != pcs) {
+-		DPRINTK("updating PCS from 0x%x to 0x%x\n", pcs, new_pcs);
+ 		pci_write_config_word(pdev, ICH5_PCS, new_pcs);
+ 		msleep(150);
+ 	}
+@@ -1769,14 +1768,12 @@ static int __init piix_init(void)
+ {
+ 	int rc;
+ 
+-	DPRINTK("pci_register_driver\n");
+ 	rc = pci_register_driver(&piix_pci_driver);
+ 	if (rc)
+ 		return rc;
+ 
+ 	in_module_init = 0;
+ 
+-	DPRINTK("done\n");
+ 	return 0;
+ }
+ 
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index 8a6835bfd18a..8b651f55fc84 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -1620,8 +1620,6 @@ static unsigned int ahci_fill_sg(struct ata_queued_cmd *qc, void *cmd_tbl)
+ 	struct ahci_sg *ahci_sg = cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
+ 	unsigned int si;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	/*
+ 	 * Next, the S/G list.
+ 	 */
+@@ -1695,7 +1693,6 @@ static void ahci_fbs_dec_intr(struct ata_port *ap)
+ 	u32 fbs = readl(port_mmio + PORT_FBS);
+ 	int retries = 3;
+ 
+-	DPRINTK("ENTER\n");
+ 	BUG_ON(!pp->fbs_enabled);
+ 
+ 	/* time to wait for DEC is not specified by AHCI spec,
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 8a0ccb190d76..f6a9e2f22a94 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -764,9 +764,6 @@ int ata_build_rw_tf(struct ata_taskfile *tf, struct ata_device *dev,
+ 		head  = track % dev->heads;
+ 		sect  = (u32)block % dev->sectors + 1;
+ 
+-		DPRINTK("block %u track %u cyl %u head %u sect %u\n",
+-			(u32)block, track, cyl, head, sect);
+-
+ 		/* Check whether the converted CHS can fit.
+ 		   Cylinder: 0-65535
+ 		   Head: 0-15
+@@ -4562,8 +4559,6 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
+ 	struct ata_port *ap = qc->ap;
+ 	unsigned int n_elem;
+ 
+-	VPRINTK("ENTER, ata%u\n", ap->print_id);
+-
+ 	n_elem = dma_map_sg(ap->dev, qc->sg, qc->n_elem, qc->dma_dir);
+ 	if (n_elem < 1)
+ 		return -1;
+@@ -5368,8 +5363,6 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
+ {
+ 	struct ata_port *ap;
+ 
+-	DPRINTK("ENTER\n");
+-
+ 	ap = kzalloc(sizeof(*ap), GFP_KERNEL);
+ 	if (!ap)
+ 		return NULL;
+@@ -5486,8 +5479,6 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
+ 	int i;
+ 	void *dr;
+ 
+-	DPRINTK("ENTER\n");
+-
+ 	/* alloc a container for our list of ATA ports (buses) */
+ 	sz = sizeof(struct ata_host) + (max_ports + 1) * sizeof(void *);
+ 	host = kzalloc(sz, GFP_KERNEL);
+@@ -5777,9 +5768,7 @@ int ata_port_probe(struct ata_port *ap)
+ 		__ata_port_probe(ap);
+ 		ata_port_wait_eh(ap);
+ 	} else {
+-		DPRINTK("ata%u: bus probe begin\n", ap->print_id);
+ 		rc = ata_bus_probe(ap);
+-		DPRINTK("ata%u: bus probe end\n", ap->print_id);
+ 	}
+ 	return rc;
+ }
+diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
+index b71ea4a680b0..39c026f3948c 100644
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -2467,8 +2467,6 @@ static int ata_pci_init_one(struct pci_dev *pdev,
+ 	struct ata_host *host = NULL;
+ 	int rc;
+ 
+-	DPRINTK("ENTER\n");
+-
+ 	pi = ata_sff_find_valid_pi(ppi);
+ 	if (!pi) {
+ 		dev_err(&pdev->dev, "no valid port_info specified\n");
+diff --git a/drivers/ata/sata_nv.c b/drivers/ata/sata_nv.c
+index 16272c111208..3c70405a0b80 100644
+--- a/drivers/ata/sata_nv.c
++++ b/drivers/ata/sata_nv.c
+@@ -1277,8 +1277,6 @@ static int nv_adma_host_init(struct ata_host *host)
+ 	unsigned int i;
+ 	u32 tmp32;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	/* enable ADMA on the ports */
+ 	pci_read_config_dword(pdev, NV_MCP_SATA_CFG_20, &tmp32);
+ 	tmp32 |= NV_MCP_SATA_CFG_20_PORT0_EN |
+@@ -1320,8 +1318,6 @@ static void nv_adma_fill_sg(struct ata_queued_cmd *qc, struct nv_adma_cpb *cpb)
+ 	struct scatterlist *sg;
+ 	unsigned int si;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	for_each_sg(qc->sg, sg, qc->n_elem, si) {
+ 		aprd = (si < 5) ? &cpb->aprd[si] :
+ 			&pp->aprd[NV_ADMA_SGTBL_LEN * qc->hw_tag + (si-5)];
 -- 
 2.29.2
 

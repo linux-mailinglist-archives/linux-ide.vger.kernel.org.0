@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 670D246FB4E
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 836BC46FB52
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237514AbhLJHc4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 02:32:56 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:46982 "EHLO
+        id S237591AbhLJHc7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 02:32:59 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:47002 "EHLO
         smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237512AbhLJHcx (ORCPT
+        with ESMTP id S237527AbhLJHcx (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 02:32:53 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 960241F387;
+        by smtp-out2.suse.de (Postfix) with ESMTP id A09CA1F3A1;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1639121358; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L8Jq8ooCprSc4sLAv3D+zc1vRLI14PVVrHU7jIQqRIU=;
-        b=iM8pnjOjqlNSI2dndEBp94eTOvBueYpqItRBkJvG57IXoRzArdLIqzExDHvZliaEkwgjPg
-        bvfJfWW+NLJ0WB9obnluB7lf+j9XxWYbOUVWnGCzXb8XigcWxvMnwoWkiV/vATPARda84x
-        h96dDg3VsYAciA1Z1rK6BH+vtSnyjvQ=
+        bh=ABgaDq4XORYzoGL6NkUsoSWXKg7FCkASv2USl06P6Io=;
+        b=ADdctAT38prv0pYApthDH9vc3iss++vranUUATJjCkxmwxoaj+KBNpzXPojgVgcitKN2d7
+        47ikNawvNEOlylamvo6Y4p0qX78GbPBwUgyuhjzRJAeJlLR19g0UGaMObPhRIpCtU+4WWH
+        brW9YoG4QjgXobfRI44k8329UoszVk4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1639121358;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=L8Jq8ooCprSc4sLAv3D+zc1vRLI14PVVrHU7jIQqRIU=;
-        b=MKirVfAot7QPe4aW4SnNvDXqoeKeG6OVj2I1A4yI4TTJ7Ct1F24HSY6O3n4nDwouU9QhNP
-        qrnF7jADO2d5ezCQ==
+        bh=ABgaDq4XORYzoGL6NkUsoSWXKg7FCkASv2USl06P6Io=;
+        b=n0/WvmDZBSHiqHkssKH4PwAN+RLZRBzd+QXRjMVE9o2M6sUP6Kb7jtfRH+KcnMAkd+xk0r
+        EzQ++kt9gszfKwDQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 7C7AEA3B9A;
+        by relay2.suse.de (Postfix) with ESMTP id 96BB5A3B9E;
         Fri, 10 Dec 2021 07:29:18 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 692895192029; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
+        id 6C95B519202B; Fri, 10 Dec 2021 08:29:18 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 04/68] libata: move ata_dump_id() to dynamic debugging
-Date:   Fri, 10 Dec 2021 08:28:01 +0100
-Message-Id: <20211210072905.15666-5-hare@suse.de>
+Subject: [PATCH 05/68] libata: sanitize ATA_HORKAGE_DUMP_ID
+Date:   Fri, 10 Dec 2021 08:28:02 +0100
+Message-Id: <20211210072905.15666-6-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211210072905.15666-1-hare@suse.de>
 References: <20211210072905.15666-1-hare@suse.de>
@@ -52,77 +52,34 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Use ata_dev_dbg() to print out the information in ata_dump_id()
-and remove the ata_msg_probe() conditional.
+With moving ata_dev_dbg() over to dynamic debugging ATA_HORKAGE_DUMP_ID
+will now print out the raw IDENTIFY data without a header unless
+explicitly enable via dyndebug.
+So move the logging level up to INFO and have the header printed
+always.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-core.c | 38 ++++++++++----------------------------
- 1 file changed, 10 insertions(+), 28 deletions(-)
+ drivers/ata/libata-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 604d9b826c29..5c5b01fb9351 100644
+index 5c5b01fb9351..bd3f36e32fd7 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -1341,6 +1341,7 @@ static int ata_hpa_resize(struct ata_device *dev)
+@@ -1848,10 +1848,10 @@ int ata_dev_read_id(struct ata_device *dev, unsigned int *p_class,
+ 	}
  
- /**
-  *	ata_dump_id - IDENTIFY DEVICE info debugging output
-+ *	@dev: device from which the information is fetched
-  *	@id: IDENTIFY DEVICE page to dump
-  *
-  *	Dump selected 16-bit words from the given IDENTIFY DEVICE
-@@ -1350,32 +1351,14 @@ static int ata_hpa_resize(struct ata_device *dev)
-  *	caller.
-  */
+ 	if (dev->horkage & ATA_HORKAGE_DUMP_ID) {
+-		ata_dev_dbg(dev, "dumping IDENTIFY data, "
++		ata_dev_info(dev, "dumping IDENTIFY data, "
+ 			    "class=%d may_fallback=%d tried_spinup=%d\n",
+ 			    class, may_fallback, tried_spinup);
+-		print_hex_dump(KERN_DEBUG, "", DUMP_PREFIX_OFFSET,
++		print_hex_dump(KERN_INFO, "", DUMP_PREFIX_OFFSET,
+ 			       16, 2, id, ATA_ID_WORDS * sizeof(*id), true);
+ 	}
  
--static inline void ata_dump_id(const u16 *id)
--{
--	DPRINTK("49==0x%04x  "
--		"53==0x%04x  "
--		"63==0x%04x  "
--		"64==0x%04x  "
--		"75==0x%04x  \n",
--		id[49],
--		id[53],
--		id[63],
--		id[64],
--		id[75]);
--	DPRINTK("80==0x%04x  "
--		"81==0x%04x  "
--		"82==0x%04x  "
--		"83==0x%04x  "
--		"84==0x%04x  \n",
--		id[80],
--		id[81],
--		id[82],
--		id[83],
--		id[84]);
--	DPRINTK("88==0x%04x  "
--		"93==0x%04x\n",
--		id[88],
--		id[93]);
-+static inline void ata_dump_id(struct ata_device *dev, const u16 *id)
-+{
-+	ata_dev_dbg(dev,
-+		"49==0x%04x  53==0x%04x  63==0x%04x  64==0x%04x  75==0x%04x\n"
-+		"80==0x%04x  81==0x%04x  82==0x%04x  83==0x%04x  84==0x%04x\n"
-+		"88==0x%04x  93==0x%04x\n",
-+		id[49], id[53], id[63], id[64], id[75], id[80],
-+		id[81], id[82], id[83], id[84], id[88], id[93]);
- }
- 
- /**
-@@ -2627,8 +2610,7 @@ int ata_dev_configure(struct ata_device *dev)
- 	/* find max transfer mode; for printk only */
- 	xfer_mask = ata_id_xfermask(id);
- 
--	if (ata_msg_probe(ap))
--		ata_dump_id(id);
-+	ata_dump_id(dev, id);
- 
- 	/* SCSI only uses 4-char revisions, dump full 8 chars from ATA */
- 	ata_id_c_string(dev->id, fwrevbuf, ATA_ID_FW_REV,
 -- 
 2.29.2
 

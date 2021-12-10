@@ -2,107 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40CF746FB90
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:30:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A03746FCEA
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 09:42:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237675AbhLJHdp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 02:33:45 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:34976 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237701AbhLJHdZ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 02:33:25 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 6C8B9218A9;
-        Fri, 10 Dec 2021 07:29:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1639121359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wANsrl+NTGHVH/3p9vBgAmwo9wDUpYFWc//q+VYv/dE=;
-        b=DnVMIKQn5nARIoFGXF8FLL5wAOJlZiU0m9prVKH5WMb0AY3V6NLtSm+XbYu0CNfiEM2zc4
-        ynoR18sf2j+5s2+kZYJL7iIFodjNsCmZNeL0/7LL4+anIPdMh5OyTzFIsBcVOSaVhC+AJd
-        18BaJPy1A+b1ucAY9dxpcw2L1pnA1+w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1639121359;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wANsrl+NTGHVH/3p9vBgAmwo9wDUpYFWc//q+VYv/dE=;
-        b=irdp97h1lNDL+pIEktR7nY4I21NfMKbQbxyQQIxf1Hc41EgY6cg1bd/Z1Dw0HFH9zLWJuL
-        Iz0mLdmJacEM7PCA==
-Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 68D53A3BD7;
-        Fri, 10 Dec 2021 07:29:19 +0000 (UTC)
-Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 66EC551920A9; Fri, 10 Dec 2021 08:29:19 +0100 (CET)
-From:   Hannes Reinecke <hare@suse.de>
-To:     Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 68/68] sata_dwc_460ex: Remove debug compile options
-Date:   Fri, 10 Dec 2021 08:29:05 +0100
-Message-Id: <20211210072905.15666-69-hare@suse.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20211210072905.15666-1-hare@suse.de>
-References: <20211210072905.15666-1-hare@suse.de>
+        id S232658AbhLJIqc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 03:46:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59702 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229761AbhLJIqc (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 03:46:32 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBC87C061746;
+        Fri, 10 Dec 2021 00:42:57 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id o20so27906116eds.10;
+        Fri, 10 Dec 2021 00:42:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yjp7trcWfJyJK01y2ql41SX0hmC1hQH0mrMXyHW+2Hs=;
+        b=NqRQ7yb7DNbmcDX0xULVOpdF14Ke+Eq71Bsf5R6opbNMHc/bwBWBT9iMsG9BLurMK4
+         illARVTpym3Y1cCMbon8sC7kD9K7EVJFKIgPNNVxZF4+JthUutRKvxL6k9Eu9rpFa3mN
+         ytpn25V88JVwPfI6OgBvmzNWa4sDM9dyzMC6K+ShOzQC4RQL/YDhxKE6lezzaaAmfnNL
+         mNV6yfNcpqvscsJmt0iu6r1ufB1XngCciJlB6kJBDNYQICxmqAiNkX5Zmj+SVcjIVirV
+         f9kvOCuscHcczZo0pfXHc7W6NOWL+qytYtWF3CZP2ZGZfhl0b73ixenYUc+a9WLEsPrc
+         o46g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yjp7trcWfJyJK01y2ql41SX0hmC1hQH0mrMXyHW+2Hs=;
+        b=40Sbb8iZPCTSpmrmFJGqGbpVOXqli5PuZ8fd/1TIiA/spXmA8Qc6l+eTPhkrKwUquL
+         fqCCmwaWEK6EODj0P8TgZvTprKH9VkirRKbb7Gewkdr4RWYZJ+zJFYCjfcPSWe1vpceX
+         B3+IA5IfVU0ng201b8eiiXu8r/J7Pb/MRqotV4ABRJZX/MemNKLy8ZJ6T7KEWJ6EAQnt
+         jyWVOlHUkWxwrhmNLFzwAyragkMAiyQSyDTAM7VSxykgCepY8YhGxjPVRt1ByRecliOm
+         9WGham4ePpalQF9F4jJIx9u0ZUAo77wMPWY+Uy1F7sujfMQZLyQZXM5s4lNR/mAe4iel
+         Lodg==
+X-Gm-Message-State: AOAM533jyPIGa1xnsTFr6Fcmr2YGOmMO14gWFr6+Zb9VWHaXcaMuhtTV
+        6mZOmzsYjy5ltPJ0EVxpGGtt8bHtltzZKz68jMY=
+X-Google-Smtp-Source: ABdhPJyBq4sqMdV9YOgX2LPfg7v0r1TyKLPSCgNFE9WC5dr6x7nuG0vtpTjgac6McvvCGXMKFokOKQeKqW5/o5klD8Y=
+X-Received: by 2002:a17:906:9b92:: with SMTP id dd18mr21874490ejc.425.1639125776074;
+ Fri, 10 Dec 2021 00:42:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211209143519.60498-1-andriy.shevchenko@linux.intel.com>
+ <20211209143519.60498-2-andriy.shevchenko@linux.intel.com> <5d98df66-a1fb-a2cf-f780-963bf26f6d1e@opensource.wdc.com>
+In-Reply-To: <5d98df66-a1fb-a2cf-f780-963bf26f6d1e@opensource.wdc.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 10 Dec 2021 10:42:19 +0200
+Message-ID: <CAHp75Vezco85W+TG+ehtMwtUyFubb+fbnn5XuyNQiNX4mJczXg@mail.gmail.com>
+Subject: Re: [PATCH v1 2/3] ata: sata_dwc_460ex: Use temporary variable for
+ struct device
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Hannes Reinecke <hare@suse.de>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-ide@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Driver has been converted to dynamic debugging, so the compile-time
-options don't have any functionality left.
+On Fri, Dec 10, 2021 at 4:25 AM Damien Le Moal
+<damien.lemoal@opensource.wdc.com> wrote:
+>
+> On 2021/12/09 23:35, Andy Shevchenko wrote:
+> > Use temporary variable for struct device to make code neater.
+> >
+> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+>
+> What is this based on ? Is this on top of Hannes series ?
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
----
- drivers/ata/Kconfig          | 12 ------------
- drivers/ata/sata_dwc_460ex.c |  8 --------
- 2 files changed, 20 deletions(-)
+Nope, on latest (available) Linux Next.
+Hannes, can you incorporate this to yours maybe? I see one conflict
+with the last patch.
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index a7da8ea7b3ed..f6e943c74001 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -432,18 +432,6 @@ config SATA_DWC_OLD_DMA
- 	  This option enables support for old device trees without the
- 	  "dmas" property.
- 
--config SATA_DWC_DEBUG
--	bool "Debugging driver version"
--	depends on SATA_DWC
--	help
--	  This option enables debugging output in the driver.
--
--config SATA_DWC_VDEBUG
--	bool "Verbose debug output"
--	depends on SATA_DWC_DEBUG
--	help
--	  This option enables the taskfile dumping and NCQ debugging.
--
- config SATA_HIGHBANK
- 	tristate "Calxeda Highbank SATA support"
- 	depends on ARCH_HIGHBANK || COMPILE_TEST
-diff --git a/drivers/ata/sata_dwc_460ex.c b/drivers/ata/sata_dwc_460ex.c
-index e1024e062cc5..8fe740db37ac 100644
---- a/drivers/ata/sata_dwc_460ex.c
-+++ b/drivers/ata/sata_dwc_460ex.c
-@@ -14,14 +14,6 @@
-  *          COPYRIGHT (C) 2005  SYNOPSYS, INC.  ALL RIGHTS RESERVED
-  */
- 
--#ifdef CONFIG_SATA_DWC_DEBUG
--#define DEBUG
--#endif
--
--#ifdef CONFIG_SATA_DWC_VDEBUG
--#define VERBOSE_DEBUG
--#endif
--
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
 -- 
-2.29.2
-
+With Best Regards,
+Andy Shevchenko

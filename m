@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC91746FB89
-	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87E9B46FB85
+	for <lists+linux-ide@lfdr.de>; Fri, 10 Dec 2021 08:29:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235025AbhLJHdd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 02:33:33 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:35098 "EHLO
+        id S237588AbhLJHdb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 02:33:31 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:35094 "EHLO
         smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237643AbhLJHdP (ORCPT
+        with ESMTP id S237644AbhLJHdP (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 02:33:15 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 3A6F2212C4;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 42958212C6;
         Fri, 10 Dec 2021 07:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1639121359; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0qlf+b9FHXif+j+YiCmdQefsapESgx+M4hDwu/PD7IA=;
-        b=Cu2XSPe+1hqkT2hya9ibmGY0PnMzxNvraLcdqIECehKd/T6aQmFmu25I9YbTL5dR/kCVcI
-        WAjtBy2Iy1BtttSJKw5T5CigDMrphvKa1NC8ZGq0BYrZywHMrDCfQr81zHHyQPTzLhBk9S
-        gGHNwrD3X/I/hygdAA1794aF5MMsJ9A=
+        bh=u77Gi0ul4Ky4xOOmIlJD16ZQ2JKY9PNS66ja49ZXAKg=;
+        b=oluTR8el5PVFWtoLJ04Oq5x354pmdOmo3mnmC2/ow2xvoht/TIPag++dMg6kIgFyYd1Q2p
+        QYmQkKZhXZKdDbCUWRyh2uiLeT5Ou4vPgBI757YnDTjjPZwhUZJYw9+HWlrJdqAhMKQG0F
+        1Gw/4hoV6QKwthAVi68pjb5wTC3Z3zE=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1639121359;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=0qlf+b9FHXif+j+YiCmdQefsapESgx+M4hDwu/PD7IA=;
-        b=lcoRCLT+HQ82+AnmpRdLcdRLb9rJYowvnpnz4qCXzErNdA2DKCj7G/Qoe0+Vpu0WgSiSfI
-        pwgo0QgWI+YWvfDA==
+        bh=u77Gi0ul4Ky4xOOmIlJD16ZQ2JKY9PNS66ja49ZXAKg=;
+        b=xS5zpNK67/MQxjfYjHRlUZSKkZecownb0n5h85IIGJVh25g9gU731UzX6TUqhnwfQB8Quq
+        Msf39uxVwgngo3Aw==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 36C4AA3BCB;
+        by relay2.suse.de (Postfix) with ESMTP id 3D5F7A3BCC;
         Fri, 10 Dec 2021 07:29:19 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 3435C519208F; Fri, 10 Dec 2021 08:29:19 +0100 (CET)
+        id 388EA5192091; Fri, 10 Dec 2021 08:29:19 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 55/68] pata_rz1000: convert printk() calls
-Date:   Fri, 10 Dec 2021 08:28:52 +0100
-Message-Id: <20211210072905.15666-56-hare@suse.de>
+Subject: [PATCH 56/68] pata_serverworks: convert printk() calls
+Date:   Fri, 10 Dec 2021 08:28:53 +0100
+Message-Id: <20211210072905.15666-57-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211210072905.15666-1-hare@suse.de>
 References: <20211210072905.15666-1-hare@suse.de>
@@ -56,31 +56,29 @@ Convert printk() calls to structured logging.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_rz1000.c | 4 ++--
+ drivers/ata/pata_serverworks.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/pata_rz1000.c b/drivers/ata/pata_rz1000.c
-index 3722a67083fd..fb00c3e5fd19 100644
---- a/drivers/ata/pata_rz1000.c
-+++ b/drivers/ata/pata_rz1000.c
-@@ -69,7 +69,7 @@ static int rz1000_fifo_disable(struct pci_dev *pdev)
- 	reg &= 0xDFFF;
- 	if (pci_write_config_word(pdev, 0x40, reg) != 0)
- 		return -1;
--	printk(KERN_INFO DRV_NAME ": disabled chipset readahead.\n");
-+	dev_info(&pdev->dev, "disabled chipset readahead.\n");
- 	return 0;
- }
- 
-@@ -97,7 +97,7 @@ static int rz1000_init_one (struct pci_dev *pdev, const struct pci_device_id *en
- 	if (rz1000_fifo_disable(pdev) == 0)
- 		return ata_pci_sff_init_one(pdev, ppi, &rz1000_sht, NULL, 0);
- 
--	printk(KERN_ERR DRV_NAME ": failed to disable read-ahead on chipset..\n");
-+	dev_err(&pdev->dev, "failed to disable read-ahead on chipset.\n");
- 	/* Not safe to use so skip */
+diff --git a/drivers/ata/pata_serverworks.c b/drivers/ata/pata_serverworks.c
+index b602e303fb54..e410fe44177f 100644
+--- a/drivers/ata/pata_serverworks.c
++++ b/drivers/ata/pata_serverworks.c
+@@ -286,13 +286,13 @@ static int serverworks_fixup_osb4(struct pci_dev *pdev)
+ 		pci_read_config_dword(isa_dev, 0x64, &reg);
+ 		reg &= ~0x00002000; /* disable 600ns interrupt mask */
+ 		if (!(reg & 0x00004000))
+-			printk(KERN_DEBUG DRV_NAME ": UDMA not BIOS enabled.\n");
++			dev_info(&pdev->dev, "UDMA not BIOS enabled.\n");
+ 		reg |=  0x00004000; /* enable UDMA/33 support */
+ 		pci_write_config_dword(isa_dev, 0x64, reg);
+ 		pci_dev_put(isa_dev);
+ 		return 0;
+ 	}
+-	printk(KERN_WARNING DRV_NAME ": Unable to find bridge.\n");
++	dev_warn(&pdev->dev, "Unable to find bridge.\n");
  	return -ENODEV;
  }
+ 
 -- 
 2.29.2
 

@@ -2,111 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 386C1470F2A
-	for <lists+linux-ide@lfdr.de>; Sat, 11 Dec 2021 01:05:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF08847101F
+	for <lists+linux-ide@lfdr.de>; Sat, 11 Dec 2021 03:01:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243965AbhLKAIf (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 10 Dec 2021 19:08:35 -0500
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:12953 "EHLO
-        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243921AbhLKAIe (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 19:08:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1639181098; x=1670717098;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=xEgeQ/Mk2e4FA08czcoHG5Hp46F5amIhTyxfqhk+t+k=;
-  b=kMs9jUI41GYHHqXcp12aO6AACzZnwNkGU7Qqlxmux680bAxm2RmVmMJV
-   MpNOCXW9pnYH+2f6KYuoGNp13YfuQwAD2ilVxRiuDKsID8tBZuhG1eXRA
-   VE3u+kZx+rIjoPZcealroyaDz5TCkZupWkvdO/FRuQAUnV0TrqjvgrtJl
-   AP0LdQJrZ2RV5OTP/RzxCGNkYVDN43qKOAlpXx1MqGqmPKKUC6ecke+WQ
-   +Q6Bx3KihIsMg+9tdUhKh9yVsV6AYyUEejZzJqaeZW6IXCjPb7515rsyj
-   sEQ5GCGYVNcLViTBl9y0+AqCO/AehfJrAkbSDkIkymbvQniNIefiPmxOj
-   w==;
-X-IronPort-AV: E=Sophos;i="5.88,197,1635177600"; 
-   d="scan'208";a="192763313"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 11 Dec 2021 08:04:57 +0800
-IronPort-SDR: fvHm85ZU9IeFUHceVjW2E1GlkNKABjIBNUTGKMkUAsckWIqnB3Ok6OtLTjGgDAAuluxHRDeU8/
- 3eJQ8iFUpt11t5fG/txjmgfR70wBjeXHxajN4/oXT1a79jLIxOmCOdW2wlZl29ufNYi9mrLe55
- npbHT8R2GUeU1cJ43JunGqIjqRuiglK/aLmbb/7+pdPmdFeDb/77GZfDoHq6FRnlHZ6dLl0Phm
- Ja7zHW12ApuAb8IngkCwqpsGwu4zjqvA9QP+jgJefTFTPTv9OMmRe2sQSfFsfOuR0SbsrFJBCS
- nAKLFA8ZW+ReNpk4ZYfuGy/Z
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 15:37:59 -0800
-IronPort-SDR: 8mPdo+lidA0Uvd1lRwAoAljHQDBf9WuqDV+dezX/zlH7b5KGFuHZ1N17ZkF8qbSnelG4vnuTko
- ZsWj0Z3PQHRRrljb/yuovCyX94JY7womQ3kSWhAHczjiOJZ8q9LvdiuecUg3y+h4jG6nPHcVvE
- NmPz/64FtoUcnPPXccW7qekebu579O4MtgbNeq9gTSu2FGqSr0TK/XVmKJz+fg94xjbsJgmtr6
- GlO98WMYgCNw5A07Q7lbFZklPAdUOITPFv93r73D4Ewc1khczwjfxCBoQ1g3C7WNkvU76jJAZG
- IfY=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2021 16:04:58 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4J9p1Q4Glxz1Rwnv
-        for <linux-ide@vger.kernel.org>; Fri, 10 Dec 2021 16:04:58 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1639181098; x=1641773099; bh=xEgeQ/Mk2e4FA08czcoHG5Hp46F5amIhTyx
-        fqhk+t+k=; b=H68JC5acb2gyp1NM51k/IDOW1mgoyM1B+LYvxYYnykfRHl4u1AB
-        jjOh09dl9HiKwgYu5blzyrisA6k/Xul8PVjpAQw2WwaX9m8/Nra87hDp0bbjDclX
-        8bY34UJlivO2BxJeniUOh8lWtI+5U4Pdy66VOnpVbzWXG556n5zB++9vtrjmyIEW
-        NFggpTVNw9wJTn3O5opBHmXpID1XhiQR5QOaM7QWEXAVMzoW/yd4wmIf2JsfocGk
-        rMISd4gdY6QftKjcMlFVGhOG//RleYJT4F2er9PmF/vjimAY8MGDPueKEW1JrSb3
-        CvJp0KtFHE9Pit+fTjYTzM46xtcKP+UJF+A==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 4Be0oB7XSCtq for <linux-ide@vger.kernel.org>;
-        Fri, 10 Dec 2021 16:04:58 -0800 (PST)
-Received: from [10.225.54.48] (unknown [10.225.54.48])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4J9p1P2TPNz1RtVG;
-        Fri, 10 Dec 2021 16:04:57 -0800 (PST)
-Message-ID: <b5c109c5-9338-cd95-ae6d-b4bebd86a210@opensource.wdc.com>
-Date:   Sat, 11 Dec 2021 09:04:55 +0900
+        id S1345645AbhLKCFO (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 10 Dec 2021 21:05:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47986 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234688AbhLKCFN (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 10 Dec 2021 21:05:13 -0500
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1484C061746
+        for <linux-ide@vger.kernel.org>; Fri, 10 Dec 2021 18:01:37 -0800 (PST)
+Received: by mail-lf1-x141.google.com with SMTP id u3so21205263lfl.2
+        for <linux-ide@vger.kernel.org>; Fri, 10 Dec 2021 18:01:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
+        b=mz95yEd7wqF+xhUHtNPAXzDqdjYFScvN3EmOxAWd7Hh/o1vy+XqEivxP3kDofXPyLO
+         W5XYmQxuXpNI3d7FE6qlKbDJOmp94nfu+yejkZPeS8A+ZVAmw4cZ+M6yxC0QmeEf1OXV
+         PvDrRZYwPm6F8rgxNp9KyZWDTRe2X5+2LGXtbLKhD7Oa/8VkVmV/ger+T/AcpZOMY+Hr
+         pk6PIvsKN2RQ9T1Jd5CmaYlFRwzl33lR1Geg2MwN8uXRCax0hB6XBG9KhwPleIbxoFyA
+         9z1MohiiVn4QgqqC9HVrz8gzOxH9wawpDOURL7bzutAg2ChxVB0407dYfMeaU4eByX7U
+         kFyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=UB8HPXfiFrSS8lJHVD9imqT8IM8lXgQeVTQMVTTdoew=;
+        b=mnHCkqIMiVOpWlScFW2mAJxQY4c8btNKKsRTFxKoBxufNOJOvBoLZem+Rqm/u6KES+
+         dCiB+81RH0GoXYKbfnrBmSTKl0xNKTyG1QQqKrJW8T3x1TfE3x/GaFt04DA4wp23oWDP
+         5puWr8bd1h3NvEza7cdT24s48xkIqMdYMVQ4I3agJrSBz4HaRaPJVyz7sckFEQfaJo31
+         LIP9yRff3gmQFOyPWUb53/ZOewf8GtHWo1LcaooseU/dVgRCvwVsNLktsSg2FTA93XRh
+         KosTOtd9TONNm5fWX+R51oD1YHEuZ4JLkAikJIM5qpP+0jLrDCnhdkKjtllU9EIJq8HG
+         TOmA==
+X-Gm-Message-State: AOAM5305cxRBoaFHM0WaJCeM5I+6KRWUE7f0bWoq/eKsfUtO1X7bM/lH
+        un48uypkMcwPf66p0U27tf6EUgAFZtfP4/ppkwUmiMBfuUk7tfXA
+X-Google-Smtp-Source: ABdhPJzO1rWK98J/C4GWmBNNeA4TMusWwthEf445R0dRxZhfqtQs8WAeeSSG9+arglNkiB0I8dDFlCz1Qas71LQQq4Y=
+X-Received: by 2002:a05:6512:3f28:: with SMTP id y40mr15606868lfa.609.1639188095920;
+ Fri, 10 Dec 2021 18:01:35 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
- Gecko/20100101 Thunderbird/91.4.0
-Subject: Re: [PATCH v1 2/2] ata: libahci_platform: Remove bogus 32-bit DMA
- mask attempt
-Content-Language: en-US
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>
-References: <20211209145937.77719-1-andriy.shevchenko@linux.intel.com>
- <20211209145937.77719-2-andriy.shevchenko@linux.intel.com>
- <YbOr0Y7qacDmCg73@smile.fi.intel.com>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital
-In-Reply-To: <YbOr0Y7qacDmCg73@smile.fi.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a05:6512:12c7:0:0:0:0 with HTTP; Fri, 10 Dec 2021 18:01:35
+ -0800 (PST)
+Reply-To: internationallmonetary695@gmail.com
+From:   International Monetary fund <abubakarsadiq1297@gmail.com>
+Date:   Fri, 10 Dec 2021 18:01:35 -0800
+Message-ID: <CAHXNoSjzJGPbSRqufvG2p9+fDSLRA_m=x+GXMLdQjX8eJrF8EQ@mail.gmail.com>
+Subject: Dear Beneficiary,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2021/12/11 4:34, Andy Shevchenko wrote:
-> On Thu, Dec 09, 2021 at 04:59:37PM +0200, Andy Shevchenko wrote:
->> If 64-bit mask attempt fails, the 32-bit will fail by the very same reason.
->> Don't even try the latter. It's a continuation of the changes that contains,
->> e.g. dcc02c19cc06 ("sata_sil24: use dma_set_mask_and_coherent").
-> 
-> I understand that some people have nothing besides bikeshedding, but this patch
-> seems fine to everybody, am I right? Can it be applied (it's independent from
-> patch 1 anyways)?
-> 
-
-Yes, this one seems fine to me. It would be good to get a different review
-though (I know hard to get reviews on ata patches...).
-I will queue it for 5.17.
-
-
 -- 
-Damien Le Moal
-Western Digital Research
+ I.M.F Head Office
+#1900 Pennsylvania Ave NW,
+Washington, DC 20431
+INTERNATIONAL MONETARY FUND.
+REF:-XVGNN82010
+internationallmonetary695@gmail.com
+Telephone : +12062785473
+
+This message is from International Monetary fund (IMF) I am Mr Bo Li
+deputy to  Kristalina Georgieva the current president of International
+  Monetary fund (IMF) We are aware of the stress you have been passing
+through and how you have lost your money trying to claim your fund ,
+you have to worry no more for the international monetary fund is fully
+ in-charge of your fund now, contact  me for more info on how you will
+receive your fund( internationallmonetary695@gmail.com) or call me
+on-Telephone : +12062785473 for more info.
+
+Regards,
+Mr Bo Li

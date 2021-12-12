@@ -2,53 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9192B471989
-	for <lists+linux-ide@lfdr.de>; Sun, 12 Dec 2021 10:52:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22632471B66
+	for <lists+linux-ide@lfdr.de>; Sun, 12 Dec 2021 16:39:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230011AbhLLJw0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 12 Dec 2021 04:52:26 -0500
-Received: from mxout03.lancloud.ru ([45.84.86.113]:54646 "EHLO
-        mxout03.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbhLLJw0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 12 Dec 2021 04:52:26 -0500
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout03.lancloud.ru 9EC5D20EC9A8
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-Message-ID: <ae7185a8-66bf-4324-45b0-832b86652e4f@omp.ru>
-Date:   Sun, 12 Dec 2021 12:52:21 +0300
+        id S231315AbhLLPjN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 12 Dec 2021 10:39:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57202 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231309AbhLLPjH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 12 Dec 2021 10:39:07 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460BDC061A32
+        for <linux-ide@vger.kernel.org>; Sun, 12 Dec 2021 07:39:07 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id k4so9506142plx.8
+        for <linux-ide@vger.kernel.org>; Sun, 12 Dec 2021 07:39:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
+        b=nW34jVsv56Ss5jLoooIeVciA93Clw83n+wCeADNfCEpcC+rdzdpKO/LYgFQaULd1OH
+         U8TXUuQSIh4yHtn8e56U2OR9tvVaBrIbZqVXXTO9qyu2ymRftWSklBAq1tsUV/ZwQyli
+         OQNIJmsnRTWXVSmhooYoNI3mrca0uQe4Qvw2po2hRHk49IphRRBl7/cc79IWCwq/knSD
+         jAnxigACSUDasTs+EUStoKgNQ9kt9Efz64Sltjg2RvPSjES1dEb3Rnabml57kHg8BYan
+         0xGZn+cZ+L22txoY5kcj47AS69tJiBQ/eAoB9E7bJT52uVrJV5T2gB+PKNcvh9Cn0hK0
+         5YnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=CScZ3wgwAoNcP2hDnqXlix5UDGrDiarDd6PNIGLyspo=;
+        b=TCRnDZQsAvtNP1XmDWIqCxMX6AmKK7ze18yHTx5K6d2aqf84HuOwCW3EG58MofUHrU
+         882VoB+N7r0EJGmppz/jJcPuYDf2aJb4WFlyMn/Rm+fUvHqGI3LbO7PzYnS27L1kD0mY
+         JlGH5hEBzYOICGLHghxNOLvm/eo4zKrKYXq8g2gUf/p6Q1tBc2B46Ya3MjZ5NqSKBwWu
+         4ITtgrhae8NUTY0rwtihKFwO3NX1REFdkav+sr2hc+EgbZiqvXpHfESmZMsRkQ7zUdLd
+         G2lHSSLY/0CX0awj4QPj2NO4gl7NwSLND6qMFUyeHfIc7rZdArMT0CA0B/Lo3p6DR61d
+         1pHg==
+X-Gm-Message-State: AOAM533ABcdkvE661U31hKxOH4h1Yr47uxXp/7heS4rSkMHipxumE6Zk
+        6Y5HRFVNR/CrQXYrZw5+MZ5JRhjqFZ/90B0Aubk=
+X-Google-Smtp-Source: ABdhPJxsBJYooaMgLjqzimk0hrl//BEpZRFhZTgaDxYyJHLKhaJGvTFjIF0TvE7MIczQ9k5dw4plILBX5bRdp3Gs0bY=
+X-Received: by 2002:a17:90b:33d0:: with SMTP id lk16mr38626959pjb.7.1639323545943;
+ Sun, 12 Dec 2021 07:39:05 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.2
-Subject: Re: [PATCH 28/68] sata_promise: Drop pointless VPRINTK() calls and
- convert the remaining ones
-Content-Language: en-US
-To:     Hannes Reinecke <hare@suse.de>,
-        Damien LeMoal <damien.lemoal@wdc.com>
-CC:     <linux-ide@vger.kernel.org>
-References: <20211210072905.15666-1-hare@suse.de>
- <20211210072905.15666-29-hare@suse.de>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-In-Reply-To: <20211210072905.15666-29-hare@suse.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
- LFEX1907.lancloud.ru (fd00:f066::207)
+Received: by 2002:a17:90b:4c51:0:0:0:0 with HTTP; Sun, 12 Dec 2021 07:39:05
+ -0800 (PST)
+Reply-To: mrsisabelladz@gmail.com
+From:   Mrs Isabella <zaidn8225@gmail.com>
+Date:   Sun, 12 Dec 2021 16:39:05 +0100
+Message-ID: <CAMU20GMeochfDfA+tFFMDmQu2qHHMSRkoPHpA3GKtw8UP0dvgw@mail.gmail.com>
+Subject: From Mrs. Isabella Dzsesszika
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 10.12.2021 10:28, Hannes Reinecke wrote:
-
-> Drop pointless VPRINTK() calls for entering and existing interrupt
-> routines and convert the remaining calls to dev_dbg().
-
-    ata_port_dbg() really...
-
-> Signed-off-by: Hannes Reinecke <hare@suse.de>
-[...]
-
-MBR, Sergey
+GOOD MORNING DEAR. MY NAME IS Isabella Dzsesszika. I AM CONTACTING YOU
+FOR IMPORTANT ISSUE I WILL LIKE TO DISCUS WITH YOU. PLEASE GET BACK TO
+ME IF YOU READ THIS MAIL.  YOURS, Isabella Dzsesszika

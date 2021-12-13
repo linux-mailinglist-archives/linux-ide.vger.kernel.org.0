@@ -2,117 +2,86 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 44AB0472BCC
-	for <lists+linux-ide@lfdr.de>; Mon, 13 Dec 2021 12:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9F1C472E2E
+	for <lists+linux-ide@lfdr.de>; Mon, 13 Dec 2021 14:56:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232633AbhLMLxT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 13 Dec 2021 06:53:19 -0500
-Received: from mga09.intel.com ([134.134.136.24]:19391 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229618AbhLMLxS (ORCPT <rfc822;linux-ide@vger.kernel.org>);
-        Mon, 13 Dec 2021 06:53:18 -0500
-X-IronPort-AV: E=McAfee;i="6200,9189,10196"; a="238532082"
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="238532082"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 03:53:18 -0800
-X-IronPort-AV: E=Sophos;i="5.88,202,1635231600"; 
-   d="scan'208";a="464600657"
-Received: from smile.fi.intel.com ([10.237.72.184])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2021 03:53:16 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1mwjsR-005bR7-V5;
-        Mon, 13 Dec 2021 13:52:19 +0200
-Date:   Mon, 13 Dec 2021 13:52:19 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH v1 1/2] ata: libahci_platform: Get rid of dup message
- when IRQ can't be retrieved
-Message-ID: <Ybcz85/ZoXRCmbbD@smile.fi.intel.com>
-References: <20211209145937.77719-1-andriy.shevchenko@linux.intel.com>
- <d91cf14d-c7d8-1c61-9071-102f38e8c924@opensource.wdc.com>
- <febc7f73-929f-d8a6-ea01-5056b9101b46@omp.ru>
- <549c1825-56e6-de9e-e109-77f0d06cfd0f@opensource.wdc.com>
- <5322dafd-86ad-a293-6005-29384cb96cc8@omp.ru>
- <de3dc434-8b87-5d9d-7fe8-bd44ff2bcbfb@opensource.wdc.com>
+        id S238407AbhLMNz5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 13 Dec 2021 08:55:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233671AbhLMNz4 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 13 Dec 2021 08:55:56 -0500
+Received: from mail-oo1-xc41.google.com (mail-oo1-xc41.google.com [IPv6:2607:f8b0:4864:20::c41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57D5BC061574
+        for <linux-ide@vger.kernel.org>; Mon, 13 Dec 2021 05:55:56 -0800 (PST)
+Received: by mail-oo1-xc41.google.com with SMTP id b1-20020a4a8101000000b002c659ab1342so4192080oog.1
+        for <linux-ide@vger.kernel.org>; Mon, 13 Dec 2021 05:55:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=Qdp0SHs3xmfRjgLIyqNwEa9EGz3sQom2u8TOqtBT/Zc=;
+        b=V+oU/mlO20ywuPTUgfS9nJ0vw7g8asPxwItPj3CjQq7+NMsXZ2+LuhTSbgCf+cpREG
+         hzFYKQN4+Nv3ZxJw/JNsURdVghsXBQ+sJ5/MnGJMGFpfslzzaRMaWgKa08PHqbccWcMM
+         8XtGRTln7fzkNAulmM5axWmePahGv2by9Q+gwL4LXW//r36WKYx/8mSV+xUq+yb0d5J6
+         2RXYtcN5xZCZ+L2ITl09ky9k80V8XsJxg14QoCt8aiUlWxi67W9rLcllJuVFFxsYhk61
+         GTwKnrgHlj8Cq0jHG88E9Z4RWdlT89ZoBrtLvu4K4blaNvbFYIx/eAm17hKrqprDFG6f
+         DeUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=Qdp0SHs3xmfRjgLIyqNwEa9EGz3sQom2u8TOqtBT/Zc=;
+        b=b5uD5HWhG8omPkfy73lbuwhptLfax0YnyUv7d17GCk4K8ksfRAtXIBkoINxmVz9wua
+         YN05LqatUoL0OEA/8WwlfXKrYv6Wf8Qu40gC1tm8s2G0yyT7GHvjUCE9JCV6ErmdHF64
+         lIPB1/Z13W8K2vbci8qmH+FSQdzSKdtOSRMS5LqojQaT2eR3rmuKXeSrOf0ClI+78BTt
+         1s2CkYwgqDD38YoPO38q4mkZX7J6crRbRwLElj2lzb0fqJwsS4Y0V3+Iec9Lz5xfHVDt
+         dSwqkKeLhihYPQcccbOSo7v4IvHnDM6ADRhWUcxHHfw6cwIdxAzygUE2T82/9E4nQf9t
+         a2lA==
+X-Gm-Message-State: AOAM533L22PDTY09oc386/KhbdD9loPaIJMo8Fvf88XnDO1h3GdI5AuW
+        6gS6xgMWsIPLc77CseXEYovc4hD3Uq2YRQlmLQQ=
+X-Google-Smtp-Source: ABdhPJyjK27JPzj20LdxqpL1omAuUi0H6NsfEnxXZL+nAEClMZcOTElnWeIxwez3HfPq+WY7/jURkB3v4XtHknGM9tU=
+X-Received: by 2002:a4a:88cc:: with SMTP id q12mr19867819ooh.29.1639403755316;
+ Mon, 13 Dec 2021 05:55:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <de3dc434-8b87-5d9d-7fe8-bd44ff2bcbfb@opensource.wdc.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Sender: nadeemammar11@gmail.com
+Received: by 2002:a4a:b142:0:0:0:0:0 with HTTP; Mon, 13 Dec 2021 05:55:54
+ -0800 (PST)
+From:   "Mrs.Nicole  Marois" <nicole1563marois@gmail.com>
+Date:   Mon, 13 Dec 2021 13:55:54 +0000
+X-Google-Sender-Auth: jtqabcnaD9Dr6m_sGYb-baQns2o
+Message-ID: <CAB3fMArn=f8WYyvJoBqZ7MVJG8pgWVwYT=LjDHZQvaoyThsypg@mail.gmail.com>
+Subject: Hello Dear,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, Dec 13, 2021 at 07:39:31AM +0900, Damien Le Moal wrote:
-> On 2021/12/11 19:25, Sergey Shtylyov wrote:
-> > On 11.12.2021 2:45, Damien Le Moal wrote:
+Hello Dear,
 
-...
+Please do not feel disturbed for contacting you, based on the critical
+condition I find mine self though, it's not financial problem, but my
+health you might have know that cancer is not what to talk home about,
+I am married to Mr.Duclos Marois who worked with Tunisia embassy in
+Burkina Faso for nine years before he died in the year 2012.We were
+married for eleven years without a child. He died after a brief
+illness that lasted for five days.
 
-> >>>> So 0 will be returned as-is. That is rather weird. That should be fixed to
-> >>>> return -ENXIO:
-> >>>>
-> >>>> 	if (WARN(ret == 0, "0 is an invalid IRQ number\n"))
-> >>>> 		return -ENXIO;
-> >>>> 	return ret;
-> >>>
-> >>>     My unmerged patch (https://marc.info/?l=linux-kernel&m=163623041902285) does this
-> >>> but returns -EINVAL instead.
-> >>
-> >> Thinking more about this, shouldn't this change go into platform_get_irq()
-> >> instead of platform_get_irq_optional() ?
-> > 
-> >     Why? platform_get_irq() currently just calls platform_get_irq_optional()...
-> > 
-> >> The way I see it, I think that the intended behavior for
-> >> platform_get_irq_optional() is:
-> >> 1) If have IRQ, return it, always > 0
-> >> 2) If no IRQ, return 0
-> > 
-> >     That does include the IRQ0 case, right?
-> 
-> IRQ 0 being invalid, I think that case should be dealt with internally within
-> platform_get_irq_optional() and warn/error return. IRQ 0 showing up would thus
-> be case (3), an error.
-> 
-> > 
-> >> 3) If error, return < 0
-> >> no ?
-> > 
-> >    I completely agree, I (after thinking a bit) have no issues with that...
-> > 
-> >> And for platform_get_irq(), case (2) becomes an error.
-> >> Is this the intended semantic ?
-> > 
-> >     I don't see how it's different from the current behavior. But we can do 
-> > that as well, I just don't see whether it's really better...
-> 
-> The problem I see is that the current behavior is unclear: what does
-> platform_get_irq_optional() returning 0 mean ? IRQ == 0 ? or "no IRQ" ? I think
-> it should be the latter rather than the former. Note that the function could
-> return ENOENT (or similar) for the "no IRQ" case. With that, case (2) goes away,
-> but then I do not see any difference between platform_get_irq_optional() and
-> platform_get_irq().
-> 
-> If the preferred API semantic is to allow returning IRQ 0 with a warning, then
-> the kdoc comments of platform_get_irq_optional() and platform_get_irq() are
-> totally broken, and the code for many drivers is probably wrong too.
+Since his death I decided not to remarry, When my late husband was
+alive he deposited the sum of US$ 9.2m (Nine million two hundred
+thousand dollars) in a bank in Burkina Faso, Presently this money is
+still in bank. And My Doctor told me that I don't have much time to
+live because of the cancer problem, Having known my condition I
+decided to hand you over this fond to take care of the less-privileged
+people, you will utilize this money the way I am going to instruct
+herein. I want you to take 30 Percent of the total money for your
+personal use While 70% of the money will go to charity" people and
+helping the orphanage.
 
-Yeah, what we need to do is that (roughly a roadmap):
- - revisit callers of platform_get_irq_optional() to be prepared for
-   new behaviour
- - rewrite platform_get_irq() to return -ENOENT
- - rewrite platform_get_irq_optional() to return 0 on -ENOENT
+I don't want my husband's efforts to be used by the Government. I grew
+up as an Orphan and I don't have anybody as my family member,
 
-This is how other similar (i.e. _optional) APIs do.
+Regards,
 
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Mrs.Nicole Marois.
+written from Hospital.

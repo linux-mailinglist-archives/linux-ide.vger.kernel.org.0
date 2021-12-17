@@ -2,60 +2,108 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C43477D0A
-	for <lists+linux-ide@lfdr.de>; Thu, 16 Dec 2021 21:06:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40870478125
+	for <lists+linux-ide@lfdr.de>; Fri, 17 Dec 2021 01:12:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229835AbhLPUGi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Dec 2021 15:06:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39640 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240799AbhLPUGh (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Dec 2021 15:06:37 -0500
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ECF3C06173F
-        for <linux-ide@vger.kernel.org>; Thu, 16 Dec 2021 12:06:37 -0800 (PST)
-Received: by mail-ed1-x543.google.com with SMTP id o20so91427215eds.10
-        for <linux-ide@vger.kernel.org>; Thu, 16 Dec 2021 12:06:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
-        b=kqA4dF63xUJ9OG9TNphoHBfpff5lieMvLAavRquBXr3gl93pqGMlohd5HEBKED2y8B
-         t0INq4chepl6jncuuQThaaLnCvYYihm3NgvZPzIMgrxsErxOIBhIhUpkyTcCeYx/isE9
-         3xicf2SDLil2AHKLumM2xMJmCP50jNX8cbR2SYAj7P/NyyJP5HkohEdorfDotkEYsJCi
-         XDAaSq0YnnCj8TDMKnWzBbByN1mSWL8/FLEFJon6IvsEeapqXq0S5yU9wShQVU77xROK
-         hHJ4rkzk2Oz53IZrMKFkgN0JACGWEzVd0tq0M9DRvR7Nm8rAsS3COZrvq3jLHQe+e07E
-         ANOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=PA5Eb3SKatYFaqsO/40bx9AAytaL07oA6ydkj8EAbzQ=;
-        b=krD4I8LLWIwfFXEc7Jl6ud1fcPGL/EM6eOsABxPImASSzRVPUzBc5HxAaQ99yCkjy4
-         dD1JVcsJqo2PlaW9seNet7o04ucMIb9KgSvWj0fuF/V9YJopCGBNLnh5xpwO2F7614/N
-         +hdA9A8VIm8IpdXomxfpvtoRO9jkfNnD2ui8OWgHNt6FAPk+kCGdgcybC7oLMLaOV1Ov
-         NIyP23uQqApH2mF/c0NyFC0TMw0F4BZiK/mxq+iMnNefXB/rCjjqAzh2VSwwO9uLzMyZ
-         Le/c5xtFw4UpzVG7wyfmyfM0149cgzCKjrpEJVXDff+1KZ0bT7hLaZ4CrJbyQy+XKsH2
-         2Yfg==
-X-Gm-Message-State: AOAM533hSQKEC9t7kOfcgEH76+WBN08pu4SB18uD0mDbqSL5D8KFvOc4
-        XnMwBImQX+wfH3gC+T1s310Qk1z9hRU/APzJJYw=
-X-Google-Smtp-Source: ABdhPJwAfJZ4KmGH71UGXAwyzNt64ueDcEKbjI0wq3tNnNVYeRcyfn4jSCYH96mXqsMHefkZYYwhET2v4cWaxg0PN/Y=
-X-Received: by 2002:a05:6402:604:: with SMTP id n4mr22261405edv.226.1639685195358;
- Thu, 16 Dec 2021 12:06:35 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a17:906:2c04:0:0:0:0 with HTTP; Thu, 16 Dec 2021 12:06:34
- -0800 (PST)
-Reply-To: revfrpaulwilliams2@gmail.com
-From:   "Rev. Fr. Paul Williams" <fatimamonge75@gmail.com>
-Date:   Fri, 17 Dec 2021 01:36:34 +0530
-Message-ID: <CANO8M71C01HMkpjJbxPkwu4B0R+x3mfJpOqeV6APWs8=b3cjKg@mail.gmail.com>
-Subject: Donation From Williams Foundation.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        id S229565AbhLQAMo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 16 Dec 2021 19:12:44 -0500
+Received: from relmlor1.renesas.com ([210.160.252.171]:58635 "EHLO
+        relmlie5.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229525AbhLQAMo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Dec 2021 19:12:44 -0500
+X-IronPort-AV: E=Sophos;i="5.88,212,1635174000"; 
+   d="scan'208";a="103763134"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie5.idc.renesas.com with ESMTP; 17 Dec 2021 09:12:42 +0900
+Received: from localhost.localdomain (unknown [10.226.36.204])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 68950414D0B8;
+        Fri, 17 Dec 2021 09:12:41 +0900 (JST)
+From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        linux-ide@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH] ata: pata_of_platform: Use of_irq_to_resource() to populate IRQ resource
+Date:   Fri, 17 Dec 2021 00:12:38 +0000
+Message-Id: <20211217001238.16298-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Contact Rev. Fr. Paul Williams Immediately For A Charity Donation Of
-$6,200,000.00 United States Dollars At E-Mail:
-revfrpaulwilliams2@gmail.com
+platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
+allocation of IRQ resources in DT core code, this causes an issue
+when using hierarchical interrupt domains using "interrupts" property
+in the node as this bypassed the hierarchical setup and messed up the
+irq chaining.
+
+In preparation for removal of static setup of IRQ resource from DT core
+code use of_irq_to_resource().
+
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+---
+Hi,
+
+Dropping usage of platform_get_resource() was agreed based on
+the discussion [0].
+
+[0] https://patchwork.kernel.org/project/linux-renesas-soc/
+patch/20211209001056.29774-1-prabhakar.mahadev-lad.rj@bp.renesas.com/
+
+Cheers,
+Prabhakar
+---
+ drivers/ata/pata_of_platform.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/ata/pata_of_platform.c b/drivers/ata/pata_of_platform.c
+index 35aa158fc976..557f349eb533 100644
+--- a/drivers/ata/pata_of_platform.c
++++ b/drivers/ata/pata_of_platform.c
+@@ -9,6 +9,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/of_address.h>
++#include <linux/of_irq.h>
+ #include <linux/platform_device.h>
+ #include <linux/ata_platform.h>
+ #include <linux/libata.h>
+@@ -25,11 +26,12 @@ static int pata_of_platform_probe(struct platform_device *ofdev)
+ 	struct device_node *dn = ofdev->dev.of_node;
+ 	struct resource io_res;
+ 	struct resource ctl_res;
+-	struct resource *irq_res;
++	struct resource irq_res;
+ 	unsigned int reg_shift = 0;
+ 	int pio_mode = 0;
+ 	int pio_mask;
+ 	bool use16bit;
++	int irq;
+ 
+ 	ret = of_address_to_resource(dn, 0, &io_res);
+ 	if (ret) {
+@@ -45,7 +47,9 @@ static int pata_of_platform_probe(struct platform_device *ofdev)
+ 		return -EINVAL;
+ 	}
+ 
+-	irq_res = platform_get_resource(ofdev, IORESOURCE_IRQ, 0);
++	irq = of_irq_to_resource(dn, 0, &irq_res);
++	if (irq <= 0 && irq != -ENXIO)
++		return irq ? irq : -ENXIO;
+ 
+ 	of_property_read_u32(dn, "reg-shift", &reg_shift);
+ 
+@@ -63,7 +67,8 @@ static int pata_of_platform_probe(struct platform_device *ofdev)
+ 	pio_mask = 1 << pio_mode;
+ 	pio_mask |= (1 << pio_mode) - 1;
+ 
+-	return __pata_platform_probe(&ofdev->dev, &io_res, &ctl_res, irq_res,
++	return __pata_platform_probe(&ofdev->dev, &io_res, &ctl_res,
++				     irq > 0 ? &irq_res : NULL,
+ 				     reg_shift, pio_mask, &pata_platform_sht,
+ 				     use16bit);
+ }
+-- 
+2.17.1
+

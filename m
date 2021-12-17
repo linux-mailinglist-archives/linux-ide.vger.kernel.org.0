@@ -2,165 +2,68 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B883A4781FD
-	for <lists+linux-ide@lfdr.de>; Fri, 17 Dec 2021 02:16:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3064783A6
+	for <lists+linux-ide@lfdr.de>; Fri, 17 Dec 2021 04:29:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231704AbhLQBQv (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Dec 2021 20:16:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53838 "EHLO
+        id S232459AbhLQD3R (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 16 Dec 2021 22:29:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229532AbhLQBQu (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Dec 2021 20:16:50 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 489C4C061574;
-        Thu, 16 Dec 2021 17:16:49 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id g17so1779069ybe.13;
-        Thu, 16 Dec 2021 17:16:49 -0800 (PST)
+        with ESMTP id S231280AbhLQD3Q (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Dec 2021 22:29:16 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E96C061574
+        for <linux-ide@vger.kernel.org>; Thu, 16 Dec 2021 19:29:16 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id r11so2691523edd.9
+        for <linux-ide@vger.kernel.org>; Thu, 16 Dec 2021 19:29:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CxroxGpED4ebB7+ml5TK6/oHJjco3q8gRiWmo9QG7KA=;
-        b=GikRGHKvM48x348muCoHHjZE+J2Ho76W8ZGYgKq5Px0yDgaII/6byXEpe7T9mI5oux
-         Io2C/9zZ4Wl2CVDv6Hd4SxyaKGpCf1tYOXMhVVF7gXU1JGpll2e9yWlKXigogEF8mKeP
-         5rdye4tyujsx7McW9oXjlel2pAQZ57Bj6eDQbvR+SpelIOWckKqk+HVC4h0fFBVFDxcR
-         Q0Hy7yQITyf9uZOMnP7ClYNd13GBqevVMdANSwoBHX3zm1JsFT0ycSVaXvAze1xyDrlX
-         awBBkHQZ+m1io6Xts2PfzgB14KmDu3DWtoKLA/W2x3M5zUQgpVVUmTJmqErSs2RuqLEh
-         IzGA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
+        b=G+rd1FRwzzuC0aM0gFY4NWK5EfyNPK8GtCllH7kNKG54dS7dWZY5w8rVraYU14x6qQ
+         TPaJ8LME3SpcBXg+mTAXBOFeqFwnGYNZ5Ofd8Wub/N+u5d6GsrnIIgfuANp31rgynVo4
+         bHbsnQOfnFWOAiVt3vZMeAU8UDaMo14YpALLTJr9TKL6EvOm7HU5KixgO5hi+8haeN9M
+         Sj4SxBSNeV6AJkQBYNWScl+VOfwUGCWahYKG0RpVMeFgvp/c7E6MlQP27G7qL7ZKSExg
+         sp3XfIkyF7b6A4sQHomAfhwivJys9baxtkBgDMLgo0SRyREsgNX4dLDqqLIN49Es93jG
+         GrKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CxroxGpED4ebB7+ml5TK6/oHJjco3q8gRiWmo9QG7KA=;
-        b=r6+HcwbK2kzN+vxMEfVqPVCLnGlOZN6ImpDx86tB6e0llAigVXrFRtzl/lWSP9chR0
-         zSWayQPf3TgORpPaKuFf/XbjtXaE+DB8D/mIfs3QMAU58/HImJFwxwGknHwK/6JCkG01
-         6yp/rgl8SBDdftZiGoSLC09tXQSEkdcNDgUF1qL9uiW2tkl+4O4eAsJZ6PM8I1ui7c/m
-         HXwwLuGGFmr67xaa9a5nWjFgQAeBMlwdpDQDgWZzv53ifHCGx+m5KxpZJ/PhcJhlAI6w
-         7kWmTLLY1DwmPjQ5w4DilsZdVZphMgfjcZ45fLWpN3JLxfa34OQgNEO3Ux0lEoyXrnAF
-         ZRIw==
-X-Gm-Message-State: AOAM5306xQGzbWDPqyY/vHSv8O9bEuxgeQHinMX2UwJixOI8NV/LYS5D
-        r6HlIEb6YOhQT3bt/vQkr+Jey+XGx84nLBFr1O/IUVWok8lmKQ==
-X-Google-Smtp-Source: ABdhPJwRNPsT87LmhYEe2k4TjApsmTNJZSqksXUBA3DXWm69lqwyLpmMBd9YbNv3o3oyBbjr8rCKsxCYLwTN1uAM/a8=
-X-Received: by 2002:a25:148a:: with SMTP id 132mr1052771ybu.251.1639703808506;
- Thu, 16 Dec 2021 17:16:48 -0800 (PST)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
+        b=s/0ybwJ8rQ0eB+JNp96keb44Agib05UYccvgUi6oV38MimWjBde2WCxZ5ejxu5r+DP
+         oUp68yQhofjFQ9wSoCFmgM/78jLfJ0K+LP2lX2d3yf1Vqb34ys5tEuBu9dx5m1KUniPU
+         yCJs+Ci8uTB12SmfpiilGJtd6cuYie3T1yoyl2kDrarTn7jguj+kg6yHfO5YGVWuv/Ot
+         bcup3m+B/uyI0Vdl6VhC4uvR02vruehmg5cSdTS4oD6I4TzL2cFf+zN5KF67cQeOWZit
+         Du+wiQd4LUPpIQK5fOD7VBPX4ktocbMMtMyvAljNUcFosOVWB84cl8r5BcwWP38EMlX3
+         D+eQ==
+X-Gm-Message-State: AOAM532em1qkBPQ3gtNYVWWPjeb1rQrqnzePWCJZQaKfDOPjGbIMD46/
+        CQ7fdAz4BBkcwWKe1OEbi28cOdnvME5+i/Ms9lQ=
+X-Google-Smtp-Source: ABdhPJwdaOzFQ7D7UDEG9ad4P/gwEzu13pmOk5uB7YkOLnZkrQGnek/2FYkmctW+DZcgtdIK/P9yzJ122cnjmnRMpv4=
+X-Received: by 2002:a05:6402:41a:: with SMTP id q26mr958001edv.387.1639711754825;
+ Thu, 16 Dec 2021 19:29:14 -0800 (PST)
 MIME-Version: 1.0
-References: <20211217001238.16298-1-prabhakar.mahadev-lad.rj@bp.renesas.com> <d25d6c6f-098a-1dbc-0c85-00f97f491e99@opensource.wdc.com>
-In-Reply-To: <d25d6c6f-098a-1dbc-0c85-00f97f491e99@opensource.wdc.com>
-From:   "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date:   Fri, 17 Dec 2021 01:16:22 +0000
-Message-ID: <CA+V-a8s=WhzjX-Cw5xXJ5Y1uADx42tHMWYuVruSPt87T9BNUeg@mail.gmail.com>
-Subject: Re: [PATCH] ata: pata_of_platform: Use of_irq_to_resource() to
- populate IRQ resource
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        linux-ide@vger.kernel.org, Rob Herring <robh+dt@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
+Received: by 2002:a54:2ecf:0:0:0:0:0 with HTTP; Thu, 16 Dec 2021 19:29:14
+ -0800 (PST)
+Reply-To: lisshuuu1@gmail.com
+From:   MS LISA HUGH <olivier.folly0@gmail.com>
+Date:   Thu, 16 Dec 2021 19:29:14 -0800
+Message-ID: <CAG_GOAuTFotjwi1bA1xvnVO5_y-zxkTu6RtckJ5C6CamT-0rVg@mail.gmail.com>
+Subject: REPLY TO HAVE THE FULL DETAILS >>MS LISA HUGH.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Damien,
+Dear Friend,
 
-Thank you for the review.
+I am Ms Lisa Hugh accountant and files keeping by profession with the bank.
 
-On Fri, Dec 17, 2021 at 12:23 AM Damien Le Moal
-<damien.lemoal@opensource.wdc.com> wrote:
->
-> On 12/17/21 09:12, Lad Prabhakar wrote:
-> > platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
-> > allocation of IRQ resources in DT core code, this causes an issue
-> > when using hierarchical interrupt domains using "interrupts" property
-> > in the node as this bypassed the hierarchical setup and messed up the
->
-> s/bypassed/bypasses
-> s/messed/messes
->
-Ok will update this.
+I need your co-operation for the  transferring of ($4,500,000,00
+,U.S.DOLLARS)to your bank account for both of us benefit.
 
-> > irq chaining.
-> >
-> > In preparation for removal of static setup of IRQ resource from DT core
-> > code use of_irq_to_resource().
-> >
-> > Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > ---
-> > Hi,
-> >
-> > Dropping usage of platform_get_resource() was agreed based on
-> > the discussion [0].
-> >
-> > [0] https://patchwork.kernel.org/project/linux-renesas-soc/
-> > patch/20211209001056.29774-1-prabhakar.mahadev-lad.rj@bp.renesas.com/
-> >
-> > Cheers,
-> > Prabhakar
-> > ---
-> >  drivers/ata/pata_of_platform.c | 11 ++++++++---
-> >  1 file changed, 8 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/drivers/ata/pata_of_platform.c b/drivers/ata/pata_of_platform.c
-> > index 35aa158fc976..557f349eb533 100644
-> > --- a/drivers/ata/pata_of_platform.c
-> > +++ b/drivers/ata/pata_of_platform.c
-> > @@ -9,6 +9,7 @@
-> >  #include <linux/kernel.h>
-> >  #include <linux/module.h>
-> >  #include <linux/of_address.h>
-> > +#include <linux/of_irq.h>
-> >  #include <linux/platform_device.h>
-> >  #include <linux/ata_platform.h>
-> >  #include <linux/libata.h>
-> > @@ -25,11 +26,12 @@ static int pata_of_platform_probe(struct platform_device *ofdev)
-> >       struct device_node *dn = ofdev->dev.of_node;
-> >       struct resource io_res;
-> >       struct resource ctl_res;
-> > -     struct resource *irq_res;
-> > +     struct resource irq_res;
-> >       unsigned int reg_shift = 0;
-> >       int pio_mode = 0;
-> >       int pio_mask;
-> >       bool use16bit;
-> > +     int irq;
-> >
-> >       ret = of_address_to_resource(dn, 0, &io_res);
-> >       if (ret) {
-> > @@ -45,7 +47,9 @@ static int pata_of_platform_probe(struct platform_device *ofdev)
-> >               return -EINVAL;
-> >       }
-> >
-> > -     irq_res = platform_get_resource(ofdev, IORESOURCE_IRQ, 0);
-> > +     irq = of_irq_to_resource(dn, 0, &irq_res);
-> > +     if (irq <= 0 && irq != -ENXIO)
-> > +             return irq ? irq : -ENXIO;
->
-> Why are you making an exception for ENXIO ? I suspect this is to cover
-> the case "there is no IRQ for this node", but then how does this
-> differentiate from a real error case ?
->
--ENXIO to handle no interrupt case. In case of actual error case we
-fallback to polling mode..
-
-> >
-> >       of_property_read_u32(dn, "reg-shift", &reg_shift);
-> >
-> > @@ -63,7 +67,8 @@ static int pata_of_platform_probe(struct platform_device *ofdev)
-> >       pio_mask = 1 << pio_mode;
-> >       pio_mask |= (1 << pio_mode) - 1;
-> >
-> > -     return __pata_platform_probe(&ofdev->dev, &io_res, &ctl_res, irq_res,
-> > +     return __pata_platform_probe(&ofdev->dev, &io_res, &ctl_res,
-> > +                                  irq > 0 ? &irq_res : NULL,
-.. here is check for irq number again.
-
-Cheers,
-Prabhakar
-> >                                    reg_shift, pio_mask, &pata_platform_sht,
-> >                                    use16bit);
-> >  }
-> >
->
->
-> --
-> Damien Le Moal
-> Western Digital Research
+Please send the follow below,
+1)AGE....2)TELEPHONE NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
+Thanks.
+Ms Lisa Hugh

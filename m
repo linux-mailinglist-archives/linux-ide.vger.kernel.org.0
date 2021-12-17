@@ -2,68 +2,141 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F3064783A6
-	for <lists+linux-ide@lfdr.de>; Fri, 17 Dec 2021 04:29:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6CF4783EE
+	for <lists+linux-ide@lfdr.de>; Fri, 17 Dec 2021 05:20:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232459AbhLQD3R (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Dec 2021 22:29:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
+        id S232673AbhLQEUL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 16 Dec 2021 23:20:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231280AbhLQD3Q (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Dec 2021 22:29:16 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48E96C061574
-        for <linux-ide@vger.kernel.org>; Thu, 16 Dec 2021 19:29:16 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id r11so2691523edd.9
-        for <linux-ide@vger.kernel.org>; Thu, 16 Dec 2021 19:29:16 -0800 (PST)
+        with ESMTP id S232655AbhLQEUK (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Dec 2021 23:20:10 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B91E6C061574;
+        Thu, 16 Dec 2021 20:20:10 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id l18so949978pgj.9;
+        Thu, 16 Dec 2021 20:20:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
-        b=G+rd1FRwzzuC0aM0gFY4NWK5EfyNPK8GtCllH7kNKG54dS7dWZY5w8rVraYU14x6qQ
-         TPaJ8LME3SpcBXg+mTAXBOFeqFwnGYNZ5Ofd8Wub/N+u5d6GsrnIIgfuANp31rgynVo4
-         bHbsnQOfnFWOAiVt3vZMeAU8UDaMo14YpALLTJr9TKL6EvOm7HU5KixgO5hi+8haeN9M
-         Sj4SxBSNeV6AJkQBYNWScl+VOfwUGCWahYKG0RpVMeFgvp/c7E6MlQP27G7qL7ZKSExg
-         sp3XfIkyF7b6A4sQHomAfhwivJys9baxtkBgDMLgo0SRyREsgNX4dLDqqLIN49Es93jG
-         GrKg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WXlXaQzQ+nfyK3zsVRGeFn4YVh8Bg3qKyVZtZQPRG+Q=;
+        b=jpr4no+MdZr+tiCxsYI0JTilC48QiI4Rln1XP1lhrhq/aGjQhbhUdM7b2Tvdg/S5xF
+         kfU3wS0R1slmczGsRZi8opS2qxTsLOFbzpI9w7CyAu/mFiSDAZA6fhw70rRuImTf3mxM
+         UWBsCYa2QN3F3mAQ7FZgoeLLYJJAtRAkLBCxvyFmdQcYl4A1akBw+oF1LzbYplkG3N9w
+         ctRuzJiLOJ+lprgD5KTm6wDYVLncFB6nQVlOYeL7l41PO70XfHg6b+EllgDia8IA3Cx7
+         Nd71632sicRjx2CPxoDhzG16Nnl4zTXfVuAJUC5/BB7l5F9GUIkrLVbvfsw/T0G6+saf
+         xtzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/hHgBKaozpyohhRsiYLOj0WZK8ScsciyYJn+ZRKFKfo=;
-        b=s/0ybwJ8rQ0eB+JNp96keb44Agib05UYccvgUi6oV38MimWjBde2WCxZ5ejxu5r+DP
-         oUp68yQhofjFQ9wSoCFmgM/78jLfJ0K+LP2lX2d3yf1Vqb34ys5tEuBu9dx5m1KUniPU
-         yCJs+Ci8uTB12SmfpiilGJtd6cuYie3T1yoyl2kDrarTn7jguj+kg6yHfO5YGVWuv/Ot
-         bcup3m+B/uyI0Vdl6VhC4uvR02vruehmg5cSdTS4oD6I4TzL2cFf+zN5KF67cQeOWZit
-         Du+wiQd4LUPpIQK5fOD7VBPX4ktocbMMtMyvAljNUcFosOVWB84cl8r5BcwWP38EMlX3
-         D+eQ==
-X-Gm-Message-State: AOAM532em1qkBPQ3gtNYVWWPjeb1rQrqnzePWCJZQaKfDOPjGbIMD46/
-        CQ7fdAz4BBkcwWKe1OEbi28cOdnvME5+i/Ms9lQ=
-X-Google-Smtp-Source: ABdhPJwdaOzFQ7D7UDEG9ad4P/gwEzu13pmOk5uB7YkOLnZkrQGnek/2FYkmctW+DZcgtdIK/P9yzJ122cnjmnRMpv4=
-X-Received: by 2002:a05:6402:41a:: with SMTP id q26mr958001edv.387.1639711754825;
- Thu, 16 Dec 2021 19:29:14 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WXlXaQzQ+nfyK3zsVRGeFn4YVh8Bg3qKyVZtZQPRG+Q=;
+        b=YH7JnGFtNCReZ6xvAGBETrdgN8SXstfhtInsDcPaa5vUfvaGiiU/7NDhA8XBk33pZd
+         9uGudoesioDEdoh4baStxpLqRkDFpXgtxzYamsxOrttMSFoF5gJ//pSRuS7F/1N5VGzM
+         N4Wxlr/RNyPct0c6llE9nokvlo6O8Kz2gVZGeSvkLvH59PE/C4TukMg+miZvmG75KfmD
+         TsKr0rzpU8uqe5N8OEZ9QwwoyBpy2u4fDo7pQFjpWaHmTLmwu/7eRESYJKxOFCtaL4Kx
+         jJqWokOzNIGAtbBHBndrGaJ8mL9RShlp53Y3GkzzAio3/mynSQOEdHFK6e5sMJ4WE4l3
+         fNSA==
+X-Gm-Message-State: AOAM5315fqE/s4MT++zsFWFhg6XIudMhUu0ncn+3KXBxvqNdmLcs7tWO
+        l3XhO2kLTU/AoTPn9c1YWUVizMyJy+0=
+X-Google-Smtp-Source: ABdhPJwOMKCRXTbQlcDoh+2QnIwrqTxR94/znbwNVzvHpdBleP/ncp2gnAca4nMx6/kpLJ5IKuwQLw==
+X-Received: by 2002:aa7:86c6:0:b0:4a4:ac66:99fc with SMTP id h6-20020aa786c6000000b004a4ac6699fcmr1120244pfo.83.1639714809820;
+        Thu, 16 Dec 2021 20:20:09 -0800 (PST)
+Received: from fainelli-desktop.igp.broadcom.net ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id mq10sm7553496pjb.3.2021.12.16.20.20.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Dec 2021 20:20:09 -0800 (PST)
+From:   Florian Fainelli <f.fainelli@gmail.com>
+To:     devicetree@vger.kernel.org
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Marc Zyngier <maz@kernel.org>,
+        bcm-kernel-feedback-list@broadcom.com (maintainer:BROADCOM BCM7XXX ARM
+        ARCHITECTURE), Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Al Cooper <alcooperx@gmail.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)), linux-kernel@vger.kernel.org (open list),
+        linux-arm-kernel@lists.infradead.org (moderated list:BROADCOM BCM7XXX
+        ARM ARCHITECTURE),
+        linux-usb@vger.kernel.org (open list:USB SUBSYSTEM)
+Subject: [PATCH v4 0/6] Broadcom DT bindings updates to YAML
+Date:   Thu, 16 Dec 2021 20:19:55 -0800
+Message-Id: <20211217042001.479577-1-f.fainelli@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a54:2ecf:0:0:0:0:0 with HTTP; Thu, 16 Dec 2021 19:29:14
- -0800 (PST)
-Reply-To: lisshuuu1@gmail.com
-From:   MS LISA HUGH <olivier.folly0@gmail.com>
-Date:   Thu, 16 Dec 2021 19:29:14 -0800
-Message-ID: <CAG_GOAuTFotjwi1bA1xvnVO5_y-zxkTu6RtckJ5C6CamT-0rVg@mail.gmail.com>
-Subject: REPLY TO HAVE THE FULL DETAILS >>MS LISA HUGH.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Friend,
+Hi Rob,
 
-I am Ms Lisa Hugh accountant and files keeping by profession with the bank.
+This patch series contains a number of device tree bindings being
+converted to YAML to help with validation.
 
-I need your co-operation for the  transferring of ($4,500,000,00
-,U.S.DOLLARS)to your bank account for both of us benefit.
+There will be second, and possibly third rounds later on after those
+land in.
 
-Please send the follow below,
-1)AGE....2)TELEPHONE NUMBER,,,,,...,3)COUNTRY.....4)OCCUPATION......
-Thanks.
-Ms Lisa Hugh
+Thanks!
+
+Changes in v4:
+- removed the patches that have already been merged
+- fixed errors in brcm,bcm7120-l2 binding
+- added interrupt descriptions and comments to compatibles of
+  brcm,gisb-arb
+- added description of the 'phys' for BDC and dropped 'ref'
+- combined all enums into a single one for brcm,sata-brcm,yaml
+
+Changes in v3;
+
+- added Gregorys' Acked-by to the GPIO binding patch
+- added Uwe's Acked-by to the PWM binding patch
+- fixed STB L2 binding to include the missing 2711 compatible string
+  and interrupt-names property for 7445
+- fixed the NSP SATA3 controller node unit name and added a missing
+  check for the 63138 variant to check for the reset/reset-names
+  property
+
+Changes in v2:
+
+- rebased against dt/next
+- addressed Gregory's feedback on the GPIO binding change
+- added Damien's Acked-by to the ATA binding patch
+
+Florian Fainelli (6):
+  dt-bindings: interrupt-controller: Convert BCM7120 L2 to YAML
+  dt-bindings: interrupt-controller: Merge BCM3380 with BCM7120
+  ARM: dts: NSP: Rename SATA unit name
+  dt-bindings: ata: Convert Broadcom SATA to YAML
+  dt-bindings: bus: Convert GISB arbiter to YAML
+  dt-bindings: usb: Convert BDC to YAML
+
+ .../bindings/ata/brcm,sata-brcm.txt           |  45 ------
+ .../bindings/ata/brcm,sata-brcm.yaml          |  90 +++++++++++
+ .../devicetree/bindings/bus/brcm,gisb-arb.txt |  34 ----
+ .../bindings/bus/brcm,gisb-arb.yaml           |  66 ++++++++
+ .../brcm,bcm3380-l2-intc.txt                  |  39 -----
+ .../brcm,bcm7120-l2-intc.txt                  |  88 -----------
+ .../brcm,bcm7120-l2-intc.yaml                 | 149 ++++++++++++++++++
+ .../devicetree/bindings/usb/brcm,bdc.txt      |  29 ----
+ .../devicetree/bindings/usb/brcm,bdc.yaml     |  49 ++++++
+ MAINTAINERS                                   |   2 +-
+ arch/arm/boot/dts/bcm-nsp.dtsi                |   2 +-
+ 11 files changed, 356 insertions(+), 237 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/ata/brcm,sata-brcm.txt
+ create mode 100644 Documentation/devicetree/bindings/ata/brcm,sata-brcm.yaml
+ delete mode 100644 Documentation/devicetree/bindings/bus/brcm,gisb-arb.txt
+ create mode 100644 Documentation/devicetree/bindings/bus/brcm,gisb-arb.yaml
+ delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/brcm,bcm3380-l2-intc.txt
+ delete mode 100644 Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.txt
+ create mode 100644 Documentation/devicetree/bindings/interrupt-controller/brcm,bcm7120-l2-intc.yaml
+ delete mode 100644 Documentation/devicetree/bindings/usb/brcm,bdc.txt
+ create mode 100644 Documentation/devicetree/bindings/usb/brcm,bdc.yaml
+
+-- 
+2.25.1
+

@@ -2,64 +2,62 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE1EC479808
-	for <lists+linux-ide@lfdr.de>; Sat, 18 Dec 2021 02:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0C6B4798F7
+	for <lists+linux-ide@lfdr.de>; Sat, 18 Dec 2021 06:28:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231164AbhLRBfV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 17 Dec 2021 20:35:21 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:47186 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbhLRBfU (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 17 Dec 2021 20:35:20 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CE2D2B82B4F
-        for <linux-ide@vger.kernel.org>; Sat, 18 Dec 2021 01:35:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6D306C36AE1;
-        Sat, 18 Dec 2021 01:35:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1639791318;
-        bh=4d/kYgdAc+VO18f6zYeoKYjSdUqNf93zAll40XQbYnA=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=CwDhSg+LXc5pzP/CbpwkGaj+v9c1FryUl8k3gys8uscbyMegS2oDF9cj3ZbtKOkcs
-         VGrUGN6L1pKqg4/aS4dl0eOaBfGSoa2btijq46c0Zt+tMfWmUl+Bmw8k73TsPKco5o
-         qnygwAsInnBdpktDTluh5emKv60vnVWRSzD0XAsZyApQzcWSToXb6j/+fNKjhwCCp9
-         bIok4Eb/3CRzj3vE6EkxKnQJy8Sawy03LshHWZdBQZb/jM3E7ESVhKV7O6oYp5nxhx
-         BQiBp09IEumvPcU1VSviIi8myK0f4omdfkSn4OhjGN+W0m9x0G+TswNn20nzOV0y9H
-         U+DKDa3JQ9tcw==
-Received: from pdx-korg-docbuild-2.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by pdx-korg-docbuild-2.ci.codeaurora.org (Postfix) with ESMTP id 4B11F60A3A;
-        Sat, 18 Dec 2021 01:35:18 +0000 (UTC)
-Subject: Re: [GIT PULL] libata fixes for 5.16-rc6
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20211217235731.304392-1-damien.lemoal@opensource.wdc.com>
-References: <20211217235731.304392-1-damien.lemoal@opensource.wdc.com>
-X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20211217235731.304392-1-damien.lemoal@opensource.wdc.com>
-X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/libata-5.16-rc6
-X-PR-Tracked-Commit-Id: 5da5231bb47864e5dd6c6731151e98b6ee498827
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 9eaa88c7036eda3f6c215f87ca693594cf90559b
-Message-Id: <163979131824.2028.10125665423561595282.pr-tracker-bot@kernel.org>
-Date:   Sat, 18 Dec 2021 01:35:18 +0000
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ide@vger.kernel.org
+        id S230488AbhLRF2J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 18 Dec 2021 00:28:09 -0500
+Received: from ae102.secure.ne.jp ([150.60.156.10]:13180 "HELO
+        ae102.secure.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S229473AbhLRF2I (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 18 Dec 2021 00:28:08 -0500
+X-Greylist: delayed 400 seconds by postgrey-1.27 at vger.kernel.org; Sat, 18 Dec 2021 00:28:08 EST
+Received: (qmail 42851 invoked by uid 10941); 18 Dec 2021 14:21:26 +0900
+Date:   18 Dec 2021 14:21:26 +0900
+Message-ID: <20211218052126.42850.qmail@ae102.secure.ne.jp>
+To:     linux-ide@vger.kernel.org
+Subject: =?ISO-2022-JP?B?GyRCJCpMZCQkOWckbyQ7JCQbKEI=?=
+ =?ISO-2022-JP?B?GyRCJD8kQCQtJF4kNyRGJCIkaiQsJEgkJiQ0JDYkJCReJDckPzN0GyhC?=
+ =?ISO-2022-JP?B?GyRCPDAycTxSJVYlJCUoJTkbKEI=?=
+From:   =?ISO-2022-JP?B?GyRCM3Q8MDJxPFIlViUkJSglORsoQiAbJEIlWyE8JWAlWiE8JTgbKEI=?= 
+        <vsco@crocus.ocn.ne.jp>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ISO-2022-JP
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Sat, 18 Dec 2021 08:57:31 +0900:
+[ 受付時間 ] 2021-12-18 14:21:26
 
-> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/libata-5.16-rc6
+お問い合わせいただきましてありがとうございました。
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/9eaa88c7036eda3f6c215f87ca693594cf90559b
+株式会社ブイエス お問い合わせページより、
+以下の内容を受け付けました。
 
-Thank you!
+担当者より折り返しご連絡いたします。しばらくお待ちください。
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+───────────────────────────────
+[ お名前 ]
+?? Cathy want to meet you! Click Here: https://bit.ly/3yzIW9R?p0cy9 ??
+
+[ フリガナ ]
+qi872zhp
+
+[ お電話番号 ]
+674610109933
+
+[ メール ]
+linux-ide@vger.kernel.org
+
+[ お問い合わせ内容 ]
+5ofmz616
+───────────────────────────────
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+　株式会社ブイエス 本社
+　〒701-1212　岡山県岡山市北区尾上6-6
+　TEL / 086-284-6973　FAX / 086-284-8202
+　http://vs-corporation.com/
+━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D92047BAD8
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B47347BAD3
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233690AbhLUHWz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:22:55 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:55906 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233300AbhLUHWo (ORCPT
+        id S233065AbhLUHWy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:22:54 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:52644 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232718AbhLUHWo (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:44 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out2.suse.de (Postfix) with ESMTP id 157411F3C1;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 194EB218FF;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=K7czETCP4qVqCLkSpiThqIEvOXTiko0JXVfpJ+OT5Sw=;
-        b=z3qbfGBB2TdVb+19w6p7Qf8O3f4cbCtFCrOkYVfuMrpWXKRQgVTSbPl57BAkxBBMdyDIyF
-        3FLfZB19AFGqbHtTm1Ukt7nu8cnqnaz3Qoq8Oo5WkRWW15zHdjNkZGA3+fvEoMXCKu0gSN
-        xFT3dlJuWgRmwMyYAh5XLhpgIdKxwww=
+        bh=OUr89Y5HpgkkF/uM/q+wvN3DYOiVSARmeDaOdBXDZKg=;
+        b=w/klb6IrcL7kLj6SWsSfgY9OE5GfDzc8jlgcIkFinWtKkNM9iJ7izWjDFYFEFklLxDaZmY
+        8hL78QS1+vdNiALG0SBGvWyxDl/69IHwMBXe3+9y/8MqvOD/Iv/tA9jFadK7s3dXP+Ixj9
+        56kG2kMRO+DekLb0nNSmpNDBRBDqFzk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1640071362;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=K7czETCP4qVqCLkSpiThqIEvOXTiko0JXVfpJ+OT5Sw=;
-        b=V4c2vmujOk5bt8VvVmMTDSe18cBPgOKrckTN63cxrQ0DiWBeUpOJsSIM4Vf82aFj9klYmt
-        hkk1ayGUff6FVmBA==
+        bh=OUr89Y5HpgkkF/uM/q+wvN3DYOiVSARmeDaOdBXDZKg=;
+        b=ujB8TC9+7H45q8qmz/Uts3LkG4RfIGa5Z6xsME46A1mwxncPKJqyzEe7gu76VcPYnK2ERG
+        eHTfrd25/Oia8TCQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 10672A3B9D;
+        by relay2.suse.de (Postfix) with ESMTP id 1420AA3B9E;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 0EA8C51923A4; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
+        id 1202051923A6; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 25/68] pdc_adma: Drop pointless VPRINTK() calls and remove disabled NCQ debugging
-Date:   Tue, 21 Dec 2021 08:20:48 +0100
-Message-Id: <20211221072131.46673-26-hare@suse.de>
+Subject: [PATCH 26/68] pata_octeon_cf: Drop pointless VPRINTK() calls and convert the remaining one
+Date:   Tue, 21 Dec 2021 08:20:49 +0100
+Message-Id: <20211221072131.46673-27-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211221072131.46673-1-hare@suse.de>
 References: <20211221072131.46673-1-hare@suse.de>
@@ -52,96 +52,73 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Drop pointless VPRINTK() calls for entering routines and
-setting up sg tables. And while we're at it, remove the
-disabled debugging messages.
+Drop pointless VPRINTK() calls and convert the remaining calls to
+the existing bmdma tracepoint.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pdc_adma.c | 31 ++-----------------------------
- 1 file changed, 2 insertions(+), 29 deletions(-)
+ drivers/ata/pata_octeon_cf.c | 22 +---------------------
+ 1 file changed, 1 insertion(+), 21 deletions(-)
 
-diff --git a/drivers/ata/pdc_adma.c b/drivers/ata/pdc_adma.c
-index 2c910c4cd4de..35b823ac20c9 100644
---- a/drivers/ata/pdc_adma.c
-+++ b/drivers/ata/pdc_adma.c
-@@ -284,9 +284,6 @@ static int adma_fill_sg(struct ata_queued_cmd *qc)
- 		*(__le32 *)(buf + i) =
- 			(pFLAGS & pEND) ? 0 : cpu_to_le32(pp->pkt_dma + i + 4);
- 		i += 4;
--
--		VPRINTK("PRD[%u] = (0x%lX, 0x%X)\n", i/4,
--					(unsigned long)addr, len);
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 07eda263b4c1..a2e7dcaa87ac 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -477,23 +477,11 @@ static void octeon_cf_tf_load16(struct ata_port *ap,
+ 		__raw_writew(tf->hob_feature << 8, base + 0xc);
+ 		__raw_writew(tf->hob_nsect | tf->hob_lbal << 8, base + 2);
+ 		__raw_writew(tf->hob_lbam | tf->hob_lbah << 8, base + 4);
+-		VPRINTK("hob: feat 0x%X nsect 0x%X, lba 0x%X 0x%X 0x%X\n",
+-			tf->hob_feature,
+-			tf->hob_nsect,
+-			tf->hob_lbal,
+-			tf->hob_lbam,
+-			tf->hob_lbah);
  	}
- 
- 	if (likely(last_buf))
-@@ -302,8 +299,6 @@ static enum ata_completion_errors adma_qc_prep(struct ata_queued_cmd *qc)
- 	u32 pkt_dma = (u32)pp->pkt_dma;
- 	int i = 0;
- 
--	VPRINTK("ENTER\n");
--
- 	adma_enter_reg_mode(qc->ap);
- 	if (qc->tf.protocol != ATA_PROT_DMA)
- 		return AC_ERR_OK;
-@@ -355,22 +350,6 @@ static enum ata_completion_errors adma_qc_prep(struct ata_queued_cmd *qc)
- 
- 	i = adma_fill_sg(qc);
- 	wmb();	/* flush PRDs and pkt to memory */
--#if 0
--	/* dump out CPB + PRDs for debug */
--	{
--		int j, len = 0;
--		static char obuf[2048];
--		for (j = 0; j < i; ++j) {
--			len += sprintf(obuf+len, "%02x ", buf[j]);
--			if ((j & 7) == 7) {
--				printk("%s\n", obuf);
--				len = 0;
--			}
--		}
--		if (len)
--			printk("%s\n", obuf);
--	}
--#endif
- 	return AC_ERR_OK;
- }
- 
-@@ -379,8 +358,6 @@ static inline void adma_packet_start(struct ata_queued_cmd *qc)
- 	struct ata_port *ap = qc->ap;
- 	void __iomem *chan = ADMA_PORT_REGS(ap);
- 
--	VPRINTK("ENTER, ap %p\n", ap);
--
- 	/* fire up the ADMA engine */
- 	writew(aPIOMD4 | aGO, chan + ADMA_CONTROL);
- }
-@@ -502,14 +479,10 @@ static irqreturn_t adma_intr(int irq, void *dev_instance)
- 	struct ata_host *host = dev_instance;
- 	unsigned int handled = 0;
- 
--	VPRINTK("ENTER\n");
--
- 	spin_lock(&host->lock);
- 	handled  = adma_intr_pkt(host) | adma_intr_mmio(host);
- 	spin_unlock(&host->lock);
- 
--	VPRINTK("EXIT\n");
--
- 	return IRQ_RETVAL(handled);
- }
- 
-@@ -545,8 +518,8 @@ static int adma_port_start(struct ata_port *ap)
- 		return -ENOMEM;
- 	/* paranoia? */
- 	if ((pp->pkt_dma & 7) != 0) {
--		printk(KERN_ERR "bad alignment for pp->pkt_dma: %08x\n",
--						(u32)pp->pkt_dma);
-+		ata_port_err(ap, "bad alignment for pp->pkt_dma: %08x\n",
-+			     (u32)pp->pkt_dma);
- 		return -ENOMEM;
+ 	if (is_addr) {
+ 		__raw_writew(tf->feature << 8, base + 0xc);
+ 		__raw_writew(tf->nsect | tf->lbal << 8, base + 2);
+ 		__raw_writew(tf->lbam | tf->lbah << 8, base + 4);
+-		VPRINTK("feat 0x%X nsect 0x%X, lba 0x%X 0x%X 0x%X\n",
+-			tf->feature,
+-			tf->nsect,
+-			tf->lbal,
+-			tf->lbam,
+-			tf->lbah);
  	}
- 	ap->private_data = pp;
+ 	ata_wait_idle(ap);
+ }
+@@ -553,8 +541,6 @@ static void octeon_cf_dma_start(struct ata_queued_cmd *qc)
+ 	union cvmx_mio_boot_dma_intx mio_boot_dma_int;
+ 	struct scatterlist *sg;
+ 
+-	VPRINTK("%d scatterlists\n", qc->n_elem);
+-
+ 	/* Get the scatter list entry we need to DMA into */
+ 	sg = qc->cursg;
+ 	BUG_ON(!sg);
+@@ -595,10 +581,6 @@ static void octeon_cf_dma_start(struct ata_queued_cmd *qc)
+ 
+ 	mio_boot_dma_cfg.s.adr = sg_dma_address(sg);
+ 
+-	VPRINTK("%s %d bytes address=%p\n",
+-		(mio_boot_dma_cfg.s.rw) ? "write" : "read", sg->length,
+-		(void *)(unsigned long)mio_boot_dma_cfg.s.adr);
+-
+ 	cvmx_write_csr(cf_port->dma_base + DMA_CFG, mio_boot_dma_cfg.u64);
+ }
+ 
+@@ -617,9 +599,7 @@ static unsigned int octeon_cf_dma_finished(struct ata_port *ap,
+ 	union cvmx_mio_boot_dma_intx dma_int;
+ 	u8 status;
+ 
+-	VPRINTK("ata%u: protocol %d task_state %d\n",
+-		ap->print_id, qc->tf.protocol, ap->hsm_task_state);
+-
++	trace_ata_bmdma_stop(qc, &qc->tf, qc->tag);
+ 
+ 	if (ap->hsm_task_state != HSM_ST_LAST)
+ 		return 0;
 -- 
 2.29.2
 

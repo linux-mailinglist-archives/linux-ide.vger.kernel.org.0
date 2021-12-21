@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB8247BAE7
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2CCC47BAF6
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232527AbhLUHXC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:23:02 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:52638 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232875AbhLUHWr (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:47 -0500
+        id S232190AbhLUHXJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:23:09 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:55896 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234047AbhLUHWy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:54 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 8DE8421921;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 8FB3C1F3CF;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=f49FC2ZlOR4wrmdnNE/mZJvkEpcq4Lw9i+Zt1VAAqDI=;
-        b=TxETLqbgUmb6eIafOFI6RlRSWUuXPK9+pwL6+Kt3qHF7FTHWsbQdAF/lkk+cJTZw0knT+c
-        w5kwi/dZdjv5MoaG8AHR2dF0Dh2BCXSf8LE94GNaGZ6IOzKTvREtP7/1Z/A2AaGSdaC/Nh
-        8QknPqmZOC8n8+7upbCMLzrvkIIiWX8=
+        bh=55ob9wRgY316G4QnCUwCpSNoqFxPM1YZRUtMfN+tNFM=;
+        b=uSbIuq7CLZzzvcT15zHjyX9W+S5d1MWNBvIqRsl1nSIyJ3X6ELk3cMRElT/jaURj3qzjTs
+        137WCPIpVXzaQsSYDUq8fRQGL3jKI+kKf+LYEjdFXuP5Ca/nIRUuJzNpk3Vn5TduNYt8J5
+        aQHbb7T2+wPUGd1nVJu+6Zjwyqsi5os=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1640071362;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=f49FC2ZlOR4wrmdnNE/mZJvkEpcq4Lw9i+Zt1VAAqDI=;
-        b=V+I3n9IqZFNPJ8kB/8myRleoNelQ/TV1D6n6KX7aJBtnfUmeRfaKsDTn+u0DAiHmBcn1Um
-        SicTvjps2NYqwCBw==
+        bh=55ob9wRgY316G4QnCUwCpSNoqFxPM1YZRUtMfN+tNFM=;
+        b=PdyyKRNPgdV9y84uSsW3PhrIjwUy5GDi9jLc6PqNZ9X2Ub733baoiTQ5NMsCl2Vb914mL6
+        kzY1vZTskAs09/BQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 88347A3BB5;
+        by relay2.suse.de (Postfix) with ESMTP id 8A746A3BB6;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 83DAF51923D8; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
+        id 87F8051923DA; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 51/68] pata_cs5536: convert printk() calls
-Date:   Tue, 21 Dec 2021 08:21:14 +0100
-Message-Id: <20211221072131.46673-52-hare@suse.de>
+Subject: [PATCH 52/68] pata_cypress: convert printk() calls
+Date:   Tue, 21 Dec 2021 08:21:15 +0100
+Message-Id: <20211221072131.46673-53-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211221072131.46673-1-hare@suse.de>
 References: <20211221072131.46673-1-hare@suse.de>
@@ -56,26 +56,20 @@ Convert printk() calls to structured logging.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_cs5536.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ata/pata_cypress.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_cs5536.c b/drivers/ata/pata_cs5536.c
-index 760ac6e65216..ab47aeb5587f 100644
---- a/drivers/ata/pata_cs5536.c
-+++ b/drivers/ata/pata_cs5536.c
-@@ -263,12 +263,12 @@ static int cs5536_init_one(struct pci_dev *dev, const struct pci_device_id *id)
- 	ppi[1] = &ata_dummy_port_info;
+diff --git a/drivers/ata/pata_cypress.c b/drivers/ata/pata_cypress.c
+index 5b3a7a8ebef6..3be5d52a777b 100644
+--- a/drivers/ata/pata_cypress.c
++++ b/drivers/ata/pata_cypress.c
+@@ -62,7 +62,7 @@ static void cy82c693_set_piomode(struct ata_port *ap, struct ata_device *adev)
+ 	u32 addr;
  
- 	if (use_msr)
--		printk(KERN_ERR DRV_NAME ": Using MSR regs instead of PCI\n");
-+		dev_err(&dev->dev, DRV_NAME ": Using MSR regs instead of PCI\n");
- 
- 	cs5536_read(dev, CFG, &cfg);
- 
- 	if ((cfg & IDE_CFG_CHANEN) == 0) {
--		printk(KERN_ERR DRV_NAME ": disabled by BIOS\n");
-+		dev_err(&dev->dev, DRV_NAME ": disabled by BIOS\n");
- 		return -ENODEV;
+ 	if (ata_timing_compute(adev, adev->pio_mode, &t, T, 1) < 0) {
+-		printk(KERN_ERR DRV_NAME ": mome computation failed.\n");
++		ata_dev_err(adev, DRV_NAME ": mome computation failed.\n");
+ 		return;
  	}
  
 -- 

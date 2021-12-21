@@ -2,48 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50C3847BAD1
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7633947BAD4
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235114AbhLUHWx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:22:53 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:52642 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232712AbhLUHWo (ORCPT
+        id S232718AbhLUHWy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:22:54 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:55894 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232919AbhLUHWo (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:44 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 07F18218FE;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 0B8AE1F3BF;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iIWtJ061dNZxVhkMNbtLB5KwIXLdM8iTsZlGUw0n2EE=;
-        b=2ACHs165eesJm4bE53yDGrygEvQMQG5ieZJTb7sNl7Xkk1PZQjb8fITl1LShJGv5OHNXP0
-        fwZhyC+d1GCsQgCS0N+YpeZ0VmKJmJCjdQZ9uTb7EJpH+grSza6m7eA1kWB2mhiIekzfsO
-        42+gsYEPMGElyHSMYXkkjr9c55QxmOE=
+        bh=hdRFbcvRNiAxUkjJ6wF5Br6yTxBWsNBPZ8NoeiIP5Mw=;
+        b=kM7bOE6MjCQvpFUf5AcaWKbCT/jkkzt/6DGIGhT5MY/MtScegVRSqUuZneDQD7I5GowVdE
+        KtFsgB0Mw/ObCCaAonLwbxtebHcX+4hDj/Z3XyE/k6xe9Zk21jzrVMBFjlj9F9W8zZgEHk
+        YjTV89TjET4PiSiNbmhRMgoTGD4NdVg=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1640071362;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=iIWtJ061dNZxVhkMNbtLB5KwIXLdM8iTsZlGUw0n2EE=;
-        b=QhczxQUmBsdAtkjI3fQ3XxJ6GwpimLFS/q40OMTUkx4OZicN62FJgmdQ1bpZoX8gs9pG7t
-        Abwl3T0qXtUPBkAw==
+        bh=hdRFbcvRNiAxUkjJ6wF5Br6yTxBWsNBPZ8NoeiIP5Mw=;
+        b=KtbmQqLXm75z8mzepBWGYwqQyF0DmOgJILcZSrQOgfyT96cFmLhd7fQKqun1+Tn6uXJZNy
+        VV0/06OLO+C2I0Aw==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 03786A3B9A;
+        by relay2.suse.de (Postfix) with ESMTP id 06846A3B9B;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 004AF519239E; Tue, 21 Dec 2021 08:22:41 +0100 (CET)
+        id 0552E51923A0; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.com>,
-        Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 22/68] pata_pdc2027x: Replace PDPRINTK() with standard ata logging
-Date:   Tue, 21 Dec 2021 08:20:45 +0100
-Message-Id: <20211221072131.46673-23-hare@suse.de>
+Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 23/68] libata: remove pointless VPRINTK() calls
+Date:   Tue, 21 Dec 2021 08:20:46 +0100
+Message-Id: <20211221072131.46673-24-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211221072131.46673-1-hare@suse.de>
 References: <20211221072131.46673-1-hare@suse.de>
@@ -53,250 +52,232 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Hannes Reinecke <hare@suse.com>
-
-Use standard ata logging macros instead of the hand-crafted
-PDPRINTK and remove duplicate logging messages.
+Most of the information is already covered by tracepoints
+(if not downright pointless), so remove the VPRINTK() calls.
+And while we're at it, remove ata_scsi_dump_cdb(), too,
+as this information can be retrieved from scsi tracing.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_pdc2027x.c | 71 +++++++++++++++----------------------
- 1 file changed, 28 insertions(+), 43 deletions(-)
+ drivers/ata/libata-core.c |  3 ---
+ drivers/ata/libata-sata.c |  2 --
+ drivers/ata/libata-scsi.c | 42 ---------------------------------------
+ drivers/ata/libata-sff.c  |  4 ----
+ drivers/ata/libata.h      |  1 -
+ 5 files changed, 52 deletions(-)
 
-diff --git a/drivers/ata/pata_pdc2027x.c b/drivers/ata/pata_pdc2027x.c
-index effc1a09444d..4fbb3eed8b0b 100644
---- a/drivers/ata/pata_pdc2027x.c
-+++ b/drivers/ata/pata_pdc2027x.c
-@@ -30,13 +30,6 @@
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 05a52e683593..3a532af172e0 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4503,8 +4503,6 @@ static void ata_sg_clean(struct ata_queued_cmd *qc)
  
- #define DRV_NAME	"pata_pdc2027x"
- #define DRV_VERSION	"1.0"
--#undef PDC_DEBUG
+ 	WARN_ON_ONCE(sg == NULL);
+ 
+-	VPRINTK("unmapping %u sg elements\n", qc->n_elem);
 -
--#ifdef PDC_DEBUG
--#define PDPRINTK(fmt, args...) printk(KERN_ERR "%s: " fmt, __func__, ## args)
--#else
--#define PDPRINTK(fmt, args...)
--#endif
+ 	if (qc->n_elem)
+ 		dma_unmap_sg(ap->dev, sg, qc->orig_n_elem, dir);
  
- enum {
- 	PDC_MMIO_BAR		= 5,
-@@ -214,11 +207,11 @@ static int pdc2027x_cable_detect(struct ata_port *ap)
- 	if (cgcr & (1 << 26))
- 		goto cbl40;
+@@ -4534,7 +4532,6 @@ static int ata_sg_setup(struct ata_queued_cmd *qc)
+ 	if (n_elem < 1)
+ 		return -1;
  
--	PDPRINTK("No cable or 80-conductor cable on port %d\n", ap->port_no);
-+	ata_port_dbg(ap, "No cable or 80-conductor cable\n");
+-	VPRINTK("%d sg elements mapped\n", n_elem);
+ 	qc->orig_n_elem = qc->n_elem;
+ 	qc->n_elem = n_elem;
+ 	qc->flags |= ATA_QCFLAG_DMAMAP;
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index d9b5744a3b06..bfe9595d4f33 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -1258,8 +1258,6 @@ int ata_sas_queuecmd(struct scsi_cmnd *cmd, struct ata_port *ap)
+ {
+ 	int rc = 0;
  
- 	return ATA_CBL_PATA80;
- cbl40:
--	printk(KERN_INFO DRV_NAME ": 40-conductor cable detected on port %d\n", ap->port_no);
-+	ata_port_info(ap, DRV_NAME ":40-conductor cable detected\n");
- 	return ATA_CBL_PATA40;
- }
- 
-@@ -292,17 +285,17 @@ static void pdc2027x_set_piomode(struct ata_port *ap, struct ata_device *adev)
- 	unsigned int pio = adev->pio_mode - XFER_PIO_0;
- 	u32 ctcr0, ctcr1;
- 
--	PDPRINTK("adev->pio_mode[%X]\n", adev->pio_mode);
-+	ata_port_dbg(ap, "adev->pio_mode[%X]\n", adev->pio_mode);
- 
- 	/* Sanity check */
- 	if (pio > 4) {
--		printk(KERN_ERR DRV_NAME ": Unknown pio mode [%d] ignored\n", pio);
-+		ata_port_err(ap, "Unknown pio mode [%d] ignored\n", pio);
- 		return;
- 
- 	}
- 
- 	/* Set the PIO timing registers using value table for 133MHz */
--	PDPRINTK("Set pio regs... \n");
-+	ata_port_dbg(ap, "Set pio regs... \n");
- 
- 	ctcr0 = ioread32(dev_mmio(ap, adev, PDC_CTCR0));
- 	ctcr0 &= 0xffff0000;
-@@ -315,9 +308,7 @@ static void pdc2027x_set_piomode(struct ata_port *ap, struct ata_device *adev)
- 	ctcr1 |= (pdc2027x_pio_timing_tbl[pio].value2 << 24);
- 	iowrite32(ctcr1, dev_mmio(ap, adev, PDC_CTCR1));
- 
--	PDPRINTK("Set pio regs done\n");
+-	ata_scsi_dump_cdb(ap, cmd);
 -
--	PDPRINTK("Set to pio mode[%u] \n", pio);
-+	ata_port_dbg(ap, "Set to pio mode[%u] \n", pio);
- }
+ 	if (likely(ata_dev_enabled(ap->link.device)))
+ 		rc = __ata_scsi_queuecmd(cmd, ap->link.device);
+ 	else {
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index bfbb4cca4c17..11fb046e3035 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1299,8 +1299,6 @@ static void scsi_6_lba_len(const u8 *cdb, u64 *plba, u32 *plen)
+ 	u64 lba = 0;
+ 	u32 len;
  
- /**
-@@ -350,7 +341,7 @@ static void pdc2027x_set_dmamode(struct ata_port *ap, struct ata_device *adev)
- 			iowrite32(ctcr1 & ~(1 << 7), dev_mmio(ap, adev, PDC_CTCR1));
- 		}
- 
--		PDPRINTK("Set udma regs... \n");
-+		ata_port_dbg(ap, "Set udma regs... \n");
- 
- 		ctcr1 = ioread32(dev_mmio(ap, adev, PDC_CTCR1));
- 		ctcr1 &= 0xff000000;
-@@ -359,16 +350,14 @@ static void pdc2027x_set_dmamode(struct ata_port *ap, struct ata_device *adev)
- 			(pdc2027x_udma_timing_tbl[udma_mode].value2 << 16);
- 		iowrite32(ctcr1, dev_mmio(ap, adev, PDC_CTCR1));
- 
--		PDPRINTK("Set udma regs done\n");
+-	VPRINTK("six-byte command\n");
 -
--		PDPRINTK("Set to udma mode[%u] \n", udma_mode);
-+		ata_port_dbg(ap, "Set to udma mode[%u] \n", udma_mode);
+ 	lba |= ((u64)(cdb[1] & 0x1f)) << 16;
+ 	lba |= ((u64)cdb[2]) << 8;
+ 	lba |= ((u64)cdb[3]);
+@@ -1326,8 +1324,6 @@ static void scsi_10_lba_len(const u8 *cdb, u64 *plba, u32 *plen)
+ 	u64 lba = 0;
+ 	u32 len = 0;
  
- 	} else  if ((dma_mode >= XFER_MW_DMA_0) &&
- 		   (dma_mode <= XFER_MW_DMA_2)) {
- 		/* Set the MDMA timing registers with value table for 133MHz */
- 		unsigned int mdma_mode = dma_mode & 0x07;
+-	VPRINTK("ten-byte command\n");
+-
+ 	lba |= ((u64)cdb[2]) << 24;
+ 	lba |= ((u64)cdb[3]) << 16;
+ 	lba |= ((u64)cdb[4]) << 8;
+@@ -1355,8 +1351,6 @@ static void scsi_16_lba_len(const u8 *cdb, u64 *plba, u32 *plen)
+ 	u64 lba = 0;
+ 	u32 len = 0;
  
--		PDPRINTK("Set mdma regs... \n");
-+		ata_port_dbg(ap, "Set mdma regs... \n");
- 		ctcr0 = ioread32(dev_mmio(ap, adev, PDC_CTCR0));
+-	VPRINTK("sixteen-byte command\n");
+-
+ 	lba |= ((u64)cdb[2]) << 56;
+ 	lba |= ((u64)cdb[3]) << 48;
+ 	lba |= ((u64)cdb[4]) << 40;
+@@ -1706,8 +1700,6 @@ static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
+ 	struct ata_queued_cmd *qc;
+ 	int rc;
  
- 		ctcr0 &= 0x0000ffff;
-@@ -376,11 +365,10 @@ static void pdc2027x_set_dmamode(struct ata_port *ap, struct ata_device *adev)
- 			(pdc2027x_mdma_timing_tbl[mdma_mode].value1 << 24);
+-	VPRINTK("ENTER\n");
+-
+ 	qc = ata_scsi_qc_new(dev, cmd);
+ 	if (!qc)
+ 		goto err_mem;
+@@ -1738,7 +1730,6 @@ static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
+ 	/* select device, send command to hardware */
+ 	ata_qc_issue(qc);
  
- 		iowrite32(ctcr0, dev_mmio(ap, adev, PDC_CTCR0));
--		PDPRINTK("Set mdma regs done\n");
+-	VPRINTK("EXIT\n");
+ 	return 0;
  
--		PDPRINTK("Set to mdma mode[%u] \n", mdma_mode);
-+		ata_port_dbg(ap, "Set to mdma mode[%u] \n", mdma_mode);
- 	} else {
--		printk(KERN_ERR DRV_NAME ": Unknown dma mode [%u] ignored\n", dma_mode);
-+		ata_port_err(ap, "Unknown dma mode [%u] ignored\n", dma_mode);
- 	}
+ early_finish:
+@@ -1851,8 +1842,6 @@ static unsigned int ata_scsiop_inq_std(struct ata_scsi_args *args, u8 *rbuf)
+ 		2
+ 	};
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	/* set scsi removable (RMB) bit per ata bit, or if the
+ 	 * AHCI port says it's external (Hotplug-capable, eSATA).
+ 	 */
+@@ -2287,8 +2276,6 @@ static unsigned int ata_scsiop_mode_sense(struct ata_scsi_args *args, u8 *rbuf)
+ 	u8 dpofua, bp = 0xff;
+ 	u16 fp;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	six_byte = (scsicmd[0] == MODE_SENSE);
+ 	ebd = !(scsicmd[1] & 0x8);      /* dbd bit inverted == edb */
+ 	/*
+@@ -2406,8 +2393,6 @@ static unsigned int ata_scsiop_read_cap(struct ata_scsi_args *args, u8 *rbuf)
+ 	log2_per_phys = ata_id_log2_per_physical_sector(dev->id);
+ 	lowest_aligned = ata_id_logical_sector_offset(dev->id, log2_per_phys);
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	if (args->cmd->cmnd[0] == READ_CAPACITY) {
+ 		if (last_lba >= 0xffffffffULL)
+ 			last_lba = 0xffffffff;
+@@ -2474,7 +2459,6 @@ static unsigned int ata_scsiop_read_cap(struct ata_scsi_args *args, u8 *rbuf)
+  */
+ static unsigned int ata_scsiop_report_luns(struct ata_scsi_args *args, u8 *rbuf)
+ {
+-	VPRINTK("ENTER\n");
+ 	rbuf[3] = 8;	/* just one lun, LUN 0, size 8 bytes */
+ 
+ 	return 0;
+@@ -2570,8 +2554,6 @@ static void atapi_qc_complete(struct ata_queued_cmd *qc)
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	unsigned int err_mask = qc->err_mask;
+ 
+-	VPRINTK("ENTER, err_mask 0x%X\n", err_mask);
+-
+ 	/* handle completion from new EH */
+ 	if (unlikely(qc->ap->ops->error_handler &&
+ 		     (err_mask || qc->flags & ATA_QCFLAG_SENSE_VALID))) {
+@@ -3680,8 +3662,6 @@ static unsigned int ata_scsi_mode_select_xlat(struct ata_queued_cmd *qc)
+ 	u8 buffer[64];
+ 	const u8 *p = buffer;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	six_byte = (cdb[0] == MODE_SELECT);
+ 	if (six_byte) {
+ 		if (scmd->cmd_len < 5) {
+@@ -3979,26 +3959,6 @@ static inline ata_xlat_func_t ata_get_xlat_func(struct ata_device *dev, u8 cmd)
+ 	return NULL;
  }
  
-@@ -414,7 +402,7 @@ static int pdc2027x_set_mode(struct ata_link *link, struct ata_device **r_failed
- 			ctcr1 |= (1 << 25);
- 			iowrite32(ctcr1, dev_mmio(ap, dev, PDC_CTCR1));
- 
--			PDPRINTK("Turn on prefetch\n");
-+			ata_dev_dbg(dev, "Turn on prefetch\n");
- 		} else {
- 			pdc2027x_set_dmamode(ap, dev);
- 		}
-@@ -485,8 +473,8 @@ static long pdc_read_counter(struct ata_host *host)
- 
- 	counter = (bccrh << 15) | bccrl;
- 
--	PDPRINTK("bccrh [%X] bccrl [%X]\n", bccrh,  bccrl);
--	PDPRINTK("bccrhv[%X] bccrlv[%X]\n", bccrhv, bccrlv);
-+	dev_dbg(host->dev, "bccrh [%X] bccrl [%X]\n", bccrh,  bccrl);
-+	dev_dbg(host->dev, "bccrhv[%X] bccrlv[%X]\n", bccrhv, bccrlv);
- 
- 	/*
- 	 * The 30-bit decreasing counter are read by 2 pieces.
-@@ -495,7 +483,7 @@ static long pdc_read_counter(struct ata_host *host)
- 	 */
- 	if (retry && !(bccrh == bccrhv && bccrl >= bccrlv)) {
- 		retry--;
--		PDPRINTK("rereading counter\n");
-+		dev_dbg(host->dev, "rereading counter\n");
- 		goto retry;
- 	}
- 
-@@ -520,20 +508,19 @@ static void pdc_adjust_pll(struct ata_host *host, long pll_clock, unsigned int b
- 
- 	/* Sanity check */
- 	if (unlikely(pll_clock_khz < 5000L || pll_clock_khz > 70000L)) {
--		printk(KERN_ERR DRV_NAME ": Invalid PLL input clock %ldkHz, give up!\n", pll_clock_khz);
-+		dev_err(host->dev, "Invalid PLL input clock %ldkHz, give up!\n",
-+			pll_clock_khz);
- 		return;
- 	}
- 
--#ifdef PDC_DEBUG
--	PDPRINTK("pout_required is %ld\n", pout_required);
-+	dev_dbg(host->dev, "pout_required is %ld\n", pout_required);
- 
- 	/* Show the current clock value of PLL control register
- 	 * (maybe already configured by the firmware)
- 	 */
- 	pll_ctl = ioread16(mmio_base + PDC_PLL_CTL);
- 
--	PDPRINTK("pll_ctl[%X]\n", pll_ctl);
+-/**
+- *	ata_scsi_dump_cdb - dump SCSI command contents to dmesg
+- *	@ap: ATA port to which the command was being sent
+- *	@cmd: SCSI command to dump
+- *
+- *	Prints the contents of a SCSI command via printk().
+- */
+-
+-void ata_scsi_dump_cdb(struct ata_port *ap, struct scsi_cmnd *cmd)
+-{
+-#ifdef ATA_VERBOSE_DEBUG
+-	struct scsi_device *scsidev = cmd->device;
+-
+-	VPRINTK("CDB (%u:%d,%d,%lld) %9ph\n",
+-		ap->print_id,
+-		scsidev->channel, scsidev->id, scsidev->lun,
+-		cmd->cmnd);
 -#endif
-+	dev_dbg(host->dev, "pll_ctl[%X]\n", pll_ctl);
+-}
+-
+ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev)
+ {
+ 	u8 scsi_op = scmd->cmnd[0];
+@@ -4077,8 +4037,6 @@ int ata_scsi_queuecmd(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
  
- 	/*
- 	 * Calculate the ratio of F, R and OD
-@@ -552,7 +539,7 @@ static void pdc_adjust_pll(struct ata_host *host, long pll_clock, unsigned int b
- 		R = 0x00;
- 	} else {
- 		/* Invalid ratio */
--		printk(KERN_ERR DRV_NAME ": Invalid ratio %ld, give up!\n", ratio);
-+		dev_err(host->dev, "Invalid ratio %ld, give up!\n", ratio);
- 		return;
- 	}
+ 	spin_lock_irqsave(ap->lock, irq_flags);
  
-@@ -560,15 +547,15 @@ static void pdc_adjust_pll(struct ata_host *host, long pll_clock, unsigned int b
+-	ata_scsi_dump_cdb(ap, cmd);
+-
+ 	dev = ata_scsi_find_dev(ap, scsidev);
+ 	if (likely(dev))
+ 		rc = __ata_scsi_queuecmd(cmd, dev);
+diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
+index b544bdc6d0a3..d5dbeb68b2bf 100644
+--- a/drivers/ata/libata-sff.c
++++ b/drivers/ata/libata-sff.c
+@@ -877,8 +877,6 @@ static void atapi_pio_bytes(struct ata_queued_cmd *qc)
+ 	if (unlikely(!bytes))
+ 		goto atapi_check;
  
- 	if (unlikely(F < 0 || F > 127)) {
- 		/* Invalid F */
--		printk(KERN_ERR DRV_NAME ": F[%d] invalid!\n", F);
-+		dev_err(host->dev, "F[%d] invalid!\n", F);
- 		return;
- 	}
+-	VPRINTK("ata%u: xfering %d bytes\n", ap->print_id, bytes);
+-
+ 	if (unlikely(__atapi_pio_bytes(qc, bytes)))
+ 		goto err_out;
+ 	ata_sff_sync(ap); /* flush */
+@@ -2586,7 +2584,6 @@ static void ata_bmdma_fill_sg(struct ata_queued_cmd *qc)
  
--	PDPRINTK("F[%d] R[%d] ratio*1000[%ld]\n", F, R, ratio);
-+	dev_dbg(host->dev, "F[%d] R[%d] ratio*1000[%ld]\n", F, R, ratio);
+ 			prd[pi].addr = cpu_to_le32(addr);
+ 			prd[pi].flags_len = cpu_to_le32(len & 0xffff);
+-			VPRINTK("PRD[%u] = (0x%X, 0x%X)\n", pi, addr, len);
  
- 	pll_ctl = (R << 8) | F;
+ 			pi++;
+ 			sg_len -= len;
+@@ -2646,7 +2643,6 @@ static void ata_bmdma_fill_sg_dumb(struct ata_queued_cmd *qc)
+ 				prd[++pi].addr = cpu_to_le32(addr + 0x8000);
+ 			}
+ 			prd[pi].flags_len = cpu_to_le32(blen);
+-			VPRINTK("PRD[%u] = (0x%X, 0x%X)\n", pi, addr, len);
  
--	PDPRINTK("Writing pll_ctl[%X]\n", pll_ctl);
-+	dev_dbg(host->dev, "Writing pll_ctl[%X]\n", pll_ctl);
+ 			pi++;
+ 			sg_len -= len;
+diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
+index 2144065e762c..51e01acdd241 100644
+--- a/drivers/ata/libata.h
++++ b/drivers/ata/libata.h
+@@ -148,7 +148,6 @@ extern int ata_scsi_user_scan(struct Scsi_Host *shost, unsigned int channel,
+ 			      unsigned int id, u64 lun);
+ void ata_scsi_sdev_config(struct scsi_device *sdev);
+ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev);
+-void ata_scsi_dump_cdb(struct ata_port *ap, struct scsi_cmnd *cmd);
+ int __ata_scsi_queuecmd(struct scsi_cmnd *scmd, struct ata_device *dev);
  
- 	iowrite16(pll_ctl, mmio_base + PDC_PLL_CTL);
- 	ioread16(mmio_base + PDC_PLL_CTL); /* flush */
-@@ -576,15 +563,13 @@ static void pdc_adjust_pll(struct ata_host *host, long pll_clock, unsigned int b
- 	/* Wait the PLL circuit to be stable */
- 	msleep(30);
- 
--#ifdef PDC_DEBUG
- 	/*
- 	 *  Show the current clock value of PLL control register
- 	 * (maybe configured by the firmware)
- 	 */
- 	pll_ctl = ioread16(mmio_base + PDC_PLL_CTL);
- 
--	PDPRINTK("pll_ctl[%X]\n", pll_ctl);
--#endif
-+	dev_dbg(host->dev, "pll_ctl[%X]\n", pll_ctl);
- 
- 	return;
- }
-@@ -605,7 +590,7 @@ static long pdc_detect_pll_input_clock(struct ata_host *host)
- 
- 	/* Start the test mode */
- 	scr = ioread32(mmio_base + PDC_SYS_CTL);
--	PDPRINTK("scr[%X]\n", scr);
-+	dev_dbg(host->dev, "scr[%X]\n", scr);
- 	iowrite32(scr | (0x01 << 14), mmio_base + PDC_SYS_CTL);
- 	ioread32(mmio_base + PDC_SYS_CTL); /* flush */
- 
-@@ -622,7 +607,7 @@ static long pdc_detect_pll_input_clock(struct ata_host *host)
- 
- 	/* Stop the test mode */
- 	scr = ioread32(mmio_base + PDC_SYS_CTL);
--	PDPRINTK("scr[%X]\n", scr);
-+	dev_dbg(host->dev, "scr[%X]\n", scr);
- 	iowrite32(scr & ~(0x01 << 14), mmio_base + PDC_SYS_CTL);
- 	ioread32(mmio_base + PDC_SYS_CTL); /* flush */
- 
-@@ -632,8 +617,8 @@ static long pdc_detect_pll_input_clock(struct ata_host *host)
- 	pll_clock = ((start_count - end_count) & 0x3fffffff) / 100 *
- 		(100000000 / usec_elapsed);
- 
--	PDPRINTK("start[%ld] end[%ld] \n", start_count, end_count);
--	PDPRINTK("PLL input clock[%ld]Hz\n", pll_clock);
-+	dev_dbg(host->dev, "start[%ld] end[%ld] PLL input clock[%ld]HZ\n",
-+		     start_count, end_count, pll_clock);
- 
- 	return pll_clock;
- }
+ /* libata-eh.c */
 -- 
 2.29.2
 

@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EADD547BAE3
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 366C347BAEE
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233774AbhLUHXB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:23:01 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:52676 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234004AbhLUHWp (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:45 -0500
+        id S235034AbhLUHXG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:23:06 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:55964 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235105AbhLUHWv (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:51 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 7753E2190B;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 7A6791F3CC;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uP+gXpC5HaVClJlCuWXZCHsRhw3uxwrQFS4qVkZYYzE=;
-        b=LgGtccmZD33l1Hb6iFVZUX0b0j22PYa4Uziz72HvVVKCYZH1kwVzAG9m+dz4fuWNHxPo/7
-        h/rvJ3R5LPr95sXbnJqXQBI2fbXtlirNu7odFCagl0hAwTyqIcVXAt1rotHYWP/JpKvHkt
-        XBpJWAhj9XHXHrUZnZG8zCPf8jnWcTU=
+        bh=/J8LYIDedkcJgvTFU5XYvz58fFXzv77lWAWvgHHtlto=;
+        b=LuxsUmFGJPS65KtGFnAuB+zPJHwj46yvvu9KTIn4IOpLIcI5OUDrMMW7vxDTHtgV1vaeE6
+        k31tOE0wY1OstBG9zlEyBF8lEEqGJ2/NZaBRj2DDUb2Gyo/MzqsmwSW6QkajvFr2umt00i
+        KzwgtDD/eVWeOQP7IVk9fduCmOBnbSo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1640071362;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=uP+gXpC5HaVClJlCuWXZCHsRhw3uxwrQFS4qVkZYYzE=;
-        b=j4opaEyHzgN/IgHIItjTN4i/+UCSGaggem6DyEADpvw6S5rbTCDyU+kwN8nxtLL3sGj0oL
-        zJy0613C5AUHGNDA==
+        bh=/J8LYIDedkcJgvTFU5XYvz58fFXzv77lWAWvgHHtlto=;
+        b=XJpOHbCs4q35FuSmSiGxEs4+Lv5i+hreY1SyaOeeO392J5Ciq5wpNYwBs8eITTB9uoFQbk
+        oW/sF6ilY4zrZeAw==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 72C2AA3BB0;
+        by relay2.suse.de (Postfix) with ESMTP id 75FD2A3BB1;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 70A6951923CE; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
+        id 7441C51923D0; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 46/68] libata: remove debug compilation switches
-Date:   Tue, 21 Dec 2021 08:21:09 +0100
-Message-Id: <20211221072131.46673-47-hare@suse.de>
+Subject: [PATCH 47/68] pata_atp867x: convert printk() calls
+Date:   Tue, 21 Dec 2021 08:21:10 +0100
+Message-Id: <20211221072131.46673-48-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211221072131.46673-1-hare@suse.de>
 References: <20211221072131.46673-1-hare@suse.de>
@@ -52,82 +52,142 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Unused now, so remove and drop any references to them.
+Convert printk() calls to structured logging.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-sff.c  |  1 -
- drivers/ata/pata_ep93xx.c |  1 -
- drivers/ata/sata_rcar.c   |  1 -
- include/linux/libata.h    | 16 ----------------
- 4 files changed, 19 deletions(-)
+ drivers/ata/pata_atp867x.c | 29 ++++++++++++-----------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 01f1673f3297..75217828dfe3 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -2091,7 +2091,6 @@ void ata_sff_drain_fifo(struct ata_queued_cmd *qc)
- 						&& count < 65536; count += 2)
- 		ioread16(ap->ioaddr.data_addr);
- 
--	/* Can become DEBUG later */
- 	if (count)
- 		ata_port_dbg(ap, "drained %d bytes to clear DRQ\n", count);
- 
-diff --git a/drivers/ata/pata_ep93xx.c b/drivers/ata/pata_ep93xx.c
-index 46208ececbb6..b78f71c70f27 100644
---- a/drivers/ata/pata_ep93xx.c
-+++ b/drivers/ata/pata_ep93xx.c
-@@ -855,7 +855,6 @@ static void ep93xx_pata_drain_fifo(struct ata_queued_cmd *qc)
- 		     && count < 65536; count += 2)
- 		ep93xx_pata_read_reg(drv_data, IDECTRL_ADDR_DATA);
- 
--	/* Can become DEBUG later */
- 	if (count)
- 		ata_port_dbg(ap, "drained %d bytes to clear DRQ.\n", count);
- 
-diff --git a/drivers/ata/sata_rcar.c b/drivers/ata/sata_rcar.c
-index 91b39a6aa9f7..3d96b6faa3f0 100644
---- a/drivers/ata/sata_rcar.c
-+++ b/drivers/ata/sata_rcar.c
-@@ -479,7 +479,6 @@ static void sata_rcar_drain_fifo(struct ata_queued_cmd *qc)
- 			count < 65536; count += 2)
- 		ioread32(ap->ioaddr.data_addr);
- 
--	/* Can become DEBUG later */
- 	if (count)
- 		ata_port_dbg(ap, "drained %d bytes to clear DRQ\n", count);
+diff --git a/drivers/ata/pata_atp867x.c b/drivers/ata/pata_atp867x.c
+index 2bc5fc81efe3..84dac8c69085 100644
+--- a/drivers/ata/pata_atp867x.c
++++ b/drivers/ata/pata_atp867x.c
+@@ -155,7 +155,7 @@ static int atp867x_get_active_clocks_shifted(struct ata_port *ap,
+ 	case 1 ... 6:
+ 		break;
+ 	default:
+-		printk(KERN_WARNING "ATP867X: active %dclk is invalid. "
++		ata_port_warn(ap, "ATP867X: active %dclk is invalid. "
+ 			"Using 12clk.\n", clk);
+ 		fallthrough;
+ 	case 9 ... 12:
+@@ -171,7 +171,8 @@ static int atp867x_get_active_clocks_shifted(struct ata_port *ap,
+ 	return clocks << ATP867X_IO_PIOSPD_ACTIVE_SHIFT;
  }
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 6bfbb419e141..ea3478d02cf5 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -39,25 +39,9 @@
-  * compile-time options: to be removed as soon as all the drivers are
-  * converted to the new debugging mechanism
-  */
--#undef ATA_DEBUG		/* debugging output */
--#undef ATA_VERBOSE_DEBUG	/* yet more debugging output */
- #undef ATA_IRQ_TRAP		/* define to ack screaming irqs */
--#undef ATA_NDEBUG		/* define to disable quick runtime checks */
+ 
+-static int atp867x_get_recover_clocks_shifted(unsigned int clk)
++static int atp867x_get_recover_clocks_shifted(struct ata_port *ap,
++					      unsigned int clk)
+ {
+ 	unsigned char clocks = clk;
+ 
+@@ -188,7 +189,7 @@ static int atp867x_get_recover_clocks_shifted(unsigned int clk)
+ 	case 15:
+ 		break;
+ 	default:
+-		printk(KERN_WARNING "ATP867X: recover %dclk is invalid. "
++		ata_port_warn(ap, "ATP867X: recover %dclk is invalid. "
+ 			"Using default 12clk.\n", clk);
+ 		fallthrough;
+ 	case 12:	/* default 12 clk */
+@@ -225,7 +226,7 @@ static void atp867x_set_piomode(struct ata_port *ap, struct ata_device *adev)
+ 	iowrite8(b, dp->dma_mode);
+ 
+ 	b = atp867x_get_active_clocks_shifted(ap, t.active) |
+-	    atp867x_get_recover_clocks_shifted(t.recover);
++		atp867x_get_recover_clocks_shifted(ap, t.recover);
+ 
+ 	if (adev->devno & 1)
+ 		iowrite8(b, dp->slave_piospd);
+@@ -233,7 +234,7 @@ static void atp867x_set_piomode(struct ata_port *ap, struct ata_device *adev)
+ 		iowrite8(b, dp->mstr_piospd);
+ 
+ 	b = atp867x_get_active_clocks_shifted(ap, t.act8b) |
+-	    atp867x_get_recover_clocks_shifted(t.rec8b);
++		atp867x_get_recover_clocks_shifted(ap, t.rec8b);
+ 
+ 	iowrite8(b, dp->eightb_piospd);
+ }
+@@ -270,7 +271,6 @@ static struct ata_port_operations atp867x_ops = {
+ };
  
  
--/* note: prints function name for you */
--#ifdef ATA_DEBUG
--#define DPRINTK(fmt, args...) printk(KERN_ERR "%s: " fmt, __func__, ## args)
--#ifdef ATA_VERBOSE_DEBUG
--#define VPRINTK(fmt, args...) printk(KERN_ERR "%s: " fmt, __func__, ## args)
--#else
--#define VPRINTK(fmt, args...)
--#endif	/* ATA_VERBOSE_DEBUG */
--#else
--#define DPRINTK(fmt, args...)
--#define VPRINTK(fmt, args...)
--#endif	/* ATA_DEBUG */
--
- #define ata_print_version_once(dev, version)			\
- ({								\
- 	static bool __print_once;				\
+-#ifdef	ATP867X_DEBUG
+ static void atp867x_check_res(struct pci_dev *pdev)
+ {
+ 	int i;
+@@ -280,7 +280,7 @@ static void atp867x_check_res(struct pci_dev *pdev)
+ 	for (i = 0; i < DEVICE_COUNT_RESOURCE; i++) {
+ 		start = pci_resource_start(pdev, i);
+ 		len   = pci_resource_len(pdev, i);
+-		printk(KERN_DEBUG "ATP867X: resource start:len=%lx:%lx\n",
++		dev_dbg(&pdev->dev, "ATP867X: resource start:len=%lx:%lx\n",
+ 			start, len);
+ 	}
+ }
+@@ -290,7 +290,7 @@ static void atp867x_check_ports(struct ata_port *ap, int port)
+ 	struct ata_ioports *ioaddr = &ap->ioaddr;
+ 	struct atp867x_priv *dp = ap->private_data;
+ 
+-	printk(KERN_DEBUG "ATP867X: port[%d] addresses\n"
++	ata_port_dbg(ap, "ATP867X: port[%d] addresses\n"
+ 		"  cmd_addr	=0x%llx, 0x%llx\n"
+ 		"  ctl_addr	=0x%llx, 0x%llx\n"
+ 		"  bmdma_addr	=0x%llx, 0x%llx\n"
+@@ -332,7 +332,6 @@ static void atp867x_check_ports(struct ata_port *ap, int port)
+ 		(unsigned long long)dp->eightb_piospd,
+ 		(unsigned long)dp->pci66mhz);
+ }
+-#endif
+ 
+ static int atp867x_set_priv(struct ata_port *ap)
+ {
+@@ -370,8 +369,7 @@ static void atp867x_fixup(struct ata_host *host)
+ 	if (v < 0x80) {
+ 		v = 0x80;
+ 		pci_write_config_byte(pdev, PCI_LATENCY_TIMER, v);
+-		printk(KERN_DEBUG "ATP867X: set latency timer of device %s"
+-			" to %d\n", pci_name(pdev), v);
++		dev_dbg(&pdev->dev, "ATP867X: set latency timer to %d\n", v);
+ 	}
+ 
+ 	/*
+@@ -419,13 +417,11 @@ static int atp867x_ata_pci_sff_init_host(struct ata_host *host)
+ 		return rc;
+ 	host->iomap = pcim_iomap_table(pdev);
+ 
+-#ifdef	ATP867X_DEBUG
+ 	atp867x_check_res(pdev);
+ 
+ 	for (i = 0; i < PCI_STD_NUM_BARS; i++)
+-		printk(KERN_DEBUG "ATP867X: iomap[%d]=0x%llx\n", i,
++		dev_dbg(gdev, "ATP867X: iomap[%d]=0x%llx\n", i,
+ 			(unsigned long long)(host->iomap[i]));
+-#endif
+ 
+ 	/*
+ 	 * request, iomap BARs and init port addresses accordingly
+@@ -444,9 +440,8 @@ static int atp867x_ata_pci_sff_init_host(struct ata_host *host)
+ 		if (rc)
+ 			return rc;
+ 
+-#ifdef	ATP867X_DEBUG
+ 		atp867x_check_ports(ap, i);
+-#endif
++
+ 		ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
+ 			(unsigned long)ioaddr->cmd_addr,
+ 			(unsigned long)ioaddr->ctl_addr);
+@@ -486,7 +481,7 @@ static int atp867x_init_one(struct pci_dev *pdev,
+ 	if (rc)
+ 		return rc;
+ 
+-	printk(KERN_INFO "ATP867X: ATP867 ATA UDMA133 controller (rev %02X)",
++	dev_info(&pdev->dev, "ATP867X: ATP867 ATA UDMA133 controller (rev %02X)",
+ 		pdev->device);
+ 
+ 	host = ata_host_alloc_pinfo(&pdev->dev, ppi, ATP867X_NUM_PORTS);
 -- 
 2.29.2
 

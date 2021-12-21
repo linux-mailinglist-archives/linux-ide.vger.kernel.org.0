@@ -2,107 +2,68 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B79A47BAF5
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6180147C3B8
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 17:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235099AbhLUHXI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:23:08 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:52634 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235125AbhLUHWy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:54 -0500
-Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id DB1DD2199A;
-        Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=c1+Qyfa9QMjEz/DYCW4bIB/SoQAoKA+TSfddaIawDGo=;
-        b=E5LKwR8u3VxbehCGd/xi1ccBLzWOhNr3FGnaMARS3RrzIsShkfBh63Hw828+a2NfSnXsj0
-        w2aT3L7K43qul3ROq3+b/GJRXRhhyTnXFXVGNfQAbLbNZT7BHGgGrPQfSDjb2C3njw8hOs
-        pMEmpCib+aSC6MGjT6naSzZ8CDK2RMI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1640071362;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=c1+Qyfa9QMjEz/DYCW4bIB/SoQAoKA+TSfddaIawDGo=;
-        b=i71ZAbLPQ0nE5fMXLpWltaQQGwSGeWtSGL5t9r0y76CR3bWDG16kxaFBoWahVmgmuYeRb1
-        axVUmCxWURDyAGAA==
-Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id D41D1A3BC5;
-        Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
-Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id D23CF51923FA; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
-From:   Hannes Reinecke <hare@suse.de>
-To:     Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 68/68] sata_dwc_460ex: Remove debug compile options
-Date:   Tue, 21 Dec 2021 08:21:31 +0100
-Message-Id: <20211221072131.46673-69-hare@suse.de>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20211221072131.46673-1-hare@suse.de>
-References: <20211221072131.46673-1-hare@suse.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S239536AbhLUQ0l (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 11:26:41 -0500
+Received: from relmlor2.renesas.com ([210.160.252.172]:27173 "EHLO
+        relmlie6.idc.renesas.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S233360AbhLUQ0l (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 11:26:41 -0500
+X-IronPort-AV: E=Sophos;i="5.88,224,1635174000"; 
+   d="scan'208";a="104724089"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 22 Dec 2021 01:26:39 +0900
+Received: from localhost.localdomain (unknown [10.226.36.204])
+        by relmlir6.idc.renesas.com (Postfix) with ESMTP id 497ED40A64B7;
+        Wed, 22 Dec 2021 01:26:38 +0900 (JST)
+From:   Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+To:     Rob Herring <robh+dt@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>,
+        Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH v2 0/4] ata: pata_platform: Refurbish the driver
+Date:   Tue, 21 Dec 2021 16:26:10 +0000
+Message-Id: <20211221162614.25308-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Driver has been converted to dynamic debugging, so the compile-time
-options don't have any functionality left.
+Hi All,
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
----
- drivers/ata/Kconfig          | 12 ------------
- drivers/ata/sata_dwc_460ex.c |  8 --------
- 2 files changed, 20 deletions(-)
+This patch series aims to merge pata_of_platform into pata_platform
+driver.
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index a7da8ea7b3ed..f6e943c74001 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -432,18 +432,6 @@ config SATA_DWC_OLD_DMA
- 	  This option enables support for old device trees without the
- 	  "dmas" property.
- 
--config SATA_DWC_DEBUG
--	bool "Debugging driver version"
--	depends on SATA_DWC
--	help
--	  This option enables debugging output in the driver.
--
--config SATA_DWC_VDEBUG
--	bool "Verbose debug output"
--	depends on SATA_DWC_DEBUG
--	help
--	  This option enables the taskfile dumping and NCQ debugging.
--
- config SATA_HIGHBANK
- 	tristate "Calxeda Highbank SATA support"
- 	depends on ARCH_HIGHBANK || COMPILE_TEST
-diff --git a/drivers/ata/sata_dwc_460ex.c b/drivers/ata/sata_dwc_460ex.c
-index 319998dcbe58..bec33d781ae0 100644
---- a/drivers/ata/sata_dwc_460ex.c
-+++ b/drivers/ata/sata_dwc_460ex.c
-@@ -14,14 +14,6 @@
-  *          COPYRIGHT (C) 2005  SYNOPSYS, INC.  ALL RIGHTS RESERVED
-  */
- 
--#ifdef CONFIG_SATA_DWC_DEBUG
--#define DEBUG
--#endif
--
--#ifdef CONFIG_SATA_DWC_VDEBUG
--#define VERBOSE_DEBUG
--#endif
--
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
+Cheers,
+Prabhakar
+
+Changes for v2:
+* Dropped check for IRQ0
+* Dropped setting the irqflags as suggested by Rob
+* Fixed freeing up irq_res when not present in DT
+* Dropped PATA_OF_PLATFORM entry
+* Split up sorting of headers in separate patch
+* Dropped sht from struct pata_platform_priv
+* Used GENMASK() to calculate mask
+
+Lad Prabhakar (4):
+  ata: pata_platform: make use of platform_get_mem_or_io()
+  ata: pata_platform: Merge pata_of_platform into pata_platform
+  ata: pata_platform: Sort the #includes alphabetically
+  ata: pata_platform: Make use of GENMASK() macro
+
+ drivers/ata/Kconfig            |  10 --
+ drivers/ata/Makefile           |   1 -
+ drivers/ata/pata_of_platform.c |  90 ---------------
+ drivers/ata/pata_platform.c    | 199 ++++++++++++++++++++++++---------
+ include/linux/ata_platform.h   |   9 --
+ 5 files changed, 144 insertions(+), 165 deletions(-)
+ delete mode 100644 drivers/ata/pata_of_platform.c
+
 -- 
-2.29.2
+2.17.1
 

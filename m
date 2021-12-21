@@ -2,104 +2,205 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7618247B93F
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 05:54:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 70ECF47BABB
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:22:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232214AbhLUEy0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 20 Dec 2021 23:54:26 -0500
-Received: from esa6.hgst.iphmx.com ([216.71.154.45]:50122 "EHLO
-        esa6.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbhLUEy0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 20 Dec 2021 23:54:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1640062467; x=1671598467;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=a/wMZz9CrZXLjivTFTZZRqGAfks9G2lpHxOQXEEBUzs=;
-  b=R6/9vjxPDAVyT2XHlCNJcWBpGG/YTYRdp1kPZ8McdQmRww9VzmfWID+L
-   4r7nHSwJ//SClR7ntwcuZTmq+9nYLCy/Dac+mg3q3GAcEjewUc00e6t99
-   PfvVjs0fk9tIOVKwlCLyKSuvqwwKcoHAKRGhxFC7JiTZT2Y/foA6WQ2/m
-   kH9PbZBGVw2DlHErp+uMTc+o/jZv/T3blZXGSyB/y/SbLJkOQykElJ1/c
-   Z+dvzeO976roM50mrlvpRmiD5GY7ozT2V54cMFqeOYtsm0FR2oL55fHq5
-   +ZGQuzs8ACfG/GPLlxZ5gKRtnRK6u9ZIukgJlrLksvYqG4pR2AyHgLD4G
-   A==;
-X-IronPort-AV: E=Sophos;i="5.88,222,1635177600"; 
-   d="scan'208";a="189764683"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 21 Dec 2021 12:54:26 +0800
-IronPort-SDR: k07+A3QBZDrgS/+FMWMgGmJxmMoqfvGDT+H7CzorEqkR+ttqffpdrWNW9tn1huOBmbt5XdANFz
- HKFkMWsE9GXr+BN3qOhCRMGMpQ/EMuRwtY5hxI+IZzOi7G6ykRc89Rod6cSGzYUC0WgCrlovVN
- ZflnDuvdCjV6AInB4T81TrLvkdguXfjcGX/pNtjxogBqAhkH0J2Jkfw0TRH1J/sycuy3xEKi+k
- sihaKEcyCo9jcsjX8PTX8v4Jk8arbBKBsvxR4D/2whYpLzc424Z99VlxQPIp2vFHjdFLI2bjeO
- ITuMLTjFJWmSVUlQWwKfQ/ui
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2021 20:27:14 -0800
-IronPort-SDR: F3o1yRxDutJHRKxPvbRy7XBQmmUx7ual29iHPkvNd8ze0Vbe93gbC5kO2S3UHaytxk8o5pZVDZ
- W4+GaN4NGo/UEE3Tcl7ILW2t3xPg9fIuz1gCL0oC1+KFAMpYMxEhtYz2pxiGM9jHbJDERxTJ2e
- FxKtWkAboJmw07caW+2qZdQG6Ak4X0sqqGbkeqyche1LKXXYfSGvCmkgqUI5k2ORmcskeNz5EN
- ztlU/NpFWfM9HQ7PIzlxQltKWM+TZhckuWm2Od+sRwtwNRuSXFnzHi6erRmb+e7uIKZIKcVZpf
- RRc=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Dec 2021 20:54:26 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JJ3yn3VTfz1Rvlf
-        for <linux-ide@vger.kernel.org>; Mon, 20 Dec 2021 20:54:25 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1640062464; x=1642654465; bh=a/wMZz9CrZXLjivTFTZZRqGAfks9G2lpHxO
-        QXEEBUzs=; b=DqEeyvBKk/eFim4n/fx4v3DSxkHaZvVT1+KW1hyQ4g7OBxjYUd8
-        RWf63nMkjyFITTKqsWgGLk+/St/NLTGvcM543Ds68oxWFM59EXmIESDINRiZuwkz
-        fFHXokJHM45K3hJsFfD/Qzv3mwBZZb/DaexTZkOszsIxVMRYGwjw21clozFaiWdD
-        qGUFHQkRVxPZHiEvJmaoapsRe4+NW3trGdYqa2IOT2wx0MDQyn5BWpuG4sl9RWbG
-        qx7CMUZuHBg/IuEzj7tbNzKIr7DmXi4s0EXXp7vdfWut3cTvbkOLFuEXgF3hb8Z4
-        5N653r6kvkil6m6jteqR3+sFntrRXlNKqUA==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 7swJR9In-e3N for <linux-ide@vger.kernel.org>;
-        Mon, 20 Dec 2021 20:54:24 -0800 (PST)
-Received: from [10.225.163.32] (unknown [10.225.163.32])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JJ3yl3b5vz1RtVG;
-        Mon, 20 Dec 2021 20:54:23 -0800 (PST)
-Message-ID: <e81624de-95b5-f5ae-e0fb-9019f9fc3944@opensource.wdc.com>
-Date:   Tue, 21 Dec 2021 13:54:22 +0900
+        id S231933AbhLUHWn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:22:43 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:52516 "EHLO
+        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229820AbhLUHWm (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:42 -0500
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id A08B8212C7;
+        Tue, 21 Dec 2021 07:22:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1640071361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=kCXvcW9TAsai5fjM2u9ASGO9HM+uTgf62ADHIrSRMwg=;
+        b=ruvjjV6HfoBSXGbbzd+x6vMdmJpn80Ml/sq5p8aOwwNAWlm+1Nn0FyqkHi6T2KHCOK0iV8
+        SctvzjnAEuHaKS8aEteczwrUFo8yCQ13uZ9YltPADxwMat9t6nHL7CYUirUWV0gOAKWauG
+        djX3Ht1WR+ofnvXsYNYkTvvgNzBnBs4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1640071361;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=kCXvcW9TAsai5fjM2u9ASGO9HM+uTgf62ADHIrSRMwg=;
+        b=4pbJhEihSt7ILBHDo+XkQglVJip7E6ge4+CLiCoLLyGEAJJejZLKV0Oww0lpe3rZDorvNU
+        9vHnrqwjM9D8/nCg==
+Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
+        by relay2.suse.de (Postfix) with ESMTP id 9AA1CA3B83;
+        Tue, 21 Dec 2021 07:22:41 +0000 (UTC)
+Received: by adalid.arch.suse.de (Postfix, from userid 16045)
+        id 9298F5192372; Tue, 21 Dec 2021 08:22:41 +0100 (CET)
+From:   Hannes Reinecke <hare@suse.de>
+To:     Damien LeMoal <damien.lemoal@wdc.com>
+Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCHv3 00/68] libata: rework logging, take II
+Date:   Tue, 21 Dec 2021 08:20:23 +0100
+Message-Id: <20211221072131.46673-1-hare@suse.de>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH] libata: use min() to make code cleaner
-Content-Language: en-US
-To:     cgel.zte@gmail.com
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Changcheng Deng <deng.changcheng@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-References: <20211220113358.472974-1-deng.changcheng@zte.com.cn>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <20211220113358.472974-1-deng.changcheng@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 12/20/21 20:33, cgel.zte@gmail.com wrote:
-> From: Changcheng Deng <deng.changcheng@zte.com.cn>
-> 
-> Use min() in order to make code cleaner.
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Changcheng Deng <deng.changcheng@zte.com.cn>
+Hi all,
 
-Applied to for-5.17. Thanks !
+after some prodding from individual persons I've resurrected my
+patchset to put libata logging on a even keel, and use structured
+logging for everything.
+So this patch does away with DPRINTK, ATA_DEBUG or ata_msg_XXX()
+calls, and moves everything over to structured logging
+(ie the dev_XXX() calls).
+Additionally I've added tracepoints to trace command flow,
+error handling, host state machine etc.
 
+So everything is looking far saner now.
+
+As usual, comments and reviews are welcome.
+
+I know that the device names suck. Blame Tejun.
+
+Changes to the original submission:
+- Converted all printk() and pr_XXX() calls, too
+- Included reviews from Damien
+- Included reviews from Sergey
+
+Changes to v2:
+- Rebase to ata/for-5.17
+- Include reviews from Sergey
+
+Hannes Reinecke (68):
+  libata: remove pointless debugging messages
+  libata: whitespace cleanup
+  libata: Add ata_port_classify() helper
+  libata: move ata_dump_id() to dynamic debugging
+  libata: sanitize ATA_HORKAGE_DUMP_ID
+  libata: add reset tracepoints
+  libata: add qc_prep tracepoint
+  libata: tracepoints for bus-master DMA
+  libata-sff: tracepoints for HSM state machine
+  libata-scsi: drop DPRINTK calls for cdb translation
+  libata: add tracepoints for ATA error handling
+  libata: move ata_{port,link,dev}_dbg to standard dev_XXX() macros
+  libata: revamp ata_get_cmd_descript()
+  libata: move DPRINTK to ata debugging
+  sata_mv: kill 'port' argument in mv_dump_all_regs()
+  sata_mv: replace DPRINTK with dynamic debugging
+  pata_octeon_cf: remove DPRINTK() macro in interrupt context
+  pdc_adma: Remove DPRINTK call
+  sata_fsl: move DPRINTK to ata debugging
+  sata_rcar: replace DPRINTK() with ata_port_dbg()
+  sata_qstor: replace DPRINTK() with ata_port_dbg()
+  pata_pdc2027x: Replace PDPRINTK() with standard ata logging
+  libata: remove pointless VPRINTK() calls
+  ahci: Drop pointless VPRINTK() calls and convert the remaining ones
+  pdc_adma: Drop pointless VPRINTK() calls and remove disabled NCQ
+    debugging
+  pata_octeon_cf: Drop pointless VPRINTK() calls and convert the
+    remaining one
+  pata_via: Drop pointless VPRINTK() calls
+  sata_promise: Drop pointless VPRINTK() calls and convert the remaining
+    ones
+  sata_qstor: Drop pointless VPRINTK() calls
+  sata_rcar: Drop pointless VPRINTK() calls
+  sata_inic162x: Drop pointless VPRINTK() calls
+  sata_mv: Drop pointless VPRINTK() call and convert the remaining one
+  sata_nv: drop pointless VPRINTK() calls and convert remaining ones
+  sata_fsl: convert VPRINTK() calls to ata_port_dbg()
+  sata_sil: Drop pointless VPRINTK() calls
+  sata_sx4: Drop pointless VPRINTK() calls and convert the remaining
+    ones
+  sata_sx4: add module parameter 'dimm_test'
+  libata: drop ata_msg_error() and ata_msg_intr()
+  libata: drop ata_msg_ctl()
+  libata: drop ata_msg_malloc()
+  libata: drop ata_msg_warn()
+  libata: drop ata_msg_probe()
+  libata: drop ata_msg_info()
+  libata: drop ata_msg_drv()
+  libata: remove 'new' ata message handling
+  libata: remove debug compilation switches
+  pata_atp867x: convert printk() calls
+  pata_cmd640: convert printk() calls
+  pata_cmd64x: convert printk() calls
+  pata_cs5520: convert printk() calls
+  pata_cs5536: convert printk() calls
+  pata_cypress: convert printk() calls
+  pata_it821x: convert printk() calls
+  pata_marvell: convert printk() calls
+  pata_rz1000: convert printk() calls
+  pata_serverworks: convert printk() calls
+  pata_sil680: convert printk() calls
+  sata_sx4: convert printk() calls
+  sata_mv: convert remaining printk() to structured logging
+  pata_hpt37x: convert pr_XXX() calls
+  pata_octeon_cf: Replace pr_XXX() calls with structured logging
+  pata_hpt3x2n: convert pr_XXX() calls
+  sata_gemini: convert pr_err() calls
+  pata_hpt366: convert pr_warn() calls
+  libata-scsi: rework ata_dump_status to avoid using pr_cont()
+  sata_dwc_460ex: drop DEBUG_NCQ
+  sata_dwc_460ex: remove 'check_status' argument
+  sata_dwc_460ex: Remove debug compile options
+
+ drivers/ata/Kconfig             |  12 -
+ drivers/ata/acard-ahci.c        |   4 -
+ drivers/ata/ahci.c              |  13 +-
+ drivers/ata/ahci_qoriq.c        |   4 -
+ drivers/ata/ahci_xgene.c        |   4 -
+ drivers/ata/ata_piix.c          |  11 +-
+ drivers/ata/libahci.c           |  33 +--
+ drivers/ata/libata-acpi.c       |  69 +++---
+ drivers/ata/libata-core.c       | 225 ++++-------------
+ drivers/ata/libata-eh.c         |  72 +++---
+ drivers/ata/libata-pmp.c        |   8 -
+ drivers/ata/libata-sata.c       |   5 -
+ drivers/ata/libata-scsi.c       | 111 ++-------
+ drivers/ata/libata-sff.c        |  88 +++----
+ drivers/ata/libata-trace.c      |  47 ++++
+ drivers/ata/libata-transport.c  |  45 +++-
+ drivers/ata/libata.h            |   5 +-
+ drivers/ata/pata_arasan_cf.c    |   3 +
+ drivers/ata/pata_atp867x.c      |  29 +--
+ drivers/ata/pata_cmd640.c       |   2 +-
+ drivers/ata/pata_cmd64x.c       |   4 +-
+ drivers/ata/pata_cs5520.c       |   4 +-
+ drivers/ata/pata_cs5536.c       |   4 +-
+ drivers/ata/pata_cypress.c      |   2 +-
+ drivers/ata/pata_ep93xx.c       |   1 -
+ drivers/ata/pata_hpt366.c       |   5 +-
+ drivers/ata/pata_hpt37x.c       |  20 +-
+ drivers/ata/pata_hpt3x2n.c      |  12 +-
+ drivers/ata/pata_it821x.c       |  43 ++--
+ drivers/ata/pata_ixp4xx_cf.c    |   6 +-
+ drivers/ata/pata_marvell.c      |   9 +-
+ drivers/ata/pata_octeon_cf.c    |  48 +---
+ drivers/ata/pata_pdc2027x.c     |  71 +++---
+ drivers/ata/pata_pdc202xx_old.c |   2 -
+ drivers/ata/pata_rz1000.c       |   4 +-
+ drivers/ata/pata_serverworks.c  |   4 +-
+ drivers/ata/pata_sil680.c       |   9 +-
+ drivers/ata/pata_via.c          |  12 -
+ drivers/ata/pdc_adma.c          |  33 +--
+ drivers/ata/sata_dwc_460ex.c    | 120 ++-------
+ drivers/ata/sata_fsl.c          | 165 +++++--------
+ drivers/ata/sata_gemini.c       |   4 +-
+ drivers/ata/sata_inic162x.c     |   4 +-
+ drivers/ata/sata_mv.c           | 130 +++++-----
+ drivers/ata/sata_nv.c           |  54 ++---
+ drivers/ata/sata_promise.c      |  31 +--
+ drivers/ata/sata_qstor.c        |  15 +-
+ drivers/ata/sata_rcar.c         |  26 +-
+ drivers/ata/sata_sil.c          |   1 -
+ drivers/ata/sata_sil24.c        |   5 +-
+ drivers/ata/sata_sx4.c          | 148 ++++--------
+ include/linux/libata.h          |  99 ++------
+ include/trace/events/libata.h   | 416 +++++++++++++++++++++++++++++++-
+ 53 files changed, 1050 insertions(+), 1251 deletions(-)
 
 -- 
-Damien Le Moal
-Western Digital Research
+2.29.2
+

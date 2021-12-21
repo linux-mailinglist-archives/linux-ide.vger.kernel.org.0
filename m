@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D960F47BAEB
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02E8C47BAFA
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234222AbhLUHXE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:23:04 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:52724 "EHLO
+        id S234420AbhLUHXL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:23:11 -0500
+Received: from smtp-out1.suse.de ([195.135.220.28]:52726 "EHLO
         smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235099AbhLUHWu (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:50 -0500
+        with ESMTP id S235136AbhLUHWy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:54 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id A4BCC2193C;
+        by smtp-out1.suse.de (Postfix) with ESMTP id A9EDB21940;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1Mp8xzMbA3w1HNa28w3f7yS2EgHgcafRb/ojjBBOe4o=;
-        b=Qay7BrzpE0CXTPva0WEZWMsu5d58CqLX1mK2Lm5D0HWOOPkG1WmwjLT+bHsNTiLnCUIwMF
-        rc7JK68jacpmKw/PURmmdy7vmNVsUd0n4aLQImY0rbRA1LNhOVJq5gJZfDIdC+DObPp4R8
-        SEIEQaEp/34UIssKl/F6EORfNDu631w=
+        bh=xnscai00jbfZzGnf+5jB+JefghmmRudSZlDFLEGR+5s=;
+        b=sTFaFCfPPK25he9tEso0ozenOihd9yANiSpAHM7YiNjKqoDK2KWQLzi/ABznIlKZmufRcn
+        LkfJU3jcEUaC4kPXM/KV2jR5/elqWfozQWFNqeI7yLuDLJlgZzRpVKUBxpcb9JgQM4G4r+
+        3ymv2F81PyJ1v8RGBKcQp7agY2Icb8U=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1640071362;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=1Mp8xzMbA3w1HNa28w3f7yS2EgHgcafRb/ojjBBOe4o=;
-        b=94BmyNNAFJ26iv7JiObvjqNofC/p80Z1KUOiMUo3IQYHY6Qc3CGXieMqr+vtY8bTfuP1mR
-        ODU68/EOpHKn8CAA==
+        bh=xnscai00jbfZzGnf+5jB+JefghmmRudSZlDFLEGR+5s=;
+        b=cc9gIUv0IyPSssyUtIImcIB+PO4sJ0u+xYpGeH/gLbcDrF+jMNc9M1TTe8I+RD6M1ZUWqx
+        6IX6MPa7/kHJblCQ==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 9F4C2A3BBB;
+        by relay2.suse.de (Postfix) with ESMTP id A4C13A3BBC;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 9D92A51923E4; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
+        id A2A1451923E6; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 57/68] pata_sil680: convert printk() calls
-Date:   Tue, 21 Dec 2021 08:21:20 +0100
-Message-Id: <20211221072131.46673-58-hare@suse.de>
+Subject: [PATCH 58/68] sata_sx4: convert printk() calls
+Date:   Tue, 21 Dec 2021 08:21:21 +0100
+Message-Id: <20211221072131.46673-59-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211221072131.46673-1-hare@suse.de>
 References: <20211221072131.46673-1-hare@suse.de>
@@ -56,35 +56,42 @@ Convert printk() calls to structured logging.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/pata_sil680.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/ata/sata_sx4.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/pata_sil680.c b/drivers/ata/pata_sil680.c
-index 81238e097fe2..0da58ce20d82 100644
---- a/drivers/ata/pata_sil680.c
-+++ b/drivers/ata/pata_sil680.c
-@@ -308,17 +308,17 @@ static u8 sil680_init_chip(struct pci_dev *pdev, int *try_mmio)
- 
- 	switch (tmpbyte & 0x30) {
- 	case 0x00:
--		printk(KERN_INFO "sil680: 100MHz clock.\n");
-+		dev_info(&pdev->dev, "sil680: 100MHz clock.\n");
- 		break;
- 	case 0x10:
--		printk(KERN_INFO "sil680: 133MHz clock.\n");
-+		dev_info(&pdev->dev, "sil680: 133MHz clock.\n");
- 		break;
- 	case 0x20:
--		printk(KERN_INFO "sil680: Using PCI clock.\n");
-+		dev_info(&pdev->dev, "sil680: Using PCI clock.\n");
- 		break;
- 	/* This last case is _NOT_ ok */
- 	case 0x30:
--		printk(KERN_ERR "sil680: Clock disabled ?\n");
-+		dev_err(&pdev->dev, "sil680: Clock disabled ?\n");
+diff --git a/drivers/ata/sata_sx4.c b/drivers/ata/sata_sx4.c
+index 5d7913644dfc..6ceec59cb291 100644
+--- a/drivers/ata/sata_sx4.c
++++ b/drivers/ata/sata_sx4.c
+@@ -1179,15 +1179,16 @@ static unsigned int pdc20621_prog_dimm_global(struct ata_host *host)
+ 	/* Turn on for ECC */
+ 	if (!pdc20621_i2c_read(host, PDC_DIMM0_SPD_DEV_ADDRESS,
+ 			       PDC_DIMM_SPD_TYPE, &spd0)) {
+-		pr_err("Failed in i2c read: device=%#x, subaddr=%#x\n",
+-		       PDC_DIMM0_SPD_DEV_ADDRESS, PDC_DIMM_SPD_TYPE);
++		dev_err(host->dev,
++			"Failed in i2c read: device=%#x, subaddr=%#x\n",
++			PDC_DIMM0_SPD_DEV_ADDRESS, PDC_DIMM_SPD_TYPE);
+ 		return 1;
  	}
- 	return tmpbyte & 0x30;
- }
+ 	if (spd0 == 0x02) {
+ 		data |= (0x01 << 16);
+ 		writel(data, mmio + PDC_SDRAM_CONTROL);
+ 		readl(mmio + PDC_SDRAM_CONTROL);
+-		printk(KERN_ERR "Local DIMM ECC Enabled\n");
++		dev_err(host->dev, "Local DIMM ECC Enabled\n");
+ 	}
+ 
+ 	/* DIMM Initialization Select/Enable (bit 18/19) */
+@@ -1279,7 +1280,7 @@ static unsigned int pdc20621_dimm_init(struct ata_host *host)
+ 	   and program the DIMM Module Controller.
+ 	*/
+ 	if (!(speed = pdc20621_detect_dimm(host))) {
+-		printk(KERN_ERR "Detect Local DIMM Fail\n");
++		dev_err(host->dev, "Detect Local DIMM Fail\n");
+ 		return 1;	/* DIMM error */
+ 	}
+ 	dev_dbg(host->dev, "Local DIMM Speed = %d\n", speed);
 -- 
 2.29.2
 

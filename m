@@ -2,47 +2,47 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D87A647BAD9
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:22:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEA8547BAE0
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Dec 2021 08:23:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233300AbhLUHW4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Dec 2021 02:22:56 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:52658 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230053AbhLUHWo (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:44 -0500
+        id S233734AbhLUHXA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Dec 2021 02:23:00 -0500
+Received: from smtp-out2.suse.de ([195.135.220.29]:55950 "EHLO
+        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234899AbhLUHWr (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Dec 2021 02:22:47 -0500
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 1F11121900;
+        by smtp-out2.suse.de (Postfix) with ESMTP id 230D41F3C3;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1640071362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Nb2/ZW5mWNW54YuCqzmfouew1g0ngMTkKE0h18UDNvA=;
-        b=Hw9odwK/blZUMQ+LzzS9c+74pn9JYPJOi2QSBpWHPdc1/OLGgIaOZWClp7w0NSZL8086Hf
-        Vn+vRZuHOLtxGSxDDZ75FMyUL+CUQPwkxskJXsRA1KqIqIoU7ODwbsa16jXJF3kxUKreyJ
-        lTYSqe2FE5wRkW7TQwNV13KNly9+Ov0=
+        bh=blHxTHASdShcDS68QjmW2iURnMqPfvw+I17evoNK+xg=;
+        b=ZiVUYeFaiFb/9Qem37xE3IWkLJbLFpHmwnIQTwf8dx/8M1uOR4oZs/4gPo6i35Ihi+9fyc
+        MvtllR1R8zvkMug1IwkvJeHuTCl7VaW/ODdP3fTDUKU3EdmlCZnI/pdTU/voYpLqga4jAd
+        cEVr8qMPyYQWHJfWc7e211qNC4GYCOk=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1640071362;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=Nb2/ZW5mWNW54YuCqzmfouew1g0ngMTkKE0h18UDNvA=;
-        b=oFkv4Vs3tPxaQr8eblsJlQLW4rl5EAvdDcxJvq8QpcT1dNne9udqqsIAYcPcUaAk1PIQrE
-        DDua2A+x46hVOjBA==
+        bh=blHxTHASdShcDS68QjmW2iURnMqPfvw+I17evoNK+xg=;
+        b=zJFXZFx30Vu9FrzcUXhvCmz8ZzZ7magsuF80uOFc8NZkj3AYRlzRqk0jJ+fHtvuFRgr3i3
+        fqqmtTrEp6XBt7DA==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 1AD0FA3BA0;
+        by relay2.suse.de (Postfix) with ESMTP id 1EAADA3B83;
         Tue, 21 Dec 2021 07:22:42 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 18F8851923AA; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
+        id 1D42051923AC; Tue, 21 Dec 2021 08:22:42 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 28/68] sata_promise: Drop pointless VPRINTK() calls and convert the remaining ones
-Date:   Tue, 21 Dec 2021 08:20:51 +0100
-Message-Id: <20211221072131.46673-29-hare@suse.de>
+Subject: [PATCH 29/68] sata_qstor: Drop pointless VPRINTK() calls
+Date:   Tue, 21 Dec 2021 08:20:52 +0100
+Message-Id: <20211221072131.46673-30-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20211221072131.46673-1-hare@suse.de>
 References: <20211221072131.46673-1-hare@suse.de>
@@ -52,115 +52,57 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Drop pointless VPRINTK() calls for entering and existing interrupt
-routines and convert the remaining calls to ata_port_dbg().
-
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_promise.c | 31 ++++++++-----------------------
- 1 file changed, 8 insertions(+), 23 deletions(-)
+ drivers/ata/sata_qstor.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/drivers/ata/sata_promise.c b/drivers/ata/sata_promise.c
-index 7815da8ef9e5..b8465fef2ed2 100644
---- a/drivers/ata/sata_promise.c
-+++ b/drivers/ata/sata_promise.c
-@@ -596,7 +596,8 @@ static void pdc_fill_sg(struct ata_queued_cmd *qc)
- 
- 			prd[idx].addr = cpu_to_le32(addr);
- 			prd[idx].flags_len = cpu_to_le32(len & 0xffff);
--			VPRINTK("PRD[%u] = (0x%X, 0x%X)\n", idx, addr, len);
-+			ata_port_dbg(ap, "PRD[%u] = (0x%X, 0x%X)\n",
-+				     idx, addr, len);
- 
- 			idx++;
- 			sg_len -= len;
-@@ -609,17 +610,16 @@ static void pdc_fill_sg(struct ata_queued_cmd *qc)
- 	if (len > SG_COUNT_ASIC_BUG) {
- 		u32 addr;
- 
--		VPRINTK("Splitting last PRD.\n");
+diff --git a/drivers/ata/sata_qstor.c b/drivers/ata/sata_qstor.c
+index 2b4ccdca71c6..db62c07f820f 100644
+--- a/drivers/ata/sata_qstor.c
++++ b/drivers/ata/sata_qstor.c
+@@ -252,9 +252,6 @@ static unsigned int qs_fill_sg(struct ata_queued_cmd *qc)
+ 		len = sg_dma_len(sg);
+ 		*(__le32 *)prd = cpu_to_le32(len);
+ 		prd += sizeof(u64);
 -
- 		addr = le32_to_cpu(prd[idx - 1].addr);
- 		prd[idx - 1].flags_len = cpu_to_le32(len - SG_COUNT_ASIC_BUG);
--		VPRINTK("PRD[%u] = (0x%X, 0x%X)\n", idx - 1, addr, SG_COUNT_ASIC_BUG);
-+		ata_port_dbg(ap, "PRD[%u] = (0x%X, 0x%X)\n",
-+			     idx - 1, addr, SG_COUNT_ASIC_BUG);
- 
- 		addr = addr + len - SG_COUNT_ASIC_BUG;
- 		len = SG_COUNT_ASIC_BUG;
- 		prd[idx].addr = cpu_to_le32(addr);
- 		prd[idx].flags_len = cpu_to_le32(len);
--		VPRINTK("PRD[%u] = (0x%X, 0x%X)\n", idx, addr, len);
-+		ata_port_dbg(ap, "PRD[%u] = (0x%X, 0x%X)\n", idx, addr, len);
- 
- 		idx++;
+-		VPRINTK("PRD[%u] = (0x%llX, 0x%X)\n", si,
+-					(unsigned long long)addr, len);
  	}
-@@ -632,8 +632,6 @@ static enum ata_completion_errors pdc_qc_prep(struct ata_queued_cmd *qc)
- 	struct pdc_port_priv *pp = qc->ap->private_data;
- 	unsigned int i;
+ 
+ 	return si;
+@@ -268,8 +265,6 @@ static enum ata_completion_errors qs_qc_prep(struct ata_queued_cmd *qc)
+ 	u64 addr;
+ 	unsigned int nelem;
  
 -	VPRINTK("ENTER\n");
 -
- 	switch (qc->tf.protocol) {
- 	case ATA_PROT_DMA:
- 		pdc_fill_sg(qc);
-@@ -922,12 +920,8 @@ static irqreturn_t pdc_interrupt(int irq, void *dev_instance)
- 	u32 hotplug_status;
- 	int is_sataii_tx4;
- 
--	VPRINTK("ENTER\n");
--
--	if (!host || !host->iomap[PDC_MMIO_BAR]) {
--		VPRINTK("QUICK EXIT\n");
-+	if (!host || !host->iomap[PDC_MMIO_BAR])
- 		return IRQ_NONE;
--	}
- 
- 	host_mmio = host->iomap[PDC_MMIO_BAR];
- 
-@@ -946,23 +940,18 @@ static irqreturn_t pdc_interrupt(int irq, void *dev_instance)
- 	/* reading should also clear interrupts */
- 	mask = readl(host_mmio + PDC_INT_SEQMASK);
- 
--	if (mask == 0xffffffff && hotplug_status == 0) {
--		VPRINTK("QUICK EXIT 2\n");
-+	if (mask == 0xffffffff && hotplug_status == 0)
- 		goto done_irq;
--	}
- 
- 	mask &= 0xffff;		/* only 16 SEQIDs possible */
--	if (mask == 0 && hotplug_status == 0) {
--		VPRINTK("QUICK EXIT 3\n");
-+	if (mask == 0 && hotplug_status == 0)
- 		goto done_irq;
--	}
- 
- 	writel(mask, host_mmio + PDC_INT_SEQMASK);
- 
- 	is_sataii_tx4 = pdc_is_sataii_tx4(host->ports[0]->flags);
- 
- 	for (i = 0; i < host->n_ports; i++) {
--		VPRINTK("port %u\n", i);
- 		ap = host->ports[i];
- 
- 		/* check for a plug or unplug event */
-@@ -989,8 +978,6 @@ static irqreturn_t pdc_interrupt(int irq, void *dev_instance)
- 		}
- 	}
- 
--	VPRINTK("EXIT\n");
--
- done_irq:
- 	spin_unlock(&host->lock);
- 	return IRQ_RETVAL(handled);
-@@ -1005,8 +992,6 @@ static void pdc_packet_start(struct ata_queued_cmd *qc)
- 	unsigned int port_no = ap->port_no;
- 	u8 seq = (u8) (port_no + 1);
+ 	qs_enter_reg_mode(qc->ap);
+ 	if (qc->tf.protocol != ATA_PROT_DMA)
+ 		return AC_ERR_OK;
+@@ -304,8 +299,6 @@ static inline void qs_packet_start(struct ata_queued_cmd *qc)
+ 	struct ata_port *ap = qc->ap;
+ 	u8 __iomem *chan = qs_mmio_base(ap->host) + (ap->port_no * 0x4000);
  
 -	VPRINTK("ENTER, ap %p\n", ap);
 -
- 	writel(0x00000001, host_mmio + (seq * 4));
- 	readl(host_mmio + (seq * 4));	/* flush */
+ 	writeb(QS_CTR0_CLER, chan + QS_CCT_CTR0);
+ 	wmb();                             /* flush PRDs and pkt to memory */
+ 	writel(QS_CCF_RUN_PKT, chan + QS_CCT_CFF);
+@@ -435,14 +428,10 @@ static irqreturn_t qs_intr(int irq, void *dev_instance)
+ 	unsigned int handled = 0;
+ 	unsigned long flags;
+ 
+-	VPRINTK("ENTER\n");
+-
+ 	spin_lock_irqsave(&host->lock, flags);
+ 	handled  = qs_intr_pkt(host) | qs_intr_mmio(host);
+ 	spin_unlock_irqrestore(&host->lock, flags);
+ 
+-	VPRINTK("EXIT\n");
+-
+ 	return IRQ_RETVAL(handled);
+ }
  
 -- 
 2.29.2

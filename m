@@ -2,134 +2,99 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D28481CA1
-	for <lists+linux-ide@lfdr.de>; Thu, 30 Dec 2021 14:47:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E03B1481E30
+	for <lists+linux-ide@lfdr.de>; Thu, 30 Dec 2021 17:36:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235880AbhL3Nrw (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 30 Dec 2021 08:47:52 -0500
-Received: from smtp-out2.suse.de ([195.135.220.29]:52846 "EHLO
-        smtp-out2.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235821AbhL3Nrv (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 30 Dec 2021 08:47:51 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id AE1E71F37C;
-        Thu, 30 Dec 2021 13:47:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1640872070; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HK86uqN7T/niRMWbddbxO36UoKIkrcmT1FYaI3FRnfU=;
-        b=CXpL3F14eFHk8L8E+6E7hRH9qNFMbFqAQotwoQKPpwZb2Www4RMe+CHmb8NGivaVVfbHDD
-        aSHL20QWvl4SL+yp0s+K7pVTC31ySfHrUXGzKLDLO+K35SIcS4sgINnlcoAvKxFezY8of4
-        dQmplkTxSsePio1ZWSLuwEIO9eMLUOE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1640872070;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HK86uqN7T/niRMWbddbxO36UoKIkrcmT1FYaI3FRnfU=;
-        b=QNi0vZHSKsChsjIOb0t4kF2X9kcMROKdHeladmdkdrcHKCrLBSidzS4oIhgGeObx07eFTu
-        4hx8hrrn5CXlrDCQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 92F2513BDA;
-        Thu, 30 Dec 2021 13:47:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id D0h7Ioa4zWFaTAAAMHmgww
-        (envelope-from <hare@suse.de>); Thu, 30 Dec 2021 13:47:50 +0000
-Subject: Re: [PATCHv3 00/68] libata: rework logging, take II
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org
-References: <20211221072131.46673-1-hare@suse.de>
- <e22c1fc6-b707-a6f0-74bf-d911adec4a5b@opensource.wdc.com>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <08361e45-f5b9-f2c5-7861-e042c6ace044@suse.de>
-Date:   Thu, 30 Dec 2021 14:47:50 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S241290AbhL3QgW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 30 Dec 2021 11:36:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S241312AbhL3QgT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 30 Dec 2021 11:36:19 -0500
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B500BC06175B
+        for <linux-ide@vger.kernel.org>; Thu, 30 Dec 2021 08:36:18 -0800 (PST)
+Received: by mail-ed1-x541.google.com with SMTP id z29so100036235edl.7
+        for <linux-ide@vger.kernel.org>; Thu, 30 Dec 2021 08:36:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=tJuk50ldQ3muMSuXbgoS9j25a+T88Kj8cRwalO+iQW8=;
+        b=Tl2guSR4m3xEw3rpULIHJ++wqFW/SYEQmQ7WMIbnHy2zYaUoARg7cK9PknZf6cN0W3
+         Peuy4aLjRGAefGaAUwuauVVgDEtZLCzlwjNxLtx80PQlCxoGSnVjxl5sdsVysUIYKcXe
+         ZHEvY5FhgjEl58lOLJ1A9t4h30umP/Ypa+sfhqsYwU7Yrt1WkeUurBVz0ENELi+zsR3u
+         BJQNY1VfxHUUaE/8TT5cdKRGj8c4KYFh+H7dGlxuQ+DG6onDg8Jr518b+Y5yocGrGcCe
+         yh+h+XVHDxXODtQ3qlmex9RXZy1vi5EDfVkrKOrMBn882gkRab822AE3oOXEEvSNp6yc
+         Cq3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=tJuk50ldQ3muMSuXbgoS9j25a+T88Kj8cRwalO+iQW8=;
+        b=VDflDNcxOI80G4J9uvjYufvceJG7Ms9jhhfDJ4PH57tvg9XoOBsfzvKxLQfZ8KRCM7
+         jREfJK1Gpj3cqUPkuR+uaeTTKqFFi5M4YkO46mL7ksed/L3cLTUDhCPREM6QEyEfwE9z
+         h2rm07GxjMq4PHy0DwQf4vnvM3vdAORfqHLlLY03B23vTE8f1Hl9TDYX1jgWYgB0AuQ0
+         Wgv6eoMV7RgMduk1Ld39pPdpKNdBrQGFxzfO0rCqGjf6BvYq3sMB6ZrdhqeDIqVClylc
+         qf3V7MbEQx/jG/15nSohJayVBc1EeqBsLtFvLMJJ8uzcBF4urM6GOMk9jktgUTzRt34z
+         3jEg==
+X-Gm-Message-State: AOAM530DO9hfPPWjM9zz2E1+uamTguG4Iz5meFdJoG9HEerEsMgCotYI
+        Kh4K/C2Fn6/kYtUbVJbh4f+4XWyY0RWsbvK5qQQ=
+X-Google-Smtp-Source: ABdhPJzOomp7dfsSHzp32oQmbyN2PzdvUl16PkfjdGA/zQ1JLDHrj2HPGycg1+BKCtW6WdYSjbqXMvD8Y4OnayGP3mo=
+X-Received: by 2002:a17:907:9805:: with SMTP id ji5mr25733798ejc.431.1640882176818;
+ Thu, 30 Dec 2021 08:36:16 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <e22c1fc6-b707-a6f0-74bf-d911adec4a5b@opensource.wdc.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6402:524a:0:0:0:0 with HTTP; Thu, 30 Dec 2021 08:36:16
+ -0800 (PST)
+From:   saleem norman <norsaleem74@gmail.com>
+Date:   Thu, 30 Dec 2021 08:36:16 -0800
+Message-ID: <CALzdWh_x5jjnnv1r9eGK9qr1a48HO-KCPT0FhG6Jv8RmohjA0g@mail.gmail.com>
+Subject: DEAR FRIEND CONTACTS MY SECRETARY HIS E-MAIL nelson_salah@aol.com.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 12/30/21 6:19 AM, Damien Le Moal wrote:
-> On 12/21/21 16:20, Hannes Reinecke wrote:
->> Hi all,
->>
->> after some prodding from individual persons I've resurrected my
->> patchset to put libata logging on a even keel, and use structured
->> logging for everything.
->> So this patch does away with DPRINTK, ATA_DEBUG or ata_msg_XXX()
->> calls, and moves everything over to structured logging
->> (ie the dev_XXX() calls).
->> Additionally I've added tracepoints to trace command flow,
->> error handling, host state machine etc.
->>
->> So everything is looking far saner now.
->>
->> As usual, comments and reviews are welcome.
->>
->> I know that the device names suck. Blame Tejun.
-> 
-> I applied this series, temporarily, to the branch for-5.17-logging, with
-> the fixes I commented about.
-> 
-> After some light testing, seems OK, but need to hammer this a little more.
-> 
-> My main concern is the change in patch 12: using the dev_xxx() macros
-> directly changes the messages from being all prefixed with "ataX.X" to
-> different flavors (devX.X, linkX.X, portX.X, etc). While I do like the
-> code simplification, this makes reading dmesg to track how a device is
-> behaving very hard.
-> 
-And that was exactly what I had been hinting at with my last sentence :-)
+I'M SORRY BUT HAPPY TO INFORM YOU ABOUT MY SUCCESS IN GETTING THOSE
+FUNDS TRANSFERRED UNDER THE CO-OPERATION OF A NEW PARTNER FROM
+PARAGUAY THOUGH I TRIED MY BEST TO INVOLVE YOU IN THE GOLD/DIAMOND
+BUSINESS BUT GOD DECIDED THE WHOLE SITUATIONS. PRESENTLY AM IN UNITED
+ARAB EMIRATES FOR INVESTMENT PROJECTS WITH MY OWN SHARE OF THE TOTAL
+SUM OF THE MONEY. MEANWHILE, I DIDN'T FORGET YOU=E2=80=99RE PAST EFFORTS AN=
+D
+ATTEMPTS TO ASSIST ME IN TRANSFERRING THOSE FUNDS DESPITE THAT
+EVERYTHING FAILED US SOMEHOW. NOW CONTACT MY SECRETARY IN BURKINA
+FASO. MR. NELSON SALAH BY NAME: HIS E-MAIL nelson_salah@aol.com.
 
-Original sin here is to have completely generic names for ata device 
-objects (link-X? C'mon).
+ASK HIM TO SEND YOU THE VISA CARD TOTAL SUM OF $2.500, 000.00.USD
+WHICH I KEPT FOR YOUR COMPENSATION FOR ALL THE PAST EFFORTS AND
+ATTEMPT TO ASSIST ME IN THIS MATTER. I DEEPLY APPRECIATED YOUR EFFORTS
+AT THAT TIME VERY MUCH. SO FEEL FREE AND KEEP IN TOUCHED WITH MY
+SECRETARY; MR. NELSON SALAH AND INSTRUCT HIM WHERE TO SEND THE VISA
+CARD VALUE SUM OF $2.500, 000.00.USD TO YOU. NOW THIS AMOUNT IS ME AND
+THE NEW PARTNER CONTRIBUTE AND OFFER YOU THIS AMOUNT
+$1.500.000.00.USD. IS FROM MY OWN SHARE WHILE MY NEW PARTNER SUPPORTED
+YOU ALSO WITH SUM OF $ 1000000.USD. FROM HIS OWN SHARE ALSO BECAUSE I
+EXPLAIN THE WHOLE FACTS TO HIM THAT YOU ARE THE FIRST PERSON I
+CONTACTED THAT WANTED TO ASSIST ME WHILE YOU COULD NOT MAKE IT AND HE
+SAID OKAY THERE'S NO PROBLEM.
 
-And trying to twiddle with the devnames will land you in the mess we are 
-in now, _and_ you lose the link between device names in sysfs and what's 
-printed in the logging message, making debugging ever so much fun.
-(And I'm not even going into the _very_ slim distinction between port, 
-link, and dev here ...)
+SO YOU HAVE TO KEEP THE WHOLE SECRET ABOUT MY SUCCESS, BECAUSE I
+BELIEVE ONLY YOU KNOW HOW I MADE THIS MONEY SO TRY TO KEEP EVERYTHING
+SECRET. I HOPE YOU UNDERSTAND THE REASON WHY THIS HUGE AMOUNT OF FUNDS
+WAS KEPT FOR YOU? PLEASE DO LET ME KNOW IMMEDIATELY YOU RECEIVE THE
+VISA CARD SO THAT WE CAN SHARE THE JOY AFTER ALL THE SUFFERINGS AT
+THAT TIME; IN THIS MOMENT OF TIME, I'M VERY BUSY HERE BECAUSE OF THE
+INVESTMENT PROJECTS WHICH MYSELF AND THE NEW PARTNER ARE HAVING AT
+HAND, FINALLY;
 
-> Defining dev_fmt() everywhere the ata_{port,link,dev}_XXX functions are
-> used would solve this, but that is annoying as almost all drivers would
-> need to define that. Looking at the dev_XXX() macros, I do not see an
-> easy solution. Any idea ?
-> 
-I guess the only sane solution would be to have a clean break by 
-introducing a new config variable like ATA_NEW_SYSFS_NAMING.
-Then we could have 'sane' sysfs names like 'ata_port', 'ata_link', and 
-'ata_dev', _and_ would avoid the 'sysfs is ABI and cannot be modified'
-trap.
+REMEMBER THAT I HAVE ALREADY FORWARD THE INSTRUCTION TO THE SECRETARY
+ON YOUR BEHALF TO RECEIVE THAT MONEY, SO FEEL FREE TO KEEP IN TOUCH
+WITH HIM, SO THAT HE WILL SEND THE VISA CARD VALUE SUM OF
+$2.500,000.00.USD. TWO MILLION FIVE HUNDRED THOUSAND UNITED STATE
+DOLLARS TO YOU WITHOUT ANY DELAY.
 
-Plan would be to send a prep patch to partially revert patch 12, so as 
-to re-introduce the original formatting, but keeping the new accessors.
-And then have an additional patch to introduce the new-style sysfs 
-layout, with the new config option. Which clearly would default to 'n' 
-for now.
-
-Hmm?
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+BEST REGARDS,
+MR. NORMAN SALEEM.

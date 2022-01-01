@@ -2,231 +2,94 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 826AA48230F
-	for <lists+linux-ide@lfdr.de>; Fri, 31 Dec 2021 10:45:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2C1248274D
+	for <lists+linux-ide@lfdr.de>; Sat,  1 Jan 2022 11:40:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbhLaJpb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 31 Dec 2021 04:45:31 -0500
-Received: from smtp-out1.suse.de ([195.135.220.28]:51100 "EHLO
-        smtp-out1.suse.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229577AbhLaJpa (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 31 Dec 2021 04:45:30 -0500
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 60BDA21101;
-        Fri, 31 Dec 2021 09:45:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1640943929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=s9jbWyBQ0NV9MlW7kq9agGuTM9zDKMiwazofHJes3aA=;
-        b=hTOYnBebtTyJBQq3hZGlzvW853eAyKV7iRkYmhRnAgf+BAuJVdZ4r2VzXWkzHRW73GzPyu
-        Th8KQ2YL6SYS1/G7KE38Hkpi7FpgzGBVsGNiGha2wn7n5cd/mCfwaOxwAwk/alq939wPoT
-        tygBcq73ZtCm5BQdiRITV6ZqRoFG/pI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1640943929;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=s9jbWyBQ0NV9MlW7kq9agGuTM9zDKMiwazofHJes3aA=;
-        b=xSMVH2gMkLs9T4KAsTNauZBoWjNB0wfuXt//EVAbxI+f+qKYIbWI9VWiDtl/gTmy3bOasz
-        GAX+OBjclhKi3zCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4312313C2F;
-        Fri, 31 Dec 2021 09:45:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 8X75DjnRzmG0DwAAMHmgww
-        (envelope-from <hare@suse.de>); Fri, 31 Dec 2021 09:45:29 +0000
-Subject: Re: [PATCHv3 00/68] libata: rework logging, take II
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Damien LeMoal <damien.lemoal@wdc.com>
-Cc:     linux-ide@vger.kernel.org
-References: <20211221072131.46673-1-hare@suse.de>
- <e22c1fc6-b707-a6f0-74bf-d911adec4a5b@opensource.wdc.com>
- <08361e45-f5b9-f2c5-7861-e042c6ace044@suse.de>
- <b00d657e-50d5-d17d-4f27-677d73e0be00@opensource.wdc.com>
-From:   Hannes Reinecke <hare@suse.de>
-Message-ID: <f0887300-7886-02c2-d6be-032778beb2ac@suse.de>
-Date:   Fri, 31 Dec 2021 10:45:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.12.0
+        id S232249AbiAAKk3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 1 Jan 2022 05:40:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229624AbiAAKk3 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 1 Jan 2022 05:40:29 -0500
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E38CC061574;
+        Sat,  1 Jan 2022 02:40:29 -0800 (PST)
+Received: by mail-pf1-x443.google.com with SMTP id b22so25404920pfb.5;
+        Sat, 01 Jan 2022 02:40:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=message-id:from:mime-version:content-transfer-encoding
+         :content-description:subject:to:date:reply-to;
+        bh=dhFaFNGf9P/hgzfpigNOAcNefTeR7Csml9+Bh/hdy/w=;
+        b=gur2PGVIvTui7quEeHmQ3cVIeJ9fS/o4r5Iq99mH6QEDDatKg9P+RkYiFEDM7i/2el
+         zRBAoUasR8HKZ390y/MgM8OMIOYXtZPg8cKYznRF5frEylS84VFCt8x1ebzDjyQumgBq
+         xwOpvNioSDIwiFxJZicGctZH0xQ55mr2NksOc74aFUaakmwQqAgrdyULZLYC+mZPlba4
+         2r3UoJhsh6NytK3nwWZ5n6DfxbqEOXyOLVuvUmZ8d2Btrd4vsOvilKxl+YXShZ0lHoEn
+         dp456WpcmAy+83VsUkH8wQqXTmxybBQJJsEhtoLpZIxWsYNaOpPocTy8P/VOxsaPOW1O
+         fimw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:from:mime-version
+         :content-transfer-encoding:content-description:subject:to:date
+         :reply-to;
+        bh=dhFaFNGf9P/hgzfpigNOAcNefTeR7Csml9+Bh/hdy/w=;
+        b=sg1pA1+zjhxo+BYb0qf44NTtDgJEJZWZnss45c+PJL0ed2RLblYE3qnPrKEmiNgtOu
+         UkPjUl5pHuKoRcl1QRogRerl+kGYXrYNo+HfBCjYJsm9Ghh4BYto2pc+dBqrnNpCPZjG
+         syif5zkENuOAMqBQdiWXgySrkUbb5aj7P7Dsu6MycrE0XmSKJbIvsY4wZg6ZvlHoAnl7
+         6VUX412gUv+LUx/k68At5/HciEeYCxMS2rrxRhJzKmxt5P+SC12f6egZihyMwyNsgByJ
+         Q+hx5Zin26TC/L+ckoQauk6dGUFV9Ev6Tl/YlOlziiUnl//1Mp2s4SFHfviFkTshmd5e
+         /8Jw==
+X-Gm-Message-State: AOAM533HJhYgVdvAY6DbILSUxI14LlnvP/4jNyp8d/1cbLO7uIYbLT7O
+        DzmCj68taYuJt05LLb4Wg8M=
+X-Google-Smtp-Source: ABdhPJxIX5yALOCDI9RvjqKJxF51BtOT/8pYy6k874njL/E7nTcmWv66Qtz92yGLqa+Wbp70RaoIqA==
+X-Received: by 2002:a63:455f:: with SMTP id u31mr34246470pgk.537.1641033628759;
+        Sat, 01 Jan 2022 02:40:28 -0800 (PST)
+Received: from [192.168.0.153] ([143.244.48.136])
+        by smtp.gmail.com with ESMTPSA id s35sm26832835pfw.193.2022.01.01.02.40.21
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Sat, 01 Jan 2022 02:40:28 -0800 (PST)
+Message-ID: <61d02f9c.1c69fb81.dee2a.a92f@mx.google.com>
+From:   hyaibe56@gmail.com
+X-Google-Original-From: suport.prilend@gmail.com
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-In-Reply-To: <b00d657e-50d5-d17d-4f27-677d73e0be00@opensource.wdc.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: RE:
+To:     Recipients <suport.prilend@gmail.com>
+Date:   Sat, 01 Jan 2022 12:40:12 +0200
+Reply-To: andres.stemmet1@gmail.com
+X-Mailer: TurboMailer 2
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 12/31/21 5:49 AM, Damien Le Moal wrote:
-> On 12/30/21 22:47, Hannes Reinecke wrote:
->> On 12/30/21 6:19 AM, Damien Le Moal wrote:
->>> On 12/21/21 16:20, Hannes Reinecke wrote:
->>>> Hi all,
->>>>
->>>> after some prodding from individual persons I've resurrected my
->>>> patchset to put libata logging on a even keel, and use structured
->>>> logging for everything.
->>>> So this patch does away with DPRINTK, ATA_DEBUG or ata_msg_XXX()
->>>> calls, and moves everything over to structured logging
->>>> (ie the dev_XXX() calls).
->>>> Additionally I've added tracepoints to trace command flow,
->>>> error handling, host state machine etc.
->>>>
->>>> So everything is looking far saner now.
->>>>
->>>> As usual, comments and reviews are welcome.
->>>>
->>>> I know that the device names suck. Blame Tejun.
->>>
->>> I applied this series, temporarily, to the branch for-5.17-logging, with
->>> the fixes I commented about.
->>>
->>> After some light testing, seems OK, but need to hammer this a little more.
->>>
->>> My main concern is the change in patch 12: using the dev_xxx() macros
->>> directly changes the messages from being all prefixed with "ataX.X" to
->>> different flavors (devX.X, linkX.X, portX.X, etc). While I do like the
->>> code simplification, this makes reading dmesg to track how a device is
->>> behaving very hard.
->>>
->> And that was exactly what I had been hinting at with my last sentence :-)
->>
->> Original sin here is to have completely generic names for ata device
->> objects (link-X? C'mon).
->>
->> And trying to twiddle with the devnames will land you in the mess we are
->> in now, _and_ you lose the link between device names in sysfs and what's
->> printed in the logging message, making debugging ever so much fun.
->> (And I'm not even going into the _very_ slim distinction between port,
->> link, and dev here ...)
->>
->>> Defining dev_fmt() everywhere the ata_{port,link,dev}_XXX functions are
->>> used would solve this, but that is annoying as almost all drivers would
->>> need to define that. Looking at the dev_XXX() macros, I do not see an
->>> easy solution. Any idea ?
->>>
->> I guess the only sane solution would be to have a clean break by
->> introducing a new config variable like ATA_NEW_SYSFS_NAMING.
->> Then we could have 'sane' sysfs names like 'ata_port', 'ata_link', and
->> 'ata_dev', _and_ would avoid the 'sysfs is ABI and cannot be modified'
->> trap.
->>
->> Plan would be to send a prep patch to partially revert patch 12, so as
->> to re-introduce the original formatting, but keeping the new accessors.
->> And then have an additional patch to introduce the new-style sysfs
->> layout, with the new config option. Which clearly would default to 'n'
->> for now.
->>
->> Hmm?
-> 
-> For the ata_xxx_printk() functions, what about something simpler like this:
-> 
-> +#define ata_port_printk(level, ap, fmt, ...)                   \
-> +       pr_ ## level ("ata%u: " fmt, (ap)->print_id, ##__VA_ARGS__)
-> 
->   #define ata_port_err(ap, fmt, ...)                             \
-> -       ata_port_printk(ap, KERN_ERR, fmt, ##__VA_ARGS__)
-> +       ata_port_printk(err, ap, fmt, ##__VA_ARGS__)
->   #define ata_port_warn(ap, fmt, ...)                            \
-> -       ata_port_printk(ap, KERN_WARNING, fmt, ##__VA_ARGS__)
-> +       ata_port_printk(warn, ap, fmt, ##__VA_ARGS__)
->   #define ata_port_notice(ap, fmt, ...)                          \
-> -       ata_port_printk(ap, KERN_NOTICE, fmt, ##__VA_ARGS__)
-> +       ata_port_printk(notice, ap, fmt, ##__VA_ARGS__)
->   #define ata_port_info(ap, fmt, ...)                            \
-> -       ata_port_printk(ap, KERN_INFO, fmt, ##__VA_ARGS__)
-> +       ata_port_printk(info, ap, fmt, ##__VA_ARGS__)
->   #define ata_port_dbg(ap, fmt, ...)                             \
-> -       ata_port_printk(ap, KERN_DEBUG, fmt, ##__VA_ARGS__)
-> +       ata_port_printk(debug, ap, fmt, ##__VA_ARGS__)
-> +
-> +#define ata_link_printk(level, link, fmt, ...)                 \
-> +do {                                                           \
-> +       if (sata_pmp_attached((link)->ap) ||                    \
-> +           (link)->ap->slave_link)                             \
-> +               pr_ ## level ("ata%u.%02u: " fmt,               \
-> +                             (link)->ap->print_id,             \
-> +                             (link)->pmp,                      \
-> +                             ##__VA_ARGS__);                   \
-> +        else                                                   \
-> +               pr_ ## level ("ata%u: " fmt,                    \
-> +                             (link)->ap->print_id,             \
-> +                             ##__VA_ARGS__);                   \
-> +} while (0)
-> 
->   #define ata_link_err(link, fmt, ...)                           \
-> -       ata_link_printk(link, KERN_ERR, fmt, ##__VA_ARGS__)
-> +       ata_link_printk(err, link, fmt, ##__VA_ARGS__)
->   #define ata_link_warn(link, fmt, ...)                          \
-> -       ata_link_printk(link, KERN_WARNING, fmt, ##__VA_ARGS__)
-> +       ata_link_printk(warn, link, fmt, ##__VA_ARGS__)
->   #define ata_link_notice(link, fmt, ...)                        \
-> -       ata_link_printk(link, KERN_NOTICE, fmt, ##__VA_ARGS__)
-> +       ata_link_printk(notice, link, fmt, ##__VA_ARGS__)
->   #define ata_link_info(link, fmt, ...)                          \
-> -       ata_link_printk(link, KERN_INFO, fmt, ##__VA_ARGS__)
-> +       ata_link_printk(info, link, fmt, ##__VA_ARGS__)
->   #define ata_link_dbg(link, fmt, ...)                           \
-> -       ata_link_printk(link, KERN_DEBUG, fmt, ##__VA_ARGS__)
-> +       ata_link_printk(debug, link, fmt, ##__VA_ARGS__)
-> +
-> +#define ata_dev_printk(level, dev, fmt, ...)                   \
-> +        pr_ ## level("ata%u.%02u: " fmt,                       \
-> +               (dev)->link->ap->print_id,                      \
-> +              (dev)->link->pmp + (dev)->devno,                 \
-> +              ##__VA_ARGS__)
-> 
->   #define ata_dev_err(dev, fmt, ...)                             \
-> -       ata_dev_printk(dev, KERN_ERR, fmt, ##__VA_ARGS__)
-> +       ata_dev_printk(err, dev, fmt, ##__VA_ARGS__)
->   #define ata_dev_warn(dev, fmt, ...)                            \
-> -       ata_dev_printk(dev, KERN_WARNING, fmt, ##__VA_ARGS__)
-> +       ata_dev_printk(warn, dev, fmt, ##__VA_ARGS__)
->   #define ata_dev_notice(dev, fmt, ...)                          \
-> -       ata_dev_printk(dev, KERN_NOTICE, fmt, ##__VA_ARGS__)
-> +       ata_dev_printk(notice, dev, fmt, ##__VA_ARGS__)
->   #define ata_dev_info(dev, fmt, ...)                            \
-> -       ata_dev_printk(dev, KERN_INFO, fmt, ##__VA_ARGS__)
-> +       ata_dev_printk(info, dev, fmt, ##__VA_ARGS__)
->   #define ata_dev_dbg(dev, fmt, ...)                             \
-> -       ata_dev_printk(dev, KERN_DEBUG, fmt, ##__VA_ARGS__)
-> +       ata_dev_printk(debug, dev, fmt, ##__VA_ARGS__)
-> 
-> And the remaining of the patch is the same. Instead of dev_xxx() this
-> uses pr_xxx() so we have the same dynamic debug feature and we preserve
-> the messages as they were until now.
-> 
-> Thoughts ?
-> 
-Well, yes, that would serve as a 'workaround' to restore the original 
-names in the kernel message log.
+I want to confide in you to finalize this transaction of mutual benefits. I=
+t may seem strange to you, but it is real. This is a transaction that has n=
+o risk at all, due process shall be followed and it shall be carried out un=
+der the ambit of the financial laws. Being the Chief Financial Officer, BP =
+Plc. I want to trust and put in your care Eighteen Million British Pounds S=
+terling, The funds were acquired from an over-invoiced payment from a past =
+contract executed in one of my departments. I can't successfully achieve th=
+is transaction without presenting you as foreign contractor who will provid=
+e a bank account to receive the funds.
 
-But the overall problem remains: device names in the message log do not 
-correspond with the names in sysfs. This makes debugging really hard as 
-one has to figure out how the device names are generated in order to 
-find the correct sysfs entry; and I even do think that we can't 
-distinguish between 'link' and 'device' names in the message log, making 
-things even harder.
+Documentation for the claim of the funds will be legally processed and docu=
+mented, so I will need your full cooperation on this matter for our mutual =
+benefits. We will discuss details if you are interested to work with me to =
+secure this funds. I will appreciate your prompt response in every bit of o=
+ur communication. Stay Blessed and Stay Safe.
 
-That is something I really like to fix, and get the libata stack in line 
-with driver core standards such that we can use the standard 
-dev_printk() macros.
+Best Regards
 
-Cheers, and indeed happy new year,
 
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Felix Imendörffer
+Tel: +44 7537 185910
+Andres  Stemmet
+Email: andres.stemmet1@gmail.com  =
+
+Chief financial officer
+BP Petroleum p.l.c.
+
+                                                                           =
+                        Copyright =A9 1996-2021
+

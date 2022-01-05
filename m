@@ -2,45 +2,45 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9362484D5F
+	by mail.lfdr.de (Postfix) with ESMTP id 8D28A484D5D
 	for <lists+linux-ide@lfdr.de>; Wed,  5 Jan 2022 06:18:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237445AbiAEFSA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 5 Jan 2022 00:18:00 -0500
-Received: from rap-us.hgst.com ([199.255.44.250]:41823 "EHLO
+        id S237441AbiAEFR7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 5 Jan 2022 00:17:59 -0500
+Received: from rap-us.hgst.com ([199.255.44.250]:12138 "EHLO
         usg-ed-osssrv.wdc.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S237443AbiAEFR5 (ORCPT
+        with ESMTP id S237444AbiAEFR5 (ORCPT
         <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Jan 2022 00:17:57 -0500
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JTHmy6zlVz1VSkb
-        for <linux-ide@vger.kernel.org>; Tue,  4 Jan 2022 21:17:54 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JTHmz5DB9z1VSkg
+        for <linux-ide@vger.kernel.org>; Tue,  4 Jan 2022 21:17:55 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:mime-version
         :references:in-reply-to:x-mailer:message-id:date:subject:to
-        :from; s=dkim; t=1641359874; x=1643951875; bh=igD7KXBPcf6kP912Mr
-        9O5BzJG3DkVrdQKO8xH3XkiUo=; b=tnddr5E0lPDhXwcdtJXSck8pPlBYOTSYVQ
-        wi7YDXKQn9eEmuN+bR1jWWzsVxp9DnoCZfflMT26ColBW0HLPdNKzGHEbbQnkn4s
-        kxmIaLoOqCwjCvDE+8QxyPmmjisS7120VxfkMkLoVw9T0KrYl/eMBX2cyI+ZgEC9
-        hLGl0AToU3StYWWLT1oDKXyUE46r8GoBiPuFLOsnd46nBltN+UFo8obcQ2ZVPIM3
-        GswOMal7oP8Wm5rVtqceQD56o/itH2/0xXJY6LGMGLGpEDS1bxJpf1L5p+Q93f32
-        0hdGuMt/z3dAQP9hMzzbx+immVSFQNSBqiHSYq2PEhiv87NP4Mww==
+        :from; s=dkim; t=1641359875; x=1643951876; bh=EIsFBs8LSmbGWA23Yi
+        32jDDhU0n+cE0rx+RpDZpsmFg=; b=YAjKKzTgBU8nDx9+UZm//LY4Aed7sxnEeD
+        XNOpz9hiJ8ozoHlyk+Ec+grgIsJwSaiiHCTeYzeC065BOz9/mh8IChm1FFt2lgsG
+        e8+mqQ//XeUru7/aL9Kj1sDEJ7MboSs2Ev4+E17THE9YRXy/tixVT8G1V7vHZiNd
+        50/UxH5X/eyWyd4ouzcGn3r9po03OtLL0ltL0azLeZdvSTCeKZhpj/vgi1jzOJF+
+        3gB8L4G3JA7/okZ4UR10X7exTSayzN56yYFr5CmQuzINVG0k9A+fNz6V+/16/QU1
+        Rsgw3zkrlNlHre3OLhy47D9urTVu9OlsJm4R2CtwP9qvsvSQImig==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id qLbw3KapOklj for <linux-ide@vger.kernel.org>;
-        Tue,  4 Jan 2022 21:17:54 -0800 (PST)
+        with ESMTP id 2eja25CifmEr for <linux-ide@vger.kernel.org>;
+        Tue,  4 Jan 2022 21:17:55 -0800 (PST)
 Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JTHmy1mCvz1VSkg;
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JTHmy6l9Dz1VSkZ;
         Tue,  4 Jan 2022 21:17:54 -0800 (PST)
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 To:     linux-ide@vger.kernel.org
 Cc:     Hannes Reinecke <hare@suse.de>
-Subject: [PATCH v3 20/22] ata: sata_fsl: fix cmdhdr_tbl_entry and prde struct definitions
-Date:   Wed,  5 Jan 2022 14:17:33 +0900
-Message-Id: <20220105051735.1871177-21-damien.lemoal@opensource.wdc.com>
+Subject: [PATCH v3 21/22] ata: ahci_xgene: use correct type for port mmio address
+Date:   Wed,  5 Jan 2022 14:17:34 +0900
+Message-Id: <20220105051735.1871177-22-damien.lemoal@opensource.wdc.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20220105051735.1871177-1-damien.lemoal@opensource.wdc.com>
 References: <20220105051735.1871177-1-damien.lemoal@opensource.wdc.com>
@@ -50,70 +50,56 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The fields of the cmdhdr_tbl_entry structure all store __le32 values,
-and so are the dba and ddc_and_ext fields of the prde structure. Define
-these fields using the __le32 type to avoid sparse warnings about
-incorrect type in assignment.
+Sparse complains about an incorrect type for port_mmio pointer
+variables:
 
-The debug message in sata_fsl_setup_cmd_hdr_entry() is changed to
-display the correct values of the cmdhdr_tbl_entry fields on big endian
-systems.
+drivers/ata/ahci_xgene.c:196:41: warning: incorrect type in initializer
+(different address spaces)
+drivers/ata/ahci_xgene.c:196:41:    expected void *port_mmio
+drivers/ata/ahci_xgene.c:196:41:    got void [noderef] __iomem *
+
+Fix this by declaring port_mmio as "void __iomem *" instead of "void *".
 
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/sata_fsl.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/ata/ahci_xgene.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index 101d4dd79f62..da0152116d9f 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -221,10 +221,10 @@ enum {
-  * 4 Dwords per command slot, command header size =3D=3D  64 Dwords.
-  */
- struct cmdhdr_tbl_entry {
--	u32 cda;
--	u32 prde_fis_len;
--	u32 ttl;
--	u32 desc_info;
-+	__le32 cda;
-+	__le32 prde_fis_len;
-+	__le32 ttl;
-+	__le32 desc_info;
- };
+diff --git a/drivers/ata/ahci_xgene.c b/drivers/ata/ahci_xgene.c
+index 4d8a186ec12a..68ec7e9430b2 100644
+--- a/drivers/ata/ahci_xgene.c
++++ b/drivers/ata/ahci_xgene.c
+@@ -193,7 +193,7 @@ static unsigned int xgene_ahci_qc_issue(struct ata_qu=
+eued_cmd *qc)
+ 	struct xgene_ahci_context *ctx =3D hpriv->plat_data;
+ 	int rc =3D 0;
+ 	u32 port_fbs;
+-	void *port_mmio =3D ahci_port_base(ap);
++	void __iomem *port_mmio =3D ahci_port_base(ap);
 =20
- /*
-@@ -259,9 +259,9 @@ struct command_desc {
-  */
+ 	/*
+ 	 * Write the pmp value to PxFBS.DEV
+@@ -454,7 +454,7 @@ static int xgene_ahci_pmp_softreset(struct ata_link *=
+link, unsigned int *class,
+ 	int pmp =3D sata_srst_pmp(link);
+ 	struct ata_port *ap =3D link->ap;
+ 	u32 rc;
+-	void *port_mmio =3D ahci_port_base(ap);
++	void __iomem *port_mmio =3D ahci_port_base(ap);
+ 	u32 port_fbs;
 =20
- struct prde {
--	u32 dba;
-+	__le32 dba;
- 	u8 fill[2 * 4];
--	u32 ddc_and_ext;
-+	__le32 ddc_and_ext;
- };
-=20
- /*
-@@ -426,10 +426,10 @@ static void sata_fsl_setup_cmd_hdr_entry(struct ata=
-_port *ap,
- 	pp->cmdslot[tag].desc_info =3D cpu_to_le32(desc_info | (tag & 0x1F));
-=20
- 	ata_port_dbg(ap, "cda=3D0x%x, prde_fis_len=3D0x%x, ttl=3D0x%x, di=3D0x%=
-x\n",
--		pp->cmdslot[tag].cda,
--		pp->cmdslot[tag].prde_fis_len,
--		pp->cmdslot[tag].ttl, pp->cmdslot[tag].desc_info);
--
-+		     le32_to_cpu(pp->cmdslot[tag].cda),
-+		     le32_to_cpu(pp->cmdslot[tag].prde_fis_len),
-+		     le32_to_cpu(pp->cmdslot[tag].ttl),
-+		     le32_to_cpu(pp->cmdslot[tag].desc_info));
- }
-=20
- static unsigned int sata_fsl_fill_sg(struct ata_queued_cmd *qc, void *cm=
-d_desc,
+ 	/*
+@@ -499,7 +499,7 @@ static int xgene_ahci_softreset(struct ata_link *link=
+, unsigned int *class,
+ 	struct ata_port *ap =3D link->ap;
+ 	struct ahci_host_priv *hpriv =3D ap->host->private_data;
+ 	struct xgene_ahci_context *ctx =3D hpriv->plat_data;
+-	void *port_mmio =3D ahci_port_base(ap);
++	void __iomem *port_mmio =3D ahci_port_base(ap);
+ 	u32 port_fbs;
+ 	u32 port_fbs_save;
+ 	u32 retry =3D 1;
 --=20
 2.31.1
 

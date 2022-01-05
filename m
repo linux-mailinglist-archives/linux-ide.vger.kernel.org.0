@@ -2,118 +2,99 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B43484CEE
-	for <lists+linux-ide@lfdr.de>; Wed,  5 Jan 2022 04:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21284484D49
+	for <lists+linux-ide@lfdr.de>; Wed,  5 Jan 2022 06:17:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236093AbiAEDku (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 4 Jan 2022 22:40:50 -0500
-Received: from rap-us.hgst.com ([199.255.44.250]:41230 "EHLO
+        id S237422AbiAEFRk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 5 Jan 2022 00:17:40 -0500
+Received: from rap-us.hgst.com ([199.255.44.250]:14990 "EHLO
         usg-ed-osssrv.wdc.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S234541AbiAEDku (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 4 Jan 2022 22:40:50 -0500
+        with ESMTP id S236195AbiAEFRk (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Jan 2022 00:17:40 -0500
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JTFcx6N05z1VSkX
-        for <linux-ide@vger.kernel.org>; Tue,  4 Jan 2022 19:40:49 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JTHmh2v2Pz1VSkY
+        for <linux-ide@vger.kernel.org>; Tue,  4 Jan 2022 21:17:40 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1641354049; x=1643946050; bh=dgdhy56DTvXTOwmGF1KFHYoNXB7nRAAFT3R
-        vVIpFxic=; b=swb0qql05u9UIBuzw9mE/+T1XtmiD6x78Nfn7s8PYmkoZl58rNJ
-        iGnGsYXYB7ZPNCscDNxYUfBC8sffUk8Cp78YjRQVjtOmzn3JHoqY0OyDxESTale8
-        FB+dBLnaNpPRe4Fvim3SDCZVxO5BApwebZQ6n4wrdPj0M1Rcw8h5cu7eWFAzxZN3
-        GY/cR1sytJOVMgYidywBaJmHDpyCsh6vQnidzTN8N5p8YwLQVM1wEpBnT3lwSZk9
-        bAiPp7y0ElD2MPP9/pI2lQI7TQTn0qSUDXn0ZsLc6ryNNLkuQ9WvO25SmGQqY0ud
-        gvO0qNQfWg8czY1ONRN3cFN5j2FzMYtlFbg==
+        opensource.wdc.com; h=content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1641359859;
+         x=1643951860; bh=+f2KgKCRg4NfbU2UmB2nvT0EVwUiF2bPJkS3Jh+hk9g=; b=
+        uQRWlQdgSeYUx5NoV+03LH75DBZkdZG3T3SNMKqH3NcN7vsMNAqrOR6TebGadpxo
+        2Yn7OsrB/HA0+3JAK23/yhI7zbSVlDHZuGnkh+CCN0c/22ZRbyS7jySe1ovlsWk8
+        ZZWu+cSw5zqSzEniJuefpiXwQO5equIMMIpF4AuADEzSRYYwF97A0W1aDgFgx5ti
+        prg/hgdiX/z9UI5CZnbec4iHa9tGGdoAhGt/7/1VN7FMawZ3NqbxP58OVUR1mR7Y
+        Poa/w+ThRdy5aDtUA15ucSYUDGxXTLoJd+Hrgg5PL54mQjpJNZ9+LuStnkS9T+hj
+        OxS8lV3wIf1Qvowf2HVCCQ==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Jk9b08rhqc-M for <linux-ide@vger.kernel.org>;
-        Tue,  4 Jan 2022 19:40:49 -0800 (PST)
-Received: from [10.225.163.43] (unknown [10.225.163.43])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JTFcx1d9Sz1VSkV;
-        Tue,  4 Jan 2022 19:40:49 -0800 (PST)
-Message-ID: <f6c5efc9-8645-c729-09e2-e7ab868d80f5@opensource.wdc.com>
-Date:   Wed, 5 Jan 2022 12:40:48 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH v2 22/22] ata: ahci_xgene: Fix id array access in
- xgene_ahci_read_id()
-Content-Language: en-US
-To:     Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org
-References: <20220104105843.1730172-1-damien.lemoal@opensource.wdc.com>
- <20220104105843.1730172-23-damien.lemoal@opensource.wdc.com>
- <88f71464-135d-7cae-287d-8961eff37333@suse.de>
+        with ESMTP id lyDD_eBAltfn for <linux-ide@vger.kernel.org>;
+        Tue,  4 Jan 2022 21:17:39 -0800 (PST)
+Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JTHmg1fp2z1VSkV;
+        Tue,  4 Jan 2022 21:17:39 -0800 (PST)
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <88f71464-135d-7cae-287d-8961eff37333@suse.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     linux-ide@vger.kernel.org
+Cc:     Hannes Reinecke <hare@suse.de>
+Subject: [PATCH v3 00/22] Improve compile test coverage
+Date:   Wed,  5 Jan 2022 14:17:13 +0900
+Message-Id: <20220105051735.1871177-1-damien.lemoal@opensource.wdc.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/4/22 20:51, Hannes Reinecke wrote:
-> On 1/4/22 11:58 AM, Damien Le Moal wrote:
->> ATA IDENTIFY command returns an array of le16 words. Accessing it as a
->> u16 array triggers the following sparse warning:
->>
->> drivers/ata/ahci_xgene.c:262:33: warning: invalid assignment: &=
->> drivers/ata/ahci_xgene.c:262:33:    left side has type unsigned short
->> drivers/ata/ahci_xgene.c:262:33:    right side has type restricted __le16
->>
->> Use a local variable to explicitly cast the id array to __le16 to avoid
->> this warning.
->>
->> Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
->> ---
->>  drivers/ata/ahci_xgene.c | 3 ++-
->>  1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/ata/ahci_xgene.c b/drivers/ata/ahci_xgene.c
->> index 68ec7e9430b2..d5075d0f8cb1 100644
->> --- a/drivers/ata/ahci_xgene.c
->> +++ b/drivers/ata/ahci_xgene.c
->> @@ -239,6 +239,7 @@ static bool xgene_ahci_is_memram_inited(struct xgene_ahci_context *ctx)
->>  static unsigned int xgene_ahci_read_id(struct ata_device *dev,
->>  				       struct ata_taskfile *tf, u16 *id)
->>  {
->> +	__le16 *__id = (__le16 *)id;
->>  	u32 err_mask;
->>  
->>  	err_mask = ata_do_dev_read_id(dev, tf, id);
->> @@ -259,7 +260,7 @@ static unsigned int xgene_ahci_read_id(struct ata_device *dev,
->>  	 *
->>  	 * Clear reserved bit 8 (DEVSLP bit) as we don't support DEVSLP
->>  	 */
->> -	id[ATA_ID_FEATURE_SUPP] &= cpu_to_le16(~(1 << 8));
->> +	__id[ATA_ID_FEATURE_SUPP] &= cpu_to_le16(~(1 << 8));
->>  
->>  	return 0;
->>  }
->>
-> Hmm. I would think that the 'id' argument is wrong; it really should be
-> '__le16 *', as it only gets converted later on with the call to
-> swap_buf_le16(id, ATA_ID_WORDS) in
-> drivers/ata/libata-core.c:ata_dev_read_id(). So when this function is
-> called the argument really _is_ __le16, only the declaration doesn't
-> tell us.
-> 
-> Maybe one should rather fix this?
+Patches 1 to 18 enable the compilation of all ata drivers that can be
+compiled with CONFIG_COMPILE_TEST to improve compile test coverage.
+The last 4 patches fix compilation and sparse warnings found by enabling
+COMPILE_TEST on a x86_64 host.
 
-Good point. Sending V3 with this patch changed to fix read_id()
-operation interface.
+Changes from v2:
+* Change patch 22 to fix read_id() port operation interface instead
+* Added review tags
 
-> 
-> Cheers,
-> 
-> Hannes
+Changes from v1:
+* Added another sata_fsl warning fix (patch 20)
 
+Damien Le Moal (22):
+  ata: sata_fsl: add compile test support
+  ata: ahci_brcm: add compile test support
+  ata: ahci_da850: add compile test support
+  ata: ahci_dm816: add compile test support
+  ata: ahci_st: add compile test support
+  ata: ahci_mtk: add compile test support
+  ata: ahci_mvebu: add compile test support
+  ata: ahci_sunxi: add compile test support
+  ata: ahci_tegra: add compile test support
+  ata: ahci_xgene: add compile test support
+  ata: ahci_seattle: add compile test support
+  ata: pata_bk3710: add compile test support
+  ata: pata_cs5535: add compile test support
+  ata: pata_ftide010: add compile test support
+  ata: pata_imx: add compile test support
+  ata: pata_pxa: add compile test support
+  ata: pata_legacy: add compile test support
+  ata: pata_samsung_cf: add compile test support
+  ata: sata_fsl: fix scsi host initialization
+  ata: sata_fsl: fix cmdhdr_tbl_entry and prde struct definitions
+  ata: ahci_xgene: use correct type for port mmio address
+  ata: fix read_id() ata port operation interface
 
--- 
-Damien Le Moal
-Western Digital Research
+ drivers/ata/Kconfig        | 38 +++++++++++++++++++-------------------
+ drivers/ata/ahci_brcm.c    |  2 +-
+ drivers/ata/ahci_ceva.c    |  5 ++---
+ drivers/ata/ahci_xgene.c   |  8 ++++----
+ drivers/ata/libata-core.c  |  6 +++---
+ drivers/ata/pata_it821x.c  | 23 +++++++++++------------
+ drivers/ata/pata_netcell.c |  5 +++--
+ drivers/ata/sata_fsl.c     | 23 +++++++++++------------
+ include/linux/libata.h     | 16 ++++++++++++++--
+ 9 files changed, 68 insertions(+), 58 deletions(-)
+
+--=20
+2.31.1
+

@@ -2,157 +2,84 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBF0B48CFBC
-	for <lists+linux-ide@lfdr.de>; Thu, 13 Jan 2022 01:34:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B389A48DB25
+	for <lists+linux-ide@lfdr.de>; Thu, 13 Jan 2022 16:56:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229693AbiAMAeN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 12 Jan 2022 19:34:13 -0500
-Received: from esa1.hgst.iphmx.com ([68.232.141.245]:42795 "EHLO
-        esa1.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbiAMAeN (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 12 Jan 2022 19:34:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1642034053; x=1673570053;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=545fTs9x0QZ4588uvRzStDOfjDxqu1bN3mh/rTFWYOc=;
-  b=Ke0ja1iId2QO+yT6muAcSr7TwI4zidk40Jri12BCV8+D5fhGvYoOIe23
-   YTc9D5beMXj4Y8fiVDA6v2I95pTLj29geW6nTHGuTp6xZqX4IhEna/eFX
-   Yp9hQtcAWRzi+cDJpIRZWr3lDO3q/hEVmMFtjppMNV90wzs0YLuoJAcn3
-   EO5BT5dytToYjK+ejNAWmB03q5bWkHqsDE4TyaUs/FIBvW7pmBm6k0M26
-   ITRy4ao/Y+p6NqC06hdG3rIHZV6+BtLCgn4xduQBhJyQFxQ8ulzP3V61w
-   ccA2UGtXnhog9VtVEkmJyzb8Wc5WZu/YC1+9f/PnsxxNI+Wr64oYPcqOi
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.88,284,1635177600"; 
-   d="scan'208";a="302192494"
-Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 13 Jan 2022 08:34:12 +0800
-IronPort-SDR: 706MrSc7XO2SnEyCZRP4JozfitujznV5zslZjnzdHOG++EfmXTktmq01/sztA6WScNd61aSaMw
- d7qsK11Y2+Gt/xDObpiECybczPkEBix0Kdoy/hb1UGCQICBknXfz9qlzv/XskbHw0TnOfx4w27
- 0DA38MFTIIeKO449DekYi/7JgkkMvN0lD3O97lDwldQv4xShSaOZL8b3SdRFInJ4Y6+NC+BQtN
- jymOjnaOFMFA0q4QXnQOjG9/zaOby385kc1aOfzxQMtY3rlYo/SmJyl7N7xrp7yut7OebeNbJo
- b9PvLAfUjiec/jwoFeQ7ykv2
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 16:06:34 -0800
-IronPort-SDR: Q3Xi/puAffoZwJT7QNwXbITLsS0JlI9733AcvIiMgDlAFhiKiqcyF3St5m7GYKYWP85DnvDK/X
- 66o5GXQutI/07qszllaMUtdhGiwiQx9wr3z2hKVQ/L1miAb5JRukZpOX6NSU63UHs3CFdluiYZ
- F3DXvjIoLS3NTLUe7mUT46RwvMaqaY5kn6Yb9V+fE22N4PWvKC90xKdt2pLdalwG2A0IzF/YmD
- p/1ZuvkZlvKLj0NfJwKO1OHutg5vvdHBYVf/pxoxrGfspxU6ACiSkQTfKqUSvB7OhL1kmN+T7+
- 9m4=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2022 16:34:13 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JZ55w44jlz1VSkZ
-        for <linux-ide@vger.kernel.org>; Wed, 12 Jan 2022 16:34:12 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1642034051; x=1644626052; bh=545fTs9x0QZ4588uvRzStDOfjDxqu1bN3mh
-        /rTFWYOc=; b=hIcPg37jgvfeTDVrdk7SMyP7EAq9e7HhP1Fvmrval92KxVlOVjA
-        Vdepo4uaD/OoIvd5QMrw0zqEYyM/PCJIUaZXYkHOe8jYuTNEmXdRFDp36f6h22N+
-        5NJYYIQUdOMnsIAMibTseieQTdOUr1LBhQCe3DTB58OCoKeDzX4VrrtvePTtVPWs
-        FVLsZqotp+rpB62ZYVwBnh7J/apV4hWD2aNOyV6MuHWp96IyMJdbKE4UMYcuV//1
-        nKk2eu+J88IgBha3Zk4oSnTStn99GQVbzu2rkuG4YCxpoywTBetcWgv0nhTjhSaY
-        PhSAFSOP743sw9HfUvx6C5P5Q7hoyPsevjA==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id VvN6XyIcCYaa for <linux-ide@vger.kernel.org>;
-        Wed, 12 Jan 2022 16:34:11 -0800 (PST)
-Received: from [10.225.163.46] (unknown [10.225.163.46])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JZ55v09HRz1VSjC;
-        Wed, 12 Jan 2022 16:34:10 -0800 (PST)
-Message-ID: <ede2b0d1-9bdc-e5d0-6a0c-c5c7216754a6@opensource.wdc.com>
-Date:   Thu, 13 Jan 2022 09:34:09 +0900
+        id S233549AbiAMP4B (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 13 Jan 2022 10:56:01 -0500
+Received: from [194.99.46.92] ([194.99.46.92]:54549 "EHLO
+        slot0.bluewaterleisure.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S236380AbiAMP4B (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 13 Jan 2022 10:56:01 -0500
+X-Greylist: delayed 609 seconds by postgrey-1.27 at vger.kernel.org; Thu, 13 Jan 2022 10:56:00 EST
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=bluewaterleisure.com;
+ h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding; i=ker.mon@bluewaterleisure.com;
+ bh=s5wqw4pf6YkH1BJ9Tv1MGcDbJe4=;
+ b=P6w6FbI+vnLM4Mog/GD6klq9CrN1Qkauma8YcUYOTawuanWgNLIvQJ79HSGet7T91+9yJ4g/2ZXL
+   0U3Ccsfq+9iXLK7dcjltJLsGSrN5ZpzkbFtqh3vSH2SDoCcilY5DPWyvMzeWpTO1SflAFoQWt7Bo
+   Xk4Gw3tcp5mwE/4iRfeSZL4aisWqrv3Ni0fbq4mQVGNZy9Kh32lSnzN/989CcmPhir/nn4TeT7ip
+   MB/FH08MY53mK4jJR4YFzJHbV78E8/k2wFipnU4cTWn/4XYXLfYqEU/X8kmip9pNSqn3kZs/gzDJ
+   T6KX7fkUUdKDGSN6qtINzKmFmUkKXYzdi//ciQ==
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=bluewaterleisure.com;
+ b=vyVFRez1/vm0LEBtqKgnjyGy1ULszdUrGBvmKmG+WT6By3gC0f3k/e1eL4DVExJb2OaRuSK6psRj
+   p5OA12XnbWBMcFA5f7xuG7Dj6ODIBJe36Ut/OgucTnshAoh6552RVLSdIO0H9GjOUwu0cQGNOkNq
+   AHIMkVx4hOxBziujpDRyXTkM50O+hoO3f6+UM8Ismd17m/ld69JIh6arieXr6Zt1CN8nygO/NBeB
+   qo013MbECA+Ng+NEO2GabEBzQha/x/wuKhGRpp8LQmch4ZeujaO3gtzObHoixLGS2DUwprWRF0hx
+   DtabcOEh/SKhAmmdleQVSKt/61cFb5A6QNgj8g==;
+Reply-To: mustafa.ayvaz@ayvazburosu.com
+From:   "Barrister Mustafa" <ker.mon@bluewaterleisure.com>
+To:     linux-ide@vger.kernel.org
+Subject: Achtung:
+Date:   13 Jan 2022 16:36:07 +0100
+Message-ID: <20220113163606.44B49930F2EBA1E4@bluewaterleisure.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.4.0
-Subject: Re: [PATCH][RESEND] sata_fsl: Use struct_group() for memcpy() region
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20220112220652.3952944-1-keescook@chromium.org>
- <df3eefdc-d8d1-48fa-f5f7-9c2f2382842b@kernel.dk>
- <202201121515.8679164D6@keescook>
- <ec4d9eb0-3999-db52-1eec-bc6351dd4f07@opensource.wdc.com>
- <202201121628.A8B11A1@keescook>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <202201121628.A8B11A1@keescook>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/13/22 09:30, Kees Cook wrote:
-> On Thu, Jan 13, 2022 at 08:47:37AM +0900, Damien Le Moal wrote:
->> On 1/13/22 08:15, Kees Cook wrote:
->>> On Wed, Jan 12, 2022 at 03:23:40PM -0700, Jens Axboe wrote:
->>>> On 1/12/22 3:06 PM, Kees Cook wrote:
->>>>> In preparation for FORTIFY_SOURCE performing compile-time and run-time
->>>>> field bounds checking for memcpy(), memmove(), and memset(), avoid
->>>>> intentionally writing across neighboring fields.
->>>>>
->>>>> Use struct_group() in struct command_desc around members acmd and fill,
->>>>> so they can be referenced together. This will allow memset(), memcpy(),
->>>>> and sizeof() to more easily reason about sizes, improve readability,
->>>>> and avoid future warnings about writing beyond the end of acmd:
->>>>>
->>>>> In function 'fortify_memset_chk',
->>>>>     inlined from 'sata_fsl_qc_prep' at drivers/ata/sata_fsl.c:534:3:
->>>>> ./include/linux/fortify-string.h:199:4: warning: call to '__write_overflow_field' declared with attribute warning: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Wattribute-warning]
->>>>>   199 |    __write_overflow_field();
->>>>>       |    ^~~~~~~~~~~~~~~~~~~~~~~~
->>>>>
->>>>> Cc: Jens Axboe <axboe@kernel.dk>
->>>>> Cc: linux-ide@vger.kernel.org
->>>>> Signed-off-by: Kees Cook <keescook@chromium.org>
->>>>> ---
->>>>> Jens, can you take (or Ack) this? It's a dependency for the FORTIFY_SOURCE
->>>>> improvements that are close to being finished. :)
->>>>
->>>> I don't maintain libata anymore, so Damien is the guy to nudge ;-)
->>>
->>> Ah-ha, okay, thanks.
->>>
->>> /me waves "hi" to Damien. :)
->>
->> Hi Kees,
->>
->> This is already queued up in libata tree for-5.17 branch. I have not
->> sent my PR to Linus yet as I am letting things soack a little longer in
->> for-next (for the various arch compile tests).
-> 
-> Oh thank you! Sorry I missed the pull. I didn't see it in -next yet, so
-> I assumed it hadn't been pulled anywhere.
+Dear linux-ide,
 
-Uh... Weird. That one has been in libata for-next since a while back. So
-it should be in linux-next.
+Ich bin Barrister Mustafa Ayvaz, ein pers=C3=B6nlicher Anwalt des=20
+verstorbenen Mr.
+Anderson, der an der Coronavirus-Krankheit starb, die er
+w=C3=A4hrend seiner Gesch=C3=A4ftsreise in China unter Vertrag genommen.=20=
 
-> 
->> Please check that branch to see if all is OK !
-> 
-> Found it:
-> https://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git/log/?h=for-next
-> 
-> Yup, looks good:
-> https://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git/commit/?h=for-next&id=23c72ffedeed6d513144fa09834b1eb0cb2b7373
+Ich m=C3=B6chte, dass Sie freundlich sind und mit mir=20
+zusammenarbeiten, um das Geld zu sichern, das er hier in der=20
+T=C3=BCrkei auf der Bank hinterlassen hat, das sind drei Millionen=20
+dreihundertneunzigtausend Dollar.
 
-OK !
+Ich habe nach den n=C3=A4chsten Angeh=C3=B6rigen meines Verstorbenen=20
+gesucht
+Kunde, sind aber gescheitert, da ich seinen aktuellen Wohnsitz=20
+nicht habe
+und Kontaktdaten. Auf der Suche bin ich auf dich gesto=C3=9Fen
+Profil mit dem gleichen Nachnamen und am gleichen Ort mit
+die n=C3=A4chsten Angeh=C3=B6rigen. Ich habe mich entschieden, dich zu=20
+kontaktieren und dich als den
+Bonafide n=C3=A4chster Verwandter.
 
-> 
-> Thanks!
-> 
+Ich erbitte Ihre Zustimmung, Sie als N=C3=A4chsten meiner Verwandten=20
+hervorzubringen
+verstorbener Kunde, da Sie beide denselben Nachnamen tragen. Der
+das Geld wird dann an Sie als Beg=C3=BCnstigten =C3=BCberwiesen und
+geteilt gem=C3=A4=C3=9F einem vorgeschlagenen Sharing-Muster/Verh=C3=A4ltni=
+s von=20
+60:40
+das sind 60 % f=C3=BCr mich und 40 % f=C3=BCr dich. Freundlich
+kontaktieren Sie mich sofort f=C3=BCr weitere Informationen.
 
+Danach schicke ich Ihnen die Details der Transaktion
+wird beginnen, Kontaktieren Sie mich f=C3=BCr weitere Informationen=20
+=C3=BCber mein
+E-Mail-Adressen unten.
 
--- 
-Damien Le Moal
-Western Digital Research
+Gr=C3=BC=C3=9Fe
+Mustafa Ayvaz
+
+E-Mail: mustafa.ayvaz@ayvazburosu.com
+oder
+ayvazmustafa231@gmail.com

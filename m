@@ -2,67 +2,76 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E9F3492134
-	for <lists+linux-ide@lfdr.de>; Tue, 18 Jan 2022 09:29:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A126D4921E5
+	for <lists+linux-ide@lfdr.de>; Tue, 18 Jan 2022 10:04:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344546AbiARI3R (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 18 Jan 2022 03:29:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
+        id S1345191AbiARJEM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 18 Jan 2022 04:04:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344352AbiARI3P (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 18 Jan 2022 03:29:15 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EEEBC06161C
-        for <linux-ide@vger.kernel.org>; Tue, 18 Jan 2022 00:29:15 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5F17BB810CE
-        for <linux-ide@vger.kernel.org>; Tue, 18 Jan 2022 08:29:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 37AD0C340E1;
-        Tue, 18 Jan 2022 08:29:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1642494553;
-        bh=UwPZT/QSSCqWgODdyZok7LfBSZp4UbI+w+/D3Fm7O2g=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=QAyrxMeAZN7d82TyYZ0IcfhMHQy7zGVNPnSifqrll4pvf2+n0f7DW6AXrbgEYyKeJ
-         KcjFTiFuUFJZ7Lq73OwxslZfuvl2HazRGJRHRCgcwp9QcnLOnviGSlesVC2/hVKHqd
-         PQf7GK/cgNMhi3Kv8BIC+toY9mO1hAmhbxstxTUkJHgL5OqmazUd8THkU/Z6/2Jini
-         MrpOTeT/s8DZVo9dWD2tcNnW6m/uaAVz3P3N8ghlea5RA2iVMj22t/cB/Q+cxs3Zx9
-         J85SHVHl7faiOcM0wjpthLU7NZXEmjOx32gDQ3HFqPMQtIxBfDloacjsGyhS43fnBa
-         ovbY6w/E0fC/g==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 25CAFF60794;
-        Tue, 18 Jan 2022 08:29:13 +0000 (UTC)
-Subject: Re: [GIT PULL] ata changes for 5.17-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20220114065906.622181-1-damien.lemoal@opensource.wdc.com>
-References: <20220114065906.622181-1-damien.lemoal@opensource.wdc.com>
-X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20220114065906.622181-1-damien.lemoal@opensource.wdc.com>
-X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-5.17-rc1
-X-PR-Tracked-Commit-Id: 237fe8885a3fdab169bf670790c9f40046af45d3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: fe81ba137ebcc7f236780996a0b375732c07e85c
-Message-Id: <164249455315.3500.12273047095389786673.pr-tracker-bot@kernel.org>
-Date:   Tue, 18 Jan 2022 08:29:13 +0000
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ide@vger.kernel.org
+        with ESMTP id S1345148AbiARJEB (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 18 Jan 2022 04:04:01 -0500
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFC4C061746
+        for <linux-ide@vger.kernel.org>; Tue, 18 Jan 2022 01:03:59 -0800 (PST)
+Received: by mail-yb1-xb31.google.com with SMTP id g12so1489565ybh.4
+        for <linux-ide@vger.kernel.org>; Tue, 18 Jan 2022 01:03:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=IAamEH5Xu1dJ3X0trVcFTPIrL7aTtcDGn5mUS4vw1a8=;
+        b=NHprezroMsvNvJXQj44poYAHm3bYOXBJZX5Wg8cW9F++sdGchhDxOadiHN0N74BqVo
+         LLsuxLOWO8eNb9Df+WO3omzRkxx9CES4mNA3Io5+oAgtUVpSbYHogg87+gCtw68c4I2t
+         jU5NFjjkmYDNDUVEzOuCjT2//b/zcZNUhM8rDEil4EjAKikZAouVCPfFT1ek6iBkNaWB
+         bcv0AUKVrFCVpxHEBYPBv8KSS3FHlu8eykSeEYJmKwrS5qbSbzeHmao2+zqXdm7uNchU
+         Rqamo/TlsQaFmHXGfCx8STX0aSjqEkHcratuhlypnT20IcvCVcqt6eV72JWjrAN3qvU0
+         7wEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=IAamEH5Xu1dJ3X0trVcFTPIrL7aTtcDGn5mUS4vw1a8=;
+        b=I7CIzo3lMTbP5sXqPVjj+Ra27CKLMe5zjL9+vGoktIij9XpbchGTNINeW/iZMDZtBi
+         pm1+6WjFZaOFp/AIUFP1XwnS48Cv3onzyu+BcggzSMjM3uO64zx7MQCPqnkoW35QDzu3
+         QGDNfxfZkr3QhCfdp/SzuGlkIu2Zj83qXlVvTiTZZO3XJFej72C+ZxKnbT2HPiv9/LUC
+         chFhgv8ERldUUGYKJPS2Kuy3GICjGGL5bbQa0LgGox+Hy3UAZ6Atqug5IKW5YB5j/qAi
+         29+cDY19204c2FSN5o8jM/zSbXnBLSIGo/qeRpUebO0onpS1+XmzQ10ubI/9c11+VteU
+         ZVlg==
+X-Gm-Message-State: AOAM531vD+7MssODwXDBKN90QLACrxxU89CwED+ecTGNLEJI6ft4lD2i
+        ecnpeZxqRVR5n/C2iHD2SxFZs5yiLFnl3XEKlHQ=
+X-Google-Smtp-Source: ABdhPJykqN6yybQfaT0kT/1JcofcZUp4wlVhtJ/gATn7SS5XA0pfx+GW8LgTxWINZerrn1yMSBF81skqvw8cEBrK9Sg=
+X-Received: by 2002:a25:e549:: with SMTP id c70mr10839900ybh.339.1642496638937;
+ Tue, 18 Jan 2022 01:03:58 -0800 (PST)
+MIME-Version: 1.0
+Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:03:58
+ -0800 (PST)
+Reply-To: asil.ajwad@gmail.com
+From:   Asil Ajwad <graceyaogokamboule@gmail.com>
+Date:   Mon, 17 Jan 2022 21:03:58 -1200
+Message-ID: <CA+Yy_gCoV9jOYW1qG-5psBKMTZyzWOj2x6Pu5iusfy4TEMaBwQ@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Fri, 14 Jan 2022 15:59:06 +0900:
-
-> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-5.17-rc1
-
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/fe81ba137ebcc7f236780996a0b375732c07e85c
-
-Thank you!
-
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Greetings,
+
+I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
+an ATM Visa Card to withdraw money at, ATM Cash Machine in your
+country, if yes I want to transfer abounded fund the sum of $10.5million
+US-Dollars, to you from my country, this is part of the money that was
+abounded by our late old client a politician who unfortunately lost
+his life and was forced out of power Du to greedy act, the bank will
+
+change the account details to your name, and apply for a Visa Card
+with your details, the Visa Card will be send to you, and you can be
+withdrawing money with it always, whatever any amount you withdraw
+daily, you will send 60% to me and you will take 40%, the Visa Card
+and the bank account will be on your name, I will be waiting for your
+response for more details, thanks to you a lot for giving me your time.
+
+regards,
+Mr.Asil Ajwad.

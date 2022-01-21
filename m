@@ -2,128 +2,109 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F097B495B85
-	for <lists+linux-ide@lfdr.de>; Fri, 21 Jan 2022 09:02:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7F7495C35
+	for <lists+linux-ide@lfdr.de>; Fri, 21 Jan 2022 09:45:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379345AbiAUICd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 21 Jan 2022 03:02:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379221AbiAUICc (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 21 Jan 2022 03:02:32 -0500
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED671C061746
-        for <linux-ide@vger.kernel.org>; Fri, 21 Jan 2022 00:02:31 -0800 (PST)
-Received: by mail-yb1-xb36.google.com with SMTP id g14so25188697ybs.8
-        for <linux-ide@vger.kernel.org>; Fri, 21 Jan 2022 00:02:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to:cc;
-        bh=8eAbY9ESXpy1tWEm1ucKW/quoE20o1cXtY1MXERpUFg=;
-        b=LkYHOVNcq3jRonNMS/pBXZ+pg0J8ShfaMFVp0USzQCYZaz8De1fwRbSlAwZtAZ3VEV
-         9cIv0Kj2tutO333jjA4NIst5Q2naydPqdXLOoZpat4tMaJQoP+O6/wZohKotJJ4MaGJe
-         ZjOJrS7eTR6KEWXLkEp80oJ5V994BGF9lrK3BBNI3jWzbs2qviv48yG8dzKKpej3SBPh
-         /CzhuHukdyhmNc3vwITOhsrHKfTXZlAsKpfEpY84gtG3affogdaOdfHkocHRqQsg5FOM
-         d5boP+jdJW2pevcTl1mbs1cmGaoznLvuhbyM3SmvzHoh37vEr7hE35j4Eh82S6bY1Oq/
-         kuKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
-        bh=8eAbY9ESXpy1tWEm1ucKW/quoE20o1cXtY1MXERpUFg=;
-        b=GUkMxeAMXsH5UZlLC+w9ZzP6mSPil+tXIOoDH6TF4Y3A44WHK+joGnHH7a8kCRVPkO
-         NF3sUWB4ojeTGdqHljMvQYi+aV7D+lE2zrUkrKUJCVMOn/g5wHf18EWYMmS3ln1AaFW6
-         w41Z7/zo6NeU1mH4LFKqtlQxgcortFf8Fujd+UFEOxMYTp1S9ldBJAvWXkFmLe4Iy/xK
-         O+sdt/cTyPYNitV90RC9+pI1WLNDAUgaXipvPfAlnlBooCIx8bQHj+fFVfs7JbS7lZeV
-         8ynjDXwTIfXjzicTzyKzvnuH2Vzb6Wh9I3lKEDYzQiUoWplOGqlXZ7v49/RQNO0EJqPp
-         5sEQ==
-X-Gm-Message-State: AOAM533r2k5oHAumdGSga715m8E3/xxNMddtVEWe5N2gWA5pnCiWmWrj
-        oMmiDfooZnAVJ4h/iRJuFWSGORP+IxXRRCr7aokTpWdZoh0=
-X-Google-Smtp-Source: ABdhPJzo0aPT+cevuAp8IgTaHWcxV/LmH8ev7zl4LJwrjRuwL0xMdQAGfBpvmudWajtB5cu2GNdVcFcLyHofDKdaqYk=
-X-Received: by 2002:a25:9082:: with SMTP id t2mr4230805ybl.684.1642752150679;
- Fri, 21 Jan 2022 00:02:30 -0800 (PST)
+        id S1349083AbiAUIo7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 21 Jan 2022 03:44:59 -0500
+Received: from esa5.hgst.iphmx.com ([216.71.153.144]:15678 "EHLO
+        esa5.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1379642AbiAUInT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 21 Jan 2022 03:43:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1642754598; x=1674290598;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mGsCY6kp93h2hKCHyeJMKzpZRBcoPAiiYRKVIrpmDQE=;
+  b=agB1qbSt6DENFaG4oegAu2mztfIVC2U6evwKcTe2f2gnsjJHmMs1OL3o
+   C4ch8mY++XzMkAEB6pGUdwE/8pTmK6JNvVUOGNjlW7O/e26KAB4a8tgUa
+   2b8j6ntqW4VgDMTb/ztGhdV14KT/jPKaATV97AILX6q0rwBFzzBeTbWZh
+   W8rbtzWXa3SF4ei+P/xLttkVi+s4rMO0+iNXx6l1nZSwHPxNpUYuvRg3n
+   pN1MFrLWpm+d+to6pj/u11n9SfXm6SHmCvPi2NhGDBjwiS7qlne/V2tMh
+   u+euTUe7yyb48skmtbxGd/xJ5j3uvY6u6Z7ig/cRWXVXLiZ3fxUtEBzqX
+   w==;
+X-IronPort-AV: E=Sophos;i="5.88,304,1635177600"; 
+   d="scan'208";a="191026946"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 21 Jan 2022 16:43:17 +0800
+IronPort-SDR: k6kAVmaI0d9hTLTVzOM908mDqTMmxH0YS4lBij/Wz4z734sugUvf9cdzz558T8UVsSCkWINSVl
+ NiURaJlhWX9fEALK87Aslo4FuRTFZxrjUd7wC5PnsLa9jCzeGhJsECmyJT/3nMcwZHzAVf0r7G
+ 9Ez/JJ1CeaWelA9tJ3nxcCxMtfwMjB/4LxOKTKm59XB6T41YzqWSnR5aoqJgQnhpZ0CYk5X32J
+ oHQWUv2kQyGsTwCkEWxyssT2e6ic62Papxezd7cJNFG9Rsna0St8fqceIlNDsB8v/PVnf9Nxn0
+ 0OxUwiJjDYsw4Xsuvl0YTTSh
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2022 00:16:45 -0800
+IronPort-SDR: zrXzSHkTSg6JvncyPbsFS7IBYgMQDOweDMOJaTEkYyQbgXCMoNeVwDgAcC/79U6AURYlOb432f
+ 4dXhscFgrXGZVDxn5fTUieU4ypTq3MAZV2Dr39PL3af46DFead0YxSwNa0qY2TwT5xuTHDCPDR
+ LAftjejkpX/rxv1fnkrFTToA/VmpWQTP/XFCDEBb1VDRNKLByHpjX92J5wGutZwXdHAuMuxfKM
+ Ymb+fwWOQJtt9hMCxm3PGsiPSUORMftJEcIG36aKLwtyK4VisYmThh2e+OsuyDTkJ9mm/Aq0t7
+ ado=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2022 00:43:18 -0800
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JgCL85ZYhz1Rwrw
+        for <linux-ide@vger.kernel.org>; Fri, 21 Jan 2022 00:32:32 -0800 (PST)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:mime-version
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1642753952;
+         x=1645345953; bh=mGsCY6kp93h2hKCHyeJMKzpZRBcoPAiiYRKVIrpmDQE=; b=
+        IrvzRAO6C5RcmmqvZEHkeGaAgK7xw9r7Jih9Tgjv2Ine0SRuEVSELaU1AsvmjeNx
+        ODec1isqFAHVg6FxsPBi5DOy0Df39ZQdsWih/rmItAM0pUYh5w1WmTXZJgKuKLNw
+        NAE8qpuU2hLGhN1u0nlXVM3UnwQoX+lUYJsSZT85cftNXKX6fCE7x/yPXlzZZmGu
+        tFMv4EZ8rN9xH4dNMM++wEAaZf2qgPO/MxWzY6zHDVYXBgZ1cyREX0wmpQwJrida
+        yX4KPd4Gh/udPLrO8QvLiSP9zpHIzi6X5lNCdWlaooXr1yNGbeCupzQJPktt9jVB
+        rHXZP/EAXRDauLZPeF6NFQ==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id KIQkm-fVPYQO for <linux-ide@vger.kernel.org>;
+        Fri, 21 Jan 2022 00:32:32 -0800 (PST)
+Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JgCL74hsjz1RvlN;
+        Fri, 21 Jan 2022 00:32:31 -0800 (PST)
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+To:     linux-ide@vger.kernel.org
+Cc:     Hannes Reinecke <hare@suse.de>, linux-mips@vger.kernel.org
+Subject: [PATCH] ata: pata_octeon_cf: fix call to trace_ata_bmdma_stop()
+Date:   Fri, 21 Jan 2022 17:32:28 +0900
+Message-Id: <20220121083228.969805-1-damien.lemoal@opensource.wdc.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 21 Jan 2022 13:32:19 +0530
-Message-ID: <CA+G9fYtq0wzSeG8YG-a+=KrbdWqHJMXk1hvq0FKeAvj9sZAK2g@mail.gmail.com>
-Subject: [next] mips: cavium_octeon_defconfig: pata_octeon_cf.c:598:23: error:
- passing argument 1 of 'trace_ata_bmdma_stop' from incompatible pointer type
-To:     "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        linux-mips@vger.kernel.org,
-        Linux-Next Mailing List <linux-next@vger.kernel.org>,
-        regressions@lists.linux.dev, lkft-triage@lists.linaro.org
-Cc:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Zeal Robot <zealci@zte.com.cn>,
-        Minghao Chi <chi.minghao@zte.com.cn>,
-        CGEL ZTE <cgel.zte@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Linux next-20220106..next-20220121 mips build failing with gcc-10.
-
-drivers/ata/pata_octeon_cf.c: In function 'octeon_cf_dma_finished':
-drivers/ata/pata_octeon_cf.c:598:23: error: passing argument 1 of
-'trace_ata_bmdma_stop' from incompatible pointer type
-[-Werror=incompatible-pointer-types]
-  598 |  trace_ata_bmdma_stop(qc, &qc->tf, qc->tag);
-      |                       ^~
-      |                       |
-      |                       struct ata_queued_cmd *
-In file included from include/trace/events/libata.h:10,
-                 from drivers/ata/pata_octeon_cf.c:22:
-include/trace/events/libata.h:414:33: note: expected 'struct ata_port
-*' but argument is of type 'struct ata_queued_cmd *'
-  414 |       TP_PROTO(struct ata_port *ap, const struct ata_taskfile
-*tf, unsigned int tag),
-      |                ~~~~~~~~~~~~~~~~~^~
-include/linux/tracepoint.h:342:34: note: in definition of macro
-'__DECLARE_TRACE'
-  342 |  static inline void trace_##name(proto)    \
-      |                                  ^~~~~
-include/linux/tracepoint.h:419:24: note: in expansion of macro 'PARAMS'
-  419 |  __DECLARE_TRACE(name, PARAMS(proto), PARAMS(args),  \
-      |                        ^~~~~~
-include/linux/tracepoint.h:542:2: note: in expansion of macro 'DECLARE_TRACE'
-  542 |  DECLARE_TRACE(name, PARAMS(proto), PARAMS(args))
-      |  ^~~~~~~~~~~~~
-include/linux/tracepoint.h:542:22: note: in expansion of macro 'PARAMS'
-  542 |  DECLARE_TRACE(name, PARAMS(proto), PARAMS(args))
-      |                      ^~~~~~
-include/trace/events/libata.h:413:1: note: in expansion of macro 'DEFINE_EVENT'
-  413 | DEFINE_EVENT(ata_exec_command_template, ata_bmdma_stop,
-      | ^~~~~~~~~~~~
-include/trace/events/libata.h:414:7: note: in expansion of macro 'TP_PROTO'
-  414 |       TP_PROTO(struct ata_port *ap, const struct ata_taskfile
-*tf, unsigned int tag),
-      |       ^~~~~~~~
-cc1: some warnings being treated as errors
-make[3]: *** [scripts/Makefile.build:289: drivers/ata/pata_octeon_cf.o] Error 1
-make[3]: Target '__build' not remade because of errors.
-make[2]: *** [scripts/Makefile.build:572: drivers/ata] Error 2
+The first argument of trace_ata_bmdma_stop() must be a pointer to a
+struct ata_port, not to a struct ata_queued_cmd.
 
 Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Fixes: d3e140f2b008 ("ata: pata_octeon_cf: Drop pointless VPRINTK() calls=
+ and convert the remaining one")
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+---
+ drivers/ata/pata_octeon_cf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-metadata:
-  git branch: master
-  git repo: https://gitlab.com/Linaro/lkft/mirrors/next/linux-next
-  git describe: next-20220121
-  kernel-config: https://builds.tuxbuild.com/23zIBGjQZgIYW8OnGcYjwWlj40X/config
-  build: https://builds.tuxbuild.com/23zIBGjQZgIYW8OnGcYjwWlj40X/
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 0912846bc1b0..05c2ab375756 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -595,7 +595,7 @@ static unsigned int octeon_cf_dma_finished(struct ata=
+_port *ap,
+ 	union cvmx_mio_boot_dma_intx dma_int;
+ 	u8 status;
+=20
+-	trace_ata_bmdma_stop(qc, &qc->tf, qc->tag);
++	trace_ata_bmdma_stop(ap, &qc->tf, qc->tag);
+=20
+ 	if (ap->hsm_task_state !=3D HSM_ST_LAST)
+ 		return 0;
+--=20
+2.31.1
 
-# To install tuxmake on your system globally:
-# sudo pip3 install -U tuxmake
-#
-# See https://docs.tuxmake.org/ for complete documentation.
-# Original tuxmake command with fragments listed below.
-
-tuxmake --runtime podman --target-arch mips --toolchain gcc-10
---kconfig cavium_octeon_defconfig
-
---
-Linaro LKFT
-https://lkft.linaro.org

@@ -2,83 +2,115 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 578FE49ED28
-	for <lists+linux-ide@lfdr.de>; Thu, 27 Jan 2022 22:11:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD7C49EEDE
+	for <lists+linux-ide@lfdr.de>; Fri, 28 Jan 2022 00:35:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344318AbiA0VLB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 27 Jan 2022 16:11:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344281AbiA0VLA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 27 Jan 2022 16:11:00 -0500
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 215D7C061760
-        for <linux-ide@vger.kernel.org>; Thu, 27 Jan 2022 13:11:00 -0800 (PST)
-Received: by mail-qt1-x82b.google.com with SMTP id j12so3302645qtr.2
-        for <linux-ide@vger.kernel.org>; Thu, 27 Jan 2022 13:11:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=wXM0hly6tyNlZq07rMipvtfpnu3wRqtV0B2JSV05g3E=;
-        b=m0D8ivz9PDCDCKh/arptMpR3/ao+LhFd+WDbL0Ndw6mZAYZf1UgxGLzVj40s+AmZjb
-         DuEwjd7NT9LFwA9OjKx7vr7puLYpS6zkJNbh+1BfuQgx4db+dU06Jgc7C75K093Hwjn/
-         9mCc5rYI5j3y1VvMx9vpxL5dad+OafMT9QhIQgFRN9dvv+QgByQ7o1yzKGSP02L54Znm
-         q7FBXWGkelfiR3xpWnnkdKDqg2UlG70uCnsM1s4SP7cRlEb+IJNQAjeVKHpZy42mZonq
-         RnHAdJAaDrxUHvlQWr6CsD5rnkBvpJUkcJOYzRgUFr/Bb7DCHALpPY9Ux9K4Rjywr0lt
-         YgYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=wXM0hly6tyNlZq07rMipvtfpnu3wRqtV0B2JSV05g3E=;
-        b=kOUaAk4oGMGUwpgjtvFu/fpx8+fjrOm/sDncgdwyZMUSsyQyDcdcsp4YFqTHv8s1sr
-         7zBp5kzj8/Twa9BS+cpMF8nBuOgJ6RdbFL6tcAW6Wfiwi8Caqqfzu++5mPSPXBr/9cK8
-         1rSJdzyhv1Z6lvYUroaCBjIBij34iQ2Pbs4P1RK2IzJZHDBSIMVEOc/J/a3PGS31DqhJ
-         YyuyW2Si1HfrSkawqFctlqopd4ClON+0ofgFN1xbRIukUesPrI4ON+cX9g/AVPnsVEI/
-         4rLMBgNXDCfQ7pLIvG5WIftsCpQd17dG7CEFAIcufY8Ax580Dxyjve+PgMgS+3pMn+xI
-         eOuQ==
-X-Gm-Message-State: AOAM532aGN5tEjzmHhd6bmYNsDHiaAUa2NyvHqDkQenCbFO/RR298AwY
-        PWeyfZXbzjQxlovsMYpAoKiTk44vL6fOvLNQJ5w2gLmAYYE=
-X-Google-Smtp-Source: ABdhPJxjfwa8g49rNfb5xQ4Dtq316EM5E6QepnaR+uvM+BcTaI+qmB/caHz8VslukXXXqzp0798ys0wp0mZ+YQ4gMH8=
-X-Received: by 2002:ac8:4e48:: with SMTP id e8mr4202203qtw.64.1643317847801;
- Thu, 27 Jan 2022 13:10:47 -0800 (PST)
+        id S235128AbiA0XfW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 27 Jan 2022 18:35:22 -0500
+Received: from esa3.hgst.iphmx.com ([216.71.153.141]:19292 "EHLO
+        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230250AbiA0XfW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 27 Jan 2022 18:35:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1643326487; x=1674862487;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=lIn9F6tbU5dCL18U1bWkAMrNx14lJRwzgnQRoH+z5lM=;
+  b=iGABwD9RwPgKgLUA67dK67x+UtGrOyL3IOb6JzxJ1rmozS2jeoVadnW5
+   hal+N+b5eMlXo8LXYq05MWN3RaRuXwBtIJfTVTe+0cUUVJeX7Wpzto5Jc
+   ZRlq/iM9OSz9ATZ5rQlUgAKdYmzfFvKjyqUyReTGmu1YC0sgVKL+mIzA/
+   gVjEy7C/U5IWr5zCGGXoP5vSMJk9MUzAVEoTNx2C33S9sJftu14kNpZ5P
+   ZIzz9tx9TBDJVpkkKXgIwEwYVdxG86Aqcxvh+69fBVFDcs/5kkyhm0ga5
+   Jr0ivHv22rYltO3JDnShjfTudRR1nqsDz0WeTxa6KdTz+B+imJmHKV8lD
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.88,321,1635177600"; 
+   d="scan'208";a="196377339"
+Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 28 Jan 2022 07:34:47 +0800
+IronPort-SDR: m1cS/RjPhFfnfodsZroKbwa+Uq36nkOOr7tlQKNjI6dQOtz7TvkfnSrgv3FNWyT4DH8VqFl21H
+ yKnI7WV4jvC1QD7YJ0VF+hs8fhku+xYns5cQMLSliWzzbHli3aviWGFX7QPdxhw9rL9H121Xgy
+ d/ZSYVv6MbwOm5dozV3P5jJij1B5ftOyGhJovngLutfrX9U6D5Qcj7yUTANhfshRbE+UeUHMNR
+ a4f7ZgJ3N0lJ6K2nz3Y5e1J6YiF19r51RdZmXW7+H0+z8y9v7uDUnX8l8tG9ktUD/XcuYNSz9l
+ Mpuju2CpgkxlR7BJVtLCBc27
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 15:08:39 -0800
+IronPort-SDR: YKuGt2X5Ia8ymHM9p4V3gRC3ca/AtFW9ndeNhcQDYXpkTkRBSWR2jqLZXruj27W73MzfrYKQ1v
+ e45sKovzLrS73lO1wEyiLd2D673iz5XKwTEOM0gaTMkGeCHk8GW64XA1NGkhaLDx30lxHLzbEz
+ DyqrpwuOOM4zbOGYccjlMNm6E5By9hkggQpzIOPsCh7rPcJw0/nV+IkyRna3DXtchRSuiKHJW0
+ whlhdHbFvSncZU/51Bi550WbGn5qK/EL6Qg4qvzxQVIFESsQu54a0rp3lMUQIXestlmGO0IHGd
+ mrY=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2022 15:35:22 -0800
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JlH5513Mwz1SVnx
+        for <linux-ide@vger.kernel.org>; Thu, 27 Jan 2022 15:35:21 -0800 (PST)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :in-reply-to:organization:from:references:to:content-language
+        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
+        1643326520; x=1645918521; bh=lIn9F6tbU5dCL18U1bWkAMrNx14lJRwzgnQ
+        RoH+z5lM=; b=lPB+JmN9H2LqGIWiz6dWXQTL8sxMYqXJBysXCdxv63nlGPdk0tE
+        Dbt2enVTwCnTltabzktzOlxRQbF4llCXvfctzgCtyWFuGF8H+C+w5fquGK8Q6+ti
+        ONaNOCdjYO+NZqZjjOVhcDtmf21HjQWYJXYpI1ko7OmSFpTwQTmqTDCHdHLdOcoB
+        VSlf5w9u61wY5c/OWsg92kUqGy6LOsNfl/64lzVt/qS+bEaHbp90lIy6LFj0YjTS
+        K5D3/UElJkm4YAsgZgqTLlreahxcQczwe756V2NbzvpCQO8INpYYi1tel/VUDOWT
+        OA8owGFPIU1qT6LowbHX3DVHMWhx4NAeQlQ==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 7kwqvwOpq3Yf for <linux-ide@vger.kernel.org>;
+        Thu, 27 Jan 2022 15:35:20 -0800 (PST)
+Received: from [10.225.163.58] (unknown [10.225.163.58])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JlH532nmqz1RvlN;
+        Thu, 27 Jan 2022 15:35:19 -0800 (PST)
+Message-ID: <1f29cbb4-9887-d2e9-20a3-af1ae9c3c599@opensource.wdc.com>
+Date:   Fri, 28 Jan 2022 08:35:17 +0900
 MIME-Version: 1.0
-Received: by 2002:a05:6214:e4b:0:0:0:0 with HTTP; Thu, 27 Jan 2022 13:10:46
- -0800 (PST)
-Reply-To: eanna00111@gmail.com
-From:   Mrs Anna Edward <mussaaliooooo7@gmail.com>
-Date:   Thu, 27 Jan 2022 13:10:46 -0800
-Message-ID: <CAFbf-n2dj0f-EXo2OhZA4D_6QXVYoysuMB5_+AOQv9Sb_nGe0w@mail.gmail.com>
-Subject: Urgent Reply
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH] ata: pata_platform: Make use of platform_get_mem_or_io()
+Content-Language: en-US
+To:     Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        linux-ide@vger.kernel.org
+Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>, linux-kernel@vger.kernel.org,
+        Prabhakar <prabhakar.csengg@gmail.com>
+References: <20220117020134.3279-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital Research
+In-Reply-To: <20220117020134.3279-1-prabhakar.mahadev-lad.rj@bp.renesas.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Greeting to you,
-Please forgive me for stressing you with my predicaments and I sorry
-to approach you through this media because it serves the fastest means
-of communication. I came across your E-mail from my personal search
-and I decided to contact you believing you will be honest to fulfill
-my final wish before I die.
+On 1/17/22 11:01, Lad Prabhakar wrote:
+> Make use of platform_get_mem_or_io() to simplify the code.
+> 
+> While at it, drop use of unlikely() from pata_platform_probe()
+> as it isn't a hotpath.
+> 
+> Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> ---
+> Hi All,
+> 
+> This patch is part of series [1]. Just sending this lone patch
+> for now.
+> 
+> [1] http://patchwork.ozlabs.org/project/linux-ide/list/?series=278349
+> 
+> Cheers,
+> Prabhakar
 
-I am Mrs Anna Edward, 63 years, from USA, I am childless and I am
-suffering from a pro-long critical cancer, my doctors confirmed I may
-not live beyond two months from now as my ill health has defiled all
-forms of medical treatment. Since my days are numbered, I have decided
-willingly to fulfill my long-time promise to donate you the sum
-($5.000.000.00) million dollars I inherited from my late husband Mr.
-Edward Herbart, foreign bank account over years. I need a very honest
-person who can assist in transfer of this money to his or her account
-and use the funds for charity work of God while you use 50% for
-yourself. I want you to know there is no risk involved; it is 100%
-hitch free & safe.
+Applied to for-5.18. Thanks !
 
-If you are interested in assisting in getting this fund into your
-account for a charity project to fulfill my promise before I die
-please let me know immediately.
 
-I will appreciate your utmost confidentiality as I wait for your reply.
-Best Regards,
-Mrs Anna Edward
+-- 
+Damien Le Moal
+Western Digital Research

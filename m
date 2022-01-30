@@ -2,66 +2,101 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3414A33C4
-	for <lists+linux-ide@lfdr.de>; Sun, 30 Jan 2022 05:28:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B1814A36A4
+	for <lists+linux-ide@lfdr.de>; Sun, 30 Jan 2022 15:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354176AbiA3E21 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 29 Jan 2022 23:28:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38058 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354180AbiA3E2Y (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Jan 2022 23:28:24 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C344C061714
-        for <linux-ide@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id i10so30409881ybt.10
-        for <linux-ide@vger.kernel.org>; Sat, 29 Jan 2022 20:28:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=QI2firgHOSt+2ZiRAEUqBnRqfCndbuygIyUz1kdYlPzS6AXkdk+mfMubksdM+6U8hJ
-         A4UbXdfo0bhasYFmsw5ceBBj4ub2bgaEqkI+Cp5foQd/M11l9HiEax3hX9+hB29fNDF1
-         4XtAbOKK0Jrn48roHo8mUNvKaz7FG0Csy4DWdnw8Q+/oXs7GbWFZBjN+ifwhy6Rfe8k0
-         Pzhs5uXUX+5v6iQyGpPCJWV84GisQUz+5cfOraMc3PalgV6vYI9t2Z4JMkhIMshepKV2
-         BM+Zj3o1QTUTRt1Kxwo+5vz+cvvR7n44irHUjPq0LbDCW52O0lwQK7qPtMHxw7vn0Id9
-         5U2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=B5teSI3NqSzeGu7ngV/22RiyR60khzQ8THYZDZ9DX3Q=;
-        b=Os/TCvXholAKclLO1e7VZTeZfRcOkVvCMz5QdXV0UxXS9pAh7WNBiT94ODy/01RK7V
-         NhKzxRnvExiDM0ykFQD/TwvHmZqm1hDZXmAFpIlu4Eg1Av7Ng+M4oBTXjMzlVx/ecJjI
-         /ECQQz+TTzDFj2K9zepmUJP/pimDJtNhboKbmbsJchgqCRHNrKCVDougea9sluR6QAzB
-         RlemFnQohRXNR25BLqOWKf1W0txfY+mdkzNwHO2rJoJaCQ9b+rcrC+ILEMjfmTWfO2M+
-         jY5oBsDR7XqQwv3rus8QAchD6bo6X+RGq/ztmqvu+q5SGUx4NBm0mPBTDxDMk+W7q8ZN
-         f5hg==
-X-Gm-Message-State: AOAM532mk9dbQm+Onwzz2d1V3rBpdq5p51RCh9sGz4I7oAwGHMDT6ExO
-        uJpZGY+pvltaAO/f8K6S9sxaOlEuvKIcCbq9KPrxVNCC7K8=
-X-Google-Smtp-Source: ABdhPJz3bgso8viJFkNwiW8XigzdjL6JZBPDE3NfxKOCgEqvWjdU/qagorQKM5joSRLXylFmq9/zlHP85rUYuZ5fTGQ=
-X-Received: by 2002:a25:6d45:: with SMTP id i66mr23246397ybc.352.1643516893721;
- Sat, 29 Jan 2022 20:28:13 -0800 (PST)
+        id S1354942AbiA3O2J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 30 Jan 2022 09:28:09 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:58628 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1354983AbiA3O2I (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 30 Jan 2022 09:28:08 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FBD8611D8
+        for <linux-ide@vger.kernel.org>; Sun, 30 Jan 2022 14:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BA9C340E4;
+        Sun, 30 Jan 2022 14:28:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643552887;
+        bh=27sqBmKS4PU2icWmTRabtJ1Hds/a1W1eCsg6meiL/nE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LX9tqdhlWC90SE+2LHK+mUARpOZlfAgE3MAB5ERPHLx6uzWMED0dlIUIlzGFhUSIE
+         s+/8WGiE/kRJATiSs+HZnf1Gx4Jfe/O8YsWy4Xu3a7DHPdUwUnwEWvIv6mYza5g6cI
+         Np67H6EkxK5GDn9EEytHKnPdk0S1SjY1x26A4p3X+uTNmEvjiq/UBGimxwD5w3XraG
+         ahraOqmXJYfzKxT3RVqPSI5oyws2q6gmhspPcTkEwd2Zu9w1+oZG8/pRJY4OdYtat0
+         sVFd7lpgPsbC4sqf6Lr7Ehwbm+1yX9thhqaSwi9n49BfeYZS0ivq7gcsp3n1Kk+n27
+         QMa3XYkZcVeyw==
+Date:   Sun, 30 Jan 2022 09:28:06 -0500
+From:   Sasha Levin <sashal@kernel.org>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        linux-ide@vger.kernel.org
+Subject: Re: [GIT PULL] Revert ata fix for 5.17-rc2
+Message-ID: <YfagEeprzcZnbWjg@sashalap>
+References: <20220128121008.46586-1-damien.lemoal@opensource.wdc.com>
+ <CAHk-=wj2uzk6iKhu2qnOOAqaT6pQ99oaY89RvEmAqHS1XP1rvQ@mail.gmail.com>
+ <YfTluSca/ye+lmrn@kroah.com>
+ <CAHk-=wjAajZDJoqy93DVLQ+ZJQ+w1ScCxsnS-ELdL12kqYM_Gg@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7010:2312:b0:201:cd76:102e with HTTP; Sat, 29 Jan 2022
- 20:28:13 -0800 (PST)
-Reply-To: mrs.bill.chantalone01@gmail.com
-From:   "Mrs.Bill.Chantal" <grassroot309@gmail.com>
-Date:   Sun, 30 Jan 2022 05:28:13 +0100
-Message-ID: <CAO3iUMDzg_ZovNWXtuQhU6sDXk7LsNwvNc2pOb7zvX7pPCdMAw@mail.gmail.com>
-Subject: Hello....
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wjAajZDJoqy93DVLQ+ZJQ+w1ScCxsnS-ELdL12kqYM_Gg@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-You have been compensated with the sum of 9.5 million dollars in this
-united nation the payment will be issue into atm visa  card and send
-to you from the santander bank we need your address and your
-Whatsapp number  + 1 6465853907  this my email.ID
-( mrs.bill.chantal.roland@gmail.com )  contact  me
+On Sat, Jan 29, 2022 at 09:07:14AM +0200, Linus Torvalds wrote:
+>On Sat, Jan 29, 2022 at 8:59 AM Greg Kroah-Hartman
+><gregkh@linuxfoundation.org> wrote:
+>>
+>> It's up to you all, if you think the patch is correct, keep it for now.
+>
+>In the fixed form (ie with Damien's fix for the wrong test polarity),
+>it's certainly not wrong, and matches a lot of our standard patterns -
+>including our documentation in
+>
+>    Documentation/driver-api/driver-model/design-patterns.rst
+>
+>I did a quick visual grep, and all the cases of
+>devm_kzalloc(..GFP_KERNEL) I grepped for did indeed have that "if
+>(!..)" error handling pattern for the return value, including other
+>cases in the ATA subsystem.
+>
+>That was very much a "quick visual grep" though, so no guarantees, and
+>I stopped looking after it was so obvious. IOW, it was just a
+>
+>   git grep -1 devm_kzalloc.*GFP_KERNEL
+>
+>and then looking at the output and saying "yup, they all seem to do
+>that allocation failure test".
 
-Thanks my
+I think that in this case the issue isn't the correctness of the
+devm_kzalloc() allocation test itself, but rather the context in which
+it's made in:
 
-mrs bill chantal
+         host = ata_host_alloc(dev, 1);
+         if (!host)
+                 return -ENOMEM;
+         ap = host->ports[0];
+
+         ap->ops = devm_kzalloc(dev, sizeof(*ap->ops), GFP_KERNEL);
+         if (!ap->ops)
+                 return -ENOMEM;
+
+My reading of ata_host_alloc() is that it allocates a refcounted 'struct
+ata_host', but due to how we handle the failure of the following
+devm_kzalloc(), we will never invoke ata_host_release() because the ref
+won't be dropped anywhere.
+
+So yes, the patch looks correct in the context shown by the patch
+itself, but once we look at the entire function I think it's incorrect
+(or, at least, I would expect more reasoning beyond "the static checker
+told us so" around why it might be correct in the patch message itself
+if I'm wrong).
+
+-- 
+Thanks,
+Sasha

@@ -2,114 +2,90 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8934A50C1
-	for <lists+linux-ide@lfdr.de>; Mon, 31 Jan 2022 22:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6561C4A5194
+	for <lists+linux-ide@lfdr.de>; Mon, 31 Jan 2022 22:38:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238696AbiAaVFz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 31 Jan 2022 16:05:55 -0500
-Received: from mxout02.lancloud.ru ([45.84.86.82]:46284 "EHLO
-        mxout02.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231445AbiAaVFy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 31 Jan 2022 16:05:54 -0500
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru E420720C90CA
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: Re: [PATCH] libata: ata_{sff|std}_prereset() always return 0
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        <linux-ide@vger.kernel.org>
-References: <d63ddc77-ddc8-d15a-030f-592cece64742@omp.ru>
- <4c79f0c7-a147-f371-5c06-28a0827bbea2@opensource.wdc.com>
-Organization: Open Mobile Platform
-Message-ID: <59ce902d-74a2-aeb3-663e-de5a2bb70625@omp.ru>
-Date:   Tue, 1 Feb 2022 00:05:44 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        id S1381097AbiAaViZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 31 Jan 2022 16:38:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51536 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1381137AbiAaViK (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 31 Jan 2022 16:38:10 -0500
+Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 103B8C061401
+        for <linux-ide@vger.kernel.org>; Mon, 31 Jan 2022 13:38:10 -0800 (PST)
+Received: by mail-oi1-x243.google.com with SMTP id q8so14908275oiw.7
+        for <linux-ide@vger.kernel.org>; Mon, 31 Jan 2022 13:38:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
+        b=dEuqzCa7Zlz6s4mRGbRbRWXXanD59qsT+xmKk7tBbCVL8shmNgt9pnuL3r3GZQALql
+         Y63DqHUGCnZO0yzAtzp7ZNS2CuC8pMKUMaMtNqE3s9gB45FDt9/C7CdeYDqwmv7HZJbj
+         h6fZit5aG7dGp8FvXKTscfcGshyIKAGZl/Y4NFvWe+GDkg5MDDBzPsbgzyvzZ7B1mfX4
+         ltlQ0tRJrdsWlCdvxMPpvS+PhwNDM1Zp7MYHnfnHzWMTP4bbhrhxbQSB0Xw9LPR0gSp/
+         L2Vas/DZH4ZiZyplfhihUfOHaOD2GjtH1tg3ZI6lVgxDcwRnl8d4U3qCI5tj+07J/ZXk
+         SzvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
+        b=MheYj8b7Q7sQjyUgvpS3pgSLRoRPSPinpezCxNbE45iMTI8tJdXCqIEeODN6jqzEYN
+         y1Y6w1+CQ5xUh6ed8HtaeQFnzlEtpO2ADEyZoncGArQ6Lng/oQekbmdsYaqOM0HGJxE9
+         E/wbUFZU8KcriXYjUaIRoxmi//PZLCRm1jNmxW+zH9KRWokA4h3Lvh2isxzxqYhi4OjE
+         ypNGZ57Jp+iZ6/EynRSJB7POqZlknvKc7RN6W6+n9eG4NqMf9wpab+6jzJ9ohSv2a7v/
+         pzLVvnImuOFmuJ6UQZamBcjzGytJdflWs1nP6PjlRQiVSlR+uFLi/izcI0k9uRf9N9rT
+         pqrg==
+X-Gm-Message-State: AOAM532gu7ZZLaksNZ04tVO4QOGdpM0B8VR1fjjTPK/XacOGOZb4VmKN
+        N4Che+eH/Zc2BGx1Kdmkg4Co+EdPq1K4znARhG8=
+X-Google-Smtp-Source: ABdhPJzjG4nHBnpm1YeRsvfpKVsM6nmNJIeFJaztEJrNHMe+iyJctx1iGavTAT23A2IhS4j6LtYbunRiUquAn1xj08o=
+X-Received: by 2002:a54:4490:: with SMTP id v16mr14818764oiv.157.1643665089421;
+ Mon, 31 Jan 2022 13:38:09 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <4c79f0c7-a147-f371-5c06-28a0827bbea2@opensource.wdc.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
- LFEX1907.lancloud.ru (fd00:f066::207)
+Received: by 2002:a4a:c30d:0:0:0:0:0 with HTTP; Mon, 31 Jan 2022 13:38:09
+ -0800 (PST)
+Reply-To: westerunion909@gmail.com
+From:   "Antonia Lloyd." <anthonylloydatmxxx04@gmail.com>
+Date:   Mon, 31 Jan 2022 13:38:09 -0800
+Message-ID: <CAExPwBBpihjV-rv_-+hYqb1WD3wpSWx81B_Q3ES15U3TXSPsyw@mail.gmail.com>
+Subject: Dear Email ID Owner.(USD$4000 IMF COMPENSATION FUND TO PICK UP TODAY).
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/29/22 8:24 AM, Damien Le Moal wrote:
+Dear Email ID Owner.
 
->> ata_std_prereset() always returns 0, hence the check in ata_sff_prereset()
->> is pointless and thus it also can return only 0 (however, we cannot change
->> the prototypes of ata_{sff|std}_prereset() as they implement the driver's
->> prereset() method).
->>
->> Found by Linux Verification Center (linuxtesting.org) with the SVACE static
->> analysis tool.
->>
->> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+The IMF is compensating all the email address that was funds as one of
+the ward win Victims and your email address and your name is among the
+listed one of approved to pay the sum of $3.6 million U.S Dollars. We
+have concluded to effect your own payment through Western Union Money
+Transfer for easy pick-up of those funds in good condition,$4000 twice
+daily,till the $3.6 million is completely transferred to you.We now
+need your information where we will be sending the funds,such
+as;Receiver name(Your full Name)address and phone number.Contact
+Western Union agent with this Email: ( westerunion995@gmail.com  ) for
+your payment fund.
 
-[...]
->> Index: libata/drivers/ata/libata-sff.c
->> ===================================================================
->> --- libata.orig/drivers/ata/libata-sff.c
->> +++ libata/drivers/ata/libata-sff.c
->> @@ -1708,16 +1708,14 @@ EXPORT_SYMBOL_GPL(ata_sff_thaw);
->>   *	Kernel thread context (may sleep)
->>   *
->>   *	RETURNS:
->> - *	0 on success, -errno otherwise.
->> + *	0 on success.
-> 
-> Well, since the function *always* return 0, I would just say so, since
-> "on success" can of imply that there may be failures.
-> Something like "0, always" would be better I think.
+Ms.Maria Zatto
+E-mail:westerunion995@gmail.com
+Telephone: +229 682 97 169
 
-   Agreed.
+Contact Ms.Maria,immediately you get this mail through western union
+email address above to enable her speed-up.your payment and release
+the $4000 dollars MTCN today for you to pick up the payment OK.
 
->>   */
->>  int ata_sff_prereset(struct ata_link *link, unsigned long deadline)
->>  {
->>  	struct ata_eh_context *ehc = &link->eh_context;
->>  	int rc;
->>  
->> -	rc = ata_std_prereset(link, deadline);
->> -	if (rc)
->> -		return rc;
->> +	ata_std_prereset(link, deadline);
-> 
-> I am not a big fan of such change. If ata_std_prereset is changed to
-> actually return an error, the above change would result in a bug...
-> 
-> What about fixing things properly:
-> 1) The ata_std_prereset comment says it: ata_std_prereset should not
-> fail, so let's make it a void function.
+You are expected to provide us with the details as prescribed below to
+enable safe and easy release of your funds today.
 
-   Hm... we can't, as ata_std_prereset() sometimes directly implement prereset()
-and pmp_prereset() methods and those should return *int*...
+(1)Your Full name:
+(2)Your Phone number:
+(3)Your Country:
+(4)Your Age:
 
-> 2) The only direct user of ata_std_prereset as the pmp_prereset port op
-> is libata-pmp.c, so let's just add a static function there that calls
-> ata_std_prereset and return 0.
-
-   I think you've missed 'ata_base_port_ops' also using ata_std_prereset()...
-
-> 3) ata_sff_prereset also always return 0. So ideally, we should also
-> make it void and have a wrapper for the drivers using it as the prereset
-> port op.
-
-   There are no drivers using it as a method -- only libata-sff.c does it,
-others have a wrapper around it.
-
-> But there are more places to change than for ata_std_prereset,
-> so not sure this makes the code cleaner. Worth looking into it though.
-> 
-> Thoughts ?
-
-   I think I'd like to keep my approach...
-
-[...]
-
-MBR, Sergey
+Thank you,
+Dr.Antonia Lloyd.
+Contact Dir.Western Union Money Transfer,
+Cotonou-Benin Republic.

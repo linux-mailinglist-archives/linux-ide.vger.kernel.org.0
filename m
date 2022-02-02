@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F1C74A7A64
-	for <lists+linux-ide@lfdr.de>; Wed,  2 Feb 2022 22:26:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D97334A7A7A
+	for <lists+linux-ide@lfdr.de>; Wed,  2 Feb 2022 22:30:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231336AbiBBV0m (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 2 Feb 2022 16:26:42 -0500
-Received: from mxout02.lancloud.ru ([45.84.86.82]:49968 "EHLO
-        mxout02.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbiBBV0m (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Feb 2022 16:26:42 -0500
+        id S232508AbiBBVav (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 2 Feb 2022 16:30:51 -0500
+Received: from mxout01.lancloud.ru ([45.84.86.81]:44902 "EHLO
+        mxout01.lancloud.ru" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1347588AbiBBVal (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Feb 2022 16:30:41 -0500
 Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru F321921F9C61
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru F30EB209C670
 Received: from LanCloud
 Received: from LanCloud
 Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH] MAINTAINERS: add myself as PATA drivers reviewer
 To:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         "Damien Le Moal" <damien.lemoal@opensource.wdc.com>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH]
 Organization: Open Mobile Platform
-Message-ID: <257fda81-c6a1-de07-c0db-5b4a3198835b@omp.ru>
-Date:   Thu, 3 Feb 2022 00:26:39 +0300
+Message-ID: <f0c50df2-c7a1-7037-9c5f-c74cbcb987ac@omp.ru>
+Date:   Thu, 3 Feb 2022 00:30:38 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
@@ -30,7 +30,7 @@ Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
+X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
  LFEX1907.lancloud.ru (fd00:f066::207)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>

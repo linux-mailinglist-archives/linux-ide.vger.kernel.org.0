@@ -2,81 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8A0D4AB424
-	for <lists+linux-ide@lfdr.de>; Mon,  7 Feb 2022 07:12:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D2384AB3CE
+	for <lists+linux-ide@lfdr.de>; Mon,  7 Feb 2022 07:12:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244094AbiBGF7P (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 7 Feb 2022 00:59:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58288 "EHLO
+        id S231468AbiBGF6O (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 7 Feb 2022 00:58:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350082AbiBGDR0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 6 Feb 2022 22:17:26 -0500
-X-Greylist: delayed 61 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 06 Feb 2022 19:17:25 PST
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40019C061A73
-        for <linux-ide@vger.kernel.org>; Sun,  6 Feb 2022 19:17:24 -0800 (PST)
+        with ESMTP id S237955AbiBGEJu (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 6 Feb 2022 23:09:50 -0500
+Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4E4C061A73
+        for <linux-ide@vger.kernel.org>; Sun,  6 Feb 2022 20:09:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1644203844; x=1675739844;
+  t=1644206989; x=1675742989;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=aTsgBI4Cz+RJ4Yn3w4NrVXmBgMpWMZItFE5CzDHNkA4=;
-  b=Fq+ZfrJK1it7lY322LfRtRkW915NNBBxJc/eZlulzenP0y11eCnK44ZJ
-   zJoBMReRso7UQB8Dq9X/X3crY9JupmO09T0wENTa08o69udy3+XzfZHvq
-   us8hnms0E+3BkNqxlD8JQgbamfuOnzV8xPpmLe9eEBhmt3pNNLUV9NlZ8
-   c8qexCcEF1BNV3V4QfA47HBtIgpFk3jXJ5T1SLWIUlQ1c56u+TnKjYD0K
-   cchEM7yESiXBYKlNalzDkfMPWBq88Li1zKhf2fszhuWgTklYAC9+1i3SL
-   fdZHoNtsuanEF01eOYqwBjMxvRFktoeiez5e79bqRuQaefGOXUFE5Ekwy
-   A==;
+  bh=Hh1z18OyVta4Mp612gkt5jiCsT3Ayzj32QuTGjSwW2M=;
+  b=kO8pkrflt5OPWDwDw0lXS9x43QLOSGGhrJpNkETq+x2hzfhOFHAcEFpf
+   WBUIyJ+fhSSO9ypH8LMtcLPfPIqvqh/i2tVH0q1eK9OsKR+e8whKOlBRo
+   9ncbX7E2lcGLIv1uBg+j+vnOFU8PdyR34lbMyYxc6JqSSdylyjZ/Yh6wb
+   mdOV9O9gedp0OjMQhNQnUb6eLIXfxCQuHk1psfdtSkYHx2rDNNn3svfcf
+   sF/u6zATc3na0/GQp7YEGRK29q/j1z0tUhnOItIGM2dZISIywVGp2Bh7x
+   tVBW8pU3rCkLQKfAgcRtYYmS6kYvOKH2CavOv/7QW52VBR5ZmGnhqy8Ds
+   w==;
 X-IronPort-AV: E=Sophos;i="5.88,348,1635177600"; 
-   d="scan'208";a="304196381"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 07 Feb 2022 11:16:19 +0800
-IronPort-SDR: wG5Spa0hLsayAnITK/RD99rmK3MYJabRe5UzzIgwblXVKY2L9mLsOr5VT2+C9Ioknyi7O/93KT
- 5WhikuY8bOlZqpogpdOYR83B/XoLjRM7VNSqxSsauxRIqqK3NVEMoVCfAHEAIBVFUwiGWfiurq
- 75SFCpg5I5mag/sditfTPkDIB3535kiwjrxRUuZCI4sRAZCf744MI8erxtEXImQDzvz8J3ArHh
- 5EqRNtzc46Ei2EyIp8OzxTKWuQbsq0P+vREOtLhe7RURFbAgWUirdH31V6W3sdznRqj7qRBpQ3
- OW8ot167LYXbY/8i8JAXKJas
+   d="scan'208";a="197110092"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 07 Feb 2022 12:09:48 +0800
+IronPort-SDR: xLBs+ZYq7saFU/fJu9TtPwIwPMt4848AEXB/JteO/SRcQrGN297S0Mlpsc8goMQ/KerBNvS4oN
+ OBABm2mJ9uSoHteu8qxxsQHjvS0ZkudtMFl5pgxww/1Laff2rSQm4r2XphL5czSfy4UtlfXPQz
+ JC8h+wsfuJc5j9bvI0PtpiNs35RP/UStN36SJ1McjivBZarA6phdhcbaqkX8dxXuHAqb8vaK3Y
+ Mt/1Kz2j3GVEqO4HdPpQJv5kTcIYDicEJ1X1l7gh8A8E8PxCkfhY5aREmzh7TkHSDRqWjNGBM4
+ dEErtFeepaMQ9E4S+2VxULs5
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2022 18:48:10 -0800
-IronPort-SDR: dA5tgSFgjl7LVrvO2TOCFi1IJf9feP0nbu1xm6c/s85TJrHfmMs7Wn5oYbSZiggGG7TQuREMqx
- /33sq4xvq1fq28gj5N9UyMQDAO0+x5lOemndD2RAJt3k3djEUWyvnfoCvA7V6sJZBViGGWsdmF
- vVvyRqaB79UmgbZLm6NgfHCnDaEard521l4THiAVQrEvDyXNDzFQjsZ3z6UY9bxqudF56D5kQ4
- /DLR0Tn9qg6cMJBju2v6T3gqvpvucYrMnZCy0zXnYwmwoI8Q2bAHVXogFiJy8pdp8hwrerm/XQ
- 1mo=
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2022 19:42:50 -0800
+IronPort-SDR: 38lTJlyogcM1iv7KwsFUtJ2q69Ickiva8qt8XhdrYLA9eWvT0MhZga2549x5PwQHb10wgTyTk7
+ ZDzyv5G/nvP73vKUCM+4rYsZIP+heIBonQFfEvML0pgyKRdaHLjIhMKAGjnkbtZbBiTMtCwSmR
+ ELpUEe7qKC08hg61FA9WzVeIrtiPggjFLtLjFy97/VrESJMC4Rn8XNr5wk+Ilxj4ywWx6XijIl
+ INMhdLSzjEWDFo6tHWO5cOpJVwD2K9epnc+TnUY4bu4ko9ZH1QYo/5kpGu4rBmPlurWSTm/S/7
+ 7Ms=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2022 19:16:19 -0800
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2022 20:09:48 -0800
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JsWWR1Wzvz1SHwl
-        for <linux-ide@vger.kernel.org>; Sun,  6 Feb 2022 19:16:19 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JsXj842cDz1SVnx
+        for <linux-ide@vger.kernel.org>; Sun,  6 Feb 2022 20:09:48 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:mime-version
-        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1644203778;
-         x=1646795779; bh=aTsgBI4Cz+RJ4Yn3w4NrVXmBgMpWMZItFE5CzDHNkA4=; b=
-        i21gec+Xqsu+MfCIqWH4jPUdE1LMbqLhx+/D3eYQTHA9Xy4J9oKijry7E4OGMBK+
-        NCbYYbLHpoalXvqPNYx2ikU8VRIxAWQCtsnp9o9kr80Yv/gpl4ekhyTd0BPeG1u8
-        mgOfkBYPflFOErEnyNN/cIg2GrR6B33wZHY9vWt6OX9nQYBQ2zp8tSbhuRvTWv0Y
-        EHSpvIbJPiSgrsylig6uEDnc1l7m7tOdU/8fsVapYL/DQfzZbZqI4tkpu16nKlFh
-        WQSQs3CTJ0wG1qPIjKaDXGRJ+PXB3h2lYjTSmcQ2VTskVDYzRpr7fh3hfqqj/zH9
-        yXA9xHn+wli9DUyFuj3+HQ==
+        :x-mailer:message-id:date:subject:to:from; s=dkim; t=1644206988;
+         x=1646798989; bh=Hh1z18OyVta4Mp612gkt5jiCsT3Ayzj32QuTGjSwW2M=; b=
+        pNJoK+1+gRZ+Zf5DUrBUQ9LECLzFOZCUoCOwvC5UtGnPaO9nmGT/OPl/r9cvu1HC
+        VgqlsxCMwkv2zFHV+VZTrqxrnNw3vkk4B2oaDLfY3yXLz+3pBOz11JPDfrT4Cfvo
+        3d+HlN0s/GiRRLs3Yb6OBLHsT+3iPV9keXbRHe9o5nbIoeMSR126qPu7ue60olLu
+        D773VZgRyq/vpxwnHZS9Q5/ZD4JNteg8ryin1c3sqmq+5MMk8P9iQUoHBeOUC+Jb
+        8fQqW5hH2/HsCjlpgsUXMYXl4Wcx4N9UrdKIpjMObHsSXIm2eTqyR22i2aqfIr2e
+        z2MKwoMMZJFJK0UBNCDTng==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id R_LIXzd1ZL-Q for <linux-ide@vger.kernel.org>;
-        Sun,  6 Feb 2022 19:16:18 -0800 (PST)
+        with ESMTP id 8EJwTa0kS5ZU for <linux-ide@vger.kernel.org>;
+        Sun,  6 Feb 2022 20:09:48 -0800 (PST)
 Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JsWWQ1HY6z1Rwrw;
-        Sun,  6 Feb 2022 19:16:17 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JsXj73xKNz1Rwrw;
+        Sun,  6 Feb 2022 20:09:47 -0800 (PST)
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 To:     linux-ide@vger.kernel.org
 Cc:     Hannes Reinecke <hare@suse.de>
-Subject: [PATCH] ata: libata-core: Fix ata_dev_config_cpr()
-Date:   Mon,  7 Feb 2022 12:16:16 +0900
-Message-Id: <20220207031616.944994-1-damien.lemoal@opensource.wdc.com>
+Subject: [PATCH v2] ata: libata-core: Fix ata_dev_config_cpr()
+Date:   Mon,  7 Feb 2022 13:09:45 +0900
+Message-Id: <20220207040945.950886-1-damien.lemoal@opensource.wdc.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
@@ -104,16 +103,21 @@ avoiding problems in the field with older drives.
 
 Fixes: fe22e1c2f705 ("libata: support concurrent positioning ranges log")
 BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=3D215519
+Cc: stable@vger.kernel.org
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 ---
- drivers/ata/libata-core.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+Changes from v1:
+* Removed error message in case of ata_read_log_page() error: that
+  function already prints a message in case of failure.
+
+ drivers/ata/libata-core.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index e1b1dd215267..88125990861e 100644
+index e1b1dd215267..ba9273f80069 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -2448,25 +2448,26 @@ static void ata_dev_config_cpr(struct ata_device =
+@@ -2448,23 +2448,21 @@ static void ata_dev_config_cpr(struct ata_device =
 *dev)
  	struct ata_cpr_log *cpr_log =3D NULL;
  	u8 *desc, *buf =3D NULL;
@@ -139,18 +143,12 @@ index e1b1dd215267..88125990861e 100644
 -	err_mask =3D ata_read_log_page(dev, ATA_LOG_IDENTIFY_DEVICE,
 -				     ATA_LOG_CONCURRENT_POSITIONING_RANGES,
 -				     buf, buf_len >> 9);
--	if (err_mask)
 +	err_mask =3D ata_read_log_page(dev, ATA_LOG_CONCURRENT_POSITIONING_RANG=
 ES,
 +				     0, buf, buf_len >> 9);
-+	if (err_mask) {
-+		ata_dev_err(dev,
-+			    "Read Concurrent Positioning Ranges log failed\n");
+ 	if (err_mask)
  		goto out;
-+	}
 =20
- 	nr_cpr =3D buf[0];
- 	if (!nr_cpr)
 --=20
 2.34.1
 

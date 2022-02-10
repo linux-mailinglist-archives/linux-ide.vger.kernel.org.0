@@ -2,53 +2,54 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2288A4B03BD
-	for <lists+linux-ide@lfdr.de>; Thu, 10 Feb 2022 04:07:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A00F4B03C1
+	for <lists+linux-ide@lfdr.de>; Thu, 10 Feb 2022 04:08:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231332AbiBJDHV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 9 Feb 2022 22:07:21 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:37812 "EHLO
+        id S232120AbiBJDIq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 9 Feb 2022 22:08:46 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231255AbiBJDHU (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Feb 2022 22:07:20 -0500
-Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26FBE2B273
-        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:07:22 -0800 (PST)
+        with ESMTP id S231760AbiBJDIp (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Feb 2022 22:08:45 -0500
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 09 Feb 2022 19:08:47 PST
+Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B3831EAD1
+        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:08:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1644462440; x=1675998440;
+  t=1644462526; x=1675998526;
   h=message-id:date:mime-version:subject:to:references:from:
    in-reply-to:content-transfer-encoding;
-  bh=HybhtefC308846jQWn/IctvlMxaMrSw/yHWx8EzS1iQ=;
-  b=AcKKSuCqY3CdhbyDG9bQNLt2EELTCk73hzM9QvgPFQkUSbZqAy0ng6Bv
-   7f5BvaZIhHJXjVSvFwSoxiQYmD3hPNN43iFPkawqKyYkteqSbvMSNb68U
-   8DJxTbBkjbDoY+f17dDDHFEDYzl8YMbxwbhX8DbKCkPFxn3Y2QrIkxTUF
-   GuphYVtt1pc0EJvXy0q0N7ls7IP/g/V7MhTVw2a0JgYWfpb51t0SysCLN
-   rArAFGyExg9fed9/lB/eUMANThC5z92/yEZiuK0ztI6/D1p5J9p5RWkX0
-   4eIdp5Ra/qfPUO6IDooL0wKM0KFRp4fSIJM+O843j2GdRhxpWBYPXwZWl
-   A==;
+  bh=0rzHpnyzUkKxNN2Mid2NVGCL5C/VT9DUE+4AP7OTFG8=;
+  b=DJECUkj3/HewXHvDCfs+VDHpoz2ybcnrkvzisV+P/SLdlsv2AV9xk+3+
+   j+wl66/Ezcqlc1nA3ve2KoCvl+0RWC4dwuwYWaN7XhlL8yelePpmkkLTS
+   8+APuaG2b31bxWjng5B0v8zIi9j3KVpNWcCGzhT3JUKnA4HXj4bFtFtlK
+   j7+wmtx6BIWEFTB3fmnUzkBXFBl8r6rhjSLFKJq4/6hDE5iu3xys9jOg6
+   pY9ZWhbksAdHuLINxPTisgfJftbb3N1nX/OZFIdFwUg4G0VaakbAG4iGO
+   ddRXc7EqLe2wZoaK8Ugye02Ur/cmFhRr91IJfMWpYMEPr5MR0t7lCAxQF
+   Q==;
 X-IronPort-AV: E=Sophos;i="5.88,357,1635177600"; 
-   d="scan'208";a="197379374"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 10 Feb 2022 11:07:20 +0800
-IronPort-SDR: MOqPh6bEkawqu2rksZIg/12mm/OGCQ5lYFGREeubuYbcklTHlyeqr9Nbvn8HabLdU7E3R3xhzg
- KkLPOQOorhIgMkeOJwmpbb553yEPiTR2zoCp6Kk7jftp72U0+kutK1VmsO4okv1/DXer5L4m/e
- 6daGCZbkr77pJMNcrjai6SOWesRQAXuhx8+NJCx7X8yeoSiWtkFRjNMkT3SAF4ufPndyJBX2lR
- 9RX8T5mz3gX5ka3P+dfYktvDYljq7SqaUsDf6OhL/z89CK2ddtMq9wDd2FysWOFSsOIA2U3F6x
- 8Gz6TQsq7PIm9RfndKGs3uN6
+   d="scan'208";a="296661338"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 10 Feb 2022 11:07:44 +0800
+IronPort-SDR: Kxp/3n8Lg+Oy5tRRiwnLl7koTnDsYtzd0+i6UFqm5UIl2GTpcCscYBGsvJDoJQ4IxoGOLOOwhP
+ bIiqx+pVQrpMPAw0kC9K5nCf4NbnelhLf3sGCdAOaXRYBqvxhzHYGjH0Hd1ppdI3cIECJzs4+j
+ PczHPFPyexgaSCIf8vhqQnUN2gpsLQeqrUcva0CqFQ8oLUh2ZE8WEDYtY8gGAfVrS9XwYs4XTN
+ +93R5hgaDU8fwuGzLXsZ/DQW/hCaV7iA47cxiNVy8jMwHKI0xVuuxzWOA+0fammZ66kDAr8oie
+ 9x3iNqk8/mZ+GkE/DLGMVfRw
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 18:40:18 -0800
-IronPort-SDR: Z+HCJ3QpKRD0uq6t7VHZBhDZ8Gv/t6j/Xh++uOsDcsKii4vlCFqtfEThLe8v9m7dVc9jESRM+B
- ncOpBqRhzrt1SD06h5YE1axYDORYuNbPe/QrNw0f3ZFOOsb4CfqG3DeTIGbX4gmDvBM75KkniX
- E+2FAtWOxjqYG5E5vsUayl629mXgxLIUxocLoPifA0TD5lQI/wTJ6M4EEJ3eh0SL7a/HfyvtiX
- yuGmFfedHMdZqChsl75mYBZSp3pLhqOumd7Sg2qxQD/5k4Fus+RkqSiF0aKBLEiiykwIvjamLD
- 2jg=
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 18:40:41 -0800
+IronPort-SDR: snz/8tX22nngrzELm2dfh1WbJMtEcpH9pliRUeoEaQYNzabu93PXNQLQsR1T3Xz9vArbCvlKLg
+ E5lj5KtRlVLUuFYbWs5GEyn2qUmaY8LVrXoU05onkr8x6LfeIeB283lUjNphbE9h+kiwNk9igm
+ 6BswAgnR9uu7wike0kawzW1xcjVe1QMDHRNak2XNndTWLWWFI+RgtrdM1j0hssrxt+L6M6ZJLc
+ WqGQ80SSozYr0IiuiTBFN44PtlesBDwS2gZIl2Fp/2FZe5+1sI4kVayDuE5+TIY119kAmttVo/
+ Ess=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 19:07:21 -0800
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 19:07:44 -0800
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JvM9j0mY1z1SVnx
-        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:07:21 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JvMB75CfTz1SVnx
+        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:07:43 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
@@ -56,34 +57,34 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:content-type
         :in-reply-to:organization:from:references:to:content-language
         :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1644462440; x=1647054441; bh=HybhtefC308846jQWn/IctvlMxaMrSw/yHW
-        x8EzS1iQ=; b=K4YMPdC/5rBFJiUOSwbJQ3aldm/76RDOaKbzsjYGNfCp44g/oee
-        3xXDA0wEJmLOTMeXRJJvMBZreXtBQj7M1MDlmq6/GZBjoxbo1ZBUPRHYhhMsz5aP
-        Z4Lrb0cY63M+1i10yIjlTSxwM41mvKmVRmlpbvpPWdSEwOL05/oflrMVNoL3dvW8
-        3Ulcou7s1VMtUB7Yex7Q7altbnVkqBJ0UqC+/gZ7RbTwC+3zvZ6u8+s3ifi7HQaa
-        MhbQD2S8cHskcyPInf32yOz4pJ0Xo35tD9T8/g63dm6xDzbepuw3RYaZAYJxvKuA
-        otFkJpIl4CzFEXJ2zFFupcIRIPbqqMRF5UQ==
+        1644462463; x=1647054464; bh=0rzHpnyzUkKxNN2Mid2NVGCL5C/VT9DUE+4
+        AP7OTFG8=; b=mlg2ym43DSMYdvuksjgFahTogRDP3mOshihl9BwCb0aJU4eQ88N
+        vnR7VpNfcsAo4tz8uA76mKZbfQ/T8NLhF+khquUEqBgm9kXPgeDc7d/MXbMA8ifk
+        bP74PfF6b3Qe2wRBV4MUfrEVZAxIpE05a85GDL5fDJcKrzvnrpi9U4d2+4cLoM++
+        y0SoS1USrBMIbIQHrPghF0ZbMS4URXXQzMhHLt3S1YrD9AQocqH/Lb0EUJVa+/xN
+        n0KAfMAc3TFvrbzHx2XSjGNxNTIat/cCSiLYzSCaooCwGW3L9uydYMaMFV8lWpD4
+        dKH9Cr8Kus11k4n3AEF7eN7TMQEBdZtXbRw==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id I0px3NJ3sdJR for <linux-ide@vger.kernel.org>;
-        Wed,  9 Feb 2022 19:07:20 -0800 (PST)
+        with ESMTP id XqtLjW4ifcaw for <linux-ide@vger.kernel.org>;
+        Wed,  9 Feb 2022 19:07:43 -0800 (PST)
 Received: from [10.225.163.67] (unknown [10.225.163.67])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JvM9h2F7Mz1Rwrw;
-        Wed,  9 Feb 2022 19:07:20 -0800 (PST)
-Message-ID: <6e6e4cfb-3011-2d13-ac88-1370919a00b0@opensource.wdc.com>
-Date:   Thu, 10 Feb 2022 12:07:19 +0900
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JvMB70kk1z1Rwrw;
+        Wed,  9 Feb 2022 19:07:42 -0800 (PST)
+Message-ID: <12a37e36-8e0d-f334-0482-2661583314b1@opensource.wdc.com>
+Date:   Thu, 10 Feb 2022 12:07:42 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH] pata_hpt3x2n: fix writing to wrong register in
- hpt3x2n_bmdma_stop()
+Subject: Re: [PATCH v5 0/2] Use *switch*es instead of *if*s in the Artop PATA
+ driver
 Content-Language: en-US
 To:     Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org
-References: <2ce292b5-d49f-740e-1445-be7375963a58@omp.ru>
+References: <20220209202535.7679-1-s.shtylyov@omp.ru>
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Organization: Western Digital Research
-In-Reply-To: <2ce292b5-d49f-740e-1445-be7375963a58@omp.ru>
+In-Reply-To: <20220209202535.7679-1-s.shtylyov@omp.ru>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -96,19 +97,21 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2/8/22 05:32, Sergey Shtylyov wrote:
-> The driver's bmdma_stop() method writes to the wrong PCI config register
-> (0x52 intead of 0x54) when trying to clear the state machine on secondary
-> channel -- "luckily", the write falls on a read-only part of the primary
-> channel MISC. control 1 register, so no collateral damage is done...
+On 2/10/22 05:25, Sergey Shtylyov wrote:
+> Here are 3 patches against the 'for-next' branch of Damien Le Moal's
+> 'libata.git' repo. The driver abuses the strings of the *if* statements
+> where a *switch* statements would fit better...
 > 
-> Alan Cox fixed the HPT37x driver in commit 6929da4427b4 ("[PATCH] hpt37x:
-> Two important bug fixes") but forgot to check the HPT3x2N driver which has
-> the same bug. :-/
 > 
-> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> Sergey Shtylyov (2):
+>   ata: pata_artop: use *switch* in artop_init_one()
+>   ata: pata_artop: use *switch* in atp8xx_fixup()
+> 
+>  drivers/ata/pata_artop.c | 31 +++++++++++++++++++------------
+>  1 file changed, 19 insertions(+), 12 deletions(-)
+> 
 
-Applied to for-5.18 with commit message fixed. Please check. Thanks !
+Applied to for-5.18. Thanks !
 
 
 -- 

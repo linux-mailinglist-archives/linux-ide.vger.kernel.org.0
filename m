@@ -2,53 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF56C4B03C3
-	for <lists+linux-ide@lfdr.de>; Thu, 10 Feb 2022 04:09:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 529D94B03BF
+	for <lists+linux-ide@lfdr.de>; Thu, 10 Feb 2022 04:08:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232226AbiBJDJF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 9 Feb 2022 22:09:05 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46194 "EHLO
+        id S232118AbiBJDIM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 9 Feb 2022 22:08:12 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232158AbiBJDI7 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Feb 2022 22:08:59 -0500
-Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C04531EAD3
-        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:09:01 -0800 (PST)
+        with ESMTP id S231760AbiBJDIK (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 9 Feb 2022 22:08:10 -0500
+Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D24AB1EACE
+        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:08:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1644462541; x=1675998541;
+  t=1644462491; x=1675998491;
   h=message-id:date:mime-version:subject:to:references:from:
    in-reply-to:content-transfer-encoding;
-  bh=Zx+5r49Mvd+BcH6BMfJ2OFzVRRNi9qudvNhQIonoz34=;
-  b=CkA9NTnKKUCoXJD5yfdPLfBv1WPV2TpgO9ohpWPdRBB5V6joRWilFoOz
-   nJ+N/QTMe2bfdttLPnMN8Wkfse3az3kjiLQDxeXdjfWXf+RtQ+B1P9N5E
-   15JlELLNIL8jSNUngSF2TUEp64lQks1OAtzkjbj1xepNC7tR+oWts7Nja
-   Jv8x76oTVRm6O6WHNWHmBooxVe7k4LFa6XcoK2jiPuKig5nEvSifHcc7q
-   NgQEfjedcsDHZ0VusJ+P8OHuKpXdvKpQV4Oq/SRg6+WU/BmSSle3lxoJM
-   jUMt6lWhmwu4GngpTddBCEofQ5ozE3kYB3Pq79TybpNjqym1PTtfCuy/U
-   g==;
+  bh=lZWgOJTtzHCMCTQlvuv8nsB7aIKH//sNTjX8h7bnNzM=;
+  b=jMN9e6ENKt7MF2CDLd/zpMmXVPXnEr+SjkDcpPS0EqOZllZP1DfbgPH6
+   E7SXefzpfsi54UZkv38Btn1aeqPRCvaMcQLcIeEqNzCqaXhV6OH+aYp13
+   AOy8I4apuNvYNYqzad8n0RLz+C20uvySkkZ9ct75w+IZxv9yJxQbXfQp6
+   1XLmPsQIG34ufiqykGTiteib8uSmVYK+cGHhPT91C5ChgrPMcmkcnvdd+
+   CpFkvihQ3BsMlreAdyvl3GIGSYSPhrGD0sAjFHqwP84KvBeTNL/rJhJhr
+   U5UfZ4zgAAplscjnjJgfwUdr1LpXkGEwTnJCNsAfCDiwpNXWKw5nFmc1e
+   A==;
 X-IronPort-AV: E=Sophos;i="5.88,357,1635177600"; 
-   d="scan'208";a="296661348"
+   d="scan'208";a="197379434"
 Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 10 Feb 2022 11:07:58 +0800
-IronPort-SDR: 58qKO0GQChStpU0ZVyKpa6RbBWf41XUn+kd0Vg9c8biKSG+4IOTEFr31KS3QBDixxmCPLpLwJI
- q99s76dwfhK940lKNFgz1wORL/VH5Tktfr73Vboju2aldaQpp2huWpw9afcLk9fnUVveSJwrFQ
- 8iyt/BZlGlBFQI/1d6AI/OFWKJxTN0eFtjEnEk+pE/M9EO8clILgTKcRRWmaFJJ9LneMLB+P/B
- RehFaSYwX1FliUR1T+rW3+OLVI6ShCQIPR1kMMlTVACBmcZg5E2Wa92qF8eBvRFpfhj1lg9Qv2
- f0sz/rrW96ZPkkXoDAhhCn7q
+  by ob1.hgst.iphmx.com with ESMTP; 10 Feb 2022 11:08:11 +0800
+IronPort-SDR: 0+Tc5FNy2af5V0QOVUjpYcWPvH4E+BviAyodYgsDa4m3ayWOdarE3V+J72WrSiiz6i6uBX0bSL
+ ORbRxMaBjCNFwYHOiU6suedn2Hf3ydSfyuzk7Teb9vKl+4gVS0qqURgHCuqYclT7ihlMEeUxvv
+ boD6kONXJtWl0yn86ZrJqSNjOR6ww2SQ443TV2EVEA5n6ak7y/uC6xsZx+ItXdAljGLcFh3usr
+ becR6mwMHEDfOWGC6VuVUwj7C2Zn3UL2b/5nElmdEv+udoURBVogKecfoBHW1k6hRPwSvo7BNb
+ c4awptcvjb49kA8F6Dr/VoMf
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 18:39:46 -0800
-IronPort-SDR: FVZhHhVdlkfojEMWZvuDFaye7YAm6pe6U32sqy5XbzQGvMv3beAukYvCcIQ0xnBggiXyyNOcRb
- WWIsw8U58PS8/mZ9lm1NeAlLLQJqsX6OAkF8qu4/yGq5aK35E1lD0juRs8TvsEfZZ8V7POb42g
- YpKRipiUxVXiGDe+hTq2+9gskHBi3hbRtgM+HniSRddb7pfaMePJtRRUa0KLbRZxHnYQvI20T0
- zeWApFyc2ylYP2LOxArJQStBY8IvVgDPPTRVdhbBD9TW2F811KSRqx5NhSyDR7GjeOYdI6xknx
- g9Y=
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 18:39:59 -0800
+IronPort-SDR: z8Q7fFYg321rORiyF3J2hOBacr5w2J1ZcsAWe2PPPrVLGBHb7xxlADXRhzKk8TYYcUDDd3tQhc
+ s6ChhZRWtC9hSkfMq/7P/B9/GlLKpMvaOQa4AHD1GxL/F1eF51jHikkFaeN9dqqrr8FnjzIAmZ
+ NE5408G3iQT4vZnPij6oDBKJJHJNGu5l9Vgpw+XmVV023g81UniAYPp1Vt1BOUkVh8RYb30iJQ
+ IqELd8F9Re7NV1zeK1GlzSv9rTcNckwHkytkeiZqfhnsLBAqcBwEVJIACwQllc85Ynf0ObH3ge
+ PNI=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 19:07:59 -0800
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Feb 2022 19:08:12 -0800
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JvMBQ5MtPz1SHwl
-        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:07:58 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4JvMBg6f32z1SVnx
+        for <linux-ide@vger.kernel.org>; Wed,  9 Feb 2022 19:08:11 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
@@ -56,33 +56,33 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:content-type
         :in-reply-to:organization:from:references:to:content-language
         :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1644462478; x=1647054479; bh=Zx+5r49Mvd+BcH6BMfJ2OFzVRRNi9qudvNh
-        QIonoz34=; b=N1bX44Xv62Jt57jC2KGsjHkQ25/RqEzBHklv6AvF/tywpY2nId7
-        Fd8NLPfuSdf0iu2qU7MibI0wdvSPrtYJo7aGlEDmNpbxqbAxHfwLcQhI/8uceYSO
-        f3s9p3FB/2yr9kOFdeFFbjPHfZrj+Aacur+NzkhCCKs6axX1pY8XrZdphBBtmjOu
-        uLbElm+THK8/5Jmvav/btb4qUxdkXZSi7Zq8dm8q2w3bhWHTQqvaYsFHYrjJqMMs
-        EV4CTp+YRun9/chpWMIs7xY7GXaHJuQU5vhoox9ezjGdZoXg5aAeuAci6SmI8zcw
-        kt8SZz6HIc9M8KsX7eFp4PbgovbiQYT1t7g==
+        1644462491; x=1647054492; bh=lZWgOJTtzHCMCTQlvuv8nsB7aIKH//sNTjX
+        8h7bnNzM=; b=I3gwDvFg2GpY3vMZMdZ+nvAxNjf+YMBsSkoWewZeQBEL+BGsKCF
+        oUR5t15SuYCUsVWVpoIMrYEk9Osvg+ns3/EZRyO+eWtUd5uXd3rSukmNVQowAwYR
+        XouYcTigc8MHAunAS8GMamU4C82gqbvJPvCRhWjhg3fYx9s98r+NetfmJtS0+F6P
+        f28YOOsFsNiH1g2wvTLCLROpN3c/PIgXtOUOQ3C4SIXkUBqoTtw3rur2Aip76jm5
+        Lg/FY4MIUxTEuJlvrDOQby51EQa60k1DnPs5QIdyIXzVAHEho3LmzAzAwP1n8pUt
+        m8Q842/Na6XC5wifMF3SA+8kW1thbGT3RyQ==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id RIEApVjhazae for <linux-ide@vger.kernel.org>;
-        Wed,  9 Feb 2022 19:07:58 -0800 (PST)
+        with ESMTP id cAvTYcAeX2iK for <linux-ide@vger.kernel.org>;
+        Wed,  9 Feb 2022 19:08:11 -0800 (PST)
 Received: from [10.225.163.67] (unknown [10.225.163.67])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JvMBQ13CKz1Rwrw;
-        Wed,  9 Feb 2022 19:07:58 -0800 (PST)
-Message-ID: <a02b1a7e-3d0c-f8ff-b316-1d6ead4f8513@opensource.wdc.com>
-Date:   Thu, 10 Feb 2022 12:07:57 +0900
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4JvMBg2LQdz1Rwrw;
+        Wed,  9 Feb 2022 19:08:11 -0800 (PST)
+Message-ID: <f1c8a0ad-5540-7602-cfb1-23709514a79f@opensource.wdc.com>
+Date:   Thu, 10 Feb 2022 12:08:10 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 0/2] Drop unused declarations from HPT3x2N PATA driver
+Subject: Re: [PATCH 0/3] Make all the devchk() functions return 'bool`
 Content-Language: en-US
 To:     Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org
-References: <20220209205351.10912-1-s.shtylyov@omp.ru>
+References: <20220209214630.13340-1-s.shtylyov@omp.ru>
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Organization: Western Digital Research
-In-Reply-To: <20220209205351.10912-1-s.shtylyov@omp.ru>
+In-Reply-To: <20220209214630.13340-1-s.shtylyov@omp.ru>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -95,17 +95,20 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2/10/22 05:53, Sergey Shtylyov wrote:
-> Here are 2 patches against the 'for-next' branch of Damien Le Moal's
-> 'libata.git' repo. The HPT3x2Nd PATA driver has some declarations from
-> the time it was first merged that have never been actually used...
+On 2/10/22 06:46, Sergey Shtylyov wrote:
+> Here are 3 patches against the 'for-next' branch of Damien Le Moal's
+> 'libata.git' repo. Make all the devchk() functions return 'bool` inbstead
+> of 'unsigned int'.
 > 
-> Sergey Shtylyov (2):
->   ata: pata_hpt3x2n: drop unused HPT_PCI_FAST
->   ata: pata_hpt3x2n: drop unused 'struct hpt_chip'
+> Sergey Shtylyov (3):
+>   ata: libata-sff: make ata_devchk() return 'bool'
+>   ata: pata_samsung_cf: make pata_s3c_devchk() return 'bool'
+>   ata: sata_rcar: make sata_rcar_ata_devchk() return 'bool'
 > 
->  drivers/ata/pata_hpt3x2n.c | 6 ------
->  1 file changed, 6 deletions(-)
+>  drivers/ata/libata-sff.c      | 9 ++++++---
+>  drivers/ata/pata_samsung_cf.c | 7 +++----
+>  drivers/ata/sata_rcar.c       | 7 +++----
+>  3 files changed, 12 insertions(+), 11 deletions(-)
 > 
 
 Applied to for-5.18. Thanks !

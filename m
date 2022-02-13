@@ -2,20 +2,20 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADCE94B3BF3
-	for <lists+linux-ide@lfdr.de>; Sun, 13 Feb 2022 16:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EC4C4B3BF5
+	for <lists+linux-ide@lfdr.de>; Sun, 13 Feb 2022 16:10:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236665AbiBMPJn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 13 Feb 2022 10:09:43 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:35948 "EHLO
+        id S236662AbiBMPKn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 13 Feb 2022 10:10:43 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236662AbiBMPJn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 13 Feb 2022 10:09:43 -0500
-Received: from mxout02.lancloud.ru (mxout02.lancloud.ru [45.84.86.82])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3C765B3CF
-        for <linux-ide@vger.kernel.org>; Sun, 13 Feb 2022 07:09:34 -0800 (PST)
+        with ESMTP id S236667AbiBMPKl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 13 Feb 2022 10:10:41 -0500
+Received: from mxout01.lancloud.ru (mxout01.lancloud.ru [45.84.86.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66BC35B3CF
+        for <linux-ide@vger.kernel.org>; Sun, 13 Feb 2022 07:10:35 -0800 (PST)
 Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru 460152314A78
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout01.lancloud.ru 623A220E4586
 Received: from LanCloud
 Received: from LanCloud
 Received: from LanCloud
@@ -23,8 +23,8 @@ From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
         <linux-ide@vger.kernel.org>
 Subject: [PATCH 0/2] Refactor the accessors for the ATA device control and alternate status registers
-Date:   Sun, 13 Feb 2022 18:09:28 +0300
-Message-ID: <20220213150930.4620-1-s.shtylyov@omp.ru>
+Date:   Sun, 13 Feb 2022 18:10:30 +0300
+Message-ID: <20220213151032.4694-1-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT

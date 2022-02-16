@@ -2,93 +2,41 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9A8E4B815C
-	for <lists+linux-ide@lfdr.de>; Wed, 16 Feb 2022 08:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 064B14B8698
+	for <lists+linux-ide@lfdr.de>; Wed, 16 Feb 2022 12:24:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229865AbiBPHU6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 16 Feb 2022 02:20:58 -0500
-Received: from gmail-smtp-in.l.google.com ([23.128.96.19]:55922 "EHLO
+        id S231491AbiBPLY4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 16 Feb 2022 06:24:56 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229861AbiBPHU5 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 16 Feb 2022 02:20:57 -0500
-Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34B3EA379
-        for <linux-ide@vger.kernel.org>; Tue, 15 Feb 2022 23:20:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1644996045; x=1676532045;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=X0NY0a6YpTtJ4fZwapVFaRMSCmitIP8Nu/8M5EU2oZ0=;
-  b=UWgivtuIJRNYAiOfH+25PGbyXLoSxSPGC/SzaFhh7FD/hcGJaZmvd+wd
-   CpJhXEK6VxOC2yFRvLAwuvUMYYNx4HcKbSXgNi8FBZ5MsouWiOFm2yBj2
-   rIkW/38LCBpQ1zB7H8xZWT3ECU6ADtWpqNxvN1GWc3ZsgKB5T1Hd9H1xx
-   Tw1AAZhT6QLlGrcu46TqzQOEuUMGFUdH50SLaMRGnCt1rcMQbvtRSCkRI
-   42/DqWzP3qVge3pzEDHzQCQbMZN4f2ePPduIzi+3ZdBx/1mTSIqhYvD5t
-   X4ACf6huvU+dqnZFgAtybzHN3qFhwVBa76dhZRaImiduHP+ek8lzbHmWz
-   g==;
-X-IronPort-AV: E=Sophos;i="5.88,373,1635177600"; 
-   d="scan'208";a="197895678"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 16 Feb 2022 15:20:44 +0800
-IronPort-SDR: 3U0lcN1D94RO1lSrlsOnuiTzMnwBOAp44NBXVKWn0znodByMJgxUbMhKUrpJgcrwrlPRC7t6nu
- tvhB1V3dmDdRwRbLWLpkPwJqV1Y6sicUNIBE7HKM0sgB4O6+5oCTDh7ngaQlQbSIxPZPqFDsdm
- kkvpesmrJSzzhfRAJykncFucMfEhEy+YqAyb8/wlfQSJg1Lhc4ZmgBmN/RN/bVc9yUWFzbLM+a
- DWDS0uKOFFcVlbfsERXOo1m/nHanE0mmOZoXt8a9t/a4pmORGbsRy5T5V8XA3DBOlety78j/8k
- q2q87/qDpBy6ENN1auSV9sHJ
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 22:53:33 -0800
-IronPort-SDR: rHnPfI1qMIRWlznpc+Q4m6kTW11X/MVVvy0XU+U5AU7Ci84wJl5In0+yWtB7NY6Pwhm+mdEOgQ
- yubni2nvPVrFx8rP0Hr6+GtYqm04kHpvQQtAx4itss+6oQtK7nBggd2DQu70fMM0KZA9xhM1L2
- iDa0RluX39+n04yhY4fHOCF9E9bqoPDV5p3J0bum7RfCio38YroVXJIcF6nBnzYEbIK6u9aZBI
- KHSwRu7JLxun0fiWl9HUsw7BNrLRPO+BOr9IowuO9JHYlmDmSv2ZU2AnncD1rkX42PCSqJjoHa
- we8=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2022 23:20:45 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4Jz8WK0MjZz1SVnx
-        for <linux-ide@vger.kernel.org>; Tue, 15 Feb 2022 23:20:45 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1644996044; x=1647588045; bh=X0NY0a6YpTtJ4fZwapVFaRMSCmitIP8Nu/8
-        M5EU2oZ0=; b=pYz/8k1bnxvNC8bcVousdaIM6yNgmMUX1goZtSmrWbUtPuC8Dzx
-        JkovKlOSvU+tu88OPcfAPZelPbErNzSSvwq9ucZeSVY3DPs6pnbw7pcyyhoeYoUB
-        TdJX/qslYWxTk4Em56x2qZK44KuWUHyVjcrKwW3OqsrBEYuP23bpt2pGFxuV3lmJ
-        XD3/vaxfZj27W2Wefv14gezs8HVjSDqmHa0d4vfIIhk3ndgm0MrOx0+dJPdG3n6M
-        jpPWIxTvfUy5s0Sm1jN4wQB8CJ0XbJv3Zu2HkoDexGZeYfcriLIslWBrTZBmQw1G
-        jtlDlsRwVpoB28xwh+p+O1rWrSG+uDcG0fw==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id o69JuzHbtden for <linux-ide@vger.kernel.org>;
-        Tue, 15 Feb 2022 23:20:44 -0800 (PST)
-Received: from [10.225.163.73] (unknown [10.225.163.73])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4Jz8WJ3BZPz1Rwrw;
-        Tue, 15 Feb 2022 23:20:44 -0800 (PST)
-Message-ID: <69253da4-064d-30aa-c630-7d04846ca92b@opensource.wdc.com>
-Date:   Wed, 16 Feb 2022 16:20:43 +0900
+        with ESMTP id S231497AbiBPLY4 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 16 Feb 2022 06:24:56 -0500
+Received: from mxout02.lancloud.ru (mxout02.lancloud.ru [45.84.86.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A23D97B8D
+        for <linux-ide@vger.kernel.org>; Wed, 16 Feb 2022 03:24:42 -0800 (PST)
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru 710DC2327E3D
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH] ata: pata_hpt37x: merge mode setting methods
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        <linux-ide@vger.kernel.org>
+Organization: Open Mobile Platform
+Message-ID: <4e5e9ea0-f7ac-025a-f94f-a4f0ee009420@omp.ru>
+Date:   Wed, 16 Feb 2022 14:24:40 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH] ata: libata-scsi: use *switch* statements to check SCSI
- command codes
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org
-References: <7440bd27-b841-c3f0-2b47-4ab3f0ac0c83@omp.ru>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <7440bd27-b841-c3f0-2b47-4ab3f0ac0c83@omp.ru>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT01.lancloud.ru (fd00:f066::141) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -96,16 +44,149 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2/15/22 05:14, Sergey Shtylyov wrote:
-> Replace strings of the *if* statements checking the SCSI command code
-> with the *switch* statements that fit better here...
-> 
-> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+After commit e0afcf140e6e ("ata: pata_hpt37x: disable fast interrupts in
+prereset() method") HPT370's and HPT372+'s PIO/DMA mode setting functions
+have become identical -- merge them.
 
-Applied to for-5.18. Thanks !
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
+---
+This patch is against the 'for-next' branch of Damien Le Moal's 'libata.git'
+repo.
 
+ drivers/ata/pata_hpt37x.c |   71 +++++++---------------------------------------
+ 1 file changed, 11 insertions(+), 60 deletions(-)
 
--- 
-Damien Le Moal
-Western Digital Research
+Index: libata/drivers/ata/pata_hpt37x.c
+===================================================================
+--- libata.orig/drivers/ata/pata_hpt37x.c
++++ libata/drivers/ata/pata_hpt37x.c
+@@ -23,7 +23,7 @@
+ #include <linux/libata.h>
+ 
+ #define DRV_NAME	"pata_hpt37x"
+-#define DRV_VERSION	"0.6.24"
++#define DRV_VERSION	"0.6.25"
+ 
+ struct hpt_clock {
+ 	u8	xfer_speed;
+@@ -420,7 +420,7 @@ static int hpt37x_pre_reset(struct ata_l
+ 	return ata_sff_prereset(link, deadline);
+ }
+ 
+-static void hpt370_set_mode(struct ata_port *ap, struct ata_device *adev,
++static void hpt37x_set_mode(struct ata_port *ap, struct ata_device *adev,
+ 			    u8 mode)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(ap->host->dev);
+@@ -449,9 +449,9 @@ static void hpt370_set_mode(struct ata_p
+  *	Perform PIO mode setup.
+  */
+ 
+-static void hpt370_set_piomode(struct ata_port *ap, struct ata_device *adev)
++static void hpt37x_set_piomode(struct ata_port *ap, struct ata_device *adev)
+ {
+-	hpt370_set_mode(ap, adev, adev->pio_mode);
++	hpt37x_set_mode(ap, adev, adev->pio_mode);
+ }
+ 
+ /**
+@@ -462,9 +462,9 @@ static void hpt370_set_piomode(struct at
+  *	Set up the channel for MWDMA or UDMA modes.
+  */
+ 
+-static void hpt370_set_dmamode(struct ata_port *ap, struct ata_device *adev)
++static void hpt37x_set_dmamode(struct ata_port *ap, struct ata_device *adev)
+ {
+-	hpt370_set_mode(ap, adev, adev->dma_mode);
++	hpt37x_set_mode(ap, adev, adev->dma_mode);
+ }
+ 
+ /**
+@@ -504,54 +504,6 @@ static void hpt370_bmdma_stop(struct ata
+ 	ata_bmdma_stop(qc);
+ }
+ 
+-static void hpt372_set_mode(struct ata_port *ap, struct ata_device *adev,
+-			    u8 mode)
+-{
+-	struct pci_dev *pdev = to_pci_dev(ap->host->dev);
+-	int addr = 0x40 + 4 * (adev->devno + 2 * ap->port_no);
+-	u32 reg, timing, mask;
+-
+-	/* Determine timing mask and find matching mode entry */
+-	if (mode < XFER_MW_DMA_0)
+-		mask = 0xcfc3ffff;
+-	else if (mode < XFER_UDMA_0)
+-		mask = 0x31c001ff;
+-	else
+-		mask = 0x303c0000;
+-
+-	timing = hpt37x_find_mode(ap, mode);
+-
+-	pci_read_config_dword(pdev, addr, &reg);
+-	reg = (reg & ~mask) | (timing & mask);
+-	pci_write_config_dword(pdev, addr, reg);
+-}
+-
+-/**
+- *	hpt372_set_piomode		-	PIO setup
+- *	@ap: ATA interface
+- *	@adev: device on the interface
+- *
+- *	Perform PIO mode setup.
+- */
+-
+-static void hpt372_set_piomode(struct ata_port *ap, struct ata_device *adev)
+-{
+-	hpt372_set_mode(ap, adev, adev->pio_mode);
+-}
+-
+-/**
+- *	hpt372_set_dmamode		-	DMA timing setup
+- *	@ap: ATA interface
+- *	@adev: Device being configured
+- *
+- *	Set up the channel for MWDMA or UDMA modes.
+- */
+-
+-static void hpt372_set_dmamode(struct ata_port *ap, struct ata_device *adev)
+-{
+-	hpt372_set_mode(ap, adev, adev->dma_mode);
+-}
+-
+ /**
+  *	hpt37x_bmdma_stop		-	DMA engine stop
+  *	@qc: ATA command
+@@ -589,8 +541,8 @@ static struct ata_port_operations hpt370
+ 
+ 	.mode_filter	= hpt370_filter,
+ 	.cable_detect	= hpt37x_cable_detect,
+-	.set_piomode	= hpt370_set_piomode,
+-	.set_dmamode	= hpt370_set_dmamode,
++	.set_piomode	= hpt37x_set_piomode,
++	.set_dmamode	= hpt37x_set_dmamode,
+ 	.prereset	= hpt37x_pre_reset,
+ };
+ 
+@@ -604,8 +556,7 @@ static struct ata_port_operations hpt370
+ };
+ 
+ /*
+- *	Configuration for HPT371 and HPT302. Slightly different PIO and DMA
+- *	mode setting functionality.
++ *	Configuration for HPT371 and HPT302.
+  */
+ 
+ static struct ata_port_operations hpt302_port_ops = {
+@@ -614,8 +565,8 @@ static struct ata_port_operations hpt302
+ 	.bmdma_stop	= hpt37x_bmdma_stop,
+ 
+ 	.cable_detect	= hpt37x_cable_detect,
+-	.set_piomode	= hpt372_set_piomode,
+-	.set_dmamode	= hpt372_set_dmamode,
++	.set_piomode	= hpt37x_set_piomode,
++	.set_dmamode	= hpt37x_set_dmamode,
+ 	.prereset	= hpt37x_pre_reset,
+ };
+ 

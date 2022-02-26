@@ -2,68 +2,298 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DB894C56B9
-	for <lists+linux-ide@lfdr.de>; Sat, 26 Feb 2022 16:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A3F44C5839
+	for <lists+linux-ide@lfdr.de>; Sat, 26 Feb 2022 22:02:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230390AbiBZQAQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 26 Feb 2022 11:00:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51410 "EHLO
+        id S229671AbiBZVAl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 26 Feb 2022 16:00:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232265AbiBZQAP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 26 Feb 2022 11:00:15 -0500
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC2C179260
-        for <linux-ide@vger.kernel.org>; Sat, 26 Feb 2022 07:59:41 -0800 (PST)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-2d07ae0b1c4so64324567b3.11
-        for <linux-ide@vger.kernel.org>; Sat, 26 Feb 2022 07:59:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=l2OpVPLDEftIK8Jk3Df6zj/LbbKQ/cX2jfsjP5X/kLc7+3V75JnEWN49Ul3yus2k0/
-         KGew9GhNHySRFKfIaaM142iXSMdcfM8OW570svrvXLWiEkFsnA5G9BSluMpCVvehvkxY
-         1smDoab9t4r7XqRLRkWq8XL0DHDuSi4mXjcCwwZGsGHWKn5wfwY7wvgGZ6LvFEypFsD9
-         vYOJ7xL8QymjEnRBwinTLPOisWmS7l/kzDntJPtctQ13ih53vcZXG99LrelDJEw3//Zj
-         QbKuNMmoLeEU73EW8NXrMIXhRqRbxwFUwTkMMNCccLJlYHgFePB/YPzESkjyMd6h2Otb
-         n+ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=c3RqascQL6pJJzExZwHCGvTZASAE01hWNLU/NRhNy3+3QYIMua7uBalq6vi6m4Okku
-         Pboc3SVYyqsVjwgfXu4AwHY6sRtHezIjPwVI6JwEhjDsn+86qHi5oEsFqQ4+2Kap2hWy
-         iGWTl2V4I/lJO9rWkowKZrPHpD7jX6kcXqUeVgYFYMxNNZu36Jcm8ffnoCiWbhmiAYAo
-         HjxF2vpmKwitQeHpj+WdaijBfpjla8aWSJhVAjlBmkSEt3QnK+l4hU0066UjM+t9LW5y
-         AzUzSXx7xZfqbvBG6TYPyDWIRjXWPg5+7D10uAUButAW3TDwLeDCHB8OSwXgyctv3vO0
-         3k4g==
-X-Gm-Message-State: AOAM531t78Nj/PObcyclWFOKgtXRGSXZUhFLVlQMlpvYMMatkp8R7tS/
-        kiop65y1lhEcTTn5Fnz6NfrTPCgMrLo/1e8EmbY=
-X-Google-Smtp-Source: ABdhPJwU0lozHDqCbN0HRgGvs2GnxteAhajXan9KOqmnKL0N6JWuMR3SDbZ8GsXlLu2XeXfCVC6CPNRjUXFEusKheuI=
-X-Received: by 2002:a81:d85:0:b0:2d1:1b8d:f236 with SMTP id
- 127-20020a810d85000000b002d11b8df236mr12727237ywn.212.1645891180463; Sat, 26
- Feb 2022 07:59:40 -0800 (PST)
+        with ESMTP id S229642AbiBZVAl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 26 Feb 2022 16:00:41 -0500
+X-Greylist: delayed 600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 26 Feb 2022 13:00:02 PST
+Received: from mxwww.masterlogin.de (mxwww.masterlogin.de [IPv6:2a03:2900:1:1::a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA001DA00D
+        for <linux-ide@vger.kernel.org>; Sat, 26 Feb 2022 13:00:02 -0800 (PST)
+Received: from mxout3.routing.net (unknown [192.168.10.111])
+        by backup.mxwww.masterlogin.de (Postfix) with ESMTPS id BFAD42C3FE
+        for <linux-ide@vger.kernel.org>; Sat, 26 Feb 2022 20:44:20 +0000 (UTC)
+Received: from mxbox2.masterlogin.de (unknown [192.168.10.89])
+        by mxout3.routing.net (Postfix) with ESMTP id 4571B601F1;
+        Sat, 26 Feb 2022 20:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+        s=20200217; t=1645908253;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=0N0goLHEHVwY3QonWnFbfubeloBYSPi4VBY9bSai/Vg=;
+        b=b608P4es0zETIhPafD7rMubJK8D7zMwmhpg2PKZ3qV2EdS+zpMlj9vZpGwyadu5qNnLpXa
+        BG0QEiCuKl7pvvwWuxpjnGaano7ka3jJ52mcjj8MHGoSzlyG5k/jGLwE0k1g5xwY8s8LN/
+        EsH41HBsgP9pvDkawhQ3aREg0YF60So=
+Received: from localhost.localdomain (fttx-pool-80.245.79.12.bambit.de [80.245.79.12])
+        by mxbox2.masterlogin.de (Postfix) with ESMTPSA id 89B4F1001D3;
+        Sat, 26 Feb 2022 20:44:12 +0000 (UTC)
+From:   Frank Wunderlich <linux@fw-web.de>
+To:     linux-ide@vger.kernel.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Peter Geis <pgwipeout@gmail.com>
+Subject: [PATCH] dt-bindings: Convert ahci-platform DT bindings to yaml
+Date:   Sat, 26 Feb 2022 21:44:04 +0100
+Message-Id: <20220226204404.109867-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:7000:9d05:0:0:0:0 with HTTP; Sat, 26 Feb 2022 07:59:40
- -0800 (PST)
-Reply-To: jessicaum734@gmail.com
-From:   Jessica U Meir <davidson4tg2015@gmail.com>
-Date:   Sat, 26 Feb 2022 15:59:40 +0000
-Message-ID: <CAD4G8nKxHnWh8oqLPcLmHthnMdjELDxR827E=5wL82Nexv5-aQ@mail.gmail.com>
-Subject: =?UTF-8?B?w4luIGlzIMOtcnRhbSBuZWtlZCBlZ3kgZWzFkXrFkSDDvHplbmV0ZXQgMiBuYXBqYSwgZA==?=
-        =?UTF-8?B?ZSBuZW0gdsOhbGFzem9sdMOhbCwgbWnDqXJ0Pw==?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Transfer-Encoding: 8bit
+X-Mail-ID: 99e6561b-5b02-45f0-93e1-2e578037435f
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+From: Frank Wunderlich <frank-w@public-files.de>
+
+Create a yaml file for dtbs_check from the old txt binding.
+
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+ .../devicetree/bindings/ata/ahci-platform.txt |  79 -----------
+ .../bindings/ata/ahci-platform.yaml           | 134 ++++++++++++++++++
+ 2 files changed, 134 insertions(+), 79 deletions(-)
+ delete mode 100644 Documentation/devicetree/bindings/ata/ahci-platform.txt
+ create mode 100644 Documentation/devicetree/bindings/ata/ahci-platform.yaml
+
+diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.txt b/Documentation/devicetree/bindings/ata/ahci-platform.txt
+deleted file mode 100644
+index 77091a277642..000000000000
+--- a/Documentation/devicetree/bindings/ata/ahci-platform.txt
++++ /dev/null
+@@ -1,79 +0,0 @@
+-* AHCI SATA Controller
+-
+-SATA nodes are defined to describe on-chip Serial ATA controllers.
+-Each SATA controller should have its own node.
+-
+-It is possible, but not required, to represent each port as a sub-node.
+-It allows to enable each port independently when dealing with multiple
+-PHYs.
+-
+-Required properties:
+-- compatible        : compatible string, one of:
+-  - "brcm,iproc-ahci"
+-  - "hisilicon,hisi-ahci"
+-  - "cavium,octeon-7130-ahci"
+-  - "ibm,476gtr-ahci"
+-  - "marvell,armada-380-ahci"
+-  - "marvell,armada-3700-ahci"
+-  - "snps,dwc-ahci"
+-  - "snps,spear-ahci"
+-  - "generic-ahci"
+-- interrupts        : <interrupt mapping for SATA IRQ>
+-- reg               : <registers mapping>
+-
+-Please note that when using "generic-ahci" you must also specify a SoC specific
+-compatible:
+-	compatible = "manufacturer,soc-model-ahci", "generic-ahci";
+-
+-Optional properties:
+-- dma-coherent      : Present if dma operations are coherent
+-- clocks            : a list of phandle + clock specifier pairs
+-- resets            : a list of phandle + reset specifier pairs
+-- target-supply     : regulator for SATA target power
+-- phy-supply        : regulator for PHY power
+-- phys              : reference to the SATA PHY node
+-- phy-names         : must be "sata-phy"
+-- ahci-supply       : regulator for AHCI controller
+-- ports-implemented : Mask that indicates which ports that the HBA supports
+-		      are available for software to use. Useful if PORTS_IMPL
+-		      is not programmed by the BIOS, which is true with
+-		      some embedded SOC's.
+-
+-Required properties when using sub-nodes:
+-- #address-cells    : number of cells to encode an address
+-- #size-cells       : number of cells representing the size of an address
+-
+-Sub-nodes required properties:
+-- reg		    : the port number
+-And at least one of the following properties:
+-- phys		    : reference to the SATA PHY node
+-- target-supply     : regulator for SATA target power
+-
+-Examples:
+-        sata@ffe08000 {
+-		compatible = "snps,spear-ahci";
+-		reg = <0xffe08000 0x1000>;
+-		interrupts = <115>;
+-        };
+-
+-With sub-nodes:
+-	sata@f7e90000 {
+-		compatible = "marvell,berlin2q-achi", "generic-ahci";
+-		reg = <0xe90000 0x1000>;
+-		interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
+-		clocks = <&chip CLKID_SATA>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		sata0: sata-port@0 {
+-			reg = <0>;
+-			phys = <&sata_phy 0>;
+-			target-supply = <&reg_sata0>;
+-		};
+-
+-		sata1: sata-port@1 {
+-			reg = <1>;
+-			phys = <&sata_phy 1>;
+-			target-supply = <&reg_sata1>;;
+-		};
+-	};
+diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.yaml b/Documentation/devicetree/bindings/ata/ahci-platform.yaml
+new file mode 100644
+index 000000000000..b5bef93215c0
+--- /dev/null
++++ b/Documentation/devicetree/bindings/ata/ahci-platform.yaml
+@@ -0,0 +1,134 @@
++# SPDX-License-Identifier: GPL-2.0
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/ata/ahci-platform.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: AHCI SATA Controller
++description:
++  SATA nodes are defined to describe on-chip Serial ATA controllers.
++  Each SATA controller should have its own node.
++
++  It is possible, but not required, to represent each port as a sub-node.
++  It allows to enable each port independently when dealing with multiple
++  PHYs.
++
++maintainers:
++  - Hans de Goede <hdegoede@redhat.com>
++  - Jens Axboe <axboe@kernel.dk>
++
++properties:
++  compatible:
++    enum:
++      - brcm,iproc-ahci
++      - hisilicon,hisi-ahci
++      - cavium,octeon-7130-ahci
++      - ibm,476gtr-ahci
++      - marvell,armada-380-ahci
++      - marvell,armada-3700-ahci
++      - snps,dwc-ahci
++      - snps,spear-ahci
++      - generic-ahci
++
++  ahci-supply:
++    description:
++      regulator for AHCI controller
++
++  dma-coherent:
++    description:
++      Present if dma operations are coherent
++
++  clocks:
++    minItems: 1
++    maxItems: 3
++
++  interrupts:
++    minItems: 1
++
++  phy-supply:
++    description:
++      regulator for PHY power
++
++  phys:
++    minItems: 1
++
++  phy-names:
++    minItems: 1
++
++  ports-implemented:
++    description:
++      Mask that indicates which ports that the HBA supports
++      are available for software to use. Useful if PORTS_IMPL
++      is not programmed by the BIOS, which is true with
++      some embedded SOC's.
++    minItems: 1
++
++  reg:
++    maxItems: 1
++
++  resets:
++    minItems: 1
++
++  target-supply:
++    description:
++      regulator for SATA target power
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++patternProperties:
++  "^sata-port@[0-9]+$":
++    type: object
++    description:
++      Subnode with configuration of the Ports.
++
++    properties:
++      reg:
++        maxItems: 1
++
++      phys:
++        minItems: 1
++
++      target-supply:
++        description:
++          regulator for SATA target power
++
++    required:
++      - reg
++
++    anyOf:
++      - required: [ phys ]
++      - required: [ target-supply ]
++
++additionalProperties: true
++
++examples:
++  - |
++        sata@ffe08000 {
++               compatible = "snps,spear-ahci";
++               reg = <0xffe08000 0x1000>;
++               interrupts = <115>;
++        };
++  - |
++        sata@f7e90000 {
++                compatible = "marvell,berlin2q-achi", "generic-ahci";
++                reg = <0xe90000 0x1000>;
++                interrupts = <GIC_SPI 7 IRQ_TYPE_LEVEL_HIGH>;
++                clocks = <&chip CLKID_SATA>;
++                #address-cells = <1>;
++                #size-cells = <0>;
++
++                sata0: sata-port@0 {
++                        reg = <0>;
++                        phys = <&sata_phy 0>;
++                        target-supply = <&reg_sata0>;
++                };
++
++                sata1: sata-port@1 {
++                        reg = <1>;
++                        phys = <&sata_phy 1>;
++                        target-supply = <&reg_sata1>;;
++                };
++        };
+-- 
+2.25.1
 

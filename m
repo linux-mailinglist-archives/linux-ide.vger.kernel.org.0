@@ -2,162 +2,226 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 940354C662D
-	for <lists+linux-ide@lfdr.de>; Mon, 28 Feb 2022 10:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8174C663B
+	for <lists+linux-ide@lfdr.de>; Mon, 28 Feb 2022 10:57:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229502AbiB1JzI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 28 Feb 2022 04:55:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56374 "EHLO
+        id S234618AbiB1J6J (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 28 Feb 2022 04:58:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234560AbiB1JzG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 28 Feb 2022 04:55:06 -0500
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F1E41C92D
-        for <linux-ide@vger.kernel.org>; Mon, 28 Feb 2022 01:54:28 -0800 (PST)
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id D15A74031B
-        for <linux-ide@vger.kernel.org>; Mon, 28 Feb 2022 09:54:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1646042066;
-        bh=mna9J1nBg6HOMnow2P6fMcSmE8VXg1IqnH2FURdKmp0=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=KtI8RzRNkh73o6/0HDmpns4ouVwXYqF7A9kzAsJA1QiE2bSPj7Y0VKSeCj75IycZB
-         NG6oeor85JLhiFihMpktc4XJMXKAZ50uhVUetUGC54mObySw4VNgmHk0vLXwvVPNqd
-         Ug7NWcBBnnSTlWasQegW4QF6heGYPbmtS2B43nJC1bO7aBO5vfnichTF5CRpKgZc/A
-         ds7WXGGmY/rKStYU/uMxaUSKBfcdyeoQy0GC71bNRN+EKPmtN8F2rGgjIg+/g+YqaJ
-         k5svaAfQMnnmxtUY8AqKeVPuhwcMHo0DLcGtfuhgMdHrYKmPPQbgqBRSRta0KNqk3j
-         cah7Qg8HfiD2g==
-Received: by mail-wm1-f69.google.com with SMTP id 7-20020a1c1907000000b003471d9bbe8dso3966451wmz.0
-        for <linux-ide@vger.kernel.org>; Mon, 28 Feb 2022 01:54:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
-         :content-language:to:cc:references:from:in-reply-to
-         :content-transfer-encoding;
-        bh=mna9J1nBg6HOMnow2P6fMcSmE8VXg1IqnH2FURdKmp0=;
-        b=1SdQPnuR+qr14EgJdFfi9n0F4mPo+zyqdPpQ77YG1AqJruk9enHvR7Q881UyeDpRBe
-         NCqYjhWIDtiNTcnVyk6OPZchjbCJS8PYNGxm1gUJB3x2vkUertCZnowlU+XY54MmcczA
-         2T3Z4LE6yoibMv0uHrRgviccOkeVi6dndeQ7g5Ik6GFn740fEuDKP47Qdr2GwgUCBGbR
-         TZ4q6oRobfS4rMJeEqF4tvctt+HHSh1E81oWXLhCshGZ7iim9v6AHVzGmssqBrkbIDvp
-         CoXeIzZm19HoVhjo4ykuYthU8XDM/4A61aQcgcnvHbTmRBHdXmSe4GZwBiBaCwJfAGdV
-         hLhw==
-X-Gm-Message-State: AOAM533tQmH17yksaoXxXmS2KThv7JLoGE6ILKika2vRnsbQb4kgeR9s
-        JVnotpO73VqCDBkwD7qFtatH7kqRDVy6zDdMs2U4E/10e2Lklib7xMUltKYJDO5FCVnFytLcoiH
-        04+fFt4u4Iv6FMzXrRoyFKfAXctMAX1m63pf3Aw==
-X-Received: by 2002:a05:6000:162f:b0:1ed:bbef:f7b9 with SMTP id v15-20020a056000162f00b001edbbeff7b9mr15608209wrb.379.1646042064786;
-        Mon, 28 Feb 2022 01:54:24 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJwF4VDklq4C5zzM72nwt08X01T/IfVu/GQ6QrQbbkJljUbB9HduFrRm9IjGHQBgzq6rkjLXyQ==
-X-Received: by 2002:a05:6000:162f:b0:1ed:bbef:f7b9 with SMTP id v15-20020a056000162f00b001edbbeff7b9mr15608187wrb.379.1646042064370;
-        Mon, 28 Feb 2022 01:54:24 -0800 (PST)
-Received: from [192.168.0.133] (xdsl-188-155-181-108.adslplus.ch. [188.155.181.108])
-        by smtp.gmail.com with ESMTPSA id n10-20020a5d598a000000b001efab095615sm4434539wri.29.2022.02.28.01.54.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Feb 2022 01:54:23 -0800 (PST)
-Message-ID: <fc3186ce-f731-a7c1-e958-b0071125b32c@canonical.com>
-Date:   Mon, 28 Feb 2022 10:54:21 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: [PATCH v3 3/3] arm64: dts: rockchip: Add sata nodes to rk356x
-Content-Language: en-US
-To:     Frank Wunderlich <linux@fw-web.de>,
-        "devicetree @ vger . kernel . org Damien Le Moal" 
-        <damien.lemoal@opensource.wdc.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Heiko Stuebner <heiko@sntech.de>,
-        Peter Geis <pgwipeout@gmail.com>,
-        Michael Riesch <michael.riesch@wolfvision.net>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org
-Cc:     Frank Wunderlich <frank-w@public-files.de>
-References: <20220227182800.275572-1-linux@fw-web.de>
- <20220227182800.275572-4-linux@fw-web.de>
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
-In-Reply-To: <20220227182800.275572-4-linux@fw-web.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S234575AbiB1J6G (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 28 Feb 2022 04:58:06 -0500
+Received: from lgeamrelo11.lge.com (lgeamrelo11.lge.com [156.147.23.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D2D47FD5
+        for <linux-ide@vger.kernel.org>; Mon, 28 Feb 2022 01:57:19 -0800 (PST)
+Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
+        by 156.147.23.51 with ESMTP; 28 Feb 2022 18:57:18 +0900
+X-Original-SENDERIP: 156.147.1.121
+X-Original-MAILFROM: byungchul.park@lge.com
+Received: from unknown (HELO localhost.localdomain) (10.177.244.38)
+        by 156.147.1.121 with ESMTP; 28 Feb 2022 18:57:18 +0900
+X-Original-SENDERIP: 10.177.244.38
+X-Original-MAILFROM: byungchul.park@lge.com
+From:   Byungchul Park <byungchul.park@lge.com>
+To:     torvalds@linux-foundation.org
+Cc:     damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+        adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+        mingo@redhat.com, linux-kernel@vger.kernel.org,
+        peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
+        rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
+        daniel.vetter@ffwll.ch, chris@chris-wilson.co.uk,
+        duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+        tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+        amir73il@gmail.com, bfields@fieldses.org,
+        gregkh@linuxfoundation.org, kernel-team@lge.com,
+        linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+        minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+        sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+        penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+        ngupta@vflare.org, linux-block@vger.kernel.org,
+        paolo.valente@linaro.org, josef@toxicpanda.com,
+        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
+        jack@suse.cz, jack@suse.com, jlayton@kernel.org,
+        dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, airlied@linux.ie,
+        rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+        hamohammed.sa@gmail.com
+Subject: [PATCH v3 00/21] DEPT(Dependency Tracker)
+Date:   Mon, 28 Feb 2022 18:56:39 +0900
+Message-Id: <1646042220-28952-1-git-send-email-byungchul.park@lge.com>
+X-Mailer: git-send-email 1.9.1
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 27/02/2022 19:28, Frank Wunderlich wrote:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> RK356x supports up to 3 sata controllers which were compatible with the
-> existing snps,dwc-ahci binding.
-> 
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-> ---
-> changes in v3:
->   - fix combphy error by moving sata0 to rk3568.dtsi
->   - remove clock-names and interrupt-names
-> changes in v2:
->   - added sata0 + 1, but have only tested sata2
-> ---
->  arch/arm64/boot/dts/rockchip/rk3568.dtsi | 14 +++++++++++++
->  arch/arm64/boot/dts/rockchip/rk356x.dtsi | 26 ++++++++++++++++++++++++
->  2 files changed, 40 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> index 5b0f528d6818..2a2f65899d47 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-> @@ -8,6 +8,19 @@
->  / {
->  	compatible = "rockchip,rk3568";
->  
-> +	sata0: sata@fc000000 {
-> +		compatible = "snps,dwc-ahci";
-> +		reg = <0 0xfc000000 0 0x1000>;
-> +		clocks = <&cru ACLK_SATA0>, <&cru CLK_SATA0_PMALIVE>,
-> +			 <&cru CLK_SATA0_RXOOB>;
-> +		interrupts = <GIC_SPI 94 IRQ_TYPE_LEVEL_HIGH>;
-> +		phys = <&combphy0 PHY_TYPE_SATA>;
-> +		phy-names = "sata-phy";
-> +		ports-implemented = <0x1>;
-> +		power-domains = <&power RK3568_PD_PIPE>;
-> +		status = "disabled";
-> +	};
-> +
->  	pipe_phy_grf0: syscon@fdc70000 {
->  		compatible = "rockchip,rk3568-pipe-phy-grf", "syscon";
->  		reg = <0x0 0xfdc70000 0x0 0x1000>;
-> @@ -114,3 +127,4 @@ power-domain@RK3568_PD_PIPE {
->  		#power-domain-cells = <0>;
->  	};
->  };
-> +
+I didn't want to bother you so I was planning to send the next spin
+after making more progress. However, PATCH v2 reports too many false
+positives because Dept tracked the bit_wait_table[] wrong way - I
+apologize for that. So I decided to send PATCH v3 first before going
+further for those who want to run Dept for now.
 
-No need for new line here,
+There might still be some false positives but not overwhelming.
 
-> diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-> index 7cdef800cb3c..484c5ace718a 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-> @@ -230,6 +230,32 @@ scmi_shmem: sram@0 {
->  		};
->  	};
->  
-> +	sata1: sata@fc400000 {
-> +		compatible = "snps,dwc-ahci";
-> +		reg = <0 0xfc400000 0 0x1000>;
-> +		clocks = <&cru ACLK_SATA1>, <&cru CLK_SATA1_PMALIVE>,
-> +			 <&cru CLK_SATA1_RXOOB>;
+---
 
-clock-names should be added. Also to bindings.
+Hi Linus and folks,
 
+I've been developing a tool for detecting deadlock possibilities by
+tracking wait/event rather than lock(?) acquisition order to try to
+cover all synchonization machanisms. It's done on v5.17-rc1 tag.
 
-Best regards,
-Krzysztof
+https://github.com/lgebyungchulpark/linux-dept/commits/dept1.14_on_v5.17-rc1
+
+Benifit:
+
+	0. Works with all lock primitives.
+	1. Works with wait_for_completion()/complete().
+	2. Works with 'wait' on PG_locked.
+	3. Works with 'wait' on PG_writeback.
+	4. Works with swait/wakeup.
+	5. Works with waitqueue.
+	6. Multiple reports are allowed.
+	7. Deduplication control on multiple reports.
+	8. Withstand false positives thanks to 6.
+	9. Easy to tag any wait/event.
+
+Future work:
+
+	0. To make it more stable.
+	1. To separates Dept from Lockdep.
+	2. To improves performance in terms of time and space.
+	3. To use Dept as a dependency engine for Lockdep.
+	4. To add any missing tags of wait/event in the kernel.
+	5. To deduplicate stack trace.
+
+How to interpret reports:
+
+	1. E(event) in each context cannot be triggered because of the
+	   W(wait) that cannot be woken.
+	2. The stack trace helping find the problematic code is located
+	   in each conext's detail.
+
+Thanks,
+Byungchul
+
+---
+
+Changes from v2:
+
+	1. Disable Dept on bit_wait_table[] in sched/wait_bit.c
+	   reporting a lot of false positives, which is my fault.
+	   Wait/event for bit_wait_table[] should've been tagged in a
+	   higher layer for better work, which is a future work.
+	   (feedback from Jan Kara)
+	2. Disable Dept on crypto_larval's completion to prevent a false
+	   positive.
+
+Changes from v1:
+
+	1. Fix coding style and typo. (feedback from Steven)
+	2. Distinguish each work context from another in workqueue.
+	3. Skip checking lock acquisition with nest_lock, which is about
+	   correct lock usage that should be checked by Lockdep.
+
+Changes from RFC:
+
+	1. Prevent adding a wait tag at prepare_to_wait() but __schedule().
+	   (feedback from Linus and Matthew)
+	2. Use try version at lockdep_acquire_cpus_lock() annotation.
+	3. Distinguish each syscall context from another.
+
+Byungchul Park (21):
+  llist: Move llist_{head,node} definition to types.h
+  dept: Implement Dept(Dependency Tracker)
+  dept: Embed Dept data in Lockdep
+  dept: Add a API for skipping dependency check temporarily
+  dept: Apply Dept to spinlock
+  dept: Apply Dept to mutex families
+  dept: Apply Dept to rwlock
+  dept: Apply Dept to wait_for_completion()/complete()
+  dept: Apply Dept to seqlock
+  dept: Apply Dept to rwsem
+  dept: Add proc knobs to show stats and dependency graph
+  dept: Introduce split map concept and new APIs for them
+  dept: Apply Dept to wait/event of PG_{locked,writeback}
+  dept: Apply SDT to swait
+  dept: Apply SDT to wait(waitqueue)
+  locking/lockdep, cpu/hotplus: Use a weaker annotation in AP thread
+  dept: Distinguish each syscall context from another
+  dept: Distinguish each work from another
+  dept: Disable Dept within the wait_bit layer by default
+  dept: Add nocheck version of init_completion()
+  dept: Disable Dept on struct crypto_larval's completion for now
+
+ crypto/api.c                       |    7 +-
+ include/linux/completion.h         |   50 +-
+ include/linux/dept.h               |  535 +++++++
+ include/linux/dept_page.h          |   78 ++
+ include/linux/dept_sdt.h           |   62 +
+ include/linux/hardirq.h            |    3 +
+ include/linux/irqflags.h           |   33 +-
+ include/linux/llist.h              |    8 -
+ include/linux/lockdep.h            |  158 ++-
+ include/linux/lockdep_types.h      |    3 +
+ include/linux/mutex.h              |   33 +
+ include/linux/page-flags.h         |   45 +-
+ include/linux/pagemap.h            |    7 +-
+ include/linux/percpu-rwsem.h       |   10 +-
+ include/linux/rtmutex.h            |    7 +
+ include/linux/rwlock.h             |   52 +
+ include/linux/rwlock_api_smp.h     |    8 +-
+ include/linux/rwlock_types.h       |    7 +
+ include/linux/rwsem.h              |   33 +
+ include/linux/sched.h              |    7 +
+ include/linux/seqlock.h            |   59 +-
+ include/linux/spinlock.h           |   26 +
+ include/linux/spinlock_types_raw.h |   13 +
+ include/linux/swait.h              |    4 +
+ include/linux/types.h              |    8 +
+ include/linux/wait.h               |    6 +-
+ init/init_task.c                   |    2 +
+ init/main.c                        |    4 +
+ kernel/Makefile                    |    1 +
+ kernel/cpu.c                       |    2 +-
+ kernel/dependency/Makefile         |    4 +
+ kernel/dependency/dept.c           | 2712 ++++++++++++++++++++++++++++++++++++
+ kernel/dependency/dept_hash.h      |   10 +
+ kernel/dependency/dept_internal.h  |   26 +
+ kernel/dependency/dept_object.h    |   13 +
+ kernel/dependency/dept_proc.c      |   92 ++
+ kernel/entry/common.c              |    3 +
+ kernel/exit.c                      |    1 +
+ kernel/fork.c                      |    2 +
+ kernel/locking/lockdep.c           |   12 +-
+ kernel/module.c                    |    2 +
+ kernel/sched/completion.c          |   12 +-
+ kernel/sched/core.c                |    3 +
+ kernel/sched/swait.c               |   10 +
+ kernel/sched/wait.c                |   16 +
+ kernel/sched/wait_bit.c            |    5 +-
+ kernel/softirq.c                   |    6 +-
+ kernel/trace/trace_preemptirq.c    |   19 +-
+ kernel/workqueue.c                 |    3 +
+ lib/Kconfig.debug                  |   21 +
+ mm/filemap.c                       |   68 +
+ mm/page_ext.c                      |    5 +
+ 52 files changed, 4257 insertions(+), 59 deletions(-)
+ create mode 100644 include/linux/dept.h
+ create mode 100644 include/linux/dept_page.h
+ create mode 100644 include/linux/dept_sdt.h
+ create mode 100644 kernel/dependency/Makefile
+ create mode 100644 kernel/dependency/dept.c
+ create mode 100644 kernel/dependency/dept_hash.h
+ create mode 100644 kernel/dependency/dept_internal.h
+ create mode 100644 kernel/dependency/dept_object.h
+ create mode 100644 kernel/dependency/dept_proc.c
+
+-- 
+1.9.1
+

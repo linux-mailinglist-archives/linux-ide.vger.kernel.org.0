@@ -2,207 +2,370 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD4444CB4FC
-	for <lists+linux-ide@lfdr.de>; Thu,  3 Mar 2022 03:40:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 021F04CB58A
+	for <lists+linux-ide@lfdr.de>; Thu,  3 Mar 2022 04:51:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231823AbiCCCda (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 2 Mar 2022 21:33:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60882 "EHLO
+        id S229447AbiCCDwa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 2 Mar 2022 22:52:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231800AbiCCCd3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Mar 2022 21:33:29 -0500
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87AD636C;
-        Wed,  2 Mar 2022 18:32:40 -0800 (PST)
-Received: from cwcc.thunk.org (pool-108-7-220-252.bstnma.fios.verizon.net [108.7.220.252])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 2232WZQO020612
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 2 Mar 2022 21:32:36 -0500
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-        id 7634315C0038; Wed,  2 Mar 2022 21:32:35 -0500 (EST)
-Date:   Wed, 2 Mar 2022 21:32:35 -0500
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Byungchul Park <byungchul.park@lge.com>
-Cc:     Jan Kara <jack@suse.cz>, torvalds@linux-foundation.org,
-        damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
-        adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
-        mingo@redhat.com, linux-kernel@vger.kernel.org,
-        peterz@infradead.org, will@kernel.org, tglx@linutronix.de,
-        rostedt@goodmis.org, joel@joelfernandes.org, sashal@kernel.org,
-        daniel.vetter@ffwll.ch, chris@chris-wilson.co.uk,
-        duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
-        willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
-        bfields@fieldses.org, gregkh@linuxfoundation.org,
-        kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
-        mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
-        vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
-        dennis@kernel.org, cl@linux.com, penberg@kernel.org,
-        rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
-        linux-block@vger.kernel.org, axboe@kernel.dk,
-        paolo.valente@linaro.org, josef@toxicpanda.com,
-        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
-        jack@suse.com, jlayton@kernel.org, dan.j.williams@intel.com,
-        hch@infradead.org, djwong@kernel.org,
-        dri-devel@lists.freedesktop.org, airlied@linux.ie,
-        rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
-        hamohammed.sa@gmail.com
-Subject: Re: Report 2 in ext4 and journal based on v5.17-rc1
-Message-ID: <YiAow5gi21zwUT54@mit.edu>
-References: <1645096204-31670-1-git-send-email-byungchul.park@lge.com>
- <1645096204-31670-2-git-send-email-byungchul.park@lge.com>
- <20220221190204.q675gtsb6qhylywa@quack3.lan>
- <20220223003534.GA26277@X58A-UD3R>
- <20220223144859.na2gjgl5efgw5zhn@quack3.lan>
- <20220224011102.GA29726@X58A-UD3R>
- <20220224102239.n7nzyyekuacgpnzg@quack3.lan>
- <20220228092826.GA5201@X58A-UD3R>
- <20220228101444.6frl63dn5vmgycbp@quack3.lan>
- <20220303010033.GB20752@X58A-UD3R>
+        with ESMTP id S229531AbiCCDw0 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 2 Mar 2022 22:52:26 -0500
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2057.outbound.protection.outlook.com [40.107.236.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB043141FC3;
+        Wed,  2 Mar 2022 19:51:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Aqn26rIQrjl17ILA9UPPzbS5veL+VgXZwmn4MZSTeWagIVYqOa/Tc355SJmFkJ/JfnyqwQ+XlJiuaMaY86yogozhRefIl9M/uwBjY2OQFtZyMeQv9mE1CAqrESVBYgRza5RxaVTd5WUYAPnZ2PQKkypyTBDmctc0Vb+uthnWDz/4Y470XKUnsI3R0g+aCByQwUbgAnrrU8ujVYdINkZQ5yVkvRaKft4LsKswXMqhtil55ZfrMqshjP7aCxcbDDOKRq//ESsCf79VI3gq+VixN9Gu4xXo0z4GIU+yLLp9ylwD7DVQLPMYujT+NIu2/VZUKdnpEi0xgTIQPa8wX1rolw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=T4Mdtwir9bYrt6O0k46nqd+3xOAiEDq54gsC6JP3p70=;
+ b=Lzvnw5qy0r8MWk5vkTRssORZPDTRln8c6sNLupsdNqG8d5FMR8MCAP3w7XmvJQP4o3FJvlS7MLgst8Bvl43ZaVeXIvwaxHHW3oaW/v6HLsxJDbhcL+MSRFXLhKsQGhUcSzVQs7MParQnp0oGaQotI3qaYG7hQb63av+mQ26pS2zJRBzDGn5FYzYKty2EerB2oWCw827iYZfgZB4C7b9CMY8k4qfBBRqYnc983k4NHImA8p7wlKamPD+8Rag5J85VkYlqLxcbAeczbCSCoXCc+O8jpL6h5Ghlg7lAQqOeDhqUQ8rfobx5IDG+T9etwrFUvLzaX3Z8/vWHHGLobxKXdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=opensource.wdc.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T4Mdtwir9bYrt6O0k46nqd+3xOAiEDq54gsC6JP3p70=;
+ b=qrCV7u6MP+65SaBUfzaeF2KRg0nIAzLHqMWFTB0nLrw6KQnyklOC1RB92rx6xUmive+mjtSh+Jcm3a0eotVJcifVTL0WNsxBqLyse88Dt8u2qVXqTAqu+Cb9peIGvU5UDtXcqQN3E21U3gmt5Idx9zCvhp3gP8n/HKYUNCPpRRY=
+Received: from CO2PR04CA0065.namprd04.prod.outlook.com (2603:10b6:102:1::33)
+ by CY4PR12MB1237.namprd12.prod.outlook.com (2603:10b6:903:3e::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5017.26; Thu, 3 Mar
+ 2022 03:51:33 +0000
+Received: from CO1NAM11FT019.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:102:1:cafe::ed) by CO2PR04CA0065.outlook.office365.com
+ (2603:10b6:102:1::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14 via Frontend
+ Transport; Thu, 3 Mar 2022 03:51:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com;
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1NAM11FT019.mail.protection.outlook.com (10.13.175.57) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.5038.14 via Frontend Transport; Thu, 3 Mar 2022 03:51:32 +0000
+Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.18; Wed, 2 Mar
+ 2022 21:51:30 -0600
+From:   Mario Limonciello <mario.limonciello@amd.com>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
+CC:     "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Christoph Hellwig <hch@lst.de>
+Subject: [PATCH v2 1/2] ata: ahci: Drop low power policy board type
+Date:   Wed, 2 Mar 2022 21:49:11 -0600
+Message-ID: <20220303034912.3615390-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220303010033.GB20752@X58A-UD3R>
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: e5d37eb2-2eb0-4cbd-eaf8-08d9fcc91b33
+X-MS-TrafficTypeDiagnostic: CY4PR12MB1237:EE_
+X-Microsoft-Antispam-PRVS: <CY4PR12MB1237D890E719295ADB5D5DBCE2049@CY4PR12MB1237.namprd12.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: wDtN6G71LFL3AxDB79t6A5Ox70xBYIQa+rukrNf3PPL0iYO1/R/TPcIaSEmp2zUNrKV9Y7G+DcK6gYE9GxYiqBVikN01fkLRBVQIBV2jpAlkQFoA21aB2QnEq9o8TOOuWjtOCFNw+ObxpaT3y7ZyA4TJZy8IRepjJA6Qtvw66IlhyfduElQ95NZPyYf0S7piRsrhgFFnw9T4uBmp69DP1zdNCqFdYv5pmS16SYzelI85BLH1RpN0DXIAIhgq329sHKQgHmTWMuon0sogyxXz+aX60YNkOQc4/iisvrdCFOBzm/jdmAyh2ZhfUTlm2o5rMU1Fpf6IRzUfLPM723bB3/dEYcwc/L1IXeKlH3M8wML1rXQhZ4ioSNnX9vR+CMaDGee5eGDZETaVoMRVL4dLg2Y+WovfYhdNaMMbV4IzWNrXVvRgXDp/wKo0En4jd+kotd6Xhr+yW9BD6lg349e8//6e6BGrc+iHUS2vL4ZRIMUtdY/m/zrZwHcy0cg+kAfHg2ILmBgAHZaxLysmIn64LtAA7lSSihvgFQkDl+RHafPNUtrNP2N1H0esJCAa8TWWRU1m2WU2WSTo/2MukHcmHDLHFjLYs4pGv8iItO9AF9EK31ItiaZdDT48RdWQbfKdQ3c+l1nugVeOq7kgw46EnAxB68nouoa3FviW7rLegMl6+o8L2LHIBMr6V6h9++QLvWNQNN7wIfl1Mf1MZhDMUA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230001)(4636009)(46966006)(40470700004)(36840700001)(70586007)(70206006)(83380400001)(4326008)(8676002)(30864003)(8936002)(2906002)(86362001)(82310400004)(5660300002)(26005)(2616005)(16526019)(186003)(44832011)(336012)(6666004)(426003)(40460700003)(36756003)(508600001)(316002)(54906003)(6916009)(81166007)(356005)(1076003)(47076005)(36860700001)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Mar 2022 03:51:32.2774
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: e5d37eb2-2eb0-4cbd-eaf8-08d9fcc91b33
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1NAM11FT019.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1237
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Mar 03, 2022 at 10:00:33AM +0900, Byungchul Park wrote:
-> 
-> Unfortunately, it's neither perfect nor safe without another wakeup
-> source - rescue wakeup source.
-> 
->    consumer			producer
-> 
-> 				lock L
-> 				(too much work queued == true)
-> 				unlock L
-> 				--- preempted
->    lock L
->    unlock L
->    do work
->    lock L
->    unlock L
->    do work
->    ...
->    (no work == true)
->    sleep
-> 				--- scheduled in
-> 				sleep
+The low power policy board type was introduced to allow systems
+to get into deep states reliably.  Before it was introduced `min_power`
+was causing problems for a number of drives.  New power policies
+`min_power_with_partial` and `med_power_with_dipm` have been introduced
+which provide a more stable baseline for systems.
 
-That's not how things work in ext4.  It's **way** more complicated
-than that.  We have multiple wait channels, one wake up the consumer
-(read: the commit thread), and one which wakes up any processes
-waiting for commit thread to have made forward progress.  We also have
-two spin-lock protected sequence number, one which indicates the
-current commited transaction #, and one indicating the transaction #
-that needs to be committed.
+As discussed in the RFC, if this patch introduces regressions they need
+to be examined closely to decide if reverting makes sense. Some things
+that make sense to look at:
 
-On the commit thread, it will sleep on j_wait_commit, and when it is
-woken up, it will check to see if there is work to be done
-(j_commit_sequence != j_commit_request), and if so, do the work, and
-then wake up processes waiting on the wait_queue j_wait_done_commit.
-(Again, all of this uses the pattern, "prepare to wait", then check to
-see if we should sleep, if we do need to sleep, unlock j_state_lock,
-then sleep.   So this prevents any races leading to lost wakeups.
+1. Check what modes are set by the disk
+2. Check what policy is set by the user in kernel config
+   (or module parameter)
+3. Verify the firmware version of the system and check whether updating
+   it helps
+4. Check the firmware version of the disk and whether updating it helps
 
-On the start_this_handle() thread, if we current transaction is too
-full, we set j_commit_request to its transaction id to indicate that
-we want the current transaction to be committed, and then we wake up
-the j_wait_commit wait queue and then we enter a loop where do a
-prepare_to_wait in j_wait_done_commit, check to see if
-j_commit_sequence == the transaction id that we want to be completed,
-and if it's not done yet, we unlock the j_state_lock spinlock, and go
-to sleep.  Again, because of the prepare_to_wait, there is no chance
-of a lost wakeup.
+The outputs from these can be used for building a disallow list rather
+than a flat revert of this commit.  If that list grows too large, it might
+make sense to revert however.
 
-So there really is no "consumer" and "producer" here.  If you really
-insist on using this model, which really doesn't apply, for one
-thread, it's the consumer with respect to one wait queue, and the
-producer with respect to the *other* wait queue.  For the other
-thread, the consumer and producer roles are reversed.
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Acked-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+Changes from v1->v2:
+ * Add Chris' tag
+ drivers/ata/Kconfig |   2 +-
+ drivers/ata/ahci.c  | 105 +++++++++++++++++++-------------------------
+ drivers/ata/ahci.h  |   9 ++--
+ 3 files changed, 50 insertions(+), 66 deletions(-)
 
-And of course, this is a highly simplified model, since we also have a
-wait queue used by the commit thread to wait for the number of active
-handles on a particular transaction to go to zero, and
-stop_this_handle() will wake up commit thread via this wait queue when
-the last active handle on a particular transaction is retired.  (And
-yes, that parameter is also protected by a different spin lock which
-is per-transaction).
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index cb9e71b4ca4d..3624d56d32b4 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -116,7 +116,7 @@ config SATA_AHCI
+ 	  If unsure, say N.
+ 
+ config SATA_LPM_POLICY
+-	int "Default SATA Link Power Management policy for low power chipsets"
++	int "Default SATA Link Power Management policy"
+ 	range 0 4
+ 	default 0
+ 	depends on SATA_AHCI
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index ffaad9eaa79d..17d757ad7111 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -50,7 +50,6 @@ enum board_ids {
+ 	/* board IDs by feature in alphabetical order */
+ 	board_ahci,
+ 	board_ahci_ign_iferr,
+-	board_ahci_low_power,
+ 	board_ahci_no_debounce_delay,
+ 	board_ahci_nomsi,
+ 	board_ahci_noncq,
+@@ -135,13 +134,6 @@ static const struct ata_port_info ahci_port_info[] = {
+ 		.udma_mask	= ATA_UDMA6,
+ 		.port_ops	= &ahci_ops,
+ 	},
+-	[board_ahci_low_power] = {
+-		AHCI_HFLAGS	(AHCI_HFLAG_USE_LPM_POLICY),
+-		.flags		= AHCI_FLAG_COMMON,
+-		.pio_mask	= ATA_PIO4,
+-		.udma_mask	= ATA_UDMA6,
+-		.port_ops	= &ahci_ops,
+-	},
+ 	[board_ahci_no_debounce_delay] = {
+ 		.flags		= AHCI_FLAG_COMMON,
+ 		.link_flags	= ATA_LFLAG_NO_DEBOUNCE_DELAY,
+@@ -275,13 +267,13 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x2924), board_ahci }, /* ICH9 */
+ 	{ PCI_VDEVICE(INTEL, 0x2925), board_ahci }, /* ICH9 */
+ 	{ PCI_VDEVICE(INTEL, 0x2927), board_ahci }, /* ICH9 */
+-	{ PCI_VDEVICE(INTEL, 0x2929), board_ahci_low_power }, /* ICH9M */
+-	{ PCI_VDEVICE(INTEL, 0x292a), board_ahci_low_power }, /* ICH9M */
+-	{ PCI_VDEVICE(INTEL, 0x292b), board_ahci_low_power }, /* ICH9M */
+-	{ PCI_VDEVICE(INTEL, 0x292c), board_ahci_low_power }, /* ICH9M */
+-	{ PCI_VDEVICE(INTEL, 0x292f), board_ahci_low_power }, /* ICH9M */
++	{ PCI_VDEVICE(INTEL, 0x2929), board_ahci }, /* ICH9M */
++	{ PCI_VDEVICE(INTEL, 0x292a), board_ahci }, /* ICH9M */
++	{ PCI_VDEVICE(INTEL, 0x292b), board_ahci }, /* ICH9M */
++	{ PCI_VDEVICE(INTEL, 0x292c), board_ahci }, /* ICH9M */
++	{ PCI_VDEVICE(INTEL, 0x292f), board_ahci }, /* ICH9M */
+ 	{ PCI_VDEVICE(INTEL, 0x294d), board_ahci }, /* ICH9 */
+-	{ PCI_VDEVICE(INTEL, 0x294e), board_ahci_low_power }, /* ICH9M */
++	{ PCI_VDEVICE(INTEL, 0x294e), board_ahci }, /* ICH9M */
+ 	{ PCI_VDEVICE(INTEL, 0x502a), board_ahci }, /* Tolapai */
+ 	{ PCI_VDEVICE(INTEL, 0x502b), board_ahci }, /* Tolapai */
+ 	{ PCI_VDEVICE(INTEL, 0x3a05), board_ahci }, /* ICH10 */
+@@ -291,9 +283,9 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x3b23), board_ahci }, /* PCH AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x3b24), board_ahci }, /* PCH RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x3b25), board_ahci }, /* PCH RAID */
+-	{ PCI_VDEVICE(INTEL, 0x3b29), board_ahci_low_power }, /* PCH M AHCI */
++	{ PCI_VDEVICE(INTEL, 0x3b29), board_ahci }, /* PCH M AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x3b2b), board_ahci }, /* PCH RAID */
+-	{ PCI_VDEVICE(INTEL, 0x3b2c), board_ahci_low_power }, /* PCH M RAID */
++	{ PCI_VDEVICE(INTEL, 0x3b2c), board_ahci }, /* PCH M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x3b2f), board_ahci }, /* PCH AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x19b0), board_ahci_pcs7 }, /* DNV AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x19b1), board_ahci_pcs7 }, /* DNV AHCI */
+@@ -316,9 +308,9 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x19cE), board_ahci_pcs7 }, /* DNV AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x19cF), board_ahci_pcs7 }, /* DNV AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1c02), board_ahci }, /* CPT AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x1c03), board_ahci_low_power }, /* CPT M AHCI */
++	{ PCI_VDEVICE(INTEL, 0x1c03), board_ahci }, /* CPT M AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1c04), board_ahci }, /* CPT RAID */
+-	{ PCI_VDEVICE(INTEL, 0x1c05), board_ahci_low_power }, /* CPT M RAID */
++	{ PCI_VDEVICE(INTEL, 0x1c05), board_ahci }, /* CPT M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x1c06), board_ahci }, /* CPT RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x1c07), board_ahci }, /* CPT RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x1d02), board_ahci }, /* PBG AHCI */
+@@ -327,29 +319,29 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x2826), board_ahci }, /* PBG/Lewisburg RAID*/
+ 	{ PCI_VDEVICE(INTEL, 0x2323), board_ahci }, /* DH89xxCC AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1e02), board_ahci }, /* Panther Point AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x1e03), board_ahci_low_power }, /* Panther M AHCI */
++	{ PCI_VDEVICE(INTEL, 0x1e03), board_ahci }, /* Panther M AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1e04), board_ahci }, /* Panther Point RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x1e05), board_ahci }, /* Panther Point RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x1e06), board_ahci }, /* Panther Point RAID */
+-	{ PCI_VDEVICE(INTEL, 0x1e07), board_ahci_low_power }, /* Panther M RAID */
++	{ PCI_VDEVICE(INTEL, 0x1e07), board_ahci }, /* Panther M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x1e0e), board_ahci }, /* Panther Point RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8c02), board_ahci }, /* Lynx Point AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x8c03), board_ahci_low_power }, /* Lynx M AHCI */
++	{ PCI_VDEVICE(INTEL, 0x8c03), board_ahci }, /* Lynx M AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x8c04), board_ahci }, /* Lynx Point RAID */
+-	{ PCI_VDEVICE(INTEL, 0x8c05), board_ahci_low_power }, /* Lynx M RAID */
++	{ PCI_VDEVICE(INTEL, 0x8c05), board_ahci }, /* Lynx M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8c06), board_ahci }, /* Lynx Point RAID */
+-	{ PCI_VDEVICE(INTEL, 0x8c07), board_ahci_low_power }, /* Lynx M RAID */
++	{ PCI_VDEVICE(INTEL, 0x8c07), board_ahci }, /* Lynx M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8c0e), board_ahci }, /* Lynx Point RAID */
+-	{ PCI_VDEVICE(INTEL, 0x8c0f), board_ahci_low_power }, /* Lynx M RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c02), board_ahci_low_power }, /* Lynx LP AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x9c03), board_ahci_low_power }, /* Lynx LP AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x9c04), board_ahci_low_power }, /* Lynx LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c05), board_ahci_low_power }, /* Lynx LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c06), board_ahci_low_power }, /* Lynx LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c07), board_ahci_low_power }, /* Lynx LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c0e), board_ahci_low_power }, /* Lynx LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c0f), board_ahci_low_power }, /* Lynx LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9dd3), board_ahci_low_power }, /* Cannon Lake PCH-LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x8c0f), board_ahci }, /* Lynx M RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c02), board_ahci }, /* Lynx LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x9c03), board_ahci }, /* Lynx LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x9c04), board_ahci }, /* Lynx LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c05), board_ahci }, /* Lynx LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c06), board_ahci }, /* Lynx LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c07), board_ahci }, /* Lynx LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c0e), board_ahci }, /* Lynx LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c0f), board_ahci }, /* Lynx LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9dd3), board_ahci }, /* Cannon Lake PCH-LP AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1f22), board_ahci }, /* Avoton AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1f23), board_ahci }, /* Avoton AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x1f24), board_ahci }, /* Avoton RAID */
+@@ -381,26 +373,26 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0x8d66), board_ahci }, /* Wellsburg RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8d6e), board_ahci }, /* Wellsburg RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x23a3), board_ahci }, /* Coleto Creek AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x9c83), board_ahci_low_power }, /* Wildcat LP AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x9c85), board_ahci_low_power }, /* Wildcat LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c87), board_ahci_low_power }, /* Wildcat LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9c8f), board_ahci_low_power }, /* Wildcat LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c83), board_ahci }, /* Wildcat LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x9c85), board_ahci }, /* Wildcat LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c87), board_ahci }, /* Wildcat LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9c8f), board_ahci }, /* Wildcat LP RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8c82), board_ahci }, /* 9 Series AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x8c83), board_ahci_low_power }, /* 9 Series M AHCI */
++	{ PCI_VDEVICE(INTEL, 0x8c83), board_ahci }, /* 9 Series M AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0x8c84), board_ahci }, /* 9 Series RAID */
+-	{ PCI_VDEVICE(INTEL, 0x8c85), board_ahci_low_power }, /* 9 Series M RAID */
++	{ PCI_VDEVICE(INTEL, 0x8c85), board_ahci }, /* 9 Series M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8c86), board_ahci }, /* 9 Series RAID */
+-	{ PCI_VDEVICE(INTEL, 0x8c87), board_ahci_low_power }, /* 9 Series M RAID */
++	{ PCI_VDEVICE(INTEL, 0x8c87), board_ahci }, /* 9 Series M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x8c8e), board_ahci }, /* 9 Series RAID */
+-	{ PCI_VDEVICE(INTEL, 0x8c8f), board_ahci_low_power }, /* 9 Series M RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9d03), board_ahci_low_power }, /* Sunrise LP AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x9d05), board_ahci_low_power }, /* Sunrise LP RAID */
+-	{ PCI_VDEVICE(INTEL, 0x9d07), board_ahci_low_power }, /* Sunrise LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x8c8f), board_ahci }, /* 9 Series M RAID */
++	{ PCI_VDEVICE(INTEL, 0x9d03), board_ahci }, /* Sunrise LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x9d05), board_ahci }, /* Sunrise LP RAID */
++	{ PCI_VDEVICE(INTEL, 0x9d07), board_ahci }, /* Sunrise LP RAID */
+ 	{ PCI_VDEVICE(INTEL, 0xa102), board_ahci }, /* Sunrise Point-H AHCI */
+-	{ PCI_VDEVICE(INTEL, 0xa103), board_ahci_low_power }, /* Sunrise M AHCI */
++	{ PCI_VDEVICE(INTEL, 0xa103), board_ahci }, /* Sunrise M AHCI */
+ 	{ PCI_VDEVICE(INTEL, 0xa105), board_ahci }, /* Sunrise Point-H RAID */
+ 	{ PCI_VDEVICE(INTEL, 0xa106), board_ahci }, /* Sunrise Point-H RAID */
+-	{ PCI_VDEVICE(INTEL, 0xa107), board_ahci_low_power }, /* Sunrise M RAID */
++	{ PCI_VDEVICE(INTEL, 0xa107), board_ahci }, /* Sunrise M RAID */
+ 	{ PCI_VDEVICE(INTEL, 0xa10f), board_ahci }, /* Sunrise Point-H RAID */
+ 	{ PCI_VDEVICE(INTEL, 0xa182), board_ahci }, /* Lewisburg AHCI*/
+ 	{ PCI_VDEVICE(INTEL, 0xa186), board_ahci }, /* Lewisburg RAID*/
+@@ -413,13 +405,13 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, 0xa356), board_ahci }, /* Cannon Lake PCH-H RAID */
+ 	{ PCI_VDEVICE(INTEL, 0x06d7), board_ahci }, /* Comet Lake-H RAID */
+ 	{ PCI_VDEVICE(INTEL, 0xa386), board_ahci }, /* Comet Lake PCH-V RAID */
+-	{ PCI_VDEVICE(INTEL, 0x0f22), board_ahci_low_power }, /* Bay Trail AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x0f23), board_ahci_low_power }, /* Bay Trail AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x22a3), board_ahci_low_power }, /* Cherry Tr. AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x5ae3), board_ahci_low_power }, /* ApolloLake AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci_low_power }, /* Ice Lake LP AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci_low_power }, /* Comet Lake PCH-U AHCI */
+-	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_low_power }, /* Comet Lake PCH RAID */
++	{ PCI_VDEVICE(INTEL, 0x0f22), board_ahci }, /* Bay Trail AHCI */
++	{ PCI_VDEVICE(INTEL, 0x0f23), board_ahci }, /* Bay Trail AHCI */
++	{ PCI_VDEVICE(INTEL, 0x22a3), board_ahci }, /* Cherry Tr. AHCI */
++	{ PCI_VDEVICE(INTEL, 0x5ae3), board_ahci }, /* ApolloLake AHCI */
++	{ PCI_VDEVICE(INTEL, 0x34d3), board_ahci }, /* Ice Lake LP AHCI */
++	{ PCI_VDEVICE(INTEL, 0x02d3), board_ahci }, /* Comet Lake PCH-U AHCI */
++	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci }, /* Comet Lake PCH RAID */
+ 
+ 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
+ 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+@@ -447,7 +439,7 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(AMD, 0x7800), board_ahci }, /* AMD Hudson-2 */
+ 	{ PCI_VDEVICE(AMD, 0x7801), board_ahci_no_debounce_delay }, /* AMD Hudson-2 (AHCI mode) */
+ 	{ PCI_VDEVICE(AMD, 0x7900), board_ahci }, /* AMD CZ */
+-	{ PCI_VDEVICE(AMD, 0x7901), board_ahci_low_power }, /* AMD Green Sardine */
++	{ PCI_VDEVICE(AMD, 0x7901), board_ahci }, /* AMD Green Sardine */
+ 	/* AMD is using RAID class only for ahci controllers */
+ 	{ PCI_VENDOR_ID_AMD, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+ 	  PCI_CLASS_STORAGE_RAID << 8, 0xffffff, board_ahci },
+@@ -1594,11 +1586,6 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap,
+ {
+ 	int policy = CONFIG_SATA_LPM_POLICY;
+ 
+-
+-	/* Ignore processing for chipsets that don't use policy */
+-	if (!(hpriv->flags & AHCI_HFLAG_USE_LPM_POLICY))
+-		return;
+-
+ 	/* user modified policy via module param */
+ 	if (mobile_lpm_policy != -1) {
+ 		policy = mobile_lpm_policy;
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index 5badbaca05a0..a2ca78e1df5c 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -235,14 +235,11 @@ enum {
+ 	AHCI_HFLAG_YES_ALPM		= (1 << 23), /* force ALPM cap on */
+ 	AHCI_HFLAG_NO_WRITE_TO_RO	= (1 << 24), /* don't write to read
+ 							only registers */
+-	AHCI_HFLAG_USE_LPM_POLICY	= (1 << 25), /* chipset that should use
+-							SATA_LPM_POLICY
+-							as default lpm_policy */
+-	AHCI_HFLAG_SUSPEND_PHYS		= (1 << 26), /* handle PHYs during
++	AHCI_HFLAG_SUSPEND_PHYS		= (1 << 25), /* handle PHYs during
+ 							suspend/resume */
+-	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= (1 << 27), /* ignore -EOPNOTSUPP
++	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= (1 << 26), /* ignore -EOPNOTSUPP
+ 							from phy_power_on() */
+-	AHCI_HFLAG_NO_SXS		= (1 << 28), /* SXS not supported */
++	AHCI_HFLAG_NO_SXS		= (1 << 27), /* SXS not supported */
+ 
+ 	/* ap->flags bits */
+ 
+-- 
+2.34.1
 
-So it seems to me that a fundamental flaw in DEPT's model is assuming
-that the only waiting paradigm that can be used is consumer/producer,
-and that's simply not true.  The fact that you use the term "lock" is
-also going to lead a misleading line of reasoning, because properly
-speaking, they aren't really locks.  We are simply using wait channels
-to wake up processes as necessary, and then they will check other
-variables to decide whether or not they need to sleep or not, and we
-have an invariant that when these variables change indicating forward
-progress, the associated wait channel will be woken up.
-
-Cheers,
-
-						- Ted
-
-
-P.S.  This model is also highly simplified since there are other
-reasons why the commit thread can be woken up, some which might be via
-a timeout, and some which is via the j_wait_commit wait channel but
-not because j_commit_request has been changed, but because file system
-is being unmounted, or the file system is being frozen in preparation
-of a snapshot, etc.  These are *not* necessary to prevent a deadlock,
-because under normal circumstances the two wake channels are
-sufficient of themselves.  So please don't think of them as "rescue
-wakeup sources"; again, that's highly misleading and the wrong way to
-think of them.
-
-And to make things even more complicated, we have more than 2 wait
-channel --- we have *five*:
-
-	/**
-	 * @j_wait_transaction_locked:
-	 *
-	 * Wait queue for waiting for a locked transaction to start committing,
-	 * or for a barrier lock to be released.
-	 */
-	wait_queue_head_t	j_wait_transaction_locked;
-
-	/**
-	 * @j_wait_done_commit: Wait queue for waiting for commit to complete.
-	 */
-	wait_queue_head_t	j_wait_done_commit;
-
-	/**
-	 * @j_wait_commit: Wait queue to trigger commit.
-	 */
-	wait_queue_head_t	j_wait_commit;
-
-	/**
-	 * @j_wait_updates: Wait queue to wait for updates to complete.
-	 */
-	wait_queue_head_t	j_wait_updates;
-
-	/**
-	 * @j_wait_reserved:
-	 *
-	 * Wait queue to wait for reserved buffer credits to drop.
-	 */
-	wait_queue_head_t	j_wait_reserved;
-
-	/**
-	 * @j_fc_wait:
-	 *
-	 * Wait queue to wait for completion of async fast commits.
-	 */
-	wait_queue_head_t	j_fc_wait;
-
-
-"There are more things in heaven and Earth, Horatio,
- Than are dreamt of in your philosophy."
-      	  	    - William Shakespeare, Hamlet

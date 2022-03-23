@@ -2,161 +2,179 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B21554E4E07
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Mar 2022 09:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 405344E4E1C
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Mar 2022 09:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242579AbiCWIVD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 23 Mar 2022 04:21:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43992 "EHLO
+        id S242590AbiCWI0G (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 23 Mar 2022 04:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242578AbiCWIUz (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Mar 2022 04:20:55 -0400
-Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066AF5F25A
-        for <linux-ide@vger.kernel.org>; Wed, 23 Mar 2022 01:19:26 -0700 (PDT)
+        with ESMTP id S238221AbiCWI0F (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Mar 2022 04:26:05 -0400
+Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EE4F6E7B6
+        for <linux-ide@vger.kernel.org>; Wed, 23 Mar 2022 01:24:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1648023564; x=1679559564;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4AsyCi0QtNvalf56cLhMHGivuaVEVYo8oFkCqbF7aLE=;
-  b=JqUnYcBVuhUWhVCh+ldDcA4Ejfzib3XAzFNH6/0Ch/WJlwXHt+Amkwyb
-   bj3nOGHsIxdjI1W6zDuxOVk47nXHMRfnoTnDDwSRgaI3IvW65CbeZwjCP
-   uZ9RktHVpp2hOCfzsrGzv6E5ZLPie1tcJzlScLNReme9LVzqkCbbOIueM
-   k//9oBX7zZh/zVNKWxA+vYumCnxUfqcePAf7+IbIwRHSjcVKA3AT7I0BM
-   S8HKlVAnIjulQ0TUAK7MG71aWTiwBgGBsn7a7eWkaPYAzbtlwWwZJol1B
-   pDBzVkg5UpNppVndrozm1rZjMlpltrZLK0rP9OD2i1EBL7rl6ZvWBVuKW
-   g==;
+  t=1648023876; x=1679559876;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vHgfnIqvx4gqj9+Qz5CGEkAMw0dBTsI78EXcq1RRvVg=;
+  b=nkatZ/G+9IFrUXVqdJkIM0jF0EwOT/CFL2yb0IlezSoPvtZIBWPTWc6s
+   Mke/XylVEQ0HZQMWF+EDZo7c3Q7Y5PutalPo2HYTKqyya3uTrHBJVIpRO
+   eyZVkmn8L+iT4N2SPRso16yWe1N1s1qsx9Bx0LWjYUqphty0haDFf94a5
+   RbHgifVHZqZUaLLNP7TJc1ELyb+0LxGEK4MLrwztyQSR1gf/dOLGhPR7p
+   7pGnghNoTVtd4KzB5/nGusUhaBcAI6V61Fx3z17SKVfPxkDwYX/R3Z4yf
+   0jncn/almzDTZ4NOoFY0WKuHmfvNSUn81BOQbWp59smP0SYb1hov4WMfq
+   Q==;
 X-IronPort-AV: E=Sophos;i="5.90,203,1643644800"; 
-   d="scan'208";a="196047610"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 23 Mar 2022 16:19:24 +0800
-IronPort-SDR: VlGZU+JJIajKMVIdV0HUO+gYRoq1rzPFKsgPSszjACrgsSzu5MfH3NJ/Xkm8hqPEdc+VSbcRoM
- kkmGAKGH9QK9q1HIe2O5d9YwJc4UO0hAoawywASIgbH4Ky6mQvSr5hn1s6PGv8qXaEaWkhHI7Z
- 2Njct5b5ooAty5hgpuIp6eSE8t0L7rQjenIlz6ESGzpv1ZVESjaMDS3gJ1ezzlMyhwwDhCbM5h
- e9aRyrWxm1SazVX7Dm0gONhtuD5uJosvB1jVFKjoyv8wfAqjrGE180JT8PmIECBCcHOwahMWo3
- P64IVbPQSF3j5az4T1QeYmIO
+   d="scan'208";a="307996881"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 23 Mar 2022 16:24:35 +0800
+IronPort-SDR: YD0B1eBLdFsexjoHT+wdoyPbATQGhAZMHPMITtnErv99atK06sAH5MDFeVLJNtjBt0TX2Sl8NI
+ AeSet7YvUURzZitzblMcu0esryw9GhZw3Tls3Q945g731MtNnR/0ZSq7JzGNw6wnU8JrVRa4To
+ ARPICaXKi4arCMxikol0wyMsg17DOI3CseUeQTSfULjrshBsHu48tJi17MrWCmpn3Nrq/47qKb
+ SVAXKxXb6iJNJVnJuWcPXFBOfTtQITfviw6gAtCeOR/xfffoA4dRp7MIBeJGN8AEBFg8OW11hL
+ y8hn4sDoWkzQKahfJ2h+6vTV
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 00:51:19 -0700
-IronPort-SDR: +imk8w8xm9GplaCd1ZNkmmxmnja/r+ttfxDy42q5sqwaUAE33RTv1WskX6/UvomfMIUyeUKeYS
- 9pD5lwh4s+J3LgAVvm0hSZtXeLmdT7LUFv6Ux6KIvCvwA1sSjpU3cMJxTta8bbLQep6hjSHfuA
- AyeK0Aic2xGyxl/OpYqwES/gVuszqgIduq/JpBbpriftiqCffiaLZEqH29W+r/CK0YMiN1e4iN
- HAk83/4Scbo7kh7GwWiJDo/yLk6zYZE0OZq0mccioLAhGCER9txPYl7gbUvxRYAkRSelbyLBtr
- C6E=
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 00:56:29 -0700
+IronPort-SDR: Wl0o8mLbEBWOBgrQE1Z/EYFPlOE2+02idtI0CxwGCCYU0LKsiHLjcMpt3n3ZHYF98MrZEiTXrZ
+ bxeDkVK81ll6tZAgFt6cNHsdozRc4wNpBgcJl+htaOtCxD4AcC525+OCA9ujX0rgTjKjiAs6UZ
+ B9zhAgnLXjqQ908kL1ypGVtzkvCOyIJNTEYsdtU2VX8yj1FmKE96futBRSYmLBY26RJ+Yr2SCs
+ NyepmwIXWBq3cxZvzccRP1iL3mqTYNlpO1WxlhLRu5ESKHjzssFwAshqZd2W5fcZzzXqkKW0bg
+ MFg=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 01:19:26 -0700
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2022 01:24:36 -0700
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4KNh8s3zC8z1Rwrw
-        for <linux-ide@vger.kernel.org>; Wed, 23 Mar 2022 01:19:25 -0700 (PDT)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4KNhGq3msfz1SHwl
+        for <linux-ide@vger.kernel.org>; Wed, 23 Mar 2022 01:24:35 -0700 (PDT)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:subject:to
-        :from; s=dkim; t=1648023565; x=1650615566; bh=4AsyCi0QtNvalf56cL
-        hMHGivuaVEVYo8oFkCqbF7aLE=; b=P3hkvll5iWj4MouDz+xbVrTm0V6JuiSDGt
-        vt5AP53NyqxTva1O0IlwfzKWc481ndtg2FM0YlnAYQS+o4eOoQaENANROzN5uHFK
-        sp3wqIrXN6wha7YeGf4EhjffRxhlckXXQervy7pGWDaOIAuC41udXJno+IJGZ2Mn
-        akRf6umUc/2WdscMf/dNVgvxWtfpkWxcsIhqndSDtUMvVen/h2cHd1hDnoYF5gVw
-        edKMNxl2NUD/tSzSHM6NFpMaJx+1BdT/nGP4oNLZgaOMlayBj5lWxIQzRDqjpi+Y
-        1LA04PpP9A3CYb7HHS3FmZ41vY7ESiDSIQGkTWeVjD8ujRW4vZYw==
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :in-reply-to:organization:from:references:to:content-language
+        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
+        1648023875; x=1650615876; bh=vHgfnIqvx4gqj9+Qz5CGEkAMw0dBTsI78EX
+        cq1RRvVg=; b=QeOURQO6QMEdw+C1fIb7ToRGR8cxhk33N7trqAHH9Sr+0EL9rJn
+        944TIHiRTDEE83Ro4gjVFiI7WHug/np+CLTES31GfU+BRt4ye60EdGdz+zc9QsiL
+        xHAf8Y5u5w+k05+IT8VM0h/U8Z6iVbTHP4j8PZwyb2jz3nCRNpLkwNdDe5L54PP7
+        1GtClfpc1gYGWYgkKu6aBuns3gF8LHK85kRSrSSxdn3lNAwotDEYFYuSfO5TA2oP
+        8Gjy8Mbtqj49WlDroOLnWiYlppda35TsachpBipMjnvn8J7gppPLRNGHyyK9qlrN
+        hWdsYSdoen5nKmkmaVq3UVa/cfCFJtGRYhQ==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id TpuiZiazvID1 for <linux-ide@vger.kernel.org>;
-        Wed, 23 Mar 2022 01:19:25 -0700 (PDT)
-Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4KNh8r5hCjz1Rvlx;
-        Wed, 23 Mar 2022 01:19:24 -0700 (PDT)
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-To:     linux-ide@vger.kernel.org
-Cc:     Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: [PATCH 4/4] ata: libata-sata: Improve sata_link_debounce()
-Date:   Wed, 23 Mar 2022 17:17:40 +0900
-Message-Id: <20220323081740.540006-5-damien.lemoal@opensource.wdc.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220323081740.540006-1-damien.lemoal@opensource.wdc.com>
-References: <20220323081740.540006-1-damien.lemoal@opensource.wdc.com>
+        with ESMTP id jn_Wv8ejVXHa for <linux-ide@vger.kernel.org>;
+        Wed, 23 Mar 2022 01:24:35 -0700 (PDT)
+Received: from [10.225.163.114] (unknown [10.225.163.114])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4KNhGp0rMzz1Rvlx;
+        Wed, 23 Mar 2022 01:24:33 -0700 (PDT)
+Message-ID: <d9837420-1cbb-ed5e-7043-985d9eb9d065@opensource.wdc.com>
+Date:   Wed, 23 Mar 2022 17:24:33 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.2
+Subject: Re: [PATCH v2 3/3] ata: ahci: Skip 200 ms debounce delay for AMD 300
+ Series Chipset SATA Controller
+Content-Language: en-US
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        Mario Limonciello <Mario.Limonciello@amd.com>
+Cc:     Hans de Goede <hdegoede@redhat.com>, linux-ide@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Nehal-bakulchandra Shah <Nehal-bakulchandra.Shah@amd.com>
+References: <20220321212431.13717-1-pmenzel@molgen.mpg.de>
+ <20220321212431.13717-3-pmenzel@molgen.mpg.de>
+ <BL1PR12MB5157DDFD5E75360F032346D3E2169@BL1PR12MB5157.namprd12.prod.outlook.com>
+ <cc7b4426-f6a6-e6b1-4aaf-0a713ee3d388@opensource.wdc.com>
+ <5fb6af7b-d84f-cbae-7eb1-543f3a7e53e4@molgen.mpg.de>
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital Research
+In-Reply-To: <5fb6af7b-d84f-cbae-7eb1-543f3a7e53e4@molgen.mpg.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-sata_link_debounce() polls the SStatus register DET field to ensure that
-a stable value is provided, to reliably detect device presence and PHY
-readiness. Polling is done for at least timing->duration if there is no
-device detected. For the device detected case, polling last up to
-deadline to ensure that the PHY becomes ready.
-
-However, the PHY ready state is actually never checked, leading to the
-poll loop duration always reaching the maximum duration.
-
-For adapters that do not require a debounce delay (link flag
-ATA_LFLAG_DEBOUNCE_DELAY no set), add a check to test if DET indicates
-device present *and* PHY ready and bail out of the polling loop if it
-does.
-
-While at it, add comments to clarify the various checks in
-sata_link_debounce() polling loop.
-
-Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
----
- drivers/ata/libata-sata.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 87ad03c2e49f..15423723c9dd 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -276,8 +276,27 @@ int sata_link_debounce(struct ata_link *link,
+On 3/23/22 15:55, Paul Menzel wrote:
+> Dear Damien,
+>=20
+>=20
+> Am 23.03.22 um 06:01 schrieb Damien Le Moal:
+>> On 3/22/22 06:51, Limonciello, Mario wrote:
+>>> [Public]
+>>>
+>>>> -----Original Message-----
+>>>> From: Paul Menzel <pmenzel@molgen.mpg.de>
+>>>> Sent: Monday, March 21, 2022 16:25
+>=20
+> [=E2=80=A6]
+>=20
+>>> I seem to recall that we were talking about trying to drop the deboun=
+ce delay for
+>>> everything, weren't we?
+>>>
+>>> So perhaps it would be right to add a 4th patch in the series to do j=
+ust that.  Then
+>>> If this turns out to be problematic for anything other than the contr=
+ollers in the
+>>> series that you identified as not problematic then that 4th patch can=
+ potentially
+>>> be reverted alone?
+>>
+>> Not quite everything :) But you are right, let's try to switch the def=
+ault
+>> to no delay. I will be posting patches today for that.
+>>
+>> Paul,
+>>
+>> With these patches, your patches are not necessary anymore as the AMD
+>> chipset falls under the default no-delay.
+>=20
+> I am all for improving the situation for all devices, but I am unable t=
+o=20
+> judge the regression potential of changing this, as it affects a lot of=
 =20
- 		/* DET stable? */
- 		if (cur =3D=3D last) {
-+			/*
-+			 * If the device presence was detected but PHY
-+			 * communication is not yet established, wait until
-+			 * deadline.
-+			 */
- 			if (cur =3D=3D 1 && time_before(jiffies, deadline))
- 				continue;
-+
-+			/*
-+			 * If PHY is ready and the device is present, and the
-+			 * driver did not request debounce delay, bail out early
-+			 * assuming that the link is stable.
-+			 */
-+			if (cur =3D=3D 3 &&
-+			    !(link->flags & ATA_LFLAG_DEBOUNCE_DELAY))
-+				return 0;
-+
-+			/*
-+			 * If DET value has remained stable for
-+			 * timing->duration, bail out.
-+			 */
- 			if (time_after(jiffies,
- 				ata_deadline(last_jiffies, timing->duration)))
- 				return 0;
-@@ -288,8 +307,9 @@ int sata_link_debounce(struct ata_link *link,
- 		last =3D cur;
- 		last_jiffies =3D jiffies;
+> devices. I guess it=E2=80=99d would go through the next tree, and hopef=
+ully the=20
+> company QA teams can give it a good spin. I hoped that my patches, as I=
 =20
--		/* Check deadline.  If debouncing failed, return
--		 * -EPIPE to tell upper layer to lower link speed.
-+		/*
-+		 * If debouncing has not succeeded before dealine, return
-+		 * -EPIPE to tell the upper layer to lower the link speed.
- 		 */
- 		if (time_after(jiffies, deadline))
- 			return -EPIPE;
+> have tested them, and AMD will hopefully too, could go into the current=
+=20
+> merge window.
+
+Yes, correct, the plan is to get the generic series queued as soon as rc1
+so that it can spend plenty of time in linux-next for people to test. Tha=
+t
+will hopefully reduce the risk of breaking things in the field. Same for
+the default LPM change.
+
+With the default removal of the debounce delay, your patches addressing
+only the AMD adapter are not needed anymore: this adapter will not have a
+debounce delay unless the ATA_LFLAG_DEBOUNCE_DELAY flag is set.
+
+>=20
+>> It would be nice if you can test though.
+>=20
+> Of course, I am going to that either way.
+
+Series posted with you on CC. Please test !
+
+>=20
+>=20
+> Kind regards,
+>=20
+> Paul
+
+
 --=20
-2.35.1
-
+Damien Le Moal
+Western Digital Research

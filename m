@@ -2,50 +2,50 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20BE94E73D4
-	for <lists+linux-ide@lfdr.de>; Fri, 25 Mar 2022 13:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8E314E73D3
+	for <lists+linux-ide@lfdr.de>; Fri, 25 Mar 2022 13:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354415AbiCYM6I (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 25 Mar 2022 08:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43954 "EHLO
+        id S1359207AbiCYM6G (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 25 Mar 2022 08:58:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238986AbiCYM6D (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 25 Mar 2022 08:58:03 -0400
+        with ESMTP id S1359193AbiCYM6C (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 25 Mar 2022 08:58:02 -0400
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C55BD0AB8
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B49CD0AB7
         for <linux-ide@vger.kernel.org>; Fri, 25 Mar 2022 05:56:28 -0700 (PDT)
 Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
-        by smtp-out1.suse.de (Postfix) with ESMTP id 36AE1210FD;
+        by smtp-out1.suse.de (Postfix) with ESMTP id 36A2C210DD;
         Fri, 25 Mar 2022 12:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
         t=1648212987; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OvpB1iaPUkxTx9vSa5yO8N242dPKxTHFb/MCfevzdwA=;
-        b=HQDcQoqgey2X0SZoKBCY4tenP2523wyjZP+xDXchovPaI3yPTuwXtHJqi3t3+Hwmiit3ts
-        xV7pPGdVdgErf2BzYSCYebz6bRTIBbnCbh5O0r6wEXnGcJIU2eVuAFWWzd8VJf9Lz+lWm5
-        9CNHqJpUge7Q3d8bpwa3qLDUV43Kgp0=
+        bh=dB/7/E+6FCLO+u1sKF9JIhE2GGEVw0tzwr3M8g7j/io=;
+        b=VL5p4ZVKS6pIa60YhwFrzKC5g/9aBPbGqm3hUnHghZx8HV638zDjbP+i6Yn54l/g3KUX4l
+        PVc0iUsO4R24hMhp3vGotKu2YLggp6w8OaM4jr+IvMzOt40zyC3S+NcAQBZYcFKxOs4lGx
+        xVIsorlxgme7v2GvoLcB3Kd6G6dSAPQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
         s=susede2_ed25519; t=1648212987;
         h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
          mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=OvpB1iaPUkxTx9vSa5yO8N242dPKxTHFb/MCfevzdwA=;
-        b=rQ9uHrjXp7u1jcwWm7t9W7mdA5qFOSVsd9p65fjqNi9OG0lmIQ79SqzQ+Bb1gabok25Urw
-        MZUTBj/Uiy6SSCAQ==
+        bh=dB/7/E+6FCLO+u1sKF9JIhE2GGEVw0tzwr3M8g7j/io=;
+        b=DGpGwtU+mo0H0FSMhByty204VKqhiTsPXxowt6ejIsCvJ/J9878/IUbrq5x0a4t+oCt9Xu
+        8tU8h3FYWu+UcoCw==
 Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
-        by relay2.suse.de (Postfix) with ESMTP id 0DE80A3B94;
+        by relay2.suse.de (Postfix) with ESMTP id 1614FA3B96;
         Fri, 25 Mar 2022 12:56:27 +0000 (UTC)
 Received: by adalid.arch.suse.de (Postfix, from userid 16045)
-        id 01C105193929; Fri, 25 Mar 2022 13:56:26 +0100 (CET)
+        id 05EAF519392B; Fri, 25 Mar 2022 13:56:27 +0100 (CET)
 From:   Hannes Reinecke <hare@suse.de>
 To:     Damien LeMoal <damien.lemoal@wdc.com>
 Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 1/2] libata: rework sysfs naming
-Date:   Fri, 25 Mar 2022 13:56:23 +0100
-Message-Id: <20220325125624.99929-2-hare@suse.de>
+Subject: [PATCH 2/2] libata: CONFIG_ATA_SYSFS_COMPAT
+Date:   Fri, 25 Mar 2022 13:56:24 +0100
+Message-Id: <20220325125624.99929-3-hare@suse.de>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20220325125624.99929-1-hare@suse.de>
 References: <20220325125624.99929-1-hare@suse.de>
@@ -61,172 +61,104 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-This patch adds a new dummy bus 'ata', which collects all ata device
-objects like ata_port, ata_link, and ata_dev, and adds an 'ata' prefix
-to the message log.
-To be consistent with the other libata objects the 'ata_port' object name
-has been changed from 'ata' to 'port'.
+Add a config option 'ATA_SYSFS_COMPAT' to create a compatibility
+'ata' symlink in the PCI device sysfs directory.
 
 Signed-off-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-transport.c | 21 ++++++++++++--
- include/linux/libata.h         | 53 ++++++++++------------------------
- 2 files changed, 33 insertions(+), 41 deletions(-)
+ drivers/ata/Kconfig            | 10 +++++++++
+ drivers/ata/libata-transport.c | 41 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 51 insertions(+)
 
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index e5641e6c52ee..f27b12ba2ce7 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -51,6 +51,16 @@ config ATA_VERBOSE_ERROR
+ 
+ 	  If unsure, say Y.
+ 
++config ATA_SYSFS_COMPAT
++	bool "Keep original sysfs layout"
++	default y
++	help
++	  This option retains the original sysfs layout by adding an
++	  additional ata_port object with the name of 'ataX' in
++	  to the ATA objects like 'ata_port', 'ata_link', and 'ata_device'.
++
++	  If unsure, say Y.
++
+ config ATA_FORCE
+ 	bool "\"libata.force=\" kernel parameter support" if EXPERT
+ 	default y
 diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
-index ca129854a88c..e5ed5046b299 100644
+index e5ed5046b299..29dec89ccc2d 100644
 --- a/drivers/ata/libata-transport.c
 +++ b/drivers/ata/libata-transport.c
-@@ -81,10 +81,13 @@ struct ata_internal {
- 	tdev_to_port((dev)->parent)
- 
- 
--/* Device objects are always created whit link objects */
-+/* Device objects are always created with link objects */
- static int ata_tdev_add(struct ata_device *dev);
- static void ata_tdev_delete(struct ata_device *dev);
- 
-+struct bus_type ata_bus_type = {
-+        .name		= "ata",
-+};
- 
- /*
-  * Hack to allow attributes of the same name in different objects.
-@@ -288,7 +291,9 @@ int ata_tport_add(struct device *parent,
- 	dev->parent = parent;
- 	ata_host_get(ap->host);
- 	dev->release = ata_tport_release;
--	dev_set_name(dev, "ata%d", ap->print_id);
-+	dev->bus = &ata_bus_type;
-+	dev_set_name(dev, "port%d", ap->print_id);
-+
- 	transport_setup_device(dev);
- 	ata_acpi_bind_port(ap);
- 	error = device_add(dev);
-@@ -444,6 +449,8 @@ int ata_tlink_add(struct ata_link *link)
- 	device_initialize(dev);
- 	dev->parent = &ap->tdev;
- 	dev->release = ata_tlink_release;
-+	dev->bus = &ata_bus_type;
-+
- 	if (ata_is_host_link(link))
- 		dev_set_name(dev, "link%d", ap->print_id);
- 	else
-@@ -695,8 +702,10 @@ static int ata_tdev_add(struct ata_device *ata_dev)
- 	device_initialize(dev);
- 	dev->parent = &link->tdev;
- 	dev->release = ata_tdev_release;
-+	dev->bus = &ata_bus_type;
-+
- 	if (ata_is_host_link(link))
--		dev_set_name(dev, "dev%d.%d", ap->print_id,ata_dev->devno);
-+		dev_set_name(dev, "dev%d.%d", ap->print_id, ata_dev->devno);
- 	else
- 		dev_set_name(dev, "dev%d.%d.0", ap->print_id, link->pmp);
- 
-@@ -822,8 +831,13 @@ __init int libata_transport_init(void)
- 	error = transport_class_register(&ata_dev_class);
- 	if (error)
- 		goto out_unregister_port;
-+	error = bus_register(&ata_bus_type);
-+	if (error)
-+		goto out_unregister_dev;
- 	return 0;
- 
-+ out_unregister_dev:
-+	transport_class_unregister(&ata_dev_class);
-  out_unregister_port:
- 	transport_class_unregister(&ata_port_class);
-  out_unregister_link:
-@@ -835,6 +849,7 @@ __init int libata_transport_init(void)
- 
- void __exit libata_transport_exit(void)
- {
-+	bus_unregister(&ata_bus_type);
- 	transport_class_unregister(&ata_link_class);
- 	transport_class_unregister(&ata_port_class);
- 	transport_class_unregister(&ata_dev_class);
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 0619ae462ecd..7dc06e5cbc3a 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1458,61 +1458,38 @@ static inline int sata_srst_pmp(struct ata_link *link)
- 	return link->pmp;
+@@ -251,6 +251,39 @@ static int ata_tport_match(struct attribute_container *cont,
+ 	return &ata_scsi_transport_template->host_attrs.ac == cont;
  }
  
--#define ata_port_printk(level, ap, fmt, ...)			\
--	pr_ ## level ("ata%u: " fmt, (ap)->print_id, ##__VA_ARGS__)
--
- #define ata_port_err(ap, fmt, ...)				\
--	ata_port_printk(err, ap, fmt, ##__VA_ARGS__)
-+	dev_err(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_warn(ap, fmt, ...)				\
--	ata_port_printk(warn, ap, fmt, ##__VA_ARGS__)
-+	dev_warn(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_notice(ap, fmt, ...)				\
--	ata_port_printk(notice, ap, fmt, ##__VA_ARGS__)
-+	dev_notice(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_info(ap, fmt, ...)				\
--	ata_port_printk(info, ap, fmt, ##__VA_ARGS__)
-+	dev_info(&ap->tdev, fmt, ##__VA_ARGS__)
- #define ata_port_dbg(ap, fmt, ...)				\
--	ata_port_printk(debug, ap, fmt, ##__VA_ARGS__)
--
--#define ata_link_printk(level, link, fmt, ...)			\
--do {								\
--	if (sata_pmp_attached((link)->ap) ||			\
--	    (link)->ap->slave_link)				\
--		pr_ ## level ("ata%u.%02u: " fmt,		\
--			      (link)->ap->print_id,		\
--			      (link)->pmp,			\
--			      ##__VA_ARGS__);			\
--        else							\
--		pr_ ## level ("ata%u: " fmt,			\
--			      (link)->ap->print_id,		\
--			      ##__VA_ARGS__);			\
--} while (0)
-+	dev_dbg(&ap->tdev, fmt, ##__VA_ARGS__)
++#ifdef CONFIG_ATA_SYSFS_COMPAT
++static int ata_tport_compat_link_add(struct ata_port *ap)
++{
++        struct device *dev = &ap->tdev;
++	struct device *parent = dev->parent;
++        char compat_name[64];
++
++	sprintf(compat_name, "ata%d", ap->print_id);
++
++	return sysfs_create_link(&parent->kobj, &dev->kobj, compat_name);
++}
++
++static void ata_tport_compat_link_delete(struct ata_port *ap)
++{
++	struct device *dev = &ap->tdev;
++	struct device *parent = dev->parent;
++	char compat_name[64];
++
++	sprintf(compat_name, "ata%d", ap->print_id);
++	sysfs_remove_link(&parent->kobj, compat_name);
++}
++
++#else
++
++static inline int ata_tport_compat_link_add(struct ata_port *ap)
++{
++	return 0;
++}
++
++static inline void ata_tport_compat_link_delete(struct ata_port *ap) {}
++
++#endif
++
+ /**
+  * ata_tport_delete  --  remove ATA PORT
+  * @ap:	ATA PORT to remove
+@@ -261,6 +294,7 @@ void ata_tport_delete(struct ata_port *ap)
+ {
+ 	struct device *dev = &ap->tdev;
  
- #define ata_link_err(link, fmt, ...)				\
--	ata_link_printk(err, link, fmt, ##__VA_ARGS__)
-+	dev_err(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_warn(link, fmt, ...)				\
--	ata_link_printk(warn, link, fmt, ##__VA_ARGS__)
-+	dev_warn(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_notice(link, fmt, ...)				\
--	ata_link_printk(notice, link, fmt, ##__VA_ARGS__)
-+	dev_notice(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_info(link, fmt, ...)				\
--	ata_link_printk(info, link, fmt, ##__VA_ARGS__)
-+	dev_info(&link->tdev, fmt, ##__VA_ARGS__)
- #define ata_link_dbg(link, fmt, ...)				\
--	ata_link_printk(debug, link, fmt, ##__VA_ARGS__)
--
--#define ata_dev_printk(level, dev, fmt, ...)			\
--        pr_ ## level("ata%u.%02u: " fmt,			\
--               (dev)->link->ap->print_id,			\
--	       (dev)->link->pmp + (dev)->devno,			\
--	       ##__VA_ARGS__)
-+	dev_dbg(&link->tdev, fmt, ##__VA_ARGS__)
++	ata_tport_compat_link_delete(ap);
+ 	ata_tlink_delete(&ap->link);
  
- #define ata_dev_err(dev, fmt, ...)				\
--	ata_dev_printk(err, dev, fmt, ##__VA_ARGS__)
-+	dev_err(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_warn(dev, fmt, ...)				\
--	ata_dev_printk(warn, dev, fmt, ##__VA_ARGS__)
-+	dev_warn(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_notice(dev, fmt, ...)				\
--	ata_dev_printk(notice, dev, fmt, ##__VA_ARGS__)
-+	dev_notice(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_info(dev, fmt, ...)				\
--	ata_dev_printk(info, dev, fmt, ##__VA_ARGS__)
-+	dev_info(&dev->tdev, fmt, ##__VA_ARGS__)
- #define ata_dev_dbg(dev, fmt, ...)				\
--	ata_dev_printk(debug, dev, fmt, ##__VA_ARGS__)
-+	dev_dbg(&dev->tdev, fmt, ##__VA_ARGS__)
+ 	transport_remove_device(dev);
+@@ -313,8 +347,15 @@ int ata_tport_add(struct device *parent,
+ 	if (error) {
+ 		goto tport_link_err;
+ 	}
++
++	error = ata_tport_compat_link_add(ap);
++	if (error)
++		goto compat_link_err;
++
+ 	return 0;
  
- void ata_print_version(const struct device *dev, const char *version);
- 
++ compat_link_err:
++	ata_tlink_delete(&ap->link);
+  tport_link_err:
+ 	transport_remove_device(dev);
+ 	device_del(dev);
 -- 
 2.29.2
 

@@ -2,87 +2,116 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 019514E9B58
-	for <lists+linux-ide@lfdr.de>; Mon, 28 Mar 2022 17:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 444004E9FCB
+	for <lists+linux-ide@lfdr.de>; Mon, 28 Mar 2022 21:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238840AbiC1PqZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 28 Mar 2022 11:46:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46516 "EHLO
+        id S245695AbiC1TeE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 28 Mar 2022 15:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238964AbiC1PqJ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 28 Mar 2022 11:46:09 -0400
-Received: from mail.baikalelectronics.ru (mail.baikalelectronics.com [87.245.175.226])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B89C14AE02;
-        Mon, 28 Mar 2022 08:44:15 -0700 (PDT)
-Received: from mail.baikalelectronics.ru (unknown [192.168.51.25])
-        by mail.baikalelectronics.ru (Postfix) with ESMTP id 2C49F1E28E1;
-        Thu, 24 Mar 2022 03:16:47 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.baikalelectronics.ru 2C49F1E28E1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baikalelectronics.ru; s=mail; t=1648081007;
-        bh=CmZMxsTO3v7Evhuuaq9r3QHFneOnKQL5Dm48UYqxXi8=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-        b=RFmO2HTV8IzpzqnIgzneSaUmocTms3kT+p6L6ylig0KWEbVkCfqGPaFogQJcOKWvg
-         0WTQRAa98EIELx2ok+u0w5pY7ycP7DlHbCIFdYR8bQoze7wVcdsAAmgERH4vYbV7AK
-         jqHtnDyttlkn9EMRM1nCYgBSDPJuOLoHGR8gNg6s=
-Received: from localhost (192.168.168.10) by mail (192.168.51.25) with
- Microsoft SMTP Server (TLS) id 15.0.1395.4; Thu, 24 Mar 2022 03:16:46 +0300
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        with ESMTP id S233677AbiC1TeD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 28 Mar 2022 15:34:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050CC5DE4E;
+        Mon, 28 Mar 2022 12:32:22 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9265B61291;
+        Mon, 28 Mar 2022 19:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CFBC340F3;
+        Mon, 28 Mar 2022 19:32:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1648495940;
+        bh=hsj7vpD6VzgwgqTGJwuQLzl4hvMkV3jhPtqSZ0sfeDk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=SNrCTUVspAbKGzkl/lkX7LEl6vPIPwqohKfQS9j4wkOpVeD4AC+KSvULMyl9G55Jg
+         cvfYgsKOx6Hu8vQjstDuuVmtLUToCxVMBhEA7FrUd5cZIm75Qm+TeRN9RS4aPKnQ8s
+         4VdTQMh25Fzqi23HYRD5azwSQUL4od4FBcYQ/fGPYvBUJXJjbspEqr29SZYyM1f0wB
+         ZVDQ0hnYEbkmvCEmJc0CRniluyzKwTE0RE7mMXVz3f34vh8LVY8Ic7yvjqtJelPsvg
+         1p3dQa/I00QKG5gziprxkUBf0YEhl/dnQRJSI8QDwxDggof97taB5T49zkVWsy22d/
+         cmkv6heGq2EfQ==
+Received: by mail-ej1-f48.google.com with SMTP id o10so30824503ejd.1;
+        Mon, 28 Mar 2022 12:32:20 -0700 (PDT)
+X-Gm-Message-State: AOAM532Vt9SL/rAbaUw2fVxZBHBUACmcNubMghaB6Dncb4XhBzOJ9gN7
+        kaQv/Kdvr6DHo0Xl2T35jEwBempx0RUVYS0vOA==
+X-Google-Smtp-Source: ABdhPJzS6HE1I5dwIXHt3Z8+oNfExeRu/Ld613R99JBEBBtqUIPwWmfatFTRXQVhLFWR4Q056OlfLe821+lCv3qLtzU=
+X-Received: by 2002:a17:906:58ce:b0:6da:b548:1bbb with SMTP id
+ e14-20020a17090658ce00b006dab5481bbbmr29647735ejs.14.1648495939083; Mon, 28
+ Mar 2022 12:32:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220324001628.13028-1-Sergey.Semin@baikalelectronics.ru> <20220324001628.13028-3-Sergey.Semin@baikalelectronics.ru>
+In-Reply-To: <20220324001628.13028-3-Sergey.Semin@baikalelectronics.ru>
+From:   Rob Herring <robh+dt@kernel.org>
+Date:   Mon, 28 Mar 2022 14:32:06 -0500
+X-Gmail-Original-Message-ID: <CAL_JsqKnnVKmCA6he_A-OAgu1xD1bjHBy4_eXf64q2LJ9+L3_g@mail.gmail.com>
+Message-ID: <CAL_JsqKnnVKmCA6he_A-OAgu1xD1bjHBy4_eXf64q2LJ9+L3_g@mail.gmail.com>
+Subject: Re: [PATCH 02/21] dt-bindings: ata: Convert AHCI-bindings to DT schema
+To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Cc:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>
-CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Jens Axboe <axboe@kernel.dk>,
         Serge Semin <fancer.lancer@gmail.com>,
         Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
         Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Rob Herring <robh+dt@kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH 21/21] MAINTAINERS: Add maintainers for DWC AHCI SATA driver
-Date:   Thu, 24 Mar 2022 03:16:28 +0300
-Message-ID: <20220324001628.13028-22-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20220324001628.13028-1-Sergey.Semin@baikalelectronics.ru>
-References: <20220324001628.13028-1-Sergey.Semin@baikalelectronics.ru>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
+        <linux-ide@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Add myself as a maintainer of the new DWC AHCI SATA driver and
-its DT-bindings schema.
+On Wed, Mar 23, 2022 at 7:16 PM Serge Semin
+<Sergey.Semin@baikalelectronics.ru> wrote:
+>
+> Currently the DT bindings of Generic AHCI Controllers are described by
+> means of the legacy text file. Since such format is deprecated in favor of
+> the DT schema. Let's convert the Generic AHCI Controllers bindings file
+> then to the corresponding yaml files. There will be two of them: a DT
+> schema with a set of properties applied to all AHCI-compatible devices,
+> and a DT schema validating an AHCI-controller on a generic platform. So if
+> a controller conforms to the Serial ATA AHCI interface specification with
+> just peculiar platform environment settings like clock sources, PHYs,
+> power regulators or resets, then the generic AHCI bindings should work for
+> it. Otherwise a dedicated DT-schema needs to be created.
+>
+> So a common AHCI SATA controller DT-node is supposed to be equipped with
+> at least compatible, reg and interrupts properties. It can optionally
+> contain clocks, resets, {ahci,target,phy}-supply and phys phandles. In
+> addition the property "ports-implemented" can be specified in order to
+> define the number of implemented SATA ports. An AHCI SATA controller
+> DT-node can also have a set of sub-nodes representing its ports, for each
+> of which an individual power source and PHY phandle can be specified.
+>
+> Note we have omitted the next compatible strings
+> "marvell,armada-380-ahci", "marvell,armada-3700-ahci", "snps,dwc-ahci",
+> "snps,spear-ahci" since the corresponding controllers are handled by the
+> dedicated drivers now, thus are supposed to have their own DT-schema
+> defined. dma-coherent has also been discarded since it's a generic
+> property and is evaluated by the dt-schema parser.
+>
+> Also note that if there is the "reg-names" property specified for a AHCI
+> DT-node then it is supposed to at least have the "ahci" sub-string as an
+> indicator of the AHCI-compatible registers space.
+>
+> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+> ---
+>  .../devicetree/bindings/ata/ahci-common.yaml  | 110 ++++++++++++++++++
+>  .../devicetree/bindings/ata/ahci-platform.txt |  79 -------------
+>  .../devicetree/bindings/ata/generic-ahci.yaml |  89 ++++++++++++++
+>  3 files changed, 199 insertions(+), 79 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/ata/ahci-common.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/ata/ahci-platform.txt
+>  create mode 100644 Documentation/devicetree/bindings/ata/generic-ahci.yaml
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
+This has already been converted and is in Linus' tree now for v5.18.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cd0f68d4a34a..19c9ea0758cc 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10919,6 +10919,15 @@ F:	drivers/ata/ahci_platform.c
- F:	drivers/ata/libahci_platform.c
- F:	include/linux/ahci_platform.h
- 
-+LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-ide@vger.kernel.org
-+S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/axboe/linux-block.git
-+F:	Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
-+F:	Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
-+F:	drivers/ata/ahci_dwc.c
-+
- LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
- M:	Mikael Pettersson <mikpelinux@gmail.com>
- L:	linux-ide@vger.kernel.org
--- 
-2.35.1
-
+Rob

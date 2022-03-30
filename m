@@ -2,192 +2,91 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE0C04EA945
-	for <lists+linux-ide@lfdr.de>; Tue, 29 Mar 2022 10:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B92B4ECBD2
+	for <lists+linux-ide@lfdr.de>; Wed, 30 Mar 2022 20:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233934AbiC2Ice (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 29 Mar 2022 04:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        id S1350518AbiC3S0K (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 30 Mar 2022 14:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233937AbiC2Icd (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 29 Mar 2022 04:32:33 -0400
-Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C3654830A
-        for <linux-ide@vger.kernel.org>; Tue, 29 Mar 2022 01:30:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1648542650; x=1680078650;
-  h=message-id:date:mime-version:subject:from:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=BaDUl8VxYwcicm9Pev8gPBuET9V4K2/MWgWA64GvjsU=;
-  b=QYBoo0AhcWCWwXLNM3vNY3fgMUUN0KcQNFNH1Yw57DwTgj23eJUxLhFN
-   N5DE7QctDVfilbuDbQJky5hfVcoTECRP3XgXm/ZBlD/R2OoIHOGdZ7SLB
-   0fSIH91kaIJJc+xgtoalwtsX0Jt9nNvLHhn6IQn7hGsWAQXvsku0JFxLJ
-   F21kzjVh+TgJZBtuimfV4QoF1uyBtSz6WrDFp/uQ2tV1j4UxaQHajNoqq
-   dvHpSdWwRh5RKhgDhacMKfu6aTxTfs7CWB6d3zQN2KDdVcnkAkPFeEZhr
-   lyszLHJtOwGDobT6AT/20qg+apv/IRTYI/R91v/QHszq2fIbeC7bWaYR9
-   g==;
-X-IronPort-AV: E=Sophos;i="5.90,219,1643644800"; 
-   d="scan'208";a="197436248"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 29 Mar 2022 16:30:48 +0800
-IronPort-SDR: qeeZ8lzsquls9rg7hbiR0VJngH0VWGVYcp4QaWxxX5Y9GXZeir1dt3ftWH0KZzZsBLCYmQy7nD
- y+3O8An7zncsZ979LAAJ9LGJABCmUtxEfc0D0u2KR3VpB3bXs+gHyJ/dxNgeo+JklpbvYe9ZiQ
- O/0ZrDsq4I21KU2fT3gFeDWZSnJACEoXwNmhAvedDArsODqR5lD8DWNzaghFfh+g3HdaFEJAQI
- hff/SPUi8SrIvUHbxWtP6acPNvPWYDBpm9GhKeMpjNahWmgWRmC6Ww40HkA5+4N9T39rkkUuLo
- hOvDQ3QTtwgUMDgBBKSMILWy
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Mar 2022 01:01:39 -0700
-IronPort-SDR: MrG7+UuZTohPGb1bQcKnKezj/omh9Gy5H0FMiuJICotY0zrnIXjepaz1ileGu/tDRmuIxd64zo
- gDnCMP5V5bbvW/E82NG+zXQkNvIrQ3kuwUn4NDOhh3B0qGvNnYqBNzQq6URNtBqaGIi9nJ9Dke
- 6kXTRyDqp5z5Cdc86LQXdWpL4OFcYqhadJmXm7NAuVT+q1DuizeyphmEr1gb0WTEXCUpx0maPB
- SKi1y9gGzM3fY7ZYhxZZls8FSKhwiJGnS6TWbfdryZi2bP6QBsLvRcQ/Rm4whnRuS/ER55fPb0
- es4=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Mar 2022 01:30:47 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4KSN7C0Pnrz1SVny
-        for <linux-ide@vger.kernel.org>; Tue, 29 Mar 2022 01:30:47 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:references:to:from:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1648542645; x=1651134646; bh=BaDUl8VxYwcicm9Pev8gPBuET9V4K2/MWgW
-        A64GvjsU=; b=dhbKVzqnEdyMI7XM52XbUMIw9KGlw/VOyY3459fGK5EbYiNmEcC
-        OsxLUiPiHej2CsypZY4FtsuirDMMbk9ztD2lcGvn0sD2ttrvqfwX9+R0jxSSsaWk
-        ReXnQvvSNWVgub3FWqIZxC4XG+PQ635JfIcR/9Tr88F3vkRkIKJlmRXQCc8m25hK
-        orZ7uZe5v9wJlCCNuLptLizx8SBoewdt+rY5DucniNbIVibgcgVDMFyTxJ2Czw4Y
-        MkPzQ1mL5Vew/ELV93q+aZE1SJXGiDXc+JV7g2f11f4ORJs2bebG1X1FaOj2jWik
-        piFDRgsjGhubD6tfOV2XXQ96FWrkeRjvj0w==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 2mxA-CqiPua1 for <linux-ide@vger.kernel.org>;
-        Tue, 29 Mar 2022 01:30:45 -0700 (PDT)
-Received: from [10.225.163.121] (unknown [10.225.163.121])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4KSN782wfRz1Rvlx;
-        Tue, 29 Mar 2022 01:30:44 -0700 (PDT)
-Message-ID: <1d6824b6-a2ef-e076-12ce-6c2fe3fda959@opensource.wdc.com>
-Date:   Tue, 29 Mar 2022 17:30:43 +0900
+        with ESMTP id S1350501AbiC3S0F (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 30 Mar 2022 14:26:05 -0400
+X-Greylist: delayed 8185 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Mar 2022 11:23:08 PDT
+Received: from zsmtp-out1.bppt.go.id (mail.bppt.go.id [103.224.137.202])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728B53FBD7;
+        Wed, 30 Mar 2022 11:23:07 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zsmtp-out1.bppt.go.id (Postfix) with ESMTP id 19B9C87671;
+        Wed, 30 Mar 2022 22:35:40 +0700 (WIB)
+Received: from zsmtp-out1.bppt.go.id ([127.0.0.1])
+        by localhost (zsmtp-out1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 9c7HwdizIHJN; Wed, 30 Mar 2022 22:35:39 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by zsmtp-out1.bppt.go.id (Postfix) with ESMTP id 511AB8756B;
+        Wed, 30 Mar 2022 22:35:37 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zsmtp-out1.bppt.go.id 511AB8756B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bppt.go.id;
+        s=selector; t=1648654537;
+        bh=W5OBf/pcqsI4R4ZVP+6553vqwfG2usLrrRoBYAMFLCQ=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=l6QiyCChAyfWB/kcczT+0U+p5oeXKeGzmNWztIA1JQFux02v1dd+JtisRjz06pIni
+         f3tp7zMi238ZIJX+trWnL+GuQUsVAAchgMymKV9BI1STiWEU2TbJVbh+oH5WoR0RP+
+         RAXRNljYTPIhMjnbENKKspQb+v1y9fMX02BuIwj8=
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        zsmtp-out1.bppt.go.id
+X-Virus-Scanned: amavisd-new at bppt.go.id
+Received: from zsmtp-out1.bppt.go.id ([127.0.0.1])
+        by localhost (zsmtp-out1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 2rLpHvSZDEwL; Wed, 30 Mar 2022 22:35:37 +0700 (WIB)
+Received: from mta1.bppt.go.id (mta1.bppt.go.id [10.10.180.6])
+        by zsmtp-out1.bppt.go.id (Postfix) with ESMTPS id 65D21872EE;
+        Wed, 30 Mar 2022 22:35:34 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mta1.bppt.go.id (Postfix) with ESMTP id B4CBF253B4;
+        Wed, 30 Mar 2022 22:35:32 +0700 (WIB)
+Received: from mta1.bppt.go.id ([127.0.0.1])
+        by localhost (mta1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id g-YTUd6H-wKW; Wed, 30 Mar 2022 22:35:32 +0700 (WIB)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mta1.bppt.go.id (Postfix) with ESMTP id E04AD25405;
+        Wed, 30 Mar 2022 22:35:29 +0700 (WIB)
+X-Virus-Scanned: amavisd-new at mta1.bppt.go.id
+Received: from mta1.bppt.go.id ([127.0.0.1])
+        by localhost (mta1.bppt.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id PNjMvEiXNB7Y; Wed, 30 Mar 2022 22:35:28 +0700 (WIB)
+Received: from mbox2.bppt.go.id (mbox2.bppt.go.id [10.10.180.5])
+        by mta1.bppt.go.id (Postfix) with ESMTP id 6B0B724F4D;
+        Wed, 30 Mar 2022 22:35:20 +0700 (WIB)
+Date:   Wed, 30 Mar 2022 22:35:20 +0700 (WIB)
+From:   Nadirah <nadirah@bppt.go.id>
+Reply-To: huangjinping@winghang.info
+Message-ID: <342392754.4896193.1648654520349.JavaMail.zimbra@bppt.go.id>
+Subject: Aw:Dringende Antwort erforderlich
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 00/21] ata: ahci: Add DWC/Baikal-T1 AHCI SATA support
-Content-Language: en-US
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-To:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Hans de Goede <hdegoede@redhat.com>
-Cc:     Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Rob Herring <robh+dt@kernel.org>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20220324001628.13028-1-Sergey.Semin@baikalelectronics.ru>
- <382eecca-f225-5272-b9d7-134c7baae4ae@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <382eecca-f225-5272-b9d7-134c7baae4ae@opensource.wdc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.15_GA_4101 (zclient/8.8.15_GA_4101)
+Thread-Index: RP7QbHaLlZ3G2nK9zJZYN/8O1GyCNg==
+Thread-Topic: Dringende Antwort erforderlich
+X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_QP_LONG_LINE,
+        MISSING_HEADERS,REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 3/29/22 05:06, Damien Le Moal wrote:
-> On 3/24/22 09:16, Serge Semin wrote:
-> [...]
->> After the denoted above functionality is added we can finally introduce
->> the Baikal-T1 AHCI SATA controller support into the DWC AHCI SATA driver.
->> The controller is based on the DWC AHCI SATA IP-core v4.10a and can work
->> well with the generic DWC AHCI driver. The only peculiarity of it is
->> connected with the SATA Ports reference clock source. It can be supplied
->> either from the internal SoC PLL or from the chip pads. Currently we have
->> to prefer selecting the signal coming from the pads if the corresponding
->> clock source is specified because the link doesn't get stably established
->> when the internal clock signal is activated. In addition the platform has
->> trigger-based reset signals so the corresponding flag must be passed to
->> the generic AHCI-resource getter.
->>
-> 
-> I am assuming this is "v2" of your patches. Please add this version number
-> to your patch titles ("[PATCH v2]") and add a changelog here in the cover
-> letter.
+Es tut mir leid, dass ich Ihnen diese E-Mail, die in Ihrem Junk-Ordner eing=
+egangen ist, als unerw=C3=BCnschte E-Mail gesendet habe. Ich hei=C3=9Fe Hua=
+ng Jinping. Ich habe einen Gesch=C3=A4ftsvorschlag f=C3=BCr Sie. Ich wei=C3=
+=9F, dass dieser Gesch=C3=A4ftsvorschlag f=C3=BCr Sie von Interesse sein w=
+=C3=BCrde. F=C3=BCr weitere Informationen kontaktieren Sie mich bitte *****=
+***************************************************************************=
+**********#################################################################=
+####################################
+Isi e-mail ini mungkin bersifat rahasia dan penyalahgunaan, penyalinan, atau penyebaran dari e-mail ini dan semua attachment dari e-mail ini dilarang. Komunikasi internet tidak aman dan oleh karena itu Badan Pengkajian dan Penerapan Teknologi tidak menerima tanggung jawab hukum atas isi pesan ini atau untuk setiap kerusakan yang disebabkan oleh virus. Pendapat-pendapat yang diungkapkan di sini tidak selalu mewakili Badan Pengkajian dan Penerapan Teknologi.
 
-Sorry. It looks like I received again the same patch series. Not sure why.
-I assumed it was a V2, but it is not.
-
-> 
->> Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
->> Cc: Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>
->> Cc: Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>
->> Cc: Rob Herring <robh+dt@kernel.org>
->> Cc: linux-ide@vger.kernel.org
->> Cc: linux-kernel@vger.kernel.org
->> Cc: devicetree@vger.kernel.org
->>
->> Serge Semin (21):
->>   dt-bindings: ata: sata: Extend number of SATA ports
->>   dt-bindings: ata: Convert AHCI-bindings to DT schema
->>   ata: libahci_platform: Explicitly set rc on devres_alloc failure
->>   ata: libahci_platform: Convert to using handy devm-ioremap methods
->>   ata: libahci_platform: Convert to using devm bulk clocks API
->>   ata: libahci_platform: Add function returning a clock-handle by id
->>   ata: libahci_platform: Sanity check the DT child nodes number
->>   ata: libahci_platform: Parse ports-implemented property in resources
->>     getter
->>   ata: libahci_platform: Introduce reset assertion/deassertion methods
->>   dt-bindings: ata: ahci: Add platform capability properties
->>   ata: libahci: Extend port-cmd flags set with port capabilities
->>   ata: libahci: Discard redundant force_port_map parameter
->>   ata: libahci: Don't read AHCI version twice in the save-config method
->>   ata: ahci: Convert __ahci_port_base to accepting hpriv as arguments
->>   ata: ahci: Introduce firmware-specific caps initialization
->>   dt-bindings: ata: ahci: Add DWC AHCI SATA controller DT schema
->>   ata: ahci: Add DWC AHCI SATA controller support
->>   dt-bindings: ata: ahci: Add Baikal-T1 AHCI SATA controller DT schema
->>   ata: ahci-dwc: Add platform-specific quirks support
->>   ata: ahci-dwc: Add Baikal-T1 AHCI SATA interface support
->>   MAINTAINERS: Add maintainers for DWC AHCI SATA driver
->>
->>  .../devicetree/bindings/ata/ahci-common.yaml  | 176 ++++++
->>  .../devicetree/bindings/ata/ahci-platform.txt |  79 ---
->>  .../bindings/ata/baikal,bt1-ahci.yaml         | 132 +++++
->>  .../devicetree/bindings/ata/generic-ahci.yaml |  98 ++++
->>  .../devicetree/bindings/ata/sata-common.yaml  |   7 +-
->>  .../bindings/ata/snps,dwc-ahci.yaml           | 121 ++++
->>  MAINTAINERS                                   |   9 +
->>  drivers/ata/Kconfig                           |  11 +
->>  drivers/ata/Makefile                          |   1 +
->>  drivers/ata/ahci.c                            |   4 +-
->>  drivers/ata/ahci.h                            |  21 +-
->>  drivers/ata/ahci_dwc.c                        | 525 ++++++++++++++++++
->>  drivers/ata/ahci_mtk.c                        |   2 -
->>  drivers/ata/ahci_platform.c                   |   5 -
->>  drivers/ata/ahci_st.c                         |   3 -
->>  drivers/ata/libahci.c                         |  63 ++-
->>  drivers/ata/libahci_platform.c                | 234 +++++---
->>  include/linux/ahci_platform.h                 |   8 +-
->>  18 files changed, 1321 insertions(+), 178 deletions(-)
->>  create mode 100644 Documentation/devicetree/bindings/ata/ahci-common.yaml
->>  delete mode 100644 Documentation/devicetree/bindings/ata/ahci-platform.txt
->>  create mode 100644 Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
->>  create mode 100644 Documentation/devicetree/bindings/ata/generic-ahci.yaml
->>  create mode 100644 Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
->>  create mode 100644 drivers/ata/ahci_dwc.c
->>
-> 
-> 
-
-
--- 
-Damien Le Moal
-Western Digital Research

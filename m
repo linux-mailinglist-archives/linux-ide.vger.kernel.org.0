@@ -2,110 +2,80 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B754F1423
-	for <lists+linux-ide@lfdr.de>; Mon,  4 Apr 2022 13:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4554F17C0
+	for <lists+linux-ide@lfdr.de>; Mon,  4 Apr 2022 16:59:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230159AbiDDL4r (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 4 Apr 2022 07:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37958 "EHLO
+        id S1378322AbiDDPA6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 4 Apr 2022 11:00:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231376AbiDDL4q (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Apr 2022 07:56:46 -0400
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2491A255A6
-        for <linux-ide@vger.kernel.org>; Mon,  4 Apr 2022 04:54:51 -0700 (PDT)
-Received: by mail-ej1-x62d.google.com with SMTP id ot30so9433019ejb.12
-        for <linux-ide@vger.kernel.org>; Mon, 04 Apr 2022 04:54:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=7xs1Q8qlIPRjoqt2EPejT10ykTPGTWoej6GDOdjftEY=;
-        b=Y1HtW4cQnQly2NsQcrFoWrVOS5oKJW+82pXsOrzpOCZdYjknS77KRNikxAxAvYjZRM
-         WwcEjUmwd2z1tyW+zJEDHkNLzgcLDK36CPUWoW5iSFS/0M7T/DpBJshPAGlfyyw5qRZ8
-         BhWpr0O5nwPEuZSwYV1OcgXC9cuFKJc9tReJ+LZ5Cdl9tUF327Fq08sg2SL+hg1WF02j
-         JXUcHVy/DEamp1x2L3VpB/DZZsGOL/Or/riOk946n3C8N7CK0yIJvXsFqQTEpG3iEyUh
-         JY/0vsRKGX/tdH7t0UvjHzxWK0M0+7A2nZsKVMYxWeCZptT7EE6s/lCsIX6W60EQdjds
-         Xlyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=7xs1Q8qlIPRjoqt2EPejT10ykTPGTWoej6GDOdjftEY=;
-        b=ehd8aEtKcwXijJ4aAyjFEUT80RDrguakDH7OgNw+92zs7y+ZiWr3E5a3WsReiMarEs
-         qhC7cAf0QfX9bwMbwNhyT0Z0Ls83KdaDtpLdMc7oiNf6kMnJyBQJgDaNTKxO8ExvSMp2
-         vWRoy3IjkG2rS5qWPLDG0kXZ01mR7HtXPYJDSPKFnFub7M3Ek8l7c+aXd/1J7immJmZy
-         hKwKTDH4sU5CJ4JC8F01GmrdtUKIgsBDK8vBfTWo6XImZkwXf/28smPMlFg1/FtfKKDT
-         1X6cXyCq1I0bT9HQRTraLL3L2ViZV/gBzM0dyPPl8ZCP2sdpMqfR1WsuQKk4HBhT88qW
-         tOoA==
-X-Gm-Message-State: AOAM533EjlDtoX+QWUsv4dh/pkN0rIKKjaDaQeIQ3FMbgoMWJPdHISlA
-        4MSUkV8lrjDchdFImT+KjzXMOL8NYXu7eN35eXs=
-X-Google-Smtp-Source: ABdhPJwIK52/Ys7FbdV+JQmb0ZUHVt/gm+Q+rFNFfZmZFtJ0uqFMxwb8kQk+tuNAkiYtNNOyXC/4qLHtqF6CxaNGJa0=
-X-Received: by 2002:a17:907:96a6:b0:6e3:9c1b:f403 with SMTP id
- hd38-20020a17090796a600b006e39c1bf403mr10310733ejc.524.1649073289643; Mon, 04
- Apr 2022 04:54:49 -0700 (PDT)
+        with ESMTP id S1378318AbiDDPAy (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Apr 2022 11:00:54 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C62DEE2;
+        Mon,  4 Apr 2022 07:58:54 -0700 (PDT)
+Received: from fraeml741-chm.china.huawei.com (unknown [172.18.147.201])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KXDQH0Xx4z67ms2;
+        Mon,  4 Apr 2022 22:57:11 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml741-chm.china.huawei.com (10.206.15.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 4 Apr 2022 16:58:52 +0200
+Received: from localhost.localdomain (10.69.192.58) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 4 Apr 2022 15:58:50 +0100
+From:   John Garry <john.garry@huawei.com>
+To:     <damien.lemoal@opensource.wdc.com>, <hch@lst.de>
+CC:     <linux-kernel@vger.kernel.org>, <linux-ide@vger.kernel.org>,
+        <linux-doc@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
+        John Garry <john.garry@huawei.com>
+Subject: [PATCH v2 0/2] libata: A tagging improvement and related code reorg
+Date:   Mon, 4 Apr 2022 22:53:08 +0800
+Message-ID: <1649083990-207133-1-git-send-email-john.garry@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-Received: by 2002:a17:907:7e99:0:0:0:0 with HTTP; Mon, 4 Apr 2022 04:54:49
- -0700 (PDT)
-Reply-To: belindasteenkamp14@gmail.com
-From:   BELINDA STEENKAMP <tiffanysmithforreal17@gmail.com>
-Date:   Mon, 4 Apr 2022 13:54:49 +0200
-Message-ID: <CAJSMfVaPOX280A8DN4j5FY+tiOd_we9Wk0mXYZov61GATNqfNA@mail.gmail.com>
-Subject: Easter Promotion!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:62d listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5009]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [belindasteenkamp14[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [tiffanysmithforreal17[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [tiffanysmithforreal17[at]gmail.com]
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
---=20
-PROMOTION WITH 2% INTEREST RATE
+This is a follow-up to the series at [0] to fix SCSI device tagging and
+use the per-device token as the libata qc tag.
 
-  We offer Loans ranging from (R10,000.00 =E2=80=93 R5,000,000.00). Loan
-duration is from 1 to 20 years (Maximum) No collateral, No ITC CHECK
-and Blacklisted, Under debt review, No pay slip, Low credit, Self
-employed and Business owners are welcome.
+I added the changes Christoph shared on the list to move
+the functionality from ata_qc_new_init() into libata-scsi.c
 
-CONTACT:
-Belinda Steenkamp (Mrs)
-Senior Loan Consultant,
-Call only ... { +27671850879 }
-Whatsapp only... ( +27677352072
-Email: { belindasteenkamp14@gmail.com }
+Please do not apply on a kernel which does not include
+"scsi: core: Fix sbitmap depth in scsi_realloc_sdev_budget_map()"
+
+v5.18-rc2 should be the release to include that patch.
+
+[0] https://lore.kernel.org/linux-ide/1647340746-17600-1-git-send-email-john.garry@huawei.com/
+
+Christoph Hellwig (1):
+  libata: Inline ata_qc_new_init() in ata_scsi_qc_new()
+
+John Garry (1):
+  libata: Use scsi cmnd budget token for qc tag for SAS host
+
+ Documentation/driver-api/libata.rst | 11 -------
+ drivers/ata/libata-core.c           | 48 +----------------------------
+ drivers/ata/libata-sata.c           | 25 ---------------
+ drivers/ata/libata-scsi.c           | 45 ++++++++++++++++++++-------
+ drivers/ata/libata.h                | 13 --------
+ include/linux/libata.h              |  1 -
+ 6 files changed, 35 insertions(+), 108 deletions(-)
+
+-- 
+2.26.2
+

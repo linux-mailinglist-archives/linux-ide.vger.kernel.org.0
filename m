@@ -2,52 +2,54 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 636794F21B7
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Apr 2022 06:09:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDD54F213C
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Apr 2022 06:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230129AbiDECwS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 4 Apr 2022 22:52:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48480 "EHLO
+        id S230340AbiDEEIr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Apr 2022 00:08:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231621AbiDECvx (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Apr 2022 22:51:53 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA83F409695
-        for <linux-ide@vger.kernel.org>; Mon,  4 Apr 2022 19:25:22 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id l26so7414958ejx.1
-        for <linux-ide@vger.kernel.org>; Mon, 04 Apr 2022 19:25:22 -0700 (PDT)
+        with ESMTP id S230333AbiDEEIo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Apr 2022 00:08:44 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A585321F
+        for <linux-ide@vger.kernel.org>; Mon,  4 Apr 2022 21:06:44 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id q26so5784983edc.7
+        for <linux-ide@vger.kernel.org>; Mon, 04 Apr 2022 21:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:from:date:message-id:subject:to;
-        bh=xf+oV+TQ+5NDWUw2TSB8GHxPjMiV0X8mJqCtnmq1h54=;
-        b=IZ/pYISQjpqBZbiltTT/WrDco0L+UDSVCXi/c0EZ4yBll7GLNYxZ4Lxe2qBpJCz4jr
-         WSIdszFNDjOzlkvOTbwfjuLvS7h5f2qquwccRx6/NOdolMNfwY3aYe7IeWiG3KuXcQyV
-         EszTfDkwFu1loY8r7YR3WaRZW27jVWwfUqKXbRdOpg9vPgmmotBjph7FZR6M+oyQNWf5
-         8IcoI4qKqn/eWi7cNqnHIHf7aTK1KC001lrpapboZC8Yof+IJUYH4EazOzrRAyleNL9V
-         F3y3Ar7tyZophINeQ4BZ568W7bK9ZoUvwi45qvhLGj7yCjIghC0Dg4FTXuKsQfF5htP4
-         0WfA==
+        bh=k33GZGWU+w9uUOgE7RI/0gXQX1NT8yDgH8ann6GGs8w=;
+        b=bxGBiyEIZStrtD3+4iQ1HCM1sWxhlXV10+iqEn/qlNsNX+5jYs2oeIrAi38GhH3C/S
+         c4jmU83itAIPmrqzQsT48+z9H0vZrIhLoIvwKeWHiAcWWZh6Rg0n8hISzOGzlrM8qjss
+         GUH0oG8ecLJJgWZesSFb6l0iqdc7YCTiHwoTZ+UwPKDeDaddbqwYkO+PhnucQWqqOI5z
+         aXQuqLdPO5kq9uzkL7RUjUz6OOsmFI8eWqAFhel/n5OnlxRJSpL34TAzn+pq0PyA+dVp
+         SntH10wmVLUg7gRuVFaDTOSkTQXEU5W3v4ZPNRSzW+wAc7bhj7EjZGWtG2NJu4+Z+vzc
+         Xt1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=xf+oV+TQ+5NDWUw2TSB8GHxPjMiV0X8mJqCtnmq1h54=;
-        b=y16dxFGLxi7Z+a98/VRnS7xycxzLOnwmBNOzKVy/uBkCgejaHMPGQb2qlJXQsMwJdC
-         EQADGiP13O+uvKnMNB70402b/0CNl3qmbm1DxThnc4eTSv5SE9teQw5tQvQLiC2J3dtU
-         T2VtdXQVdSDqLD0b2OPobqnbruIb4DhnIcPXMtslbRHuxn4UuOwcyhmtFAsWtDqO9Ryv
-         q6kKad+CfLKXn7G+HgkQrsRgwu72aFGimKIx9Z78YAkTx1I3EYa2+s28X/FR9eUmhp24
-         /AbbLeKYUuBXi+57O9BNWVUWocbtLNHCZOS/dgRXp+wOPf9ztcV/tL1aKJ1DM3QPcJxy
-         afew==
-X-Gm-Message-State: AOAM530tUcN0DQmpE7qBBZdum1iDLYH6W375HOs74JDxQRuMb2ebLM57
-        2TqeL6Qx5ouyfyHB9ixx1FiuMRDD2iPIx7cfU5s=
-X-Google-Smtp-Source: ABdhPJwX+/I+kxRm2+sQeqq1m7f5/T5Gwt7pAce4r+2PTapWU/k4qaVrP3KLNhksU3gamWzyrPFPQXLZq1j1humi64g=
-X-Received: by 2002:a17:907:c0c:b0:6d1:8c46:6415 with SMTP id
- ga12-20020a1709070c0c00b006d18c466415mr1267123ejc.326.1649125521091; Mon, 04
- Apr 2022 19:25:21 -0700 (PDT)
+        bh=k33GZGWU+w9uUOgE7RI/0gXQX1NT8yDgH8ann6GGs8w=;
+        b=L3UOSuCXE3lJY0AWxelF4g1/3hP5MND0UBx4eFMt13dQOm/RRK7bj6X7z/9bo0VO9R
+         4X5hQ32wtTHH5iLnVvdKgbXH5h/POUSijqRwo9kuvbHrJJGTmZVm+jxL1uBysP5NDvMW
+         bw+2oGv+GawQf4S5MRYEmgCQzHfidWITJzcf1QPS6Hf+klB+UqfHdurgtSwgceAhnCzt
+         tPX7cWdfAr/1FtE+5e38sZqx+v+lv4MuVPJYkwRSKCyL+ox8MjJ11eNIbLwAC+AZDr6w
+         8hSexfYPr3pnJ269Z8BYqO8VcBzzEyLAO+jRBZ4q+9tHJdIQA00zo2DZpGymXLTflaCm
+         Aj0w==
+X-Gm-Message-State: AOAM531dqOjLN6r6x+7QTY/tFrmjx1LWhvSqTlkm+fd3ZO9q1IcnMxyq
+        M8rgcTVv+ZVJU/3RnY/UM+v1pPQ59prl9vThoZo=
+X-Google-Smtp-Source: ABdhPJzIwxH2Bdxpe3kP5X875Mjtstqa6tDNBqcHYydSExz556mCkxa77yqXPypcDIe5L5yfy2+OGnvw8Xqzcr2Wdek=
+X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
+ el4-20020a056402360400b0041cc4e62988mr1477962edb.157.1649131602779; Mon, 04
+ Apr 2022 21:06:42 -0700 (PDT)
 MIME-Version: 1.0
 From:   Duke Abbaddon <duke.abbaddon@gmail.com>
-Date:   Tue, 5 Apr 2022 03:24:57 +0100
-Message-ID: <CAHpNFcN15GZ2pbutgkw17KyjzpDGCsGXhgM4-9hwBfL0-6G_1A@mail.gmail.com>
-Subject: HDD,SDD & Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators
-To:     "Kramer, Lou" <lou.kramer@amd.com>
+Date:   Tue, 5 Apr 2022 05:06:31 +0100
+Message-ID: <CAHpNFcMO+-rxX=T4GPX9C8hb81AfMP8KhEaxiozFx3URRcf89Q@mail.gmail.com>
+Subject: Device Cache Align 'code align also speeds up prefetch' RS 128Bit
+ Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit Align Quads & Float Quads -
+ HDD,SSD & Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators
+To:     torvalds@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -59,8 +61,16 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-HDD,SDD normally have the EIDD DDI Equivelant
+DMAC yep Security Align 128Bits to Cache Array
+Align that 128Bit Buffer to Cache Align = Pure, 32Bit,64Bit,128Bit
+Align Quads & Float Quads -
+HDD,SDD normally have the EIDD DDI Equivalent
+Device Cache Align 'code align also speeds up prefetch' Radio AKA Wifi
+is also aligned & Internet protocols
 
+RS
+
+https://lkml.org/lkml/2022/4/4/1254
 https://lore.kernel.org/all/20220404194510.9206-2-mario.limonciello@amd.com/
 
 Subject: Hardware Dual Encrypt & Decrypt : Hardware Accelerators

@@ -2,180 +2,213 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8044F6520
-	for <lists+linux-ide@lfdr.de>; Wed,  6 Apr 2022 18:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F023C4F65C6
+	for <lists+linux-ide@lfdr.de>; Wed,  6 Apr 2022 18:43:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237618AbiDFQ2d (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 6 Apr 2022 12:28:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34368 "EHLO
+        id S237504AbiDFQij (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 6 Apr 2022 12:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237790AbiDFQ1R (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 6 Apr 2022 12:27:17 -0400
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27EB311924B
-        for <linux-ide@vger.kernel.org>; Tue,  5 Apr 2022 19:10:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1649211054; x=1680747054;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=d0+FytOO558btlFRtC1lBvGsmdlxFF1L6dG+96oaJ+4=;
-  b=nkjYK+h+YmIKuTAeQZnltsJMOnmNq6WbwPwUU1Fh/OBKeboEb7OSB9Dg
-   p+F9UVshGIKyhlfSq2P7mRXLG0AwOTuFH51y1QRczyQ6BgiZ1n9PAcjya
-   WO/EijxkDNY5X9CpY9wDtrOklcvbOKr9II2Tc/KXd+6bD/WxpdcCISraJ
-   JDSjfLl+AQqFs6rHYhJ3h7LnaHF9KfD7R4SAEiwgJdv03x0LI41CuiedD
-   UsKUblOJYicvesy+3bIvxOAYb7lVnFMoWX+nOLmz0NOiVgAXmLbtpH1Fh
-   K3AzMX/tITmyXlcSobOLnByXjJicDfSj7kz6ysmHzziXCmtReQxJHm4F4
-   A==;
-X-IronPort-AV: E=Sophos;i="5.90,238,1643644800"; 
-   d="scan'208";a="196065494"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 06 Apr 2022 10:10:50 +0800
-IronPort-SDR: QUqZItJhCMia16bxtR68ENAdhI+2o+S7a0FVV9l4aQab483tw/UzQzFC6d92Hgd4GWSBQXSk1j
- SWlKgNCRG0nOLJINn2Cwoc0U6xgXIjZvlj6Us6E/4d+hvZQJGhlhfOLnvN6xN0YThzQyZzkZDC
- bZURwngmqzhOV1OS5zQY1+D+6zk2QAaHOUzpCnjWDiQqwWMYt95UO1pgIzNTCh89wYCA9ia0iZ
- MR+a150Of+xgsKC8uGTFpTqVxgDPvm3G/xfAacfsADVcmyZVqpUQq6TurJmkvpJGjjM/VHLcUB
- xEsZJksAtt+J3nRBek18LYzZ
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Apr 2022 18:41:33 -0700
-IronPort-SDR: J+FH/TKehX4vkwXGEB8aI080jwmds7njdUzW9uiy2MxTYD6FTvSvrU5DEV6TNBe2xuXXUlwm4E
- 5iOCnZgAQiEl19FvUAanZHhBl6iyIap0KJpM18EAo8DUhFbG0AJiNd5Ilm8IDvFjehKJj5qFWx
- j8rrZ6zMnIWAYSTi8ZrK3s6MNvrjlan7/+tQHTou3nS3kyXah1EY2c3FvfvQaPwFwN7skJBJQJ
- M3QqEsX6QiZow1uURtqeJW7XYdVRTV5vqTFo3k/RtxGK6pJ9mhmZo79WD6tSJo4WQ+0wUreyJ6
- 3PY=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Apr 2022 19:10:52 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4KY7K654KMz1SHwl
-        for <linux-ide@vger.kernel.org>; Tue,  5 Apr 2022 19:10:50 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1649211050; x=1651803051; bh=d0+FytOO558btlFRtC1lBvGsmdlxFF1L6dG
-        +96oaJ+4=; b=DGiCKGDztbwwCLwB/GNQfZx3xgOClhBsxA45wxipCKiSXhNZqTz
-        p6csTAu3GZxbpDP4IlHGdtZdmut7dIt1KCRj75DkmeMfA5gnFB+hE9tLkHpKgaPr
-        /6mssPYeZ16UAmbDgiWOjdCgpJNBaNQhmHGOHesrlL8zE/sKhwnEJVM+9IHPvPUi
-        FrsRxTAq6YVv8r/ByCzAkUek1sZHIYZ/Vw0wKflzibFNO/qBQYB8ay3c6eIiexkK
-        6M7Yghqh6wKRWZzgGjNaatgroogitGgXU1Zf7aPL+j7PRxzXMnpTpxUFJ9kw3ugc
-        skIeqNZoWlGz9PUZRczE+owJvbQVsYaSkWQ==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id mmrtQFtpInjR for <linux-ide@vger.kernel.org>;
-        Tue,  5 Apr 2022 19:10:50 -0700 (PDT)
-Received: from [10.149.53.254] (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4KY7K52xF7z1Rvlx;
-        Tue,  5 Apr 2022 19:10:49 -0700 (PDT)
-Message-ID: <da15b34f-2f13-6c97-29f1-9f26c8ec5a3d@opensource.wdc.com>
-Date:   Wed, 6 Apr 2022 11:10:48 +0900
+        with ESMTP id S238773AbiDFQiV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 6 Apr 2022 12:38:21 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DFD2F3D11
+        for <linux-ide@vger.kernel.org>; Wed,  6 Apr 2022 06:57:27 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id yy13so4496810ejb.2
+        for <linux-ide@vger.kernel.org>; Wed, 06 Apr 2022 06:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=12C6tMvUOqmE7iPeN67Buox9hidIxbeU6o+nTMIlrmg=;
+        b=TIHndFfPo+aaXhrleHu1XKHsvk8SmC+eKthCJ1x8k1jOU+FlmZp1HraGZe+KRNSejw
+         lAdLIaFuzOEvGXFyAJm6TYPZxSDLp8r3tTzTA7hH4bWGi5bmSlmjb/JhO4m81EX/23zo
+         JMC37cyMVhkPc2YolTh/ZQH4C8yQX30KAKqpvHjDMS121yd+bZ+kGjC4fw/VSDTd/Bel
+         r++sz3h90Y1q3YMtz3u9vkqTtI9AnQYD9Dxw44zbHFq/3sIfbG/fosSlnR1j3w9I45Hd
+         c20ZFtPU/2IMcvlxH0WaArlfD88e06eBvHl6UAsbzD3EpoCHHQmgMnUL6JnMa80b+0IK
+         VdEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=12C6tMvUOqmE7iPeN67Buox9hidIxbeU6o+nTMIlrmg=;
+        b=w4h2SEV8yKHjUh3Ol7JGS4pZW4kL7NmDVYjgDWmbqcRG6EXl66HHWK6Iq3PxTxYrrS
+         I9RiBCNZiA39txBmj25UfFgVZWRCqR3eAIXd7HQDH5SjBe2J+PuUacMo49Uh/RoHobks
+         0NkfSR7+1P3TrU34U2+Rz1NuFsyd/bfxWQtT0rmCWnEBBhuo1dmzDDrYowfTwhJHFyxy
+         WFREGjq5B+JgL9EIZDMn5UAKHWB5GFBj7IInVxmlGjAX6UC6bZ0N81Y3AUSeP+qeNyCi
+         0gU8rtOAZpSX77JZrgZ2euVe47vR3+Bp4wvnwAjtlcnwrAsrsuhxiTPdeVBrlc/8lNFg
+         MRIw==
+X-Gm-Message-State: AOAM5322qkBc+/ohz+xDznVt1c+UohYp4vCl87I7URPAlQolv0dv9zBr
+        fz8AFFlYeU1OnBwUccj0Bn62xrA3wsL83bNURKM=
+X-Google-Smtp-Source: ABdhPJzFnHz+H9bUAOi37zIlujICLHHCorayrVW8scWF90/ZOC3VDJeoKK7oBD1gDjScx2MY4DTEtjSy2PyuLZI+P4Y=
+X-Received: by 2002:a17:907:6e06:b0:6e4:dae7:9574 with SMTP id
+ sd6-20020a1709076e0600b006e4dae79574mr8718896ejc.540.1649253445762; Wed, 06
+ Apr 2022 06:57:25 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v2 2/2] ata: ahci: Rename CONFIG_SATA_LPM_POLICY
- configuration item back
-Content-Language: en-US
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     "open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" 
-        <linux-ide@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>, hdegoede@redhat.com,
-        Christoph Hellwig <hch@infradead.org>
-References: <20220404200202.9388-1-mario.limonciello@amd.com>
- <20220404200202.9388-2-mario.limonciello@amd.com>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <20220404200202.9388-2-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Wed, 6 Apr 2022 14:57:14 +0100
+Message-ID: <CAHpNFcObr9v28HTpqKS=eAKC5wV2z7k0NaVXz94ga6JN1kJ_vA@mail.gmail.com>
+Subject: Display Stream Compression Support - 3D Mux , 3D Mu-X by GPU & CPU
+ though SiMD & AVX 32Bit IfNotOR to a Singular planar Frame Buffer
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 4/5/22 05:02, Mario Limonciello wrote:
-> CONFIG_SATA_LPM_MOBILE_POLICY was renamed to CONFIG_SATA_LPM_POLICY in
-> commit 4dd4d3deb502 ("ata: ahci: Rename CONFIG_SATA_LPM_MOBILE_POLICY
-> configuration item").
-> 
-> This caused some pain as users would invisibly lose configuration policy
-> defaults when they built the new kernel.  To help alleviate that, switch
-> back to the old name (even if it's wrong).
-> 
-> Suggested-by: Christoph Hellwig <hch@infradead.org>
-> Suggested-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+https://lkml.org/lkml/2022/4/6/401
 
-I applied this manually as the "default 3" is from the first patch, 
-which is for 5.19. This one is queued in for-5.18-fixes now. Thanks.
+*
+[PATCH v7 13/14] drm/msm: Update generated headers Vinod Koul
+  [PATCH v7 07/14] drm/msm/disp/dpu1: Add support for DSC in encoder Vinod =
+Koul
+  [PATCH v7 09/14] drm/msm: Add missing num_dspp field documentation Vinod =
+Koul
+  [PATCH v7 06/14] drm/msm/disp/dpu1: Add DSC support in hw_ctl Vinod Koul
+  [PATCH v7 08/14] drm/msm/dpu: don't use merge_3d if DSC merge topo
+... Vinod Koul
+  [PATCH v7 03/14] drm/msm/disp/dpu1: Add support for DSC Vinod Koul
+  [PATCH v7 01/14] drm/msm/dsi: add support for dsc data Vinod Koul
+[New] [PATCH v7 00/14] drm/msm: Add Display Stream Compression Support
+Vinod Koul
+*
+3D Mux , 3D Mu-X by GPU & CPU though SiMD & AVX 32Bit IfNotOR to a
+Single planar Frame Buffer is logical in the case of Multi Window
+desktops,
+A Blitter Frame Works well for X-OR.
 
-> ---
-> v1->v2:
->   * New patch
->   drivers/ata/Kconfig | 6 ++++--
->   drivers/ata/ahci.c  | 2 +-
->   drivers/ata/ahci.h  | 2 +-
->   3 files changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-> index 3ffe14057ed2..c3194b80c655 100644
-> --- a/drivers/ata/Kconfig
-> +++ b/drivers/ata/Kconfig
-> @@ -115,14 +115,16 @@ config SATA_AHCI
->   
->   	  If unsure, say N.
->   
-> -config SATA_LPM_POLICY
-> +config SATA_MOBILE_LPM_POLICY
->   	int "Default SATA Link Power Management policy for low power chipsets"
->   	range 0 4
->   	default 3
->   	depends on SATA_AHCI
->   	help
->   	  Select the Default SATA Link Power Management (LPM) policy to use
-> -	  for chipsets / "South Bridges" designated as supporting low power.
-> +	  for chipsets / "South Bridges" supporting low-power modes. Such
-> +	  chipsets are typically found on most laptops but desktops and
-> +	  servers now also widely use chipsets with low power modes support.
->   
->   	  The value set has the following meanings:
->   		0 => Keep firmware settings
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 84456c05e845..397dfd27c90d 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -1595,7 +1595,7 @@ static int ahci_init_msi(struct pci_dev *pdev, unsigned int n_ports,
->   static void ahci_update_initial_lpm_policy(struct ata_port *ap,
->   					   struct ahci_host_priv *hpriv)
->   {
-> -	int policy = CONFIG_SATA_LPM_POLICY;
-> +	int policy = CONFIG_SATA_MOBILE_LPM_POLICY;
->   
->   
->   	/* Ignore processing for chipsets that don't use policy */
-> diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-> index 6ead58c1b6e5..ad11a4c52fbe 100644
-> --- a/drivers/ata/ahci.h
-> +++ b/drivers/ata/ahci.h
-> @@ -236,7 +236,7 @@ enum {
->   	AHCI_HFLAG_NO_WRITE_TO_RO	= (1 << 24), /* don't write to read
->   							only registers */
->   	AHCI_HFLAG_USE_LPM_POLICY	= (1 << 25), /* chipset that should use
-> -							SATA_LPM_POLICY
-> +							SATA_MOBILE_LPM_POLICY
->   							as default lpm_policy */
->   	AHCI_HFLAG_SUSPEND_PHYS		= (1 << 26), /* handle PHYs during
->   							suspend/resume */
+The relevance is that a Single Frame buffer per Eye does 3D Imagery!
+(Google Glass & MS & PS4 VR)
+
+We can and will need more; For this Substance Called Flexibility we
+need 2 Details:
+
+ReDirectable DMA & Multi Frame Blitter...
+
+By this method we can literally write every detail if we wish in
+Shader, But we do not need to worry!
+
+X-OR Blitter Recovers from Overwrite by detecting details that are new.
+
+Simple is best but keep in mind that CPU Frame Buffer (In RAM & Cache)
+& GPU Frame Buffer (in GPU) & Direct Access RAM : ReBAR to
+Transparently access GPU RAM!
+
+Allowing ALL.
+
+****
+
+Vector Compression VESA Standard Display protocol 3 +
+DSC : Zero compression or low level compression version of DSC
+1.2bc
+
+Frame by Frame compression with vector prediction.
+
+X-OR Frame Buffer Compression & Blank Space Compression:
+
+X-OR X=3D1 New Data & X=3D0 being not sent,
+Therefore Masking the frame buffer,
+
+A Frame buffer needs a cleared aria; A curve or ellipsoid for example,
+Draw the ellipsoid; This is the mask & can be in 3 levels:
+
+X-OR : Draw or not Draw Aria : Blitter XOR
+AND : Draw 1 Value & The other : Blitter Additive
+Variable Value Resistor : Draw 1 Value +- The other : Blitter + or - Modifi=
+er
+*
+
+Vector Compression VESA Standard Display protocol 3 : RS
+
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+Improve Console & TV & BIOS & General Animated Render
+
+Vector Display Standards with low relative CPU Weight
+SiMD Polygon Font Method Render
+
+Default option point scaling (the space) : Metadata Vector Fonts with
+Curl mathematical vector :
+
+16 Bit : SiMD 1 width
+32 Bit : SiMD Double Width
+
+High precision for AVX 32Bit to 256Bit width precision.
+
+Vectoring with SiMD allows traditional CPU mastered VESA Emulation
+desktops & safe mode to be super fast & displays to conform to VESA
+render standards with little effort & a 1MB Table ROM.
+
+Though the VESA & HDMI & DisplayPort standards Facilitates direct low
+bandwidth transport of and transformation of 3D & 2D graphics & fonts
+into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+
+Display Standards Vector Render : DSVR-SiMD Can and will be directly
+rendered to a Surface for visual element : SfVE-Vec
+
+As such transport of Vectors & transformation onto display (Monitor,
+3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
+
+Directly resolve The total graphics pipeline into high quality output
+or input & allow communication of almost infinite Floating point
+values for all rendered 3D & 2D Elements on a given surface (RAM
+Render Page or Surface)
+
+In high precision that is almost unbeatable & yet consumes many levels
+less RAM & Transport Protocol bandwidth,
+
+Further more can also render Vector 3D & 2D Audio & other elements
+though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
+Harmonic reproduction units for example Yamaha and Casio keyboards.
+
+"QFT a Zero compression or low level compression version of DSC
+1.2bc
+
+X-OR Frame Buffer Compression & Blank Space Compression:
+Vector Compression VESA Standard Display protocol 3"
+
+"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
+latency=E2=80=9D, which is the amount of time between a frame being ready f=
+or
+transport in the GPU and that frame being completely displayed. This
+latency is the sum of the transport time through the source=E2=80=99s outpu=
+t
+circuits, the transport time across the interface, the processing of
+the video data in the display, and the painting of the screen with the
+new data. This overall latency affects the responsiveness of games:
+how long it appears between a button is pressed to the time at which
+the resultant action is observed on the screen.
 
 
--- 
-Damien Le Moal
-Western Digital Research
+While there are a lot of variables in this equation, not many are
+adjustable from an HDMI specification perspective. QFT operates on the
+transport portion of this equation by reducing the time it takes to
+send only the active video across the cable. This results in reduced
+display latency and increased responsiveness."
+*
+
+(c)Rupert S
+
+Include vector today *important* RS
+https://vesa.org/vesa-display-compression-codecs/
+
+https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
+
+https://science.n-helix.com/2019/06/vulkan-stack.html
+
+https://science.n-helix.com/2019/06/kernel.html
+
+https://science.n-helix.com/2022/03/fsr-focal-length.html
+
+https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
+ml
+
+https://bit.ly/VESA_BT
+
+Rupert S

@@ -2,322 +2,252 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F0594F7ED2
-	for <lists+linux-ide@lfdr.de>; Thu,  7 Apr 2022 14:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6C1B4F7EF2
+	for <lists+linux-ide@lfdr.de>; Thu,  7 Apr 2022 14:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245111AbiDGMRW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 7 Apr 2022 08:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54894 "EHLO
+        id S245119AbiDGM3s (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 7 Apr 2022 08:29:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235119AbiDGMRR (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 7 Apr 2022 08:17:17 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786EC643B;
-        Thu,  7 Apr 2022 05:15:12 -0700 (PDT)
-Received: from fraeml740-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4KZ0dm4rTPz686w8;
-        Thu,  7 Apr 2022 20:13:16 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml740-chm.china.huawei.com (10.206.15.221) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 7 Apr 2022 14:15:06 +0200
-Received: from localhost.localdomain (10.69.192.58) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 7 Apr 2022 13:15:04 +0100
-From:   John Garry <john.garry@huawei.com>
-To:     <damien.lemoal@opensource.wdc.com>, <hch@lst.de>
-CC:     <linux-doc@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, John Garry <john.garry@huawei.com>
-Subject: [PATCH v3] libata: Improve ATA queued command allocation
-Date:   Thu, 7 Apr 2022 20:09:25 +0800
-Message-ID: <1649333365-100672-1-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
+        with ESMTP id S245113AbiDGM3r (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 7 Apr 2022 08:29:47 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D236E72469
+        for <linux-ide@vger.kernel.org>; Thu,  7 Apr 2022 05:27:38 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id x20so6180550edi.12
+        for <linux-ide@vger.kernel.org>; Thu, 07 Apr 2022 05:27:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=VRuoAIQ8VM7Z7lkjnKl30FJLKecdPI+AAj9EpsNSn2k=;
+        b=pjuzAXsmGUfimoqYqkuIDhQezqaFwxIutqB489Dv2Wm6p+bqikvsuLx0pRh5WRfKF0
+         xzqz+Rxa2d6UoA9YV2hYUMqzJ3rJ3BwpR5d10EhpJI7rMd0X3yRCj9H/XCPV26VohZyT
+         gXLwdemo1hExYlfRek+blr/0B9Sg02n87v+A/EtvANbahRzFqYdBVw3WLOFmLpMSh9ku
+         xczB7aP7A4m4WsvgbrY8y3z7yNpHX0ZNy4F/g5zZDmop9kvZF3DJkWtf8MLEFSzyLeWt
+         eKDpMnjYliQRoEEeNy0Xqzuv3TEAiYUXm3wORsCQynvBP1duaALpucL9HXfP7CSTIXLH
+         tFvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=VRuoAIQ8VM7Z7lkjnKl30FJLKecdPI+AAj9EpsNSn2k=;
+        b=3pNIVWknmZGoPZQaZmP9/usiaBYXtbIsht+00CD80QsWJNUSl14bIbRuityclyZvYK
+         qIHqQtILcYK2PbO+VpjVlgyRiwelIUqb9p4iIDibVYk+RMpTxHFB9tQEe80oBoxbO5qX
+         jm2TwyvghpGKUhXT8voEOi9ZxJ0pTpkscH7lPqqukJGyDSN0tawNHDwftIb6OzKN5vI8
+         wQQmwIkn8wFdcFRVYODLwUvPQhR6N9/9+jWYBVERo3TnTZzSBAuVQm8ZnzswrTP/zhL4
+         emNHJlNxYRL4pEattpy3QW6WTrQJSa37enQf0UlTl0pQGyoNNs4uysxBWrd1ysINO4+S
+         k0Ww==
+X-Gm-Message-State: AOAM531oHyzGI7QpGuFLlQ7GD4yjrx/mjeENkPfA1UzsjUfWdwtNqpdy
+        5kIRGc640Dy59iL8vswRfI/eiBvXQJGSWX/a8e4=
+X-Google-Smtp-Source: ABdhPJw0Jqrrh7/d2QZPdCy+X/ZgkW51U3q/hqh4YEClrBeDkimwT6OirRgRyVtwDUG2wV87fTl/0HtTj+00K+kH6d4=
+X-Received: by 2002:a05:6402:3604:b0:41c:c4e6:2988 with SMTP id
+ el4-20020a056402360400b0041cc4e62988mr13852621edb.157.1649334457045; Thu, 07
+ Apr 2022 05:27:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.58]
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+From:   Duke Abbaddon <duke.abbaddon@gmail.com>
+Date:   Thu, 7 Apr 2022 13:27:25 +0100
+Message-ID: <CAHpNFcM-uqvy7kTzdNjt9ipt4XVGKC4xyWbvxqGDYsxKORSsDQ@mail.gmail.com>
+Subject: Frame Buffer - Personally QFT  is a much more pleasurable experience
+ than VRR at 2xFPS+ Stable FPS & X-OR Partial Frame Retention saving on compression.
+To:     torvalds@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Improve ATA queued command allocation as follows:
+VecSR - Vector Standard Render
 
-- For attaining a qc tag for a SAS host we need to allocate a bit in
-  ata_port.sas_tag_allocated bitmap.
+VESA Standards : Vector Graphics, Boxes, Ellipses, Curves & Fonts :
+Consolas & other brilliant fonts : (c)RS
 
-  However we already have a unique tag per device in range
-  [0, ATA_MAX_QUEUE - 1] in the scsi cmnd budget token, so just use that
-  instead.
+Vector Compression VESA Standard Display protocol 3 : RS
 
-- It is a bit pointless to have ata_qc_new_init() in libata-core.c since it
-  pokes scsi internals, so inline it in ata_scsi_qc_new() (in
-  libata-scsi.c). Also update Doc accordingly.
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
 
-- Use standard SCSI helpers set_host_byte() and set_status_byte() in
-  ata_scsi_qc_new().
+OT-SVG Fonts & TT-SVG Obviously Rendered in Direct X 9+ & OpenGL 3+
+Mode & Desktop Rendering modes
 
-Christoph Hellwig originally contributed the change to inline
-ata_qc_new_init().
+Improve Console & TV & BIOS & General Animated Render
 
-Signed-off-by: John Garry <john.garry@huawei.com>
----
-Do not apply on a kernel without "scsi: core: Fix sbitmap depth in
-scsi_realloc_sdev_budget_map()" - hopefully v5.18-rc2 will include it.
+*
+Vector Compression VESA Standard Display protocol 3 +
+DSC : Zero compression or low level compression version of DSC
+1.2bc
 
-Changes since v2 series:
-- combine into a single patch
-- use scsi helpers (Damien)
-- use inclusive brackets for commit message descripton
+Frame by Frame compression with vector prediction.
 
-diff --git a/Documentation/driver-api/libata.rst b/Documentation/driver-api/libata.rst
-index d477e296bda5..311af516a3fd 100644
---- a/Documentation/driver-api/libata.rst
-+++ b/Documentation/driver-api/libata.rst
-@@ -424,12 +424,6 @@ How commands are issued
- -----------------------
- 
- Internal commands
--    First, qc is allocated and initialized using :c:func:`ata_qc_new_init`.
--    Although :c:func:`ata_qc_new_init` doesn't implement any wait or retry
--    mechanism when qc is not available, internal commands are currently
--    issued only during initialization and error recovery, so no other
--    command is active and allocation is guaranteed to succeed.
--
-     Once allocated qc's taskfile is initialized for the command to be
-     executed. qc currently has two mechanisms to notify completion. One
-     is via ``qc->complete_fn()`` callback and the other is completion
-@@ -447,11 +441,6 @@ SCSI commands
-     translated. No qc is involved in processing a simulated scmd. The
-     result is computed right away and the scmd is completed.
- 
--    For a translated scmd, :c:func:`ata_qc_new_init` is invoked to allocate a
--    qc and the scmd is translated into the qc. SCSI midlayer's
--    completion notification function pointer is stored into
--    ``qc->scsidone``.
--
-     ``qc->complete_fn()`` callback is used for completion notification. ATA
-     commands use :c:func:`ata_scsi_qc_complete` while ATAPI commands use
-     :c:func:`atapi_qc_complete`. Both functions end up calling ``qc->scsidone``
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index cceedde51126..5e7d6ccad5da 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4563,42 +4563,6 @@ void swap_buf_le16(u16 *buf, unsigned int buf_words)
- #endif /* __BIG_ENDIAN */
- }
- 
--/**
-- *	ata_qc_new_init - Request an available ATA command, and initialize it
-- *	@dev: Device from whom we request an available command structure
-- *	@tag: tag
-- *
-- *	LOCKING:
-- *	None.
-- */
--
--struct ata_queued_cmd *ata_qc_new_init(struct ata_device *dev, int tag)
--{
--	struct ata_port *ap = dev->link->ap;
--	struct ata_queued_cmd *qc;
--
--	/* no command while frozen */
--	if (unlikely(ap->pflags & ATA_PFLAG_FROZEN))
--		return NULL;
--
--	/* libsas case */
--	if (ap->flags & ATA_FLAG_SAS_HOST) {
--		tag = ata_sas_allocate_tag(ap);
--		if (tag < 0)
--			return NULL;
--	}
--
--	qc = __ata_qc_from_tag(ap, tag);
--	qc->tag = qc->hw_tag = tag;
--	qc->scsicmd = NULL;
--	qc->ap = ap;
--	qc->dev = dev;
--
--	ata_qc_reinit(qc);
--
--	return qc;
--}
--
- /**
-  *	ata_qc_free - free unused ata_queued_cmd
-  *	@qc: Command to complete
-@@ -4611,19 +4575,9 @@ struct ata_queued_cmd *ata_qc_new_init(struct ata_device *dev, int tag)
-  */
- void ata_qc_free(struct ata_queued_cmd *qc)
- {
--	struct ata_port *ap;
--	unsigned int tag;
--
--	WARN_ON_ONCE(qc == NULL); /* ata_qc_from_tag _might_ return NULL */
--	ap = qc->ap;
--
- 	qc->flags = 0;
--	tag = qc->tag;
--	if (ata_tag_valid(tag)) {
-+	if (ata_tag_valid(qc->tag))
- 		qc->tag = ATA_TAG_POISON;
--		if (ap->flags & ATA_FLAG_SAS_HOST)
--			ata_sas_free_tag(tag, ap);
--	}
- }
- 
- void __ata_qc_complete(struct ata_queued_cmd *qc)
-diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 044a16daa2d4..7a5fe41aa5ae 100644
---- a/drivers/ata/libata-sata.c
-+++ b/drivers/ata/libata-sata.c
-@@ -1268,31 +1268,6 @@ int ata_sas_queuecmd(struct scsi_cmnd *cmd, struct ata_port *ap)
- }
- EXPORT_SYMBOL_GPL(ata_sas_queuecmd);
- 
--int ata_sas_allocate_tag(struct ata_port *ap)
--{
--	unsigned int max_queue = ap->host->n_tags;
--	unsigned int i, tag;
--
--	for (i = 0, tag = ap->sas_last_tag + 1; i < max_queue; i++, tag++) {
--		tag = tag < max_queue ? tag : 0;
--
--		/* the last tag is reserved for internal command. */
--		if (ata_tag_internal(tag))
--			continue;
--
--		if (!test_and_set_bit(tag, &ap->sas_tag_allocated)) {
--			ap->sas_last_tag = tag;
--			return tag;
--		}
--	}
--	return -1;
--}
--
--void ata_sas_free_tag(unsigned int tag, struct ata_port *ap)
--{
--	clear_bit(tag, &ap->sas_tag_allocated);
--}
--
- /**
-  *	sata_async_notification - SATA async notification handler
-  *	@ap: ATA port where async notification is received
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 06c9d90238d9..805bca2db16d 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -638,24 +638,49 @@ EXPORT_SYMBOL_GPL(ata_scsi_ioctl);
- static struct ata_queued_cmd *ata_scsi_qc_new(struct ata_device *dev,
- 					      struct scsi_cmnd *cmd)
- {
-+	struct ata_port *ap = dev->link->ap;
- 	struct ata_queued_cmd *qc;
-+	int tag;
- 
--	qc = ata_qc_new_init(dev, scsi_cmd_to_rq(cmd)->tag);
--	if (qc) {
--		qc->scsicmd = cmd;
--		qc->scsidone = scsi_done;
--
--		qc->sg = scsi_sglist(cmd);
--		qc->n_elem = scsi_sg_count(cmd);
-+	if (unlikely(ap->pflags & ATA_PFLAG_FROZEN))
-+		goto fail;
- 
--		if (scsi_cmd_to_rq(cmd)->rq_flags & RQF_QUIET)
--			qc->flags |= ATA_QCFLAG_QUIET;
-+	if (ap->flags & ATA_FLAG_SAS_HOST) {
-+		/*
-+		 * SAS hosts may queue > ATA_MAX_QUEUE commands so use
-+		 * unique per-device budget token as a tag.
-+		 */
-+		if (WARN_ON_ONCE(cmd->budget_token >= ATA_MAX_QUEUE))
-+			goto fail;
-+		tag = cmd->budget_token;
- 	} else {
--		cmd->result = (DID_OK << 16) | SAM_STAT_TASK_SET_FULL;
--		scsi_done(cmd);
-+		tag = scsi_cmd_to_rq(cmd)->tag;
- 	}
- 
-+	qc = __ata_qc_from_tag(ap, tag);
-+	qc->tag = qc->hw_tag = tag;
-+	qc->scsicmd = NULL;
-+	qc->ap = ap;
-+	qc->dev = dev;
-+
-+	ata_qc_reinit(qc);
-+
-+	qc->scsicmd = cmd;
-+	qc->scsidone = scsi_done;
-+
-+	qc->sg = scsi_sglist(cmd);
-+	qc->n_elem = scsi_sg_count(cmd);
-+
-+	if (scsi_cmd_to_rq(cmd)->rq_flags & RQF_QUIET)
-+		qc->flags |= ATA_QCFLAG_QUIET;
-+
- 	return qc;
-+
-+fail:
-+	set_host_byte(cmd, DID_OK);
-+	set_status_byte(cmd, SAM_STAT_TASK_SET_FULL);
-+	scsi_done(cmd);
-+	return NULL;
- }
- 
- static void ata_qc_set_pc_nbytes(struct ata_queued_cmd *qc)
-diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
-index c9c2496d91ea..926a7f41303d 100644
---- a/drivers/ata/libata.h
-+++ b/drivers/ata/libata.h
-@@ -44,7 +44,6 @@ static inline void ata_force_cbl(struct ata_port *ap) { }
- #endif
- extern u64 ata_tf_to_lba(const struct ata_taskfile *tf);
- extern u64 ata_tf_to_lba48(const struct ata_taskfile *tf);
--extern struct ata_queued_cmd *ata_qc_new_init(struct ata_device *dev, int tag);
- extern int ata_build_rw_tf(struct ata_taskfile *tf, struct ata_device *dev,
- 			   u64 block, u32 n_block, unsigned int tf_flags,
- 			   unsigned int tag, int class);
-@@ -91,18 +90,6 @@ extern unsigned int ata_read_log_page(struct ata_device *dev, u8 log,
- 
- #define to_ata_port(d) container_of(d, struct ata_port, tdev)
- 
--/* libata-sata.c */
--#ifdef CONFIG_SATA_HOST
--int ata_sas_allocate_tag(struct ata_port *ap);
--void ata_sas_free_tag(unsigned int tag, struct ata_port *ap);
--#else
--static inline int ata_sas_allocate_tag(struct ata_port *ap)
--{
--	return -EOPNOTSUPP;
--}
--static inline void ata_sas_free_tag(unsigned int tag, struct ata_port *ap) { }
--#endif
--
- /* libata-acpi.c */
- #ifdef CONFIG_ATA_ACPI
- extern unsigned int ata_acpi_gtf_filter;
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 9b1d3d8b1252..16107122e587 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -820,7 +820,6 @@ struct ata_port {
- 	unsigned int		cbl;	/* cable type; ATA_CBL_xxx */
- 
- 	struct ata_queued_cmd	qcmd[ATA_MAX_QUEUE + 1];
--	unsigned long		sas_tag_allocated; /* for sas tag allocation only */
- 	u64			qc_active;
- 	int			nr_active_links; /* #links with active qcs */
- 	unsigned int		sas_last_tag;	/* track next tag hw expects */
--- 
-2.26.2
+Personally QFT  is a much more pleasurable experience than VRR at 2xFPS+
+Stable FPS & X-OR Partial Frame Retention saving on compression.
 
+X-OR Frame Buffer Compression & Blank Space Compression:
+
+X-OR X=3D1 New Data & X=3D0 being not sent,
+Therefore Masking the frame buffer,
+
+A Frame buffer needs a cleared aria; A curve or ellipsoid for example,
+Draw the ellipsoid; This is the mask & can be in 3 levels:
+
+X-OR : Draw or not Draw Aria : Blitter XOR
+AND : Draw 1 Value & The other : Blitter Additive
+Variable Value Resistor : Draw 1 Value +- The other : Blitter + or - Modifi=
+er
+*
+
+Vector Compression VESA Standard Display protocol 3 : RS
+
+SiMD Render - Vector Graphics, Boxes, Ellipses, Curves & Fonts
+Improve Console & TV & BIOS & General Animated Render
+
+Vector Display Standards with low relative CPU Weight
+SiMD Polygon Font Method Render
+
+Default option point scaling (the space) : Metadata Vector Fonts with
+Curl mathematical vector :
+
+16 Bit : SiMD 1 width
+32 Bit : SiMD Double Width
+
+High precision for AVX 32Bit to 256Bit width precision.
+
+Vectoring with SiMD allows traditional CPU mastered VESA Emulation
+desktops & safe mode to be super fast & displays to conform to VESA
+render standards with little effort & a 1MB Table ROM.
+
+Though the VESA & HDMI & DisplayPort standards Facilitates direct low
+bandwidth transport of and transformation of 3D & 2D graphics & fonts
+into directly Rendered Super High Fidelity SiMD & AVX Rendering Vector
+
+Display Standards Vector Render : DSVR-SiMD Can and will be directly
+rendered to a Surface for visual element : SfVE-Vec
+
+As such transport of Vectors & transformation onto display (Monitor,
+3D Unit, Render, TV, & Though HDMI, PCI Port & DP & RAM)
+
+Directly resolve The total graphics pipeline into high quality output
+or input & allow communication of almost infinite Floating point
+values for all rendered 3D & 2D Elements on a given surface (RAM
+Render Page or Surface)
+
+In high precision that is almost unbeatable & yet consumes many levels
+less RAM & Transport Protocol bandwidth,
+
+Further more can also render Vector 3D & 2D Audio & other elements
+though Vector 'Fonting' Systems, Examples exist : 3D Wave Tables,
+Harmonic reproduction units for example Yamaha and Casio keyboards.
+
+Personally QFT  is a much more pleasurable experience than VRR at 2xFPS+
+Stable FPS & X-OR Partial Frame Retention saving on compression.
+
+"QFT a Zero compression or low level compression version of DSC
+1.2bc
+
+X-OR Frame Buffer Compression & Blank Space Compression:
+Vector Compression VESA Standard Display protocol 3"
+
+"QFT transports each frame at a higher rate to decrease =E2=80=9Cdisplay
+latency=E2=80=9D, which is the amount of time between a frame being ready f=
+or
+transport in the GPU and that frame being completely displayed. This
+latency is the sum of the transport time through the source=E2=80=99s outpu=
+t
+circuits, the transport time across the interface, the processing of
+the video data in the display, and the painting of the screen with the
+new data. This overall latency affects the responsiveness of games:
+how long it appears between a button is pressed to the time at which
+the resultant action is observed on the screen.
+
+
+While there are a lot of variables in this equation, not many are
+adjustable from an HDMI specification perspective. QFT operates on the
+transport portion of this equation by reducing the time it takes to
+send only the active video across the cable. This results in reduced
+display latency and increased responsiveness."
+*
+
+(c)Rupert S
+
+Include vector today *important* RS
+https://vesa.org/vesa-display-compression-codecs/
+
+https://science.n-helix.com/2016/04/3d-desktop-virtualization.html
+
+https://science.n-helix.com/2019/06/vulkan-stack.html
+
+https://science.n-helix.com/2019/06/kernel.html
+
+https://science.n-helix.com/2022/03/fsr-focal-length.html
+
+https://science.n-helix.com/2018/01/integer-floats-with-remainder-theory.ht=
+ml
+
+https://bit.ly/VESA_BT
+*
+
+*Application of SiMD Polygon Font Method Render
+*3D Render method with Console input DEMO : RS
+
+3D Display access to correct display of fonts at angles in games &
+apps without Utilizing 3rd Axis maths on a simple Shape polygon Vector
+font or shape. (c)Rupert S
+
+3rd dimensional access with vector fonts by a simple method:
+
+Render text to virtual screen layer AKA a fully rendered monochrome, 2
+colour or multi colour..
+
+Bitmap/Texture,
+
+Due to latency we have 3 frames ahead to render to bitmap DPT 3 / Dot 5
+
+Can be higher resolution & we can sub sample with closer view priority...
+
+We then rotate the texture on our output polygon & factor size differential=
+.
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize
+
+Why ? Because rotating a polygon is harder than subtracting or adding
+width, Hight & direction to fully complex polygon Fonts & Polygon
+lines or curves...
+
+The maths is simple enough to implement in games on an SSE configured
+Celeron D (depending on resolution and Bilinear filter & resize.
+
+*
+
+VecSR is really good for secondary loading of sprites & text; In these
+terms very good for pre loading on for example the X86, RISC, AMIGA &
+Famicon type devices,
+With appropriate loading into Sprite buffers or Emulated Secondaries
+(Special Animations) or Font Buffers.
+
+Although Large TT-SVG & OT-SVG fonts load well in 8MB Ram on the Amiga
+with Integer & Emulated Float (Library); Traditional BitMap fonts work
+well in a Set Size & can resize well if cached!
+
+The full process leads upto the terminal & how to optimise CON,
+We can & will need to exceed capacities of any system & To improve them!
+
+presenting: Dev-Con-VectorE=C2=B2
+Fast/dev/CON 3DText & Audio Almost any CPU & GPU ''SiMD & Float/int"
+Class VESA Console +
+
+With Console in VecSR you can 3DText & Audio,
+
+VecSR Firmware update 2022 For immediate implementation in all
+operating systems & ROM's
+
+Potential is fast & useful.
+
+*
+
+https://science.n-helix.com/2022/04/vecsr.html

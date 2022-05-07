@@ -2,189 +2,153 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F295751E543
-	for <lists+linux-ide@lfdr.de>; Sat,  7 May 2022 09:37:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FA551E642
+	for <lists+linux-ide@lfdr.de>; Sat,  7 May 2022 12:02:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358512AbiEGHkr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 7 May 2022 03:40:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42686 "EHLO
+        id S1446232AbiEGKFt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 7 May 2022 06:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346679AbiEGHkq (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 7 May 2022 03:40:46 -0400
-Received: from ZXSHCAS1.zhaoxin.com (zxshcas1.zhaoxin.com [180.169.121.87])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E67351E75
-        for <linux-ide@vger.kernel.org>; Sat,  7 May 2022 00:36:58 -0700 (PDT)
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHCAS1.zhaoxin.com
- (10.28.252.161) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Sat, 7 May
- 2022 15:36:55 +0800
-Received: from [10.29.8.9] (10.29.8.9) by zxbjmbx1.zhaoxin.com (10.29.252.163)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.27; Sat, 7 May
- 2022 15:36:55 +0800
-Subject: Re: [PATCH 1/2] ahci: Add PhyRdy Change control on actual LPM
- capability
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        <linux-ide@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Cobe Chen <CobeChen@zhaoxin.com>, Tim Guo <TimGuo@zhaoxin.com>,
-        TonyW Wang <TonyWWang@zhaoxin.com>,
-        Leo Liu <LeoLiu@zhaoxin.com>
-References: <1650534217-14052-1-git-send-email-RunaGuo-oc@zhaoxin.com>
- <1650534217-14052-2-git-send-email-RunaGuo-oc@zhaoxin.com>
- <244f0c98-13f4-1ac4-9ebe-facdad4ae8b6@opensource.wdc.com>
- <af0571fe-a8f4-cb0a-323f-4dc0c4e7517d@zhaoxin.com>
- <ffc33fd4-a676-167d-ec2c-18e8211f2858@opensource.wdc.com>
- <349b0922-7efd-99e9-7bc8-b18ed98d94f8@zhaoxin.com>
- <e0213b8b-daea-7e75-793c-50f39956f932@opensource.wdc.com>
-From:   Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
-Message-ID: <4824f9b5-92c1-a53b-2174-1d096e723e13@zhaoxin.com>
-Date:   Sat, 7 May 2022 15:36:55 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S232437AbiEGKFl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 7 May 2022 06:05:41 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040C53D4B9;
+        Sat,  7 May 2022 03:01:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1651917715; x=1683453715;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Q/otdjcbA6WbbPS5f3qcEn378K8z0rLFkeMOCGtuneE=;
+  b=B61f1fM1p9qVEJQbfg4WSL1V39NNCIKF5mwSY0Zk4neWljbwsvU7x8Jl
+   3j5ijrmTAsc7i0aYl4I6LSE4RjKFwCJ8yIq3dQCbeuwsAJqFCz6LJnrRZ
+   QfPcNbP5eHDPdnDehEgjgi7n5huQSbFUuv9iIlCeYDLKec6X4pvkUkeHF
+   +B/ee2gSw8gY4i7eDZrrQx3YArTQkX9Ec0lTgOtX2zwX8bvRfQpAlPxZR
+   L1LsMLMjWmrukvMKmbtg3P4gYjjb/EX/gKj1FB/JjT/wOiNqrym0zQEhR
+   BnsJ0O/KdvGj53iH6nwdA4L74HYMqdyNXVmoa8EmDBD4URt2LXy6RnoRf
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10339"; a="268828938"
+X-IronPort-AV: E=Sophos;i="5.91,206,1647327600"; 
+   d="scan'208";a="268828938"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2022 03:01:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,206,1647327600"; 
+   d="scan'208";a="695555683"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orsmga004.jf.intel.com with ESMTP; 07 May 2022 03:01:48 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+        id 78FB3155; Sat,  7 May 2022 13:01:49 +0300 (EEST)
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Wolfram Sang <wsa@kernel.org>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Mark Brown <broonie@kernel.org>,
+        chris.packham@alliedtelesis.co.nz,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-serial@vger.kernel.org
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Anatolij Gustschin <agust@denx.de>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>
+Subject: [PATCH v2 1/4] powerpc/52xx: Remove dead code, i.e. mpc52xx_get_xtal_freq()
+Date:   Sat,  7 May 2022 13:01:44 +0300
+Message-Id: <20220507100147.5802-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-In-Reply-To: <e0213b8b-daea-7e75-793c-50f39956f932@opensource.wdc.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Originating-IP: [10.29.8.9]
-X-ClientProxiedBy: zxbjmbx1.zhaoxin.com (10.29.252.163) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2022/5/2 21:05, Damien Le Moal wrote:
-> On 2022/04/27 19:18, Runa Guo-oc wrote:
->> On 2022/4/23 6:37, Damien Le Moal wrote:
->>> On 4/22/22 18:57, RunaGuo-oc wrote:
->>>> On 2022/4/21 18:39, Damien Le Moal wrote:
->>>>> On 4/21/22 18:43, Runa Guo-oc wrote:
->>>>>> On some platform, when OS enables LPM by default (eg, min_power),
->>>>>> then, PhyRdy Change cannot be detected if ahci supports no LPM.
->>>>> Do you mean "...if the ahci adapter does not support LPM." ?
->>>> Yes.
->>>>
->>>>> If that is what you mean, then min_power should not be set.
->>>> Yes, I agree with you. But, as we know, link_power_management
->>>> is a user policy which can be modified, if some users are not
->>>> familiar with ahci spec, then the above case may happen.
->>> Users should *never* need to be aware of the HW specs and what can or
->>> cannot be done with a particular adapter/drive. User actions trying to
->>> enable an unsupported feature should be failed, always.
->>>
->>> In your case though, quickly checking the AHCI specs, the scontrol
->>> register bits you change seem to be for preventing *device* initiated
->>> power mode transitions, not user/host initiated operations. Your commit
->>> message should clearly mention that. But I still need to spend more time
->>> re-reading the specs to confirm. Will do that next week.
->>>
->>> Since you added the CAP flags, these flags should be used to detect low
->>> power policies that can be allowed for user actions.
->>>
->>> Mario,
->>>
->>> Please rebase and repost your patches ! I rebased the for-5.19 branch on
->>> rc3 to have the LPM config name revert. We need to fix this LPM mess :)
->>>
->>>>>     Mario has patches to fix that.
->>>>     
->>>> Hmm. How to patch this case ?
->>> Mario's patches modify the beginning of the sata_link_scr_lpm() function
->>> to prevent setting an LPM policy that the adapter/drive does not support.
->>> This together with the correct bits set/reset in the scr register will
->>> only allow LPM transitions that are supported.
->>>
->>> It may also be good to revisit ata_scsi_lpm_store() to prevent the user
->>> from setting an unsupported policy. Currently, that uselessly triggers an
->>> EH sequence.
->> To avoid some confusion in this patch set, I want to explain it here.
->> The patch set involves two LPM related issues, one for the ahci adapter
->> does not support LPM (no partial & slumber & devslp), the other for
->> ahci adapter supports part of LPM(eg, only partial, no slumber & devslp).
->>
->> The former case is what I metioned in this mail thread. Namely, when LPM is
->> enabled, actions trying to enable this unsupported feature will be failed,
->> but will disable PORT_IRQ_PHYRDY bit at the beginning of the ahci_set_lpm()
->> function, which would make PhyRdy Changed cannot be detected. So I add flags
->> in the ata_eh_set_lpm() function which will not go to the disable operation.
->>
->> The latter case is what I metioned in "PATCH[2/2]". Namely, if the ahci
->> adapter only supports partial (no slumber & devslp), then when LPM is enabled
->> (eg, min_power), *device* initiated power mode transitions will be enabled
->> with the scontrol register bits setting to indicate no restrictions on LPM
->> transitions. After that, if SSD/HDD sends a DIPM slumber request, it cannot
->> be disallowed by ahci adpter for driver not setting scontrol register bits
->> properly. So I add flags to control it.
->>
->> Therefore, Mario's patches in the sata_link_scr_lpm() function may fix the
->> issue in "PATCH[2/2]".
->>
->> Revisit ata_scsi_lpm_store() to prevent the user from setting an unsupported
->> policy may be a way to fix the issue in "PATCH[1/2]", but there may be another
->> case where some operating system manufacturers setting LPM default enable in
->> driver, like the following code in the ahci_init_one() function, also need to
->> control.
->>
->> 	if (ap->flags & ATA_FLAG_EM)
->> 		ap->em_message_type = hpriv->em_msg_type;
->>
->> +        ap->target_lpm_policy = ATA_LPM_MIN_POWER;
-> This one looks wrong. This is set inside ahci_update_initial_lpm_policy()
-> according to the default kernel config (CONFIG_SATA_MOBILE_LPM_POLICY) and
-> module param + what the drive can do according to ACPI. The problem though is
-> that the adapter capabilities are not checked in that function, so the initial
-> target lpm policy may be wrong.
->
-> Since your patch 1/2 adds the hpriv flags indicating the capabilities, you need
-> to use these in ahci_update_initial_lpm_policy() to validate whatever initial
-> policy is asked for by the user.
+It seems mpc52xx_get_xtal_freq() is not used anywhere. Remove dead code.
 
-Yes, the above code is not rigorous, existing methods provided by kernel as you
-said should be used in this case.
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Wolfram Sang <wsa@kernel.org>
+---
+v2: collected tags
+ arch/powerpc/include/asm/mpc52xx.h           |  1 -
+ arch/powerpc/platforms/52xx/mpc52xx_common.c | 37 --------------------
+ 2 files changed, 38 deletions(-)
 
-In order to use CAP flags to validate user policy, I review the latest kernel
-LPM policies, here is my understanding:
-ATA_LPM_UNKNOWN: default policy, no LPM
-ATA_LPM_MAX_POWER: disable LPM (hipm & dipm)
-ATA_LPM_MED_POWER: enable hipm partial
-ATA_LPM_MED_POWER_WITH_DIPM: enable hipm partial &dipm partial &slumber
-ATA_LPM_MIN_POWER_WITH_PARTIAL: enable hipm partial &dipm partial&slumber&devslp
-ATA_LPM_MIN_POWER: enable hipm slumber &dipm partial &slumber &devslp
-hipm: adpter initiated power mode transitions;
-dipm:*device* initiated power mode transitions;
+diff --git a/arch/powerpc/include/asm/mpc52xx.h b/arch/powerpc/include/asm/mpc52xx.h
+index ce1e0aabaa64..ddd80aae1e32 100644
+--- a/arch/powerpc/include/asm/mpc52xx.h
++++ b/arch/powerpc/include/asm/mpc52xx.h
+@@ -274,7 +274,6 @@ extern void mpc52xx_declare_of_platform_devices(void);
+ extern int mpc5200_psc_ac97_gpio_reset(int psc_number);
+ extern void mpc52xx_map_common_devices(void);
+ extern int mpc52xx_set_psc_clkdiv(int psc_id, int clkdiv);
+-extern unsigned int mpc52xx_get_xtal_freq(struct device_node *node);
+ extern void __noreturn mpc52xx_restart(char *cmd);
+ 
+ /* mpc52xx_gpt.c */
+diff --git a/arch/powerpc/platforms/52xx/mpc52xx_common.c b/arch/powerpc/platforms/52xx/mpc52xx_common.c
+index 565e3a83dc9e..4a39e1cb2263 100644
+--- a/arch/powerpc/platforms/52xx/mpc52xx_common.c
++++ b/arch/powerpc/platforms/52xx/mpc52xx_common.c
+@@ -203,43 +203,6 @@ int mpc52xx_set_psc_clkdiv(int psc_id, int clkdiv)
+ }
+ EXPORT_SYMBOL(mpc52xx_set_psc_clkdiv);
+ 
+-/**
+- * mpc52xx_get_xtal_freq - Get SYS_XTAL_IN frequency for a device
+- *
+- * @node: device node
+- *
+- * Returns the frequency of the external oscillator clock connected
+- * to the SYS_XTAL_IN pin, or 0 if it cannot be determined.
+- */
+-unsigned int mpc52xx_get_xtal_freq(struct device_node *node)
+-{
+-	u32 val;
+-	unsigned int freq;
+-
+-	if (!mpc52xx_cdm)
+-		return 0;
+-
+-	freq = mpc5xxx_get_bus_frequency(node);
+-	if (!freq)
+-		return 0;
+-
+-	if (in_8(&mpc52xx_cdm->ipb_clk_sel) & 0x1)
+-		freq *= 2;
+-
+-	val  = in_be32(&mpc52xx_cdm->rstcfg);
+-	if (val & (1 << 5))
+-		freq *= 8;
+-	else
+-		freq *= 4;
+-	if (val & (1 << 6))
+-		freq /= 12;
+-	else
+-		freq /= 16;
+-
+-	return freq;
+-}
+-EXPORT_SYMBOL(mpc52xx_get_xtal_freq);
+-
+ /**
+  * mpc52xx_restart: ppc_md->restart hook for mpc5200 using the watchdog timer
+  */
+-- 
+2.35.1
 
- From my comprehension, user policy in [ATA_LPM_MED_POWER, ATA_LPM_MIN_POWER]
-need to be validated on adapter's capabilities (partial(y/n), slumber(y/n),
-devslp(y/n)), so, there exits the following cases:
-1, (n, n, n), validate  it to ATA_LPM_UNKNOWN;
-2, (n, n, y), validate  it to  ATA_LPM_MIN_POWER_WITH_PARTIAL/ATA_LPM_MIN_POWER?
-3, (n, y, n), validate  it to ATA_LPM_MIN_POWER;
-4, (n, y, y), validate  it to ATA_LPM_MIN_POWER;
-5, (y, n, n), validate  it to ATA_LPM_MED_POWER;
-6, (y, n, y), validate  it to ATA_LPM_MIN_POWER_WITH_PARTIAL;
-7, (y, y, n), default user policy;
-8, (y, y, y), default user policy;
-('y' for support, 'n' for not support)
-
-for case 2, I'm not quiet sure, for which may enable hipm partial/slumber.
-
-The way I provided above is quiet complicated and may be incomplete.
-It may not be realistic to take all into account, but I think case 1 should
-be taken seriously for which may cause the above PORT_IRQ_PHYRDY issue.
-
-Perhaps, I could refer to Mario's patches later (I have not found yet on
-kernel/git ^_^).
-
->> 	 ahci_update_initial_lpm_policy(ap, hpriv);
->>
->> According to my current understanding, the currently submitted patches can
->> solve the above problems, and definitely not the best. I haven't figured out
->> good way to use CAP flags to patch. Hope you can give me some advice, thanks.
->
->

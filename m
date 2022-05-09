@@ -2,40 +2,63 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE13E51F1AA
-	for <lists+linux-ide@lfdr.de>; Sun,  8 May 2022 22:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6976F51F237
+	for <lists+linux-ide@lfdr.de>; Mon,  9 May 2022 03:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232724AbiEHUpl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 8 May 2022 16:45:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33504 "EHLO
+        id S233716AbiEIB3y (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 8 May 2022 21:29:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232305AbiEHUph (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 8 May 2022 16:45:37 -0400
-Received: from mxout04.lancloud.ru (mxout04.lancloud.ru [45.84.86.114])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E62DAE5A
-        for <linux-ide@vger.kernel.org>; Sun,  8 May 2022 13:41:43 -0700 (PDT)
-Received: from LanCloud
-DKIM-Filter: OpenDKIM Filter v2.11.0 mxout04.lancloud.ru DCC7A209A449
-Received: from LanCloud
-Received: from LanCloud
-Received: from LanCloud
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        <linux-ide@vger.kernel.org>
-Subject: [PATCH 3/3] ata: make ata_port_info::{pio|mwdma|udma}_mask *unsigned int*
-Date:   Sun, 8 May 2022 23:41:39 +0300
-Message-ID: <20220508204139.4961-4-s.shtylyov@omp.ru>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20220508204139.4961-1-s.shtylyov@omp.ru>
-References: <20220508204139.4961-1-s.shtylyov@omp.ru>
+        with ESMTP id S234806AbiEIAWI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 8 May 2022 20:22:08 -0400
+Received: from lgeamrelo11.lge.com (lgeamrelo12.lge.com [156.147.23.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AD1D12AC2
+        for <linux-ide@vger.kernel.org>; Sun,  8 May 2022 17:18:15 -0700 (PDT)
+Received: from unknown (HELO lgemrelse6q.lge.com) (156.147.1.121)
+        by 156.147.23.52 with ESMTP; 9 May 2022 09:18:13 +0900
+X-Original-SENDERIP: 156.147.1.121
+X-Original-MAILFROM: byungchul.park@lge.com
+Received: from unknown (HELO X58A-UD3R) (10.177.244.38)
+        by 156.147.1.121 with ESMTP; 9 May 2022 09:18:13 +0900
+X-Original-SENDERIP: 10.177.244.38
+X-Original-MAILFROM: byungchul.park@lge.com
+Date:   Mon, 9 May 2022 09:16:37 +0900
+From:   Byungchul Park <byungchul.park@lge.com>
+To:     Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc:     torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+        linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+        linux-ext4@vger.kernel.org, mingo@redhat.com,
+        linux-kernel@vger.kernel.org, peterz@infradead.org,
+        will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+        joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+        chris@chris-wilson.co.uk, duyuyang@gmail.com,
+        johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+        willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+        gregkh@linuxfoundation.org, kernel-team@lge.com,
+        linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+        minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+        sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+        penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+        ngupta@vflare.org, linux-block@vger.kernel.org,
+        paolo.valente@linaro.org, josef@toxicpanda.com,
+        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
+        jack@suse.cz, jack@suse.com, jlayton@kernel.org,
+        dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, airlied@linux.ie,
+        rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+        hamohammed.sa@gmail.com
+Subject: Re: [PATCH RFC v6 00/21] DEPT(Dependency Tracker)
+Message-ID: <20220509001637.GA6047@X58A-UD3R>
+References: <CAHk-=whnPePcffsNQM+YSHMGttLXvpf8LbBQ8P7HEdqFXaV7Lg@mail.gmail.com>
+ <1651795895-8641-1-git-send-email-byungchul.park@lge.com>
+ <YnYd0hd+yTvVQxm5@hyeyoo>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [192.168.11.198]
-X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
- LFEX1907.lancloud.ru (fd00:f066::207)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YnYd0hd+yTvVQxm5@hyeyoo>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,35 +66,95 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The {pio|mwdma|udma}_mask fields of the *struct* ata_port_info are declared
-as *unsigned long* (which is a 64-bit type on 64-bit architectures) while
-the actual masks should easily fit into just 8 bits. The alike fields in
-the *struct* ata_port are declared as *unsigned int*, so there are silent
-truncations going on in ata_host_alloc_pinfo() anyway... Using *unsigned*
-*int* fields instead saves some object code in many LLDDs too...
+On Sat, May 07, 2022 at 04:20:50PM +0900, Hyeonggon Yoo wrote:
+> On Fri, May 06, 2022 at 09:11:35AM +0900, Byungchul Park wrote:
+> > Linus wrote:
+> > >
+> > > On Wed, May 4, 2022 at 1:19 AM Byungchul Park <byungchul.park@lge.com> wrote:
+> > > >
+> > > > Hi Linus and folks,
+> > > >
+> > > > I've been developing a tool for detecting deadlock possibilities by
+> > > > tracking wait/event rather than lock(?) acquisition order to try to
+> > > > cover all synchonization machanisms.
+> > > 
+> > > So what is the actual status of reports these days?
+> > > 
+> > > Last time I looked at some reports, it gave a lot of false positives
+> > > due to mis-understanding prepare_to_sleep().
+> > 
+> > Yes, it was. I handled the case in the following way:
+> > 
+> > 1. Stage the wait at prepare_to_sleep(), which might be used at commit.
+> >    Which has yet to be an actual wait that Dept considers.
+> > 2. If the condition for sleep is true, the wait will be committed at
+> >    __schedule(). The wait becomes an actual one that Dept considers.
+> > 3. If the condition is false and the task gets back to TASK_RUNNING,
+> >    clean(=reset) the staged wait.
+> > 
+> > That way, Dept only works with what actually hits to __schedule() for
+> > the waits through sleep.
+> > 
+> > > For this all to make sense, it would need to not have false positives
+> > > (or at least a very small number of them together with a way to sanely
+> > 
+> > Yes. I agree with you. I got rid of them that way I described above.
+> >
+> 
+> IMHO DEPT should not report what lockdep allows (Not talking about
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+No.
+
+> wait events). I mean lockdep allows some kind of nested locks but
+> DEPT reports them.
+
+You have already asked exactly same question in another thread of
+LKML. That time I answered to it but let me explain it again.
+
 ---
- include/linux/libata.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index f6fc482d767a..6417f1fd4852 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -979,9 +979,9 @@ struct ata_port_operations {
- struct ata_port_info {
- 	unsigned long		flags;
- 	unsigned long		link_flags;
--	unsigned long		pio_mask;
--	unsigned long		mwdma_mask;
--	unsigned long		udma_mask;
-+	unsigned int		pio_mask;
-+	unsigned int		mwdma_mask;
-+	unsigned int		udma_mask;
- 	struct ata_port_operations *port_ops;
- 	void 			*private_data;
- };
--- 
-2.26.3
+CASE 1.
 
+   lock L with depth n
+   lock_nested L' with depth n + 1
+   ...
+   unlock L'
+   unlock L
+
+This case is allowed by Lockdep.
+This case is allowed by DEPT cuz it's not a deadlock.
+
+CASE 2.
+
+   lock L with depth n
+   lock A
+   lock_nested L' with depth n + 1
+   ...
+   unlock L'
+   unlock A
+   unlock L
+
+This case is allowed by Lockdep.
+This case is *NOT* allowed by DEPT cuz it's a *DEADLOCK*.
+
+---
+
+The following scenario would explain why CASE 2 is problematic.
+
+   THREAD X			THREAD Y
+
+   lock L with depth n
+				lock L' with depth n
+   lock A
+				lock A
+   lock_nested L' with depth n + 1
+				lock_nested L'' with depth n + 1
+   ...				...
+   unlock L'			unlock L''
+   unlock A			unlock A
+   unlock L			unlock L'
+
+Yes. I need to check if the report you shared with me is a true one, but
+it's not because DEPT doesn't work with *_nested() APIs.
+
+	Byungchul

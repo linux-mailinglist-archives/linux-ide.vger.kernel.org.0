@@ -2,104 +2,104 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2751A522B40
-	for <lists+linux-ide@lfdr.de>; Wed, 11 May 2022 06:40:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0946B522C48
+	for <lists+linux-ide@lfdr.de>; Wed, 11 May 2022 08:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241308AbiEKEkQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 11 May 2022 00:40:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43198 "EHLO
+        id S237416AbiEKG1e (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 11 May 2022 02:27:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239450AbiEKEj1 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 11 May 2022 00:39:27 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33CD914AF70
-        for <linux-ide@vger.kernel.org>; Tue, 10 May 2022 21:39:24 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-deb9295679so1483357fac.6
-        for <linux-ide@vger.kernel.org>; Tue, 10 May 2022 21:39:23 -0700 (PDT)
+        with ESMTP id S233219AbiEKG1e (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 11 May 2022 02:27:34 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6990A22EA74;
+        Tue, 10 May 2022 23:27:32 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id q76so929871pgq.10;
+        Tue, 10 May 2022 23:27:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=nrkBIDyCffFbQz5WNhQU88q5l+bx8m1CoLNL/nRcxBFZRgp3B2RwRJzpJi69hjmFPQ
-         Eotn36CVTQor8sTwq84btYhQQ+OsypTpYdHIfGkC/Ekjg8a9U0HkQq0T/gbcQg5/if4Y
-         i1yzcJYhTRMm8ny1NIiOYUNRazrfloxlCC/1XVxW2+TG0ItQpx2/G3cXjgMuOALgO1Rc
-         auxKHXwS3ghK6vFFIfR8essc70JXfRi2oIpi3YT/VLqISCMTaVWCOI/Xf0rWfpfTmlnw
-         XgqCFC8jOuHD5AjsEtox3h0b9tzcHlVM0fA1RrJyDFubK9aS707t1BYf/K43qSc4slo4
-         wrQw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6QMLfxwOjrgEo2T024s8tceNALt/NjOUTGCdVzN17Y0=;
+        b=lrbiXuOxFTroo21bJnsXw8lr9QSBUnK/XFsQaWyDte2CMf+ycoWwOfCC4v4QsXIaFA
+         v3EOJP0bb7sWXSLScJL+uWVTk4ckOrs8s8wtuFOSm+xpeGk/VbobBqsTJx3yjXeNCqAl
+         TSVRYB1r7UaShsu4uZ/fjlXb2J8LKDOBQL/IZxFNKHNu1TrC+1/sC0NTm7aQYMwtSIvU
+         8Mi4akg3JxsMVgziu+MRSwxvmjap/XFPlaTeUH0l8yHVShfFbkWyaxIpaYiK4OaJPTyJ
+         WQnehxWCd12lf/l+aB7NBo9bVJ96nczhnI5cEMToNNK/+7snh0Gvi6SaIRUXxWk5YShU
+         CRAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=s3Cdswvtyrq8qHVwuRB9YRoTAIoD9G/2//h6WeFZHzo=;
-        b=BPC+Bhs4PBPK9sPnZFNZbRUwdxSqOz2vZG6EGGZV+9fTemb0BLNMHl9sHW8qjcqOha
-         uSqY/sntZ7dHYslAacfJo/ECmHBll0QMcZoIeS7CrVSTuk6nVAZ6nr4jBmWJcAMSyNRp
-         Qriq1dw4XbzU3C/oz4r9jQof+TvyeAaOQB/cQ0W8nG7BCukAO5lhqjy+7uF5Q0HeUd2a
-         1RQqu28FvoUSlvuPRRNH3tVsGVj6fHUyA6kDQoEg368KlA1oN149e2Hg2sQK9su6VlLf
-         FpRfuH+d6gGyziuxacHQ8owyUSVKUhiYAuj23aSrlkUnjZLwQKVWgDyOTxqpUMqUmfOD
-         7NAw==
-X-Gm-Message-State: AOAM532F1XYRwJn43qu+QZD6oTgxiC1mAB6mcWkst7c6cT1nqZxbUh0o
-        xfQdtRGei0axk2e0q2yATaSyqY3+96u9JrNKI5Fp2W6/0XXjwQ==
-X-Google-Smtp-Source: ABdhPJwbKHmbnZDflMHBZCcp2YbZAAZvFdPcM4owWeuPIkoxodmwIZJ+Xpgi08ylB1RFXLrw63SQRxJzumbwJKMTxhs=
-X-Received: by 2002:a17:90b:1007:b0:1dc:9862:68af with SMTP id
- gm7-20020a17090b100700b001dc986268afmr3261389pjb.205.1652243951499; Tue, 10
- May 2022 21:39:11 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6QMLfxwOjrgEo2T024s8tceNALt/NjOUTGCdVzN17Y0=;
+        b=V7fMUxA2exlXqCEY7jRPDdstjCy31lDJrqRkawpbgB6B5YDvwxYbJaYAisFXYqS9ov
+         VBP2pG2P0TaWv6tvlOWxZwoBF3bufMJ796fmpQtXZq/CTaTQM2yevimzaE+bbSUAhDao
+         ZdFKffi5Lsf9sO4ut5fMBwelkRCqyS3RuTilqnmL06oHc0nJqr1F2hsfkXTCW+Qxi3gI
+         tyLCWy0rfqia2PLcMjko5zrcTFTfqfL8xpQpUSU5s8H/jJZQsyLzxRlB5P0hB1r9d/j+
+         2pUf1iYQ1eQ5aa9YIc2KxqVqSp2DGjz97rR+NGHnK9Icm8wvn0Vel8jhoXsd7i8aNXES
+         bdbg==
+X-Gm-Message-State: AOAM530YRlLWZ1IR0PUj6/fpAGfhDDp2Oyr50IYp3JZ+uFL8uTPmjtV7
+        0Ca04T1s5Ou81eU8TWHgzV8=
+X-Google-Smtp-Source: ABdhPJzV7M8WNxLMmly7NZZKEXlt2lXzDUTZ89qzMV6tl2sP0GFbTZJ9KfjTX4f3cCcU/Dstwic0Pg==
+X-Received: by 2002:a63:da13:0:b0:3c6:4c0:e2f9 with SMTP id c19-20020a63da13000000b003c604c0e2f9mr19585290pgh.493.1652250451978;
+        Tue, 10 May 2022 23:27:31 -0700 (PDT)
+Received: from localhost.localdomain ([202.120.234.246])
+        by smtp.googlemail.com with ESMTPSA id s64-20020a17090a2f4600b001d7f3bb11d7sm3173716pjd.53.2022.05.10.23.27.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 May 2022 23:27:31 -0700 (PDT)
+From:   Miaoqian Lin <linmq006@gmail.com>
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Jeff Garzik <jgarzik@redhat.com>,
+        David Daney <david.daney@cavium.com>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     linmq006@gmail.com
+Subject: [PATCH] ata: pata_octeon_cf: Fix refcount leak in octeon_cf_probe
+Date:   Wed, 11 May 2022 10:27:23 +0400
+Message-Id: <20220511062723.56652-1-linmq006@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:319:0:0:0:0 with HTTP; Tue, 10 May 2022 21:39:10
- -0700 (PDT)
-From:   Private Mail <privatemail1961@gmail.com>
-Date:   Tue, 10 May 2022 21:39:10 -0700
-Message-ID: <CANjAOAiiVcSrSv31FjThCVmeppS54UVvGVj3SRSvMfxOB+T8DA@mail.gmail.com>
-Subject: Have you had this? It is for your Benefit
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.3 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DEAR_BENEFICIARY,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,
-        DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,
-        LOTS_OF_MONEY,MONEY_FRAUD_5,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Our Ref: BG/WA0151/2022
+of_find_device_by_node() takes reference, we should use put_device()
+to release it when not need anymore.
+Add missing put_device() in error path to avoid refcount
+leak.
 
-Dear Beneficiary
+Fixes: 43f01da0f279 ("MIPS/OCTEON/ata: Convert pata_octeon_cf.c to use device tree.")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+---
+ drivers/ata/pata_octeon_cf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Subject: An Estate of US$15.8 Million
+diff --git a/drivers/ata/pata_octeon_cf.c b/drivers/ata/pata_octeon_cf.c
+index 6b5ed3046b44..65688459acf1 100644
+--- a/drivers/ata/pata_octeon_cf.c
++++ b/drivers/ata/pata_octeon_cf.c
+@@ -857,12 +857,14 @@ static int octeon_cf_probe(struct platform_device *pdev)
+ 				res_dma = platform_get_resource(dma_dev, IORESOURCE_MEM, 0);
+ 				if (!res_dma) {
+ 					of_node_put(dma_node);
++					put_device(&dma_dev->dev);
+ 					return -EINVAL;
+ 				}
+ 				cf_port->dma_base = (u64)devm_ioremap(&pdev->dev, res_dma->start,
+ 									 resource_size(res_dma));
+ 				if (!cf_port->dma_base) {
+ 					of_node_put(dma_node);
++					put_device(&dma_dev->dev);
+ 					return -EINVAL;
+ 				}
+ 
+-- 
+2.25.1
 
-Blount and Griffin Genealogical Investigators specializes in probate
-research to locate missing heirs and beneficiaries to estates in the
-United Kingdom and Europe.
-
-We can also help you find wills, obtain copies of certificates, help
-you to administer an estate, as well as calculating how an estate,
-intestacy or trust should be distributed.
-
-You may be entitled to a large pay out for an inheritance in Europe
-worth US$15.8 million. We have discovered an estate belonging to the
-late Depositor has remained unclaimed since he died in 2011 and we
-have strong reasons to believe you are the closest living relative to
-the deceased we can find.
-
-You may unknowingly be the heir of this person who died without
-leaving a will (intestate). We will conduct a probate research to
-prove your entitlement, and can submit a claim on your behalf all at
-no risk to yourselves.
-
-Our service fee of 10% will be paid to us after you have received the estate.
-
-The estate transfer process should take just a matter of days as we
-have the mechanism and expertise to get this done very quickly. This
-message may come to you as a shock, however we hope to work with you
-to transfer the estate to you as quickly as possible.
-
-Feel free to email our senior case worker Mr. Malcolm Casey on email:
-malcolmcasey68@yahoo.com for further discussions.
-
-With warm regards,
-
-Mr. Blount W. Gort, CEO.
-Blount and Griffin Associates Inc

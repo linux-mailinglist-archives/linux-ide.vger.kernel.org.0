@@ -2,92 +2,153 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5835352C6F9
-	for <lists+linux-ide@lfdr.de>; Thu, 19 May 2022 00:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B14B452D02F
+	for <lists+linux-ide@lfdr.de>; Thu, 19 May 2022 12:11:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231338AbiERW5V (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 18 May 2022 18:57:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46578 "EHLO
+        id S236575AbiESKL1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 19 May 2022 06:11:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbiERW5U (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 18 May 2022 18:57:20 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 180A4EBA
-        for <linux-ide@vger.kernel.org>; Wed, 18 May 2022 15:57:05 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id x2so5821691ybi.8
-        for <linux-ide@vger.kernel.org>; Wed, 18 May 2022 15:57:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=ovbcf3BPb/ZrA/FpQ+ZjErGDIEZ9sF3fYOxqsE4Z0xdiTlYY9UY36hS3ty6MLllddq
-         FdZzNc2PcFHW5cwKZ0FlQqx6F8uTY06Ab/cmT+eL89dkm6I4fHT5v6DDGzwY+fqIjM8b
-         RjeYQt93Ckr4p0lPVWY342OwWKznH6xDl4nV36uj7bwrBPcHFh3ePzF5GNEmu/mQBhIV
-         GwWDekgJIDWSV60014hyLdzt2NtjUStY8MI6SiwBWMH8LEBnRGkE0W6Db0zUE9IYWmDQ
-         Ifd6nbhkESdcIbQrjo3sdEfmdPtb1VAIHCw/LAZv1DOtvQwqLYnhML4dVDmuoYeMmVFn
-         q7TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=jAGlAS2FWhJOF5wiA1W1HfOOLPcrJczsGxL4h3MFMzsrI6HBbc+KbYzRXy/P63x/ND
-         y/mPTq6WMHsVGAqfnTt3Yo8wJVfef9SCC4ty4KGYrPM16wBEhqnG845qI1a70N/P82Sr
-         AI6Wm0yF2QkJZPzqjv+k7KcZ1JXNYnMTj2TjDWImeDYXd5EFeauWF+Z5TR0m/tCPSp0b
-         /avY3aDz398PpQhIcKeZtmOnEZRNVlAxzFDH4LfZvOHeknzsZdCHD8czbiTuP7a+UOfj
-         G0jCNkPkPEFl07nQohoVLHw3IyG/ujhyhv8FC9v+zM7PvtlcI+0DncSSc324d14nhTK4
-         d/RQ==
-X-Gm-Message-State: AOAM530rxXtUWMi7G9foYumloBDfSLe5LxIrOFtCtq1tvteQ9WCE7PNV
-        pacKDUoFMyI7i9WHA0jYO9xTUqI+ddEcEqXJth1/qH3PsOY7nZMY2170IbLH
-X-Google-Smtp-Source: ABdhPJyyLDAg+sVdsLTxwEXiZ5avjedwK/uWMP/Y3UWcChEjwDE+iXuY4kOycHY8vIqM/rcV0hLTcVdg0IN0RAQYgBc=
-X-Received: by 2002:a5b:f87:0:b0:64a:9aa6:e181 with SMTP id
- q7-20020a5b0f87000000b0064a9aa6e181mr1852277ybh.157.1652914614913; Wed, 18
- May 2022 15:56:54 -0700 (PDT)
+        with ESMTP id S236578AbiESKL1 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 19 May 2022 06:11:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C05A33A22;
+        Thu, 19 May 2022 03:11:25 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72B3D619A6;
+        Thu, 19 May 2022 10:11:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A385C385AA;
+        Thu, 19 May 2022 10:11:14 +0000 (UTC)
+Date:   Thu, 19 May 2022 11:11:10 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc:     Byungchul Park <byungchul.park@lge.com>,
+        torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+        linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+        linux-ext4@vger.kernel.org, mingo@redhat.com,
+        linux-kernel@vger.kernel.org, peterz@infradead.org,
+        will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+        joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+        chris@chris-wilson.co.uk, duyuyang@gmail.com,
+        johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+        willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+        gregkh@linuxfoundation.org, kernel-team@lge.com,
+        linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+        minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+        sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+        penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+        ngupta@vflare.org, linux-block@vger.kernel.org,
+        paolo.valente@linaro.org, josef@toxicpanda.com,
+        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
+        jack@suse.cz, jack@suse.com, jlayton@kernel.org,
+        dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, airlied@linux.ie,
+        rodrigosiqueiramelo@gmail.com, melissa.srw@gmail.com,
+        hamohammed.sa@gmail.com
+Subject: Re: [PATCH RFC v6 00/21] DEPT(Dependency Tracker)
+Message-ID: <YoYXvsgVJwwaWrrZ@arm.com>
+References: <CAHk-=whnPePcffsNQM+YSHMGttLXvpf8LbBQ8P7HEdqFXaV7Lg@mail.gmail.com>
+ <1651795895-8641-1-git-send-email-byungchul.park@lge.com>
+ <YnYd0hd+yTvVQxm5@hyeyoo>
+ <20220509001637.GA6047@X58A-UD3R>
+ <YnpJ9Mtf+pjx4JYm@hyeyoo>
+ <20220510233929.GB18445@X58A-UD3R>
+ <YnuKQ9UIhk9WYoz7@hyeyoo>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:7143:0:0:0:0 with HTTP; Wed, 18 May 2022 15:56:53
- -0700 (PDT)
-Reply-To: tonywenn@asia.com
-From:   Tony Wen <weboutloock4@gmail.com>
-Date:   Thu, 19 May 2022 06:56:53 +0800
-Message-ID: <CAE2_YrD=5bo8j9+ah-xptEBBV-HEC4=Gb0SRHf996phiopc3WQ@mail.gmail.com>
-Subject: engage
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b36 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4933]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [weboutloock4[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [weboutloock4[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.4 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YnuKQ9UIhk9WYoz7@hyeyoo>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Can I engage your services?
+On Wed, May 11, 2022 at 07:04:51PM +0900, Hyeonggon Yoo wrote:
+> On Wed, May 11, 2022 at 08:39:29AM +0900, Byungchul Park wrote:
+> > On Tue, May 10, 2022 at 08:18:12PM +0900, Hyeonggon Yoo wrote:
+> > > On Mon, May 09, 2022 at 09:16:37AM +0900, Byungchul Park wrote:
+> > > > CASE 1.
+> > > > 
+> > > >    lock L with depth n
+> > > >    lock_nested L' with depth n + 1
+> > > >    ...
+> > > >    unlock L'
+> > > >    unlock L
+> > > > 
+> > > > This case is allowed by Lockdep.
+> > > > This case is allowed by DEPT cuz it's not a deadlock.
+> > > > 
+> > > > CASE 2.
+> > > > 
+> > > >    lock L with depth n
+> > > >    lock A
+> > > >    lock_nested L' with depth n + 1
+> > > >    ...
+> > > >    unlock L'
+> > > >    unlock A
+> > > >    unlock L
+> > > > 
+> > > > This case is allowed by Lockdep.
+> > > > This case is *NOT* allowed by DEPT cuz it's a *DEADLOCK*.
+> > > 
+> > > Yeah, in previous threads we discussed this [1]
+> > > 
+> > > And the case was:
+> > > 	scan_mutex -> object_lock -> kmemleak_lock -> object_lock
+> > > And dept reported:
+> > > 	object_lock -> kmemleak_lock, kmemleak_lock -> object_lock as
+> > > 	deadlock.
+> > > 
+> > > But IIUC - What DEPT reported happens only under scan_mutex and it
+> > > is not simple just not to take them because the object can be
+> > > removed from the list and freed while scanning via kmemleak_free()
+> > > without kmemleak_lock and object_lock.
+
+The above kmemleak sequence shouldn't deadlock since those locks, even
+if taken in a different order, are serialised by scan_mutex. For various
+reasons, trying to reduce the latency, I ended up with some
+fine-grained, per-object locking.
+
+For object allocation (rbtree modification) and tree search, we use
+kmemleak_lock. During scanning (which can take minutes under
+scan_mutex), we want to prevent (a) long latencies and (b) freeing the
+object being scanned. We release the locks regularly for (a) and hold
+the object->lock for (b).
+
+In another thread Byungchul mentioned:
+
+|    context X			context Y
+| 
+|    lock mutex A		lock mutex A
+|    lock B			lock C
+|    lock C			lock B
+|    unlock C			unlock B
+|    unlock B			unlock C
+|    unlock mutex A		unlock mutex A
+| 
+| In my opinion, lock B and lock C are unnecessary if they are always
+| along with lock mutex A. Or we should keep correct lock order across all
+| the code.
+
+If these are the only two places, yes, locks B and C would be
+unnecessary. But we have those locks acquired (not nested) on the
+allocation path (kmemleak_lock) and freeing path (object->lock). We
+don't want to block those paths while scan_mutex is held.
+
+That said, we may be able to use a single kmemleak_lock for everything.
+The object freeing path may be affected slightly during scanning but the
+code does release it every MAX_SCAN_SIZE bytes. It may even get slightly
+faster as we'd hammer a single lock (I'll do some benchmarks).
+
+But from a correctness perspective, I think the DEPT tool should be
+improved a bit to detect when such out of order locking is serialised by
+an enclosing lock/mutex.
+
+-- 
+Catalin

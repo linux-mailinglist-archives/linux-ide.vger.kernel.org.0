@@ -2,86 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE8952E75A
-	for <lists+linux-ide@lfdr.de>; Fri, 20 May 2022 10:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D33752F4AD
+	for <lists+linux-ide@lfdr.de>; Fri, 20 May 2022 22:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231423AbiETI3o (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 20 May 2022 04:29:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39552 "EHLO
+        id S234804AbiETUxm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 20 May 2022 16:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344316AbiETI3l (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 20 May 2022 04:29:41 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D07D61618;
-        Fri, 20 May 2022 01:29:40 -0700 (PDT)
-Received: from fraeml709-chm.china.huawei.com (unknown [172.18.147.200])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4L4KYR55tBz687XH;
-        Fri, 20 May 2022 16:25:47 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml709-chm.china.huawei.com (10.206.15.37) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 20 May 2022 10:29:38 +0200
-Received: from localhost.localdomain (10.69.192.58) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 20 May 2022 09:29:34 +0100
-From:   John Garry <john.garry@huawei.com>
-To:     <damien.lemoal@opensource.wdc.com>, <joro@8bytes.org>,
-        <will@kernel.org>, <jejb@linux.ibm.com>,
-        <martin.petersen@oracle.com>, <hch@lst.de>,
-        <m.szyprowski@samsung.com>, <robin.murphy@arm.com>
-CC:     <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-ide@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
-        <linux-scsi@vger.kernel.org>, <liyihang6@hisilicon.com>,
-        <chenxiang66@hisilicon.com>, <thunder.leizhen@huawei.com>,
-        John Garry <john.garry@huawei.com>
-Subject: [PATCH 4/4] libata-scsi: Cap ata_device->max_sectors according to shost->max_sectors
-Date:   Fri, 20 May 2022 16:23:23 +0800
-Message-ID: <1653035003-70312-5-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1653035003-70312-1-git-send-email-john.garry@huawei.com>
-References: <1653035003-70312-1-git-send-email-john.garry@huawei.com>
+        with ESMTP id S231705AbiETUxk (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 20 May 2022 16:53:40 -0400
+Received: from mxout02.lancloud.ru (mxout02.lancloud.ru [45.84.86.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D319619320C
+        for <linux-ide@vger.kernel.org>; Fri, 20 May 2022 13:53:36 -0700 (PDT)
+Received: from LanCloud
+DKIM-Filter: OpenDKIM Filter v2.11.0 mxout02.lancloud.ru B242420BFEC3
+Received: from LanCloud
+Received: from LanCloud
+Received: from LanCloud
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH] ata: libata-core: fix NULL pointer deref in
+ ata_host_alloc_pinfo()
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        <linux-ide@vger.kernel.org>
+Organization: Open Mobile Platform
+Message-ID: <3727e0b4-3958-283f-c0cf-6b8b898ab018@omp.ru>
+Date:   Fri, 20 May 2022 23:53:33 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.58]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [192.168.11.198]
+X-ClientProxiedBy: LFEXT02.lancloud.ru (fd00:f066::142) To
+ LFEX1907.lancloud.ru (fd00:f066::207)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-ATA devices (struct ata_device) have a max_sectors field which is
-configured internally in libata. This is then used to (re)configure the
-associated sdev request queue max_sectors value from how it is earlier set
-in __scsi_init_queue(). In __scsi_init_queue() the max_sectors value is set
-according to shost limits, which includes host DMA mapping limits.
+In an unlikely (and probably wrong?) case that the 'ppi' parameter of
+ata_host_alloc_pinfo() points to an array starting with a NULL pointer,
+there's going to be a kernel oops as the 'pi' local variable won't get
+reassigned from the initial value of NULL.  Assign &ata_dummy_port_info
+to 'pi' at the start of the *for* loop instead to fix this kernel oops
+for good...
 
-Cap the ata_device max_sectors according to shost->max_sectors to respect
-this shost limit.
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+
 ---
- drivers/ata/libata-scsi.c | 1 +
- 1 file changed, 1 insertion(+)
+This patch is against the 'for-next' branch of Damien's 'libata.git' repo.
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 06c9d90238d9..25fe89791641 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1036,6 +1036,7 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
- 		dev->flags |= ATA_DFLAG_NO_UNLOAD;
- 
- 	/* configure max sectors */
-+	dev->max_sectors = min(dev->max_sectors, sdev->host->max_sectors);
- 	blk_queue_max_hw_sectors(q, dev->max_sectors);
- 
- 	if (dev->class == ATA_DEV_ATAPI) {
--- 
-2.26.2
+ drivers/ata/libata-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+Index: libata/drivers/ata/libata-core.c
+===================================================================
+--- libata.orig/drivers/ata/libata-core.c
++++ libata/drivers/ata/libata-core.c
+@@ -5470,7 +5470,7 @@ struct ata_host *ata_host_alloc_pinfo(st
+ 	if (!host)
+ 		return NULL;
+ 
+-	for (i = 0, j = 0, pi = NULL; i < host->n_ports; i++) {
++	for (i = 0, j = 0, pi = &ata_dummy_port_info; i < host->n_ports; i++) {
+ 		struct ata_port *ap = host->ports[i];
+ 
+ 		if (ppi[j])

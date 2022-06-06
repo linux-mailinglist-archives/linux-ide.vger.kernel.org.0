@@ -2,167 +2,108 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA77E53DFBF
-	for <lists+linux-ide@lfdr.de>; Mon,  6 Jun 2022 04:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC6F553EA09
+	for <lists+linux-ide@lfdr.de>; Mon,  6 Jun 2022 19:08:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349161AbiFFCmJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 5 Jun 2022 22:42:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33666 "EHLO
+        id S232916AbiFFJgm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 6 Jun 2022 05:36:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241809AbiFFCmH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 5 Jun 2022 22:42:07 -0400
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5E163CB
-        for <linux-ide@vger.kernel.org>; Sun,  5 Jun 2022 19:42:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1654483326; x=1686019326;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=wVZw+lH039ADPETmDQdHaK1lxpc+CC3Nqs4e9zJ/LHg=;
-  b=DKGkHgQ/eqUU9iWbNy0MLdQnTI5EtdJSyQh+OI4LwZNrF7RRSpSBgeEy
-   vRqt6kWLlni29N+U7ulJv0ppbpeag9EcKjGgwL9LuOQexci0F13ahIkaC
-   VIntdtYP5qhZsKhfMn/wY+4kOXKh4qqdunhvkHvIjprj0IAt7G5LtXIg2
-   bcFW/wtzR4zlxFOYvzR3pqdGuTb61H7UjrxRt1Kgnsarnu+blrCXYEC+3
-   zcQRnNxzjYo0LhMY155FJ6DfiY3Nj4QIaTNUnf+vFPURj7qVIT2PeZUcZ
-   DMOqiW859iHcxYMfJnI2PTABj/qDdBk3Jy64ttHihRY8G7ArNaGhNdvU5
-   g==;
-X-IronPort-AV: E=Sophos;i="5.91,280,1647273600"; 
-   d="scan'208";a="314379911"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 06 Jun 2022 10:42:05 +0800
-IronPort-SDR: f7PgQ0MF1rrOql1vTaKcGughERTDL/4Enmg+i9rRGaJnZO/F2whHtzpcPqGZLPyrTKpbOJCGlI
- Wmrc6FK2MvE4Otwi9c9u0flpkVcly8bxcF1OHIwbEw4mGwCN1wUJ90ierTo0qLkGDTmbySL3qf
- R4xV8lIylWA7TC5+z5SxSEz9jV9uaiyJK8VJzJ779dmq1SOmKkpmSB1Hr8GWb5RlGKFaTCOkMG
- qdZ8fMM1D0xq51jay4W4JsTiVlciiWgp3b2jLAZeGqDkfyNSYPAOxLkwXgoHjZ1YS1+f/KBe5C
- twjMznz7vnOr/m9ZT1eszYc9
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Jun 2022 19:05:26 -0700
-IronPort-SDR: WXlKtqa//PVz2gkYZcL+ni+KFFJagZNnzMyk9Dx0R+gWlrZGFoCcuX5t+N4UcRTZs80mobYhl/
- Z+Tv2SKMlczTzUiMmHRV7kCjTLdzi0W0N9Efqyh3fVMjC4fn47F7PjV0RGKdvRqCM3bkon21xi
- 4vgSyqiCdJM2+p9YxryksfLISdRULn/pGfhmS/iMBq81mCIiYZ4Q6gkO/ukb21LbvySpigpoqp
- MiIK2r8Z6Hyq7Cf+sqcI8qAQcEoy4uKo3qpufCayQzMt0SW9U3DzT9bvrFrkJx5i2X6VLcoAxH
- jJM=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Jun 2022 19:42:06 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4LGd712Pwrz1Rvlx
-        for <linux-ide@vger.kernel.org>; Sun,  5 Jun 2022 19:42:05 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1654483324; x=1657075325; bh=wVZw+lH039ADPETmDQdHaK1lxpc+CC3Nqs4
-        e9zJ/LHg=; b=bj6CPVihuDtzL8fv0Ix9iRysVN4b9owCjjM4cTlnzivgVL+wpfy
-        3KUY01YdAAPWDvIJFdiKCgh6ImEb0ZPtOInIXhfYFQ5HfHy3fbzjFfcp4pCG52/l
-        puF9nKxGTjwvEhu1k0Ab2dqnWudU2i7syQEpLO7LmgmgFNU8HjIJjLg2TcYiwWyg
-        j++MN7QSy8knjUfMHVr0Zo0hB4RZJQTur3HObZM2iV6UnkaEH41Y8GdwIdUKOUdt
-        5FarRiJ/rnQVR5KvXsN6U9X9kaMSRbcm7+yiSkLcoO64AUhYv+InYg3D6EHwWhJ0
-        jHmCThwgj2BF+5QR78v0BLCSsZB5mAZJpWg==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 3-wakoyooFJr for <linux-ide@vger.kernel.org>;
-        Sun,  5 Jun 2022 19:42:04 -0700 (PDT)
-Received: from [10.225.163.72] (unknown [10.225.163.72])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4LGd701mCLz1Rvlc;
-        Sun,  5 Jun 2022 19:42:04 -0700 (PDT)
-Message-ID: <c9695894-3bc6-e825-8239-ea6aa3e4831e@opensource.wdc.com>
-Date:   Mon, 6 Jun 2022 11:42:02 +0900
+        with ESMTP id S232850AbiFFJgi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 6 Jun 2022 05:36:38 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB1AB1BF166;
+        Mon,  6 Jun 2022 02:36:34 -0700 (PDT)
+Received: from fraeml703-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LGpFB45xXz68778;
+        Mon,  6 Jun 2022 17:33:02 +0800 (CST)
+Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
+ fraeml703-chm.china.huawei.com (10.206.15.52) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.24; Mon, 6 Jun 2022 11:36:31 +0200
+Received: from localhost.localdomain (10.69.192.58) by
+ lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 6 Jun 2022 10:36:26 +0100
+From:   John Garry <john.garry@huawei.com>
+To:     <damien.lemoal@opensource.wdc.com>, <joro@8bytes.org>,
+        <will@kernel.org>, <jejb@linux.ibm.com>,
+        <martin.petersen@oracle.com>, <hch@lst.de>,
+        <m.szyprowski@samsung.com>, <robin.murphy@arm.com>
+CC:     <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>, <iommu@lists.linux-foundation.org>,
+        <linux-scsi@vger.kernel.org>, <liyihang6@hisilicon.com>,
+        <chenxiang66@hisilicon.com>, <thunder.leizhen@huawei.com>,
+        John Garry <john.garry@huawei.com>
+Subject: [PATCH v3 0/4] DMA mapping changes for SCSI core
+Date:   Mon, 6 Jun 2022 17:30:18 +0800
+Message-ID: <1654507822-168026-1-git-send-email-john.garry@huawei.com>
+X-Mailer: git-send-email 2.8.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH] ata: libata-transport: fix {dma|pio|xfer}_mode sysfs
- files
-Content-Language: en-US
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org
-References: <b0f8a1d3-2550-31b2-702c-3294d0569187@omp.ru>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <b0f8a1d3-2550-31b2-702c-3294d0569187@omp.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.69.192.58]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ lhreml724-chm.china.huawei.com (10.201.108.75)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 6/5/22 05:53, Sergey Shtylyov wrote:
-> The {dma|pio|xfer}_mode sysfs files are incorrectly handled by the
-> ata_bitfield_name_match() macro which leads to reading such kind of
-> nonsense from them:
-> 
-> $ cat /sys/class/ata_device/dev3.0/pio_mode
-> XFER_UDMA_7, XFER_UDMA_6, XFER_UDMA_5, XFER_UDMA_4, XFER_MW_DMA_4,
-> XFER_PIO_6, XFER_PIO_5, XFER_PIO_4, XFER_PIO_3, XFER_PIO_2, XFER_PIO_1,
-> XFER_PIO_0
-> 
-> Using the correct ata_bitfield_name_search() macro fixes that:
-> 
-> $ cat /sys/class/ata_device/dev3.0/pio_mode
-> XFER_PIO_4
+As reported in [0], DMA mappings whose size exceeds the IOMMU IOVA caching
+limit may see a big performance hit.
 
-Looks good, but Documentation/ABI/testing/sysfs-ata says:
+This series introduces a new DMA mapping API, dma_opt_mapping_size(), so
+that drivers may know this limit when performance is a factor in the
+mapping.
 
-pio_mode:       (RO) Transfer modes supported by the device when
-                in PIO mode. Mostly used by PATA device.
+Robin didn't like using dma_max_mapping_size() for this [1].
 
-xfer_mode:      (RO) Current transfer mode
+The SCSI core code is modified to use this limit.
 
-dma_mode:       (RO) Transfer modes supported by the device when
-                in DMA mode. Mostly used by PATA device.
+I also added a patch for libata-scsi as it does not currently honour the
+shost max_sectors limit.
 
-which seems incorrect/badly worded for pio_mode and dma_mode. Since these
-2 sysfs attributes do not actually device the pio mask (list of supported
-pio modes) but the pio mode that will be used for that device, we should
-reword, no ?
+Note: Christoph has previously kindly offered to take this series via the
+      dma-mapping tree, so I think that we just need an ack from the
+      IOMMU guys now. 
 
-What about:
+[0] https://lore.kernel.org/linux-iommu/20210129092120.1482-1-thunder.leizhen@huawei.com/
+[1] https://lore.kernel.org/linux-iommu/f5b78c9c-312e-70ab-ecbb-f14623a4b6e3@arm.com/
 
-pio_mode:       (RO) Transfer mode used by the device when
-                in PIO mode. Mostly used by PATA device.
+Changes since v2:
+- Rebase on v5.19-rc1
+- Add Damien's tag to 2/4 (thanks)
 
-xfer_mode:      (RO) Current transfer mode
+Changes since v1:
+- Relocate scsi_add_host_with_dma() dma_dev check (Reported by Dan)
+- Add tags from Damien and Martin (thanks)
+  - note: I only added Martin's tag to the SCSI patch
 
-dma_mode:       (RO) Transfer mode used by the device when
-                in DMA mode. Mostly used by PATA device.
+John Garry (4):
+  dma-mapping: Add dma_opt_mapping_size()
+  dma-iommu: Add iommu_dma_opt_mapping_size()
+  scsi: core: Cap shost max_sectors according to DMA optimum mapping
+    limits
+  libata-scsi: Cap ata_device->max_sectors according to
+    shost->max_sectors
 
-
-> 
-> Fixes: d9027470b886 ("[libata] Add ATA transport class")
-> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-> Cc: stable@vger.kernel.org
-> 
-> ---
-> This patch is against the 'master' branch of Damien's 'libata.git' repo.
-> 
->  drivers/ata/libata-transport.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> Index: libata/drivers/ata/libata-transport.c
-> ===================================================================
-> --- libata.orig/drivers/ata/libata-transport.c
-> +++ libata/drivers/ata/libata-transport.c
-> @@ -196,7 +196,7 @@ static struct {
->  	{ XFER_PIO_0,			"XFER_PIO_0" },
->  	{ XFER_PIO_SLOW,		"XFER_PIO_SLOW" }
->  };
-> -ata_bitfield_name_match(xfer,ata_xfer_names)
-> +ata_bitfield_name_search(xfer, ata_xfer_names)
->  
->  /*
->   * ATA Port attributes
-
+ Documentation/core-api/dma-api.rst |  9 +++++++++
+ drivers/ata/libata-scsi.c          |  1 +
+ drivers/iommu/dma-iommu.c          |  6 ++++++
+ drivers/iommu/iova.c               |  5 +++++
+ drivers/scsi/hosts.c               |  5 +++++
+ drivers/scsi/scsi_lib.c            |  4 ----
+ include/linux/dma-map-ops.h        |  1 +
+ include/linux/dma-mapping.h        |  5 +++++
+ include/linux/iova.h               |  2 ++
+ kernel/dma/mapping.c               | 12 ++++++++++++
+ 10 files changed, 46 insertions(+), 4 deletions(-)
 
 -- 
-Damien Le Moal
-Western Digital Research
+2.26.2
+

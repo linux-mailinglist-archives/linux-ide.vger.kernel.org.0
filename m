@@ -2,141 +2,91 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 804CF542706
-	for <lists+linux-ide@lfdr.de>; Wed,  8 Jun 2022 08:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5195D5426D0
+	for <lists+linux-ide@lfdr.de>; Wed,  8 Jun 2022 08:58:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232593AbiFHBLF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 7 Jun 2022 21:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56620 "EHLO
+        id S233595AbiFHGAE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 8 Jun 2022 02:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1838016AbiFHAAy (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 7 Jun 2022 20:00:54 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CED41F21B3;
-        Tue,  7 Jun 2022 16:49:43 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D68EBB8247A;
-        Tue,  7 Jun 2022 23:49:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E65BC34114;
-        Tue,  7 Jun 2022 23:49:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654645780;
-        bh=NS/V46V47Sf9XBKle2Qi4MX9X2KwRhjCPnKdxUCJENs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=MtaQCLxTXJb2arBWP/ih+TVPapyfo6WhuBRaYOcMnYtmOTaVK0PtQD+wjbXQd8mIG
-         4y1mYzJroYbk09J6XAtHpZphidDa1YWISLrPm287rbc8512LcKWBMpjl8Ml7wKlaKO
-         m3bgYQfUh22JCEGrkN0fEj4OxdS0Lw+9AoMWfODbistdrClrCSbWOXlz0BTv/ureFZ
-         vwH8bXRETh1/Tn/wH+Mt8aEcvKE+4961M4Hbdmn5FlrJ7evcl4p/O46ubR1gb0juAu
-         lDX8s8aZBkcFI6CRNLm2l2YuO+UtXv8ufOl3mknsSZlRCNBS5Qodg5nxu+6WJpLp22
-         XPN31KVPHKw4Q==
-Date:   Tue, 7 Jun 2022 18:49:37 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     linux-pci@vger.kernel.org
-Cc:     Hajo Noerenberg <hajo-linux-bugzilla@noerenberg.de>,
-        Pali =?iso-8859-1?Q?Roh=E1r?= <pali@kernel.org>,
-        linux-ide@vger.kernel.org
-Subject: Re: [Bug 216094] New: pci-mvebu: SATA HDDs via 88SE6121 AHCI fail
- with Marvell 88F6281 PCIe
-Message-ID: <20220607234937.GA356793@bhelgaas>
+        with ESMTP id S238601AbiFHFv5 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 8 Jun 2022 01:51:57 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7E0113A11;
+        Tue,  7 Jun 2022 20:34:43 -0700 (PDT)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 257NUv1w014268;
+        Wed, 8 Jun 2022 02:28:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2021-07-09;
+ bh=UnmqXkpiTAP51sDtRl4BUGeSYwx+BbIJjn7jP9GGSSA=;
+ b=cil1gp1W3a6YoNE7HWm1YZZQyC8N/J7S/LFm0XrvqvB81u8XyLtVNu8gfR0HUh2lxPy5
+ JCjH7I9nbGnx9H1bR1XMGDPpnclO96silMrZpftTCf6k0S/ys2nuQfO6PQBTfk8PozDa
+ CyHLer0bPO04K2iea7qXgbD92Sm8C+jDqFP/e9v7ruomzWzLfJh0XDZ2M4SUE+pXp0XG
+ Tr6arrxFm+lZzi9Ln16wpOeSIHT/1VjHtH15nAgOzQPt5VbKVc5yELm4zVpMbqmTacU9
+ kEujsaiqyfv76wXKA1tQMVviZljmLXFJQBfcQ6oX3D5BHKc62mUp8AJdZb0gMX4eM7SV BA== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3ggvxmwffa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jun 2022 02:28:03 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.16.1.2/8.16.1.2) with SMTP id 2582ATsj037982;
+        Wed, 8 Jun 2022 02:28:03 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3gfwu334ae-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jun 2022 02:28:03 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 2582RxlV032073;
+        Wed, 8 Jun 2022 02:28:02 GMT
+Received: from ca-mkp.mkp.ca.oracle.com (ca-mkp.ca.oracle.com [10.156.108.201])
+        by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com with ESMTP id 3gfwu33499-4;
+        Wed, 08 Jun 2022 02:28:02 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     jejb@linux.ibm.com, damien.lemoal@opensource.wdc.com,
+        Tyler Erickson <tyler.erickson@seagate.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-ide@vger.kernel.org, muhammad.ahmad@seagate.com,
+        linux-scsi@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] ata,sd: Fix reading concurrent positioning ranges
+Date:   Tue,  7 Jun 2022 22:27:56 -0400
+Message-Id: <165465514542.8982.625569084964110654.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.35.2
+In-Reply-To: <20220602225113.10218-1-tyler.erickson@seagate.com>
+References: <20220602225113.10218-1-tyler.erickson@seagate.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <bug-216094-41252@https.bugzilla.kernel.org/>
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Proofpoint-GUID: qRnPzEOXv_0mWC_6WnAvzLhqJ_6rCYex
+X-Proofpoint-ORIG-GUID: qRnPzEOXv_0mWC_6WnAvzLhqJ_6rCYex
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Tue, Jun 07, 2022 at 07:29:03AM +0000, bugzilla-daemon@kernel.org wrote:
-> https://bugzilla.kernel.org/show_bug.cgi?id=216094
-> 
->            Summary: pci-mvebu: SATA HDDs via 88SE6121 AHCI fail with
->                     Marvell 88F6281 PCIe
->     Kernel Version: 3.16 ... 5.10
->           Reporter: hajo-linux-bugzilla@noerenberg.de
->                 CC: pali@kernel.org
->         Regression: No
-> 
-> I would like to continue the SATA-related topic started with Pali
-> Rohár at the U-Boot mailing list [1]. I have analysed the issue
-> further and come the following conclusion that it is related to the
-> PCIe subsystem:
-> 
-> SATA-2 and SATA-3 hard disks connected to a 88SE6121 (AHCI)
-> controller, wired via PCIe to the 88F6281 SoC fail to operate
-> ("failed to IDENTIFY" ... "qc timeout") when the pci-mvebu driver
-> (Kernel 3.16 .. 5.10 Debian) is in use.
+On Thu, 2 Jun 2022 16:51:10 -0600, Tyler Erickson wrote:
 
-Please attach the complete dmesg logs showing this issue.
-
-From your lspci output with v3.2, the SATA controller is at 00:01.0:
-
-  00:01.0 IDE [0101]: Marvell 88SE6121 SATA II
-
-The v3.16 (with DTB) lspci output is essentially the same except the
-controller is at 01:00.0:
-
-  01:00.0 IDE [0101]: Marvell 88SE6121 SATA II
-
-The ahci driver is bound in both cases.  The PCI address and I/O port
-assignment differences are of no consequence unless some mvebu driver
-defect keeps them from working.
-
-I think what we need is a complete dmesg log and DTB from the newest
-possible kernel that fails, plus the same logs from the newest kernel
-that works.
-
-> More details:
+> This patch series fixes reading the concurrent positioning ranges.
 > 
-> - The problem does not exist in 2.6 and 3.16 kernels. With the old
-> mach-kirkwood/pcie.c driver all SATA-2/3 hard disks work correctly.
-> Especially with a 3.16 kernel it is possible to have identical
-> ATA/AHCI drivers but try both PCIe drivers: without DTB ->
-> mach-kirkwood -> SATA-2/3 HDDs work; with DTB -> mach-mvebu -> HDDs
-> fail.
+> The first patch fixes reading this in libata, where it was reading
+> more data than a drive necessarily supports, resulting in a
+> command abort.
 > 
-> - The problem is specific to SATA-2/3 HDDs. Very old SATA-1-only
-> HDDs work without problems. This might be related to the available
-> data lanes, DMA or other bandwidth-related things -- I can only
-> guess. Interestingly it does not help to limit SATA speed
-> (libata.force=1.5G ...) with SATA-2/3 HDDs, only 'pure' SATA-1 HDDs
-> work with pci-mvebu.
+> The second patch fixes the SCSI translated data to put the VPD page
+> length in the correct starting byte.
 > 
-> - The problem was identified with the Seagate Blackarmor NAS440
-> hardware. Forum posts show that other users experience similar
-> problems with the (very similar) Iomega ix4-200d NAS [2].
-> 
-> - Within patched U-Boot [3] all (Sata-1/2/3) HDDs always work. Same
-> for the 88F6281 SoC onboard SATA ports (sata_mv - not connected via
-> PCIe).
-> 
-> - The mach-kirkwood driver operates the 6281 as class "Host bridge
-> [0600]" with Cap "Express (v1) Root Port", the mach-mvebu driver as
-> class "PCI bridge [0604]" with "Express (v2) Root Port"
-> [4][5][6][7]. Notably the v1/v2, cache line size 32/64 or the
-> missing interrupt route might be a key difference.
-> 
-> From the sources I see that all PCI drivers (mach-kirkwood,
-> mach-mvebu and U-Boot) do various unconventional 'magic' things
-> (rewriting PCI class of the root complex, changing capabilitys, host
-> emulation and so on). This is the point where I currently get lost
-> and ask for your help.
+> [...]
 
-> [1] https://lists.denx.de/pipermail/u-boot/2022-March/479197.html
-> [2] https://forum.doozan.com/read.php?2,94079,95519#msg-95519
-> [3] https://lists.denx.de/pipermail/u-boot/2022-March/479227.html
-> [4] lspci Linux version 3.2.0-4-kirkwood mach-kirkwood/pci.c: HDDs ok
-> [5] lspci Linux version 3.16.0-0.bpo.4-kirkwood - with DTB -> mvebu-pci: HDDs
-> fail
-> [6] lspci Linux version 3.16.0-0.bpo.4-kirkwood - without DTB ->
-> mach-kirkwood/pci.c: HDDs ok
-> [7] lspci Linux version 5.10.0-11-marvell (Debian bullseye) mvebu-pci: HDDs
-> fail
+Applied to 5.19/scsi-fixes, thanks!
+
+[3/3] scsi: sd: Fix interpretation of VPD B9h length
+      https://git.kernel.org/mkp/scsi/c/f92de9d11042
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

@@ -2,139 +2,73 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25730549F1F
-	for <lists+linux-ide@lfdr.de>; Mon, 13 Jun 2022 22:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48BE954A07C
+	for <lists+linux-ide@lfdr.de>; Mon, 13 Jun 2022 22:56:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbiFMUb2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 13 Jun 2022 16:31:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33944 "EHLO
+        id S1351143AbiFMU4X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 13 Jun 2022 16:56:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351579AbiFMUaN (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 13 Jun 2022 16:30:13 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65EB4F1E7
-        for <linux-ide@vger.kernel.org>; Mon, 13 Jun 2022 12:20:26 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.74.127) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Mon, 13 Jun
- 2022 22:20:18 +0300
-Subject: Re: [PATCH 0/3] Make PATA transfer mode masks always being 32-bit
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        <linux-ide@vger.kernel.org>
-References: <20220508204139.4961-1-s.shtylyov@omp.ru>
- <f4b5fd32-0182-53d4-ca6b-a1f11abbcba8@opensource.wdc.com>
- <446dab29-c8b1-22c6-156c-1a2d266ca30f@omp.ru>
- <7ab32324-c78b-2b4d-2cc0-f9a3f3bc4799@opensource.wdc.com>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <970f1eae-6101-66df-60b5-3ac05b80ff02@omp.ru>
-Date:   Mon, 13 Jun 2022 22:20:18 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S1351359AbiFMUzO (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 13 Jun 2022 16:55:14 -0400
+Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA21A475
+        for <linux-ide@vger.kernel.org>; Mon, 13 Jun 2022 13:27:29 -0700 (PDT)
+Received: by mail-ua1-x943.google.com with SMTP id h21so1232849uaw.7
+        for <linux-ide@vger.kernel.org>; Mon, 13 Jun 2022 13:27:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=f/v1gZW2d1xf+y6gXLTGdOPEOS7UDztcZyURQzQMDp0=;
+        b=OdrDmXqTVaEbKcbTjD93surbgAVobFR9a3I9MeN4fRc5obpOYLA/G7GfEB5WFowb8h
+         XdRsLcqW7XIqfCH+isAmT75z5hl/HZxm1St9/GA9XMrLtzLbb8jGzb8DWdAstivj5YtO
+         v00D+S/b9wk68DZLb6hJErkewgMZGK17nK/lMoDllJr2v11w50S7JTmtJEeLSnJOEka6
+         OECmoc2TH/Sd8h9FNyTKTWCAI7gpMwcT/8XQfDOECJaeHw50dOAl5k9XJEjJrzl/1LtK
+         UdU4n5L/u4kNC0tGXPIkgPO/R9cAbS5Dp4aLhYu2iTjcF/JrrIPiwXPxJe3+RU+id1IJ
+         GSwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=f/v1gZW2d1xf+y6gXLTGdOPEOS7UDztcZyURQzQMDp0=;
+        b=rendacbuH9297o4WqsS/u8RsI/zwK0BwZAMaUjvcTXWpTT5ZYvbTZAOlFPJLSk6hXw
+         4V1jmgBBmNVjNzKEE6wj8Psxf6Xr4CziLLuOu5nYUZ9wm0T1DYbJ0EwRI+Xn97L9/AnS
+         4esJ+EOICbzbEWZRvclZAJordjGyRLdSkiMVuOXYiLWXSW/xgcj6vqQeX5TDG2VESsIA
+         6ChwTlTqAhNKITS1hIeo9EcZgab1IP+MaTxv7EI8k261gK1cizYX6tjvTQV7+yQOtzaJ
+         vdeCZgjH8PC0xfn8OgZuZTX3w2AabWlVS2YrMADGS+F/IDDQ5nRevnhUadh19NzEjK1q
+         E2zg==
+X-Gm-Message-State: AJIora+uVrJv5epsS2xZZeAat0Xba3qtkpIVJ0HqEH7SRgHojkaVTlkn
+        EYX8HOiu8C8xUjZ4K7zDZR16qujHZsftbBV937U=
+X-Google-Smtp-Source: AGRyM1vlUx8WCvfTFwc0l2UwNQoC52Qay1JID43h6Lwj7EfAxiXQd6uzVfIzERlunthWMzzAAT3c9eTduXZ3DW4jxm0=
+X-Received: by 2002:ab0:5a85:0:b0:35d:20c3:5463 with SMTP id
+ w5-20020ab05a85000000b0035d20c35463mr719740uae.103.1655152048706; Mon, 13 Jun
+ 2022 13:27:28 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <7ab32324-c78b-2b4d-2cc0-f9a3f3bc4799@opensource.wdc.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.74.127]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/13/2022 19:04:19
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 171077 [Jun 13 2022]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 489 489 b67d2e276d358fa514f5991440453e6a402e3a26
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.127 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;178.176.74.127:7.1.2;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.127
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/13/2022 19:08:00
-X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/13/2022 4:53:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a59:bf8a:0:b0:2ca:3b5c:ca48 with HTTP; Mon, 13 Jun 2022
+ 13:27:28 -0700 (PDT)
+Reply-To: nikkifenton79@gmail.com
+From:   Nikki Fenton <gustaviagrowe629@gmail.com>
+Date:   Mon, 13 Jun 2022 22:27:28 +0200
+Message-ID: <CAEmpkiAvAF6YR3E1DnukQzAj+5ibPOvEG4TM+XcbhkRyf1Ve9A@mail.gmail.com>
+Subject: Please Read
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello!
+Good Day,
+I viewed your profile on Linkedin regarding a proposal that has
+something in common with you, reply for more details on my private
+email:nikkifenton79@gmail.com
 
-On 6/13/22 2:24 AM, Damien Le Moal wrote:
-
->>>> The PATA transfer mode masks (direct and packed) in libata are sometimes
->>>> declared as *unsigned int* and sometimes as *unsigned long* (which is a
->>>> 64-bit type on 64-bit architectures), while the packed mask really only
->>>> uses 20 bits and the PIO/MWDMA/UDMA masks use up to 8 bits. Switching to
->>>> the uniform 32-bit masks saves siginificant amount of the object code...
->>>>
->>>> Sergey Shtylyov (3):
->>>>   ata: make packed transfer mode masks *unsigned int*
->>>>   ata: make ata_device::{pio|mwdma|udma}_mask *unsigned int*
->>>>   ata: make ata_port_info::{pio|mwdma|udma}_mask *unsigned int*
->>>>
->>>>  drivers/ata/libata-acpi.c      |  8 +++---
->>>>  drivers/ata/libata-core.c      | 38 +++++++++++++-------------
->>>>  drivers/ata/pata_acpi.c        |  2 +-
->>>>  drivers/ata/pata_ali.c         |  2 +-
->>>>  drivers/ata/pata_amd.c         | 14 +++++-----
->>>>  drivers/ata/pata_hpt366.c      |  2 +-
->>>>  drivers/ata/pata_hpt37x.c      |  6 ++---
->>>>  drivers/ata/pata_hpt3x2n.c     |  2 +-
->>>>  drivers/ata/pata_pdc2027x.c    |  4 +--
->>>>  drivers/ata/pata_serverworks.c |  4 +--
->>>>  drivers/ata/pata_sis.c         |  2 +-
->>>>  drivers/ata/pata_via.c         |  2 +-
->>>>  include/linux/libata.h         | 49 +++++++++++++++++-----------------
->>>>  13 files changed, 67 insertions(+), 68 deletions(-)
->>>>
->>>
->>> Are you going to resend this as a single patch ?
->>
->>    No, I'd like to avoid that... Please merge as is.
-> 
-> Nope. I still have concerns about this patch structure. And reviewing
-> again, I think some changes are still missing.
-> E.g., patch 3 changes struct ata_port_info masks to unsigned int. This is
-> used in ata_host_alloc_pinfo() to set the port masks, but I do not see
-> where these are changed to unsigned int too. Which patch does that ? These
-> should be in the same patch.
-
-   Sigh... they always were *unsigned int*! And I explicitly wrote about that
-in the commit msg of that patch... :-/
-
-> I am OK with one patch for the packed mask, and one patch for the
-> {pio|mwdma|udma}_mask fields. Patch 3 is weird and should at least be
-> squashed into patch 2.
-
-   Why? What does *struct* ata_device have to do with *struct* ata_port_info?
-
-> 
-> But given that patch 1 and 2 both touch the same functions, one patch
-> would be better.
-
-   I specifically aimed at minimizing the patches....
-
-MBR, Sergey
+Nikki Fenton,
+nikkifenton79@gmail.com

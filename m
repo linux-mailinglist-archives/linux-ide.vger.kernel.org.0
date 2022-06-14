@@ -2,73 +2,103 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48BE954A07C
-	for <lists+linux-ide@lfdr.de>; Mon, 13 Jun 2022 22:56:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CF3B54A445
+	for <lists+linux-ide@lfdr.de>; Tue, 14 Jun 2022 04:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351143AbiFMU4X (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 13 Jun 2022 16:56:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35180 "EHLO
+        id S1351373AbiFNCFx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 13 Jun 2022 22:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351359AbiFMUzO (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 13 Jun 2022 16:55:14 -0400
-Received: from mail-ua1-x943.google.com (mail-ua1-x943.google.com [IPv6:2607:f8b0:4864:20::943])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA21A475
-        for <linux-ide@vger.kernel.org>; Mon, 13 Jun 2022 13:27:29 -0700 (PDT)
-Received: by mail-ua1-x943.google.com with SMTP id h21so1232849uaw.7
-        for <linux-ide@vger.kernel.org>; Mon, 13 Jun 2022 13:27:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=f/v1gZW2d1xf+y6gXLTGdOPEOS7UDztcZyURQzQMDp0=;
-        b=OdrDmXqTVaEbKcbTjD93surbgAVobFR9a3I9MeN4fRc5obpOYLA/G7GfEB5WFowb8h
-         XdRsLcqW7XIqfCH+isAmT75z5hl/HZxm1St9/GA9XMrLtzLbb8jGzb8DWdAstivj5YtO
-         v00D+S/b9wk68DZLb6hJErkewgMZGK17nK/lMoDllJr2v11w50S7JTmtJEeLSnJOEka6
-         OECmoc2TH/Sd8h9FNyTKTWCAI7gpMwcT/8XQfDOECJaeHw50dOAl5k9XJEjJrzl/1LtK
-         UdU4n5L/u4kNC0tGXPIkgPO/R9cAbS5Dp4aLhYu2iTjcF/JrrIPiwXPxJe3+RU+id1IJ
-         GSwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=f/v1gZW2d1xf+y6gXLTGdOPEOS7UDztcZyURQzQMDp0=;
-        b=rendacbuH9297o4WqsS/u8RsI/zwK0BwZAMaUjvcTXWpTT5ZYvbTZAOlFPJLSk6hXw
-         4V1jmgBBmNVjNzKEE6wj8Psxf6Xr4CziLLuOu5nYUZ9wm0T1DYbJ0EwRI+Xn97L9/AnS
-         4esJ+EOICbzbEWZRvclZAJordjGyRLdSkiMVuOXYiLWXSW/xgcj6vqQeX5TDG2VESsIA
-         6ChwTlTqAhNKITS1hIeo9EcZgab1IP+MaTxv7EI8k261gK1cizYX6tjvTQV7+yQOtzaJ
-         vdeCZgjH8PC0xfn8OgZuZTX3w2AabWlVS2YrMADGS+F/IDDQ5nRevnhUadh19NzEjK1q
-         E2zg==
-X-Gm-Message-State: AJIora+uVrJv5epsS2xZZeAat0Xba3qtkpIVJ0HqEH7SRgHojkaVTlkn
-        EYX8HOiu8C8xUjZ4K7zDZR16qujHZsftbBV937U=
-X-Google-Smtp-Source: AGRyM1vlUx8WCvfTFwc0l2UwNQoC52Qay1JID43h6Lwj7EfAxiXQd6uzVfIzERlunthWMzzAAT3c9eTduXZ3DW4jxm0=
-X-Received: by 2002:ab0:5a85:0:b0:35d:20c3:5463 with SMTP id
- w5-20020ab05a85000000b0035d20c35463mr719740uae.103.1655152048706; Mon, 13 Jun
- 2022 13:27:28 -0700 (PDT)
+        with ESMTP id S1351109AbiFNCFT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 13 Jun 2022 22:05:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE66B340F9;
+        Mon, 13 Jun 2022 19:05:11 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 322DF60B78;
+        Tue, 14 Jun 2022 02:05:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B78C36AFF;
+        Tue, 14 Jun 2022 02:05:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1655172310;
+        bh=pM92xqIpK7CjtIH4rj4N0MbyKRtCtouLiZx0V1/xzyg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Yklp8Y4GwubOefa3KUIjK5uTx1Dg4R+AyEYmXSlFcWKbqBkA4hmPRpRz+dviYLwPt
+         ZEp23471CsyBOjfn+eCppSBUAZTX1wY5Ccwse0gnhWqIG3cekoS5MAGZccfs80E1Mt
+         JMx559x4fO+ZjByGcpNHhX//DpB64zrZplaTKd69kPUcbh7wuhYqJWqxVcRtk4IyRJ
+         RL7HaPcqq+8Pj09Z5H0fadySYF0XsVrJN9te/DCqmeVFnOmBsZ3LThez0gh+/I15Uy
+         kCOub9HBNPE1skucgdwJRuGuArYai6at3yaDkG3gjeYA6t8NcXqLyvyJOqDNyaf0Hd
+         VyvjYec4Qaajg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Sasha Levin <sashal@kernel.org>, tj@kernel.org,
+        linux-ide@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.18 16/47] ata: libata-core: fix NULL pointer deref in ata_host_alloc_pinfo()
+Date:   Mon, 13 Jun 2022 22:04:09 -0400
+Message-Id: <20220614020441.1098348-16-sashal@kernel.org>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220614020441.1098348-1-sashal@kernel.org>
+References: <20220614020441.1098348-1-sashal@kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a59:bf8a:0:b0:2ca:3b5c:ca48 with HTTP; Mon, 13 Jun 2022
- 13:27:28 -0700 (PDT)
-Reply-To: nikkifenton79@gmail.com
-From:   Nikki Fenton <gustaviagrowe629@gmail.com>
-Date:   Mon, 13 Jun 2022 22:27:28 +0200
-Message-ID: <CAEmpkiAvAF6YR3E1DnukQzAj+5ibPOvEG4TM+XcbhkRyf1Ve9A@mail.gmail.com>
-Subject: Please Read
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Good Day,
-I viewed your profile on Linkedin regarding a proposal that has
-something in common with you, reply for more details on my private
-email:nikkifenton79@gmail.com
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-Nikki Fenton,
-nikkifenton79@gmail.com
+[ Upstream commit bf476fe22aa1851bab4728e0c49025a6a0bea307 ]
+
+In an unlikely (and probably wrong?) case that the 'ppi' parameter of
+ata_host_alloc_pinfo() points to an array starting with a NULL pointer,
+there's going to be a kernel oops as the 'pi' local variable won't get
+reassigned from the initial value of NULL. Initialize 'pi' instead to
+'&ata_dummy_port_info' to fix the possible kernel oops for good...
+
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
+
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/ata/libata-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index ca64837641be..804fc2fc97d7 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5501,7 +5501,7 @@ struct ata_host *ata_host_alloc_pinfo(struct device *dev,
+ 				      const struct ata_port_info * const * ppi,
+ 				      int n_ports)
+ {
+-	const struct ata_port_info *pi;
++	const struct ata_port_info *pi = &ata_dummy_port_info;
+ 	struct ata_host *host;
+ 	int i, j;
+ 
+@@ -5509,7 +5509,7 @@ struct ata_host *ata_host_alloc_pinfo(struct device *dev,
+ 	if (!host)
+ 		return NULL;
+ 
+-	for (i = 0, j = 0, pi = NULL; i < host->n_ports; i++) {
++	for (i = 0, j = 0; i < host->n_ports; i++) {
+ 		struct ata_port *ap = host->ports[i];
+ 
+ 		if (ppi[j])
+-- 
+2.35.1
+

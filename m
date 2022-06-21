@@ -2,107 +2,164 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BFDB552ECB
-	for <lists+linux-ide@lfdr.de>; Tue, 21 Jun 2022 11:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 045C7553A11
+	for <lists+linux-ide@lfdr.de>; Tue, 21 Jun 2022 21:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349279AbiFUJkS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 21 Jun 2022 05:40:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
+        id S1352164AbiFUTOW (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 21 Jun 2022 15:14:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349280AbiFUJkI (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Jun 2022 05:40:08 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23BCB27CE0
-        for <linux-ide@vger.kernel.org>; Tue, 21 Jun 2022 02:39:55 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id r3so23501769ybr.6
-        for <linux-ide@vger.kernel.org>; Tue, 21 Jun 2022 02:39:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
-         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
-         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
-         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
-         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
-         Q2/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=4rF9Yt45NO5CoLIChwQrCZi8aDJUZTJmfd8oZ7rdQ4eMFg0N7u0eclAq+V5s/pWsvT
-         p92h/eCH0HKxT7ine8pORwyNnt4lnOhwNc/bPKTsXNr032XvX8ZE1J7UCr/ilbzemJoN
-         CNvQSAIwTbaELgNfbpRl58DQ7JbeRrNLgzarwhdI7xFnCiGqQlZEHOTWNXsqcLWxGTEd
-         ibKY2rhSL+HAo2s/iE36kpA+3seSB9QGXtU1x57glkwbXonKLixmc42UMA2GM0BPqNW3
-         jphD4C4Nn5N+RXUQLvv0u4mhHX79J8fPnUsbE5sTq3FV81YZK0o4yuNFuHDegv92xlxq
-         gbiw==
-X-Gm-Message-State: AJIora/lz/XjwqeITQxwvBQP9QNu0kPo9TrMtpWfQBNfNrTz0vQhH7wm
-        FNauXVCGtgJAFH2sL4rYkOhSbtjxzY+g1nOgJNCAe4PXtYVLHDdd
-X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
-X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
- z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
- Jun 2022 02:39:44 -0700 (PDT)
+        with ESMTP id S229918AbiFUTOV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 21 Jun 2022 15:14:21 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC3E13E09
+        for <linux-ide@vger.kernel.org>; Tue, 21 Jun 2022 12:14:17 -0700 (PDT)
+Received: from [192.168.1.103] (178.176.77.12) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Tue, 21 Jun
+ 2022 22:14:06 +0300
+Subject: Re: [PATCH] ata: libata-scsi: fix sloppy result type of ata_ioc32()
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        <linux-ide@vger.kernel.org>
+References: <4a695619-2de7-671e-7b67-2afddf22423f@omp.ru>
+ <d653908c-1270-9c2f-eceb-2572e9c9d339@opensource.wdc.com>
+ <e8dcebdc-7618-533e-0050-dd03ef1f4bb8@omp.ru>
+ <9c231ffe-df3c-9c36-4b8b-dc518009c3d2@opensource.wdc.com>
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <b37cfe23-a19b-970d-d5b1-3d67659595ee@omp.ru>
+Date:   Tue, 21 Jun 2022 22:14:06 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
- 02:39:44 -0700 (PDT)
-Reply-To: dimitryedik@gmail.com
-From:   Dimitry Edik <lsbthdwrds@gmail.com>
-Date:   Tue, 21 Jun 2022 02:39:44 -0700
-Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
-Subject: Dear Partner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b35 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lsbthdwrds[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+In-Reply-To: <9c231ffe-df3c-9c36-4b8b-dc518009c3d2@opensource.wdc.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [178.176.77.12]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 06/21/2022 18:56:16
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 171268 [Jun 21 2022]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 491 491 a718ef6dc942138335b0bcd7ab07f27b5c06005e
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.77.12 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.77.12 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;178.176.77.12:7.7.3,7.7.1
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.77.12
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 06/21/2022 19:00:00
+X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 6/21/2022 4:24:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello Dear,
+On 6/21/22 1:44 AM, Damien Le Moal wrote:
+[...]
+>>>> While ata_ioc32() returns *int*, its result gets assigned to and compared
+>>>> with the *unsigned long* variable 'val' in ata_sas_scsi_ioctl(), its only
+>>>> caller, which implies a problematic implicit cast -- fix that by returning
+>>>> *unsigned long* instead.
+>>>>
+>>>> Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+>>>> analysis tool.
+>>>>
+>>>> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+>>>>
+>>>> ---
+>>>> This patch is against the 'for-next' branch of Damien's 'libata.git' repo.
+>>>>
+>>>>  drivers/ata/libata-scsi.c |    2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> Index: libata/drivers/ata/libata-scsi.c
+>>>> ===================================================================
+>>>> --- libata.orig/drivers/ata/libata-scsi.c
+>>>> +++ libata/drivers/ata/libata-scsi.c
+>>>> @@ -539,7 +539,7 @@ int ata_task_ioctl(struct scsi_device *s
+>>>>  	return rc;
+>>>>  }
+>>>>  
+>>>> -static int ata_ioc32(struct ata_port *ap)
+>>>> +static unsigned long ata_ioc32(struct ata_port *ap)
+>>>>  {
+>>>>  	if (ap->flags & ATA_FLAG_PIO_DMA)
+>>>>  		return 1;
+>>
+>>> Actually, this should be a bool I think and the ioctl code cleaned to use
+>>
+>>    By the ioctl code you mean ata_sas_scsi_ioctl()?
+> 
+> yes.
+> 
+>>> that type since the val argument of the ioctl is also used as a bool.
+>>
+>>    As for HDIO_SET_32BIT, that's prolly OK but what to do with HDIO_GET_32BIT
+>> (it calls put_user() on *unsigned long*)?
+> 
+> Something like this should work fine:
+> 
+> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+> index 86dbb1cdfabd..ec7f79cbb135 100644
+> --- a/drivers/ata/libata-scsi.c
+> +++ b/drivers/ata/libata-scsi.c
+[...]
+> @@ -571,16 +572,16 @@ int ata_sas_scsi_ioctl(struct ata_port *ap, struct
+> scsi_device *scsidev,
+>                 return put_user(val, (unsigned long __user *)arg);
+> 
+>         case HDIO_SET_32BIT:
 
-My Name is Dimitry Edik from Russia A special assistance to my Russia
-boss who deals in oil import and export He was killed by the Ukraine
-soldiers at the border side. He supplied
-oil to the Philippines company and he was paid over 90 per cent of the
-transaction and the remaining $18.6 Million dollars have been paid into a
-Taiwan bank in the Philippines..i want a partner that will assist me
-with the claims. Is a (DEAL ) 40% for you and 60% for me
-I have all information for the claims.
-Kindly read and reply to me back is 100 per cent risk-free
+   Hmm, I told you this *case* is prolly OK -- it was HDIO_GET_32BIT *case* that
+I was concerned about... So you mean that HDIO_GET_32BIT handling should remain
+intact?
 
-Yours Sincerely
-Dimitry Edik
+> -               val = (unsigned long) arg;
+> +               pio32 = !!((unsigned long) arg);
+>                 rc = 0;
+>                 spin_lock_irqsave(ap->lock, flags);
+>                 if (ap->pflags & ATA_PFLAG_PIO32CHANGE) {
+> -                       if (val)
+> +                       if (pio32)
+>                                 ap->pflags |= ATA_PFLAG_PIO32;
+>                         else
+>                                 ap->pflags &= ~ATA_PFLAG_PIO32;
+>                 } else {
+> -                       if (val != ata_ioc32(ap))
+> +                       if (pio32 != ata_ioc32(ap))
+>                                 rc = -EINVAL;
+>                 }
+>                 spin_unlock_irqrestore(ap->lock, flags);
+
+   Not really sure this is worth it... *unsigned long* result type for
+ata_ioc32() seems simpler.
+
+MBR, Sergey

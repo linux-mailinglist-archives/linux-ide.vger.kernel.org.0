@@ -2,73 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2294C554E65
-	for <lists+linux-ide@lfdr.de>; Wed, 22 Jun 2022 17:04:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CA005550F3
+	for <lists+linux-ide@lfdr.de>; Wed, 22 Jun 2022 18:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358951AbiFVPEJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 22 Jun 2022 11:04:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36794 "EHLO
+        id S1352029AbiFVQLi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 22 Jun 2022 12:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358885AbiFVPEA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 22 Jun 2022 11:04:00 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF4EF3AA6F
-        for <linux-ide@vger.kernel.org>; Wed, 22 Jun 2022 08:03:52 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-101d2e81bceso13987480fac.0
-        for <linux-ide@vger.kernel.org>; Wed, 22 Jun 2022 08:03:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=lmXhPRDXrnlbYClAFJkfHZYdowqXsf1nTuDLZnU/Y1W/T6TJ8ApbIv950i47frAtN/
-         OtndHJQoWJG+weygm2GuosJduERMEzUHLtTF4oGKopzqXa+c5O1ob2p5JuwuGNaCZz0D
-         0k2iO6ZG6gpeVsjTt5A+NLMvCH8qDkpG8Ex3xIMBpunG6BNJWrlCGLJYo7boJK6pvBIx
-         W4x550ST0gVpK9sdxwL58OfMVVl7H7xG/39bSvJCxipLUGbdwSBY6WRzvY6hd28wfB/N
-         vDKUfqITg8PxsgA4g6gEDGmS0K0dBg3KSntFmGDvcmLKkvSy/F4e+TYysqkO/txSQBCJ
-         afFQ==
+        with ESMTP id S1359301AbiFVQLf (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 22 Jun 2022 12:11:35 -0400
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B9123F88A;
+        Wed, 22 Jun 2022 09:11:31 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id jb13so2202405plb.9;
+        Wed, 22 Jun 2022 09:11:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=vhZEVnaGNBjosB86GDUW8b2wHjB/+QU31bPXl36TqFE=;
-        b=I3eV75lGcSO9jrZj/avvbaD303AX7pEbTL8jMkn2V48ANz3cMdc6IJ/mvkx+RxmcYe
-         anlh3+zIA1cfy8U7klK5zNGAH3Nwz9Kge5InGhV7mr5ARGdGeTaFWECjmmtrbrLtyl8i
-         /+5wtWagi587iiehw9P7m8tm2L5H9cW4V7nRAfZX0Iq2BZTP6zDLVznFKZkUjQGsVuxl
-         L7TdfjW1y/3UYBYijeNWjQYmnqZri8d3qZHmXSEohUH5W+IpAhGXSs40FdSifq8QU0op
-         gslWRW7OXGwtYe9O4vjMyTdgKE5FoPd/FFgGPPninLh0WAW+iYrvWpngjKCmnxe6gYWY
-         F/cg==
-X-Gm-Message-State: AJIora+q7mZ9I/agewuvbBMW6+F09AB8AProIhAFU6s++APN2aC5r57Q
-        aLcyBEfzeU+zyFKeNm8/SOkvopACk8/2csAqSVvYKArKQq8kY+Xu
-X-Google-Smtp-Source: AGRyM1ulxotWsDV/SS5wzW6q4zt5LXu3F658bS4StYWI/FgPuIBqBz38zqk7aydOTm9FXxU+wDfnf428k+eRTEG/aD8=
-X-Received: by 2002:a17:90b:1988:b0:1ec:f52d:90d4 with SMTP id
- mv8-20020a17090b198800b001ecf52d90d4mr1796737pjb.70.1655910220864; Wed, 22
- Jun 2022 08:03:40 -0700 (PDT)
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:from:in-reply-to
+         :content-transfer-encoding;
+        bh=7IURSGRwyKWJDHrM6K4VNsvV53mSmBXAkgF9XnuDav8=;
+        b=A8vKLxd/j+FMEPHd97Yp2esOev4ooBCgP0Qo81bFWpoO2wKJ8x+e/HmNRBX2a8f6dK
+         yaMOx/YCGoYDO5eeruTAiHD+WWXSPma54+xzcoER0ECYyEt8lzJzdtttk3UxJuLzQyXv
+         jPVzi1OvHlcHIjIUWqRtjkHKqvCmXO2IZjZISV8x1Uk5g14WmYGkGMavkE2OZXVVuS6i
+         wADK6sOWrsKsbd5hyyAhEnxTY2tjlOola5JY6olIAUHlIz77etqq/b0E2KDZoYtvMHDr
+         RzQkjDlSTlXgss3dAESzEaHAA4iQg1pF3gV/Z+ZMJaQ/pL2PBiABtUn25SjryYLrl1qd
+         OZUQ==
+X-Gm-Message-State: AJIora8xgbLXB911PIorUXaidgaJWv69YO1BU8eEDzUWpJag1jFdlbJ7
+        osq7QWS/hf1Js20221Xc1yI=
+X-Google-Smtp-Source: AGRyM1tHwHpLdzo3ytqIXM7LfqPIQbMDTYusb8KYlmEI8GeMb5aJAPu029jEQbOI7q1XHwb7bFv/0g==
+X-Received: by 2002:a17:90b:3504:b0:1ec:d246:f02d with SMTP id ls4-20020a17090b350400b001ecd246f02dmr8252005pjb.46.1655914290856;
+        Wed, 22 Jun 2022 09:11:30 -0700 (PDT)
+Received: from ?IPV6:2620:15c:211:201:9497:eb13:222f:4e4d? ([2620:15c:211:201:9497:eb13:222f:4e4d])
+        by smtp.gmail.com with ESMTPSA id j6-20020a17090a694600b001ec839fff50sm8966697pjm.34.2022.06.22.09.11.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Jun 2022 09:11:30 -0700 (PDT)
+Message-ID: <bd23bd5f-2b13-2703-62a7-97dba8e1e4b8@acm.org>
+Date:   Wed, 22 Jun 2022 09:11:28 -0700
 MIME-Version: 1.0
-Received: by 2002:a17:903:2308:b0:16a:1b3f:f74b with HTTP; Wed, 22 Jun 2022
- 08:03:40 -0700 (PDT)
-Reply-To: sales0212@asonmedsystemsinc.com
-From:   Prasad Ronni <lerwickfinance7@gmail.com>
-Date:   Wed, 22 Jun 2022 16:03:40 +0100
-Message-ID: <CAFkto5vTxj70kORZJZdwOGowXjsZ399eo6DJj=8T==7paSuHTw@mail.gmail.com>
-Subject: Service Needed.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v3 2/3] scsi: ufs: ufshcd-pltfrm: constify pointed data
+Content-Language: en-US
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>,
+        Avri Altman <avri.altman@wdc.com>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Doug Gilbert <dgilbert@interlog.com>,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ide@vger.kernel.org
+References: <20220613100655.105301-1-krzysztof.kozlowski@linaro.org>
+ <20220613100655.105301-3-krzysztof.kozlowski@linaro.org>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20220613100655.105301-3-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Hi,
+On 6/13/22 03:06, Krzysztof Kozlowski wrote:
+> Constify pointers to data which is not modified for code safety.
 
-Are you currently open to work as our executive company representative
-on contractual basis working remotely? If yes, we will be happy to
-share more details. Looking forward to your response.
+Thank you for having removed a type cast.
 
-Regards,
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>

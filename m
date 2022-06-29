@@ -2,99 +2,76 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80C8955FF1D
-	for <lists+linux-ide@lfdr.de>; Wed, 29 Jun 2022 13:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CB3855FFA9
+	for <lists+linux-ide@lfdr.de>; Wed, 29 Jun 2022 14:19:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231422AbiF2L6I (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 29 Jun 2022 07:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60226 "EHLO
+        id S233438AbiF2MQe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 29 Jun 2022 08:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229911AbiF2L55 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 29 Jun 2022 07:57:57 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B2E8387B1;
-        Wed, 29 Jun 2022 04:57:56 -0700 (PDT)
-Received: from fraeml739-chm.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4LY0Lr1xbbz67yhs;
-        Wed, 29 Jun 2022 19:57:08 +0800 (CST)
-Received: from lhreml724-chm.china.huawei.com (10.201.108.75) by
- fraeml739-chm.china.huawei.com (10.206.15.220) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 29 Jun 2022 13:57:53 +0200
-Received: from [10.195.245.77] (10.195.245.77) by
- lhreml724-chm.china.huawei.com (10.201.108.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Wed, 29 Jun 2022 12:57:52 +0100
-Message-ID: <416ebe33-28ed-eef0-0001-83efd83a9d0f@huawei.com>
-Date:   Wed, 29 Jun 2022 12:57:54 +0100
+        with ESMTP id S233263AbiF2MQ1 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 29 Jun 2022 08:16:27 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D73CE31927;
+        Wed, 29 Jun 2022 05:16:22 -0700 (PDT)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4LY0mv4Wyzz4xD8;
+        Wed, 29 Jun 2022 22:16:15 +1000 (AEST)
+From:   Michael Ellerman <patch-notifications@ellerman.id.au>
+To:     Mark Brown <broonie@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>, linux-ide@vger.kernel.org,
+        linux-serial@vger.kernel.org,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        linux-kernel@vger.kernel.org, Wolfram Sang <wsa@kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-i2c@vger.kernel.org,
+        Jakub Kicinski <kuba@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        netdev@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-spi@vger.kernel.org, linux-can@vger.kernel.org,
+        Jiri Slaby <jirislaby@kernel.org>,
+        chris.packham@alliedtelesis.co.nz,
+        Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc:     Paolo Abeni <pabeni@redhat.com>, Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Eric Dumazet <edumazet@google.com>,
+        Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Anatolij Gustschin <agust@denx.de>
+In-Reply-To: <20220507100147.5802-1-andriy.shevchenko@linux.intel.com>
+References: <20220507100147.5802-1-andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v2 1/4] powerpc/52xx: Remove dead code, i.e. mpc52xx_get_xtal_freq()
+Message-Id: <165650492719.3004956.10259665965182865650.b4-ty@ellerman.id.au>
+Date:   Wed, 29 Jun 2022 22:15:27 +1000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH v4 1/5] dma-mapping: Add dma_opt_mapping_size()
-To:     Robin Murphy <robin.murphy@arm.com>
-CC:     <linux-scsi@vger.kernel.org>, <linux-doc@vger.kernel.org>,
-        <linuxarm@huawei.com>, <iommu@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-        <iommu@lists.linux-foundation.org>,
-        <damien.lemoal@opensource.wdc.com>, <jejb@linux.ibm.com>,
-        <martin.petersen@oracle.com>, <m.szyprowski@samsung.com>,
-        <joro@8bytes.org>, <hch@lst.de>, <will@kernel.org>
-References: <1656343521-62897-1-git-send-email-john.garry@huawei.com>
- <1656343521-62897-2-git-send-email-john.garry@huawei.com>
- <bbca5df5-8681-d6d9-201d-3d48b34e3001@arm.com>
- <a2e717d0-c3e2-ea98-9d8b-cee1fd37c117@huawei.com>
-From:   John Garry <john.garry@huawei.com>
-In-Reply-To: <a2e717d0-c3e2-ea98-9d8b-cee1fd37c117@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.195.245.77]
-X-ClientProxiedBy: lhreml751-chm.china.huawei.com (10.201.108.201) To
- lhreml724-chm.china.huawei.com (10.201.108.75)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 28/06/2022 12:27, John Garry via iommu wrote:
-> On 28/06/2022 12:23, Robin Murphy wrote:
->>> +
->>> +    size_t
->>> +    dma_opt_mapping_size(struct device *dev);
->>> +
->>> +Returns the maximum optimal size of a mapping for the device. 
->>> Mapping large
->>> +buffers may take longer so device drivers are advised to limit total 
->>> DMA
->>> +streaming mappings length to the returned value.
->>
->> Nit: I'm not sure "advised" is necessarily the right thing to say in 
->> general - that's only really true for a caller who cares about 
->> throughput of churning through short-lived mappings more than anything 
->> else, and doesn't take a significant hit overall from splitting up 
->> larger requests. I do think it's good to clarify the exact context of 
->> "optimal" here, but I'd prefer to be objectively clear that it's for 
->> workloads where the up-front mapping overhead dominates.
+On Sat, 7 May 2022 13:01:44 +0300, Andy Shevchenko wrote:
+> It seems mpc52xx_get_xtal_freq() is not used anywhere. Remove dead code.
 > 
-I'm going to go with something like this:
+> 
 
-size_t
-dma_opt_mapping_size(struct device *dev);
+Patches 1-3 applied to powerpc/next.
 
-Returns the maximum optimal size of a mapping for the device.
+[1/4] powerpc/52xx: Remove dead code, i.e. mpc52xx_get_xtal_freq()
+      https://git.kernel.org/powerpc/c/6d056b7254f9954522b7bb9947c8779a013d189f
+[2/4] powerpc/mpc5xxx: Switch mpc5xxx_get_bus_frequency() to use fwnode
+      https://git.kernel.org/powerpc/c/de06fba62af64144aca6f8a8bedbc848d2e5b440
+[3/4] powerpc/52xx: Get rid of of_node assignment
+      https://git.kernel.org/powerpc/c/00bcb550dc60f73d593d2dbb718c4f521c7d7be8
 
-Mapping larger buffers may take much longer in certain scenarios. In 
-addition, for high-rate short-lived streaming mappings the upfront time 
-spent on the mapping may account for an appreciable part of the total 
-request lifetime. As such, if splitting larger requests incurs no 
-significant performance penalty, then device drivers are advised to 
-limit total DMA streaming mappings length to the returned value.
-
-Let me know if you would like it further amended.
-
-Cheers,
-John
+cheers

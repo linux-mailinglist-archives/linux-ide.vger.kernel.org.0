@@ -2,70 +2,116 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EB9D568F27
-	for <lists+linux-ide@lfdr.de>; Wed,  6 Jul 2022 18:28:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58651568FB4
+	for <lists+linux-ide@lfdr.de>; Wed,  6 Jul 2022 18:53:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231685AbiGFQ2B (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 6 Jul 2022 12:28:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53982 "EHLO
+        id S233871AbiGFQxD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 6 Jul 2022 12:53:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233325AbiGFQ2B (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 6 Jul 2022 12:28:01 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDE1B286EB
-        for <linux-ide@vger.kernel.org>; Wed,  6 Jul 2022 09:27:59 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-f2a4c51c45so22033006fac.9
-        for <linux-ide@vger.kernel.org>; Wed, 06 Jul 2022 09:27:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=Uk0kx353H+gGEfDDNFmV1k9XciWZTV5g6S3ovbgNaYc=;
-        b=j3Iv1xBLwra5/UwrJF1NWDBUQ6GgzCnHDHHIxb0t14iKZhX5UuaFu5sHypjuwje33j
-         8V0sL5TNLGvbIP5RlSvkv1MO2V/s/pJsWITqGQHD3C4CsD7bUbfpWGcPFcaF+LsMY6Kz
-         vEfbGF7+ypXI0vZZa2NBkV34Cw6zwUlJ8hd4slykDHkCX15z5ZLTGJBVtCGYi/U3USp6
-         8FXEn5ryM7erRjUIqrZn4+ciQq2GuEKDOwwN20ZWOfKy8Yhab+xA/vc/OBrgtNHuVjFO
-         G9hE6KO7kG4W3Yu7oQWex552HWfcW+JyP0iLPQW522cOLLQH1ksCcKFQ8iDhU1i4IHEr
-         x7vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=Uk0kx353H+gGEfDDNFmV1k9XciWZTV5g6S3ovbgNaYc=;
-        b=1R+jZ6OrJR9OUbENLjEZmaFNCTmve5MEEZKUeQTG6btPoBClvgzC92RM/+G+rXL64u
-         YhB7cz/vlDL1xVV1O64fGLo3lRjd8C2/l7rhhFY9B8AJ3Em8arRu9gEsrCXb0GIfOWp8
-         sfA23fqoVzlGz0qQZigGAGCBhnd871GtiaI/ivY84SJ+tLpmo8F7tZo8BVI9998mgJwk
-         vkK66EGVl3pXJN4Up3IbVP8VIHRPo4IT2R+R7Rv1xCM/yzNhThKek6oiZAqHUXWTwoFd
-         Uj4Og/YcwQUp45PvNlFg3P4nx0Z5aV3huePz+ENdnMdpgkKR7EA/KLAwJMJzSsKELDNf
-         yLXw==
-X-Gm-Message-State: AJIora/Un/lgF46kMzqVzws92hTUXdfvnE+pSBGpSG9wpoxdsK4+xzUS
-        poC3gQiHJkC0GPtI7B+A1dgP7PRIWCvIKYznvAU=
-X-Google-Smtp-Source: AGRyM1s5FmLRUFsvV9y0RYj/twKb5g1BUwc7Mx+uUhIvLMYEo5sG0Nv1uyoVJUOjosA/9u56DJdo1OvKNpM1RGlmL7c=
-X-Received: by 2002:a05:6870:c144:b0:eb:5ef1:7d8c with SMTP id
- g4-20020a056870c14400b000eb5ef17d8cmr26652011oad.232.1657124879273; Wed, 06
- Jul 2022 09:27:59 -0700 (PDT)
+        with ESMTP id S232574AbiGFQxC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 6 Jul 2022 12:53:02 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BFCF2A42D;
+        Wed,  6 Jul 2022 09:53:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 1188CB81E32;
+        Wed,  6 Jul 2022 16:53:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB5BC3411C;
+        Wed,  6 Jul 2022 16:52:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1657126378;
+        bh=p9+EIYiQFsEijWg7qUqn4ryIqQU2p1/cxe9Pq3LUI5I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VaUuO1RwaFm+0u5ev1dM72McKyCsJgUoMfeulJYPkHososvaV+WDRIKh2rSmPq/5I
+         ycOK+fXQFhN0cAzIGuEIRUGAc72n1Dg8BvFGxp45CG3JXMdbYTikfi2jlnQVeNoBij
+         r2zfhkuKbEGjlN+md/SkAdY1aYaN4T4QB9EM0K5JZp4RG2Q+wkmpDBNq3N+VeK0/PO
+         qidIwXyZj01SxZRRmEYAqsn075IAurVDuHlFh+oh0YwLTG7MhXCwpEFRQBF5dKSyW9
+         ciX4ZrYzhQCwlQ0ADndLsxjzn5lmyyRbMban5DzpUIt/qICAYJNnuSF7Qx6E13IbEF
+         uVl1lLdxPW9uA==
+Date:   Wed, 6 Jul 2022 22:22:55 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     William Zhang <william.zhang@broadcom.com>
+Cc:     Linux ARM List <linux-arm-kernel@lists.infradead.org>,
+        joel.peshkin@broadcom.com, kursad.oney@broadcom.com,
+        f.fainelli@gmail.com, anand.gore@broadcom.com,
+        Broadcom Kernel List <bcm-kernel-feedback-list@broadcom.com>,
+        philippe.reynes@softathome.com, dan.beygelman@broadcom.com,
+        Al Cooper <alcooperx@gmail.com>,
+        Andre Przywara <andre.przywara@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Cai Huoqing <cai.huoqing@linux.dev>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Eugen Hristev <eugen.hristev@microchip.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Jan Dabros <jsd@semihalf.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Jie Deng <jie.deng@intel.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        Kavyasree Kotagiri <kavyasree.kotagiri@microchip.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Matt Mackall <mpm@selenic.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Rob Herring <robh@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Sam Protsenko <semen.protsenko@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Sven Peter <sven@svenpeter.dev>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Tyrone Ting <kfting@nuvoton.com>,
+        Wolfram Sang <wsa@kernel.org>, linux-clk@vger.kernel.org,
+        linux-crypto@vger.kernel.org, linux-i2c@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-serial@vger.kernel.org,
+        linux-spi@vger.kernel.org
+Subject: Re: [PATCH 5/9] arm: bcmbca: Replace ARCH_BCM_63XX with ARCH_BCMBCA
+Message-ID: <YsW95wP010g9z1P7@matsya>
+References: <20220705172613.21152-1-william.zhang@broadcom.com>
+ <20220705172613.21152-6-william.zhang@broadcom.com>
 MIME-Version: 1.0
-Received: by 2002:a4a:4545:0:0:0:0:0 with HTTP; Wed, 6 Jul 2022 09:27:58 -0700 (PDT)
-Reply-To: sgtkaylla202@gmail.com
-From:   Kayla Manthey <avrielharry73@gmail.com>
-Date:   Wed, 6 Jul 2022 16:27:58 +0000
-Message-ID: <CAFSKFDbu5djrmtNGDBZiMtuYkRbAv3pBykwbOHcr6djUNxFAFA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=4.2 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220705172613.21152-6-william.zhang@broadcom.com>
+X-Spam-Status: No, score=-7.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-LS0gDQrQl9C00YDQsNCy0L4g0LTRgNCw0LPQsA0K0JLQtSDQvNC+0LvQsNC8LCDQtNCw0LvQuCDR
-mNCwINC00L7QsdC40LLRgtC1INC80L7RmNCw0YLQsCDQv9GA0LXRgtGF0L7QtNC90LAg0L/QvtGA
-0LDQutCwLCDQstC4INCx0LvQsNCz0L7QtNCw0YDQsNC8Lg0K
+On 05-07-22, 10:26, William Zhang wrote:
+> Update ARCH_BCM_63XX in all sources to use ARCHB_BCMBCA instead.
+> 
+> Signed-off-by: William Zhang <william.zhang@broadcom.com>
+> ---
+> 
+>  arch/arm/Kconfig.debug         | 2 +-
+>  drivers/ata/Kconfig            | 2 +-
+>  drivers/char/hw_random/Kconfig | 2 +-
+>  drivers/clk/bcm/Kconfig        | 4 ++--
+>  drivers/i2c/busses/Kconfig     | 2 +-
+>  drivers/phy/broadcom/Kconfig   | 2 +-
+
+Acked-By: Vinod Koul <vkoul@kernel.org>
+
+
+
+-- 
+~Vinod

@@ -2,94 +2,128 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6954D572D6C
-	for <lists+linux-ide@lfdr.de>; Wed, 13 Jul 2022 07:34:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC99573B0B
+	for <lists+linux-ide@lfdr.de>; Wed, 13 Jul 2022 18:22:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233343AbiGMFeM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 13 Jul 2022 01:34:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45268 "EHLO
+        id S235051AbiGMQV7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 13 Jul 2022 12:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234171AbiGMFcH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 13 Jul 2022 01:32:07 -0400
-Received: from mail.baikalelectronics.com (mail.baikalelectronics.com [87.245.175.230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EF727BD3BB;
-        Tue, 12 Jul 2022 22:30:02 -0700 (PDT)
-Received: from mail (mail.baikal.int [192.168.51.25])
-        by mail.baikalelectronics.com (Postfix) with ESMTP id 0190916D7;
-        Wed, 13 Jul 2022 08:31:43 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.baikalelectronics.com 0190916D7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baikalelectronics.ru; s=mail; t=1657690303;
-        bh=oUSpaIhkvZGXowqh4vbRpzxbsFao5e19AluMuTh7ZdI=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-        b=C0mISJvTgXaRtTVLR0DOBwQ6pB49DPchryhKp1dI5uOGERoP4IPenoWqr+HTpt3kV
-         m6cO9FaogrO6Kw/5/5VoQgVXnyd+4JnoxexthImhXlQGjOu4tZj0MkiB8NgsRmkPIy
-         mrxKmR5ETEC4jqzmBlwrSGZN+0/ZrslpWQTaDHFo=
-Received: from localhost (192.168.53.207) by mail (192.168.51.25) with
- Microsoft SMTP Server (TLS) id 15.0.1395.4; Wed, 13 Jul 2022 08:29:47 +0300
-From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>
-CC:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
-        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
-        Rob Herring <robh+dt@kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v5 23/23] MAINTAINERS: Add maintainers for DWC AHCI SATA driver
-Date:   Wed, 13 Jul 2022 08:29:16 +0300
-Message-ID: <20220713052917.27036-24-Sergey.Semin@baikalelectronics.ru>
-In-Reply-To: <20220713052917.27036-1-Sergey.Semin@baikalelectronics.ru>
-References: <20220713052917.27036-1-Sergey.Semin@baikalelectronics.ru>
+        with ESMTP id S229922AbiGMQV6 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 13 Jul 2022 12:21:58 -0400
+X-Greylist: delayed 4600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 13 Jul 2022 09:21:51 PDT
+Received: from delivery.e-purifier.com (delivery.e-purifier.com [197.234.175.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72FE183B6;
+        Wed, 13 Jul 2022 09:21:51 -0700 (PDT)
+Authentication-Results: delivery.e-purifier.com;
+        spf=pass (e-purifier.com: domain of moodley1@telkomsa.net designates 105.224.1.22 as permitted sender) smtp.mailfrom=moodley1@telkomsa.net;
+Received: from zmmtaout3.telkomsa.net ([105.224.1.22])
+        by delivery.e-purifier.com  with ESMTP id 26DF1ltO025842-26DF1ltQ025842
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+        Wed, 13 Jul 2022 17:01:47 +0200
+Received: from localhost (localhost [127.0.0.1])
+        by zmmtaout3.telkomsa.net (Postfix) with ESMTP id 1DAF82BD63;
+        Wed, 13 Jul 2022 17:00:36 +0200 (SAST)
+Received: from zmmtaout3.telkomsa.net ([127.0.0.1])
+        by localhost (zmmtaout3.telkomsa.net [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id S3VelQmqOiCU; Wed, 13 Jul 2022 17:00:35 +0200 (SAST)
+Received: from localhost (localhost [127.0.0.1])
+        by zmmtaout3.telkomsa.net (Postfix) with ESMTP id 9D3712BD6B;
+        Wed, 13 Jul 2022 17:00:32 +0200 (SAST)
+X-Virus-Scanned: amavisd-new at zmmtaout3.telkomsa.net
+Received: from zmmtaout3.telkomsa.net ([127.0.0.1])
+        by localhost (zmmtaout3.telkomsa.net [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 1w-1SZ-VR7Kz; Wed, 13 Jul 2022 17:00:32 +0200 (SAST)
+Received: from zmstore9.telkomsa.net (unknown [105.224.1.35])
+        by zmmtaout3.telkomsa.net (Postfix) with ESMTP id D70262BD25;
+        Wed, 13 Jul 2022 16:59:52 +0200 (SAST)
+Date:   Wed, 13 Jul 2022 16:57:32 +0200 (SAST)
+From:   moodley1@telkomsa.net
+Message-ID: <603518918.33120404.1657724252746.JavaMail.zimbra@telkomsa.net>
+In-Reply-To: <1973961642.33118723.1657724132801.JavaMail.zimbra@telkomsa.net>
+References: <2127485694.31048803.1657662626489.JavaMail.zimbra@telkomsa.net> <980133854.32889861.1657719768395.JavaMail.zimbra@telkomsa.net> <1053654300.32902192.1657719834566.JavaMail.zimbra@telkomsa.net> <1659146035.32936102.1657720147525.JavaMail.zimbra@telkomsa.net> <618554591.32945678.1657720268622.JavaMail.zimbra@telkomsa.net> <782242463.32974907.1657720739247.JavaMail.zimbra@telkomsa.net> <872503409.33007043.1657721100496.JavaMail.zimbra@telkomsa.net> <1973961642.33118723.1657724132801.JavaMail.zimbra@telkomsa.net>
+Subject: Please Read
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [41.150.32.161]
+X-Mailer: Zimbra 8.8.15_GA_4308 (zclient/8.8.15_GA_4308)
+Thread-Topic: Please Read
+Thread-Index: zrwTMR13eISbWlCcDqfemSplFCEPBZodD7nHD1yGqeG0h3Tw/vRNVBIJmgHRXppY0sP7ZkZCsYgNld2DkPBhA5vTMSDb/j86+UH3A5VIfrOoNg+rFDzDiOwERXzRCTLj0og+GRhJ67dyELL7RDGg30Mzez+dJ7/DDPlt+hwCfa9zh0jPZrOTNhEMJwzePc2GiZnXqUQbOIOog3hHmWn4gPR2Q+07FVAbvIoYVbZdSiq7DvnAF5Umf5rt4Gvy+orTe4G0OyS/9EHE2LF/z9JikgsGi8I6NUtly2+wzg2+WTI+9l2D/nqqt7oVzvBZ/J9ORFpePwIVs0SrzmHMKrAQ9GkaiVc8giyaroMueBZjnhqZqoJ46EnvHPWtzUznwBs=
+X-FE-Last-Public-Client-IP: 105.224.1.22
+X-FE-Policy-ID: 5:3:2:SYSTEM
+X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_50,MISSING_HEADERS,
+        RCVD_IN_BL_SPAMCOP_NET,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,
+        T_SPF_TEMPERROR autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Add myself as a maintainer of the new DWC AHCI SATA driver and
-its DT-bindings schema.
+Good Day,
+I viewed your profile on Linkedin regarding a proposal that has something in common with you, kindly reply back for more details on my private email: nikkifenton323@gmail.com
 
-Signed-off-by: Serge Semin <Sergey.Semin@baikalelectronics.ru>
+Nikki Fenton,
+nikkifenton323@gmail.com
 
----
 
-Changelog v2:
-- Use dlemoal/libata.git git tree for the LIBATA SATA AHCI SYNOPSYS
-  DWC driver (@Damien).
----
- MAINTAINERS | 9 +++++++++
- 1 file changed, 9 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3cf9842d9233..61a0218a3d27 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11255,6 +11255,15 @@ F:	drivers/ata/ahci_platform.c
- F:	drivers/ata/libahci_platform.c
- F:	include/linux/ahci_platform.h
- 
-+LIBATA SATA AHCI SYNOPSYS DWC CONTROLLER DRIVER
-+M:	Serge Semin <fancer.lancer@gmail.com>
-+L:	linux-ide@vger.kernel.org
-+S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
-+F:	Documentation/devicetree/bindings/ata/baikal,bt1-ahci.yaml
-+F:	Documentation/devicetree/bindings/ata/snps,dwc-ahci.yaml
-+F:	drivers/ata/ahci_dwc.c
-+
- LIBATA SATA PROMISE TX2/TX4 CONTROLLER DRIVER
- M:	Mikael Pettersson <mikpelinux@gmail.com>
- L:	linux-ide@vger.kernel.org
--- 
-2.35.1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

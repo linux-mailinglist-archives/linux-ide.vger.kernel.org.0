@@ -2,27 +2,26 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A10BB589B6B
-	for <lists+linux-ide@lfdr.de>; Thu,  4 Aug 2022 14:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC98B589C7F
+	for <lists+linux-ide@lfdr.de>; Thu,  4 Aug 2022 15:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234093AbiHDMHU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 4 Aug 2022 08:07:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
+        id S232454AbiHDNUb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 4 Aug 2022 09:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232031AbiHDMHT (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Aug 2022 08:07:19 -0400
-X-Greylist: delayed 2340 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 04 Aug 2022 05:07:17 PDT
+        with ESMTP id S231807AbiHDNUa (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Aug 2022 09:20:30 -0400
 Received: from nifty-ride.212-227-211-85.plesk.page (unknown [212.227.211.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C8A51F630
-        for <linux-ide@vger.kernel.org>; Thu,  4 Aug 2022 05:07:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A9D7640A
+        for <linux-ide@vger.kernel.org>; Thu,  4 Aug 2022 06:20:28 -0700 (PDT)
 Received: by nifty-ride.212-227-211-85.plesk.page (Postfix, from userid 10001)
-        id C87EE49E94E; Thu,  4 Aug 2022 11:28:17 +0000 (UTC)
+        id 4FDAB49E941; Thu,  4 Aug 2022 11:28:17 +0000 (UTC)
 To:     linux-ide@vger.kernel.org
 Subject: Copie de : THE WORLD FINANCIAL CRISIS CAN MAKE YOU A MILLIONAIRE!
 Date:   Thu, 4 Aug 2022 11:28:17 +0000
 From:   Galerie Raymond Dreyfus <gaelle@ruegama.net>
 Reply-To: Charlestiz <linux-ide@vger.kernel.org>
-Message-ID: <a9e546a0ae038cf7965193fb25f091f2@www.raymond-dreyfus.com>
+Message-ID: <ade21da4dc0de2a30ea5841bf7255e1b@www.raymond-dreyfus.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit

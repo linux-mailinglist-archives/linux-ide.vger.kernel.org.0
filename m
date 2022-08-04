@@ -2,82 +2,162 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C137589D8C
-	for <lists+linux-ide@lfdr.de>; Thu,  4 Aug 2022 16:35:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60CFA58A3A1
+	for <lists+linux-ide@lfdr.de>; Fri,  5 Aug 2022 00:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239725AbiHDOf1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 4 Aug 2022 10:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48434 "EHLO
+        id S240102AbiHDWyy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 4 Aug 2022 18:54:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234188AbiHDOf0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Aug 2022 10:35:26 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5DC0C22B2D
-        for <linux-ide@vger.kernel.org>; Thu,  4 Aug 2022 07:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1659623724;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=QOJHL/pGQzT3tIq90CJQn6jYhq+AXxVvPpN0wHZqCaM=;
-        b=FV8tuB8Pndf0hTSZGryc/65v+fV0EcoxRji6Alt0ZoqWt/SeWVpSkRtNaTNXFp2EYRV7kv
-        6PDp2cjqI+F3oDqWWgchC8TdVDKaq3zGgJv2B3o8mT+H01fjhtFPnbyDQdJ9XWzjuizvXF
-        /ee8BfbSDXEWAUNob+b56nCCAgNiMZ8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-377-9I0ebCPoOpWv_kv3LWqzHA-1; Thu, 04 Aug 2022 10:35:21 -0400
-X-MC-Unique: 9I0ebCPoOpWv_kv3LWqzHA-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 03FDE18A0163;
-        Thu,  4 Aug 2022 14:35:21 +0000 (UTC)
-Received: from localhost.localdomain.com (unknown [10.43.2.159])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5AE18C28125;
-        Thu,  4 Aug 2022 14:35:20 +0000 (UTC)
-From:   Tomas Henzl <thenzl@redhat.com>
-To:     linux-ide@vger.kernel.org
-Cc:     sergei.shtylyov@gmail.com, damien.lemoal@opensource.wdc.com
-Subject: [PATCH V3] libata: Print timeout value when internal command times out
-Date:   Thu,  4 Aug 2022 16:35:19 +0200
-Message-Id: <20220804143519.12245-1-thenzl@redhat.com>
+        with ESMTP id S240245AbiHDWyD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Aug 2022 18:54:03 -0400
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 484AE74369
+        for <linux-ide@vger.kernel.org>; Thu,  4 Aug 2022 15:52:55 -0700 (PDT)
+Received: by mail-wr1-x434.google.com with SMTP id p10so1336058wru.8
+        for <linux-ide@vger.kernel.org>; Thu, 04 Aug 2022 15:52:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linexp-org.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc;
+        bh=Y+8gnJ68hJod6uvQUR4L1wvFSKnRgzdO4yxaDxG616M=;
+        b=dfd1RDzSjLjHExV+EaGPHEXW2HbH1qMEV5PNCZClRbql6yUUuCwFoQgJcS/SRTVrVN
+         h7B2rJDg2Gy3V9EADURhz914xMJYqf4diGNP1Q5DQ0vsoVkiChDVBhu2pYeJ16+0Ew2r
+         W+hhliRFKa9YT0AyAgqsFVeojh4oBpPHcyiiIcRdVa4uMhpT5rjKeeR6P/DStWG2fyio
+         O8xedJQJzpnryKXIRo+azAVUH5qRcAJ4vqsZswN3RdCvQDulevNaAxQTQ6lzaRxlhbc8
+         cvpCDIV9+6Jq9Dnh3E6KQLox6nn/KQMzCUPZKpC/lExk8aVzf8EVzGia+jmvGsHCFTYx
+         AhxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc;
+        bh=Y+8gnJ68hJod6uvQUR4L1wvFSKnRgzdO4yxaDxG616M=;
+        b=s8cAaYC0S0GrtMR7aA/5RO4jZUtp8AUpvEwjiLCbbDKq8cQHdlDYPS7MEvzNoDYA1/
+         FKYEtsdJHeK9XQojTMG+pe5TfnVc/Zlg+63ldOLA/PaZh7u/ZcuserG/HSnB+9ffKfZO
+         Z0rWq0umCDdWYvRGCblUnqcQUUfLGHrj+gQiGzAqEsXdbeo1e5S6lajNrQ8A7w39jx71
+         m8SI1bpVPBd9mE3PQwZrrX0ZzcFjS/QRiYpXuwEs6QB3vj8ERnNWrBna5FekLfq3y6Sg
+         mLY3u4cDTlmOOagpoAbzb4m6qidzJGWO9Hjsq/Pv9gJNqd0iBjEXPVoQyuC8Mx7G7nJy
+         ZpUg==
+X-Gm-Message-State: ACgBeo1TlWhvGcbdROF4qnraGamJ6V23z2Mv8FnUDFNuGbxm6kPNQ4aB
+        Huw4Dd06wa00OUnV8zQu34NLmw==
+X-Google-Smtp-Source: AA6agR5yGSclA5gFlTAnvgte1BCgtH6uZwtDoYlN40D/6jt4Q0TuIARi9wLNQjI3X6Ocf7C00QWqOA==
+X-Received: by 2002:adf:fe0d:0:b0:220:5f88:ebef with SMTP id n13-20020adffe0d000000b002205f88ebefmr2462048wrr.349.1659653574611;
+        Thu, 04 Aug 2022 15:52:54 -0700 (PDT)
+Received: from mai.box.freepro.com ([2a05:6e02:1041:c10:31aa:ed2c:3f7:19d])
+        by smtp.gmail.com with ESMTPSA id a16-20020a056000051000b0021f87e8945asm2495906wrf.12.2022.08.04.15.52.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Aug 2022 15:52:54 -0700 (PDT)
+From:   Daniel Lezcano <daniel.lezcano@linexp.org>
+To:     daniel.lezcano@linaro.org, rafael@kernel.org
+Cc:     rui.zhang@intel.com, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, khilman@baylibre.com,
+        abailon@baylibre.com, lukasz.luba@arm.com, broonie@kernel.org,
+        damien.lemoal@opensource.wdc.com, heiko@sntech.de,
+        hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+        talel@amazon.com, thierry.reding@gmail.com, digetx@gmail.com,
+        jonathanh@nvidia.com, anarsoul@gmail.com, tiny.windzz@gmail.com,
+        baolin.wang7@gmail.com, f.fainelli@gmail.com,
+        bjorn.andersson@linaro.org, mcoquelin.stm32@gmail.com,
+        glaroque@baylibre.com, miquel.raynal@bootlin.com,
+        shawnguo@kernel.org, niklas.soderlund@ragnatech.se,
+        matthias.bgg@gmail.com, j-keerthy@ti.com,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        linux-ide@vger.kernel.org (open list:LIBATA SUBSYSTEM (Serial and
+        Parallel ATA drivers)),
+        linux-arm-kernel@lists.infradead.org (moderated list:ARM/FREESCALE IMX
+        / MXC ARM ARCHITECTURE)
+Subject: [PATCH v5 25/33] ata/drivers/ahci_imx: Switch to new of thermal API
+Date:   Fri,  5 Aug 2022 00:43:41 +0200
+Message-Id: <20220804224349.1926752-26-daniel.lezcano@linexp.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220804224349.1926752-1-daniel.lezcano@linexp.org>
+References: <20220804224349.1926752-1-daniel.lezcano@linexp.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Print the timeout value may help in troubleshooting failures.
+The thermal OF code has a new API allowing to migrate the OF
+initialization to a simpler approach. The ops are no longer device
+tree specific and are the generic ones provided by the core code.
 
-Signed-off-by: David Milburn <dmilburn@redhat.com>
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Convert the ops to the thermal_zone_device_ops format and use the new
+API to register the thermal zone with these generic ops.
+
+sata_ahci_read_temperature() is used by sata_ahci_show_temp() also.
+
+So in order to change the function prototype for the get_temp ops which
+does not take a void* but a thermal_zone_device* structure, this
+function wraps the call.
+
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linexp.org>
+Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 ---
-V3: rewording subject and description, no functional change
-V2: timeout changed to unsigned int as in for-next
+ drivers/ata/ahci_imx.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
- drivers/ata/libata-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 826d41f341e4..0fc4782ef4f8 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -1578,8 +1578,8 @@ static unsigned ata_exec_internal_sg(struct ata_device *dev,
- 			else
- 				ata_qc_complete(qc);
+diff --git a/drivers/ata/ahci_imx.c b/drivers/ata/ahci_imx.c
+index 79aa9f285312..b734e069034d 100644
+--- a/drivers/ata/ahci_imx.c
++++ b/drivers/ata/ahci_imx.c
+@@ -327,7 +327,7 @@ static int read_adc_sum(void *dev, u16 rtune_ctl_reg, void __iomem * mmio)
+ }
  
--			ata_dev_warn(dev, "qc timeout (cmd 0x%x)\n",
--				     command);
-+			ata_dev_warn(dev, "qc timeout after %u msecs (cmd 0x%x)\n",
-+				timeout, command);
+ /* SATA AHCI temperature monitor */
+-static int sata_ahci_read_temperature(void *dev, int *temp)
++static int __sata_ahci_read_temperature(void *dev, int *temp)
+ {
+ 	u16 mpll_test_reg, rtune_ctl_reg, dac_ctl_reg, read_sum;
+ 	u32 str1, str2, str3, str4;
+@@ -416,6 +416,11 @@ static int sata_ahci_read_temperature(void *dev, int *temp)
+ 	return 0;
+ }
+ 
++static int sata_ahci_read_temperature(struct thermal_zone_device *tz, int *temp)
++{
++	return __sata_ahci_read_temperature(tz->devdata, temp);
++}
++
+ static ssize_t sata_ahci_show_temp(struct device *dev,
+ 				   struct device_attribute *da,
+ 				   char *buf)
+@@ -423,14 +428,14 @@ static ssize_t sata_ahci_show_temp(struct device *dev,
+ 	unsigned int temp = 0;
+ 	int err;
+ 
+-	err = sata_ahci_read_temperature(dev, &temp);
++	err = __sata_ahci_read_temperature(dev, &temp);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	return sprintf(buf, "%u\n", temp);
+ }
+ 
+-static const struct thermal_zone_of_device_ops fsl_sata_ahci_of_thermal_ops = {
++static const struct thermal_zone_device_ops fsl_sata_ahci_of_thermal_ops = {
+ 	.get_temp = sata_ahci_read_temperature,
+ };
+ 
+@@ -1131,8 +1136,8 @@ static int imx_ahci_probe(struct platform_device *pdev)
+ 			ret = PTR_ERR(hwmon_dev);
+ 			goto disable_clk;
  		}
+-		devm_thermal_zone_of_sensor_register(hwmon_dev, 0, hwmon_dev,
+-					     &fsl_sata_ahci_of_thermal_ops);
++		devm_thermal_of_zone_register(hwmon_dev, 0, hwmon_dev,
++					      &fsl_sata_ahci_of_thermal_ops);
+ 		dev_info(dev, "%s: sensor 'sata_ahci'\n", dev_name(hwmon_dev));
+ 	}
  
- 		spin_unlock_irqrestore(ap->lock, flags);
+-- 
+2.25.1
 

@@ -2,33 +2,42 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40EE1589C5D
-	for <lists+linux-ide@lfdr.de>; Thu,  4 Aug 2022 15:13:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E960B589EC8
+	for <lists+linux-ide@lfdr.de>; Thu,  4 Aug 2022 17:36:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231807AbiHDNNb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 4 Aug 2022 09:13:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51330 "EHLO
+        id S239674AbiHDPgS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 4 Aug 2022 11:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229625AbiHDNNb (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Aug 2022 09:13:31 -0400
+        with ESMTP id S240039AbiHDPgI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 4 Aug 2022 11:36:08 -0400
 Received: from nifty-ride.212-227-211-85.plesk.page (unknown [212.227.211.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7471EB
-        for <linux-ide@vger.kernel.org>; Thu,  4 Aug 2022 06:13:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493C6183A5
+        for <linux-ide@vger.kernel.org>; Thu,  4 Aug 2022 08:36:05 -0700 (PDT)
 Received: by nifty-ride.212-227-211-85.plesk.page (Postfix, from userid 10001)
-        id 40DE24A4DF4; Thu,  4 Aug 2022 11:28:18 +0000 (UTC)
+        id DF05849E906; Thu,  4 Aug 2022 11:28:15 +0000 (UTC)
 To:     linux-ide@vger.kernel.org
 Subject: Copie de : THE WORLD FINANCIAL CRISIS CAN MAKE YOU A MILLIONAIRE!
-Date:   Thu, 4 Aug 2022 11:28:18 +0000
+Date:   Thu, 4 Aug 2022 11:28:15 +0000
 From:   Galerie Raymond Dreyfus <gaelle@ruegama.net>
 Reply-To: Charlestiz <linux-ide@vger.kernel.org>
-Message-ID: <796776e2cd124e6bf167c295fdd0ba89@www.raymond-dreyfus.com>
+Message-ID: <180370592cb541ce4f13fb0008ce883f@www.raymond-dreyfus.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=3.6 required=5.0 tests=BAYES_50,RCVD_IN_VALIDITY_RPBL,
-        RDNS_NONE,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DATE_IN_PAST_03_06,
+        RCVD_IN_VALIDITY_RPBL,RDNS_NONE,SPF_HELO_NONE,SPF_SOFTFAIL
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4999]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [212.227.211.85 listed in bl.score.senderscore.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  1.6 DATE_IN_PAST_03_06 Date: is 3 to 6 hours before Received: date
+        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk

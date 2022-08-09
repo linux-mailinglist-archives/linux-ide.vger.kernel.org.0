@@ -2,93 +2,106 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE97358DAE5
-	for <lists+linux-ide@lfdr.de>; Tue,  9 Aug 2022 17:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874E058E2DF
+	for <lists+linux-ide@lfdr.de>; Wed, 10 Aug 2022 00:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244782AbiHIPQc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 9 Aug 2022 11:16:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
+        id S229768AbiHIWQV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 9 Aug 2022 18:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244780AbiHIPQb (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Aug 2022 11:16:31 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C5C2310549
-        for <linux-ide@vger.kernel.org>; Tue,  9 Aug 2022 08:16:30 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-272-zpkONdTzPdWH-Kj0IJX1Bg-1; Tue, 09 Aug 2022 16:16:27 +0100
-X-MC-Unique: zpkONdTzPdWH-Kj0IJX1Bg-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.36; Tue, 9 Aug 2022 16:16:26 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.036; Tue, 9 Aug 2022 16:16:26 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Damien Le Moal' <damien.lemoal@opensource.wdc.com>,
-        John Garry <john.garry@huawei.com>,
-        kernel test robot <oliver.sang@intel.com>
-CC:     Christoph Hellwig <hch@lst.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "Linux Memory Management List" <linux-mm@kvack.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "lkp@lists.01.org" <lkp@lists.01.org>,
-        "lkp@intel.com" <lkp@intel.com>,
-        "ying.huang@intel.com" <ying.huang@intel.com>,
-        "feng.tang@intel.com" <feng.tang@intel.com>,
-        "zhengjun.xing@linux.intel.com" <zhengjun.xing@linux.intel.com>,
-        "fengwei.yin@intel.com" <fengwei.yin@intel.com>
-Subject: RE: [ata] 0568e61225: stress-ng.copy-file.ops_per_sec -15.0%
- regression
-Thread-Topic: [ata] 0568e61225: stress-ng.copy-file.ops_per_sec -15.0%
- regression
-Thread-Index: AQHYrAAmXDHshJwwj0GxX5X1j6JqC62mrM6g
-Date:   Tue, 9 Aug 2022 15:16:26 +0000
-Message-ID: <c4b45c0e06af473abe17e3471e1bb948@AcuMS.aculab.com>
-References: <YuzPMMnnY739Tnit@xsang-OptiPlex-9020>
- <1f498d4a-f93f-ceb4-b713-753196e5e08d@opensource.wdc.com>
- <3451fa5a-6229-073f-ae18-0c232cd48ed5@huawei.com>
- <e4106ffa-3842-45c0-9756-5226cfcfa17d@opensource.wdc.com>
-In-Reply-To: <e4106ffa-3842-45c0-9756-5226cfcfa17d@opensource.wdc.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S229783AbiHIWPQ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Aug 2022 18:15:16 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D861EEEB
+        for <linux-ide@vger.kernel.org>; Tue,  9 Aug 2022 15:15:14 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id q16so12626403pgq.6
+        for <linux-ide@vger.kernel.org>; Tue, 09 Aug 2022 15:15:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
+         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
+         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
+         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
+         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
+         O1Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=SExKALHKv/w6pFN0ciBlG776TsgKy7hyMtQ1DDaoPe9qwtLsUDAHFJhXoj6cczHdv8
+         qeioinAm//fjSeo7PlXCmphGZIUcA6985UrSnukn9umFCzoJJ0KBUr10NmwtsWH+ksSS
+         ftDJQLAunlTRkgW8XlVV5ZQbVO70JdwhBYrvBU/cP6bA/FWPPhTotNd4P+mITczmOyhb
+         Mk/o4P5Bal3prwBst0vtKzH9VdIo3K1+lQEZe6A6yqKI4rDv5iYNHVjqTPpHLF4oPAsW
+         sv7YVmijgbnA0OU3B6ziqRVBQaa4fPtsfFKULlu8/AixP9TK1Tyb7BsXKaNVkILetwbh
+         hiiA==
+X-Gm-Message-State: ACgBeo0RHYiDPkT4nHBCeerYngOuhrDPr6d9C8+o5c5U97rcs5gNMg5p
+        oDEeVFUwKv5axtYnFqF3LAMjl2FzcBb5Loho/YV4TYJvuLp5yg==
+X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
+X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
+ v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
+ Aug 2022 15:15:03 -0700 (PDT)
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
+ 15:15:03 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Dr. Ali Moses" <alimoses07@gmail.com>
+Date:   Tue, 9 Aug 2022 15:15:03 -0700
+Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:52a listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [alimoses07[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alimoses07[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Li4uDQo+ID4+IFdpdGhvdXQga25vd2luZyB3aGF0IHRoZSBkZXZpY2UgYWRhcHRlciBpcywgaGFy
-ZCB0byBzYXkgd2hlcmUgdGhlIHByb2JsZW0gaXMuIEkNCj4gPj4gc3VzcGVjdCB0aGF0IHdpdGgg
-dGhlIHBhdGNoIGFwcGxpZWQsIHdlIG1heSBiZSBlbmRpbmcgdXAgd2l0aCBhIHNtYWxsIGRlZmF1
-bHQNCj4gPj4gbWF4X3NlY3RvcnMgdmFsdWUsIGNhdXNpbmcgb3ZlcmhlYWQgZHVlIHRvIG1vcmUg
-Y29tbWFuZHMgdGhhbiBuZWNlc3NhcnkuDQo+ID4+DQo+ID4+IFdpbGwgY2hlY2sgd2hhdCBJIHNl
-ZSB3aXRoIG15IHRlc3QgcmlnLg0KPiA+DQo+ID4gQXMgZmFyIGFzIEkgY2FuIHNlZSwgdGhpcyBw
-YXRjaCBzaG91bGQgbm90IG1ha2UgYSBkaWZmZXJlbmNlIHVubGVzcyB0aGUNCj4gPiBBVEEgc2hv
-c3QgZHJpdmVyIGlzIHNldHRpbmcgdGhlIG1heF9zZWN0b3JzIHZhbHVlIHVubmVjZXNzYXJpbHkg
-bG93Lg0KPiANCj4gVGhhdCBpcyBteSBodW5jaCB0b28sIGhlbmNlIG15IHF1ZXN0aW9uIGFib3V0
-IHdoaWNoIGhvc3QgZHJpdmVyIGlzIGJlaW5nIHVzZWQNCj4gZm9yIHRoaXMgdGVzdC4uLiBUaGF0
-IGlzIG5vdCBhcHBhcmVudCBmcm9tIHRoZSBwcm9ibGVtIHJlcG9ydC4NCg0KTm8gb25lJ3MgZmFs
-bGVuIG92ZXIgdGhlIG9sZCBwcm9ibGVtIGFuZCBtYW5hZ2VkIHRvIGxpbWl0DQp0aGUgbnVtYmVy
-IG9mIHNlY3RvcnMgaW4gYSByZWFkIHRvIHRoZSBudW1iZXIgb2Ygc2VjdG9ycw0KaW4gKElJUkMp
-IGEgJ211bHRpIHNlY3RvcicgcmVhZCB0aGF0IHVzZXMgYSBzaW5nbGUgRE1BIGJ1cnN0Pw0KDQpX
-YXMgYWx3YXlzIGEgZ29vZCB3YXkgb2Yga2lsbGluZyBkaXNrIHBlcmZvcm1hbmNlLg0KDQpJSVJD
-IHRoZSBtYXhpbXVtIG51bWJlciBvZiBzZWN0b3JzIGZvciBhbiBBVEEgZGlzayB0cmFuc2ZlciBp
-cyAyNTUuDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJyYW1s
-ZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lzdHJh
-dGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+-- 
+Hello,
+We the Board Directors believe you are in good health, doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
+My regards,
+Dr. Ali Moses..
+
+Sincerely,
+Prof. Chin Guang

@@ -2,106 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 874E058E2DF
-	for <lists+linux-ide@lfdr.de>; Wed, 10 Aug 2022 00:16:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8959A58E8D3
+	for <lists+linux-ide@lfdr.de>; Wed, 10 Aug 2022 10:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229768AbiHIWQV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 9 Aug 2022 18:16:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37298 "EHLO
+        id S231203AbiHJIdj (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 10 Aug 2022 04:33:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229783AbiHIWPQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 9 Aug 2022 18:15:16 -0400
-Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89D861EEEB
-        for <linux-ide@vger.kernel.org>; Tue,  9 Aug 2022 15:15:14 -0700 (PDT)
-Received: by mail-pg1-x52a.google.com with SMTP id q16so12626403pgq.6
-        for <linux-ide@vger.kernel.org>; Tue, 09 Aug 2022 15:15:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
-         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
-         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
-         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
-         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
-         O1Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc;
-        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
-        b=SExKALHKv/w6pFN0ciBlG776TsgKy7hyMtQ1DDaoPe9qwtLsUDAHFJhXoj6cczHdv8
-         qeioinAm//fjSeo7PlXCmphGZIUcA6985UrSnukn9umFCzoJJ0KBUr10NmwtsWH+ksSS
-         ftDJQLAunlTRkgW8XlVV5ZQbVO70JdwhBYrvBU/cP6bA/FWPPhTotNd4P+mITczmOyhb
-         Mk/o4P5Bal3prwBst0vtKzH9VdIo3K1+lQEZe6A6yqKI4rDv5iYNHVjqTPpHLF4oPAsW
-         sv7YVmijgbnA0OU3B6ziqRVBQaa4fPtsfFKULlu8/AixP9TK1Tyb7BsXKaNVkILetwbh
-         hiiA==
-X-Gm-Message-State: ACgBeo0RHYiDPkT4nHBCeerYngOuhrDPr6d9C8+o5c5U97rcs5gNMg5p
-        oDEeVFUwKv5axtYnFqF3LAMjl2FzcBb5Loho/YV4TYJvuLp5yg==
-X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
-X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
- v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
- Aug 2022 15:15:03 -0700 (PDT)
+        with ESMTP id S230035AbiHJIda (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 Aug 2022 04:33:30 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60C8557250;
+        Wed, 10 Aug 2022 01:33:29 -0700 (PDT)
+Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.200])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4M2jrM3KsSz67Xgw;
+        Wed, 10 Aug 2022 16:33:23 +0800 (CST)
+Received: from lhrpeml500003.china.huawei.com (7.191.162.67) by
+ fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
+ 15.1.2375.24; Wed, 10 Aug 2022 10:33:27 +0200
+Received: from [10.195.247.138] (10.195.247.138) by
+ lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 10 Aug 2022 09:33:24 +0100
+Message-ID: <82dbf4d6-2d43-20ff-22a7-857f9f11a5ce@huawei.com>
+Date:   Wed, 10 Aug 2022 09:33:23 +0100
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
- 15:15:03 -0700 (PDT)
-Reply-To: wijh555@gmail.com
-From:   "Dr. Ali Moses" <alimoses07@gmail.com>
-Date:   Tue, 9 Aug 2022 15:15:03 -0700
-Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
-Subject: Good Day,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:52a listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [alimoses07[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [wijh555[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [alimoses07[at]gmail.com]
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+Subject: Re: [ata] 0568e61225: stress-ng.copy-file.ops_per_sec -15.0%
+ regression
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        kernel test robot <oliver.sang@intel.com>
+CC:     Christoph Hellwig <hch@lst.de>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "Linux Memory Management List" <linux-mm@kvack.org>,
+        <linux-ide@vger.kernel.org>, <lkp@lists.01.org>, <lkp@intel.com>,
+        <ying.huang@intel.com>, <feng.tang@intel.com>,
+        <zhengjun.xing@linux.intel.com>, <fengwei.yin@intel.com>
+References: <YuzPMMnnY739Tnit@xsang-OptiPlex-9020>
+ <1f498d4a-f93f-ceb4-b713-753196e5e08d@opensource.wdc.com>
+ <3451fa5a-6229-073f-ae18-0c232cd48ed5@huawei.com>
+ <16f03f81-a8c7-bacf-c74c-67231f7f7202@huawei.com>
+ <ef84d2dd-84ea-e1c7-05ef-f0a082d4f7d0@opensource.wdc.com>
+From:   John Garry <john.garry@huawei.com>
+In-Reply-To: <ef84d2dd-84ea-e1c7-05ef-f0a082d4f7d0@opensource.wdc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.195.247.138]
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500003.china.huawei.com (7.191.162.67)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
--- 
-Hello,
-We the Board Directors believe you are in good health, doing great and
-with the hope that this mail will meet you in good condition, We are
-privileged and delighted to reach you via email" And we are urgently
-waiting to hear from you. and again your number is not connecting.
+On 09/08/2022 15:57, Damien Le Moal wrote:
+>>> As far as I can see, this patch should not make a difference unless the
+>>> ATA shost driver is setting the max_sectors value unnecessarily low.
+>> For __ATA_BASE_SHT, we don't set max_sectors. As such, we default
+>> shost->max_sectors = SCSI_DEFAULT_MAX_SECTORS (=1024) in
+>> scsi_host_alloc(). I assume no shost dma mapping limit applied.
+>>
+>> Then - for example - we could select dev->max_sectors =
+>> ATA_MAX_SECTORS_LBA48 (=65535) in ata_dev_configure().
+>>
+>> So with commit 0568e6122574 we would have final max sectors = 1024, as
+>> opposed to 65535 previously. I guess that the problem is something like
+>> this.
+>>
+>> If so, it seems that we would need to apply the shost dma mapping limit
+>> separately in ata_scsi_dev_config() and not use shost->max_sectors.
+> OK. Will have a look at that.
+> 
 
-My regards,
-Dr. Ali Moses..
+We may need to introduce something like shost->max_hw_sectors, which is 
+set according to sht max sectors and dma mapping limits. That could be 
+also used in USB scsiglue slave_configure()
 
-Sincerely,
-Prof. Chin Guang
+Or else set max_sectors value for __ATA_BASE_SHT, but I don't know a 
+sane value there considering ATA_MAX_SECTORS_LBA48 gives max_sectors of 
+65535.
+
+Damien, please let me know if you need help now. I am just waiting for 
+you to test to prove this theory about dev->max_sectors being capped. I 
+don't have an AHCI setup readily-available for testing - just SAS cards 
+or QEMU.
+
+Thanks,
+John

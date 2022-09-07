@@ -2,113 +2,170 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CB735B06F1
-	for <lists+linux-ide@lfdr.de>; Wed,  7 Sep 2022 16:33:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 217D15B0C7C
+	for <lists+linux-ide@lfdr.de>; Wed,  7 Sep 2022 20:26:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230355AbiIGOdS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 7 Sep 2022 10:33:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46984 "EHLO
+        id S230328AbiIGS0K (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 7 Sep 2022 14:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229869AbiIGOdA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 7 Sep 2022 10:33:00 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B72B179A72
-        for <linux-ide@vger.kernel.org>; Wed,  7 Sep 2022 07:32:27 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id 29so14927511edv.2
-        for <linux-ide@vger.kernel.org>; Wed, 07 Sep 2022 07:32:27 -0700 (PDT)
+        with ESMTP id S230305AbiIGS0H (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 7 Sep 2022 14:26:07 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E99DBCC1F;
+        Wed,  7 Sep 2022 11:26:02 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id z20so16986861ljq.3;
+        Wed, 07 Sep 2022 11:26:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=UtFlTSGHQz81OSpK49QGakNczTrN7BvVDcdecb2PlQLSH6U6g6YnfIOwEhF4HyopVw
-         xF3rEa1JazWxVmoA4IZ4APHTWslJfRg5yYhTgDCuueeGynL8ZQ8rlmQ1XFto97Lt71ZJ
-         j3Ra7mPDPEuM/14t68TI6JbC26x0Okvn0tFLgQTeFpImczwoq6TYczyXFG/k8mY/UwUL
-         n4rphtthc3JujA/DBbZnDH2NqlI3e1mX42kS7zoBsDbrZwgnwP4UWzhHEqiLlccbumw3
-         Wu+X+CCk1Fp6KNp6XYfEMT802FX63wwwnC1iqf8dYPeJE0BVyNRj/Y77DpMb+lFAEfsS
-         NjnA==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=Z9P17Yt0yBVUVeFH8T9sgH+GY3z+6mIu/hWAbTLi3gE=;
+        b=bSBq6TrQEMMHQceNOwc7Uc3PucEeV7/m1nPzeUW8yOGLZNY+O3AMad8w93hHNktZr+
+         7OFC0TAqOj3LanMxXMVzvbX9bca+jx8gsewboM9qLs8yLoty7khzGREqn6DR9vfyzNRQ
+         tCuKV3S4qTixrgPar/hItGWEYMu8o3U166vRTALg83Jwk8QXg5ZODmWjswhzwFmZGssN
+         Bi4Snob/0nesX+GoQA5PFNCvNia7V+v3Nmvw9BcdH6RDbhKBHxaCoILQLLHxbrp4kJN1
+         BSXtGZfjDz/Be5gefJwsFaXAHZwXuwRsA1AQ2rkLURe0lLUEKe22kYlrhrHz5jzrUdwG
+         +RDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
-        b=sVucuwaqVPdLv5tKytzceDURF6KKf+5IZReY6sd5s6VFXXCS2wQg/ioQt5FC6d9S9C
-         zSTJsjcPUOpiBFDvEwVWVwUxtrHzRFrr7I1jhTTPCk2E5RrCWF/xP+hVjuvT0tswYHX3
-         zN+ckexiW/8Qv8uVBCypfCt/p62H+rSYzJo0HiP/dM6xebxvurPVDWHO0E7lW3yvvWPS
-         wBjCOpNuLH2wthOgwfxHj+cuUOvN3d3XtEmXsnd1+YW9hQGWql/KTA7AD6GN4jpkPRtN
-         Ig2qy2Y4tZNlquZKwyZOAx2nNBHgG82giOSncbvE7Yt9hKXLjhozU6RK1OKdXz4pmsR7
-         Oovw==
-X-Gm-Message-State: ACgBeo2J/5z8+o4qIEkuQwQkghrOSl6KH0LkhZM52uM3X1VRm3uluZo1
-        IQbh/EtDEORsXPGGqPfLgZ9O+SSZkNI/kgIXYLc=
-X-Google-Smtp-Source: AA6agR4u/dbCsJbsVZIBLL6h1UPerJ2TE45jgxUgoCjVrPyl8+wsl025ctgdSe/t/2vkl2wcEplmUnwM80u8Z9eZepA=
-X-Received: by 2002:a05:6402:51d1:b0:44b:ea34:6c0a with SMTP id
- r17-20020a05640251d100b0044bea346c0amr3314952edd.369.1662561145430; Wed, 07
- Sep 2022 07:32:25 -0700 (PDT)
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=Z9P17Yt0yBVUVeFH8T9sgH+GY3z+6mIu/hWAbTLi3gE=;
+        b=yKoiG74mHUk26xCrXhH61e/yixEMPQ8sBpX/Ue7b5Yfsh2eLV03evOCZVvqN/a08ua
+         oIE+yVAtg5stYIs4sMbTFOH6e2DuOTn49DZpLnTInDoD46RYWUdWWR1GiLAEdwXm3GGD
+         UWFpa3Q2k9S054D/lDkzAo7IehVhqKxGjJKzZHJaCQAnZuDLkmDHgxJWbHJIhGY7UJFl
+         czIWer2aosyqZipkd+0nO3PT4M90d+W8OR0b9Mf+YLbIJCs0pmQEgRnm/7PPr27b2INo
+         1M4wuWmzqXWlf5Ns/yD3du81f8mqIlEtBOgmQvfmsPevvmGteECbK3c+nd/rhGttM2WA
+         TryQ==
+X-Gm-Message-State: ACgBeo0oai563s5JQbTKA6QSfA+chW+Xqw1TwSu3uUmLyLjpALJhN9zV
+        L7nPYk5/rxsQx5Zl/Fu0GFC0RCaHlYGU4A==
+X-Google-Smtp-Source: AA6agR7iwLntxAUMmySKwPm/4Mi+kVhw3ueG8RBFbNS7KyIQL4/zk+rTw2jYIU86FY1YZzQkN0C9Fg==
+X-Received: by 2002:a2e:940d:0:b0:261:c5c8:3403 with SMTP id i13-20020a2e940d000000b00261c5c83403mr1488589ljh.86.1662575160567;
+        Wed, 07 Sep 2022 11:26:00 -0700 (PDT)
+Received: from mobilestation (89-109-51-230.dynamic.mts-nn.ru. [89.109.51.230])
+        by smtp.gmail.com with ESMTPSA id 5-20020a2eb945000000b00267232d0652sm2817728ljs.46.2022.09.07.11.25.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 Sep 2022 11:25:59 -0700 (PDT)
+Date:   Wed, 7 Sep 2022 21:25:56 +0300
+From:   Serge Semin <fancer.lancer@gmail.com>
+To:     kernel test robot <lkp@intel.com>
+Cc:     Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>, Hannes Reinecke <hare@suse.de>,
+        kbuild-all@lists.01.org,
+        Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+        Pavel Parkhomenko <Pavel.Parkhomenko@baikalelectronics.ru>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org
+Subject: Re: [PATCH v7 19/23] ata: ahci: Add DWC AHCI SATA controller support
+Message-ID: <20220907182556.em57cl4g5nk2i4sc@mobilestation>
+References: <20220822183728.24434-20-Sergey.Semin@baikalelectronics.ru>
+ <202209040834.w5y0s1NR-lkp@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:32:24 -0700 (PDT)
-Reply-To: lumar.casey@outlook.com
-From:   LUMAR CASEY <miriankushrat@gmail.com>
-Date:   Wed, 7 Sep 2022 16:32:24 +0200
-Message-ID: <CAO4StN1OR4tXWWJAZ10p+-rJJ7qOsU8FxVS9cWv=PiegDVtnsA@mail.gmail.com>
-Subject: ATTENTION/PROPOSAL
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:544 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [miriankushrat[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: ******
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202209040834.w5y0s1NR-lkp@intel.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-ATTENTION
+On Sun, Sep 04, 2022 at 08:34:20AM +0800, kernel test robot wrote:
+> Hi Serge,
+> 
+> I love your patch! Yet something to improve:
+> 
+> [auto build test ERROR on robh/for-next]
+> [also build test ERROR on axboe-block/for-next linus/master v6.0-rc3 next-20220901]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Serge-Semin/ata-ahci-Add-DWC-Baikal-T1-AHCI-SATA-support/20220823-024133
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/robh/linux.git for-next
+> config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20220904/202209040834.w5y0s1NR-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 12.1.0
+> reproduce (this is a W=1 build):
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # https://github.com/intel-lab-lkp/linux/commit/e628913a210e29775bc995d1ed3ed58ab13416b8
+>         git remote add linux-review https://github.com/intel-lab-lkp/linux
+>         git fetch --no-tags linux-review Serge-Semin/ata-ahci-Add-DWC-Baikal-T1-AHCI-SATA-support/20220823-024133
+>         git checkout e628913a210e29775bc995d1ed3ed58ab13416b8
+>         # save the config file
+>         mkdir build_dir && cp config build_dir/.config
+>         COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross W=1 O=build_dir ARCH=m68k SHELL=/bin/bash drivers/ata/
+> 
+> If you fix the issue, kindly add following tag where applicable
+> Reported-by: kernel test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    In file included from include/linux/clk.h:13,
+>                     from drivers/ata/ahci_dwc.c:11:
+> >> drivers/ata/ahci_dwc.c:372:50: error: 'ahci_dwc_suspend' undeclared here (not in a function); did you mean 'ahci_dwc_probe'?
+>      372 | static DEFINE_SIMPLE_DEV_PM_OPS(ahci_dwc_pm_ops, ahci_dwc_suspend,
+>          |                                                  ^~~~~~~~~~~~~~~~
+>    include/linux/kernel.h:57:44: note: in definition of macro 'PTR_IF'
+>       57 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
+>          |                                            ^~~
+>    include/linux/pm.h:313:20: note: in expansion of macro 'pm_sleep_ptr'
+>      313 |         .suspend = pm_sleep_ptr(suspend_fn), \
+>          |                    ^~~~~~~~~~~~
+>    include/linux/pm.h:373:9: note: in expansion of macro 'SYSTEM_SLEEP_PM_OPS'
+>      373 |         SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>          |         ^~~~~~~~~~~~~~~~~~~
+>    include/linux/pm.h:399:9: note: in expansion of macro '_DEFINE_DEV_PM_OPS'
+>      399 |         _DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
+>          |         ^~~~~~~~~~~~~~~~~~
+>    drivers/ata/ahci_dwc.c:372:8: note: in expansion of macro 'DEFINE_SIMPLE_DEV_PM_OPS'
+>      372 | static DEFINE_SIMPLE_DEV_PM_OPS(ahci_dwc_pm_ops, ahci_dwc_suspend,
+>          |        ^~~~~~~~~~~~~~~~~~~~~~~~
+> >> drivers/ata/ahci_dwc.c:373:33: error: 'ahci_dwc_resume' undeclared here (not in a function); did you mean 'ahci_port_resume'?
+>      373 |                                 ahci_dwc_resume);
+>          |                                 ^~~~~~~~~~~~~~~
+>    include/linux/kernel.h:57:44: note: in definition of macro 'PTR_IF'
+>       57 | #define PTR_IF(cond, ptr)       ((cond) ? (ptr) : NULL)
+>          |                                            ^~~
+>    include/linux/pm.h:314:19: note: in expansion of macro 'pm_sleep_ptr'
+>      314 |         .resume = pm_sleep_ptr(resume_fn), \
+>          |                   ^~~~~~~~~~~~
+>    include/linux/pm.h:373:9: note: in expansion of macro 'SYSTEM_SLEEP_PM_OPS'
+>      373 |         SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+>          |         ^~~~~~~~~~~~~~~~~~~
+>    include/linux/pm.h:399:9: note: in expansion of macro '_DEFINE_DEV_PM_OPS'
+>      399 |         _DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
+>          |         ^~~~~~~~~~~~~~~~~~
+>    drivers/ata/ahci_dwc.c:372:8: note: in expansion of macro 'DEFINE_SIMPLE_DEV_PM_OPS'
+>      372 | static DEFINE_SIMPLE_DEV_PM_OPS(ahci_dwc_pm_ops, ahci_dwc_suspend,
+>          |        ^~~~~~~~~~~~~~~~~~~~~~~~
+>    drivers/ata/ahci_dwc.c:267:12: warning: 'ahci_dwc_reinit_host' defined but not used [-Wunused-function]
+>      267 | static int ahci_dwc_reinit_host(struct ahci_host_priv *hpriv)
+>          |            ^~~~~~~~~~~~~~~~~~~~
 
-BUSINESS PARTNER,
+Right. The SYSTEM_SLEEP_PM_OPS macro doesn't imply ifdef'ing the sleep
+action-methods. I'll drop the conditional compilation then.
 
-I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
-MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
-PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
-DIPLOMATIC OUTLET.
+-Sergey
 
-I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
-PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
-YOUR COUNTRY.
-
-I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
-
-REGARDS,
-
-LUMAR CASEY
+> 
+> 
+> vim +372 drivers/ata/ahci_dwc.c
+> 
+>    371	
+>  > 372	static DEFINE_SIMPLE_DEV_PM_OPS(ahci_dwc_pm_ops, ahci_dwc_suspend,
+>  > 373					ahci_dwc_resume);
+>    374	
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://01.org/lkp

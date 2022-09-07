@@ -2,68 +2,150 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0814A5AC490
-	for <lists+linux-ide@lfdr.de>; Sun,  4 Sep 2022 15:50:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A7305B0288
+	for <lists+linux-ide@lfdr.de>; Wed,  7 Sep 2022 13:11:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233206AbiIDNuc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 4 Sep 2022 09:50:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34754 "EHLO
+        id S230411AbiIGLK6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 7 Sep 2022 07:10:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234044AbiIDNua (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 4 Sep 2022 09:50:30 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8108B2654B
-        for <linux-ide@vger.kernel.org>; Sun,  4 Sep 2022 06:50:11 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-3450a7358baso23393577b3.13
-        for <linux-ide@vger.kernel.org>; Sun, 04 Sep 2022 06:50:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
-         :to:cc:subject:date;
-        bh=8JC6EsSfafXmIapFg+dMsRIDXE8++LB1Nr2fu20u/vM=;
-        b=duhFjZDteDpu7z3VF1i5MCwnIverAbFhBHyPGZQGAveFaeP+8rcuETFwoF1BfUzpZW
-         dIpDgaoAQYOs+9YTuKOTAXM8WKBkwnDXub9e29JfXe3CHdjuj8+EnbdWa7ChKfVH/XJJ
-         59uNZoSxBokjpFlXHEPaBT4ATN8OQXFXTqZu0F7IpEmBXplGDni3KiMlN1yLCZ4oMzyb
-         J73U1gL8OA+Z4SlBZg8kP9nD9XyI4Xv+nXJJVELTdKQ7PlDwtNR2eteThdBCVP00eY7Y
-         UBcqXzvh75F0xDlKwMeddKYfKc0VzSA58E7NfJwwYN3SxuwHIk7Auo3k532XD+thhjow
-         9+zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=8JC6EsSfafXmIapFg+dMsRIDXE8++LB1Nr2fu20u/vM=;
-        b=RGEGDHXp1n82C3C+MFan/3GDFDaEdJGjqeD23V9rF9AA/6L1F0vTi3kPinCWIH9ITg
-         lcB8/7nUi4iRJvdE/Yzw3oc4eYwJB4dQCXZd7deJXkImo8F/TsammMP/hYx6hJgjgtKF
-         SaFoVXrsXCUf04AJtgaReb+TTJuYgGAO4tOcv+fAudgAGbhRgMCG9X3t9J5VY2pYaWLn
-         GnY15N4Z55YWEAYiaZKn9Doj26nqs9ZLV57u8hcrOxjR75nRqnog6IwJ4B6aQcUZSzOR
-         anDC6rqcbsEpaGFVNZFd7eBr7pY3Ue/igcN/rn91UzpzDil58fYmc099qo9xJnGYBbcd
-         qnGw==
-X-Gm-Message-State: ACgBeo2bUyvw7I+m2E7lfivpLbE6Hh8Aky7Kupxqg0chpB0X4OucE9o9
-        rEsOK+UACx8lDiAWtbjv15cFh1Tnay6+Suj2hjs=
-X-Google-Smtp-Source: AA6agR65SsFfKYctriGVjs1lUk0TPQVTZ9F7E+llK1oHr/i8Cm6+sEdj/YlWG6uV+TTT+WxVqdEUDDjXhQlXILei2gM=
-X-Received: by 2002:a81:ad59:0:b0:340:b000:368d with SMTP id
- l25-20020a81ad59000000b00340b000368dmr34373948ywk.397.1662299410698; Sun, 04
- Sep 2022 06:50:10 -0700 (PDT)
+        with ESMTP id S230094AbiIGLKj (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 7 Sep 2022 07:10:39 -0400
+X-Greylist: delayed 1068 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 07 Sep 2022 04:10:20 PDT
+Received: from spamfilter.jmicron.com (spamfilter.jmicron.com [220.130.51.235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA73A193CA;
+        Wed,  7 Sep 2022 04:10:19 -0700 (PDT)
+Received: from spamfilter.jmicron.com (localhost [127.0.0.2] (may be forged))
+        by spamfilter.jmicron.com with ESMTP id 287ArVKY086128;
+        Wed, 7 Sep 2022 18:53:31 +0800 (+08)
+        (envelope-from mdlin@jmicron.com)
+Received: from JMEH601.jmicron.com (jmeh601.jmicron.com [10.88.10.17])
+        by spamfilter.jmicron.com with ESMTP id 287ArNaW086108;
+        Wed, 7 Sep 2022 18:53:23 +0800 (+08)
+        (envelope-from mdlin@jmicron.com)
+Received: from JMEH601.jmicron.com (10.88.10.17) by JMEH601.jmicron.com
+ (10.88.10.17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2375.28; Wed, 7
+ Sep 2022 18:52:23 +0800
+Received: from localhost.localdomain (10.88.20.234) by JMEH601.jmicron.com
+ (10.88.10.17) with Microsoft SMTP Server id 15.1.2375.28 via Frontend
+ Transport; Wed, 7 Sep 2022 18:52:23 +0800
+From:   MD Lin <mdlin@jmicron.com>
+To:     <axboe@kernel.dk>
+CC:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <mdlin@jmicron.com>, <kevinliu@jmicron.com>,
+        <charonchen@jmicron.com>, <corahuang@jmicron.com>,
+        <mhchen@jmicron.com>, <georgechao@jmicron.com>,
+        <banks@jmicron.com>, <tzuwei@jmicron.com>
+Subject: [PATCH] libata/ahci: quirk for JMB585/JMB582
+Date:   Wed, 7 Sep 2022 10:51:30 +0000
+Message-ID: <20220907105130.13797-1-mdlin@jmicron.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Reply-To: paulassidubroker612@gmail.com
-Sender: sambieningbabe@gmail.com
-Received: by 2002:a05:7010:26a3:b0:2ef:f144:c87c with HTTP; Sun, 4 Sep 2022
- 06:50:09 -0700 (PDT)
-From:   Paul Assidu <paulassidubroker612@gmail.com>
-Date:   Sun, 4 Sep 2022 13:50:09 +0000
-X-Google-Sender-Auth: wRbsIi6_qlrKebq-AJQvWkP04jY
-Message-ID: <CAKz7bGYzKPcEAFxcOFCZO9Uaa8UnN-=u9f-0V2Bs4VseG5h7WA@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-DNSRBL: 
+X-MAIL: spamfilter.jmicron.com 287ArVKY086128
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Greetings, trust you're good. please check and reply my previous emails to you.
+This patch adds a quirk, which enable error bit handling functions
+and SATA configuration for JMicron JMB585/JMB582.
+
+Signed-off-by: MD Lin <mdlin@jmicron.com>
+---
+ drivers/ata/ahci.c | 65 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
+
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 505920d45..b0768fae3 100755
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1657,6 +1657,68 @@ static void ahci_intel_pcs_quirk(struct pci_dev *pdev, struct ahci_host_priv *hp
+ 	}
+ }
+ 
++static void ahci_jmb585_write_sata_phy(void __iomem *mmio, u32 addr, u32 data)
++{
++	writel((addr & 0x01FFFUL) + (1UL << 18UL), mmio + 0xC0);
++	writel(data, mmio + 0xC8);
++}
++
++static void ahci_jmicron_585_quirk(void __iomem *mmio)
++{
++	u32 pi = readl(mmio + HOST_PORTS_IMPL);
++	u32 b8_data;
++
++	/*
++	 * enable error bit handling functions, these might overwrite
++	 * the setting which loads from external SPI flash
++	 */
++	b8_data = (pi > 3) ? 0x13 : 0x92;
++	writel(0x03060004+b8_data, mmio + 0xB8);
++	writel(0x00FF0B01,         mmio + 0x30);
++	writel(0x0000003F,         mmio + 0x34);
++	writel(0x0000001F,         mmio + 0x38);
++	writel(0x03060000+b8_data, mmio + 0xB8);
++	writel(0xF9E4EFBF,         mmio + 0xB0);
++
++	/*
++	 * set SATA configuration, these might overwrite
++	 * the setting which loads from external SPI flash
++	 */
++	ahci_jmb585_write_sata_phy(mmio, 0x06, 0x70005BE3); /* port0 */
++	ahci_jmb585_write_sata_phy(mmio, 0x13, 0x70005BE3); /* port1 */
++	ahci_jmb585_write_sata_phy(mmio, 0x73, 0x000001E5); /* port0 */
++	ahci_jmb585_write_sata_phy(mmio, 0x75, 0x000001E5); /* port1 */
++	ahci_jmb585_write_sata_phy(mmio, 0x74, 0x00000024); /* port0 */
++	ahci_jmb585_write_sata_phy(mmio, 0x80, 0x250B0003); /* port1 */
++	if (pi > 3) {
++		ahci_jmb585_write_sata_phy(mmio, 0x20, 0x70005BE3); /* port2 */
++		ahci_jmb585_write_sata_phy(mmio, 0x2D, 0x70005BE3); /* port3 */
++		ahci_jmb585_write_sata_phy(mmio, 0x3A, 0x70005BE3); /* port4 */
++		ahci_jmb585_write_sata_phy(mmio, 0x79, 0x000001E5); /* port3 */
++		ahci_jmb585_write_sata_phy(mmio, 0x83, 0x250B0003); /* port3 */
++		ahci_jmb585_write_sata_phy(mmio, 0x7A, 0x00000024); /* port3 */
++		ahci_jmb585_write_sata_phy(mmio, 0x84, 0x250B0003); /* port3 */
++	}
++}
++
++static void ahci_jmicron_quirk(struct pci_dev *pdev,
++			struct ahci_host_priv *hpriv)
++{
++	void __iomem *mmio = hpriv->mmio;
++	u8 tmp8;
++
++	if (pdev->vendor != PCI_VENDOR_ID_JMICRON)
++		return;
++
++	switch (pdev->device) {
++	case 0x585: /* check if the chip is JMB585 */
++		tmp8 = readb(mmio + 0x44);
++		if (tmp8)
++			ahci_jmicron_585_quirk(mmio);
++		break;
++	}
++}
++
+ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	unsigned int board_id = ent->driver_data;
+@@ -1775,6 +1837,9 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 */
+ 	ahci_intel_pcs_quirk(pdev, hpriv);
+ 
++	/* set JMicron configuration */
++	ahci_jmicron_quirk(pdev, hpriv);
++
+ 	/* prepare host */
+ 	if (hpriv->cap & HOST_CAP_NCQ) {
+ 		pi.flags |= ATA_FLAG_NCQ;
+-- 
+2.17.1
+

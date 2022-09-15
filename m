@@ -2,113 +2,192 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB85D5B8F4A
-	for <lists+linux-ide@lfdr.de>; Wed, 14 Sep 2022 21:37:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20FFB5B9181
+	for <lists+linux-ide@lfdr.de>; Thu, 15 Sep 2022 02:12:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229614AbiINThd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 14 Sep 2022 15:37:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49100 "EHLO
+        id S229890AbiIOAMr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 14 Sep 2022 20:12:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbiINThc (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 14 Sep 2022 15:37:32 -0400
-Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0712873316
-        for <linux-ide@vger.kernel.org>; Wed, 14 Sep 2022 12:37:31 -0700 (PDT)
-Received: by mail-lf1-x141.google.com with SMTP id s6so15611981lfo.7
-        for <linux-ide@vger.kernel.org>; Wed, 14 Sep 2022 12:37:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date;
-        bh=2vJHlqQj2D5js5r0I2Y1BVF4byvG2P2spYzFG+ucJkc=;
-        b=E3/8Bjjvq8/FO5vxh7xOxsWFdBwzKK5NuarGYqYiiSeYwc82/p6sCGRAed937uHvqg
-         EnCRPIvPReDViEpiyc2syhvCx4AK2T/IIoHLXGqWj2GXFPsjx+c2KlRcoFDIBvMNIHaJ
-         SJ18RRa1vzFaZBrzuZFj9RILI5yDhP08LHqF1xj/siOoC2yoy/P5RoKBNCV9lwLUDlVW
-         MRat76Hgeubeq4yJ6oF4FKM/T6+vcqebz/rNyjbDW3O65wTQSqxbThUUVIWzW8lKg6jF
-         5hXuHdf12bbwbo9oEbUYsA9ONrxaCXcVKcrHXFupqCmwPLHRwWP84otEImzaQuLrNL2F
-         0SSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=2vJHlqQj2D5js5r0I2Y1BVF4byvG2P2spYzFG+ucJkc=;
-        b=8EnxT/fdMyyVeWq2gLXFMDK1mEk+O5M3xGKwiLFc0N1J5E3LFQPHzdjnDCQfiWEFaX
-         cw8BMJu15GTYZ7xqw8EwAXPtna8pGSsY2ioq4p8RDaztAVeyU5zhFum0mGyAI23zrmHr
-         oiKouv8cb2Ve3scQRQifSJ6CmcIZKLxXgTl7AML+kgcojL4Wvcqmmikrd4VKXJO4x+fq
-         WzApKV6qZODAAq9eV1p3jc0CDlFcoWcNbjaqbu8rm88Gz8Hx6FwrYVWloGA6P1uty3pa
-         MfYQyAvIc/tpkXvRmw252QTLUCA0Xw+1zA3NTIvO9v82rHmbM8IaQyfu1yNqLU01zYRy
-         NUBg==
-X-Gm-Message-State: ACgBeo2b1iGcW3xZujeWupjfmjTPJDOPSmCKrw2BnfwCEwjfl2Cjw8df
-        ScfMB/j2N6v30NjpZqvYvtXytTYgcykuuW0qZLk=
-X-Google-Smtp-Source: AA6agR4BCfhqQgm8gAXtILuWNnoK7wzM6DfKnkLicWr9KIBiHeePFsgzwIyBQ0bOM9HKvlwwSy3S/jCgIT29hzAH728=
-X-Received: by 2002:a05:6512:3f4:b0:497:a33e:365e with SMTP id
- n20-20020a05651203f400b00497a33e365emr13416444lfq.638.1663184249862; Wed, 14
- Sep 2022 12:37:29 -0700 (PDT)
+        with ESMTP id S229889AbiIOAMq (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 14 Sep 2022 20:12:46 -0400
+Received: from spamfilter.jmicron.com (spamfilter.jmicron.com [220.130.51.235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA294454D;
+        Wed, 14 Sep 2022 17:12:43 -0700 (PDT)
+Received: from JMEH602.jmicron.com (jmeh602.jmicron.com [10.88.10.18])
+        by spamfilter.jmicron.com with ESMTP id 28F0CioR002300;
+        Thu, 15 Sep 2022 08:12:44 +0800 (+08)
+        (envelope-from mdlin@jmicron.com)
+Received: from JMEH601.jmicron.com (10.88.10.17) by JMEH602.jmicron.com
+ (10.88.10.18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2375.28; Thu, 15
+ Sep 2022 08:12:27 +0800
+Received: from localhost.localdomain (10.88.20.234) by JMEH601.jmicron.com
+ (10.88.10.17) with Microsoft SMTP Server id 15.1.2375.28 via Frontend
+ Transport; Thu, 15 Sep 2022 08:12:27 +0800
+From:   MD Lin <mdlin@jmicron.com>
+To:     <damien.lemoal@opensource.wdc.com>
+CC:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <mdlin@jmicron.com>, <kevinliu@jmicron.com>,
+        <charonchen@jmicron.com>, <corahuang@jmicron.com>,
+        <mhchen@jmicron.com>, <georgechao@jmicron.com>,
+        <banks@jmicron.com>, <tzuwei@jmicron.com>
+Subject: [PATCH] ata: ahci: Add initialization quirk for JMicron JMB585/JMB582 controllers
+Date:   Thu, 15 Sep 2022 00:11:49 +0000
+Message-ID: <20220915001149.24241-1-mdlin@jmicron.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Received: by 2002:a2e:a583:0:0:0:0:0 with HTTP; Wed, 14 Sep 2022 12:37:29
- -0700 (PDT)
-Reply-To: bodeg41@gmail.com
-From:   Bode George <fbiinvestigationf1@gmail.com>
-Date:   Wed, 14 Sep 2022 20:37:29 +0100
-Message-ID: <CAB01aPoUFFcrjCwB9m15YAtevU_cmE5iVhjBU8FtGeHXP=gWJA@mail.gmail.com>
-Subject: For Your Attention:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:141 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5065]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [fbiinvestigationf1[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [fbiinvestigationf1[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [bodeg41[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-DNSRBL: 
+X-MAIL: spamfilter.jmicron.com 28F0CioR002300
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+JMicron JMB585/JMB582 does not enable specific error bit handling functions
+by default so this patch enable these functions for better compatibility.
+Besides, these patches also adjust SATA RX/TX_GEN1/TX_GEN2 parameters for
+better compatibility. These patches had been tested in JMicron Test
+Laboratory and been implemented to our customers.
+
+Signed-off-by: MD Lin <mdlin@jmicron.com>
+---
+ drivers/ata/ahci.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/ata/ahci.h | 23 +++++++++++++++
+ 2 files changed, 94 insertions(+)
+ mode change 100755 => 100644 drivers/ata/ahci.h
+
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 505920d45..3e9e3b8f8 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -1657,6 +1657,75 @@ static void ahci_intel_pcs_quirk(struct pci_dev *pdev, struct ahci_host_priv *hp
+ 	}
+ }
+ 
++static void ahci_jmb58x_write_sata(void __iomem *mmio, u32 addr, u32 data)
++{
++	writel((addr & 0x01FFFUL) + (1UL << 18UL), mmio + 0xC0);
++	writel(data, mmio + 0xC8);
++}
++
++static void ahci_jmb58x_quirk(void __iomem *mmio)
++{
++	u32 pi = readl(mmio + HOST_PORTS_IMPL);
++	u32 b8_data;
++
++	/*
++	 * JMB582: PI is 0x03
++	 * JMB585: PI is 0x1f
++	 */
++
++	/*
++	 * enable error bit handling functions, these might overwrite
++	 * the setting which loads from external SPI flash.
++	 * the address and value are defined in adapter specs.
++	 */
++	b8_data = (pi > 3) ? 0x13 : 0x92;
++	writel(JMB58X_EH_MODIFY_ON + b8_data,  mmio + 0xB8);
++	writel(JMB58X_EH_GENERAL,              mmio + 0x30);
++	writel(JMB58X_EH_CFIS_RETRY,           mmio + 0x34);
++	writel(JMB58X_EH_DROP_D2H,             mmio + 0x38);
++	writel(JMB58X_EH_MODIFY_OFF + b8_data, mmio + 0xB8);
++	writel(JMB58X_EH_TX_LOCK,              mmio + 0xB0);
++
++	/*
++	 * set SATA configuration, these might overwrite
++	 * the setting which loads from external SPI flash.
++	 * the address and value are defined in adapter specs.
++	 */
++	ahci_jmb58x_write_sata(mmio, 0x06, JMB58X_SATA0_RX);
++	ahci_jmb58x_write_sata(mmio, 0x13, JMB58X_SATA1_RX);
++	ahci_jmb58x_write_sata(mmio, 0x73, JMB58X_SATA0_TX_GEN2);
++	ahci_jmb58x_write_sata(mmio, 0x75, JMB58X_SATA1_TX_GEN2);
++	ahci_jmb58x_write_sata(mmio, 0x74, JMB58X_SATA0_TX_GEN1);
++	ahci_jmb58x_write_sata(mmio, 0x80, JMB58X_SATA1_TX_GEN1);
++	if (pi > 3) {
++		ahci_jmb58x_write_sata(mmio, 0x20, JMB58X_SATA2_RX);
++		ahci_jmb58x_write_sata(mmio, 0x2D, JMB58X_SATA3_RX);
++		ahci_jmb58x_write_sata(mmio, 0x3A, JMB58X_SATA4_RX);
++		ahci_jmb58x_write_sata(mmio, 0x79, JMB58X_SATA3_TX_GEN2);
++		ahci_jmb58x_write_sata(mmio, 0x83, JMB58X_SATA3_TX_GEN2_EXT);
++		ahci_jmb58x_write_sata(mmio, 0x7A, JMB58X_SATA3_TX_GEN1);
++		ahci_jmb58x_write_sata(mmio, 0x84, JMB58X_SATA3_TX_GEN1_EXT);
++	}
++}
++
++static void ahci_jmicron_quirk(struct pci_dev *pdev,
++			struct ahci_host_priv *hpriv)
++{
++	void __iomem *mmio = hpriv->mmio;
++	u8 tmp8;
++
++	if (pdev->vendor != PCI_VENDOR_ID_JMICRON)
++		return;
++
++	switch (pdev->device) {
++	case 0x585:
++		tmp8 = readb(mmio + 0x44);
++		if (tmp8)  /* check controller version */
++			ahci_jmb58x_quirk(mmio);
++		break;
++	}
++}
++
+ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ {
+ 	unsigned int board_id = ent->driver_data;
+@@ -1775,6 +1844,8 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 */
+ 	ahci_intel_pcs_quirk(pdev, hpriv);
+ 
++	ahci_jmicron_quirk(pdev, hpriv);
++
+ 	/* prepare host */
+ 	if (hpriv->cap & HOST_CAP_NCQ) {
+ 		pi.flags |= ATA_FLAG_NCQ;
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+old mode 100755
+new mode 100644
+index 9290e787a..82ecc6f2c
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -52,6 +52,29 @@
+ #define EM_MSG_LED_VALUE_OFF          0xfff80000
+ #define EM_MSG_LED_VALUE_ON           0x00010000
+ 
++/* JMicron JMB585/JMB582 Error Bit Handling Register Value */
++#define JMB58X_EH_MODIFY_ON           0x03060004
++#define JMB58X_EH_MODIFY_OFF          0x03060000
++#define JMB58X_EH_GENERAL             0x00FF0B01
++#define JMB58X_EH_CFIS_RETRY          0x0000003F
++#define JMB58X_EH_DROP_D2H            0x0000001F
++#define JMB58X_EH_TX_LOCK             0xF9E4EFBF
++
++/* JMicron JMB585/JMB582 SATA PHY Register Value */
++#define JMB58X_SATA0_RX               0x70005BE3
++#define JMB58X_SATA1_RX               0x70005BE3
++#define JMB58X_SATA2_RX               0x70005BE3
++#define JMB58X_SATA3_RX               0x70005BE3
++#define JMB58X_SATA4_RX               0x70005BE3
++#define JMB58X_SATA0_TX_GEN1          0x00000024
++#define JMB58X_SATA1_TX_GEN1          0x250B0003
++#define JMB58X_SATA3_TX_GEN1          0x00000024
++#define JMB58X_SATA3_TX_GEN1_EXT      0x250B0003
++#define JMB58X_SATA0_TX_GEN2          0x000001E5
++#define JMB58X_SATA1_TX_GEN2          0x000001E5
++#define JMB58X_SATA3_TX_GEN2          0x000001E5
++#define JMB58X_SATA3_TX_GEN2_EXT      0x250B0003
++
+ enum {
+ 	AHCI_MAX_PORTS		= 32,
+ 	AHCI_MAX_CLKS		= 5,
 -- 
-Dear Friend
+2.17.1
 
-I need a Reliable, Honest and trust worthy person like you to receive
-my fund for our benefit or investing it into any lucrative investment
-opportunity in your country
-
-or around the globe as you may deem it fit. I have investment interest
-in your country with this fund but if investment is not in your own
-interest, whether investment
-
-or not investment, this fund as you receive it will be of immense
-benefit to both of us. Therefore, please contact me immediately for
-more details and requirements.
-
-Best Regards,
-Bode George

@@ -2,105 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ED3E5BAC1F
-	for <lists+linux-ide@lfdr.de>; Fri, 16 Sep 2022 13:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67DEB5BAD6D
+	for <lists+linux-ide@lfdr.de>; Fri, 16 Sep 2022 14:28:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230221AbiIPLPD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 16 Sep 2022 07:15:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38008 "EHLO
+        id S231267AbiIPM2x (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 16 Sep 2022 08:28:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230188AbiIPLPC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 16 Sep 2022 07:15:02 -0400
-Received: from mail-yw1-x1143.google.com (mail-yw1-x1143.google.com [IPv6:2607:f8b0:4864:20::1143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6DCD2F033
-        for <linux-ide@vger.kernel.org>; Fri, 16 Sep 2022 04:15:00 -0700 (PDT)
-Received: by mail-yw1-x1143.google.com with SMTP id 00721157ae682-349c4310cf7so89804387b3.3
-        for <linux-ide@vger.kernel.org>; Fri, 16 Sep 2022 04:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version:from
-         :to:cc:subject:date;
-        bh=NXQOMjASUDRmi+uu1tqKKn/W7wXdpQKgIoLNIi5MmvY=;
-        b=UTO8xNmtdZ7JCIINazK2Q6vHhfjlhzvS7/SGj8DrTugy6ZMdqNN5MF8cKzVimRAVZ+
-         pHB9SocsACwRYXuYCQHlBUgQnSPooc2XpfYEvtuWbRLglrko7YyJNHPthif2EN/T3eUt
-         QcYB/uLYMHuJd1R79/frG0OusxuQ6RXZXGgxNeOUtSF92MTvyrZJCgUEIy5WYAX56xY+
-         zJdw2u+W8sLVIMIjyWohR7KeQqztU7ByMTehCfwMjx/655BfkMevdH7R8DH6tc2cVp/C
-         eCVXBJs1V3vzTOGeaaMYeSw8j15/3eolbLVou1h3zKyxLt7fBNeVcZEEbvzbmMaoD8w3
-         yDng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=NXQOMjASUDRmi+uu1tqKKn/W7wXdpQKgIoLNIi5MmvY=;
-        b=8QQb0QfrDRBp8fiQEWvctt1Xb4i8R+pmyPi0ks6wBW5ns5S5sOu6H9Cl9NH10CRp2F
-         s8cEECOMxCg3NLZmbRW6BeUdzYrYUsTgE8dgNi1NO4Hpjze3e0O7u9XBBl6VBIDebUFg
-         JMzsML75WdB/BhwO64A0ddKQMRAoaOIPkI/Meyj9isUszipSbuVyGD35tEboClStdYqH
-         jvcrJtcGyZRyAtlqgPAEMXPyQjUWF+854phZmpdqan3PDgQXTyg3iQ9U3m4Xfp+LBvkT
-         wYgiY+KqAT7mqhIyI7o2OXZ6lIL5ltmzXXLaTMwdhLcbAWCHzix8fQvDZ4Ae2TnnLYlu
-         mfVw==
-X-Gm-Message-State: ACrzQf2lEfwCrn4/EbGlailM4QZbaZgHKNwn0yG1x0cGm6vxgdEmeOV5
-        ubUu5LDBIHwcZa8CgtBLHVr+kKmLuS5RyrxVhlI=
-X-Google-Smtp-Source: AMsMyM6Dj0y9YczMdzi4HSPqSCtueWq7dvUqya8VRYZ4G8SGhjIYnZ6C+cfO71G7kT8vXqD8YBVetjJefwhJxl/L4h0=
-X-Received: by 2002:a0d:e946:0:b0:345:696:caaa with SMTP id
- s67-20020a0de946000000b003450696caaamr3835315ywe.507.1663326899638; Fri, 16
- Sep 2022 04:14:59 -0700 (PDT)
+        with ESMTP id S231654AbiIPM2s (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 16 Sep 2022 08:28:48 -0400
+Received: from esa3.hgst.iphmx.com (esa3.hgst.iphmx.com [216.71.153.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4F08B1BBE
+        for <linux-ide@vger.kernel.org>; Fri, 16 Sep 2022 05:28:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1663331323; x=1694867323;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=F+3yEhq0e6iXUsaf3DMA4YehJnt6KnSiSERKk0FRxmU=;
+  b=eb74B+loUIvKfwVhON32Nh0a1c6z+dNQEfg0RKtUvkFHk0jD7sWdaNfd
+   s3WoMXmXWLc6vH6Finmfd709Wn4QglQs2slH5WLKFhd9+0q9B8tu7B+Co
+   rk9oyQ19T/1OzwcHOaWY4NEOu/AveJEjaHNbgVN1LRoursklUjVqWHjVc
+   u0a6bqJbk9lVjF5cm4Y5WG3o4iwIS1A6jgrnMaCKGFHdSByxwwbR5M+Gh
+   N0ZIoHR3rcGGIr6Tu997T+cVh+dGUq2CpSJ0Sk5CmM/CzfIiI31vrWpgh
+   3EKzzfUmexYgMdb81yI1LgnvhL/lkl245fhBdOxPM9YZPvf7vRiWEHrME
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.93,320,1654531200"; 
+   d="scan'208";a="216701263"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 16 Sep 2022 20:28:42 +0800
+IronPort-SDR: qaS9rbD4WAH1/yXBIGWS3AkRvKtIa20oNSYaQrs5pT4YTgkliQcrhvIj38ie7MT1V0MFWlhf2b
+ zpzD2IUKioufNLowB9Jl190wy4a/8Lug5ChPV9SQYZk9FfA49Wq+V6UCBmxlayCALXnYTfFLpk
+ OgkMPF6TsmbG9HgocEg/CY+CE5ELoDGAmhhhbx9R3/XdpGbcqM5eScCYf757Gi6oBMWDhXbwDp
+ SNXHnEn9g7285/2jBM4+wPv3skV4IqArvxNL4Br+z3sykpILbwGpvf9NbYnWBuNZBWAVI/1LhW
+ C/kRH+7Prj3yDPH4o5eol7YO
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Sep 2022 04:48:53 -0700
+IronPort-SDR: jRmMt0dGYg067IeA34IUF69N0QRUW4MJURjAGiiNT7ewKXHxVF35Uf3E8jMB6PscZums60U3Tf
+ rpsp0bM8j8kQwB5WYZVDCU6b0b8EhaCLPYbi0FBuMp6bjt5O/Pd21JUAKTeN+U+eDyGS1x7fm/
+ SBux5S3m6+y6R7FY0aO74BIYxpHLenW80A7LvjMI3f4xd9B9wj0R190iYh72Y5ekWTDYc0QWfM
+ LBPOJKJ4fGfzr0jg2AsojiAYV1pPbOhxMKbIPvuCI8VGeWq3HT2x7vHa2b7hk5pjoWrPZfKUl3
+ hf0=
+WDCIronportException: Internal
+Received: from dellx5.wdc.com (HELO x1-carbon.cphwdc) ([10.200.210.81])
+  by uls-op-cesaip02.wdc.com with ESMTP; 16 Sep 2022 05:28:40 -0700
+From:   Niklas Cassel <niklas.cassel@wdc.com>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Hannes Reinecke <hare@suse.de>, Tejun Heo <tj@kernel.org>,
+        Aaron Lu <aaron.lwe@gmail.com>,
+        Shane Huang <shane.huang@amd.com>,
+        Jeff Garzik <jgarzik@redhat.com>,
+        Kristen Carlson Accardi <kristen.c.accardi@intel.com>
+Cc:     Niklas Cassel <niklas.cassel@wdc.com>, linux-ide@vger.kernel.org
+Subject: [PATCH 0/6] IDENTIFY DEVICE supported bit fixes
+Date:   Fri, 16 Sep 2022 14:28:31 +0200
+Message-Id: <20220916122838.1190628-1-niklas.cassel@wdc.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Reply-To: rkamara999@gmail.com
-Sender: mn5562461@gmail.com
-Received: by 2002:a05:7010:a521:b0:2ef:b330:88d6 with HTTP; Fri, 16 Sep 2022
- 04:14:59 -0700 (PDT)
-From:   Raphael Kamara <rkamara303@gmail.com>
-Date:   Fri, 16 Sep 2022 13:14:59 +0200
-X-Google-Sender-Auth: 0gwTzJ12S3cCtIMujEPdXyY5JTY
-Message-ID: <CANW=vWBKxjU+tE36qaqJaQDWBfH2GxzxytMjq2SzStVL8gYLbQ@mail.gmail.com>
-Subject: Regards.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:1143 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [mn5562461[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [rkamara999[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mn5562461[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Hello,
+
+This series fixes some incorrect handling of the supported bits
+in IDENTIFY DEVICE data.
+
+As a bonus, there are two small cleanups which removes superfluous
+parameters in libata-eh.c.
+
+
+Kind regards,
+Niklas
+
+Niklas Cassel (6):
+  ata: fix ata_id_sense_reporting_enabled() and
+    ata_id_has_sense_reporting()
+  ata: fix ata_id_has_devslp()
+  ata: fix ata_id_has_ncq_autosense()
+  ata: fix ata_id_has_dipm()
+  ata: libata: drop superfluous ata_eh_request_sense() parameter
+  ata: libata: drop superfluous ata_eh_analyze_tf() parameter
+
+ drivers/ata/libata-eh.c | 14 ++++++--------
+ include/linux/ata.h     | 39 +++++++++++++++++++++------------------
+ 2 files changed, 27 insertions(+), 26 deletions(-)
+
 -- 
-Hello
+2.37.3
 
-Good day to you. Please, I have something important to discuss with you.
-
-Response urgently for more details.
-
-Regards.
-Raphael Kamara

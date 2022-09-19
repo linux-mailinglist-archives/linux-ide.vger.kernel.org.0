@@ -2,78 +2,134 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F26D55BBF00
-	for <lists+linux-ide@lfdr.de>; Sun, 18 Sep 2022 18:50:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBCF85BCA82
+	for <lists+linux-ide@lfdr.de>; Mon, 19 Sep 2022 13:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229458AbiIRQuH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 18 Sep 2022 12:50:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45212 "EHLO
+        id S229887AbiISLQz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 19 Sep 2022 07:16:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbiIRQuF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 18 Sep 2022 12:50:05 -0400
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772C7D135
-        for <linux-ide@vger.kernel.org>; Sun, 18 Sep 2022 09:50:03 -0700 (PDT)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-127d10b4f19so58796062fac.9
-        for <linux-ide@vger.kernel.org>; Sun, 18 Sep 2022 09:50:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date;
-        bh=/h9gKnMfrpB8UgQ8t9enyoIllg4YKOK1P8hel/POVkQ=;
-        b=UNU2p/hrbCw2/NNR01sPe5VjaPu1RGePKoJzGi95DZCUZGzznhAjpmPCop2pZJlA8B
-         ZhgoU3dsrKxjo5HGX13DHaCAoQQOA1MJukvnjbnsQHw8Ot0LL4LcRA5AVeayhPLOgrhE
-         ehcTdd3Ft61UoCTW90srYmugpUGo3p2lgpttiXTCJgZBlUHAT+sXTicv+z+XYqW9Cx5P
-         nQY9WgzcHd9Ek91UZ4d5tN3jK7BYQUmkP/NkZTj/JGvlkpfVET3TQ9hRCdfms/nTwOfK
-         h5cwjIzKSyZSD1VnvV0TeEOdYa8vjo8ZAQPX2jH/swIGJHioDFm290AJftEqwjFpgJ5o
-         011w==
+        with ESMTP id S229873AbiISLQx (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 19 Sep 2022 07:16:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 008D8101DC
+        for <linux-ide@vger.kernel.org>; Mon, 19 Sep 2022 04:16:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1663586211;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=+Bz0UOQAJOXRrtdCnmyKdFMTMhYr8+15WKdruE59Rlc=;
+        b=L9YGiNDSPdrtnbHPEmwLi07HgdqrQ5+jJ6wsB/03HVjG12/VccOPy4ENm6+GpjZuntSjXc
+        TeO/gejrrn1d8UKZ28fAQfCls2EpsJ7wXuzZKTBTu33Nfbky59unMgeiRr5+FUDjkZ3T5w
+        2aZnIVTHhPEGcac61TTJSCNJ+5aYpcM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-646-T7u_gLRUNNmKtYYhujPKng-1; Mon, 19 Sep 2022 07:16:49 -0400
+X-MC-Unique: T7u_gLRUNNmKtYYhujPKng-1
+Received: by mail-wr1-f72.google.com with SMTP id d9-20020adfa349000000b0022ad6fb2845so1428872wrb.17
+        for <linux-ide@vger.kernel.org>; Mon, 19 Sep 2022 04:16:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=/h9gKnMfrpB8UgQ8t9enyoIllg4YKOK1P8hel/POVkQ=;
-        b=uYXOfkNg8/yRF5jEELmlU2i4cQlotnIiQg6eKrnRUIlGZaPq0vanwjNjnviGq6fMod
-         D4vrz3T55MJ8xbAPK/8uGkjv7P2Jf0mG1wAqO1XhPZrDyOOhS/edjU132bRbYg3KS/9o
-         HkaHXicYYttTM7Da/KMTBG9byrYmYWCMVQxbV2U9Sx2kvDlTrHoRknc4Zvm7nyk36Kwz
-         IjQEWAw6DzqxUSvUBNp072N4kLLqthrzIw2PlvAkYkeadI6bTOvsIyf523KjU67j+CJq
-         g2H5UHEB2CjV7yPdZHgtpt40apIcv5Oqdy+Gvz9fxFSCszcPVQB7L3bfmLp45/jP17cK
-         mljw==
-X-Gm-Message-State: ACgBeo1jbjuCp0h5zfynoNPfR8vPsXPSRAbRGNS4bfBqJXZ9inZTBQKh
-        HVRdeOlNWejnRye4A0o/MztSSbKaCvfygKtSsAs=
-X-Google-Smtp-Source: AA6agR6Lw0hX8lCNOPZRzDGyF08J01wUBW3MjkW0Ms580f0QwTJAw41b0/UEECmsGLG6/7opeIiFoGKisg+Kk/ZTItk=
-X-Received: by 2002:a05:6870:168c:b0:127:c627:3bad with SMTP id
- j12-20020a056870168c00b00127c6273badmr13031812oae.93.1663519802492; Sun, 18
- Sep 2022 09:50:02 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date;
+        bh=+Bz0UOQAJOXRrtdCnmyKdFMTMhYr8+15WKdruE59Rlc=;
+        b=J1QpEtTJ6FGZ2ReeqpWSjPy4qLGKHXdBlyO6DyLFb3Vgjv2+SQdzx7Tk4OBLPkb73Y
+         gC+uuv3EfWU1yNwIByyU60Isk4XlumggVBGMnx1srWjJRoS5kLB+DJxn7I3/Lm31gU6P
+         jhKxPBPTO/rVyiE4hEZqUSCzFwiTEmFlvqmhdeinqVoTkGb8q/jqDx8NzZmenyFbhMJQ
+         hZErnPXF2BbOTjti7aeBQoqwDz3pPP0aHfuM4azI0pzl8CSYL02i+11AtOxSzngTb1kC
+         aKus1KskniWHfy3j6pdc+yCxZqMuu0l+ZlJLGXFEAij3O5rt1BIz1oVTTWm2O7jmsmJs
+         Qq1A==
+X-Gm-Message-State: ACrzQf0qGOTR5c+iM5FWum+QJRSRpKHeCtac5h9pgIHaeOcWgbzzpWmK
+        7rDcdM+ygOQUBC/P1onpcXbKwNrrGa7f9GmN8N/BHMj786KOK4S/K/V76T87u7H88wJ5H9tBTr4
+        q44uCR4neLigcB7Zlz67M
+X-Received: by 2002:a5d:58f8:0:b0:22a:f284:496e with SMTP id f24-20020a5d58f8000000b0022af284496emr5928697wrd.501.1663586208789;
+        Mon, 19 Sep 2022 04:16:48 -0700 (PDT)
+X-Google-Smtp-Source: AMsMyM4+YoLASGIvhgO3CYh57x41pdBvHMpazmIJpNV+9J15jjkYoSQD4i/JuZFbP+vWbBIeHI/u/g==
+X-Received: by 2002:a5d:58f8:0:b0:22a:f284:496e with SMTP id f24-20020a5d58f8000000b0022af284496emr5928681wrd.501.1663586208587;
+        Mon, 19 Sep 2022 04:16:48 -0700 (PDT)
+Received: from p1.Home ([2001:8a0:6724:4500:dc68:d331:1862:9fcb])
+        by smtp.gmail.com with ESMTPSA id k21-20020adfb355000000b0022584c82c80sm13424911wrd.19.2022.09.19.04.16.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Sep 2022 04:16:47 -0700 (PDT)
+From:   Eric Curtin <ecurtin@redhat.com>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        linux-ide@vger.kernel.org
+Cc:     Eric Curtin <ecurtin@redhat.com>, linux-kernel@vger.kernel.org,
+        Brian Masney <bmasney@redhat.com>, Al Stone <ahs3@redhat.com>,
+        Alexander Larsson <alexl@redhat.com>,
+        Andrew Halaney <ahalaney@redhat.com>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Joe Konno <joe.konno@intel.com>
+Subject: [PATCH] ata: ahci: Enable/Disable ATA Staggered Spin-up by default
+Date:   Mon, 19 Sep 2022 10:46:39 +0100
+Message-Id: <20220919094635.184804-1-ecurtin@redhat.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Sender: onosetaleelishevaunuebholo@gmail.com
-Received: by 2002:a05:6850:7ad4:b0:32c:d8e3:2685 with HTTP; Sun, 18 Sep 2022
- 09:50:01 -0700 (PDT)
-From:   Dr Lisa Williams <lw4666555@gmail.com>
-Date:   Sun, 18 Sep 2022 09:50:01 -0700
-X-Google-Sender-Auth: x9Kde0_3TwV-UrYwNklAKbat7f4
-Message-ID: <CACBkC06eJ1EdbYjR1FsVrrCZh-Vjr5wSdnE70sTsw16C3QGjFA@mail.gmail.com>
-Subject: Hi Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Dear
+On some kernels tuned for performance, you want to always favour
+spin-up time versus power draw. This adds the ability to always favour
+spin-up time by default (disabling Staggered Spin-up favours
+performance, rather than power draw).
 
-My name is Dr Lisa Williams from the United States.I am a French and
-American nationality dual) living in the U.S and sometimes in France
-for Work Purpose. I hope you consider my friend request. I will share
-some of my pics and more details about myself when I get your
-response.
+Regardless of whether this is enabled or disabled the
+libahci.ignore_sss option will override any kernel config.
 
-Thanks
+Signed-off-by: Eric Curtin <ecurtin@redhat.com>
+---
+ drivers/ata/Kconfig   | 15 +++++++++++++++
+ drivers/ata/libahci.c |  2 +-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-With love
-Lisa
+diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+index 1c9f4fb2595d..36b11fbcf644 100644
+--- a/drivers/ata/Kconfig
++++ b/drivers/ata/Kconfig
+@@ -67,6 +67,21 @@ config ATA_FORCE
+ 
+ 	  If unsure, say Y.
+ 
++config ATA_SSS
++        bool "Enable ATA Staggered Spin-up by default"
++        default y
++        help
++          This option denotes whether Staggered Spin-up capability on
++          storage controllers is used. Staggered Spin-up reduces
++          peak power draw, but decreases performance. If this config is
++          set to N, Staggered Spin-up capability will be ignored by
++          default.
++
++          This can be overridden by using the kernel argument
++          libahci.ignore_sss.
++
++          If unsure, say Y.
++
+ config ATA_ACPI
+ 	bool "ATA ACPI Support"
+ 	depends on ACPI
+diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
+index cf8c7fd59ada..b7b573d47fda 100644
+--- a/drivers/ata/libahci.c
++++ b/drivers/ata/libahci.c
+@@ -33,7 +33,7 @@
+ #include "libata.h"
+ 
+ static int ahci_skip_host_reset;
+-int ahci_ignore_sss;
++int ahci_ignore_sss = !IS_ENABLED(CONFIG_ATA_SSS);
+ EXPORT_SYMBOL_GPL(ahci_ignore_sss);
+ 
+ module_param_named(skip_host_reset, ahci_skip_host_reset, int, 0444);
+-- 
+2.37.3
+

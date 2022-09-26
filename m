@@ -2,70 +2,71 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56A245EB2B6
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Sep 2022 22:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBD45EB2AF
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Sep 2022 22:53:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230506AbiIZUxn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 26 Sep 2022 16:53:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36066 "EHLO
+        id S230454AbiIZUxU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 26 Sep 2022 16:53:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229760AbiIZUxV (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Sep 2022 16:53:21 -0400
-Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67DFAAC3AE
-        for <linux-ide@vger.kernel.org>; Mon, 26 Sep 2022 13:53:20 -0700 (PDT)
+        with ESMTP id S229925AbiIZUxS (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Sep 2022 16:53:18 -0400
+Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C361AAC39F
+        for <linux-ide@vger.kernel.org>; Mon, 26 Sep 2022 13:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1664225600; x=1695761600;
+  t=1664225597; x=1695761597;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=D2tlF2V9kpdDUzPbuo0OvgGM763PPvJVdQJbL/XT7gA=;
-  b=PzOoX1eN2fwEYSawzfrq46oGhSGnyoZCjki8NI3fX8Doc06YXeLhkfDF
-   mqGZk4R5UquDByrOYGwZ2pzetXSVE9EQ1f95dzYVBeIenya8TBkOhNASG
-   nPk5WOpsMLXLjpOKq0bsXB7IuSIIkaDLMD/e/zrXg86U8eDDbCzk9/ozG
-   Id9Cg/kK9FghOzkuge/hlRvH0yGuQbr/dguKPQrqV9xVGN/FkitSM7r2I
-   LY/DWocIPGRp3+bI20DO+Jl1hVOK6k9hgvS1y1ct2puZyWnkMFzEANy+Q
-   AX1wE627Z3NDJuRaLguze0zFBkpZdi7ljZTScXlyruE1UbJO+YzQBhhzn
-   g==;
+  bh=popbEWWE8beRjvLWbjO6htXqgXTCLBhiU4JqgO0BaKA=;
+  b=n2gZIrIXt0Wfb2Qz5psi2jfDWL9E0s1+bptYCM9Xct3Nh8TYOBLH6jHh
+   xlNJAuL1IMLvhQ/MYvGMQROmgRgKUfC4QJSzx4OMcIgKQI06l1Qg+gdC7
+   8TuYdcmq7WzSaXtQasoH7IC1SFDiDldtjr7uOHKBgLpKIn6rxsLNbfN4W
+   /rTX8I7zDEmAW2J639z41rD4pGKDcEGtyBSVG8GPe/bmP7SKlJBYQ6oo1
+   9/gCddfI+F47DNghwmizfLDrsHzts5VTBs0h0WjPeAhKW9ip1zub/USz+
+   n5qJaipHvhnY42CkSeCUk+CgLjKdRMRdkDus/AoUNKcDfoaikcRe5juYB
+   Q==;
 X-IronPort-AV: E=Sophos;i="5.93,347,1654531200"; 
-   d="scan'208";a="316601435"
-Received: from mail-bn8nam04lp2043.outbound.protection.outlook.com (HELO NAM04-BN8-obe.outbound.protection.outlook.com) ([104.47.74.43])
-  by ob1.hgst.iphmx.com with ESMTP; 27 Sep 2022 04:53:09 +0800
+   d="scan'208";a="324421453"
+Received: from mail-bn8nam12lp2172.outbound.protection.outlook.com (HELO NAM12-BN8-obe.outbound.protection.outlook.com) ([104.47.55.172])
+  by ob1.hgst.iphmx.com with ESMTP; 27 Sep 2022 04:53:16 +0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dWGPSRw31RU+jW9WhaiLrKN9MudrO36+/SFC2ouA0vXTPH4pYO3xBueZna8uzq6c07a6peo2P/DL8Pe51ySfVohT5WFdK7dkICrtJA79/F23wZzokzNh3P1wHeAyTV8rP9IiOlc7it6czS0uT91j2+/XVo+jHjEie8J7QAZDxOOgHmfa9/EdFr5sbMM8B6FDjj4fdvHccpDOf75bebjV3sl3RjwGh4szmsoojFSB7SlyWWu8JLVWedGgpMmgsNjvJYdnfpLM55KfCeb3TksESpUg70QXeLJN+10HKUCbZPO4McmejynqAk8yrH6YxF/RK1WXARoYx5UYJLFo87HxiQ==
+ b=HxMOXqCmKwjUR5J6LuYIwD0+sMaCC7j3nn3z7HJW3o/feUd4Ppmlvzsntlz05O0ZsZQRi/9wPnVWEeCbqyhka2wRPjmpeBbM3tKqTFKcrIhDcsdHM65Fztp6EifYy96+bQb8z/r/oiCdWgDkmBrXGlCplr+bjgX64bmYnkSWOARtCA2fE8Y+ydXS77DBnTO0lTT59DWAX2OWq3naSuVnj2UQsZwoAIdUyl78ZVbSOOcm4U20cWoo6/xfxh4+lmgocmbCy4+I+ZpVsC6zEVnkjtJDdUw/hWRsUP+EEpUKyNYjgmHwAT32HkFCumdOnH9b8aWTNTSUDfXSGx6sBN1d0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GdfCAwA9ZeHwR1l+q68dZDsCSRmLlPEWtzMEVyVIRsg=;
- b=gxq11YEAdzN/F9mqzHoRKI7g5UX1t8QHjmxsrjHTjnJfY0v+QY0opT5+kN3KOmeo13VNcunApEzZScVTYyljb5h/MWtl1w7fBicRKexHSV2kyUsw57XzUFtk+hLKNxnQ7Adpx6cZ7Nw6iWc3BHrFgQst7phrwk9AB6sUXlcusiOeiPw+Y0+9kj/rbs5lXd6S6HeUXLNGEKqIPCcrlNgYG/sQmLtDOCgGdZHIYZD/dMVi6/QcoGT2n3ygWk/hCDN4sHrUVLkYsWswEwKD/iKgu0mJYU8QCih7Pc+V/pIKRqD9n/hepC/afGXOKgtT8rYKt/cUth0ytxygcPjqEMwb+Q==
+ bh=L66sVjYJgXTdlE23mWhV8TxI10w8jkj94MYl+PRw2a0=;
+ b=D4958ImsQOgN+Zt6Yh0K/La6xNuW54R4MxACY9MI6cEOA99EkiGMMYn6Di2oKO1EJOB+ZrzCkh8LnYxj35JLcG4YSvgOs920nhAdpunZpwxWIzaimMpmWtw+B5TzEz9AU/mc+YjrcNM/4fab7x3uYhvhz/6W36Vn/aCvA7aBcvL98WxadhAuE1iez418gT8Q+D0TcWruUn+U/uAeMbr2R+Kc8HOo0fe14tpVUCoQcCJZtpDTW3jomdjXz95VGyrhLzOb4StVRbdoueUi2GzpXGf2gUtSqSc+QsD+D/wu3/+xetiG4wtB5JxobG//gLxhNdUl8TY8rl+VezYNaJOwFg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
  header.d=wdc.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GdfCAwA9ZeHwR1l+q68dZDsCSRmLlPEWtzMEVyVIRsg=;
- b=YKYUdbztecmDLQ3csuBHUOcDERnOL9A0KHsAhmiR2XBsuDOTHG2boww89I6jJW5BWSqNSlU7V8BeYFhi0RY8/+TYEze3Lw8wpK4yZrmvC4k0vJEhdUAEm7Wig7EB4oPmVEpHb9tmb01SIfEtGfaGxQJQjvXm4Uq4UbQq+nbxm7M=
+ bh=L66sVjYJgXTdlE23mWhV8TxI10w8jkj94MYl+PRw2a0=;
+ b=a7dU5rcTlUlhA51lyAVC3jS9qpKTFMIm12pHMMw5c9mpa3Yj4c7G2c5jbi/pcsAAbZeGZ4ANcd1FpADyZLRCmepOMIW7VKJ9l/8Dl6Rem9hB4p/hM5mjvt6mx7QL194PvqpUqwzIMwkacAtsrAjfGGoukSSVCGehlAG9lp5Z0vQ=
 Received: from MN2PR04MB6272.namprd04.prod.outlook.com (2603:10b6:208:e0::27)
- by BY5PR04MB6469.namprd04.prod.outlook.com (2603:10b6:a03:1e4::13) with
+ by CY4PR04MB0391.namprd04.prod.outlook.com (2603:10b6:903:bf::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.25; Mon, 26 Sep
- 2022 20:53:06 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5654.22; Mon, 26 Sep
+ 2022 20:53:07 +0000
 Received: from MN2PR04MB6272.namprd04.prod.outlook.com
  ([fe80::c8bd:645f:364:f7aa]) by MN2PR04MB6272.namprd04.prod.outlook.com
  ([fe80::c8bd:645f:364:f7aa%5]) with mapi id 15.20.5654.025; Mon, 26 Sep 2022
- 20:53:06 +0000
+ 20:53:07 +0000
 From:   Niklas Cassel <Niklas.Cassel@wdc.com>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Tejun Heo <tj@kernel.org>, Hannes Reinecke <hare@suse.de>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
 CC:     Hannes Reinecke <hare@suse.com>,
         Niklas Cassel <Niklas.Cassel@wdc.com>,
         "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
-Subject: [PATCH 2/5] ata: libata: fix NCQ autosense logic
-Thread-Topic: [PATCH 2/5] ata: libata: fix NCQ autosense logic
-Thread-Index: AQHY0en6rNKKvZczkECrEVsvZ9JCxg==
-Date:   Mon, 26 Sep 2022 20:53:06 +0000
-Message-ID: <20220926205257.601750-3-Niklas.Cassel@wdc.com>
+Subject: [PATCH 4/5] ata: libata: only set sense valid flag if sense data is
+ valid
+Thread-Topic: [PATCH 4/5] ata: libata: only set sense valid flag if sense data
+ is valid
+Thread-Index: AQHY0en7pPsTP8d7Kk6fjaAZPX9+6g==
+Date:   Mon, 26 Sep 2022 20:53:07 +0000
+Message-ID: <20220926205257.601750-5-Niklas.Cassel@wdc.com>
 References: <20220926205257.601750-1-Niklas.Cassel@wdc.com>
 In-Reply-To: <20220926205257.601750-1-Niklas.Cassel@wdc.com>
 Accept-Language: en-US
@@ -76,43 +77,43 @@ x-mailer: git-send-email 2.37.3
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=wdc.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN2PR04MB6272:EE_|BY5PR04MB6469:EE_
-x-ms-office365-filtering-correlation-id: f13f461a-53da-435e-4d0f-08daa0011c8d
+x-ms-traffictypediagnostic: MN2PR04MB6272:EE_|CY4PR04MB0391:EE_
+x-ms-office365-filtering-correlation-id: 9767cb82-e50c-4717-c719-08daa0011d8e
 wdcipoutbound: EOP-TRUE
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: DKeXzIXA4/ILQMohe64gT1984ZqUq4ixQcKjMI9KVMqs3wgxGuydY5iPjXoPYuwHdSXSRrEwCgQkURxaJQ/3ita9aD5ibXgIjMX8KZHNLhxNbOzvAs+XEyNoG6G14eWRv1ORCzYva0zNnEtR6OZUAuSv5ZkmLe+IiJKxgB5CKw5l5J64Nd763oIAQilYCIwmeGPD+QyGHQZ0htv5JjdcCe+Q5/QHxb19j4pBbSGFZkMfRxlPAThE6qF0y4y8ZoRcbyFM3ii2VbPzyIdtJRpN8ehZFaJal12UrGpupDfqvDT+fwjFXIQjFnGZPz2R5W41sVUBcZ7uIuQItGXxBo6fcrcNqngGFdL3g+xUevpYDKdH3AFDZ31SIGul+volmwFm6jnBytSwOmb+o4yB61ng046p2YYAqccHQsK3EUblE4vLpJEceagA/v6QIlDDla2PxREN1cQiUDWRT6uUkC/UOqYqXiHDRlwMLNdvojeqGeZdNCaBVzDsnfENBmJyNi49tIbarQQvcNm5eBtUeJ1V2lklDEX8G3MbPrcKxRI3so1+zDt60+d6RQ1E4fOVg2z9cdIZiTcm2YnJCOOVZg6NKDBFXCB9zNEWthXUXOQ1fEDGJ2cNhuqrkaT2m46Yn/2Daiut0JzMS9F7wAordvS+068bykiBCDAVy1VTKF++hLXg82hJlEv7N191YZYJNTte+FM5tu8NcUvC/Pf74o3QMOk8Bp5suMiEbFdWlbCsI6xKwYqtC+x2myX/Zaw1WqIXkckpfqEIlrE3PlCtCOM7Aw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR04MB6272.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(136003)(346002)(376002)(396003)(39860400002)(451199015)(26005)(6506007)(5660300002)(8936002)(41300700001)(82960400001)(83380400001)(6512007)(122000001)(186003)(2616005)(1076003)(36756003)(38070700005)(2906002)(38100700002)(110136005)(316002)(6486002)(54906003)(71200400001)(4326008)(8676002)(76116006)(66446008)(66476007)(66556008)(91956017)(64756008)(66946007)(86362001)(478600001);DIR:OUT;SFP:1102;
+x-microsoft-antispam-message-info: fUFG8PZfvnqo6VfV5NcNs5yGQW0NLfgSMs5ObpmsalnnLO9xEjfq5NNfjTdzF1hWWawVpCvcC8iM6b395ORWjOKfS/RdNs2VoxQZgr92JMl0PqpV1aqmp4LIVE/rDuu5G/Qqy7nn9AO5J1VoUc+Nim5W1abFxQHDKh1R6EpkldlMAsARQQN+bQquJP9Nii4e8xqvrUOYVkjMvi9eoZWkmdjapO4IHJjegbhDHFUIlnqU5RX+p1hx0cFCQveDKWhjRdZPXEQVfPmsUI0mN0LXl8uRfYyROO3Xk/bstEusSSmv7mGzNFoxXQJZqAJRFehtm6O2vK3YkHY+r406xO+tlsEz2GgHr1BPGcykbPfqRHX2rCy+I5jmhHEct9cwoG7ncuEEa0nKDxhA7FlXiGVAhTNdw9+ALuL7Jy9PI6JXtVvF9mE1qQrxykspLfN7H12UhVBYOvo5gpCuIHq6B061BkxAUCXa9I2Gpi0PbFXjP4iM9HUi3DksX0cd626+txGtdiEUd+0a4G0TXtbdq1bVDnEqarpuWZI37uOJQh2DbX+F2qfibMDOTMPWMt4YsUH4vIXdKljiHQo8hE341EReNGpCltOT5BfkKR6yaMyZbxWleXFn+9DNBc+qMaJrVgAYbaSG+gNn769aDR8p1L1PtbsoeypPjt/A1+ykb3dgT0JrGAXg/7iG3tslpcv1mWCThd82Q+stXmDGLgzKlTiXlJU1wM6K7BDxJ0fe8qrJTbNjQPkCy7XUpoyNc0Cs2lOqNGXJ/YyQ//GO15CM8QWkaA==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN2PR04MB6272.namprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(346002)(366004)(39860400002)(396003)(136003)(376002)(451199015)(38070700005)(5660300002)(38100700002)(122000001)(66556008)(6512007)(82960400001)(316002)(66946007)(26005)(64756008)(2906002)(66446008)(91956017)(76116006)(2616005)(66476007)(478600001)(86362001)(71200400001)(6506007)(54906003)(6486002)(36756003)(6862004)(186003)(8936002)(8676002)(1076003)(4326008)(41300700001)(83380400001);DIR:OUT;SFP:1102;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?D2jBtPAEzqxpersxfWDfvizWMIGrA/2/1eC5/Q48I1qmmGJji/Yp1upW5j?=
- =?iso-8859-1?Q?i8hVyCEIKXNbXMEG923MLnrc98MD1jnpSQtYPBeUIip1VGFUb5NJ1KCf2o?=
- =?iso-8859-1?Q?DDNw0qBLrzK2hCsh1QXvVocVVYhX4sbyfAkMwIbH6Q6QpugI8ljqga++6E?=
- =?iso-8859-1?Q?a/SUr3jR84nvyW0PxqC2mqhh7YXKkKwXo3QFC49wW022fFFuSMHRHkjELi?=
- =?iso-8859-1?Q?sd7/javfAKqkfcg0US/TlvOV4UOoWIs/LuOSASDGwKeaZA5l5vOPc9/9co?=
- =?iso-8859-1?Q?dDIiG91S5y08mkJdbGZPhhSI0KF8hAQM94pvGxFfTiym7iUbXtGKhYnUTu?=
- =?iso-8859-1?Q?rb5BSsLkak8tgdc1ngowOabnRJoabe0/Gj3RWF0OeEBiQd6P/WRtwFXIYO?=
- =?iso-8859-1?Q?M4LmYty7I0nZZIK/KxWIuROxx4GRP6ZkeIysZxTU1Xi1XdcUuwXsKVygYi?=
- =?iso-8859-1?Q?Nf/r0A6dnmz/sDq9Gw9c2g6/ThOGGnA699lOYK3u/bqZGCTR2RXTyIkKrX?=
- =?iso-8859-1?Q?5sPQKWVN1LfJ2ZtvVv3LMZWoVsbe3QgSrn0LLpCBGGuOBPIppsjymUoiQE?=
- =?iso-8859-1?Q?IT7gbx+EdAR1pHJc4pp44vKcv2jkaU0VTn7abMITzFHNEztzReRT1A6kcb?=
- =?iso-8859-1?Q?x6d5FI79T0iKczjqTyGvEy+7+LEZOzO89PGD3pWXjgq9MIbr9k8r6iTLAB?=
- =?iso-8859-1?Q?edqGvYRoRkI5V2c8bInLAmo1ot8pNp4WrV/AoXW62KKx5jrGXEmxZ0CLYX?=
- =?iso-8859-1?Q?1SUZ9gi90bRHiw1ioeHjpDGW5sy3ey22cYNkcTfhxPBJ0AbJBXg+ahpuJK?=
- =?iso-8859-1?Q?lN/TujHSS10y2QAu6ikwZ/noAxe0oftoj8MnKnDXkd3Go3sxhwICfyHyJG?=
- =?iso-8859-1?Q?qA3VcgXzrYkLnxnoa9ShydQFpeKOsTc8YIFfN6dra/tiCTDoFrFNwnkS21?=
- =?iso-8859-1?Q?gDgTVbGgPoPfpwzhkUmdOS+S3KmIjknpPErCEUAnmUSODOpMN96wAopqYI?=
- =?iso-8859-1?Q?e7Ufpr79PMzDOlcmzB0182CLtCtQT3IqEFq6OQKmNBD+w1ZWv2QrTlevio?=
- =?iso-8859-1?Q?ZUzSKoV2zzdK6sU/goKkxb5ECrElY59Kz5ZDIgeLeLyoIpj3W84vx/SDEw?=
- =?iso-8859-1?Q?qVTEj/ZKV6rtufBpocsbgwx3XjTJQ1MsU703iZoPT/eYOaRUipDg0ntMKe?=
- =?iso-8859-1?Q?1qHUWiT6SaQf4jzUzU/Fnce0POB+YbgzWj1amZYbiIiqu7+KBqn9Ph0Kb6?=
- =?iso-8859-1?Q?hSIhS1bQ7u4QSSM1bdnMMff/mPn4frjDVJP6dO71YNvVirUZux70CShJvz?=
- =?iso-8859-1?Q?+y4b9p4pPTeb2odHurxlrZlLn/PfxMjpuVqdMFBF9VvedboAm02dj1Aq9O?=
- =?iso-8859-1?Q?I/lSZFL9HrbhuQVPWHEQyLP3A1RTsfEmSHPdN764er3fM79qkonetzXVK2?=
- =?iso-8859-1?Q?6yrHJTYkT58PRXDsB/qeWPsLJkZKWQjANeAPWh+8qdDczMAaM2f2SCFCas?=
- =?iso-8859-1?Q?81m6kxp+8ohc6pdc8XsewGa6XkEvm5i4g/r+M7iwRTtUNl9H87GC3VI7UF?=
- =?iso-8859-1?Q?nNYkh0kdbScKFs/YerZkn4alORX+cCthUlGHkj3TKjLI3QAXy2ogF+Gys5?=
- =?iso-8859-1?Q?89r2lu9iYB1K14UdkTMW4tgnZlzjlx24ZdSwTtRhrocxkmGwmlQztPsA?=
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?R2xI5hL2pkOzfhC5tJGyRR6NA/U11OGIff8svrHczLaP8JD77E3sQmxeXC?=
+ =?iso-8859-1?Q?vbWDWNeA+mka1dg4yEjK2RYXkhYQvHAaO8qrDeGDrUQI6cSKgPq+X+qJDR?=
+ =?iso-8859-1?Q?/bDXSGB4R22QBPsLf0BzoJ2aMm1dkhAxSke6TqnCr71pYF304BTPlBgY4d?=
+ =?iso-8859-1?Q?7aLQLQvIGi/TYU22SexEVu2VyA1xKS2D5fLKlsdxfexiPtGVQiFXayOw2l?=
+ =?iso-8859-1?Q?7FE51zhmCERMqGzvnxKOx35wAQiAXVHY14Sjo6P5R4+P9r7+lvLROMozfg?=
+ =?iso-8859-1?Q?r5uAAeryXQ8jiacumB5vPsVIhkZKGM9mnHSSYVsNdfojLlKhqHq9iQf/fm?=
+ =?iso-8859-1?Q?i07fmH2HeFBnbtsBTvSc2lmIsYWD8pSxmUMYRijJ3AkKVwCg+m4ndUuslW?=
+ =?iso-8859-1?Q?RAJIkFeUYrS2G4SMqXviJk8VrJJkO+lIF9Ogv1qPr+0ZjLGVtWD7Fsv6i/?=
+ =?iso-8859-1?Q?xfQAaAr3Mv+TbBFeMVJCrGIkRWKupdHnjXOhGnssrXcodsArtFv5f2OQ6V?=
+ =?iso-8859-1?Q?JgOe4sqXlV92dXgjxsVwCknpg6e6hDMZ7H9IeJigV/6hyBjvM9rYpfxw3B?=
+ =?iso-8859-1?Q?/320vG5F3+IZSRx/txX32HTLQU1LZes9Z0bKPPPshZMewJjA+JyF8ivY8x?=
+ =?iso-8859-1?Q?oqFm9Tct0C01hI6eKc8Qtf3DzPtwSD7LPuttnPpl7RO4tI/ZOqef1qCPZy?=
+ =?iso-8859-1?Q?Cv7IgB72PqMp2d9IVh/attSuR8Y5xu3QdTnsN4ULJIfG9yWGN2WKSV6FUW?=
+ =?iso-8859-1?Q?cG8aUBfTaL+ib9zA5+wcjapjL+hrbSqGsFLgjZO1g/FPYxS85ck3mYgO3O?=
+ =?iso-8859-1?Q?RNi4mvx7si8lqocUeMRK4YkbIC7uAWMDzF5ybUyUGr8W6YyM1OLlvDYTx1?=
+ =?iso-8859-1?Q?weWPqsGGeFHVnhxKOEq9xXKorIcaam2rYITGkqpWR30r2JuNSVkEX6FGAE?=
+ =?iso-8859-1?Q?MZS11PkD5nyJhQ75KR0aQoaUWUpKmHrmlLbdgGxuV4tHEZrYQgX/qmnYWX?=
+ =?iso-8859-1?Q?WiRwl++s5UNjS/nG8Jayfs272FD73RJsDwNVQ8AEer3ASHxmZTr6/hTZIw?=
+ =?iso-8859-1?Q?CIUwq4oXBH/vORXggs89SAB8Ux7vxZoy6gtV3YBS5MN8N8vMlGfHLo4O3/?=
+ =?iso-8859-1?Q?zm5q8WanQfM+iOMejsI9zwxU40J2caVZOkW/WLAE1GLEgMveyZLe/gjQbp?=
+ =?iso-8859-1?Q?4T9OQbOjR+oQYsxABbhdRBrFevrxxOCi6dltJEnR7GWaPDQfW0kuy7H+IE?=
+ =?iso-8859-1?Q?291j1OSrQZzxlL+PC2OSCSBiI+Nu8NmESs9wEgNFPJvkLIlq6Pf81EYYus?=
+ =?iso-8859-1?Q?01F7LMmWf0/5G8HCmDh3e3v3D3htBNiKESvfHJ8iZHyccAkxKPENe9zF8W?=
+ =?iso-8859-1?Q?LzllOEdw1nNH4zmygYjopXzpJU6j3iFWKnslO6at6gU1jdlryL22lLBp22?=
+ =?iso-8859-1?Q?A6htWO8MNFGbR3Gb3SZ/r1ANGBSfx2HC90aNm3xBks0AyBW/Z9029T7Gfz?=
+ =?iso-8859-1?Q?1jfv4MMMr7KBudis6VEuwmf2Uz/8gVe2fU1XpVARr4K8/c3eLNlmLAxC6f?=
+ =?iso-8859-1?Q?ZN5+B5Fle8EPlm5TPqoIG2UpSq/vRgqeedl6fqdSilaghMs0Wa0DSBvGLS?=
+ =?iso-8859-1?Q?rd5+LXbn9WZnii8zxuefSJ7tSSuc/0TlAnOPSH3MI8ckkJferYNAaflA?=
  =?iso-8859-1?Q?=3D=3D?=
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
@@ -120,14 +121,14 @@ MIME-Version: 1.0
 X-OriginatorOrg: wdc.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: MN2PR04MB6272.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f13f461a-53da-435e-4d0f-08daa0011c8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2022 20:53:06.0624
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9767cb82-e50c-4717-c719-08daa0011d8e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2022 20:53:07.7498
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: m0gMHMI5lLp6cPCALNqQINgCUONiWRKMuyKEkpKLs4UVyEeaURPM87jIQD+QIwK6zAnxgy7/RbFBz5EwUl9xqA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR04MB6469
+X-MS-Exchange-CrossTenant-userprincipalname: EusHSMLHjbAgWn3dL6OF2XfjJWluURfrt0qWT4L2R/aqXwUVFTSDLn0eUZRJ3io8gw7R+wxnd1BvvvyP0bpdvA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR04MB0391
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
         SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -139,69 +140,113 @@ X-Mailing-List: linux-ide@vger.kernel.org
 
 From: Niklas Cassel <niklas.cassel@wdc.com>
 
-Currently, the logic if we should call ata_scsi_set_sense()
-(and set flag ATA_QCFLAG_SENSE_VALID to indicate that we have
-successfully added sense data to the struct ata_queued_cmd)
-looks like this:
+While this shouldn't be needed if all devices that claim that they
+support NCQ autosense (ata_id_has_ncq_autosense()) and/or the sense
+data reporting feature (ata_id_has_sense_reporting()), actually
+supported those features.
 
-if (dev->class =3D=3D ATA_DEV_ZAC &&
-    ((qc->result_tf.status & ATA_SENSE) || qc->result_tf.auxiliary))
+However, there might be some old ATA devices that either have these
+bits set, even when they don't support those features, or they simply
+return malformed data when using those features.
 
-The problem with this is that a drive can support the NCQ command
-error log without supporting NCQ autosense.
+These devices should be quirked, but in order to try to minimize the
+impact for the users of these such devices, it was suggested by Damien
+Le Moal that it might be a good idea to sanity check the sense data
+received from the device. If the sense data looks bogus, then the
+sense data is never added to the scsi_cmnd command.
 
-On such a drive, if the failing command has sense data, the status
-field in the NCQ command error log will have the ATA_SENSE bit set.
+Introduce a new function, ata_scsi_sense_is_valid(), and use it in all
+places where sense data is received from the device.
 
-It is just that this sense data is not included in the NCQ command
-error log when NCQ autosense is not supported. Instead the sense
-data has to be fetched using the REQUEST SENSE DATA EXT command.
-
-Therefore, we should only add the sense data if the drive supports
-NCQ autosense AND the ATA_SENSE bit is set in the status field.
-
-Fix this, and at the same time, remove the duplicated ATA_DEV_ZAC
-check. The struct ata_taskfile supplied to ata_eh_read_log_10h()
-is memset:ed before calling the function, so simply checking if
-qc->result_tf.auxiliary is set is sufficient to tell us that the
-log actually contained sense data.
-
-Fixes: d238ffd59d3c ("libata: do not attempt to retrieve sense code twice")
+Suggested-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 ---
- drivers/ata/libata-sata.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/ata/libata-eh.c   |  6 ++++--
+ drivers/ata/libata-sata.c | 11 +++++++----
+ drivers/ata/libata-scsi.c | 16 ++++++++++++++++
+ drivers/ata/libata.h      |  1 +
+ 4 files changed, 28 insertions(+), 6 deletions(-)
 
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index c6964fd2bc42..922e6c37ea9b 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1431,8 +1431,10 @@ static void ata_eh_request_sense(struct ata_queued_c=
+md *qc)
+ 	err_mask =3D ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
+ 	/* Ignore err_mask; ATA_ERR might be set */
+ 	if (tf.status & ATA_SENSE) {
+-		ata_scsi_set_sense(dev, cmd, tf.lbah, tf.lbam, tf.lbal);
+-		qc->flags |=3D ATA_QCFLAG_SENSE_VALID;
++		if (ata_scsi_sense_is_valid(tf.lbah, tf.lbam, tf.lbal)) {
++			ata_scsi_set_sense(dev, cmd, tf.lbah, tf.lbam, tf.lbal);
++			qc->flags |=3D ATA_QCFLAG_SENSE_VALID;
++		}
+ 	} else {
+ 		ata_dev_warn(dev, "request sense failed stat %02x emask %x\n",
+ 			     tf.status, err_mask);
 diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index eef57d101ed1..dfbc660651e7 100644
+index dfbc660651e7..5d75e62f27b5 100644
 --- a/drivers/ata/libata-sata.c
 +++ b/drivers/ata/libata-sata.c
-@@ -1392,7 +1392,8 @@ static int ata_eh_read_log_10h(struct ata_device *dev=
-,
- 	tf->hob_lbah =3D buf[10];
- 	tf->nsect =3D buf[12];
- 	tf->hob_nsect =3D buf[13];
--	if (dev->class =3D=3D ATA_DEV_ZAC && ata_id_has_ncq_autosense(dev->id))
-+	if (dev->class =3D=3D ATA_DEV_ZAC && ata_id_has_ncq_autosense(dev->id) &&
-+	    (tf->status & ATA_SENSE))
- 		tf->auxiliary =3D buf[14] << 16 | buf[15] << 8 | buf[16];
-=20
- 	return 0;
-@@ -1456,8 +1457,12 @@ void ata_eh_analyze_ncq_error(struct ata_link *link)
- 	memcpy(&qc->result_tf, &tf, sizeof(tf));
- 	qc->result_tf.flags =3D ATA_TFLAG_ISADDR | ATA_TFLAG_LBA | ATA_TFLAG_LBA4=
-8;
- 	qc->err_mask |=3D AC_ERR_DEV | AC_ERR_NCQ;
--	if (dev->class =3D=3D ATA_DEV_ZAC &&
--	    ((qc->result_tf.status & ATA_SENSE) || qc->result_tf.auxiliary)) {
-+
-+	/*
-+	 * If the device supports NCQ autosense, ata_eh_read_log_10h() will have
-+	 * stored the sense data in qc->result_tf.auxiliary.
-+	 */
-+	if (qc->result_tf.auxiliary) {
- 		char sense_key, asc, ascq;
-=20
+@@ -1468,10 +1468,13 @@ void ata_eh_analyze_ncq_error(struct ata_link *link=
+)
  		sense_key =3D (qc->result_tf.auxiliary >> 16) & 0xff;
+ 		asc =3D (qc->result_tf.auxiliary >> 8) & 0xff;
+ 		ascq =3D qc->result_tf.auxiliary & 0xff;
+-		ata_scsi_set_sense(dev, qc->scsicmd, sense_key, asc, ascq);
+-		ata_scsi_set_sense_information(dev, qc->scsicmd,
+-					       &qc->result_tf);
+-		qc->flags |=3D ATA_QCFLAG_SENSE_VALID;
++		if (ata_scsi_sense_is_valid(sense_key, asc, ascq)) {
++			ata_scsi_set_sense(dev, qc->scsicmd, sense_key, asc,
++					   ascq);
++			ata_scsi_set_sense_information(dev, qc->scsicmd,
++						       &qc->result_tf);
++			qc->flags |=3D ATA_QCFLAG_SENSE_VALID;
++		}
+ 	}
+=20
+ 	ehc->i.err_mask &=3D ~AC_ERR_DEV;
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index f3c64e796423..1222aaa62aff 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -188,6 +188,22 @@ DEVICE_ATTR(unload_heads, S_IRUGO | S_IWUSR,
+ 	    ata_scsi_park_show, ata_scsi_park_store);
+ EXPORT_SYMBOL_GPL(dev_attr_unload_heads);
+=20
++bool ata_scsi_sense_is_valid(u8 sk, u8 asc, u8 ascq)
++{
++	/*
++	 * If sk =3D=3D NO_SENSE, and asc + ascq =3D=3D NO ADDITIONAL SENSE INFOR=
+MATION,
++	 * then there is no sense data to add.
++	 */
++	if (sk =3D=3D 0 && asc =3D=3D 0 && ascq =3D=3D 0)
++		return false;
++
++	/* If sk > COMPLETED, sense data is bogus. */
++	if (sk > COMPLETED)
++		return false;
++
++	return true;
++}
++
+ void ata_scsi_set_sense(struct ata_device *dev, struct scsi_cmnd *cmd,
+ 			u8 sk, u8 asc, u8 ascq)
+ {
+diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
+index 2c5c8273af01..2cd6124a01e8 100644
+--- a/drivers/ata/libata.h
++++ b/drivers/ata/libata.h
+@@ -114,6 +114,7 @@ extern int ata_scsi_add_hosts(struct ata_host *host,
+ 			      struct scsi_host_template *sht);
+ extern void ata_scsi_scan_host(struct ata_port *ap, int sync);
+ extern int ata_scsi_offline_dev(struct ata_device *dev);
++extern bool ata_scsi_sense_is_valid(u8 sk, u8 asc, u8 ascq);
+ extern void ata_scsi_set_sense(struct ata_device *dev,
+ 			       struct scsi_cmnd *cmd, u8 sk, u8 asc, u8 ascq);
+ extern void ata_scsi_set_sense_information(struct ata_device *dev,
 --=20
 2.37.3

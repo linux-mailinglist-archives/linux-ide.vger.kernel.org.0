@@ -2,147 +2,106 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4C1A5FB401
-	for <lists+linux-ide@lfdr.de>; Tue, 11 Oct 2022 16:00:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C2F5FBA1E
+	for <lists+linux-ide@lfdr.de>; Tue, 11 Oct 2022 20:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbiJKOAM (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 11 Oct 2022 10:00:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48472 "EHLO
+        id S230015AbiJKSHk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 11 Oct 2022 14:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229889AbiJKOAL (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 11 Oct 2022 10:00:11 -0400
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BF0120374;
-        Tue, 11 Oct 2022 07:00:09 -0700 (PDT)
-Received: by mail-oi1-f172.google.com with SMTP id g130so15898362oia.13;
-        Tue, 11 Oct 2022 07:00:09 -0700 (PDT)
+        with ESMTP id S229729AbiJKSHi (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 11 Oct 2022 14:07:38 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550EA2980C
+        for <linux-ide@vger.kernel.org>; Tue, 11 Oct 2022 11:07:35 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-354c7abf786so135271297b3.0
+        for <linux-ide@vger.kernel.org>; Tue, 11 Oct 2022 11:07:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=b7nMl+IIoVXIZCC/DKHT3CXI2Xf2HP4geGz0+dJZi9s=;
+        b=FG0qA4ikAjxVKa3sHpnmD3r0ovEhAB/bTmLX8VaAqEoTpZLQ8gI6+KCa2X7rXzcUx3
+         rJST5MEvmq0VI70J8hjHeW0BnsDmXHjn1DU19Jfy8L1wC2sLYsljtxyV47EilRh2TLtC
+         9cB+K0rCTEfq02tPXJzGGRr2QF9LJd3mCke8WtuRcb9fZqpXu9hc5PKyEH03JR7y3FCa
+         fR9MC0LDUvDah73tE2PvE3mCpnHEUVEXCgJH/S+cEMd13lcLv9SWquKndDYNyeOjDrAV
+         6YYxGSJpZ+hIfCaCTY2Nyncsf03owIdhplfLFZJjPMseBggOY0NJfZkPV3LWUppYNKkJ
+         0fRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fpinFLGyfMz5LuoFScjs1SYGNlDOoMK18vHAn2nhxCo=;
-        b=5ZybirFQCUgwVRA4joHZ/hUemxB3JPKlCCjx4mOyFeoDCBeI1m7mSqgeRrkB7N6mRp
-         VY7foDCblqKgvVU5o5jX6Mav4oPImMevSY2IIWl3G8OhzJZs1qo+1IRtLROeIPprIuU4
-         nIyGdtW+Nl8f6QOZ4u0Qr4VpLujv7uz7melkcUZmAFHz4J43hW18hGulNXKdO899LB9E
-         8vHkCZG7d8gm0ftcXW4Kcb1YJ4CL6JnUIgJRLdniyrgWD2WSCPlWYZFXsIbiSEQZq1on
-         PjU2dVcSjOLmFb9+uaqbDtkgWuCw8a00Im8YZJkBIge9v3AJlih7jePdjKXvRvz7qUcF
-         B0Vg==
-X-Gm-Message-State: ACrzQf3aPNSm14kBl4cYqQe3qFI4UTbQXSREMHgSmjPKhQ6ZyEddx67h
-        TEpiMmO6FopdxR+1hXoM5Y9uGdhmpA==
-X-Google-Smtp-Source: AMsMyM5HM5siP22QE9AFMbURQF+/Q7yQHyaDxP66PMEWANnBNS8+u9VKkNiJULC0pZeLlabGvBFvog==
-X-Received: by 2002:aca:f056:0:b0:350:f0ba:9caa with SMTP id o83-20020acaf056000000b00350f0ba9caamr11984375oih.198.1665496808582;
-        Tue, 11 Oct 2022 07:00:08 -0700 (PDT)
-Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
-        by smtp.gmail.com with ESMTPSA id r12-20020a4abf0c000000b0044897475dd0sm5292461oop.43.2022.10.11.07.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 07:00:08 -0700 (PDT)
-Received: (nullmailer pid 2787286 invoked by uid 1000);
-        Tue, 11 Oct 2022 14:00:09 -0000
-From:   Rob Herring <robh@kernel.org>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Alexander Shiyan <shc_work@mail.ru>, linux-ide@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] dt-bindings: ata: Add 'ata-generic' binding
-Date:   Tue, 11 Oct 2022 08:58:50 -0500
-Message-Id: <20221011135849.2785834-1-robh@kernel.org>
-X-Mailer: git-send-email 2.35.1
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=b7nMl+IIoVXIZCC/DKHT3CXI2Xf2HP4geGz0+dJZi9s=;
+        b=Toy81hdMEMJ4gdbrDwPl+ZBRUFFuf3SMfKLGWuGun8PQrbsEq9tjdjSDmwa8HUm4wq
+         6tDJkWR7QoaGTwjNufCHC3Oxy2eFLAEo4GJ7VNIerkZVlRGM9fpKuwxoteywrfX+JBsd
+         3PR9tRLwSxvmlKN5cBIG3BjKw6gZnJwOEBHxZbTRv3mAHKN4VRWh+3r46dCfkFbiUTv+
+         eWlDanZ2Tb6nEK0dst5VApK65ZSaID5fcnw4+VvTrSO8FZivogUeSOp2qKoPdA9mUHws
+         /u6C1nQjmI59JEAlQA75jCO4z5Dii2jfd35F1tccdimezBwEb8/judD/YQOKUjyTFDU4
+         0TdA==
+X-Gm-Message-State: ACrzQf0arrP+VycZC8YxxUX+x9L8HLJoHOA6MBBGyxpl+8nbkpDswSOy
+        1diOfPkAJhVTWdS3gbIbYIdrxXak8UYhenXfknM=
+X-Google-Smtp-Source: AMsMyM6OCvagOVxxxTEsfErq9xBhIJJgtNqp5+7CYXRzAiyXlU45PahqHzXqTx5VO8MUR+9wqIhH0LJTIZYEhX9SSJw=
+X-Received: by 2002:a81:6907:0:b0:34a:51ce:3b38 with SMTP id
+ e7-20020a816907000000b0034a51ce3b38mr23284332ywc.151.1665511654327; Tue, 11
+ Oct 2022 11:07:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Received: by 2002:a05:7000:1749:b0:3c5:f473:56e4 with HTTP; Tue, 11 Oct 2022
+ 11:07:33 -0700 (PDT)
+Reply-To: illuminatiinitiationcenter56@gmail.com
+From:   Garry Lee <johnalinda8@gmail.com>
+Date:   Tue, 11 Oct 2022 21:07:33 +0300
+Message-ID: <CA+Dt0k_wprVPDRPoDepuruBYd2vtSZ60hGqdrTRy=NsRMSYouA@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_FILL_THIS_FORM_SHORT,
+        UNDISC_FREEM,UPPERCASE_75_100 autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:112c listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [illuminatiinitiationcenter56[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [johnalinda8[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [johnalinda8[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 T_FILL_THIS_FORM_SHORT Fill in a short form with personal
+        *      information
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The 'ata-generic' binding has been around since 2008, but never
-documented.
-
-Cc: Alexander Shiyan <shc_work@mail.ru>
-Signed-off-by: Rob Herring <robh@kernel.org>
----
-AFAICT, the ata-generic,use16bit property has no effect in Linux. The
-32-bit transfers fallback to 16-bit if ATA_PFLAG_PIO32 flag is not set
-which it doesn't appear to ever be set. Looking at the history, the
-driver always used 16-bit mode.
-
-Linus, Okay with being maintainer here?
-
----
- .../devicetree/bindings/ata/ata-generic.yaml  | 58 +++++++++++++++++++
- 1 file changed, 58 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/ata/ata-generic.yaml
-
-diff --git a/Documentation/devicetree/bindings/ata/ata-generic.yaml b/Documentation/devicetree/bindings/ata/ata-generic.yaml
-new file mode 100644
-index 000000000000..0697927f3d7e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/ata/ata-generic.yaml
-@@ -0,0 +1,58 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/ata/ata-generic.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Generic Parallel ATA Controller
-+
-+maintainers:
-+  - Linus Walleij <linus.walleij@linaro.org>
-+
-+description:
-+  Generic Parallel ATA controllers supporting PIO modes only.
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - arm,vexpress-cf
-+          - fsl,mpc8349emitx-pata
-+      - const: ata-generic
-+
-+  reg:
-+    items:
-+      - description: Command interface registers
-+      - description: Control interface registers
-+
-+  reg-shift:
-+    enum: [ 1, 2 ]
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  ata-generic,use16bit:
-+    type: boolean
-+    description: Use 16-bit accesses instead of 32-bit for data transfers
-+
-+  pio-mode:
-+    description: Maximum ATA PIO transfer mode
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    maximum: 6
-+    default: 0
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    compact-flash@1a000 {
-+        compatible = "arm,vexpress-cf", "ata-generic";
-+        reg = <0x1a000 0x100>,
-+              <0x1a100 0xf00>;
-+        reg-shift = <2>;
-+    };
-+...
 -- 
-2.35.1
-
+DO YOU WANT TO BE RICH AND FAMOUS? JOIN THE GREAT ILLUMINATI ORDER OF
+RICHES, POWER/FAME  NOW AND ACHIEVE ALL YOUR DREAMS? IF YES EMAIL US :
+MAIL: illuminatiinitiationcenter56@gmail.com
+YOUR FULL NAME:
+PHONE NUMBER :
+COUNTRY :
+GENDER:

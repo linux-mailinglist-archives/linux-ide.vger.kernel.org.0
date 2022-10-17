@@ -2,133 +2,115 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02F446006AB
-	for <lists+linux-ide@lfdr.de>; Mon, 17 Oct 2022 08:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6608F600770
+	for <lists+linux-ide@lfdr.de>; Mon, 17 Oct 2022 09:13:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229726AbiJQG0N (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 17 Oct 2022 02:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
+        id S230040AbiJQHNZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 17 Oct 2022 03:13:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230036AbiJQG0M (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 17 Oct 2022 02:26:12 -0400
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7D12E69B
-        for <linux-ide@vger.kernel.org>; Sun, 16 Oct 2022 23:26:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1665987971; x=1697523971;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=t4teOJveAsuZ73M/b4IVMod3m+YB2xkwcL5g6oHeKPI=;
-  b=jPaLYFCBjz4E7VVUZJpBzdAnNEYpE6LSg+R1IK1g+0aqHdAKC08tZMKu
-   8Bxfb+L0UnFb4Ewtl5NucdwjQLSFQePFwPuoRSKIXjrKE4BSHTkZk+YKJ
-   TRCl47WJIpkFxS9r7hM++hNSCs7Q2YJrwEaxIGor3omDlSLCX7oiqlkNs
-   bkGGk1Jh606XfJHPdUY4WiI8WOnTj0rtQOjJ9PIgXNqNYFJuNsCqkRx51
-   SVSXsIP/SEgwgIOaqkHB+/vBZN5UkZxlsY82yQ7Es+m09xTiY/V+tKish
-   39mOypp4OuMvNe989BrTseOiFKJTcQUEMWBjFWlzP3FCQpnZlB6LdJhLh
-   w==;
-X-IronPort-AV: E=Sophos;i="5.95,190,1661788800"; 
-   d="scan'208";a="212316364"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 17 Oct 2022 14:26:09 +0800
-IronPort-SDR: jimibWU0WDKwlLLuvmgK9i66xCO+uEdGkUYH7cVp7uq5e2iMfjjFFeQkHtskjTBLIUqKb7jo6t
- h/ieQoxunCr1t3+IwJOIHFj3F11fidAW5PD2IFMl26RaCpO+0OFCBAaB96rr/kSfbst81xuCOd
- tYpkMR7U8cMCxNwYNBZ57Ai932EA303NAqF5LPlZ4ehZEYK2YKP3mvMVZJ2JqR9gNQwWnapluO
- FgQ5mimwcvnej6q1ZcDvBbDm4Sll17wdQPS9tR//yA4dfgV/aQOGjGKf2gMWVACEfKg/ehlQSo
- WydRVPRr7HsEQ+b7GnvU7QrZ
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2022 22:40:04 -0700
-IronPort-SDR: uuhb7lIz19dSXjjQUjwYTterUISejD+ltNuK1wXVdqX7IpRbCBMg5PcFky3Z28w8m20mQYpbU0
- sz8SG6q5xJuWBXfrjFHW4ZNm42C+WrVgmRMtl8jtEwTo/PQudJgahlLyl71WHCej1fY80vNHAQ
- Acd+LqRcMpnCj27MbVmNC5scnoaTQlGCUFiPMK2kfUwfl5ydlvZTo3xN5nNgGcs5x+MOKLhC/T
- Jk+BrpYB5+QAmziso0FfI41wlgk543QXPp47RAhdkVJq+YgUpGr6x3m20Gh3UyN2bibrpwgpSp
- Vs4=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 16 Oct 2022 23:26:09 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4MrRp90rVlz1RwtC
-        for <linux-ide@vger.kernel.org>; Sun, 16 Oct 2022 23:26:09 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:subject:to
-        :from; s=dkim; t=1665987964; x=1668579965; bh=t4teOJveAsuZ73M/b4
-        IVMod3m+YB2xkwcL5g6oHeKPI=; b=ShETl2BxybGCHJMT5BwO0S/zjExU7qhMRY
-        IujBczGP+yg4ct3g3H7xvZxUaSSbIyo/zb9q+CogXehgnXEtyaMcmBUCkb3STzaj
-        1/pMCV/N2+LR6WzEqSOVwohIKESg+MlTXN6PHIupd4RwmnTWZLWqQxZ0KKkNwpwh
-        6Z7QlGllLKxvcSEpIUQomv1RZp0bE/0eXbSNVHElE2mlG0CtPs5Z2i+uUIxk5lCH
-        Oxb9T5jpGd7bjqT5M47mSl3fbq+Yfc0GpAzzEr1WRYbNcvCnTz62SDxSa+7QJjWh
-        G/banSlP7MC6NbcmIFCTGvSQaDA18gAltesdp2i+qyXQ5/5y8hew==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id rWOhh-HpKRsc for <linux-ide@vger.kernel.org>;
-        Sun, 16 Oct 2022 23:26:04 -0700 (PDT)
-Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4MrRp32fZQz1RvTr;
-        Sun, 16 Oct 2022 23:26:03 -0700 (PDT)
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-To:     linux-ide@vger.kernel.org
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH 2/2] ata: pata_ftide010: Remove build dependency on OF
-Date:   Mon, 17 Oct 2022 15:25:59 +0900
-Message-Id: <20221017062559.2221881-3-damien.lemoal@opensource.wdc.com>
-X-Mailer: git-send-email 2.37.3
-In-Reply-To: <20221017062559.2221881-1-damien.lemoal@opensource.wdc.com>
-References: <20221017062559.2221881-1-damien.lemoal@opensource.wdc.com>
+        with ESMTP id S230137AbiJQHNY (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 17 Oct 2022 03:13:24 -0400
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12B9A2C134;
+        Mon, 17 Oct 2022 00:13:23 -0700 (PDT)
+Received: by mail-qt1-f173.google.com with SMTP id z8so7190330qtv.5;
+        Mon, 17 Oct 2022 00:13:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n0WYKvrhUFoKU+5fvL/Dmd8fbPcmVJhwegNBT3s8dvg=;
+        b=67FoBPEqtAkxK6X+jSPNx9MjI1c5usR1Q19S4JCXR2P5Quf4m+TS8+ih0xHBdYnzFL
+         2zF2Dv1S9P7+M8iJqbUHkI9lS9ip6rFZntBRfSHvpu6nUGE0w/ExmzFNllqVLVemdyYE
+         p/Kbg1mc4FDhAw7ehIolieem/rmlOCqnCVQFoUlg9Uga1rKgRbBaPzyhHCFE8neUFYia
+         bNxopFUcBWA2ZJHSV0az/Q7HmRA1SPJYXJs6d6E7x2bct3QYFwk+kcoWP7HG3pU8UQGh
+         wmU96Pw1JdQZJKb+M0wMTuufku2sweY64DRjJ1rsfLBQqUwayirDmVyRFEfIo+QmKIbB
+         698A==
+X-Gm-Message-State: ACrzQf3hKdF/kB72U+IcSvBbZGZUsPvQOIUBtKZbiDF3bEqst7kke31P
+        ItitHvKhkthBi3vQ7hAKxDfm1F0Avf6pEQ==
+X-Google-Smtp-Source: AMsMyM6nkoAlUBzlpocyQc/mDq09PNyLLE2AzztT6PsoYTIU7izjnmQcPGfsjB3UGMMwxegWkpiEhA==
+X-Received: by 2002:a05:622a:170f:b0:39c:e3dd:62f3 with SMTP id h15-20020a05622a170f00b0039ce3dd62f3mr6475035qtk.480.1665990801984;
+        Mon, 17 Oct 2022 00:13:21 -0700 (PDT)
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
+        by smtp.gmail.com with ESMTPSA id t6-20020a05620a450600b006b8e8c657ccsm8935465qkp.117.2022.10.17.00.13.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Oct 2022 00:13:21 -0700 (PDT)
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-354c7abf786so99659287b3.0;
+        Mon, 17 Oct 2022 00:13:20 -0700 (PDT)
+X-Received: by 2002:a81:1b09:0:b0:35d:cf91:aadc with SMTP id
+ b9-20020a811b09000000b0035dcf91aadcmr7998342ywb.47.1665990800612; Mon, 17 Oct
+ 2022 00:13:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221017032205.2210188-1-damien.lemoal@opensource.wdc.com> <20221017032205.2210188-3-damien.lemoal@opensource.wdc.com>
+In-Reply-To: <20221017032205.2210188-3-damien.lemoal@opensource.wdc.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 17 Oct 2022 09:13:09 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXZEOQ+z98zvK-_tEZibnO38Qan7z5u6fH1Yc0patsT7w@mail.gmail.com>
+Message-ID: <CAMuHMdXZEOQ+z98zvK-_tEZibnO38Qan7z5u6fH1Yc0patsT7w@mail.gmail.com>
+Subject: Re: [PATCH 2/6] ata: sata_rcar: Fix compilation warning
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc:     linux-ide@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-arm-kernel@lists.infradead.org,
+        Patrice Chotard <patrice.chotard@foss.st.com>,
+        linux-renesas-soc@vger.kernel.org,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pata_ftide010 can be built without CONFIG_OF being enabled, as long
-as the macro of_match_ptr() is not used when initializing the platform
-driver .of_match_table field.
+Hi Damien,
 
-Remove the use of this macro and the build dependency on OF.
+On Mon, Oct 17, 2022 at 5:22 AM Damien Le Moal
+<damien.lemoal@opensource.wdc.com> wrote:
+> When compiling with clang and W=1, the following warning is generated:
+>
+> drivers/ata/sata_rcar.c:878:15: error: cast to smaller integer type
+> 'enum sata_rcar_type' from 'const void *'
+> [-Werror,-Wvoid-pointer-to-enum-cast]
+>         priv->type = (enum sata_rcar_type)of_device_get_match_data(dev);
+>                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Fix this by using a cast to unsigned long to match the "void *" type
+> size returned by of_device_get_match_data().
+>
+> Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
----
- drivers/ata/Kconfig         | 1 -
- drivers/ata/pata_ftide010.c | 2 +-
- 2 files changed, 1 insertion(+), 2 deletions(-)
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index 37e065106baf..b30f71859154 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -696,7 +696,6 @@ config PATA_EP93XX
-=20
- config PATA_FTIDE010
- 	tristate "Faraday Technology FTIDE010 PATA support"
--	depends on OF
- 	depends on ARM || COMPILE_TEST
- 	depends on SATA_GEMINI
- 	help
-diff --git a/drivers/ata/pata_ftide010.c b/drivers/ata/pata_ftide010.c
-index 0117df0fe3c5..88924b5daa1a 100644
---- a/drivers/ata/pata_ftide010.c
-+++ b/drivers/ata/pata_ftide010.c
-@@ -560,7 +560,7 @@ static const struct of_device_id pata_ftide010_of_mat=
-ch[] =3D {
- static struct platform_driver pata_ftide010_driver =3D {
- 	.driver =3D {
- 		.name =3D DRV_NAME,
--		.of_match_table =3D of_match_ptr(pata_ftide010_of_match),
-+		.of_match_table =3D pata_ftide010_of_match,
- 	},
- 	.probe =3D pata_ftide010_probe,
- 	.remove =3D pata_ftide010_remove,
---=20
-2.37.3
+Modulo bike-shedding about "uintptr_t" vs. "unsigned long".
+I'd prefer the former (the road to Zettalinux?), but Linus prefers the latter.
 
+> --- a/drivers/ata/sata_rcar.c
+> +++ b/drivers/ata/sata_rcar.c
+> @@ -875,7 +875,7 @@ static int sata_rcar_probe(struct platform_device *pdev)
+>         if (!priv)
+>                 return -ENOMEM;
+>
+> -       priv->type = (enum sata_rcar_type)of_device_get_match_data(dev);
+> +       priv->type = (unsigned long)of_device_get_match_data(dev);
+>
+>         pm_runtime_enable(dev);
+>         ret = pm_runtime_get_sync(dev);
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

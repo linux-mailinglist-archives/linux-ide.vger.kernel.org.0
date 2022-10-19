@@ -2,44 +2,153 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3E7603AB5
-	for <lists+linux-ide@lfdr.de>; Wed, 19 Oct 2022 09:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E3D760425A
+	for <lists+linux-ide@lfdr.de>; Wed, 19 Oct 2022 13:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbiJSHej (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 19 Oct 2022 03:34:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44618 "EHLO
+        id S230478AbiJSLAB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 19 Oct 2022 07:00:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229867AbiJSHei (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 19 Oct 2022 03:34:38 -0400
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95146FD1D;
-        Wed, 19 Oct 2022 00:34:35 -0700 (PDT)
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id DCC8068C4E; Wed, 19 Oct 2022 09:34:31 +0200 (CEST)
-Date:   Wed, 19 Oct 2022 09:34:31 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Ondrej Zary <linux@zary.sk>
-Cc:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        Tim Waugh <tim@cyberelk.net>, linux-block@vger.kernel.org,
-        linux-parport@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pata_parport: add driver (PARIDE replacement)
-Message-ID: <20221019073431.GA12124@lst.de>
-References: <20220312144415.20010-1-linux@zary.sk> <202203161228.05700.linux@zary.sk> <0015ea51-b3e9-924a-2714-61b159fc7b98@opensource.wdc.com> <202203161358.06506.linux@zary.sk>
+        with ESMTP id S234993AbiJSK72 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 19 Oct 2022 06:59:28 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C92D8D42;
+        Wed, 19 Oct 2022 03:29:24 -0700 (PDT)
+Received: from fraeml737-chm.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MslmW4F1Kz689J4;
+        Wed, 19 Oct 2022 17:29:15 +0800 (CST)
+Received: from lhrpeml500003.china.huawei.com (7.191.162.67) by
+ fraeml737-chm.china.huawei.com (10.206.15.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 19 Oct 2022 11:32:27 +0200
+Received: from [10.126.171.238] (10.126.171.238) by
+ lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Wed, 19 Oct 2022 10:32:26 +0100
+Message-ID: <4011744f-d6b5-acab-4efa-95465df4e98b@huawei.com>
+Date:   Wed, 19 Oct 2022 10:32:26 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202203161358.06506.linux@zary.sk>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.1
+From:   John Garry <john.garry@huawei.com>
+Subject: Re: libata and software reset
+To:     Niklas Cassel <Niklas.Cassel@wdc.com>
+CC:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        Xiang Chen <chenxiang66@hisilicon.com>
+References: <046e86d2-17e1-e85d-08a1-744ef975171c@huawei.com>
+ <Y07AmUoyq8+HVzQU@x1-carbon>
+In-Reply-To: <Y07AmUoyq8+HVzQU@x1-carbon>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.126.171.238]
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500003.china.huawei.com (7.191.162.67)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-It's been a while - did you get a chance to make some progress on
-this?  Do you need any help to unblock you?
+On 18/10/2022 16:04, Niklas Cassel wrote:
+>> Hi guys,
+>>
+>> In the hisi_sas driver there are times in which we need to issue an ATA
+>> software reset. For this we use hisi_sas_softreset_ata_disk() ->
+>> sas_execute_ata_cmd() -> sas_execute_tmf(), which uses libsas "slow task"
+>> mechanism to issue the command.
+>>
+>> I would like if libata provided such a function to issue a software reset,
+>> such that we can send the command as an ATA queued command.
+>>
+>> The problem is that often when we would want to issue this software reset
+>> the associated ata port is frozen, like in ATA EH, and so we cannot issue
+>> ATA queued commands - internal or normal - at that time.
+>>
+>> Is there any way to solve this? Or I am just misunderstanding how and when
+>> ATA queued commands can and should be used?
+>>
+> Hello John,
+
+Hi Niklas,
+
+> 
+> See the kdoc above __ata_port_freeze():
+> "This function is called when HSM violation or some other
+> condition disrupts normal operation of the port.  Frozen port
+> is not allowed to perform any operation until the port is
+> thawed, which usually follows a successful reset.
+
+ok, I see.
+
+> 
+> ap->ops->freeze() callback can be used for freezing the port
+> hardware-wise (e.g. mask interrupt and stop DMA engine).  If a
+> port cannot be frozen hardware-wise, the interrupt handler
+> must ack and clear interrupts unconditionally while the port
+> is frozen."
+> 
+> 
+> ata_port_operations.qc_issue() is obviously an operation on the port,
+> so it makes sense that it is not allowed.
+
+hmmm..ok, then.
+
+
+> Interrupts are also usually masked or disabled at this time, so we
+> won't get an IRQ with the completion.
+
+Doesn't this policy really just depend on the host controller driver?
+
+> 
+> Perhaps one could argue that there could be an API to execute a polled
+> command. But if the port is in a bad state,
+  e.g. a HSM error (RDY bit
+> is not set), issuing a command would likely fail anyway, regardless if
+> using polling or IRQs.
+> 
+> 
+>> I assume that ata_port_operations.softreset callback requires a method to be
+>> able to issue the softreset directly from the driver, like ahci_softreset()
+>> -> ahci_do_softreset() -> ahci_exec_polled_cmd().
+> Yes, looking .softreset in a few ata drivers, they all seem issue the
+> softreset directly from the driver.
+> (e.g. ahci_do_softreset() calls ahci_exec_polled_cmd() which just always
+> uses bit 0 in PORT_CMD_ISSUE, so it ignores hw_tag.)
+> 
+> But I don't think that I fully understand your problem.
+> 
+> hisi_sas_softreset_ata_disk() -> sas_execute_ata_cmd() -> sas_execute_tmf()
+> calls lldd_execute_task() (hisi_sas_queue_command()) and then calls
+> waits for completion.
+> 
+> How is this different from e.g. the libahci case?
+
+The difference really comes down to the controller programming interface.
+
+For ahci we have a MMIO interface to issue the software reset command.
+
+For my SAS controller of interest, there is no such MMIO interface. To 
+issue the reset we build a h2d fis with a SRST set, and send on the 
+controller ring buffer like any other IO.
+
+As I mentioned, we can set the SRST for the h2d fis on the HW interface 
+without issue, and it works fine. The problem for me is that the command 
+comes via libsas/driver, and I would like it to come from libata such 
+that it has a ATA queued command associated. But then we have the 
+problem that the port is frozen at such times that we want to issue this 
+command.
+
+> Doesn't this end up being the same as resetting the port directly from the
+> driver? (if we ignore all the callbacks)
+> Or do you actually get stuck on a ata_port_is_frozen() check somewhere?
+
+
+Thanks,
+John

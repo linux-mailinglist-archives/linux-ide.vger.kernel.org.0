@@ -2,81 +2,81 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD449606F83
-	for <lists+linux-ide@lfdr.de>; Fri, 21 Oct 2022 07:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3A60606F85
+	for <lists+linux-ide@lfdr.de>; Fri, 21 Oct 2022 07:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbiJUFiQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 21 Oct 2022 01:38:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46528 "EHLO
+        id S230006AbiJUFiS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 21 Oct 2022 01:38:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230013AbiJUFiP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 21 Oct 2022 01:38:15 -0400
+        with ESMTP id S230020AbiJUFiQ (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 21 Oct 2022 01:38:16 -0400
 Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA9722D592
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091FD1D3EB9
         for <linux-ide@vger.kernel.org>; Thu, 20 Oct 2022 22:38:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1666330694; x=1697866694;
+  t=1666330695; x=1697866695;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5jDx0lP+o2kM2l3dFDfXJIWsNbQK6E/ZPhUoPm7PXlE=;
-  b=GEgfkOd2/MH7UAIUtwSpV8LmYME8O0Vg5lUTTN4dF70QpPGgTv5byT+s
-   YhnNsdgU3cGGrwhATfYXHiDQi93wmPCDWPerWhWoCcVuAddd2IbDShl/8
-   k4ZdiFf7LmfsdXCOkXUnhPxQvmwgfgxf1+Yrcxwvy5bP9qXixxczazmh1
-   gCJLhZBse225gKAoMNOs8HLKEnfocTXVUJgjBv5bPb7WoFa6cFIm8Z2pu
-   g5an2zJYsX3awTNUUT6QHfGt2WHKQEd28g0fdMJbmszHR6xTPue5NFTJL
-   fELVUknmDeR7ydiU68BbOquiRxnEAzgOTsTXB5xqTrBFxC+oxWZj7FUwu
+  bh=5xuAmGEn348RubcykWSiLzYAm2/uYdDmjJOxyy3Ikx8=;
+  b=d1EBigoXzWv1qoNQPzRfUgYbSVmg6dKoYz6EdZ5XQ0IfCkNu10zXsVUj
+   sEdtCX6G1Wrr7BRlzS7ASAUV4bOvpjYM5tzQRgSLhcAaGq0kg7fX987SP
+   zA5IG86VSu0StN4WkdMtO3F6uMP0arohCsaMvTAh6R1Ar3q1w6GpgRdPj
+   rrPY3sLt0FMrSOySI7mDqRHMwDrzsErL4Vzel+1/YFWFa+Y/YjaS1Pl/J
+   OGkRle0veR4XQSQjDtQakiiNKeHQM//zIpttH/d93ZZWuimFUZJ61Pg3B
+   9NJn/1mYy42idyiMbvoKPInYK7CZxrILiv4C+3uGj/Zt69InLhijo79NG
    A==;
 X-IronPort-AV: E=Sophos;i="5.95,200,1661788800"; 
-   d="scan'208";a="326518274"
+   d="scan'208";a="326518277"
 Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 21 Oct 2022 13:38:13 +0800
-IronPort-SDR: /yTXpkZwRI19ogJMdB5C4Zk4AEQ+NxHOgu2tWSSMB19UlN+xx8VMqDrnkjTlCjODRi18eNi6Su
- WbBs6GGZc3H8zLduGnP2MA3zCXMffxcPw3mhL3x00CRoVbWrPACGlFeW+XG6AK9UsVvHjE6v76
- kOeXCJxEfILF2+jaMbSKKH6SwntR8ROyt1Sun3AvFSp93UlKiElxUoT9X0SiTa5gPmIl4AAdb1
- Ju7JhacO+P8IrgkI+cpVuwjNZHnL+ITP7VgeQFLkXPGH8SqB4CKK2sMFEcS4ZVilOPMbqph/6J
- feffR5LYQvP/q2T8srYuyJ/G
+  by ob1.hgst.iphmx.com with ESMTP; 21 Oct 2022 13:38:14 +0800
+IronPort-SDR: BxyTTZdvj/Ub97MfXjjJ6zhwaMt8EWQ92N5LM+SMIXZIT+rbo/D/novyGj10TAF/7xKpoFI6NO
+ AlswLIOnV8cgURgh3M/mj2jhYb5NCaLnxakNs4ZG5O2puet8MtOeRtzXMIg4cq5/tWjysojiQU
+ TfxlDgTYlF943uYUN/nxRk6a3l8A5BGdCiFEjw08xKJYIQNPGg8e7RGnnO+Ihvyt0ZNW2v22cR
+ mTmBNE47JzSSH/RpkFLQA60u4XX7188xn7ZEk7ZR0yQ4OCacsHpWl3HXZyaBB2IBvuMvioJlpu
+ LyOUd51s2PwBJVMgbfJeGgo6
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Oct 2022 21:57:41 -0700
-IronPort-SDR: duhhL8ufQwLdrCXt2pbW1YErf1ZNslrXKTa3ANhKXLY3XTkTMgEWuWTeYV8XsDKL2dOOVnQb4C
- ODev96GuKnbp7Y+n/g4XKHaIuiRyRo/AUczdewwmrUxuqHEZAPELE0sFm4xNBSw6fk3vKD+64W
- jXjcHpBHGIN3tVh4VCGq0saeTj+z0hO+uweqAlkg7aY2/FOSdyyusVWctoOqHQ/SfROwL4o41J
- hLpkPy3z0xMzig3jSytbp7e2lMcY3ima0At+rn4G7v+SbBfd8HI0XLZCX1YE7CTCsGVoFygqV8
- 2yw=
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Oct 2022 21:57:42 -0700
+IronPort-SDR: AUhRPngLNht3OWe7w97dX2Q8atfMKkItXhlJrVXw9MDF3/cwdHNqeEPv8w9Vn0kH3urEq3A8hy
+ 1hPKHktp5O5PjgioodgN6KyDX2n6kGHAHRj2yjE5KoV6XVTfq5BYw0f2bjzD7r7+R/DiB86jB7
+ CBS37rmfBWSxUljtDwPq3HmVSD2Pc2Uc9hWm4FoxeQsgfZCz3nNFTQYcBefO/w8qXvl/HNa7vu
+ SS4EOpXMYg+n4HPU11o97CnH1tQDPic1AjjrgnKjhxWSs7SjE3hTOv1ivBAsw/7rUXnJakNkdX
+ 3dg=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
   by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Oct 2022 22:38:14 -0700
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4MttY136qLz1RvTr
-        for <linux-ide@vger.kernel.org>; Thu, 20 Oct 2022 22:38:13 -0700 (PDT)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4MttY22JYvz1RvTr
+        for <linux-ide@vger.kernel.org>; Thu, 20 Oct 2022 22:38:14 -0700 (PDT)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:mime-version
         :references:in-reply-to:x-mailer:message-id:date:subject:to
-        :from; s=dkim; t=1666330693; x=1668922694; bh=5jDx0lP+o2kM2l3dFD
-        fXJIWsNbQK6E/ZPhUoPm7PXlE=; b=TXElKP3GpjEiYq/PM4L/alVS6V+ZuskerU
-        JL/rKM5jCI4k7cJJBXmNnjCm0My+iyEJuvagOPwJVI9aD8/0dKF/qXPyyl6SFXse
-        YBC4Cq6yDVtAmYGWjM8J8E5jKN2DxX4yr7tszAle99xbQU49fKWofHSFiIcHbIcK
-        K6RKQfN5eROALwhA4uhIX4vusQBRRDNPvBQIpECHb9l/c6yZxMslHkxc9sARjE/B
-        KZ74N1DFSq7+Sz877GeRW8Ii7EsSUxwLTAQJVhlPyMzw0T1CbO2VEcrgjPG7IdFc
-        GDV5+vt9fCuEtdrAYOv+hVXPNkpAty/FO+cS0s6s8kphs1dMiWjw==
+        :from; s=dkim; t=1666330693; x=1668922694; bh=5xuAmGEn348RubcykW
+        SiLzYAm2/uYdDmjJOxyy3Ikx8=; b=hnOWBDLk5191RCMpkLrc2QWy4+VroW3B+8
+        0/mRMvWtwLn0REE9PM3NvG0ml4NceTOmV6P5yUyZaNdMJAii+NwshQLN/goKmRwm
+        eLM3p1PzPP+2PxVnUq6qQlOJb+EndBhpCRk2QhpHdHvDSjcnzrWM3A6cNJ32filv
+        YFCfHHlCeEDF7GGlzxwlbSaSgMQZ+IXIpOxYa+HkIOz2BjQjsbyR0plGKKMPFt19
+        wvK3hVe2HfxqI70k2G/akCIBN2htxEy+XLwUw13Y0vTKI9dbsltLocM3srBGcgKg
+        lLVKc2hYq3SNpJqNpAib32B4KHI9Qo29naMkxIQE1PQq15rfLcPQ==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id oXYUWTx6Ww3o for <linux-ide@vger.kernel.org>;
+        with ESMTP id j4x7j-dHTbzF for <linux-ide@vger.kernel.org>;
         Thu, 20 Oct 2022 22:38:13 -0700 (PDT)
 Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4MttY03xvtz1RvLy;
-        Thu, 20 Oct 2022 22:38:12 -0700 (PDT)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4MttY12qhZz1RvTp;
+        Thu, 20 Oct 2022 22:38:13 -0700 (PDT)
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 To:     linux-ide@vger.kernel.org,
         "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>
 Cc:     Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 2/3] ata: libata: allow toggling fua parameter at runtime
-Date:   Fri, 21 Oct 2022 14:38:08 +0900
-Message-Id: <20221021053809.237651-3-damien.lemoal@opensource.wdc.com>
+Subject: [PATCH 3/3] ata: libata: Enable fua support by default
+Date:   Fri, 21 Oct 2022 14:38:09 +0900
+Message-Id: <20221021053809.237651-4-damien.lemoal@opensource.wdc.com>
 X-Mailer: git-send-email 2.37.3
 In-Reply-To: <20221021053809.237651-1-damien.lemoal@opensource.wdc.com>
 References: <20221021053809.237651-1-damien.lemoal@opensource.wdc.com>
@@ -91,48 +91,33 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>
+Change the default value of the fua module parameter to 1 to enable fua
+support by default for all devices supporting it. This parameter
+description is also updated to indicate it is deprecated and that
+libata.force=3D[no]fua should be used to control fua support.
 
-Currently, the libata.fua parameter isn't runtime-writable, so a
-system restart is required in order to toggle it.
-This unnecessarily complicates testing how drives behave with FUA on and
-off.
-
-Let's make this parameter R/W instead, like many others in the kernel.
-
-Example usage:
-Disable the parameter:
-echo 0 >/sys/module/libata/parameters/fua
-
-Revalidate disk cache settings:
-F=3D/sys/class/scsi_disk/0\:0\:0\:0/cache_type; echo `cat $F` >$F
-
-[Damien]
-Enabling fua support by setting libata.fua to 1 will have no effect if
-the libata module is loaded with libata.force=3D[ID]nofua, which disables
-fua support for the ata device(s) identified with ID or all ata devices
-if no ID is specified.
-
-Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 ---
- drivers/ata/libata-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 6008f7ed1c42..1bb9616b10d9 100644
+index 1bb9616b10d9..140e7e7d7833 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -128,7 +128,7 @@ module_param(atapi_passthru16, int, 0444);
+@@ -127,9 +127,9 @@ int atapi_passthru16 =3D 1;
+ module_param(atapi_passthru16, int, 0444);
  MODULE_PARM_DESC(atapi_passthru16, "Enable ATA_16 passthru for ATAPI dev=
 ices (0=3Doff, 1=3Don [default])");
 =20
- int libata_fua =3D 0;
--module_param_named(fua, libata_fua, int, 0444);
-+module_param_named(fua, libata_fua, int, 0644);
- MODULE_PARM_DESC(fua, "FUA support (0=3Doff [default], 1=3Don)");
+-int libata_fua =3D 0;
++int libata_fua =3D 1;
+ module_param_named(fua, libata_fua, int, 0644);
+-MODULE_PARM_DESC(fua, "FUA support (0=3Doff [default], 1=3Don)");
++MODULE_PARM_DESC(fua, "FUA support (0=3Doff, 1=3Don [default])");
 =20
  static int ata_ignore_hpa;
+ module_param_named(ignore_hpa, ata_ignore_hpa, int, 0644);
 --=20
 2.37.3
 

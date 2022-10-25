@@ -2,235 +2,173 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5167E60C9A5
-	for <lists+linux-ide@lfdr.de>; Tue, 25 Oct 2022 12:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADCC960D34E
+	for <lists+linux-ide@lfdr.de>; Tue, 25 Oct 2022 20:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230187AbiJYKMJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 25 Oct 2022 06:12:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43428 "EHLO
+        id S230305AbiJYSOh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 25 Oct 2022 14:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232171AbiJYKKt (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 25 Oct 2022 06:10:49 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8806013669F;
-        Tue, 25 Oct 2022 03:03:42 -0700 (PDT)
-Received: from fraeml701-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4MxS9Q390vz67brF;
-        Tue, 25 Oct 2022 18:00:10 +0800 (CST)
-Received: from lhrpeml500003.china.huawei.com (7.191.162.67) by
- fraeml701-chm.china.huawei.com (10.206.15.50) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.2375.31; Tue, 25 Oct 2022 12:03:40 +0200
-Received: from localhost.localdomain (10.69.192.58) by
- lhrpeml500003.china.huawei.com (7.191.162.67) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 25 Oct 2022 11:03:37 +0100
-From:   John Garry <john.garry@huawei.com>
-To:     <damien.lemoal@opensource.wdc.com>, <jejb@linux.ibm.com>,
-        <martin.petersen@oracle.com>, <hare@suse.de>, <bvanassche@acm.org>,
-        <hch@lst.de>, <ming.lei@redhat.com>, <niklas.cassel@wdc.com>
-CC:     <axboe@kernel.dk>, <jinpu.wang@cloud.ionos.com>,
-        <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-ide@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-        <linuxarm@huawei.com>, John Garry <john.garry@huawei.com>
-Subject: [PATCH RFC v3 7/7] scsi: hisi_sas: Remove internal tag handling for reserved commands
-Date:   Tue, 25 Oct 2022 18:32:56 +0800
-Message-ID: <1666693976-181094-8-git-send-email-john.garry@huawei.com>
-X-Mailer: git-send-email 2.8.1
-In-Reply-To: <1666693976-181094-1-git-send-email-john.garry@huawei.com>
-References: <1666693976-181094-1-git-send-email-john.garry@huawei.com>
+        with ESMTP id S232810AbiJYSOd (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 25 Oct 2022 14:14:33 -0400
+Received: from vps-vb.mhejs.net (vps-vb.mhejs.net [37.28.154.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11EAFC50AA
+        for <linux-ide@vger.kernel.org>; Tue, 25 Oct 2022 11:14:04 -0700 (PDT)
+Received: from MUA
+        by vps-vb.mhejs.net with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <mail@maciej.szmigiero.name>)
+        id 1onOQl-0002gb-TM; Tue, 25 Oct 2022 20:13:39 +0200
+Message-ID: <f950360e-5b52-a64d-8804-52c8028b3b03@maciej.szmigiero.name>
+Date:   Tue, 25 Oct 2022 20:13:33 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.69.192.58]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- lhrpeml500003.china.huawei.com (7.191.162.67)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.3.0
+Content-Language: en-US, pl-PL
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc:     linux-ide@vger.kernel.org, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Niklas Cassel <Niklas.Cassel@wdc.com>,
+        Hannes Reinecke <hare@suse.de>
+References: <20221024072609.346502-1-damien.lemoal@opensource.wdc.com>
+ <f1456224-f644-dce5-15ea-fecc965788e1@maciej.szmigiero.name>
+ <1401aa25-38de-c5e0-f9de-7aeb7ce0af9d@opensource.wdc.com>
+ <a44337f7-3e8f-abcc-5695-f2e571087e8d@opensource.wdc.com>
+ <709fb497-df73-0ee7-06db-1fb4c2e50cf6@suse.de>
+ <26def87e-6e44-17ae-f928-030c837c9dbe@opensource.wdc.com>
+From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Subject: Re: [PATCH v2 0/3] Improve libata support for FUA
+In-Reply-To: <26def87e-6e44-17ae-f928-030c837c9dbe@opensource.wdc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Now that any sas_task which we're sent has a request associated, we can
-use the request tag for slot IPTT.
+On 25.10.2022 10:59, Damien Le Moal wrote:
+> On 10/25/22 16:05, Hannes Reinecke wrote:
+>> On 10/25/22 01:26, Damien Le Moal wrote:
+>>> On 10/25/22 07:09, Damien Le Moal wrote:
+>>>> On 10/25/22 03:48, Maciej S. Szmigiero wrote:
+>>>>> On 24.10.2022 09:26, Damien Le Moal wrote:
+>>>>>> These patches cleanup and improve libata support for the FUA device
+>>>>>> feature. Patch 3 enables FUA support by default for any drive that
+>>>>>> reports supporting the feature.
+>>>>>>
+>>>>>> Changes from v1:
+>>>>>>     - Removed Maciej's patch 2. Instead, blacklist drives which are known
+>>>>>>       to have a buggy FUA support.
+>>>>>>
+>>>>>> Damien Le Moal (3):
+>>>>>>      ata: libata: cleanup fua handling
+>>>>>>      ata: libata: blacklist FUA support for known buggy drives
+>>>>>>      ata: libata: Enable fua support by default
+>>>>>>
+>>>>>
+>>>>> Thanks for the updated series.
+>>>>>
+>>>>> In general (besides the small commit message thing that Sergey had
+>>>>> already mentioned) it looks good to me, so:
+>>>>> Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+>>>>
+>>>> Thanks. I need to do some more testing using some very old drives I found.
+>>>> So far, no issues: detection works, some drives have FUA, other not. For
+>>>> the ones that have FUA, I am running fstests (ext4 and xfs) to check for
+>>>> weird behavior with REQ_FUA writes. Once I complete all tests I will queue
+>>>> this.
+>>>
+>>> Actually, I need to take this back. Checking again the code, I found an
+>>> issue with this entire FUA support: for a drive that does not support NCQ,
+>>> or one that has NCQ but has its queue depth set to one, then for a REQ_FUA
+>>> write request, ATA_CMD_WRITE_MULTI_FUA_EXT or ATA_CMD_WRITE_FUA_EXT will
+>>> be used. All good, BUT ! sd.c may also send read requests with the FUA bit
+>>> set if the read request has REQ_FUA set. For read commands, the regular,
+>>> non FUA commands ATA_CMD_READ_MULTI, ATA_CMD_READ_MULTI_EXT, ATA_CMD_READ
+>>> or ATA_CMD_READ_EXT will be used since ATA does not define a FUA version
+>>> of these. This means that the REQ_FUA flag will be ignored: this entire
+>>> code is broken as it is assuming that the read command processing on the
+>>> drive is consistent with executions of ATA_CMD_WRITE_MULTI_FUA_EXT or
+>>> ATA_CMD_WRITE_FUA_EXT. I do not want to bet on that, especially with old
+>>> drives.
+>>>
+>> Now you got me confused.
+>> What exactly would be the semantics of a READ request with the FUA bit
+>> set? Ignore the cache and read from disk?
+>> That would only make sense if the cache went out of sync with the drive,
+>> which really shouldn't happen, no?
+> 
+> For the NCQ read command, FUA text says:
+> 
+> If the Forced Unit Access (FUA) bit is set to one, the device shall
+> retrieve the data from the non-volatile media regardless of whether the
+> device holds the requested information in the volatile cache. If the
+> device holds a modified copy of the requested data as a result of having
+> volatile cached writes, the modified data shall be written to the
+> non-volatile media before being retrieved from the non-volatile media as
+> part of this operation. If the FUA bit is cleared to zero, the data shall
+> be retrieved either from the device's non-volatile media or cache.
+> 
+> So all well for NCQ, everything as expected, no surprises at all here.
+> 
+> But no equivalent behavior defined for non-NCQ read commands, and with
+> libata.fua enabled, ata_rwcmd_protocol() will cause any REQ_FUA read to
+> fail, which is the safe thing to do, but that is not what one gets when
+> libata.fua is disabled. So enabling libata fua by default could
+> potentially break some use cases out there of people using REQ_FUA reads
+> without realizing that it is doing nothing in non-NCQ case.
+> 
+> I have not checked the block layer though. Does the preflush/sync
+> machinery also triggers for reads ? I do not think so. I think REQ_FUA is
+> ignored for reads.
 
-However, since v2 HW has its own slot IPTT allocation scheme due to badly
-broken HW, continue to use it.
+It seems like the block layer is indeed capable of doing a {pre,post}-flush
+on reads - neither op_is_flush() nor blk_flush_policy() or
+blk_insert_flush() have any checks for request direction.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
----
- drivers/scsi/hisi_sas/hisi_sas.h       |  3 -
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 82 +++++---------------------
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c |  9 +--
- 3 files changed, 17 insertions(+), 77 deletions(-)
+But, as you mentioned, no higher level kernel code seems to actually issue
+such FUA reads.
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas.h b/drivers/scsi/hisi_sas/hisi_sas.h
-index 6f8a52a1b808..8cd238f75066 100644
---- a/drivers/scsi/hisi_sas/hisi_sas.h
-+++ b/drivers/scsi/hisi_sas/hisi_sas.h
-@@ -39,9 +39,6 @@
- #define HISI_SAS_PM_BIT		2
- #define HISI_SAS_HW_FAULT_BIT	3
- #define HISI_SAS_MAX_COMMANDS (HISI_SAS_QUEUE_SLOTS)
--#define HISI_SAS_RESERVED_IPTT  96
--#define HISI_SAS_UNRESERVED_IPTT \
--	(HISI_SAS_MAX_COMMANDS - HISI_SAS_RESERVED_IPTT)
- 
- #define HISI_SAS_IOST_ITCT_CACHE_NUM 64
- #define HISI_SAS_IOST_ITCT_CACHE_DW_SZ 10
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 65475775c844..7f784cdacf9f 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -161,49 +161,13 @@ static void hisi_sas_slot_index_clear(struct hisi_hba *hisi_hba, int slot_idx)
- 
- static void hisi_sas_slot_index_free(struct hisi_hba *hisi_hba, int slot_idx)
- {
--	if (hisi_hba->hw->slot_index_alloc ||
--	    slot_idx >= HISI_SAS_UNRESERVED_IPTT) {
-+	if (hisi_hba->hw->slot_index_alloc) {
- 		spin_lock(&hisi_hba->lock);
- 		hisi_sas_slot_index_clear(hisi_hba, slot_idx);
- 		spin_unlock(&hisi_hba->lock);
- 	}
- }
- 
--static void hisi_sas_slot_index_set(struct hisi_hba *hisi_hba, int slot_idx)
--{
--	void *bitmap = hisi_hba->slot_index_tags;
--
--	__set_bit(slot_idx, bitmap);
--}
--
--static int hisi_sas_slot_index_alloc(struct hisi_hba *hisi_hba,
--				     struct request *rq)
--{
--	int index;
--	void *bitmap = hisi_hba->slot_index_tags;
--
--	if (rq)
--		return rq->tag + HISI_SAS_RESERVED_IPTT;
--
--	spin_lock(&hisi_hba->lock);
--	index = find_next_zero_bit(bitmap, HISI_SAS_RESERVED_IPTT,
--				   hisi_hba->last_slot_index + 1);
--	if (index >= HISI_SAS_RESERVED_IPTT) {
--		index = find_next_zero_bit(bitmap,
--				HISI_SAS_RESERVED_IPTT,
--				0);
--		if (index >= HISI_SAS_RESERVED_IPTT) {
--			spin_unlock(&hisi_hba->lock);
--			return -SAS_QUEUE_FULL;
--		}
--	}
--	hisi_sas_slot_index_set(hisi_hba, index);
--	hisi_hba->last_slot_index = index;
--	spin_unlock(&hisi_hba->lock);
--
--	return index;
--}
--
- void hisi_sas_slot_task_free(struct hisi_hba *hisi_hba, struct sas_task *task,
- 			     struct hisi_sas_slot *slot)
- {
-@@ -465,8 +429,10 @@ static int hisi_sas_queue_command(struct sas_task *task, gfp_t gfp_flags)
- 	struct hisi_sas_port *port;
- 	struct hisi_hba *hisi_hba;
- 	struct hisi_sas_slot *slot;
-+	unsigned int dq_index;
- 	struct request *rq;
- 	struct device *dev;
-+	u32 blk_tag;
- 	int rc;
- 
- 	if (!sas_port) {
-@@ -486,20 +452,9 @@ static int hisi_sas_queue_command(struct sas_task *task, gfp_t gfp_flags)
- 	hisi_hba = dev_to_hisi_hba(device);
- 	dev = hisi_hba->dev;
- 	rq = sas_task_find_rq(task);
--	if (rq) {
--		unsigned int dq_index;
--		u32 blk_tag;
--
--		blk_tag = blk_mq_unique_tag(rq);
--		dq_index = blk_mq_unique_tag_to_hwq(blk_tag);
--		dq = &hisi_hba->dq[dq_index];
--	} else {
--		struct Scsi_Host *shost = hisi_hba->shost;
--		struct blk_mq_queue_map *qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
--		int queue = qmap->mq_map[raw_smp_processor_id()];
--
--		dq = &hisi_hba->dq[queue];
--	}
-+	blk_tag = blk_mq_unique_tag(rq);
-+	dq_index = blk_mq_unique_tag_to_hwq(blk_tag);
-+	dq = &hisi_hba->dq[dq_index];
- 
- 	switch (task->task_proto) {
- 	case SAS_PROTOCOL_SSP:
-@@ -563,13 +518,13 @@ static int hisi_sas_queue_command(struct sas_task *task, gfp_t gfp_flags)
- 			goto err_out_dma_unmap;
- 	}
- 
--	if (!internal_abort && hisi_hba->hw->slot_index_alloc)
-+	if (hisi_hba->hw->slot_index_alloc) {
- 		rc = hisi_hba->hw->slot_index_alloc(hisi_hba, device);
--	else
--		rc = hisi_sas_slot_index_alloc(hisi_hba, rq);
--
--	if (rc < 0)
--		goto err_out_dif_dma_unmap;
-+		if (rc < 0)
-+			goto err_out_dif_dma_unmap;
-+	} else {
-+		rc = rq->tag;
-+	}
- 
- 	slot = &hisi_hba->slot_info[rc];
- 	slot->n_elem = n_elem;
-@@ -2434,17 +2389,8 @@ int hisi_sas_probe(struct platform_device *pdev,
- 	shost->max_lun = ~0;
- 	shost->max_channel = 1;
- 	shost->max_cmd_len = 16;
--	if (hisi_hba->hw->slot_index_alloc) {
--		shost->can_queue = HISI_SAS_MAX_COMMANDS;
--		shost->cmd_per_lun = HISI_SAS_MAX_COMMANDS;
--	} else {
--		/*
--		 * Intentionally use HISI_SAS_UNRESERVED_IPTT for .can_queue until
--		 * every sas_task we're sent has a request associated.
--		 */
--		shost->can_queue = HISI_SAS_UNRESERVED_IPTT;
--		shost->cmd_per_lun = HISI_SAS_UNRESERVED_IPTT;
--	}
-+	shost->can_queue = HISI_SAS_MAX_COMMANDS;
-+	shost->cmd_per_lun = HISI_SAS_MAX_COMMANDS;
- 
- 	sha->sas_ha_name = DRV_NAME;
- 	sha->dev = hisi_hba->dev;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 4caf07306b24..c7963ae8ad50 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -4862,12 +4862,9 @@ hisi_sas_v3_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	shost->max_lun = ~0;
- 	shost->max_channel = 1;
- 	shost->max_cmd_len = 16;
--	/*
--	 * Intentionally use HISI_SAS_UNRESERVED_IPTT for .can_queue until
--	 * every sas_task we're sent has a request associated.
--	 */
--	shost->can_queue = HISI_SAS_UNRESERVED_IPTT;
--	shost->cmd_per_lun = HISI_SAS_UNRESERVED_IPTT;
-+
-+	shost->can_queue = HISI_SAS_MAX_COMMANDS;
-+	shost->cmd_per_lun = HISI_SAS_MAX_COMMANDS;
- 
- 	sha->sas_ha_name = DRV_NAME;
- 	sha->dev = dev;
--- 
-2.35.3
+>>
+>>> I would be tempted to restrict FUA support to drives that support NCQ,
+>>> given that with NCQ, both READ FPDMA QUEUED and READ FPDMA WRITE have the
+>>> FUA bit. But then, the problem is that if the user changes the queue depth
+>>> of the drive to 1 through sysfs, ncq is turned off and we are back to
+>>> using the EXT read & write commands, that is, only write has FUA.
+>>>
+>> Hmm. Is this a requirement? We _could_ use the NCQ variants even with a
+>> queue depth of 1, no?
+> 
+> Absolutely, yes. Running NCQ commands at QD = 1 is perfectly fine.
+> I think that this "do not use NCQ when QD == 1" is there mostly to deal
+> with drives that have a buggy NCQ implementation. Not sure. It has been
+> like this forever. Would need to do some git archeology about that one.
+
+As Niklas has mentioned the NCQ will be disabled if there are too many
+errors (for buggy implementations), so it should be safe to always make
+use of it when it is supported by the drive.
+
+>>> So if we want a solid ata FUA support, we would need to always use NCQ
+>>> regardless of the drive max queue depth setting...
+>>>
+>> Sure, that would be the way I would be going.
+>> If the drive supports NCQ we should always be using the FPDMA variants,
+>> irrespective of the queue depth.
+>> Additionally we _might_ make FUA dependent on NCQ, and disallow FUA for
+>> non-NCQ drives.
+>> (Where it's questionable anyway; if you only have a single command
+>> outstanding the pressure on any internal cache is far less as with NCQ.)
+> 
+> Yes, that is my thinking too. Will try this and see how it looks.
+
+In my opinion, having FUA dependent on NCQ totally makes sense
+considering that there are no ATA_CMD_READ_FUA{,_EXT}.
+
+In this case the NCQ disabling code in ata_eh_speed_down() will probably
+need to clear the queue FUA flag too.
+
+Thanks,
+Maciej
 

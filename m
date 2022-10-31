@@ -2,82 +2,82 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E67C612EF4
-	for <lists+linux-ide@lfdr.de>; Mon, 31 Oct 2022 03:27:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 71F0C612F0D
+	for <lists+linux-ide@lfdr.de>; Mon, 31 Oct 2022 03:38:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbiJaC07 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 30 Oct 2022 22:26:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38856 "EHLO
+        id S229549AbiJaCiI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 30 Oct 2022 22:38:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbiJaC0y (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 30 Oct 2022 22:26:54 -0400
+        with ESMTP id S229494AbiJaCiH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 30 Oct 2022 22:38:07 -0400
 Received: from esa6.hgst.iphmx.com (esa6.hgst.iphmx.com [216.71.154.45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFE55FB7
-        for <linux-ide@vger.kernel.org>; Sun, 30 Oct 2022 19:26:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 273A664F0
+        for <linux-ide@vger.kernel.org>; Sun, 30 Oct 2022 19:38:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1667183214; x=1698719214;
+  t=1667183887; x=1698719887;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=x509jXSJnwObswBV4jpE+8MByFyOsaKwegxIAG6rrnw=;
-  b=U2WEc/kDHIocmCi+TT6SucVfhUulx8rcxeUpsv7jMFcyJuq6Nncs0WxI
-   rw0GFZX22+7vLg9LOQLFQwUUe4TApsAcigcPSNtxaIQwTcEZuvGKtrspO
-   UYh+baYBU0g8nTA9UUXQEPAkHX+kE5xXQdYZYTAlQcHnf5h4Je8jQV32I
-   nCBAl+m4b5T5GaJH+QG0Xcme4uQx3595k/a5pgrmkoozaKz0cSpY9Z4ld
-   x0s71YqEXhpg8VRKONLwInkRbmwMVEe18nRjFvlTwVnuk18PqloyrTvMK
-   MQgyOA+yOmBeEuK1ua5aMo3cVXdHhJMY0dqwfkO91FxlR0IbX05wGiJ9g
-   g==;
+  bh=xz6ycfIfidoOOGiPhXlSF5Bv4e0fjijWd4+tMRv7Bmo=;
+  b=kkfQ+0+N8/FUN2Qc2KVGHPbAMT7O405+4ufk0bRsoKkNxj/s/Jo6PO/+
+   oR3uo7a+mCySWEcGclXfsIXNhQoBDyrcYwg3z4t2z2q6FT0qLo9z0aDrY
+   Q/2uren7QBhf8FsDp4XWWPLaUiUafwvPDXYvgxjsWzVi/Li+CblXcqArZ
+   3qHiP1Gs0LpPmHCfMxuiDjFfmYYliCFntIuTSr6Jzh90+5k3Kqe2XUy8F
+   p+1N8p46l0+d9qWx5os84d4VXJ0e1b+FgNbief4yC6b2lpw2eVpZZwPzJ
+   I/7YU4PBa7DXbS6JqsSXldxEBgua+El5BA9Kk2Mep1wRLdNBuWzWP8f32
+   w==;
 X-IronPort-AV: E=Sophos;i="5.95,227,1661788800"; 
-   d="scan'208";a="215446862"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 31 Oct 2022 10:26:53 +0800
-IronPort-SDR: l0UInz6i1x5MlCS52ZpwtOcS+Brg+gQPTIVpXGqesjiHuz/GzdMfxSZy6BguXP1zHDGzazWExb
- aEYSLdd/sO+C8bybiOjjRTmFypWwFeDdGXuHg0WsShuTFdnKzZISupDH8KSLwRLNBop2XaD9HT
- RIhVeX9rw8Gkj/glwhEEc8J+MUFKZO6Y3LUq5kJoxcxTDbus6tVD9bPXCbRGSPRch85U1j7gnR
- T0zer6SaSRol8rIyiGF/Jnx86Tb/RJylqMBqeIEvYJnnjcdf8LRXO4a2C1+vrjXxhxkK1agRL4
- HRAfbaaZW2Ys/BV1j0AYL6f2
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2022 18:46:09 -0700
-IronPort-SDR: gPVC/fx3FjvJdOZBEAVwczdO9pjY//WRt68ZrGrubZzfzm/jCvboe/HGdwRlrp4NpCmLSrANAl
- JJF+Lr55eIznAUFCFV0lI34DMYowHCVyEJEe96GozOyJoYRzB5xNNKhP1I5SBF6IXuX+edpIC4
- 6JcS47bFF0p0hMTthJoE/97wHO/cX4YBZmuRZuW1a91g5j5yHzA9gPNAfyv76H7nQzhgDO0chZ
- vx6Jc05iG1HGSH7fIgyHgZE5EVqVkAo2xdnTplDrbJBW0x81J2Vl+vuHftEBPXh4NCtjj36k2i
- Gdk=
+   d="scan'208";a="215447473"
+Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 31 Oct 2022 10:38:06 +0800
+IronPort-SDR: rBE0ZI2tpLpigDGucQO8fJEKX5qIqk+kLyiOLbf4n8tK9h3pxmeNE/76B8n3GxT6T3QfKj/gwh
+ QeE1+oTVTgqZkrnzc8NgnsWRu51eJJGLFWgNt2XWtDKM0yoo3kQ2eqUEZLCo3dlnI56ZiAqozf
+ FXI3QNwRKXlPF8cTbRCk33x26jFHy17HxjG2JzCSDHVcm+/aYilGtQ6p6yGGX25hFcUirBdxu4
+ PR6YH4cjenILZh9SY2PzGoA1hKxdd+yI5M+D82B3oqBL3QOq3IvQw+06n5lWECT3cTC47kpMNg
+ MEaZNtmrBV7QGtJptgjMgksa
+Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2022 18:51:39 -0700
+IronPort-SDR: pNHs1EK2tIMO/h2ZBlc/31xWZhmrNPnj221JkRlJFpSKDbLi7yyEI1oxLFz2kZ0Hn1vjrP4S8+
+ GJlzvb2snTgHhxBxKpZd6sFfLNmIKml16sZOc3lSJH6ru8WEB03e28IP1e8/QQ5qs9XsaSl8RR
+ oJC5/a87VroNuOECAL2ANzoHkZErN9ZVHLtlciNptwy54l/BM3zZxrsqDmVcLWOgDKqnaHqkj5
+ PtPE7/3Z+GszHDXYJ/BGIF9S+AOtNs0F7afG/sOhY4J2qp1/QG8QpiTboSS7ZpxlM/ECVvd1/9
+ g4s=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2022 19:26:53 -0700
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Oct 2022 19:38:06 -0700
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4N0xqc6sP3z1Rwrq
-        for <linux-ide@vger.kernel.org>; Sun, 30 Oct 2022 19:26:52 -0700 (PDT)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4N0xqf47QNz1RvLy
+        for <linux-ide@vger.kernel.org>; Sun, 30 Oct 2022 19:26:54 -0700 (PDT)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:mime-version
         :references:in-reply-to:x-mailer:message-id:date:subject:to
-        :from; s=dkim; t=1667183212; x=1669775213; bh=x509jXSJnwObswBV4j
-        pE+8MByFyOsaKwegxIAG6rrnw=; b=YAFV5fp8lJOT0VeNeX9BA9njCCn+gKbWzE
-        Ffky99BX1JpbHVdf+8WLdA9mgjAIkUhYEKXE8b4LF+C/xGbf1hOWueVC0JXKbMIW
-        6rA0BFsxZ+J2zSe3F9UNJKcYCLkvXfnBksCuDiobdsvIL0XxMprVOexZoKfjk3H4
-        WravlJWJWi10YLKck5t0ZyYT2iQdBG1joj6di/ZbOaGr/R25c/d4zIAYdzQZt688
-        gvKCnXzm75enss1+LIMh4acDxSebiNAdysTyIIHzOw+ZDRg7bc5Cxjhf2ZkG+BCf
-        Y3jMyWz1JwAltD+Wlq9oE38DvlaolHHgX8iN+WKAxTH+8nyUAXHA==
+        :from; s=dkim; t=1667183214; x=1669775215; bh=xz6ycfIfidoOOGiPhX
+        lSF5Bv4e0fjijWd4+tMRv7Bmo=; b=mSFPBxsKCyB+SZa2mL2FrrvuEukrzZHxrM
+        XDzfN585gQGvVt+c2ZwuQ8sl8t9SNDstQ08FeuvZQiyPjygzLaLFCVbZklszwdMQ
+        /e162TUmjz2f/MWXzf9H5bznUlQ4zTHd6ArZi8uSxs+zPQZJrgzmJaMC6G5+ueb3
+        scEykZNNBHDZ0NEqMXBvwnj0g6HTzKVtrjrylz61VcDXjUfJ/26xirBNUwHNow2A
+        fZwp9hQnGukR/tYi5tqBk1wR6+d/VhkmkW+mNzAOFk2AtkuLaA7SljayQDUR2wGX
+        Sfr7leXJrdhXdTFeX3aPlMmudvYmyimhghhNsOr9UAOL1sAOS1Rw==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 4a8NoOeiy96p for <linux-ide@vger.kernel.org>;
-        Sun, 30 Oct 2022 19:26:52 -0700 (PDT)
+        with ESMTP id qvj7B9GFNTfM for <linux-ide@vger.kernel.org>;
+        Sun, 30 Oct 2022 19:26:54 -0700 (PDT)
 Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4N0xqZ0PWXz1RvLy;
-        Sun, 30 Oct 2022 19:26:49 -0700 (PDT)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4N0xqc5fNBz1RvTp;
+        Sun, 30 Oct 2022 19:26:52 -0700 (PDT)
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 To:     linux-ide@vger.kernel.org, linux-block@vger.kernel.org,
         Jens Axboe <axboe@kernel.dk>
 Cc:     "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
         Hannes Reinecke <hare@suse.de>
-Subject: [PATCH v4 2/7] ata: libata: Introduce ata_ncq_supported()
-Date:   Mon, 31 Oct 2022 11:26:37 +0900
-Message-Id: <20221031022642.352794-3-damien.lemoal@opensource.wdc.com>
+Subject: [PATCH v4 3/7] ata: libata: Rename and cleanup ata_rwcmd_protocol()
+Date:   Mon, 31 Oct 2022 11:26:38 +0900
+Message-Id: <20221031022642.352794-4-damien.lemoal@opensource.wdc.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221031022642.352794-1-damien.lemoal@opensource.wdc.com>
 References: <20221031022642.352794-1-damien.lemoal@opensource.wdc.com>
@@ -85,71 +85,94 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Introduce the inline helper function ata_ncq_supported() to test if a
-device supports NCQ commands. The function ata_ncq_enabled() is also
-rewritten using this new helper function.
+Rename ata_rwcmd_protocol() to ata_set_rwcmd_protocol() to better
+reflect the fact that this function sets a task file command and
+protocol. The arguments order is also reversed and the function return
+type changed to a bool to indicate if the command and protocol were set
+corretly (instead of returning a completely arbitrary "-1" value.
 
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 ---
- include/linux/libata.h | 26 ++++++++++++++++++++------
- 1 file changed, 20 insertions(+), 6 deletions(-)
+ drivers/ata/libata-core.c | 28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index af4953b95f76..58651f565b36 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1690,21 +1690,35 @@ extern struct ata_device *ata_dev_next(struct ata=
-_device *dev,
- 	     (dev) =3D ata_dev_next((dev), (link), ATA_DITER_##mode))
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 884ae73b11ea..6ee1cbac3ab0 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -574,17 +574,18 @@ static const u8 ata_rw_cmds[] =3D {
+ };
 =20
  /**
-- *	ata_ncq_enabled - Test whether NCQ is enabled
-- *	@dev: ATA device to test for
-+ *	ata_ncq_supported - Test whether NCQ is supported
-+ *	@dev: ATA device to test
+- *	ata_rwcmd_protocol - set taskfile r/w commands and protocol
+- *	@tf: command to examine and configure
+- *	@dev: device tf belongs to
++ *	ata_set_rwcmd_protocol - set taskfile r/w command and protocol
++ *	@dev: target device for the taskfile
++ *	@tf: taskfile to examine and configure
+  *
+- *	Examine the device configuration and tf->flags to calculate
+- *	the proper read/write commands and protocol to use.
++ *	Examine the device configuration and tf->flags to determine
++ *	the proper read/write command and protocol to use for @tf.
   *
   *	LOCKING:
-  *	spin_lock_irqsave(host lock)
-  *
-  *	RETURNS:
-- *	1 if NCQ is enabled for @dev, 0 otherwise.
-+ *	true if @dev supports NCQ, false otherwise.
+  *	caller.
   */
--static inline int ata_ncq_enabled(struct ata_device *dev)
-+static inline bool ata_ncq_supported(struct ata_device *dev)
+-static int ata_rwcmd_protocol(struct ata_taskfile *tf, struct ata_device=
+ *dev)
++static bool ata_set_rwcmd_protocol(struct ata_device *dev,
++				   struct ata_taskfile *tf)
  {
- 	if (!IS_ENABLED(CONFIG_SATA_HOST))
- 		return 0;
--	return (dev->flags & (ATA_DFLAG_PIO | ATA_DFLAG_NCQ_OFF |
--			      ATA_DFLAG_NCQ)) =3D=3D ATA_DFLAG_NCQ;
-+	return (dev->flags & (ATA_DFLAG_PIO | ATA_DFLAG_NCQ)) =3D=3D ATA_DFLAG_=
-NCQ;
-+}
+ 	u8 cmd;
+=20
+@@ -607,11 +608,12 @@ static int ata_rwcmd_protocol(struct ata_taskfile *=
+tf, struct ata_device *dev)
+ 	}
+=20
+ 	cmd =3D ata_rw_cmds[index + fua + lba48 + write];
+-	if (cmd) {
+-		tf->command =3D cmd;
+-		return 0;
+-	}
+-	return -1;
++	if (!cmd)
++		return false;
 +
-+/**
-+ *	ata_ncq_enabled - Test whether NCQ is enabled
-+ *	@dev: ATA device to test
-+ *
-+ *	LOCKING:
-+ *	spin_lock_irqsave(host lock)
-+ *
-+ *	RETURNS:
-+ *	true if NCQ is enabled for @dev, false otherwise.
-+ */
-+static inline bool ata_ncq_enabled(struct ata_device *dev)
-+{
-+	return ata_ncq_supported(dev) && !(dev->flags & ATA_DFLAG_NCQ_OFF);
++	tf->command =3D cmd;
++
++	return true;
  }
 =20
- static inline bool ata_fpdma_dsm_supported(struct ata_device *dev)
+ /**
+@@ -744,7 +746,7 @@ int ata_build_rw_tf(struct ata_queued_cmd *qc, u64 bl=
+ock, u32 n_block,
+ 			/* request too large even for LBA48 */
+ 			return -ERANGE;
+=20
+-		if (unlikely(ata_rwcmd_protocol(tf, dev) < 0))
++		if (unlikely(!ata_set_rwcmd_protocol(dev, tf)))
+ 			return -EINVAL;
+=20
+ 		tf->nsect =3D n_block & 0xff;
+@@ -762,7 +764,7 @@ int ata_build_rw_tf(struct ata_queued_cmd *qc, u64 bl=
+ock, u32 n_block,
+ 		if (!lba_28_ok(block, n_block))
+ 			return -ERANGE;
+=20
+-		if (unlikely(ata_rwcmd_protocol(tf, dev) < 0))
++		if (unlikely(!ata_set_rwcmd_protocol(dev, tf)))
+ 			return -EINVAL;
+=20
+ 		/* Convert LBA to CHS */
 --=20
 2.38.1
 

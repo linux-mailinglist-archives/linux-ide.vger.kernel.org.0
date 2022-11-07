@@ -2,128 +2,115 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D57561F078
-	for <lists+linux-ide@lfdr.de>; Mon,  7 Nov 2022 11:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE1961F2A7
+	for <lists+linux-ide@lfdr.de>; Mon,  7 Nov 2022 13:13:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232012AbiKGKYb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 7 Nov 2022 05:24:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35662 "EHLO
+        id S232018AbiKGMNE (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 7 Nov 2022 07:13:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231959AbiKGKYS (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 7 Nov 2022 05:24:18 -0500
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F24118E35
-        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 02:24:03 -0800 (PST)
-Received: by mail-qv1-xf42.google.com with SMTP id lf15so7329855qvb.9
-        for <linux-ide@vger.kernel.org>; Mon, 07 Nov 2022 02:24:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=Zv++OJ/ncK2pWuUWAQT+z52+cIoHK/WVJU4bVze52hunD5wDL4D5XJdl5mW2VbRjhi
-         PKA0tQ/z42/ONfUnPJoBfdYRGEG2gwiyoDRW7hecaxcg+/0t0u3g44ISFlpe+B9l1fvu
-         TmkNgtKOyak6WThRMAIvY+g5IgPZxvnz63e21BpajeaX9653GP4qpHUHyfV7BL4cSNb4
-         pCU1fNGxZBn7NlKzWZCMHMxM9LSs8sKofgpQ0FSoeb/qTDQ+CPP+tvlBe/vGQ8T8hOyn
-         vdUZr48/zTuwVxtBDF6IrOR7pT19nf73qD9i1Q8QUWEzM8dVJjwmGS+xVbVCXqFaE09J
-         SKzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=chHPIHux0dSkui8YJRhtKgs24w6fh7+HF7XwaQA+nthIfiiEJp32AkfXFmUHtGtgw6
-         ARIYFG00cYwtJJNZ3ljK23r85BlR7PhZ65HhbPbFY3tMJyCjK+anMNz0+CAoiBWngGmR
-         BkGIiKBsPjeX7l3oN4BQmtRHq0SIhShq8f5D4MK4NPzcOr3GY+fe9iAoLHlYCxm1oTX/
-         E0r2v/Q3sdwwi+YlXpYcgFkXla+l7rfkgPWLZjQ6HF9+nOqs0nINyLbGjsXtf+k7M79n
-         kjN2GvMJi/rtLqNB1WZYUJGzfgmvD/jaHmFwH2SolVD6obEYAZtEXKcBAfaKXCFDfPST
-         0bUg==
-X-Gm-Message-State: ACrzQf037hYIui38CNc5xzlRjh4A7kd9Eiye/WnXzXoUL2Y6vl9lLV+K
-        /pZF6DHINr6IvY0rq1GoAc4Ad+h4fuoPfB3Zws+u/jWk2MY=
-X-Google-Smtp-Source: AMsMyM7DPjaK7bSeUBIcMTkNZUaqK+NSwCEUfp88ZZDLY5TXShnQ2+B86xH3ryBKqTyGQWW3ozA/96x60VupsK8qo34=
-X-Received: by 2002:a17:902:8a90:b0:186:b145:f5ec with SMTP id
- p16-20020a1709028a9000b00186b145f5ecmr50774476plo.103.1667816632274; Mon, 07
- Nov 2022 02:23:52 -0800 (PST)
+        with ESMTP id S231997AbiKGMND (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 7 Nov 2022 07:13:03 -0500
+Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3569ABB6
+        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 04:13:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
+  t=1667823181; x=1699359181;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=tUstmNhwZ0mBvZkbjuyo7nQC2y/FVzmOOGFSb/fvLS4=;
+  b=EMWtYe1shCzseu1L/o8byFoIi/s8O3kiWAtfC3YAFqsNa4PMdxSC1vbo
+   Zc1D+F9diLBuz0yGpcslVic393KlgdQUW26ZzZWwQv88Kun6a5/XorX3m
+   pb4EiJiDohhX5ce0hFAnd2XjfZ7aNNzbB4laKffRS6QtgGCrUowRiPAFX
+   k4FhyiiuH6PrVJBWwWNrshRdDxyKXX9Y5QDBZzG5UoXHoBJgfvLXjDZOm
+   kFHFErH2oyIB8fz5sCQlLNqATU/T/ZjVM+kUhP07c4zY783UozJ2rJObI
+   s2ssZPG7llvKD3HuMVofhCr3JEBnFIfJUHNSfze3G/PUL0ywbzDvaeVZ7
+   g==;
+X-IronPort-AV: E=Sophos;i="5.96,143,1665417600"; 
+   d="scan'208";a="327762179"
+Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
+  by ob1.hgst.iphmx.com with ESMTP; 07 Nov 2022 20:13:01 +0800
+IronPort-SDR: P/W3eRD+GXtzNMywv6uSqsqzIdvYzSZH3rEGVYjR9Cgad78qLIFbGP4Dey+8jjF130J+ExHNup
+ 8JZG3M+7ED5CT/WYypTdgWPkibGLHQ5lPxyrYVf+t0tf4b2OUuyM7LuoG4pJz9qpwiEBBkOBrg
+ p+viTWE48bg7CuYbxPG2g7ZvURXXEYasgrv9d63d8rwOBXccxFwjZxW4k+Eyg1KT+5lMWw9GYx
+ fgg418LUewbkCl+GuD2E2BSRb9v/cMJcc9YGoY05YI+cFCT9K9DIPRKuvbtAuvnEpnIGaRKcAr
+ q1o=
+Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 03:32:08 -0800
+IronPort-SDR: 1s2LBfME97WVjwsX04SnCu7P2P1tSvm8btYdZjRd4Q4uLWI42dc3Tx7Jar6ifps3rWWymOZBWc
+ JhV3GEq0VSR8RQYsW/0KisjvrTiFUvZrIZdR3Q/aDhu9iKY0x50v9nBL9LpmFCVnAdijHwB0Vq
+ sekZ9qkDzqBBETbpbjZAyOKptkyttPqAeJ+ErTCNzmwrbiZHmkYA5IlJZGfmbJHjZA9Jr/4LDY
+ 6gj48gxHQJijNr/ybRZXV0snrSE0+x+t1hCiTVAN7KF9tzoLb8vu9TkSnnlLZyILpPHBCuMAmb
+ oq4=
+WDCIronportException: Internal
+Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
+  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 04:13:01 -0800
+Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4N5VVh5mHjz1RwqL
+        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 04:13:00 -0800 (PST)
+Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
+        reason="pass (just generated, assumed good)"
+        header.d=opensource.wdc.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
+        opensource.wdc.com; h=content-transfer-encoding:content-type
+        :in-reply-to:organization:from:references:to:content-language
+        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
+        1667823180; x=1670415181; bh=tUstmNhwZ0mBvZkbjuyo7nQC2y/FVzmOOGF
+        Sb/fvLS4=; b=rNRusHKEkfrgtGupdl0arGOlnkt2uDWDrSVY0tVugkDCPrBM2nS
+        Zw+kTFGsXnMSIYM8TamJqlW6t5UYq3HTCl9t4JjmzG6MXFeDfb+JDOKYjW2/07+/
+        Dj9SkeOyMDHEdYB+emwfa9AwYDePccnMR1X17XRvfrvZ20sx4RyEN2Kenl7pMNxV
+        mCJ4jTdi0lsLAaCCW8syTY/UAKrhf5UGq6LQndncST3XgBKHfl3I+ePDyNEAQ9l9
+        TwN7FZimc/UqHKz3EaBVb4MzrnMXnJACSRaSJOypRC10VXmOzZB8vzfWP2RG41Pu
+        E6M6cHkrCn73oI7eo4bU6n/8iBx+CQF+86A==
+X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
+Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
+        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id ouwve7NiTUsn for <linux-ide@vger.kernel.org>;
+        Mon,  7 Nov 2022 04:13:00 -0800 (PST)
+Received: from [10.225.163.31] (unknown [10.225.163.31])
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4N5VVg38nWz1RvLy;
+        Mon,  7 Nov 2022 04:12:59 -0800 (PST)
+Message-ID: <ca10f501-0d3e-fcae-2b98-d39ca1822a67@opensource.wdc.com>
+Date:   Mon, 7 Nov 2022 21:12:57 +0900
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:23:51 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:23:51 +0100
-Message-ID: <CAHAXD+bPNCns8Ez=7iXmPLADMtJgZj3-mFTk3NMhWC-Ca1b9rw@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_20,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:f42 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
-        *      [score: 0.1486]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Subject: Re: [PATCH v5 5/7] ata: libata: Fix FUA handling in ata_build_rw_tf()
+Content-Language: en-US
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     linux-ide@vger.kernel.org, linux-block@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>,
+        "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
+        Hannes Reinecke <hare@suse.de>
+References: <20221107005021.1327692-1-damien.lemoal@opensource.wdc.com>
+ <20221107005021.1327692-6-damien.lemoal@opensource.wdc.com>
+ <20221107055000.GD28873@lst.de>
+From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Organization: Western Digital Research
+In-Reply-To: <20221107055000.GD28873@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+On 11/7/22 14:50, Christoph Hellwig wrote:
+> On Mon, Nov 07, 2022 at 09:50:19AM +0900, Damien Le Moal wrote:
+>> Finally, since the block layer should never issue a FUA read
+>> request, warn in ata_build_rw_tf() if we see such request.
+> 
+> Couldn't this be triggered using SG_IO passthrough with a SCSI 
+> WRITE* command that has the FUA bit set?
+
+Yes indeed. Should I drop the warn ?
+
+-- 
+Damien Le Moal
+Western Digital Research
+

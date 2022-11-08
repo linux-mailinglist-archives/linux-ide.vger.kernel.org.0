@@ -2,53 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A86E6209BE
-	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 07:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BB1D6209B5
+	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 07:47:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233290AbiKHGxI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 8 Nov 2022 01:53:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50174 "EHLO
+        id S233464AbiKHGrX (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 8 Nov 2022 01:47:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232911AbiKHGxH (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 01:53:07 -0500
-Received: from esa5.hgst.iphmx.com (esa5.hgst.iphmx.com [216.71.153.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1133A26AFD
-        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 22:53:07 -0800 (PST)
+        with ESMTP id S232367AbiKHGrW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 01:47:22 -0500
+Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF1A2C104
+        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 22:47:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1667890386; x=1699426386;
+  t=1667890036; x=1699426036;
   h=message-id:date:mime-version:subject:to:references:from:
    in-reply-to:content-transfer-encoding;
-  bh=4IovsOPUexF4CKRl2Awg9H0VAiIxWE4bO/gmwyZLHj0=;
-  b=ngNDpd4IT0+Nqw204O5ByYFAOXtgDnNPu7u1+/dNfF/ptgCW0pLxzFAY
-   tQTM2x2fTj9wc1Hx/zQWPFUozIrTed8Upwv3ZzqMBDPj7lR+P1nNWV2OG
-   vu7nUzcV004RJ5F9O1G4o00tTs3hcgBHnwJTkH3PPAMUPI8oWx95CCbF1
-   cIvhFBRfwFb9v3sM8b2Wo1LvQCcmHF3O3WqnnZFhD4D8X7yqSaaCVncFf
-   aHX/pCKY/FhK8O/OvLwcEYwz+x9N6njNMdzLBHC38gHf+3kYAWzfT0Dqp
-   e3J5KvV9krXl53CSOt8h1ONMncHAHaebeW6EpoxQHsRd/vgF+i21ASPcw
+  bh=KW7Hlvzfqw6YanEJ88WzZJr8Fyb+DRaRy/QtQivyBgo=;
+  b=Bz3LKlENrYadZwZdbsehF5B27g8HPkIhS6eBhEQWOQHUOTwyy5RIchgC
+   5lL2sP+XI3HFW3BP/ffdTCH/k62YApzqW+t7V93P2Yww5Atz5t1nWEA70
+   /SkWwJ3ZSUDPG+sa6sidd8qV2sIiblocEp3MGUWNYyADFquIxYweWShNP
+   tp5fdDQfRuBqK+ryjg/57ZBYbXNop+DDgxp6Q1VR8lFs+CMFmCZnN3nG1
+   kZ6a9RJnodtF5PptD5vPtb7WGj4bxc2hxT7SG/E3wT4Lbob0VtucwGYBF
+   XajNkpRTzGfdwqGd70tkxvlX5oKip46B6drP4qXgN1o+TjhVVrbjgM7oK
    A==;
 X-IronPort-AV: E=Sophos;i="5.96,147,1665417600"; 
-   d="scan'208";a="215735482"
-Received: from uls-op-cesaip01.wdc.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 08 Nov 2022 14:53:06 +0800
-IronPort-SDR: V57s6GJNZmgw9lVn9Gi7h39G716j4GmTw9Kh21t44pfcY2c6VGGgcsbaYrPjDjQogeLYd6/LPP
- RnBBGD6OyWNCLXmNDY935hpPXD6rM4gUnFMXR1fxmRlU/hvn3/RNzLlm5vF+s0rXpif53OS6Uy
- YjK4DY7D2Fx0MExj8z0dflyjZToa+HN+VAspIOdR7ELNqXlZg8HscMCX+kLqTnB2soiHcIc9vv
- JsCAarCqKtauOSq+oxHAaHNt5k9jerKZhAT8nxVrSxFIsTxx1/sWePbXJw3Tkoy+39tYE5N1wi
- Zkc=
+   d="scan'208";a="214017332"
+Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
+  by ob1.hgst.iphmx.com with ESMTP; 08 Nov 2022 14:47:15 +0800
+IronPort-SDR: NeqFAida6oK1bRcVTDbCf3GsKw0Lf2jpzMLIYirBRJwm7mZLKuzUIqGnBn61DIFxEOESbRrYvh
+ YaWEkAZs8eraiFvK9mJt6yaXieENUzmtBcoUyVTOK2E99Kzl2djPPSN0P//gZkGoivhsyPYgwx
+ vl1Q1IIRpYI3adsFgGKbNAp9VjB88LuPQ8iLSbBKi94/r3zrmSqMUazM7hLmVwyRDsPHvMP2F7
+ rCzOExoCeK/TN9TahHgT/qIPPU6BC7PYpFFxaV/CrlPsttU8Oda0j4DWM5Ag4qPJHx8Ckqvlsv
+ DNw=
 Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 22:12:12 -0800
-IronPort-SDR: uObBlGHATUG8W9f9/g2ZWwHJzTgt1C5KSj03rLIIOJgItxv6FaAeEiNkW7ZTe3X5d1e56p/Gjw
- LeVOr+UnYvb4skg4b8q2XrzaJhgKWZkx5aaw1k6VBRtP85KegtIefpAJh3xe9xJ1k7Ax2IqfR6
- PdLEJOfGXKnbGUPbCzO0QKvudvyNd2BcraUERR2spwn222kaOpCACviJRs2UTt6bK1IXCM5Hgk
- 89ThpZan0JI4wHawPlQw1NqFm3VwhmMygdwRswENOnp3AQAo4df/4NIjnTB4KK+qXHgjMqgOmG
- 0p0=
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 22:00:37 -0800
+IronPort-SDR: PvJvoL6s4fY3antWD0bzBEkizFfnz+g0QcCQSWMIM3WTZBSm2gY+vIgyZhRYzi8RlVhDQ4nC9V
+ o5OZqq1k8g9/MZzh5B+BAnNxlYcjlVBIVoFav/cwSfgpJlmIdwxT+UDI5szwHj5uUZ8RwEEbsb
+ 5Pi2pvH7Ys3rMToJ8dA/vSr7peX2hSVl8m8i6T33mOw/VHu4sewjgDnj4a/Zf4zCX0UnTghYj5
+ QQyi3pPgwFCu3Ibpf/90y5V/FLy6r1oTxSF/SDk7DbH9uZPOsjR+YzCfiDscqw8Luf6tQVrOHA
+ efM=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 22:53:07 -0800
+  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 22:47:16 -0800
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4N5z6Y0KWMz1RvTr
-        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 22:42:13 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4N5zDM3tmpz1RvTp
+        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 22:47:15 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
@@ -56,34 +56,36 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:content-type
         :in-reply-to:organization:from:references:to:content-language
         :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1667889732; x=1670481733; bh=4IovsOPUexF4CKRl2Awg9H0VAiIxWE4bO/g
-        mwyZLHj0=; b=k1i2ShS+LKnXFJlaznn4cdD3xawNpVmn7ZjGA9RMKJ3az1g47pq
-        bm/lqgmUca7zd2BqDBcY6lAt8ENsW0Td4VBFuexA7WDKfxBzF/A5SyWT8JBPmWWP
-        sJnpMRkDKfydDZdFdwdpBNDk2UK3s8cwhRtQUkzshCDcmeONnG076Rs8nntf0uHC
-        VjsBMQG0RvmSYP0V6oNn55yaOJfaWPX2dAjhNrVFEBWvnA9yIshJFofBhQm/bauM
-        +EIe1j8DqrEoxH5XZpv8Pr2zLxJjkkWRgD/hrjZB9ewMEZAthIJ5hGWEig7medM9
-        r83kvtckpcJSVR16qPN051HcNPVbohZVnoA==
+        1667890035; x=1670482036; bh=KW7Hlvzfqw6YanEJ88WzZJr8Fyb+DRaRy/Q
+        tQivyBgo=; b=uoMthjfMWeN1ScP8kObtiwXOcJgsPWuIEu6KI7RwW1LwOkylGad
+        IrfIBZumnOmeQB+IWMYpF3oENoBXFcz6KppUwfYk1bqLz4drye/lM/9VxqQZXZnG
+        Q+RkFL4ngPUqY6GOoqenbzPUcakQ6Hr78vyUJf+8uvjHd0ZtPn9Ta0XAnS/3MtEa
+        ///JDi5FC1CydaUhF0nokvjdRV0a3easgrB7uPei+p0okP2C5YCOfEMzvTPWSJK/
+        /pmQSkW3DJMvRubyfdJobi8JhhWjGcAnr+xy7XiQ1rbexDaxPP151niGH3PE4UZK
+        k4OU737n4EvXUzADIdAuLcZyPXeLxyuvUWw==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Qas1DiRzT3Vu for <linux-ide@vger.kernel.org>;
-        Mon,  7 Nov 2022 22:42:12 -0800 (PST)
+        with ESMTP id pnxm6K453zia for <linux-ide@vger.kernel.org>;
+        Mon,  7 Nov 2022 22:47:15 -0800 (PST)
 Received: from [10.149.53.254] (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4N5z6X2sMSz1RvLy;
-        Mon,  7 Nov 2022 22:42:12 -0800 (PST)
-Message-ID: <97aaad89-d5f8-31c2-bd4d-8e5665b6cd44@opensource.wdc.com>
-Date:   Tue, 8 Nov 2022 15:42:11 +0900
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4N5zDL5zZxz1RvLy;
+        Mon,  7 Nov 2022 22:47:14 -0800 (PST)
+Message-ID: <9cb5dc95-0d45-58ec-0d35-237f22ec3c1f@opensource.wdc.com>
+Date:   Tue, 8 Nov 2022 15:47:13 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.0
-Subject: Re: [PATCH 0/3] ata: libata-transport: fix some error handing
+Subject: Re: [PATCH 1/3] ata: libata-transport: fix error handling in
+ ata_tport_add()
 Content-Language: en-US
 To:     Yang Yingliang <yangyingliang@huawei.com>,
         linux-ide@vger.kernel.org
 References: <20221107125942.143769-1-yangyingliang@huawei.com>
+ <20221107125942.143769-2-yangyingliang@huawei.com>
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Organization: Western Digital Research
-In-Reply-To: <20221107125942.143769-1-yangyingliang@huawei.com>
+In-Reply-To: <20221107125942.143769-2-yangyingliang@huawei.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -96,23 +98,68 @@ List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
 On 11/7/22 21:59, Yang Yingliang wrote:
-> This patchset handle error case of transport_add_device(), if it's
-> ignored, it will lead kernel crash because of trying to delete not
-> added device in transport_remove_device()
-> 
-> Yang Yingliang (3):
->   ata: libata-transport: fix error handling in ata_tport_add()
->   ata: libata-transport: fix error handling in ata_tlink_add()
->   ata: libata-transport: fix error handling in ata_tdev_add()
+> If transport_add_device() fails in ata_tport_add(), it's not handled,
+> it will lead kernel crash because of trying to delete not added device
+> in transport_remove_device() called from ata_tport_delete().
 
-It would be nice to have your earlier patch "ata: libata-transport: fix
-double ata_host_put() in ata_tport_add()" in this series too. When
-sending a v2, please include it.
+Simplify your sentences to make them easier to understand:
+
+In ata_tport_add(), the return value of transport_add_device() is not
+checked. As a result, another error after that function call leads to a
+kernel crash (null pointer dereference) because
+transport_remove_device() is called to remove a device that was not added.
+
+Please fix this. The patch itself is OK.
 
 > 
->  drivers/ata/libata-transport.c | 18 +++++++++++++++---
->  1 file changed, 15 insertions(+), 3 deletions(-)
+> Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
+> CPU: 12 PID: 13605 Comm: rmmod Kdump: loaded Tainted: G        W          6.1.0-rc3+ #8
+> pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> pc : device_del+0x48/0x39c
+> lr : device_del+0x44/0x39c
+> Call trace:
+>  device_del+0x48/0x39c
+>  attribute_container_class_device_del+0x28/0x40
+>  transport_remove_classdev+0x60/0x7c
+>  attribute_container_device_trigger+0x118/0x120
+>  transport_remove_device+0x20/0x30
+>  ata_tport_delete+0x34/0x60 [libata]
+>  ata_port_detach+0x148/0x1b0 [libata]
+>  ata_pci_remove_one+0x50/0x80 [libata]
+>  ahci_remove_one+0x4c/0x8c [ahci]
 > 
+> Fix this by checking and handling return value of transport_add_device()
+> in ata_tport_add().
+> 
+> Fixes: d9027470b886 ("[libata] Add ATA transport class")
+> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+> ---
+>  drivers/ata/libata-transport.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
+> index 105da3ec5eaa..ef53bdfbcbb2 100644
+> --- a/drivers/ata/libata-transport.c
+> +++ b/drivers/ata/libata-transport.c
+> @@ -301,7 +301,9 @@ int ata_tport_add(struct device *parent,
+>  	pm_runtime_enable(dev);
+>  	pm_runtime_forbid(dev);
+>  
+> -	transport_add_device(dev);
+> +	error = transport_add_device(dev);
+> +	if (error)
+> +		goto tport_transport_add_err;
+>  	transport_configure_device(dev);
+>  
+>  	error = ata_tlink_add(&ap->link);
+> @@ -312,6 +314,7 @@ int ata_tport_add(struct device *parent,
+>  
+>   tport_link_err:
+>  	transport_remove_device(dev);
+> + tport_transport_add_err:
+>  	device_del(dev);
+>  
+>   tport_err:
 
 -- 
 Damien Le Moal

@@ -2,158 +2,223 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 043256209B8
-	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 07:49:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56F4D6209DE
+	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 08:10:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232606AbiKHGta (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 8 Nov 2022 01:49:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49602 "EHLO
+        id S233263AbiKHHKV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 8 Nov 2022 02:10:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232367AbiKHGt3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 01:49:29 -0500
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 388011A21F
-        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 22:49:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1667890169; x=1699426169;
-  h=message-id:date:mime-version:subject:to:references:from:
-   in-reply-to:content-transfer-encoding;
-  bh=uH0tcjooA46M1dYXuhsU3iAJe8ZbdbEcpebVm2tbe7I=;
-  b=KCWoXBQ4KCAcTrlHuEG/ziuONtyZISM2QriqAdaCLErg5+mMm1fGJdSg
-   k9Rmf1V3z/zbymGtJHkd/2ua20e4f7AJyn9VnxOzyru8amVgy3utGj3As
-   wz84faUP7V3XLWbrBuxEVTyKLiQHcptSQk2/4j/naWZlPVLY2VEe99jbG
-   GbZSoVUd4hspotzHumML4MPXmr27iVTsZdShbyXfobUhIMuy3QDchgYvN
-   vrBMriX5HfhgRJI0GObdmuXDROkzZ/FSm3CfJF7VU8OFfSc4jsTD2e1oc
-   ksqT3d3mXZ+LS2IpnHrghsZhwyBNcyxZh0VTLmf/J1LU79V84FHbEVleG
-   g==;
-X-IronPort-AV: E=Sophos;i="5.96,147,1665417600"; 
-   d="scan'208";a="327834849"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 08 Nov 2022 14:49:28 +0800
-IronPort-SDR: O5k49qi2vvJKbYvRhEdKRZ36p6d1STg5OefMU/OTK4BXjNd0sbyJF0hr4QekdNRsfCSuwLwxRg
- pbAGFYlfqYNLeJaZc63EvzF3h7tpL4Wuqd/NInHmLiqmKgEKQc47f1IpUxvId1C1WViAhDEgQe
- ijo6wvEjOA5Q6oaMo6QqCLaqjxR7PqENU7NlXHZxoC9dP6bolgbJk9MOeNyKrtGn4cu4MvGiZ2
- /KSHLwT4LjtEGWIJLE638o4K0m1xjxS56o5fHLoyJYFHqQ/a1NffdDhqFe0lG2y6dTqMMnYfgL
- j6g=
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 22:02:50 -0800
-IronPort-SDR: yuIiyppELtuC3tg9wttSo1xXvCxLcD6XFR7olR3aq/LzqOpXFI7tfdlm9axo5uT20mxvdNO18D
- xfw1HyEssPaPB5Pd90QfmBBOjfg44pQY4TY1bLt5ID54Co0RigmdJDQqk1gWrbI/569CMzvfJV
- Ax4NsDuFr7c/Xlnz0xEgj+kFHzYmMYxNUyNcCuM11oJgKL7ZMjtf1JcD7Vm4vIlUOA16Fm51wt
- ZtWP3uNyfY0ciivbwML8I25OVqfTf24AqUnBvEeYj/Ma+IzkQg27oJF50hrIItR1PVKzIaTNLZ
- yJ8=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Nov 2022 22:49:29 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4N5zGw4NN7z1RvTp
-        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 22:49:28 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1667890168; x=1670482169; bh=uH0tcjooA46M1dYXuhsU3iAJe8ZbdbEcpeb
-        Vm2tbe7I=; b=fEWbRaNZiU/PNujjzllLPTF70/zqvtwz8RehvpSijD7Mh+V41rZ
-        emDZIzvOvMi5xkdQKPxGi1TF7zxqk+5UCSMQtF+mJdPpjS98gPIubS+NJi8MSsil
-        955vgny/VH6RB4Yiso43KtRCkuzZIoDIiHbBjizt+D+PfD3gaPg2GU6HucCpVHVL
-        icraByvn3HrmIhA/n8u1HcY/nOB+KZP0Ie6rd8tVUxOpGg3FmtVc+rjKLtU7PC2W
-        4FuhmL3EHFyZdNFL9P9jn8UbnOps4j2EVYD+H14IAH0jsxzBkU+jIbGx6aCfcM24
-        LtCiO75xjQwPlA3yLHO1JlXHaHOWTKidskQ==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ZLIDV-mM4EUo for <linux-ide@vger.kernel.org>;
-        Mon,  7 Nov 2022 22:49:28 -0800 (PST)
-Received: from [10.149.53.254] (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4N5zGv6nkfz1RvLy;
-        Mon,  7 Nov 2022 22:49:27 -0800 (PST)
-Message-ID: <30c09854-3203-3bbe-c4c0-e6fa88c7d873@opensource.wdc.com>
-Date:   Tue, 8 Nov 2022 15:49:26 +0900
+        with ESMTP id S229521AbiKHHKU (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 02:10:20 -0500
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B3A19003
+        for <linux-ide@vger.kernel.org>; Mon,  7 Nov 2022 23:10:19 -0800 (PST)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 0972822492;
+        Tue,  8 Nov 2022 07:10:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1667891417; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=S1Zc9+1FcPge/NJtlOtsmYnEzy43hL4VkJ9kMBFNHqI=;
+        b=s5Tfjauj80sC0nfFHF/WRFIQYCdKoViFcqowxoWgwDMCjZN0HSoYd+EDUMB8//TPMpkFGL
+        0Z74jflHB/gOeJxro+zWUwKIr5VpwX7OBn1hqHdM4RCNtbPfImq6vgv1DO3JsUEmFUm5E4
+        kAQ0hrZCND1Q4cFf10g6VZ0ZcBIYBak=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1667891417;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=S1Zc9+1FcPge/NJtlOtsmYnEzy43hL4VkJ9kMBFNHqI=;
+        b=gS0BHppwGKhR1LhHoyAQoN3ut4SGarh/TepGC+ntgjPQDkOCdrmXjYC9V189oKtGERTLO9
+        1+rx1w46x+TBbpBQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id DB16A139F1;
+        Tue,  8 Nov 2022 07:10:16 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id VSJoNNgAamM7JgAAMHmgww
+        (envelope-from <hare@suse.de>); Tue, 08 Nov 2022 07:10:16 +0000
+Message-ID: <00204846-726c-7fbc-fc4b-43ac432500f8@suse.de>
+Date:   Tue, 8 Nov 2022 08:10:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH 3/3] ata: libata-transport: fix error handling in
- ata_tdev_add()
+ Thunderbird/102.2.2
+Subject: Re: [PATCH v2] ata: libata-core: do not issue non-internal commands
+ once EH is pending
 Content-Language: en-US
-To:     Yang Yingliang <yangyingliang@huawei.com>,
-        linux-ide@vger.kernel.org
-References: <20221107125942.143769-1-yangyingliang@huawei.com>
- <20221107125942.143769-4-yangyingliang@huawei.com>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <20221107125942.143769-4-yangyingliang@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To:     Niklas Cassel <Niklas.Cassel@wdc.com>,
+        John Garry <john.g.garry@oracle.com>
+Cc:     "damien.lemoal@opensource.wdc.com" <damien.lemoal@opensource.wdc.com>,
+        "tj@kernel.org" <tj@kernel.org>,
+        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
+References: <20221107161036.670237-1-niklas.cassel@wdc.com>
+ <5a4fa5db-c706-5cf2-1145-bf091445d20e@oracle.com>
+ <Y2mbX8MvYrF0FHaI@x1-carbon>
+From:   Hannes Reinecke <hare@suse.de>
+In-Reply-To: <Y2mbX8MvYrF0FHaI@x1-carbon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 11/7/22 21:59, Yang Yingliang wrote:
-> If transport_add_device() fails in ata_tdev_add(), it's not handled,
-> it will lead kernel crash because of trying to delete not added device
-> in transport_remove_device() called from ata_tdev_delete().
-
-Same comment as the first 2 patches.
-
-The fix is OK otherwise.
-
+On 11/8/22 00:57, Niklas Cassel wrote:
+> On Mon, Nov 07, 2022 at 05:01:53PM +0000, John Garry wrote:
+>> On 07/11/2022 16:10, Niklas Cassel wrote:
+>>> scsi_queue_rq() will check if scsi_host_in_recovery() (state is
+>>> SHOST_RECOVERY), and if so, it will _not_ issue a command via:
+>>> scsi_dispatch_cmd() -> host->hostt->queuecommand() (ata_scsi_queuecmd())
+>>> -> __ata_scsi_queuecmd() -> ata_scsi_translate() -> ata_qc_issue()
+>>>
+>>> Before commit e494f6a72839 ("[SCSI] improved eh timeout handler"),
+>>> when receiving a TFES error IRQ, this was the call chain:
+>>> ahci_error_intr() -> ata_port_abort() -> ata_do_link_abort() ->
+>>> ata_qc_complete() -> ata_qc_schedule_eh() -> blk_abort_request() ->
+>>> blk_rq_timed_out() -> q->rq_timed_out_fn() (scsi_times_out()) ->
+>>> scsi_eh_scmd_add() -> scsi_host_set_state(shost, SHOST_RECOVERY)
+>>>
+>>> Which meant that as soon as the error IRQ was serviced, no additional
+>>> commands sent from the block layer (scsi_queue_rq()) would be sent down
+>>> to the device. (ATA internal commands originating for ATA EH could of
+>>> course still be sent.)
+>>>
+>>> However, after commit e494f6a72839 ("[SCSI] improved eh timeout handler"),
+>>> scsi_times_out() would instead result in a call to scsi_abort_command() ->
+>>> queue_delayed_work(). work function: scmd_eh_abort_handler() would call
+>>> scsi_eh_scmd_add(), which calls scsi_host_set_state(shost, SHOST_RECOVERY).
+>>>
+>>> (It was possible to get the old behavior if host->hostt->no_async_abort
+>>> was set, but libata never used it, and this option was completely removed
+>>> in commit a06586325f37 ("scsi: make asynchronous aborts mandatory"))
+>>>
+>>> Additionally, later in commit 358f70da49d7 ("blk-mq: make
+>>> blk_abort_request() trigger timeout path"), blk_abort_request() was changed
+>>> to also call the abort callback asynchronously.
+>>>
+>>> So now, after the TFES error irq has been serviced, we need to wait for
+>>> two different workqueues to run their work, before the SHOST_RECOVERY
+>>> state gets set.
+>>>
+>>> While the ATA specification states that a device should return command
+>>> aborted for all commands queued after the device has entered error state,
+>>> since ATA only keeps the sense data for the latest command (in non-NCQ
+>>> case), we really don't want to send block layer commands to the device
+>>> after it has entered error state. (Only ATA EH commands should be sent,
+>>> to read the sense data etc.)
+>>>
+>>> While we could just call scsi_host_set_state(shost, SHOST_RECOVERY) from
+>>> ata_qc_schedule_eh() directly, that might be a layering violation.
+>>> So instead of doing that, add an additional check against the libata's own
+>>> EH flag(s) before calling the qc_defer callback.
+>>>
+>>> Fixes: e494f6a72839 ("[SCSI] improved eh timeout handler")
+>>> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+>>> ---
+>>> Changes since v1:
+>>> -Implemented review comments from Damien.
+>>>
+>>>    drivers/ata/libata-scsi.c | 20 ++++++++++++++++++++
+>>>    1 file changed, 20 insertions(+)
+>>>
+>>> diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+>>> index 4cb914103382..383a208f5f99 100644
+>>> --- a/drivers/ata/libata-scsi.c
+>>> +++ b/drivers/ata/libata-scsi.c
+>>> @@ -1736,6 +1736,26 @@ static int ata_scsi_translate(struct ata_device *dev, struct scsi_cmnd *cmd,
+>>>    	if (xlat_func(qc))
+>>>    		goto early_finish;
+>>> +	/*
+>>> +	 * scsi_queue_rq() will defer commands when in state SHOST_RECOVERY.
+>>> +	 *
+>>> +	 * When getting an error interrupt, ata_port_abort() will be called,
+>>> +	 * which ends up calling ata_qc_schedule_eh() on all QCs.
+>>> +	 *
+>>> +	 * ata_qc_schedule_eh() will call ata_eh_set_pending() and then call
+>>> +	 * blk_abort_request() on the given QC. blk_abort_request() will
+>>> +	 * asynchronously end up calling scsi_eh_scmd_add(), which will set
+>>> +	 * the state to SHOST_RECOVERY and wake up SCSI EH.
+>>> +	 *
+>>> +	 * In order to avoid requests from being issued to the device from the
+>>> +	 * time ata_eh_set_pending() is called, to the time scsi_eh_scmd_add()
+>>> +	 * sets the state to SHOST_RECOVERY, we defer requests here as well.
+>>> +	 */
+>>> +	if (ap->pflags & (ATA_PFLAG_EH_PENDING | ATA_PFLAG_EH_IN_PROGRESS)) {
+>>> +		rc = ATA_DEFER_LINK;
+>>> +		goto defer;
+>>
+>> Could we move this check earlier? I mean, we didn't need to have the qc
+>> alloc'ed and xlat'ed for this check to be done, right?
 > 
-> Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-> CPU: 61 PID: 13969 Comm: rmmod Kdump: loaded Tainted: G        W          6.1.0-rc3+ #13
-> pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> pc : device_del+0x48/0x39c
-> lr : device_del+0x44/0x39c
-> Call trace:
->  device_del+0x48/0x39c
->  attribute_container_class_device_del+0x28/0x40
->  transport_remove_classdev+0x60/0x7c
->  attribute_container_device_trigger+0x118/0x120
->  transport_remove_device+0x20/0x30
->  ata_tlink_delete+0x4c/0xb0 [libata]
->  ata_tport_delete+0x2c/0x60 [libata]
->  ata_port_detach+0x148/0x1b0 [libata]
->  ata_pci_remove_one+0x50/0x80 [libata]
->  ahci_remove_one+0x4c/0x8c [ahci]
+> Sure, we could put it in e.g. ata_scsi_queuecmd() or __ata_scsi_queuecmd().
 > 
-> Fix this by checking and handling return value of transport_add_device()
-> in ata_tdev_add().
 > 
-> Fixes: d9027470b886 ("[libata] Add ATA transport class")
-> Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-> ---
->  drivers/ata/libata-transport.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+> Or, perhaps it is just time to accept that ATA EH is so interconnected with
+> SCSI EH, so the simplest thing is just to do:
 > 
-> diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
-> index aac9336e8153..e4fb9d1b9b39 100644
-> --- a/drivers/ata/libata-transport.c
-> +++ b/drivers/ata/libata-transport.c
-> @@ -713,7 +713,13 @@ static int ata_tdev_add(struct ata_device *ata_dev)
->  		return error;
->  	}
->  
-> -	transport_add_device(dev);
-> +	error = transport_add_device(dev);
-> +	if (error) {
-> +		device_del(dev);
-> +		ata_tdev_free(ata_dev);
-> +		return error;
-> +	}
-> +
->  	transport_configure_device(dev);
->  	return 0;
->  }
+> --- a/drivers/ata/libata-eh.c
+> +++ b/drivers/ata/libata-eh.c
+> @@ -913,6 +913,7 @@ void ata_qc_schedule_eh(struct ata_queued_cmd *qc)
+>   
+>          qc->flags |= ATA_QCFLAG_FAILED;
+>          ata_eh_set_pending(ap, 1);
+> +       scsi_host_set_state(ap->scsi_host, SHOST_RECOVERY);
+>   
+>          /* The following will fail if timeout has already expired.
+>           * ata_scsi_error() takes care of such scmds on EH entry.
+> 
+> 
+> Which appears to work just as well as the patch in $subject.
+> 
+> In commit ee7863bc68fa ("[PATCH] SCSI: implement shost->host_eh_scheduled")
+> Tejun mentioned that "... libata is planning to depart from SCSI, so, for the
+> time being, libata will be using SCSI EH to handle such exceptions."
+> 
+> Now, 16 years later, ATA is still using SCSI EH (see ata_port_schedule_eh() and
+> ata_std_sched_eh()) to schedule EH in the case when there are no QCs to abort:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/ata/libata-eh.c?h=v6.1-rc4#n1004
+> 
+> Damien, thoughts?
 
+Yeah, that was the original idea. By the time libata was designed we 
+still had quite a lot of drivers in drivers/ide, and it wasn't quite 
+clear if managing everything via SATL was the way to go.
+So one idea was to allow libata to become stand-alone, and SATL working 
+as a modular interface on top of libata.
+However, this never materialized, as everyone was quite happy having to 
+deal with SCSI devices only, even if that meant to go via an additional 
+layer of interpolation.
+
+With the introduction of libsas this idea became even more dubious, as 
+libsas really called for a _tighter_ integration with SCSI.
+Plus ATA in general seems to be heading into the sunset, so I sincerely 
+doubt anyone really wants to head that way.
+
+In fact, with the recent patches we should finally drop the pretension 
+that libata will ever be standalone, and concentrate on making it more 
+aligned with SCSI.
+
+Cheers,
+
+Hannes
 -- 
-Damien Le Moal
-Western Digital Research
+Dr. Hannes Reinecke                Kernel Storage Architect
+hare@suse.de                              +49 911 74053 688
+SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
+Myers, Andrew McDonald, Martje Boudien Moerman
 

@@ -2,106 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F1F26212A7
-	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 14:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54FEB621671
+	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 15:27:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234306AbiKHNll (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 8 Nov 2022 08:41:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
+        id S233438AbiKHO1a (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 8 Nov 2022 09:27:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234460AbiKHNl1 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 08:41:27 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5E95288E
-        for <linux-ide@vger.kernel.org>; Tue,  8 Nov 2022 05:41:24 -0800 (PST)
-Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N68Pz0smjz15MMw;
-        Tue,  8 Nov 2022 21:41:11 +0800 (CST)
-Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.31; Tue, 8 Nov 2022 21:41:22 +0800
-Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
- (7.185.36.183) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 8 Nov
- 2022 21:41:21 +0800
-From:   Yang Yingliang <yangyingliang@huawei.com>
-To:     <linux-ide@vger.kernel.org>
-CC:     <damien.lemoal@opensource.wdc.com>, <yangyingliang@huawei.com>
-Subject: [PATCH v3 4/4] ata: libata-transport: fix error handling in ata_tdev_add()
-Date:   Tue, 8 Nov 2022 21:40:04 +0800
-Message-ID: <20221108134004.1079981-5-yangyingliang@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20221108134004.1079981-1-yangyingliang@huawei.com>
-References: <20221108134004.1079981-1-yangyingliang@huawei.com>
+        with ESMTP id S234503AbiKHO0y (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 09:26:54 -0500
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E67C201A1
+        for <linux-ide@vger.kernel.org>; Tue,  8 Nov 2022 06:25:45 -0800 (PST)
+Received: by mail-pj1-x1031.google.com with SMTP id l22-20020a17090a3f1600b00212fbbcfb78so18023145pjc.3
+        for <linux-ide@vger.kernel.org>; Tue, 08 Nov 2022 06:25:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=frTjEIHTlXO6v5jJNflbe46il1dUjxah1hmkPCKJYy1/f6aaVZ96YwVNT21c8Mx+VL
+         R0PVu5F+awlay7dv8uEqG3mfQMZaN+xEIbVs3zUJk90rHuBTfTbUKI9ehW1dX10rlbxd
+         mQXXSvWli42inJrLM2g6PhN5xYN7/tmPsk29sFPQYGlAj5/CDrj8p18q2KOhwzU0yn1Z
+         U66f4vHTq4ebadAs2QjhqyxxvIbo8plXAHwfVczpBCyZj8AfWtsEsZzbPdDqwFqP6y9l
+         dnCncy0D5q5jmwTVNrSaXkMoaoWTcIIADYOaYowOD+gdgXtrIbBhvp2gXI2k+n6CIgmW
+         oJxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
+        b=vFCln88+4zeXBqVEKjSvuM0FHEAVnG4aGQM1H+rrcrV10kinFIvkQSKJUmWot3OJ+j
+         8jQcntaDN+MAfrYHjJwY9ke+WypnGuS5HAOZuJxHZlEJJdgBpRrL7fA8a/8DECxLwl94
+         /9IqrAo02kOSckyVPqYRM1l4QEVaaG8J5uH5L79XC26bcjkbGiUf7lJn9Cx7XfTlDeXH
+         qdUkKtuNiRzV1Ms4Z+HKsyK/4ywFbLsHfNB3JjlSM2/sKG0V0SDC9sU5cK1Tndxl0+mR
+         qyZ9Rp1LOpr9nW8CjHXcK7yCFMvFvMzOZ6RlihkrLZPktqV3KKkgnnnnRnyJfMka1Tvx
+         g+UQ==
+X-Gm-Message-State: ACrzQf14IEo0ket3VbyJECdp7di7dnzLHtkF+TVhzSn9H+P1wqcyXGjB
+        VHOe58ehar4UTlmIgpauSySrWvxtl7PN9dTV9hA=
+X-Google-Smtp-Source: AMsMyM7i+ouk6KB7gDQcijSLT+5BFPLxz5mMKwdHu69kXLREkeFp6kif+v8n3IHurpTlIb3CZV20pcw+4UqMuGNpObo=
+X-Received: by 2002:a17:902:b581:b0:186:fb90:1151 with SMTP id
+ a1-20020a170902b58100b00186fb901151mr56255957pls.43.1667917544943; Tue, 08
+ Nov 2022 06:25:44 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.103.91]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500007.china.huawei.com (7.185.36.183)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7300:5388:b0:85:81c6:896c with HTTP; Tue, 8 Nov 2022
+ 06:25:44 -0800 (PST)
+Reply-To: mr.abraham022@gmail.com
+From:   "Mr.Abraham" <davidkekeli11@gmail.com>
+Date:   Tue, 8 Nov 2022 14:25:44 +0000
+Message-ID: <CAPBO+FLJ4NDKP9BsZOPRz6jaWhgZgOACSy5HwxhJ-yxSoaUS2A@mail.gmail.com>
+Subject: Greeting
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:1031 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4905]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mr.abraham022[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [davidkekeli11[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [davidkekeli11[at]gmail.com]
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-In ata_tdev_add(), the return value of transport_add_device() is
-not checked. As a result, it causes null-ptr-deref while removing
-the module, because transport_remove_device() is called to remove
-the device that was not added.
-
-Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-CPU: 13 PID: 13603 Comm: rmmod Kdump: loaded Tainted: G        W          6.1.0-rc3+ #36
-pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : device_del+0x48/0x3a0
-lr : device_del+0x44/0x3a0
-Call trace:
- device_del+0x48/0x3a0
- attribute_container_class_device_del+0x28/0x40
- transport_remove_classdev+0x60/0x7c
- attribute_container_device_trigger+0x118/0x120
- transport_remove_device+0x20/0x30
- ata_tdev_delete+0x24/0x50 [libata]
- ata_tlink_delete+0x40/0xa0 [libata]
- ata_tport_delete+0x2c/0x60 [libata]
- ata_port_detach+0x148/0x1b0 [libata]
- ata_pci_remove_one+0x50/0x80 [libata]
- ahci_remove_one+0x4c/0x8c [ahci]
-
-Fix this by checking and handling return value of transport_add_device()
-in ata_tdev_add(). In the error path, device_del() is called to delete
-the device which was added earlier in this function, and ata_tdev_free()
-is called to free ata_dev.
-
-Fixes: d9027470b886 ("[libata] Add ATA transport class")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
----
- drivers/ata/libata-transport.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
-index aac9336e8153..e4fb9d1b9b39 100644
---- a/drivers/ata/libata-transport.c
-+++ b/drivers/ata/libata-transport.c
-@@ -713,7 +713,13 @@ static int ata_tdev_add(struct ata_device *ata_dev)
- 		return error;
- 	}
- 
--	transport_add_device(dev);
-+	error = transport_add_device(dev);
-+	if (error) {
-+		device_del(dev);
-+		ata_tdev_free(ata_dev);
-+		return error;
-+	}
-+
- 	transport_configure_device(dev);
- 	return 0;
- }
--- 
-2.25.1
-
+My Greeting, Did you receive the letter i sent to you. Please answer me.
+Regard, Mr.Abraham

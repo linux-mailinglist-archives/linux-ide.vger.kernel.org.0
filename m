@@ -2,23 +2,23 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFE466212A6
-	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 14:41:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F1F26212A7
+	for <lists+linux-ide@lfdr.de>; Tue,  8 Nov 2022 14:41:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234293AbiKHNlk (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 8 Nov 2022 08:41:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38638 "EHLO
+        id S234306AbiKHNll (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 8 Nov 2022 08:41:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233998AbiKHNl0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 08:41:26 -0500
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A23EB43ADA
-        for <linux-ide@vger.kernel.org>; Tue,  8 Nov 2022 05:41:23 -0800 (PST)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.57])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4N68Pk0B36zHvdG;
-        Tue,  8 Nov 2022 21:40:58 +0800 (CST)
+        with ESMTP id S234460AbiKHNl1 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 8 Nov 2022 08:41:27 -0500
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5E95288E
+        for <linux-ide@vger.kernel.org>; Tue,  8 Nov 2022 05:41:24 -0800 (PST)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4N68Pz0smjz15MMw;
+        Tue,  8 Nov 2022 21:41:11 +0800 (CST)
 Received: from dggpemm500007.china.huawei.com (7.185.36.183) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
  15.1.2375.31; Tue, 8 Nov 2022 21:41:22 +0800
 Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
@@ -28,9 +28,9 @@ Received: from huawei.com (10.175.103.91) by dggpemm500007.china.huawei.com
 From:   Yang Yingliang <yangyingliang@huawei.com>
 To:     <linux-ide@vger.kernel.org>
 CC:     <damien.lemoal@opensource.wdc.com>, <yangyingliang@huawei.com>
-Subject: [PATCH v3 3/4] ata: libata-transport: fix error handling in ata_tlink_add()
-Date:   Tue, 8 Nov 2022 21:40:03 +0800
-Message-ID: <20221108134004.1079981-4-yangyingliang@huawei.com>
+Subject: [PATCH v3 4/4] ata: libata-transport: fix error handling in ata_tdev_add()
+Date:   Tue, 8 Nov 2022 21:40:04 +0800
+Message-ID: <20221108134004.1079981-5-yangyingliang@huawei.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20221108134004.1079981-1-yangyingliang@huawei.com>
 References: <20221108134004.1079981-1-yangyingliang@huawei.com>
@@ -49,60 +49,59 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-In ata_tlink_add(), the return value of transport_add_device() is
+In ata_tdev_add(), the return value of transport_add_device() is
 not checked. As a result, it causes null-ptr-deref while removing
 the module, because transport_remove_device() is called to remove
 the device that was not added.
 
 Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-CPU: 33 PID: 13850 Comm: rmmod Kdump: loaded Tainted: G        W          6.1.0-rc3+ #12
+CPU: 13 PID: 13603 Comm: rmmod Kdump: loaded Tainted: G        W          6.1.0-rc3+ #36
 pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : device_del+0x48/0x39c
-lr : device_del+0x44/0x39c
+pc : device_del+0x48/0x3a0
+lr : device_del+0x44/0x3a0
 Call trace:
- device_del+0x48/0x39c
+ device_del+0x48/0x3a0
  attribute_container_class_device_del+0x28/0x40
  transport_remove_classdev+0x60/0x7c
  attribute_container_device_trigger+0x118/0x120
  transport_remove_device+0x20/0x30
- ata_tlink_delete+0x88/0xb0 [libata]
+ ata_tdev_delete+0x24/0x50 [libata]
+ ata_tlink_delete+0x40/0xa0 [libata]
  ata_tport_delete+0x2c/0x60 [libata]
  ata_port_detach+0x148/0x1b0 [libata]
  ata_pci_remove_one+0x50/0x80 [libata]
  ahci_remove_one+0x4c/0x8c [ahci]
 
 Fix this by checking and handling return value of transport_add_device()
-in ata_tlink_add().
+in ata_tdev_add(). In the error path, device_del() is called to delete
+the device which was added earlier in this function, and ata_tdev_free()
+is called to free ata_dev.
 
 Fixes: d9027470b886 ("[libata] Add ATA transport class")
 Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 ---
- drivers/ata/libata-transport.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/ata/libata-transport.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/ata/libata-transport.c b/drivers/ata/libata-transport.c
-index ef53bdfbcbb2..aac9336e8153 100644
+index aac9336e8153..e4fb9d1b9b39 100644
 --- a/drivers/ata/libata-transport.c
 +++ b/drivers/ata/libata-transport.c
-@@ -458,7 +458,9 @@ int ata_tlink_add(struct ata_link *link)
- 		goto tlink_err;
+@@ -713,7 +713,13 @@ static int ata_tdev_add(struct ata_device *ata_dev)
+ 		return error;
  	}
  
 -	transport_add_device(dev);
 +	error = transport_add_device(dev);
-+	if (error)
-+		goto tlink_transport_err;
++	if (error) {
++		device_del(dev);
++		ata_tdev_free(ata_dev);
++		return error;
++	}
++
  	transport_configure_device(dev);
- 
- 	ata_for_each_dev(ata_dev, link, ALL) {
-@@ -473,6 +475,7 @@ int ata_tlink_add(struct ata_link *link)
- 		ata_tdev_delete(ata_dev);
- 	}
- 	transport_remove_device(dev);
-+  tlink_transport_err:
- 	device_del(dev);
-   tlink_err:
- 	transport_destroy_device(dev);
+ 	return 0;
+ }
 -- 
 2.25.1
 

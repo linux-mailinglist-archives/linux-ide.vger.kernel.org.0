@@ -2,122 +2,117 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B01176392E6
-	for <lists+linux-ide@lfdr.de>; Sat, 26 Nov 2022 01:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C99276393B9
+	for <lists+linux-ide@lfdr.de>; Sat, 26 Nov 2022 04:28:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbiKZA45 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 25 Nov 2022 19:56:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59806 "EHLO
+        id S230255AbiKZD2p (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 25 Nov 2022 22:28:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbiKZA44 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 25 Nov 2022 19:56:56 -0500
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DA5D59871
-        for <linux-ide@vger.kernel.org>; Fri, 25 Nov 2022 16:56:55 -0800 (PST)
-Received: by mail-wm1-x342.google.com with SMTP id ay14-20020a05600c1e0e00b003cf6ab34b61so7320619wmb.2
-        for <linux-ide@vger.kernel.org>; Fri, 25 Nov 2022 16:56:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KLS2zcruSlKyOQ1OBKYSyr+7+6zj0YKBqr4fpDhq6DI=;
-        b=lfYmbOP9ucL9DjkZA6V55PYtDgnIjUPje4WoT9nlkr4//Y5sCsGEK9xucBRIo9oyzT
-         eRob59yUSChBjuakz70kAaVYTBvIfrq5blHwNq8IFEvgrVWKTaJ1Vs+Oen3YGhOnQQVm
-         u91HNWxEhp0+hCfCit7L1J/O3Z0nAEYDgkeRl1idn7ggUnSKGCdgvgGSLfMdI2rW8Qbi
-         bIS6YHZes89+U/7FU3DlG45cgTMOE/HMIaBnq6iol4O9YN25RkTc2aeBy9gXhoSmhf0j
-         54L6VcfskWHLZawwz69uIS0oqzJ1GzLmX2sYniqueDppMjIR0BN4bMI1YpNgKa+u77aK
-         dF8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KLS2zcruSlKyOQ1OBKYSyr+7+6zj0YKBqr4fpDhq6DI=;
-        b=0D59nBro86JFUF65FpVoTDcC2b5sZ58YaZLvpQynjcrkTKK2RatjhYEs4Ck1xfcMcD
-         2CVzb/jocgE34rFCho3cDnvCMMcDYkOVDHOgiIppcRH0QQf2eBZnDJ85UaibenyGiecL
-         CO54SQNnaRDRvi0RF/J4SnL/RPCNs5IRu8kozF/KGNMl+JbPv3KTDVGl0yd8da4Nk1j0
-         7dGo73G5nj7GWTXP1jj7R16eFE6dC/IG3C8OGXpJ9Ohxk6Hxa9/s/CEoBKEtvccMyrSx
-         wmHyVXl+gaykeRroLYq5mjuyI/yhopvVft1T4dWiN8jge2w8mTAeZGmzDZw4K6PsPx1N
-         EgCg==
-X-Gm-Message-State: ANoB5pnz1dG2Uv5o3GsdjUCidXeiqrm1FD0udbEGrlisP2tQJlwfmPoF
-        UHDU3pDnblc1RPv6mlwjHc01LUdzLj/lozuoa2A=
-X-Google-Smtp-Source: AA0mqf4ejnDcyhITVh1fSw1EB2a8aPAKWM2gvK5+cnZtosMW/URRO/3XqGgnw9Udbeho1nBisGjyAT/ie6GvUfWGTaA=
-X-Received: by 2002:a05:600c:4d09:b0:3cf:6e8e:7e8d with SMTP id
- u9-20020a05600c4d0900b003cf6e8e7e8dmr28361164wmp.58.1669424214079; Fri, 25
- Nov 2022 16:56:54 -0800 (PST)
+        with ESMTP id S230304AbiKZD22 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 25 Nov 2022 22:28:28 -0500
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2E0E1BE98;
+        Fri, 25 Nov 2022 19:28:24 -0800 (PST)
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AQ2hbup007916;
+        Sat, 26 Nov 2022 03:27:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2022-7-12;
+ bh=AcagkFnJ+fxUlscIN6IjL6P7egIgluL1OZhulAL1UnQ=;
+ b=mvu81B1jAjb+iQ6MM92frRDUHEr4JjxmPPoaI8lGgelfK0tY26AeAGpXKYQqxl7PfakE
+ zKYR5gspEHq4K8A5lXxuzIhtLNaXvmIKO62/MRCp0/7BL781RtS2v7uCoevnZJ3y5Jpe
+ o4k15RYgVjtQOzJ7HMVMABblAwr0dtY49pEsscSVs8hehmj/twewXRy1+1LN1vLlT3G/
+ v2xYrPsJW6V6XrJm2hokCQMoNB7mRQcHFN2tzIe9dpmq/LftKP6ZeS9lIhBRARfqXgp+
+ Eaf1bj/wXzdFOlU5SlpQfuENIvXv9u+TNm6GxzDP01RMy7w2HAFdX8VSqM3T7Hplrxc0 Qw== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3m39k2g1ng-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 26 Nov 2022 03:27:47 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 2AQ1XTWB007302;
+        Sat, 26 Nov 2022 03:27:47 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3m3988b812-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 26 Nov 2022 03:27:47 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2AQ3Rhsb028327;
+        Sat, 26 Nov 2022 03:27:46 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3m3988b7y9-8;
+        Sat, 26 Nov 2022 03:27:46 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, oss-drivers@corigine.com,
+        James Smart <james.smart@broadcom.com>,
+        Cornelia Huck <cohuck@redhat.com>, dmaengine@vger.kernel.org,
+        Paolo Abeni <pabeni@redhat.com>, Will Deacon <will@kernel.org>,
+        Lee Jones <lee@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Roy Pledge <Roy.Pledge@nxp.com>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>, iommu@lists.linux.dev,
+        Joerg Roedel <joro@8bytes.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        netdev@vger.kernel.org, kvm@vger.kernel.org,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Diana Craciun <diana.craciun@oss.nxp.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Stuart Yoder <stuyoder@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        linux-scsi@vger.kernel.org, Dave Jiang <dave.jiang@intel.com>,
+        linux-ide@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Subject: Re: [patch 00/10] genirq/msi: Treewide cleanup of pointless linux/msi.h includes
+Date:   Sat, 26 Nov 2022 03:27:39 +0000
+Message-Id: <166943312556.1684293.1625990735787388062.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221113201935.776707081@linutronix.de>
+References: <20221113201935.776707081@linutronix.de>
 MIME-Version: 1.0
-Received: by 2002:adf:d1cf:0:0:0:0:0 with HTTP; Fri, 25 Nov 2022 16:56:53
- -0800 (PST)
-Reply-To: samsonvichisunday@gmail.com
-From:   Aminu Bello <aminuadamuvitaform@gmail.com>
-Date:   Sat, 26 Nov 2022 01:56:53 +0100
-Message-ID: <CADwEiSuOWmvHnVVeCLJzu-rnAGqocdNYSQmCm5GbqWAPJJ6y8w@mail.gmail.com>
-Subject: INVITATION TO THE GREAT ILLUMINATI SOCIETY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
-        FILL_THIS_FORM_LONG,FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_FILL_THIS_FORM_LOAN,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:342 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [aminuadamuvitaform[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  2.0 FILL_THIS_FORM_LONG Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-X-Spam-Level: *******
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2022-11-26_02,2022-11-25_01,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0 phishscore=0
+ mlxlogscore=825 mlxscore=0 adultscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
+ definitions=main-2211260024
+X-Proofpoint-GUID: oUxjHgTGr4WNozsr_LV_OOFyzCy5QslK
+X-Proofpoint-ORIG-GUID: oUxjHgTGr4WNozsr_LV_OOFyzCy5QslK
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
---=20
-INVITATION TO THE GREAT ILLUMINATI SOCIETY
-CONGRATULATIONS TO YOU....
-You have been chosen among the people given the opportunity this
-November to become rich and popular by joining the Great ILLUMINATI.
-This is an open invitation for you to become part of the world's
-biggest conglomerate and reach the peak of your career. a worthy goal
-and motivation to reach those upper layers of the pyramid to become
-one among the most Successful, Richest, Famous, Celebrated, Powerful
-and most decorated Personalities in the World???
-If you are interested, please respond to this message now with =E2=80=9CI
-ACCEPT" and fill the below details to get the step to join the
-Illuminati.
-KINDLY FILL BELOW DETAILS AND RETURN NOW.....
-Full names: ....................
-Your Country: .................
-State/ City: .............
-Age: ....................
-Marital status: ....................
-Occupation: ....................
-Monthly income: ....................
-WhatsApp Number: ......
-Postal Code: .....
-Home / House Address: .....
-NOTE: That you are not forced to join us, it is on your decision to
-become part of the world's biggest conglomerate and reach the peak of
-your career.
-Distance is not a barrier.
+On Sun, 13 Nov 2022 21:33:54 +0100 (CET), Thomas Gleixner wrote:
+
+> While working on per device MSI domains I noticed that quite some files
+> include linux/msi.h just because.
+> 
+> The top level comment in the header file clearly says:
+> 
+>   Regular device drivers have no business with any of these functions....
+> 
+> [...]
+
+Applied to 6.2/scsi-queue, thanks!
+
+[03/10] scsi: lpfc: Remove linux/msi.h include
+        https://git.kernel.org/mkp/scsi/c/cdd9344e00b4
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

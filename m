@@ -2,226 +2,103 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE29363FAF4
-	for <lists+linux-ide@lfdr.de>; Thu,  1 Dec 2022 23:51:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 013C8640705
+	for <lists+linux-ide@lfdr.de>; Fri,  2 Dec 2022 13:43:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231588AbiLAWvN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 1 Dec 2022 17:51:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43358 "EHLO
+        id S233519AbiLBMnL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 2 Dec 2022 07:43:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230298AbiLAWuo (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 1 Dec 2022 17:50:44 -0500
-Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3302C4CF9
-        for <linux-ide@vger.kernel.org>; Thu,  1 Dec 2022 14:49:48 -0800 (PST)
-Date:   Thu, 01 Dec 2022 22:49:33 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-        s=protonmail3; t=1669934984; x=1670194184;
-        bh=bBxjFGE/5LJVpSosjGrisnN6ynueCgHg10xHNRARoJQ=;
-        h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-         Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-        b=eyfIB/jZwFEaFjLqw9Uq29aNt+J83e4N6jQbqKbpr1OPAwW7yOVqBLpUjzeetWGU8
-         Zh0JaSQV2NCL1tmvJDaB1ec+/Q9ive4F0z4gixrMpX/tm5TZow0Darf5pYj4lyw5AH
-         BO8ZeEsf674iOfCXI594t1oK9mqsgtBuZXi4L4MW7aA4Co2eGQrXaDHdg07xUG7rdT
-         1nPWYTNnMDNWvdUoRroVkVE0rezWWVq5W80SRB7F6jExAQA3UMfoU7Z+w0vDzFenAX
-         LRHcot5gYQvL9bvUggnh6NObH/Vp/r8aRYppl8sHcYHLWG8l+l95sVxWpDthl6ku6n
-         Ky/BOBawn30Dg==
-To:     "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
-From:   grozzly <grozzly@protonmail.com>
-Subject: [PATCH] libata/ahci: Fix PCS quirk application for suspend
-Message-ID: <GDLzJIZ_OPwuAzIjUg0sSe2tVHaJJvuAvlIv056rty6JTo-noLGRiVuY7YIEb0u-4w0kIZQvP2EwQuoKGwafcglUiXUQCkf6ufsZuv3IjgQ=@protonmail.com>
-Feedback-ID: 34388925:user:proton
+        with ESMTP id S233520AbiLBMnK (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 2 Dec 2022 07:43:10 -0500
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBDECC9369
+        for <linux-ide@vger.kernel.org>; Fri,  2 Dec 2022 04:43:09 -0800 (PST)
+Received: by mail-lj1-x231.google.com with SMTP id d3so5293091ljl.1
+        for <linux-ide@vger.kernel.org>; Fri, 02 Dec 2022 04:43:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gmMhzLW1Ky3aYrauJIOEu3sGYQQwtA8U3ujVQrJjKtQ=;
+        b=fwvEyYeshCQcMkJ0cX773Y5H3LdJDxjyQFJeCVUHP3y03ujyNlqu/mue51YskX1flM
+         5Dh+1xV908DBHKOt+jbnC0fjhT4cOKCQ8BZmI6lI6yM5VE5Q8ObUXs9a5PHYoIxlnoUf
+         EXVS+ZnqZ6uZ1/VT5Nw/okG1Ni1Ed8GYe4nIpdte/toCW1K95V7xNAWddU2aLASstHuX
+         o/ozEfJVpSlQvxHf0uDUCaTIG/oHmYWT2A9edp3HnnZ5Rj4PJuvkv1ijac0Y6yNKJXRG
+         D9oBINslVdSrSYUZABzkbFOw0G8I2soII3FFede6Xh9vqjTn92pqmyLhZjnkF1qJe8sw
+         L2Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gmMhzLW1Ky3aYrauJIOEu3sGYQQwtA8U3ujVQrJjKtQ=;
+        b=wPhJnYb/PRsidccT4SGsj9mrkp9lCwjWTkPq3EL+euMQ04GwtK0Zw+Egx5QespSI5R
+         rzEWel8I2Y1KeuO2dChDAhF8O+5+H4yS3HD8wBeavv2dAPgkMHh3cUqgLVVTmjEul5Ra
+         jGzFH785xU9dDfNp96d2CM8pdl/Xp/3rwmxsxI8Ndgh3RUwB6PULBcMcXO27JxjbeNhY
+         3OzjlLgvZ40a4eOfODzSq19Mhmk5Ozo0B/ydgC7AsLov4c3Hx3PgbZc8kUVRMj+mzxZV
+         fMw27TNkpik1EMHOigWygGJ05W7a4IvfWluWjpTajW8GXXu9+R3P2812N4s3WtqJr8pQ
+         W9cw==
+X-Gm-Message-State: ANoB5pn7yVkFlf+jhcvfHztfcyMG7VOibUqJtMxlumwX1z1wbGwXbxc5
+        B4TvZSV9DKDd6JXfNW6v6o2ebmqpsM1jW2T5Oqk=
+X-Google-Smtp-Source: AA0mqf5YP+14C0dcemoG8pui/qN4OR62VZUGH1e+tEF399RtSc9GLoZziWdxkiupF5L7OUOybim+a1kpncRLS0b610Q=
+X-Received: by 2002:a2e:2c01:0:b0:279:926e:c9b9 with SMTP id
+ s1-20020a2e2c01000000b00279926ec9b9mr10910327ljs.170.1669984988227; Fri, 02
+ Dec 2022 04:43:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a2e:a547:0:0:0:0:0 with HTTP; Fri, 2 Dec 2022 04:43:07 -0800 (PST)
+Reply-To: chuinh021@gmail.com
+From:   chuinh <flexmr271@gmail.com>
+Date:   Fri, 2 Dec 2022 13:43:07 +0100
+Message-ID: <CAAWWbs+-h=YdeT+1Cfu8nd6Vw2W+yUkQKs+pC0CK4EV91gaEqw@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=7.5 required=5.0 tests=BAYES_50,DEAR_FRIEND,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:231 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [chuinh021[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [flexmr271[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [flexmr271[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  2.6 DEAR_FRIEND BODY: Dear Friend? That's not very dear!
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  2.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-There is a bug introduced in c312ef176399 "libata/ahci: Drop PCS quirk for =
-Denverton and beyond": the quirk is not applied on wake from suspend as it =
-originally was. Because of that my laptop (ICH8M controller) doesnt see KIN=
-GSTON SV300S37A60G SSD disk connected into a SATA connector on wake since k=
-ernel 5.3.4 or better to say 5.3.8 because there was another error in c312e=
-f176399 until a fix arrived in 09d6ac8dc51a "libata/ahci: Fix PCS quirk app=
-lication". Btw 4.19.y lts branch is affected as well.
+-- 
 
-The problem somewhy doesnt trigger on another disk though (WD5000LPCX HDD).=
- I discovered it upgrading the laptop with the SSD in place of a HDD with s=
-ome 5.4 kernel.
+Dear Friend,
 
-Here is my hardware:
-- Acer 5920G with ICH8M SATA controller
-- sda: some SATA HDD connnected into the DVD drive IDE port with a SATA-IDE=
- caddy. It is a boot disk to test kernels
-- sdb: KINGSTON SV300S37A60G SSD connected into the only SATA port
+I have an important message which i want to discuss with you.
 
-Booting into vanilla 5.3.8 and beyond (built from upstream sources with con=
-figs extracted from https://kernel.ubuntu.com/~kernel-ppa/mainline/) I see =
-both disks in lsblk. After wake from suspend the SSD is gone from lsblk out=
-put.
+Sincerely,
 
-Here is sample "dmesg --notime | grep -E '^(sd |ata)'" output on wake:
-
-sd 0:0:0:0: [sda] Starting disk
-sd 2:0:0:0: [sdb] Starting disk
-ata4: SATA link down (SStatus 4 SControl 300)
-ata3: SATA link down (SStatus 4 SControl 300)
-ata1.00: ACPI cmd ef/03:0c:00:00:00:a0 (SET FEATURES) filtered out
-ata1.00: ACPI cmd ef/03:42:00:00:00:a0 (SET FEATURES) filtered out
-ata1: FORCE: cable set to 80c
-ata5: SATA link down (SStatus 0 SControl 300)
-ata3: SATA link down (SStatus 4 SControl 300)
-ata3: SATA link down (SStatus 4 SControl 300)
-ata3.00: disabled
-sd 2:0:0:0: rejecting I/O to offline device
-ata3.00: detaching (SCSI 2:0:0:0)
-sd 2:0:0:0: [sdb] Start/Stop Unit failed: Result: hostbyte=3DDID_NO_CONNECT=
- driverbyte=3DDRIVER_OK
-sd 2:0:0:0: [sdb] Synchronizing SCSI cache
-sd 2:0:0:0: [sdb] Synchronize Cache(10) failed: Result: hostbyte=3DDID_BAD_=
-TARGET driverbyte=3DDRIVER_OK
-sd 2:0:0:0: [sdb] Stopping disk
-sd 2:0:0:0: [sdb] Start/Stop Unit failed: Result: hostbyte=3DDID_BAD_TARGET=
- driverbyte=3DDRIVER_OK
-
-The patch is tested on 6.0.10, it solves the problem for my hardware. Compa=
-red to c312ef176399, I miraculously revived ahci_pci_reset_controller() and=
- intergrated internals of ahci_intel_pcs_quirk() into it.
-
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index c1eca72b4575..2f2c8176808c 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -677,6 +677,43 @@ static void ahci_pci_save_initial_config(struct pci_de=
-v *pdev,
- =09ahci_save_initial_config(&pdev->dev, hpriv);
- }
-=20
-+static int ahci_pci_reset_controller(struct ata_host *host)
-+{
-+=09struct pci_dev *pdev =3D to_pci_dev(host->dev);
-+=09const struct pci_device_id *id =3D pci_match_id(ahci_pci_tbl, pdev);
-+=09int rc;
-+
-+=09rc =3D ahci_reset_controller(host);
-+=09if (rc)
-+=09=09return rc;
-+
-+=09/*
-+=09 * Only apply the 6-port PCS quirk for known legacy platforms.
-+=09 * Skip applying the quirk on Denverton and beyond
-+=09 */
-+=09if (id && id->vendor =3D=3D PCI_VENDOR_ID_INTEL &&
-+=09=09=09((enum board_ids) id->driver_data) < board_ahci_pcs7) {
-+=09=09struct ahci_host_priv *hpriv =3D host->private_data;
-+=09=09u16 tmp16;
-+
-+=09=09/*
-+=09=09 * port_map is determined from PORTS_IMPL PCI register which is
-+=09=09 * implemented as write or write-once register.  If the register
-+=09=09 * isn't programmed, ahci automatically generates it from number
-+=09=09 * of ports, which is good enough for PCS programming. It is
-+=09=09 * otherwise expected that platform firmware enables the ports
-+=09=09 * before the OS boots.
-+=09=09 */
-+=09=09pci_read_config_word(pdev, PCS_6, &tmp16);
-+=09=09if ((tmp16 & hpriv->port_map) !=3D hpriv->port_map) {
-+=09=09=09tmp16 |=3D hpriv->port_map;
-+=09=09=09pci_write_config_word(pdev, PCS_6, tmp16);
-+=09=09}
-+=09}
-+
-+=09return 0;
-+}
-+
- static void ahci_pci_init_controller(struct ata_host *host)
- {
- =09struct ahci_host_priv *hpriv =3D host->private_data;
-@@ -871,7 +908,7 @@ static int ahci_pci_device_runtime_resume(struct device=
- *dev)
- =09struct ata_host *host =3D pci_get_drvdata(pdev);
- =09int rc;
-=20
--=09rc =3D ahci_reset_controller(host);
-+=09rc =3D ahci_pci_reset_controller(host);
- =09if (rc)
- =09=09return rc;
- =09ahci_pci_init_controller(host);
-@@ -907,7 +944,7 @@ static int ahci_pci_device_resume(struct device *dev)
- =09=09ahci_mcp89_apple_enable(pdev);
-=20
- =09if (pdev->dev.power.power_state.event =3D=3D PM_EVENT_SUSPEND) {
--=09=09rc =3D ahci_reset_controller(host);
-+=09=09rc =3D ahci_pci_reset_controller(host);
- =09=09if (rc)
- =09=09=09return rc;
-=20
-@@ -1624,36 +1661,6 @@ static void ahci_update_initial_lpm_policy(struct at=
-a_port *ap,
- =09=09ap->target_lpm_policy =3D policy;
- }
-=20
--static void ahci_intel_pcs_quirk(struct pci_dev *pdev, struct ahci_host_pr=
-iv *hpriv)
--{
--=09const struct pci_device_id *id =3D pci_match_id(ahci_pci_tbl, pdev);
--=09u16 tmp16;
--
--=09/*
--=09 * Only apply the 6-port PCS quirk for known legacy platforms.
--=09 */
--=09if (!id || id->vendor !=3D PCI_VENDOR_ID_INTEL)
--=09=09return;
--
--=09/* Skip applying the quirk on Denverton and beyond */
--=09if (((enum board_ids) id->driver_data) >=3D board_ahci_pcs7)
--=09=09return;
--
--=09/*
--=09 * port_map is determined from PORTS_IMPL PCI register which is
--=09 * implemented as write or write-once register.  If the register
--=09 * isn't programmed, ahci automatically generates it from number
--=09 * of ports, which is good enough for PCS programming. It is
--=09 * otherwise expected that platform firmware enables the ports
--=09 * before the OS boots.
--=09 */
--=09pci_read_config_word(pdev, PCS_6, &tmp16);
--=09if ((tmp16 & hpriv->port_map) !=3D hpriv->port_map) {
--=09=09tmp16 |=3D hpriv->port_map;
--=09=09pci_write_config_word(pdev, PCS_6, tmp16);
--=09}
--}
--
- static ssize_t remapped_nvme_show(struct device *dev,
- =09=09=09=09  struct device_attribute *attr,
- =09=09=09=09  char *buf)
-@@ -1788,12 +1795,6 @@ static int ahci_init_one(struct pci_dev *pdev, const=
- struct pci_device_id *ent)
- =09/* save initial config */
- =09ahci_pci_save_initial_config(pdev, hpriv);
-=20
--=09/*
--=09 * If platform firmware failed to enable ports, try to enable
--=09 * them here.
--=09 */
--=09ahci_intel_pcs_quirk(pdev, hpriv);
--
- =09/* prepare host */
- =09if (hpriv->cap & HOST_CAP_NCQ) {
- =09=09pi.flags |=3D ATA_FLAG_NCQ;
-@@ -1903,7 +1904,7 @@ static int ahci_init_one(struct pci_dev *pdev, const =
-struct pci_device_id *ent)
- =09if (rc)
- =09=09return rc;
-=20
--=09rc =3D ahci_reset_controller(host);
-+=09rc =3D ahci_pci_reset_controller(host);
- =09if (rc)
- =09=09return rc;
-
+Mrs Chu Inh

@@ -2,61 +2,56 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE93A658F55
-	for <lists+linux-ide@lfdr.de>; Thu, 29 Dec 2022 18:00:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C9D5658F58
+	for <lists+linux-ide@lfdr.de>; Thu, 29 Dec 2022 18:00:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233601AbiL2RAV (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 29 Dec 2022 12:00:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42668 "EHLO
+        id S233651AbiL2RAc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 29 Dec 2022 12:00:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233597AbiL2RAU (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 29 Dec 2022 12:00:20 -0500
+        with ESMTP id S233604AbiL2RAV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 29 Dec 2022 12:00:21 -0500
 Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7333F5A7;
-        Thu, 29 Dec 2022 09:00:18 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A77B410046
+        for <linux-ide@vger.kernel.org>; Thu, 29 Dec 2022 09:00:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1672333218; x=1703869218;
+  t=1672333220; x=1703869220;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pli0p8qWBG/fw32ZyJYrgU57uHIz5Ggmoyz9LzzBTXc=;
-  b=VESXedALYS9FYESpX7wcexybsUJxJ2Yp3HVEw/kzmQNjmsHbKvYBOsV9
-   hpwqMKvtcvy9SdOxX0V5a6qVFhzaJgCdUTHias5xqxmUdahEjRXuIBJVp
-   R65xoYuv8L3rVU2FRdM//ZEX47eM8AB+Nbmx5taiCihEBhaVCX8jKDZnD
-   mHSTpzFIC08kNviu+0Ae4GNzenWwWhPUXyC92RNZQ5JRqLI4xynDFJR3+
-   rnMxbzbismthKsbu/FggN7KqI61KiufWMHt3d8xItKbg78W2xScez1oQw
-   tcZ2tgvfXw8ibdRiIMLcTWpYQgz9IG71Zk3GlUtBRQJYMUwloGt4A1BLZ
-   A==;
+  bh=Z1/60qVJ74xQpZ73JO2WWSgrPUxpRHWg/OfH98FyPlw=;
+  b=dD8SlVyL2fAkMqJxRug5pdRsDyVgntW8yEFgVkfa/8vajoSoOWPskALg
+   YQuHeferc4Gg9nXkaEpXUnejNF2O68tIDSsRE34BDEsLkHGPv/5ARiLI+
+   ta6HXYcctZAn/C1pYbYapcPfQF69lGffMvdlSs3B95OWYvZhIRnoSwX3+
+   G9zw3W/GV/tkaZVnaCQhpbQRewY/F0ozSDsWr/YXBGl570VDOlNCzuCWc
+   Z7JRK+TBqIBeZqj8fXuWyFcBQPXEsQXM3g8aLILs+X2wMt+tmHKMYz90s
+   LtH4Lo6GjLuen5f2e+rUUdrJwaUA7yaihlqhgiGS1qRabdZpszvLpZcVf
+   Q==;
 X-IronPort-AV: E=Sophos;i="5.96,284,1665417600"; 
-   d="scan'208";a="323990980"
+   d="scan'208";a="323990985"
 Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 30 Dec 2022 01:00:18 +0800
-IronPort-SDR: F6XP4QRhK1P7ZM62Hg5w6tW2M6Gf7H/g0LZf08aS8ZIapnZ+EOGyw3/aGvI8Gp4HUShFnNhP7g
- X+GAB9E4iY3LzlGWa0rlriaVBzIHNcD0PMB93vvsxHRU9V6KGSWUXKn64/aaipetjLc9rRIMf0
- h9LAnMREiQiPHfbb14VE7TgP9b5ArSp7HSIhPjNvkk+YHcjueIFV2oMATdgcCQo/M0ihq0trLM
- EVrqXuZg6WF4nryZZGmb/UFTN78eTHi1HZXkoow2qSyLZQziMAhtH8vLH9CkixKbUeBRH/oX7H
- GpE=
+  by ob1.hgst.iphmx.com with ESMTP; 30 Dec 2022 01:00:20 +0800
+IronPort-SDR: NzPDB8x7zs5J2veP+f69THCfnnwMRQ2uZWek8H/U9j8AOobW/mqs7H9e+tjOKWCOCqI83oV7rR
+ RhDxtO4M0AecTo80yrtbIvN6KavAmKkhD0MaDdHO7IUJj5T0hbt2lbk/YuLGybrZ0qzgr4WMOc
+ kk0sGZn1Dty3FzbLon3TJFwHavhf4erIurNmMUyRvWy/61fgqI9gDs7Pv7rmheAklbFJDLWNYH
+ zWUByyy8xDX6dkt5JE942XkN5BP3n5AFNqMGk0pUy6eFXXCsu+X22M/yA/hETAS9UqpevtF+a5
+ MXk=
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Dec 2022 08:18:22 -0800
-IronPort-SDR: Nru65MeL5cdfhQVCSSwAEpfCvFsyvIDy/MoJ4kTlDq7w6Ou6rG/lX1RwzA87u2t49TGRszVRCn
- ZC1oldwvfGUv1a0bFyLbyk1o4k2fS1Jmd7q/0C327WLEAkU/hIDPcyGau6m/XZMggO3CooufCT
- hXpyFlvK8TxqxQKMDX+r5kihjBfApGxXxLYhcyfcWG0ej+UYwYILJ/9WocOmgTYetZ6zBq0RNF
- SQK6XUJSU7x8wZt5/sbkgSO20UNYxHJI8e7AZunhIQIkA1jVpS/gY2iwWSaZHfVKqwvomoCudF
- m00=
+  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 Dec 2022 08:18:24 -0800
+IronPort-SDR: Ued5lY+sWwKNVFW1P7pc1DfKtCU392xq81ciydrb7/TyKG9WCJRlDimoXRk1p5fHhsEqnO6b9t
+ jw1tN7BRuSyRj/4eX87lmEJDnYRUK3pclQ3Qh7mY6248Iot8XwtbZJkxS/oN9Wq4Dn13kE38FM
+ q7UR2PLHMRlcLg8tnkvK/RfJ8F0bQyCZl6+0qsMtIJGSinSkuj4+Gp0BcjoXeEm4jhzpcfkNfu
+ v2HUSHcjFiU5XiHpSKg6FPGsDgEwzIhvQzSKlSyQp0j4WCZuffbPUwAQSx90eD3UA345dujWGD
+ /WE=
 WDCIronportException: Internal
 Received: from unknown (HELO x1-carbon.lan) ([10.225.164.9])
-  by uls-op-cesaip02.wdc.com with ESMTP; 29 Dec 2022 09:00:17 -0800
+  by uls-op-cesaip02.wdc.com with ESMTP; 29 Dec 2022 09:00:20 -0800
 From:   Niklas Cassel <niklas.cassel@wdc.com>
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Brian King <brking@us.ibm.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     Niklas Cassel <niklas.cassel@wdc.com>,
-        John Garry <john.g.garry@oracle.com>,
-        linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org
-Subject: [PATCH v2 2/7] ata: libata: simplify qc_fill_rtf port operation interface
-Date:   Thu, 29 Dec 2022 17:59:58 +0100
-Message-Id: <20221229170005.49118-3-niklas.cassel@wdc.com>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Cc:     Niklas Cassel <niklas.cassel@wdc.com>, linux-ide@vger.kernel.org
+Subject: [PATCH v2 3/7] ata: libata: read the shared status for successful NCQ commands once
+Date:   Thu, 29 Dec 2022 17:59:59 +0100
+Message-Id: <20221229170005.49118-4-niklas.cassel@wdc.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221229170005.49118-1-niklas.cassel@wdc.com>
 References: <20221229170005.49118-1-niklas.cassel@wdc.com>
@@ -71,251 +66,217 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Currently, the status is being read for each QC, inside
+ata_qc_complete(), which means that QCs being completed by
+ata_qc_complete_multiple() (i.e. multiple QCs completed during a single
+interrupt), can have different status and error bits set. This is
+because the FIS Receive Area will get updated as soon as the HBA
+receives a new FIS from the device in the NCQ case.
 
-The boolean return value of the qc_fill_rtf operation is used nowhere.
-Simplify this operation interface by making it a void function. All
-drivers defining this operation are also updated.
+Here is an example of the problem:
+ata14.00: ata_qc_complete_multiple: done_mask: 0x180000
+qc tag: 19 cmd: 0x61 flags: 0x11b err_mask: 0x0 tf->status: 0x40
+qc tag: 20 cmd: 0x61 flags: 0x11b err_mask: 0x0 tf->status: 0x43
 
+A print in ata_qc_complete_multiple(), shows that done_mask is: 0x180000
+which means that tag 19 and 20 were completed. Another print in
+ata_qc_complete(), after the call to fill_result_tf(), shows that tag 19
+and 20 have different status values, even though they were completed in
+the same ata_qc_complete_multiple() call.
+
+If PMP is not enabled, simply read the status and error once, before
+calling ata_qc_complete() for each QC. Without PMP, we know that all QCs
+must share the same status and error values.
+
+If PMP is enabled, we also read the status before calling
+ata_qc_complete(), however, we still read the status for each QC, since
+the QCs can belong to different PMP links (which means that the QCs
+does not necessarily share the same status and error values).
+
+Do all this by introducing the new port operation .qc_ncq_fill_rtf. If
+set, this operation is called in ata_qc_complete_multiple() to set the
+result tf for all completed QCs signaled by the last SDB FIS received.
+
+QCs that have their result tf filled are marked with the new flag
+ATA_QCFLAG_RTF_FILLED so that any later execution of the qc_fill_rtf
+port operation does nothing (e.g. when called from ata_qc_complete()).
+
+Co-developed-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
 ---
- drivers/ata/acard-ahci.c      |  6 ++----
- drivers/ata/libahci.c         |  6 ++----
- drivers/ata/libata-sff.c      |  6 +-----
- drivers/ata/sata_fsl.c        |  3 +--
- drivers/ata/sata_inic162x.c   | 12 +++++-------
- drivers/ata/sata_sil24.c      |  5 ++---
- drivers/scsi/ipr.c            |  7 +------
- drivers/scsi/libsas/sas_ata.c |  3 +--
- include/linux/libata.h        |  4 ++--
- 9 files changed, 17 insertions(+), 35 deletions(-)
+ drivers/ata/libahci.c     | 90 +++++++++++++++++++++++++++++++++++++--
+ drivers/ata/libata-sata.c |  3 ++
+ include/linux/libata.h    |  2 +
+ 3 files changed, 92 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/acard-ahci.c b/drivers/ata/acard-ahci.c
-index da74a86b70ba..993eadd173da 100644
---- a/drivers/ata/acard-ahci.c
-+++ b/drivers/ata/acard-ahci.c
-@@ -57,7 +57,7 @@ struct acard_sg {
- };
- 
- static enum ata_completion_errors acard_ahci_qc_prep(struct ata_queued_cmd *qc);
--static bool acard_ahci_qc_fill_rtf(struct ata_queued_cmd *qc);
-+static void acard_ahci_qc_fill_rtf(struct ata_queued_cmd *qc);
- static int acard_ahci_port_start(struct ata_port *ap);
- static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent);
- 
-@@ -248,7 +248,7 @@ static enum ata_completion_errors acard_ahci_qc_prep(struct ata_queued_cmd *qc)
- 	return AC_ERR_OK;
- }
- 
--static bool acard_ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void acard_ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	struct ahci_port_priv *pp = qc->ap->private_data;
- 	u8 *rx_fis = pp->rx_fis;
-@@ -268,8 +268,6 @@ static bool acard_ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
- 		qc->result_tf.status = (rx_fis + RX_FIS_PIO_SETUP)[15];
- 	} else
- 		ata_tf_from_fis(rx_fis + RX_FIS_D2H_REG, &qc->result_tf);
--
--	return true;
- }
- 
- static int acard_ahci_port_start(struct ata_port *ap)
 diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index 03aa9eb415d3..0167aac25c34 100644
+index 0167aac25c34..e5d67eb46f3c 100644
 --- a/drivers/ata/libahci.c
 +++ b/drivers/ata/libahci.c
-@@ -55,7 +55,7 @@ static ssize_t ahci_transmit_led_message(struct ata_port *ap, u32 state,
- 
+@@ -56,6 +56,7 @@ static ssize_t ahci_transmit_led_message(struct ata_port *ap, u32 state,
  static int ahci_scr_read(struct ata_link *link, unsigned int sc_reg, u32 *val);
  static int ahci_scr_write(struct ata_link *link, unsigned int sc_reg, u32 val);
--static bool ahci_qc_fill_rtf(struct ata_queued_cmd *qc);
-+static void ahci_qc_fill_rtf(struct ata_queued_cmd *qc);
+ static void ahci_qc_fill_rtf(struct ata_queued_cmd *qc);
++static void ahci_qc_ncq_fill_rtf(struct ata_port *ap, u64 done_mask);
  static int ahci_port_start(struct ata_port *ap);
  static void ahci_port_stop(struct ata_port *ap);
  static enum ata_completion_errors ahci_qc_prep(struct ata_queued_cmd *qc);
-@@ -2053,7 +2053,7 @@ unsigned int ahci_qc_issue(struct ata_queued_cmd *qc)
- }
- EXPORT_SYMBOL_GPL(ahci_qc_issue);
+@@ -157,6 +158,7 @@ struct ata_port_operations ahci_ops = {
+ 	.qc_prep		= ahci_qc_prep,
+ 	.qc_issue		= ahci_qc_issue,
+ 	.qc_fill_rtf		= ahci_qc_fill_rtf,
++	.qc_ncq_fill_rtf	= ahci_qc_ncq_fill_rtf,
  
--static bool ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
+ 	.freeze			= ahci_freeze,
+ 	.thaw			= ahci_thaw,
+@@ -2058,6 +2060,13 @@ static void ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
  	struct ahci_port_priv *pp = qc->ap->private_data;
  	u8 *rx_fis = pp->rx_fis;
-@@ -2087,8 +2087,6 @@ static bool ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
- 		qc->result_tf.error = fis[3];
- 	} else
- 		ata_tf_from_fis(rx_fis + RX_FIS_D2H_REG, &qc->result_tf);
--
--	return true;
- }
  
- static void ahci_freeze(struct ata_port *ap)
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 34beda28e712..cd82d3b5ed14 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -1377,14 +1377,10 @@ EXPORT_SYMBOL_GPL(ata_sff_qc_issue);
-  *
-  *	LOCKING:
-  *	spin_lock_irqsave(host lock)
-- *
-- *	RETURNS:
-- *	true indicating that result TF is successfully filled.
-  */
--bool ata_sff_qc_fill_rtf(struct ata_queued_cmd *qc)
-+void ata_sff_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	qc->ap->ops->sff_tf_read(qc->ap, &qc->result_tf);
--	return true;
- }
- EXPORT_SYMBOL_GPL(ata_sff_qc_fill_rtf);
++	/*
++	 * rtf may already be filled (e.g. for successful NCQ commands).
++	 * If that is the case, we have nothing to do.
++	 */
++	if (qc->flags & ATA_QCFLAG_RTF_FILLED)
++		return;
++
+ 	if (pp->fbs_enabled)
+ 		rx_fis += qc->dev->link->pmp * AHCI_RX_FIS_SZ;
  
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index 7eab9c4e1473..b052c5a65c17 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -566,7 +566,7 @@ static unsigned int sata_fsl_qc_issue(struct ata_queued_cmd *qc)
- 	return 0;
- }
+@@ -2071,6 +2080,9 @@ static void ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
+ 	    !(qc->flags & ATA_QCFLAG_EH)) {
+ 		ata_tf_from_fis(rx_fis + RX_FIS_PIO_SETUP, &qc->result_tf);
+ 		qc->result_tf.status = (rx_fis + RX_FIS_PIO_SETUP)[15];
++		qc->flags |= ATA_QCFLAG_RTF_FILLED;
++		return;
++	}
  
--static bool sata_fsl_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void sata_fsl_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	struct sata_fsl_port_priv *pp = qc->ap->private_data;
- 	struct sata_fsl_host_priv *host_priv = qc->ap->host->private_data;
-@@ -577,7 +577,6 @@ static bool sata_fsl_qc_fill_rtf(struct ata_queued_cmd *qc)
- 	cd = pp->cmdentry + tag;
- 
- 	ata_tf_from_fis(cd->sfis, &qc->result_tf);
--	return true;
- }
- 
- static int sata_fsl_scr_write(struct ata_link *link,
-diff --git a/drivers/ata/sata_inic162x.c b/drivers/ata/sata_inic162x.c
-index f480ff456190..2833c722118d 100644
---- a/drivers/ata/sata_inic162x.c
-+++ b/drivers/ata/sata_inic162x.c
-@@ -566,7 +566,7 @@ static void inic_tf_read(struct ata_port *ap, struct ata_taskfile *tf)
- 	tf->status	= readb(port_base + PORT_TF_COMMAND);
- }
- 
--static bool inic_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void inic_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	struct ata_taskfile *rtf = &qc->result_tf;
- 	struct ata_taskfile tf;
-@@ -580,12 +580,10 @@ static bool inic_qc_fill_rtf(struct ata_queued_cmd *qc)
+ 	/*
+ 	 * For NCQ commands, we never get a D2H FIS, so reading the D2H Register
+@@ -2080,13 +2092,85 @@ static void ahci_qc_fill_rtf(struct ata_queued_cmd *qc)
+ 	 * instead. However, the SDB FIS does not contain the LBA, so we can't
+ 	 * use the ata_tf_from_fis() helper.
  	 */
- 	inic_tf_read(qc->ap, &tf);
+-	} else if (ata_is_ncq(qc->tf.protocol)) {
++	if (ata_is_ncq(qc->tf.protocol)) {
+ 		const u8 *fis = rx_fis + RX_FIS_SDB;
  
--	if (!(tf.status & ATA_ERR))
--		return false;
--
--	rtf->status = tf.status;
--	rtf->error = tf.error;
--	return true;
-+	if (tf.status & ATA_ERR) {
-+		rtf->status = tf.status;
-+		rtf->error = tf.error;
++		/*
++		 * Successful NCQ commands have been filled already.
++		 * A failed NCQ command will read the status here.
++		 * (Note that a failed NCQ command will get a more specific
++		 * error when reading the NCQ Command Error log.)
++		 */
+ 		qc->result_tf.status = fis[2];
+ 		qc->result_tf.error = fis[3];
+-	} else
+-		ata_tf_from_fis(rx_fis + RX_FIS_D2H_REG, &qc->result_tf);
++		qc->flags |= ATA_QCFLAG_RTF_FILLED;
++		return;
++	}
++
++	ata_tf_from_fis(rx_fis + RX_FIS_D2H_REG, &qc->result_tf);
++	qc->flags |= ATA_QCFLAG_RTF_FILLED;
++}
++
++static void ahci_qc_ncq_fill_rtf(struct ata_port *ap, u64 done_mask)
++{
++	struct ahci_port_priv *pp = ap->private_data;
++	const u8 *fis;
++
++	/* No outstanding commands. */
++	if (!ap->qc_active)
++		return;
++
++	/*
++	 * FBS not enabled, so read status and error once, since they are shared
++	 * for all QCs.
++	 */
++	if (!pp->fbs_enabled) {
++		u8 status, error;
++
++		/* No outstanding NCQ commands. */
++		if (!pp->active_link->sactive)
++			return;
++
++		fis = pp->rx_fis + RX_FIS_SDB;
++		status = fis[2];
++		error = fis[3];
++
++		while (done_mask) {
++			struct ata_queued_cmd *qc;
++			unsigned int tag = __ffs64(done_mask);
++
++			qc = ata_qc_from_tag(ap, tag);
++			if (qc && ata_is_ncq(qc->tf.protocol)) {
++				qc->result_tf.status = status;
++				qc->result_tf.error = error;
++				qc->flags |= ATA_QCFLAG_RTF_FILLED;
++			}
++			done_mask &= ~(1ULL << tag);
++		}
++
++		return;
++	}
++
++	/*
++	 * FBS enabled, so read the status and error for each QC, since the QCs
++	 * can belong to different PMP links. (Each PMP link has its own FIS
++	 * Receive Area.)
++	 */
++	while (done_mask) {
++		struct ata_queued_cmd *qc;
++		unsigned int tag = __ffs64(done_mask);
++
++		qc = ata_qc_from_tag(ap, tag);
++		if (qc && ata_is_ncq(qc->tf.protocol)) {
++			fis = pp->rx_fis;
++			fis += qc->dev->link->pmp * AHCI_RX_FIS_SZ;
++			fis += RX_FIS_SDB;
++			qc->result_tf.status = fis[2];
++			qc->result_tf.error = fis[3];
++			qc->flags |= ATA_QCFLAG_RTF_FILLED;
++		}
++		done_mask &= ~(1ULL << tag);
 +	}
  }
  
- static void inic_freeze(struct ata_port *ap)
-diff --git a/drivers/ata/sata_sil24.c b/drivers/ata/sata_sil24.c
-index 0a01518a8d97..22cc9e9789dd 100644
---- a/drivers/ata/sata_sil24.c
-+++ b/drivers/ata/sata_sil24.c
-@@ -328,7 +328,7 @@ static int sil24_scr_write(struct ata_link *link, unsigned sc_reg, u32 val);
- static int sil24_qc_defer(struct ata_queued_cmd *qc);
- static enum ata_completion_errors sil24_qc_prep(struct ata_queued_cmd *qc);
- static unsigned int sil24_qc_issue(struct ata_queued_cmd *qc);
--static bool sil24_qc_fill_rtf(struct ata_queued_cmd *qc);
-+static void sil24_qc_fill_rtf(struct ata_queued_cmd *qc);
- static void sil24_pmp_attach(struct ata_port *ap);
- static void sil24_pmp_detach(struct ata_port *ap);
- static void sil24_freeze(struct ata_port *ap);
-@@ -901,10 +901,9 @@ static unsigned int sil24_qc_issue(struct ata_queued_cmd *qc)
- 	return 0;
- }
+ static void ahci_freeze(struct ata_port *ap)
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 908f35acee1e..f3e7396e3191 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -655,6 +655,9 @@ int ata_qc_complete_multiple(struct ata_port *ap, u64 qc_active)
+ 		return -EINVAL;
+ 	}
  
--static bool sil24_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void sil24_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	sil24_read_tf(qc->ap, qc->hw_tag, &qc->result_tf);
--	return true;
- }
- 
- static void sil24_pmp_attach(struct ata_port *ap)
-diff --git a/drivers/scsi/ipr.c b/drivers/scsi/ipr.c
-index c68ca2218a05..1c8040d250ea 100644
---- a/drivers/scsi/ipr.c
-+++ b/drivers/scsi/ipr.c
-@@ -7142,11 +7142,8 @@ static unsigned int ipr_qc_issue(struct ata_queued_cmd *qc)
- /**
-  * ipr_qc_fill_rtf - Read result TF
-  * @qc: ATA queued command
-- *
-- * Return value:
-- * 	true
-  **/
--static bool ipr_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void ipr_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	struct ipr_sata_port *sata_port = qc->ap->private_data;
- 	struct ipr_ioasa_gata *g = &sata_port->ioasa;
-@@ -7163,8 +7160,6 @@ static bool ipr_qc_fill_rtf(struct ata_queued_cmd *qc)
- 	tf->hob_lbal = g->hob_lbal;
- 	tf->hob_lbam = g->hob_lbam;
- 	tf->hob_lbah = g->hob_lbah;
--
--	return true;
- }
- 
- static struct ata_port_operations ipr_sata_ops = {
-diff --git a/drivers/scsi/libsas/sas_ata.c b/drivers/scsi/libsas/sas_ata.c
-index 14da33a3b6a6..ac8576e7f0b7 100644
---- a/drivers/scsi/libsas/sas_ata.c
-+++ b/drivers/scsi/libsas/sas_ata.c
-@@ -226,12 +226,11 @@ static unsigned int sas_ata_qc_issue(struct ata_queued_cmd *qc)
- 	return ret;
- }
- 
--static bool sas_ata_qc_fill_rtf(struct ata_queued_cmd *qc)
-+static void sas_ata_qc_fill_rtf(struct ata_queued_cmd *qc)
- {
- 	struct domain_device *dev = qc->ap->private_data;
- 
- 	ata_tf_from_fis(dev->sata_dev.fis, &qc->result_tf);
--	return true;
- }
- 
- static struct sas_internal *dev_to_sas_internal(struct domain_device *dev)
++	if (ap->ops->qc_ncq_fill_rtf)
++		ap->ops->qc_ncq_fill_rtf(ap, done_mask);
++
+ 	while (done_mask) {
+ 		struct ata_queued_cmd *qc;
+ 		unsigned int tag = __ffs64(done_mask);
 diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 7985e6e2ae0e..8483d8300ea3 100644
+index 8483d8300ea3..f54e02dadc6f 100644
 --- a/include/linux/libata.h
 +++ b/include/linux/libata.h
-@@ -876,7 +876,7 @@ struct ata_port_operations {
- 	int (*check_atapi_dma)(struct ata_queued_cmd *qc);
+@@ -200,6 +200,7 @@ enum {
+ 	/* struct ata_queued_cmd flags */
+ 	ATA_QCFLAG_ACTIVE	= (1 << 0), /* cmd not yet ack'd to scsi lyer */
+ 	ATA_QCFLAG_DMAMAP	= (1 << 1), /* SG table is DMA mapped */
++	ATA_QCFLAG_RTF_FILLED	= (1 << 2), /* result TF has been filled */
+ 	ATA_QCFLAG_IO		= (1 << 3), /* standard IO command */
+ 	ATA_QCFLAG_RESULT_TF	= (1 << 4), /* result TF requested */
+ 	ATA_QCFLAG_CLEAR_EXCL	= (1 << 5), /* clear excl_link on completion */
+@@ -877,6 +878,7 @@ struct ata_port_operations {
  	enum ata_completion_errors (*qc_prep)(struct ata_queued_cmd *qc);
  	unsigned int (*qc_issue)(struct ata_queued_cmd *qc);
--	bool (*qc_fill_rtf)(struct ata_queued_cmd *qc);
-+	void (*qc_fill_rtf)(struct ata_queued_cmd *qc);
+ 	void (*qc_fill_rtf)(struct ata_queued_cmd *qc);
++	void (*qc_ncq_fill_rtf)(struct ata_port *ap, u64 done_mask);
  
  	/*
  	 * Configuration and exception handling
-@@ -1936,7 +1936,7 @@ extern void ata_sff_queue_delayed_work(struct delayed_work *dwork,
- 		unsigned long delay);
- extern void ata_sff_queue_pio_task(struct ata_link *link, unsigned long delay);
- extern unsigned int ata_sff_qc_issue(struct ata_queued_cmd *qc);
--extern bool ata_sff_qc_fill_rtf(struct ata_queued_cmd *qc);
-+extern void ata_sff_qc_fill_rtf(struct ata_queued_cmd *qc);
- extern unsigned int ata_sff_port_intr(struct ata_port *ap,
- 				      struct ata_queued_cmd *qc);
- extern irqreturn_t ata_sff_interrupt(int irq, void *dev_instance);
 -- 
 2.38.1
 

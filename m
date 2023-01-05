@@ -2,120 +2,105 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D1665EDA7
-	for <lists+linux-ide@lfdr.de>; Thu,  5 Jan 2023 14:47:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 015FC65EF33
+	for <lists+linux-ide@lfdr.de>; Thu,  5 Jan 2023 15:49:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbjAENrc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 5 Jan 2023 08:47:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60604 "EHLO
+        id S233726AbjAEOsn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 5 Jan 2023 09:48:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233329AbjAENrJ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 5 Jan 2023 08:47:09 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAA583F13B;
-        Thu,  5 Jan 2023 05:47:06 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6A455B81AD7;
-        Thu,  5 Jan 2023 13:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15C1C433F0;
-        Thu,  5 Jan 2023 13:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1672926424;
-        bh=Yiulr7Sl0+EFOJK9Ppots4MUfhCrrD1tUceLFrFQBAw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Au29traIASfq9dNyl8+ZbpOYCSGvTUHA36hQmRXoeSdhcuZNHgxROKVUPJcimuE1n
-         wTEbQgbBcTh9IKa30BBGzEEizNTCmerQLas4A01ekpZ58esEAO/+Rde/Vg27XOVo9b
-         bZNnVdGZ93ajq5l4ODUBGX0WnM68txXrJsYBDAwyEidQ9mf8CIKrOVXYFYQWaPEn+O
-         SZjSn6y6w3oUdaUw+CnGpaDlHsnD5C4XYBSugOjNdoXwB2Q3c/7/PEbf9fq/02yvJT
-         D7aT/kVmyHHz6NK7VOyLFzbHEYox6ou3pPktli0m8tKNR2Nmx/a9L3hF3PeLfot47M
-         iz0s6LCgloHbQ==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Robert Jarzmik <robert.jarzmik@free.fr>
-Cc:     Daniel Mack <daniel@zonque.org>,
-        Haojian Zhuang <haojian.zhuang@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>, linux-ide@vger.kernel.org
-Subject: [PATCH 08/27] ata: remove palmld pata driver
-Date:   Thu,  5 Jan 2023 14:46:03 +0100
-Message-Id: <20230105134622.254560-9-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230105134622.254560-1-arnd@kernel.org>
-References: <20230105134622.254560-1-arnd@kernel.org>
+        with ESMTP id S234312AbjAEOsa (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 5 Jan 2023 09:48:30 -0500
+Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C80F45933C
+        for <linux-ide@vger.kernel.org>; Thu,  5 Jan 2023 06:48:28 -0800 (PST)
+Received: by mail-yb1-xb2b.google.com with SMTP id p188so4914648yba.5
+        for <linux-ide@vger.kernel.org>; Thu, 05 Jan 2023 06:48:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7JT2Gt7y/M3YLHVCyMzZwNsFe1p6EOvnpVpu2gl496w=;
+        b=TxpC5CzW5NZ3iMneMosTeHrFxDGwEn13V77giIA0vr/IXBqDZ1zhAx831NdFpe8r9y
+         HO/8gzV7ql5CSrlo6fWOq/eCbSo5aVOAuEPl4tNS9RZGnAUjhNugTvUdOAqVQ4Rl9G5z
+         m/Fbs7+viOjU/UX6y897C9batzXCOB9Y2y8Yosv5KKNRIU3ZGVUg6BSOSgiyHI5htsuG
+         m264DpWBmeVachwHAPH5WjqTpDGLrzIY97Vq7g42S1xO10iSaU4kQLvn+zS955hVbCA1
+         r9BiN6KTYAGumKiuO4RpJSIKltFwrTb3zsg7uqTUeQxMZnMM1bzjXACraQHj8XBxgjKL
+         mgbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7JT2Gt7y/M3YLHVCyMzZwNsFe1p6EOvnpVpu2gl496w=;
+        b=OBJa9PkBDVxvosYWk3epfu0tFBsurJ/gn3UP8ze5mqcmIaxrAZgpyXOr7rdJTZK2V4
+         vLD1OZTXOMziEE1WuWcQTfJJCp0FFEcmNmVXXXxYhWsFOfnz6cFIiv+K9RXBC6xGHOk/
+         MOIArCcXdQnNgRFPmYn/3BvReG3Y0uQW59WcVna3LB1tWAijJ9sXrTIBjzvCQO1xM3Yi
+         8iK6ohBzP7bzknbUL3yjCLukSEia8iCt0hwAGaLeI2F8lLD4bjmBk3JJY66aV4PRVOjs
+         jvEnnntq2XYQun5bbnSzsEOmgVZLNRDyLf5ucULWSQHuHA+uN6KsjMNt64fDTeE3f4bm
+         QfgQ==
+X-Gm-Message-State: AFqh2koz8AsXmZVBXeotchWBka9TbTjsN8moLI8WK6MBCmd6RETAzATm
+        NJ0oXbYtrMsuFlxLiUggxpdBqaT4711fFYNEf3Y=
+X-Google-Smtp-Source: AMrXdXs3IWRoQIh5lex0sKvd/mrVQqcym6C07SQwKJT4h7KBDIShWmQdJ5l45384ZPQwQK2tOUEl7ybfLW8zTi2gBaE=
+X-Received: by 2002:a25:4f83:0:b0:7b3:fa44:5e69 with SMTP id
+ d125-20020a254f83000000b007b3fa445e69mr385937ybb.333.1672930108068; Thu, 05
+ Jan 2023 06:48:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:7000:9842:b0:3de:3508:45c3 with HTTP; Thu, 5 Jan 2023
+ 06:48:27 -0800 (PST)
+Reply-To: westernuniontransfer277@gmail.com
+From:   Western Union Agent <kokoe92944706@gmail.com>
+Date:   Thu, 5 Jan 2023 06:48:27 -0800
+Message-ID: <CAH3TjNME4h6NrWE6gm5Yv3ZsyjCAhKzV_F9mmF51goJ6qC7-yA@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_60,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:b2b listed in]
+        [list.dnswl.org]
+        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.6256]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [kokoe92944706[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [westernuniontransfer277[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [kokoe92944706[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Good day dear,
 
-The PXA palmld machine was removed, so the pata driver is no
-longer used and can be removed. There is a chance that some of
-this code might be useful for turning some of the other PXA
-PCMCIA host drivers into PATA drivers, but it's clear that
-it would not work unmodified, and it seems unlikely that
-someone would do this work.
+This is to let you know that your payment is ready now, but we need
+your details now so we can complete your transfer today without
+no error, so please try to send us your information now
+so we can continue.
 
-Cc: Alessandro Zummo <a.zummo@towertech.it>
-Cc: Marek Vasut <marek.vasut@gmail.com>
-Cc: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc: Sergey Shtylyov <s.shtylyov@omp.ru>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-ide@vger.kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/ata/Kconfig       |   9 ---
- drivers/ata/Makefile      |   1 -
- drivers/ata/pata_palmld.c | 137 --------------------------------------
- 3 files changed, 147 deletions(-)
- delete mode 100644 drivers/ata/pata_palmld.c
+We hope to confirm your information now.
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index e4d9e39b08dd..4aafb75bf0c3 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -1082,15 +1082,6 @@ config PATA_OPTI
- 
- 	  If unsure, say N.
- 
--config PATA_PALMLD
--	tristate "Palm LifeDrive PATA support"
--	depends on MACH_PALMLD
--	help
--	  This option enables support for Palm LifeDrive's internal ATA
--	  port via the new ATA layer.
--
--	  If unsure, say N.
--
- config PATA_PCMCIA
- 	tristate "PCMCIA PATA support"
- 	depends on PCMCIA
-diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
-index 0a863e7f3c60..4ee5c0761d90 100644
---- a/drivers/ata/Makefile
-+++ b/drivers/ata/Makefile
-@@ -105,7 +105,6 @@ obj-$(CONFIG_PATA_MPIIX)	+= pata_mpiix.o
- obj-$(CONFIG_PATA_NS87410)	+= pata_ns87410.o
- obj-$(CONFIG_PATA_OPTI)		+= pata_opti.o
- obj-$(CONFIG_PATA_PCMCIA)	+= pata_pcmcia.o
--obj-$(CONFIG_PATA_PALMLD)	+= pata_palmld.o
- obj-$(CONFIG_PATA_PLATFORM)	+= pata_platform.o
- obj-$(CONFIG_PATA_OF_PLATFORM)	+= pata_of_platform.o
- obj-$(CONFIG_PATA_RB532)	+= pata_rb532_cf.o
-diff --git a/drivers/ata/pata_palmld.c b/drivers/ata/pata_palmld.c
-deleted file mode 100644
-index 51caa2a427dd..000000000000
--- 
-2.39.0
-
+Cheers,
+Western Union Agent.

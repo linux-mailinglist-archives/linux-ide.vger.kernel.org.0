@@ -2,82 +2,82 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C5196641BB
-	for <lists+linux-ide@lfdr.de>; Tue, 10 Jan 2023 14:27:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBEAF6641BF
+	for <lists+linux-ide@lfdr.de>; Tue, 10 Jan 2023 14:27:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229763AbjAJN1h (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 10 Jan 2023 08:27:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53354 "EHLO
+        id S232892AbjAJN1k (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 10 Jan 2023 08:27:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233423AbjAJN1V (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Jan 2023 08:27:21 -0500
+        with ESMTP id S233615AbjAJN1W (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 10 Jan 2023 08:27:22 -0500
 Received: from esa2.hgst.iphmx.com (esa2.hgst.iphmx.com [68.232.143.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5267610B3
-        for <linux-ide@vger.kernel.org>; Tue, 10 Jan 2023 05:27:20 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3AD73BB
+        for <linux-ide@vger.kernel.org>; Tue, 10 Jan 2023 05:27:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
   d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1673357240; x=1704893240;
+  t=1673357241; x=1704893241;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=K+DjrBoMp8r4GmO2ND7jZ/tYn6dWl8LN/Wiw9iXU22w=;
-  b=Y+aPc0OFCaikmLqc0nyVjiAg7K38IKvvKGpj4fgOJQ05aidBSf9ESc0v
-   RHc+en4kJkuv5PWYJsAXGDp6+bOiJDloUMGBOnHjwJ+eKuatnvj3AXkJ3
-   emL6gzHOyJKSPIPmdPjIEK3lrMM1OaM2tTmOMxRaBDEon5EGezmUuH0kq
-   BLgfmSyBx/XLgNgeH9em+hnzL4GwmJLa6BxKaXD4ctA6KXFXZT8O9R7OQ
-   Y20ltNie4ToUtKKeK9RwpfdRBqyTLeiFR5eK5PzZ1jLrfvTZ+VNM8gMAr
-   b0XcyocyIw3Uo8JDfzHiE35kAPcnFpUE8jx8A8s+/wfQUEfmOGsLWCtbk
-   Q==;
+  bh=R2Z83dzCeZHKddXeuTUmcn0ovi37DfKGzvD49wy2LNI=;
+  b=YZKGi3BWD3IR5b+32WcnoQWmf9U3rlyVIIbKCtJKxVrjdR8pLzVxmljg
+   CJmKmFykCppDuvBGD57qcuyQCnp6kCXTRZOWsDzenWzdciPKycjdYIfCN
+   bktOo1FVGcIP3NBCE3IZbpBzzGzzwbC/hqux8vf/PFMtu0VDKmFFcDsvJ
+   xQVgNNxULp+hUY8sOgXx1mDECzaHAVop1+7vToGToBuO/ruyJSdhIqtkO
+   9ceXCUrUysuJw+BhLdwhDLDpYAWuI2JdzKAO1YnvY3xf+YRdlaMVJRuF+
+   6AQVCyHPlNOGI1uzEMeb/GWFug+cj/6gq/jnqzcgW2Bv6goS8ByDVsNW0
+   A==;
 X-IronPort-AV: E=Sophos;i="5.96,315,1665417600"; 
-   d="scan'208";a="324741507"
+   d="scan'208";a="324741510"
 Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 10 Jan 2023 21:27:19 +0800
-IronPort-SDR: MnI5TGXfTWi5adr8g0PSHM6HnHYt77SIABgEZFyuSC9J3g0Se1IwF3MRPVcD8Q5TV6cpJmxw0r
- vObb0HgNqJCCW2JXZ6bBbZIMbySQUj8a3lfcuqWkTaOFDKTFipk5aRj2E+SYBgiLfYdOAsPAlm
- OTTk8riKtOyl2t35OCS3a7z9OOtr5+s4ekp4kj36BEQiueKPtWFlnklE8aWEMvbcdokbfyqISY
- 9To9iVB/ir27mVvUpLZQNhi0FiEZFptcBN1uW8Lxk2Yq5x7XdN2Fzx8CBHwTnyoSlVkLmNP0bB
- +r8=
+  by ob1.hgst.iphmx.com with ESMTP; 10 Jan 2023 21:27:20 +0800
+IronPort-SDR: l2edOPMWGMq02lK6vaxHtC8sfYj46CCgsN03+VsbcO9q+a/ma8oXcdCJ2Qj5/u11ZZ7SN1twsm
+ jkXvIp0uu3Ye/54vKVRK03FC4wuHUxpguiqkHB5ZZwnu33veSqXA3RgsNs+xaWWTlDh/PvC0k6
+ 65NyhTc0n52vUJ1adQORspk8xlS9uhJTHB1cqUgDsNs1yJzCXDVF/yhi1fn5ww/0gBckl/iR6G
+ oEkT03gaLnj5HBn9VvjyWkf2c/aOhMSq1cWPlAX1CQozRUCNU8PDyNqa61ZGvRUH3d8HVQ3o/z
+ bn4=
 Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jan 2023 04:39:25 -0800
-IronPort-SDR: xUq9D0COzIw+Yl1uXi/H5/kD/W8xoRKCu5wl3G+ZSIYukT+/SLugFclgV6bv05I+avrWEGl/tb
- S82TXrCn9rX0dkwgQnsB399nUvqyZSDLttl35+XKrfAKWaOMyZ/RO/5LW2Y8OY9to7v54OqMjj
- rXjK/trMHklQB6gF7CKC5YPLD8h044NQ/PiAo2eUigGVdLs+Nws4AzItrk9AKJiK7SZ0Uh0zYx
- gl39DzWIEJLlT7dyzpcBJjZIb16BeXYaaDjEhTCXflXNAMpCgMCWeIwiveFIMw+2Yuz+nV0hNg
- IHU=
+  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jan 2023 04:39:26 -0800
+IronPort-SDR: mKWasVohmWfp3M2u6vMy6lGu4bM29CJmX+XRS1Drylk7zTgjn86JEqy1vb2R3ih7bxbhS1vfjd
+ GD8BzmYwpo1Ha7vFY1LmFw20h9c/F2VpSTBSQ2GsMkf9V8pZmMZEyPHvJXp+oLHH/casc3QpVY
+ sllT0Fvijrr6671nmRcVXWnFe9veDvEBHEclPUsReRcSnOBg4P+jgW4t8pbup7lxBoxDtb+tHV
+ o+VYIT3oBbMMwwFgqhdqu97zcGJ0nr7J8ETEgaWIRoGjxxDeFSbyl3MB1sRvuqa6J5fxohSNHH
+ SHk=
 WDCIronportException: Internal
 Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jan 2023 05:27:20 -0800
+  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Jan 2023 05:27:21 -0800
 Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4Nrs6v3h93z1RvTr
-        for <linux-ide@vger.kernel.org>; Tue, 10 Jan 2023 05:27:19 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4Nrs6w57qpz1RvTp
+        for <linux-ide@vger.kernel.org>; Tue, 10 Jan 2023 05:27:20 -0800 (PST)
 Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
         reason="pass (just generated, assumed good)"
         header.d=opensource.wdc.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
         opensource.wdc.com; h=content-transfer-encoding:mime-version
         :references:in-reply-to:x-mailer:message-id:date:subject:to
-        :from; s=dkim; t=1673357239; x=1675949240; bh=K+DjrBoMp8r4GmO2ND
-        7jZ/tYn6dWl8LN/Wiw9iXU22w=; b=D2KotuHLkbPHXUp/pbMm394dfGh5LFGUMP
-        94xKBgNFPOzbqXasz3zMTtds4/zESmB7M0NXYJfvy3B/fYCEc5Bt7lQCv5Ia+vTT
-        5cxQ7qnUtJ5r2ikrTIkrv3g2PuPcEQqHQt6Km+W/NovVukVOnbfLN9U+g3MUb/6O
-        lw2+xjGmEcsz0D3YP5lZplORmgwqrJvR1x1wPJ6RAqIIgD2AHDo6eJmrJ3c1lid/
-        t0+EeeK+dYQqkeUGUg6nSdyc5ITaO6TUCtg7deIRC9j5iRNH2CvNlVjQRJFlU/yU
-        jsVpvswaTlxPJfAqdal8S9J9W2SDzg2DivJwZlDboX/icWc9blpg==
+        :from; s=dkim; t=1673357240; x=1675949241; bh=R2Z83dzCeZHKddXeuT
+        Umcn0ovi37DfKGzvD49wy2LNI=; b=ZJ+0O30axYCJ+x2trR1XYoFhrpq/aV2ttv
+        jKGDDhHgt9mHLxqEY5YPGnVjkbC3LIVJ9aTJQ3QZW5db72btJvoJv3RlGoaxKyD0
+        uQfoQbv3rErZBsD3qjMbzTVqXhM9hILOMskdDAx+O9WJVQ2+CVqo6PIm8HV5etWp
+        Ah0SJ68XAR49yjj2TSHdIwVAaLJYbi/XpIvqTbUKhYX7wgUd4BrCMeMxUrBzJCZN
+        +FPP/1/B5Q5vQA5/tsTsd7liprMPNowc0/UERrSScnLjYdSlkOx36yo6GHKtQ147
+        wDZMT3dh4I3QY0BmRyQfwkpCXOO2/uV2m0pX0S/bnYahnfY3ezxg==
 X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
 Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
         by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 89E4feBozDma for <linux-ide@vger.kernel.org>;
-        Tue, 10 Jan 2023 05:27:19 -0800 (PST)
+        with ESMTP id YE7Y4kURHQ7e for <linux-ide@vger.kernel.org>;
+        Tue, 10 Jan 2023 05:27:20 -0800 (PST)
 Received: from washi.fujisawa.hgst.com (washi.fujisawa.hgst.com [10.149.53.254])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4Nrs6t1GrTz1RvTp;
-        Tue, 10 Jan 2023 05:27:17 -0800 (PST)
+        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4Nrs6v2jnwz1RvLy;
+        Tue, 10 Jan 2023 05:27:19 -0800 (PST)
 From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
 To:     linux-ide@vger.kernel.org, linux-block@vger.kernel.org,
         Jens Axboe <axboe@kernel.dk>
 Cc:     "Maciej S . Szmigiero" <mail@maciej.szmigiero.name>,
         Christoph Hellwig <hch@lst.de>
-Subject: [PATCH v9 5/6] ata: libata: Fix FUA handling in ata_build_rw_tf()
-Date:   Tue, 10 Jan 2023 22:27:09 +0900
-Message-Id: <20230110132710.252015-6-damien.lemoal@opensource.wdc.com>
+Subject: [PATCH v9 6/6] ata: libata: blacklist FUA support for known buggy drives
+Date:   Tue, 10 Jan 2023 22:27:10 +0900
+Message-Id: <20230110132710.252015-7-damien.lemoal@opensource.wdc.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230110132710.252015-1-damien.lemoal@opensource.wdc.com>
 References: <20230110132710.252015-1-damien.lemoal@opensource.wdc.com>
@@ -92,65 +92,42 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-If a user issues a write command with the FUA bit set for a device with
-NCQ support disabled (that is, the device queue depth was set to 1), the
-LBA 48 command WRITE DMA FUA EXT must be used. However,
-ata_build_rw_tf() ignores this and first tests if LBA 28 can be used
-based on the write command sector and number of blocks. That is, for
-small FUA writes at low LBAs, ata_rwcmd_protocol() will cause the write
-to fail.
+Thread [1] reported back in 2012 problems with enabling FUA for 3
+different drives. Add these drives to ata_device_blacklist[] to mark
+them with the ATA_HORKAGE_NO_FUA flag. To be conservative and avoid
+problems on old systems, the model number for the three new entries
+are defined as to widely match all drives in the same product line.
 
-Fix this by preventing the use of LBA 28 for any FUA write request.
+[1]: https://lore.kernel.org/lkml/CA+6av4=3Duxu_q5U_46HtpUt=3DFSgbh3pZuAE=
+Y54J5_xK=3DMKWq-YQ@mail.gmail.com/
 
-Given that the WRITE MULTI FUA EXT command is marked as obsolete in the
-ATA specification since ACS-3 (published in 2013), remove the
-ATA_CMD_WRITE_MULTI_FUA_EXT command from the ata_rw_cmds array.
-
+Suggested-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
 ---
- drivers/ata/libata-core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index d25a53a873dc..ac88376f095a 100644
+index ac88376f095a..36c1aca310e9 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -552,7 +552,7 @@ static const u8 ata_rw_cmds[] =3D {
- 	0,
- 	0,
- 	0,
--	ATA_CMD_WRITE_MULTI_FUA_EXT,
-+	0,
- 	/* pio */
- 	ATA_CMD_PIO_READ,
- 	ATA_CMD_PIO_WRITE,
-@@ -727,7 +727,8 @@ int ata_build_rw_tf(struct ata_queued_cmd *qc, u64 bl=
-ock, u32 n_block,
- 	} else if (dev->flags & ATA_DFLAG_LBA) {
- 		tf->flags |=3D ATA_TFLAG_LBA;
+@@ -4133,6 +4133,9 @@ static const struct ata_blacklist_entry ata_device_=
+blacklist [] =3D {
 =20
--		if (lba_28_ok(block, n_block)) {
-+		/* We need LBA48 for FUA writes */
-+		if (!(tf->flags & ATA_TFLAG_FUA) && lba_28_ok(block, n_block)) {
- 			/* use LBA28 */
- 			tf->device |=3D (block >> 24) & 0xf;
- 		} else if (lba_48_ok(block, n_block)) {
-@@ -742,9 +743,10 @@ int ata_build_rw_tf(struct ata_queued_cmd *qc, u64 b=
-lock, u32 n_block,
- 			tf->hob_lbah =3D (block >> 40) & 0xff;
- 			tf->hob_lbam =3D (block >> 32) & 0xff;
- 			tf->hob_lbal =3D (block >> 24) & 0xff;
--		} else
-+		} else {
- 			/* request too large even for LBA48 */
- 			return -ERANGE;
-+		}
+ 	/* Buggy FUA */
+ 	{ "Maxtor",		"BANC1G10",	ATA_HORKAGE_NO_FUA },
++	{ "WDC*WD2500J*",	NULL,		ATA_HORKAGE_NO_FUA },
++	{ "OCZ-VERTEX*",	NULL,		ATA_HORKAGE_NO_FUA },
++	{ "INTEL*SSDSC2CT*",	NULL,		ATA_HORKAGE_NO_FUA },
 =20
- 		if (unlikely(!ata_set_rwcmd_protocol(dev, tf)))
- 			return -EINVAL;
+ 	/* End Marker */
+ 	{ }
 --=20
 2.39.0
 

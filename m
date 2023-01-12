@@ -2,243 +2,118 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B81626674B3
-	for <lists+linux-ide@lfdr.de>; Thu, 12 Jan 2023 15:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 742C2668366
+	for <lists+linux-ide@lfdr.de>; Thu, 12 Jan 2023 21:08:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235427AbjALOLu (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 12 Jan 2023 09:11:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37362 "EHLO
+        id S233365AbjALUH1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 12 Jan 2023 15:07:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234352AbjALOK2 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 12 Jan 2023 09:10:28 -0500
-Received: from esa1.hgst.iphmx.com (esa1.hgst.iphmx.com [68.232.141.245])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0C5B58D2F;
-        Thu, 12 Jan 2023 06:05:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1673532326; x=1705068326;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iJuqTlHbB+r3PzdoLMxijeGItAuqi1spp9PVHEVw1+Q=;
-  b=BB+ZEaRH048ynRkNCF6qZEDWEHQVFxHpjVczowpFFkVSrzGzAUGjchmi
-   VdYNx8Key3AyHS+JdOBGj0jnH1oqwuhNap2GNcCjvYTvYuhNuNJPuq5i0
-   YMYGyrXA/GVKtEUUI+w8JI7no5CT04FbfDK7aZvAzyWbnvujb3QTAgnlS
-   qopJdWv3EwZss+bFSDQg9YEF8A+UMdTvCfqiaJhHBe0CBaTBVFtR8NFwu
-   peI8GSBOlAkicyVQNthI6hW8IpiEu9Mo3sjjVH2Wj4TrbbBcDT23vuPAn
-   gQ/mef8cYJCZuaS+Rxc2ypAZVuuCRFQ8ub87KMq4IEq99Zlj2HUOJx22R
-   A==;
-X-IronPort-AV: E=Sophos;i="5.97,211,1669046400"; 
-   d="scan'208";a="332632758"
-Received: from uls-op-cesaip02.wdc.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 12 Jan 2023 22:05:11 +0800
-IronPort-SDR: 22K2g1Z8G7SXmFvm94GpnZ7kqixbQVzvSEyFyHhykCFwL0cdcUUpJ9BesneZAzy8au7IpZJHJd
- A4maT8dAUvq20aYBQyLug5R1OeRZF3Vcgzq3pwRVvfjZa1+D09xTI4B9HghdC9gS6bVOzpFuMa
- athrdrRBEEADbTcprihRV1ivrYjbUHwe1owQiNQyxgjH6lF+RM/LUPapnKzXYSfoKJrAkgI6YD
- tVdgAdPAlRngnav3ygh2YuacPuRiMv2xeXkffCtPWClrJNl0tXWx6ecrzCd+SkeXQfdLXAhwBp
- AkI=
-Received: from uls-op-cesaip01.wdc.com ([10.248.3.36])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 12 Jan 2023 05:17:15 -0800
-IronPort-SDR: mJE5jswxrS6xxVKtsQhZZpLT6y1e0Rb01aQCv8cd82+fdSPygaN36UdtAPmGHiVsiXI7cQphlY
- bkUYjmvKmoVoNPdT9itS62M+rlmp69nkf+xhYqc59a8A/76yRaVBMNQeSJeE+8uQ/OLA+z28g0
- Yvn80elQQrR1aPyAwNCRJkSUhdhq/EpsN4b3v6C/nkQKnMcJAKxpqoQ2MPLrp5/9tKGpDf4dRi
- cOEb1Yxiy8fGRTGV+G+pAXEtNFU46a/q9U12kfTmFvY+9tdI8pyk+v+tWchCkgtoF9fp48t9ey
- txs=
-WDCIronportException: Internal
-Received: from unknown (HELO x1-carbon.wdc.com) ([10.225.164.12])
-  by uls-op-cesaip01.wdc.com with ESMTP; 12 Jan 2023 06:05:10 -0800
-From:   Niklas Cassel <niklas.cassel@wdc.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     Hannes Reinecke <hare@suse.de>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-block@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: [PATCH v2 18/18] Documentation: sysfs-block-device: document command duration limits
-Date:   Thu, 12 Jan 2023 15:04:07 +0100
-Message-Id: <20230112140412.667308-19-niklas.cassel@wdc.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230112140412.667308-1-niklas.cassel@wdc.com>
-References: <20230112140412.667308-1-niklas.cassel@wdc.com>
+        with ESMTP id S241389AbjALUDw (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 12 Jan 2023 15:03:52 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4252713E2A;
+        Thu, 12 Jan 2023 12:01:31 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E0FBDB81E62;
+        Thu, 12 Jan 2023 20:01:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28061C433D2;
+        Thu, 12 Jan 2023 20:01:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1673553688;
+        bh=DjplknG/Og42vIVzT/q7FbntQdQMbrnKJqFFsTyhjNM=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=EUafdQGi6kPVntwFcsX8dQ++eMfDpAt4hRufXGYp4rn3498p9O5an8Dtzb32f8VZO
+         /0dwxqLx9EiZWyrofGYjXdGydKTREAjzdQvusJ0Ow7D4V0fv83WO6VIMOVK93JIW2S
+         WKNFKVIBv7VwC+kTD5h1WgF5etFBp2YPn8S3ZXmT1Seav9nsmaQ1vhNBslaNNmcYRn
+         zsCLB4TmasZgZxWFa1UpanGfaUnDdJStrP+pk1HardQUH3NiBxgoCCXTezH0ic2ZBw
+         6otuSPV9m9aONvZu3dzL7IfHqeZgMZCL4VALktP1HibdXNi78cOSWjN0jogQQsvptF
+         31XhLFJQie5QQ==
+From:   Mark Brown <broonie@kernel.org>
+To:     Robert Jarzmik <robert.jarzmik@free.fr>,
+        Arnd Bergmann <arnd@kernel.org>
+Cc:     Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, stern@rowland.harvard.edu,
+        alexandre.belloni@bootlin.com, brgl@bgdev.pl,
+        damien.lemoal@opensource.wdc.com, dmitry.torokhov@gmail.com,
+        linux@dominikbrodowski.net, balbi@kernel.org,
+        gregkh@linuxfoundation.org, deller@gmx.de, perex@perex.cz,
+        jingoohan1@gmail.com, lee@kernel.org, kernel@wantstofly.org,
+        lgirdwood@gmail.com, linus.walleij@linaro.org,
+        marek.vasut@gmail.com, mkpetch@internode.on.net,
+        miquel.raynal@bootlin.com, lost.distance@yahoo.com,
+        philipp.zabel@gmail.com, linux@armlinux.org.uk, sre@kernel.org,
+        slapin@ossfans.org, s.shtylyov@omp.ru, sudipm.mukherjee@gmail.com,
+        tiwai@suse.com, ulf.hansson@linaro.org, vigneshr@ti.com,
+        viresh.kumar@linaro.org, wsa+renesas@sang-engineering.com,
+        linux-pm@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-input@vger.kernel.org,
+        patches@opensource.cirrus.com, linux-leds@vger.kernel.org,
+        linux-mmc@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
+        linux-usb@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, alsa-devel@alsa-project.org
+In-Reply-To: <20230105134622.254560-1-arnd@kernel.org>
+References: <20230105134622.254560-1-arnd@kernel.org>
+Subject: Re: (subset) [PATCH v2 00/27] ARM: pxa: remove all unused boards&drivers
+Message-Id: <167355367885.2500964.3629822486060649314.b4-ty@kernel.org>
+Date:   Thu, 12 Jan 2023 20:01:18 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12-dev-8b3d1
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+On Thu, 05 Jan 2023 14:45:55 +0100, Arnd Bergmann wrote:
+> Most of the legacy PXA board files were marked as unused in linux-5.19 and
+> can get removed in linux-6.3. There is support for pxa250/pxa270/pxa300
+> using devicetree already, which supports a number of boards, but progress
+> on converting the remaining ones has stalled over the past few years.
+> 
+> The two boards that are left in the tree for now are the three 'sharpsl'
+> variants (spitz/akita/borzoi) and the 'gumstix' family of machines.
+> Both of these are supported by qemu, which can be helpful for completing
+> the DT conversion.
+> 
+> [...]
 
-Document ABI/testing/sysfs-block-device the sysfs attributes present
-under /sys/block/*/device/duration_limits for ATA and SCSI devices
-supporting the command duration limits feature.
+Applied to
 
-Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
----
- Documentation/ABI/testing/sysfs-block-device | 150 +++++++++++++++++++
- 1 file changed, 150 insertions(+)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-diff --git a/Documentation/ABI/testing/sysfs-block-device b/Documentation/ABI/testing/sysfs-block-device
-index 7ac7b19b2f72..3a32c86942f5 100644
---- a/Documentation/ABI/testing/sysfs-block-device
-+++ b/Documentation/ABI/testing/sysfs-block-device
-@@ -95,3 +95,153 @@ Description:
- 		This file does not exist if the HBA driver does not implement
- 		support for the SATA NCQ priority feature, regardless of the
- 		device support for this feature.
-+
-+
-+What:		/sys/block/*/device/duration_limits/enable
-+Date:		Dec, 2022
-+KernelVersion:	v6.3
-+Contact:	linux-scsi@vger.kernel.org
-+Description:
-+		(RW) For ATA and SCSI devices supporting the command duration
-+		limits feature, write to the file to turn on or off the
-+		feature. By default this feature is turned off. If the device
-+		does not support the command duration limits feature, this
-+		attribute does not exist (the directory
-+		"/sys/block/\*/device/duration_limits" does not exist).
-+		Writing "1" to this file enables the use of command duration
-+		limits for read and write commands in the kernel and turns on
-+		the feature on the device. Writing "0" disables the feature.
-+
-+
-+What:		/sys/block/*/device/duration_limits/read/[1-7]/*
-+Date:		Dec, 2022
-+KernelVersion:	v6.3
-+Contact:	linux-scsi@vger.kernel.org
-+Description:
-+		(RO) For ATA and SCSI devices supporting the command duration
-+		limits feature, this shows the set of 7 command duration limits
-+		descriptors for read commands currently set on the device. For
-+		each of the 7 descritors, the following read-only attributes
-+		are present:
-+
-+		  - duration_guideline: specifies the preferred length of time
-+		    in microseconds for the completion of a command.
-+
-+		  - duration_guideline_policy: specifies the policy action
-+		    taken if the duration_guideline attribute specifies a
-+		    non-zero command duration guideline that the device is
-+		    unable to achieve for a command.
-+
-+		    Possible values are:
-+
-+		      - 0x0: The device will complete the command at the
-+			earliest possible time consistent with the specified
-+			command duration guideline.
-+
-+		      - 0x1: If the specified command duration guideline has not
-+			been achieved and the command duration guideline policy
-+			field is not in the seventh command duration limits
-+			descriptor, then the device continues processing that
-+			command using the command duration limits descriptor
-+			that has the next higher number.
-+
-+		      - 0x2: The device will continue processing the command as
-+			with no command duration limits descriptor being used.
-+
-+		      - 0xD: The device will complete the command and an IO
-+			failure will be reported to the user with the ETIME
-+			error code.
-+
-+		      - 0xF: Same as 0xD.
-+
-+		  - max_active_time: specifies an upper limit in microseconds
-+		    on the time that elapses from the time at which the device
-+		    initiates actions to access, transfer, or act upon the
-+		    specified data until the time the device returns status for
-+		    the command.
-+
-+		  - max_active_time_policy: specifies the policy action taken
-+		    if the time used to process a command exceeds a non-zero
-+		    time specified by the max_active_time attribute.
-+
-+		    Possible values are:
-+
-+		      - 0x0: The device will complete the command at the
-+			earliest possible time (i.e, do nothing based on the max
-+			time limit not being met).
-+
-+		      - 0xD: The device will complete the command and an IO
-+			failure will be reported to the user with the ETIME
-+			error code.
-+
-+		      - 0xE: Same as 0xD.
-+
-+		      - 0xF: Same as 0xD.
-+
-+		  - max_inactive_time: specifies an upper limit in microseconds
-+		    on the time that elapses from the time at which the device
-+		    receives the command until the time at which the device
-+		    initiates actions to access, transfer, or act upon the
-+		    specified data.
-+
-+		  - max_inactive_time_policy: specifies the policy action taken
-+		    if a non-zero max_inactive_time limit is not met.
-+
-+		    Possible values are:
-+
-+		      - 0x0: The device will complete the command at the
-+			earliest possible time (i.e, do nothing based on the max
-+			time limit not being met).
-+
-+		      - 0xD: The device will complete the command and an IO
-+			failure will be reported to the user with the ETIME
-+			error code.
-+
-+		      - 0xF: Same as 0xD.
-+
-+
-+What:		/sys/block/*/device/duration_limits/read/page
-+Date:		Dec, 2022
-+KernelVersion:	v6.3
-+Contact:	linux-scsi@vger.kernel.org
-+Description:
-+		(RO) For ATA and SCSI devices supporting the command duration
-+		limits feature, this shows the name of the device VPD page
-+		specifying the set of 7 command duration limits descriptors for
-+		read commands. Possible values are "T2A" and "T2B".
-+
-+
-+What:		/sys/block/*/device/duration_limits/write/[1-7]/*
-+Date:		Dec, 2022
-+KernelVersion:	v6.3
-+Contact:	linux-scsi@vger.kernel.org
-+Description:
-+		(RO) For ATA and SCSI devices supporting the command duration
-+		limits feature, this shows the set of 7 command duration limits
-+		descriptors for write commands currently set on the device. For
-+		each of the 7 descritors, the same set of read-only attributes
-+		as for read commands is present.
-+
-+
-+What:		/sys/block/*/device/duration_limits/write/page
-+Date:		Dec, 2022
-+KernelVersion:	v6.3
-+Contact:	linux-scsi@vger.kernel.org
-+Description:
-+		(RO) For ATA and SCSI devices supporting the command duration
-+		limits feature, this shows the name of the device VPD page
-+		specifying the set of 7 command duration limits descriptors for
-+		write commands. Possible values are "T2A" and "T2B".
-+
-+
-+What:		/sys/block/*/device/duration_limits/perf_vs_duration_guideline
-+Date:		Dec, 2022
-+KernelVersion:	v6.3
-+Contact:	linux-scsi@vger.kernel.org
-+Description:
-+		(RO) For ATA and SCSI devices supporting the command duration
-+		limits feature, this specifies the maximum percentage increase
-+		in average command completion times (reduction in IOPS) that
-+		is allowed for the device to perform actions based on the
-+		contents of the duration guideline field in every command
-+		duration limit descriptor for both read and write commands.
--- 
-2.39.0
+Thanks!
 
+[14/27] ASoC: PXA: make SND_PXA2XX_SOC_AC97 user-selectable
+        commit: 5eab9265759e2fb042aa452931c3d06ab7ab8dae
+[15/27] ASoC: pxa: remove unused board support
+        (no commit info)
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark

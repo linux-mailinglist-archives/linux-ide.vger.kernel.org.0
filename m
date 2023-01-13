@@ -2,114 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C05668AE9
-	for <lists+linux-ide@lfdr.de>; Fri, 13 Jan 2023 05:37:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 19AF4668BCF
+	for <lists+linux-ide@lfdr.de>; Fri, 13 Jan 2023 06:53:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231416AbjAMEhZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 12 Jan 2023 23:37:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50392 "EHLO
+        id S240459AbjAMFxL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 13 Jan 2023 00:53:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231154AbjAMEhT (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 12 Jan 2023 23:37:19 -0500
-Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B852F3
-        for <linux-ide@vger.kernel.org>; Thu, 12 Jan 2023 20:37:18 -0800 (PST)
-Received: by mail-qv1-xf2a.google.com with SMTP id q10so14108714qvt.10
-        for <linux-ide@vger.kernel.org>; Thu, 12 Jan 2023 20:37:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pefoley.com; s=google;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lPm2cDob64PHi+nW3IeZECmXVT/SwFopaoWwfdNRye0=;
-        b=BLpRYQgjOeaSOzpLq9w9Aze82Npz+TR8bofK5jRsT9mhfJ2LbAp3rKHZT8MpUwcWJx
-         clCtjEksgGfakcqxrG3QZC4vDzfZnzxPYBPo5rw5lWh4sTIdVopQ671T9TgwR+h0Z4EC
-         U/zNKX4YnNopUciFbKh1SGt5uYz7Ub1sVPGs8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lPm2cDob64PHi+nW3IeZECmXVT/SwFopaoWwfdNRye0=;
-        b=ItdgwC4HrCX77YCsSWg5/Wf35W+qcdDMXdRSrw4cUy6DSoa0b+w1LE5h+MqHER7zfR
-         tLrFeF4p4alwV27FEsAbLBkKR7Xsik4a7AsvwHL4Th8ezwvwwxeVTWqv1YrJDb3vie2V
-         04r+JqPGwqXNBE+o4NGf41T9HUz/2xcrJ2B+atBlDd56y2wv7Ei/WrR0EAeKFnDHpYUA
-         2Z/dWbO7RVZCZWL0I8WDzNpE4fcGJjCrgrqQto4CuW822f0zImJUwRgdXiDlmCsivUc9
-         Ne0z/89RbRE4mtk2iv/wsAd79qfxA0qMbPhQBcsoq3HE7n8JYUpcTP+yyfmEkg9+ILkA
-         NnoA==
-X-Gm-Message-State: AFqh2kqGpN5eakWUwiqbZaN/hp76mLxZhxdvkMx1upUG4+kge4FvmDGh
-        zx5zMcp3XffbG5VUHG2F7RFJNmWAuagh63zTKQc=
-X-Google-Smtp-Source: AMrXdXvZC03LqMiePLnWj6MotTeke3pWqpdvKcBQhpkVjCmlrhc4na1nxCifEG61lNj8bV4498iejg==
-X-Received: by 2002:a0c:cdcd:0:b0:532:f87:753c with SMTP id a13-20020a0ccdcd000000b005320f87753cmr43721182qvn.4.1673584636690;
-        Thu, 12 Jan 2023 20:37:16 -0800 (PST)
-Received: from [192.168.1.3] ([2600:4040:29fb:d300:887b:7eff:fe74:68b2])
-        by smtp.gmail.com with ESMTPSA id q5-20020a05620a0d8500b006eee3a09ff3sm12087761qkl.69.2023.01.12.20.37.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Jan 2023 20:37:16 -0800 (PST)
-From:   Peter Foley <pefoley2@pefoley.com>
-Date:   Thu, 12 Jan 2023 23:37:06 -0500
-Subject: [PATCH] ata: Don't build PATA_CS5535 on UML
+        with ESMTP id S233405AbjAMFv7 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 13 Jan 2023 00:51:59 -0500
+X-Greylist: delayed 345 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 12 Jan 2023 21:51:46 PST
+Received: from mp-relay-02.fibernetics.ca (mp-relay-02.fibernetics.ca [208.85.217.137])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24221216;
+        Thu, 12 Jan 2023 21:51:46 -0800 (PST)
+Received: from mailpool-fe-01.fibernetics.ca (mailpool-fe-01.fibernetics.ca [208.85.217.144])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mp-relay-02.fibernetics.ca (Postfix) with ESMTPS id 1738270E5B;
+        Fri, 13 Jan 2023 05:46:00 +0000 (UTC)
+Received: from localhost (mailpool-mx-01.fibernetics.ca [208.85.217.140])
+        by mailpool-fe-01.fibernetics.ca (Postfix) with ESMTP id CFE0826892;
+        Fri, 13 Jan 2023 05:45:59 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at 
+X-Spam-Score: 3.651
+X-Spam-Level: ******
+X-Spam-Status: Yes, score=6.3 required=5.0 tests=BAYES_99,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
+Received: from mailpool-fe-01.fibernetics.ca ([208.85.217.144])
+        by localhost (mail-mx-01.fibernetics.ca [208.85.217.140]) (amavisd-new, port 10024)
+        with ESMTP id 5nKEStyxmCAA; Fri, 13 Jan 2023 05:45:59 +0000 (UTC)
+Received: from localhost (unknown [208.85.220.72])
+        by mail.ca.inter.net (Postfix) with ESMTP id 2C31E2688E;
+        Fri, 13 Jan 2023 05:45:58 +0000 (UTC)
+Received: from reverse.rain.network (reverse.rain.network [197.184.176.8])
+ by webmail.ca.inter.net (Horde Framework) with HTTP; Fri, 13 Jan 2023
+ 00:45:57 -0500
+Message-ID: <20230113004557.1776655zih3sj09h@webmail.ca.inter.net>
+Date:   Fri, 13 Jan 2023 00:45:57 -0500
+From:   INFO <boothg@istar.ca>
+Reply-to: s.g0392440821@gmail.com
+To:     undisclosed-recipients:;
+Subject: IST DIESE E-MAIL AKTIV?
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230112-umide-v1-1-78742026a3f1@pefoley.com>
-X-B4-Tracking: v=1; b=H4sIAPLfwGMC/x2NQQqAMAwEvyI5WzAVRPyKeKg12hyskqgIxb9bP
- c7swCZQEiaFrkggdLHyFjNgWYAPLi5keMoMtrJ1hWjNufJEBluP2GAWtYXcjk7JjOKiD1+9Oj1I
- vmEXmvn+D/rheV6HLd/UcAAAAA==
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Peter Foley <pefoley2@pefoley.com>
-X-Mailer: b4 0.11.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1673584636; l=1936;
- i=pefoley2@pefoley.com; s=20230111; h=from:subject:message-id;
- bh=2wIRUjf5hTGwjbx7HQnUhS+/nYxNZeMVIcHB4lIPfKc=;
- b=fdUZlUPj5Ky5rwzT8s0TyDCN3U6SNivmS/z/aZYkVxKo4o8KhkaJyqXYOoxRVArndWAHSa2oa8+z
- SVZCKixsCpAwYBm/oCP/ORTmYT8esrrttvb+4EX4iz90pSmUQ75k
-X-Developer-Key: i=pefoley2@pefoley.com; a=ed25519;
- pk=DCQqIdN6rHnvfQH58WQiQzJFfGUo1HyWSvdYG8vnO5o=
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain;
+ charset=ISO-8859-1;
+ DelSp="Yes";
+ format="flowed"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: Internet Messaging Program (IMP) H3 (4.3.7)
+X-Originating-User-Info: boothg@istar.ca 208.85.219.96
+X-Spam-Report: *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
+        *      [score: 0.9984]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [s.g0392440821[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-This driver uses MSR functions that aren't implemented under UML.
-Avoid building it to prevent tripping up allyesconfig.
 
-e.g.
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x3a3): undefined reference to `__tracepoint_read_msr'
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x3d2): undefined reference to `__tracepoint_write_msr'
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x457): undefined reference to `__tracepoint_write_msr'
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x481): undefined reference to `do_trace_write_msr'
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x4d5): undefined reference to `do_trace_write_msr'
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x4f5): undefined reference to `do_trace_read_msr'
-/usr/lib/gcc/x86_64-pc-linux-gnu/12/../../../../x86_64-pc-linux-gnu/bin/ld: pata_cs5535.c:(.text+0x51c): undefined reference to `do_trace_write_msr'
 
-Signed-off-by: Peter Foley <pefoley2@pefoley.com>
----
- drivers/ata/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Sehr geehrter E-Mail-Begünstigter, Sie wurden für eine Spende in Höhe  
+von 3.500.000,00 ? ausgewählt. Wenden Sie sich an diese  
+E-Mail-Adresse: s.g0392440821@gmail.com, um weitere Informationen zum  
+Erhalt Ihrer Spende zu erhalten. Vielen Dank
 
-diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
-index eceaec33af65..9695c4404e26 100644
---- a/drivers/ata/Kconfig
-+++ b/drivers/ata/Kconfig
-@@ -640,6 +640,7 @@ config PATA_CS5530
- config PATA_CS5535
- 	tristate "CS5535 PATA support (Experimental)"
- 	depends on PCI && (X86_32 || (X86_64 && COMPILE_TEST))
-+	depends on !UML
- 	help
- 	  This option enables support for the NatSemi/AMD CS5535
- 	  companion chip used with the Geode processor family.
-
----
-base-commit: 1b929c02afd37871d5afb9d498426f83432e71c2
-change-id: 20230112-umide-18c116111232
-
-Best regards,
--- 
-Peter Foley <pefoley2@pefoley.com>

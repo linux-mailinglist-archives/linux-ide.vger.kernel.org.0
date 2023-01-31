@@ -2,144 +2,328 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99B8B682589
-	for <lists+linux-ide@lfdr.de>; Tue, 31 Jan 2023 08:28:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB106826AD
+	for <lists+linux-ide@lfdr.de>; Tue, 31 Jan 2023 09:40:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230328AbjAaH2O (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 31 Jan 2023 02:28:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40698 "EHLO
+        id S231502AbjAaIkD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 31 Jan 2023 03:40:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230135AbjAaH2N (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 31 Jan 2023 02:28:13 -0500
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A3AC11EA4
-        for <linux-ide@vger.kernel.org>; Mon, 30 Jan 2023 23:28:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1675150092; x=1706686092;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=3ESuML21Vo+lVaZRwWJlv63h9XhTG4VjGVnTXl+S7A4=;
-  b=l94yXHIbNGtf1g57kuEWwIOclFyLpu8yEva9S4auPAzyVSPh43cmlGK4
-   XePjNCXSG3p0K2yaA14G8ReCSj9o+3Y56t6D+WFSCRLDpPto6mlpxpcbc
-   GR+3cTND4k4WZo2ojL1hzdmzY+g3srHpur3gJ20Xbm3Y+S2JsRu+9nPbM
-   pGuHuUSER16xPu+Do36GqXrRVzy5WK+3TK7b0K32KADKYHGrPwxIkOz4r
-   qbRcs8Z/07b8mFKgNnwABjYww+FcYA2Adkaty0Pqi0ZNfm2yCf47wLfE8
-   c5Gk9URRQ3t0u8SmBZ0uW6FcJpYl8KfoZpz8vutIxZngGBhZ0qbu05x14
-   g==;
-X-IronPort-AV: E=Sophos;i="5.97,259,1669046400"; 
-   d="scan'208";a="220483207"
-Received: from h199-255-45-14.hgst.com (HELO uls-op-cesaep01.wdc.com) ([199.255.45.14])
-  by ob1.hgst.iphmx.com with ESMTP; 31 Jan 2023 15:28:11 +0800
-IronPort-SDR: 6CwDN1kFtDftR0ko3PewoaF5KwYc5li0doPkBqSU1iYUq9nOLO1FvCHylLgWYXVvN6gLAozvZk
- Zi3fTUzMycNNPYrrpl9HmCYH4/QhgfIYf2DUrZJpYK+52GbLcUskNs/MEMwBWMlieoPiHF/H/u
- sP2b2EbcYVXw4d3NiW63MQecCRVmqRtymtIju46AYbKapBErQN5L4Yx6ThmIr0s2FSKGj2gZS/
- 6ZJP+kFRFr/LAHmLmcOjGFu8GvPuDl/ShZlCv74sHo+OJrA7KD/YvXXlUqVMvIiXmS00NjwV44
- k10=
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep01.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Jan 2023 22:45:36 -0800
-IronPort-SDR: Yw5LmFfGvMNBVqksEm9sQVZUFqusI7nAHl4at8tl5hcUovwd9az9e7uifuvtQp5B2fOcmEJ7Qz
- NCY/tSZLt9PVb6fqhsWfOuVaZagc2q6QfQk8kHUl11UIFsh+TeMG1XTNHrKfMJVquVvhTXA8Nm
- WDkdai+/eNY3Z7sy/WZk9j0mk3+6cws70f569d7i625X0Qk0enxaYnd1C7xtYoZJP76ai3UtGJ
- 53xEVaWfcep4ZZz684ih6p090DZUcAjv6bksDGpM6irezGgGHrlbx/mVMsIKbpYdDUWfX5JdZl
- DlE=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 30 Jan 2023 23:28:10 -0800
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4P5c8q2hQ4z1RvTr
-        for <linux-ide@vger.kernel.org>; Mon, 30 Jan 2023 23:28:11 -0800 (PST)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:references:to:content-language
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1675150091; x=1677742092; bh=3ESuML21Vo+lVaZRwWJlv63h9XhTG4VjGVn
-        TXl+S7A4=; b=EU3tgUbBrcg8OuCI2J2LjO9CpdUWaZhweCi8qXFMXqYQ6G60JYI
-        58PxThl43LXb92idV3AhlJIcuml6/eoAelMw7D+mlXPWoBtOrnakDUzaTOnsGqHn
-        sGv6cUy4CgiOLmS5VxXaySMBZa50JPpvptPWvp+eNnDn6lknv1u1xOL27/g01BpW
-        oQdCNjiJA/p3UiEpJdmQzAK+ASa0Oeo+Jp1kONxIyMKLJqA6RwfsGq1wXQW7AaFJ
-        /asT3E7e5DX+z2UuMHScZ/8m0hRBfZqtm77/CPcJn/Er2H5OStjdaHxK1cZLK47Z
-        oj+NpD2TmN7MTT5qryTyA7hfool2cS19sSA==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Mb7DVQrXgrZD for <linux-ide@vger.kernel.org>;
-        Mon, 30 Jan 2023 23:28:11 -0800 (PST)
-Received: from [10.225.163.70] (unknown [10.225.163.70])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4P5c8p4VWLz1RvLy;
-        Mon, 30 Jan 2023 23:28:10 -0800 (PST)
-Message-ID: <1e069565-a391-0f33-0714-ba9cc3792a42@opensource.wdc.com>
-Date:   Tue, 31 Jan 2023 16:28:09 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: Bug report for ahci-mvebu driver
-Content-Language: en-US
-To:     marius@psihoexpert.ro
-Cc:     linux-ide@vger.kernel.org
-References: <1831eb01-5c84-54f1-7950-9b8e9bf0a046@opensource.wdc.com>
- <aa61bc53-34e2-4f19-962f-888e9daabbb4@opensource.wdc.com>
- <C9DCFF5E79814EAB9E9BE94B81A1CD7F@graph>
- <889ee9c9e77106b17ceac456e327d480@psihoexpert.ro>
- <1b74a7e40419b6f99870c21ca3be7834@psihoexpert.ro>
- <77b389a080646567b9f9d44caa42d547@psihoexpert.ro>
- <da1d366a494469a46eb066b167613e21@psihoexpert.ro>
- <d42ddd29171c69e9a6628bfc2b100aca@psihoexpert.ro>
- <44527e2f8583a8ce51b1241bf9e56595@psihoexpert.ro>
- <45337bf4a17c9c879f9439c1138bc443@psihoexpert.ro>
- <7fe0b96f30bf787d339ba656d5d2df01@psihoexpert.ro>
- <db3fa398d4a1dcadb9df02d1001a61c6@psihoexpert.ro>
- <c7e1b214fca6c2a08dbce60006442dd8@psihoexpert.ro>
- <009822d6-24b8-739d-e7ee-13adc1c7d548@opensource.wdc.com>
- <55834657003f5a4579b326ee61fe1e80@psihoexpert.ro>
- <8cd8066ac1059ae0fef280a3cf6ab03c@psihoexpert.ro>
- <9490768bca8f5a213d89214ca9324fa0@psihoexpert.ro>
- <071bf5d4-4007-6779-60fd-82ec58dd44fe@opensource.wdc.com>
- <d8abdd49a63106081b4f899f8bc53dbe@psihoexpert.ro>
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <d8abdd49a63106081b4f899f8bc53dbe@psihoexpert.ro>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231487AbjAaIkA (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 31 Jan 2023 03:40:00 -0500
+Received: from lgeamrelo11.lge.com (lgeamrelo13.lge.com [156.147.23.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 24DC1244BA
+        for <linux-ide@vger.kernel.org>; Tue, 31 Jan 2023 00:39:56 -0800 (PST)
+Received: from unknown (HELO lgeamrelo04.lge.com) (156.147.1.127)
+        by 156.147.23.53 with ESMTP; 31 Jan 2023 17:39:55 +0900
+X-Original-SENDERIP: 156.147.1.127
+X-Original-MAILFROM: max.byungchul.park@gmail.com
+Received: from unknown (HELO localhost.localdomain) (10.177.244.38)
+        by 156.147.1.127 with ESMTP; 31 Jan 2023 17:39:55 +0900
+X-Original-SENDERIP: 10.177.244.38
+X-Original-MAILFROM: max.byungchul.park@gmail.com
+From:   Byungchul Park <max.byungchul.park@gmail.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+        linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+        linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+        will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+        joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+        duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+        tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+        amir73il@gmail.com, gregkh@linuxfoundation.org,
+        kernel-team@lge.com, linux-mm@kvack.org, akpm@linux-foundation.org,
+        mhocko@kernel.org, minchan@kernel.org, hannes@cmpxchg.org,
+        vdavydov.dev@gmail.com, sj@kernel.org, jglisse@redhat.com,
+        dennis@kernel.org, cl@linux.com, penberg@kernel.org,
+        rientjes@google.com, vbabka@suse.cz, ngupta@vflare.org,
+        linux-block@vger.kernel.org, paolo.valente@linaro.org,
+        josef@toxicpanda.com, linux-fsdevel@vger.kernel.org,
+        viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org,
+        dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+        melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+        42.hyeyoo@gmail.com, chris.p.wilson@intel.com,
+        gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+        boqun.feng@gmail.com, longman@redhat.com, hdanton@sina.com
+Subject: [PATCH v9 00/25] DEPT(Dependency Tracker)
+Date:   Tue, 31 Jan 2023 17:39:29 +0900
+Message-Id: <1675154394-25598-1-git-send-email-max.byungchul.park@gmail.com>
+X-Mailer: git-send-email 1.9.1
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_ADSP_CUSTOM_MED,
+        FORGED_GMAIL_RCVD,FREEMAIL_FROM,NML_ADSP_CUSTOM_MED,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_SOFTFAIL,SPOOFED_FREEMAIL,
+        SPOOF_GMAIL_MID autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 1/31/23 16:20, marius@psihoexpert.ro wrote:
-> January 31, 2023 1:22 AM, "Damien Le Moal" <damien.lemoal@opensource.wdc.com>
-> wrote:
->> 
->> I sent the official patch and CC-ed you. Can I add your "Tested-by: Marius
->> Dinu <marius@psihoexpert.ro>" tag to the patch and queue it ?
->> 
->> -- Damien Le Moal Western Digital Research
-> 
-> Yes, I was planning to reply myself, but I'm not done testing yet. At this
-> point I can only say it's working on mvebu / Armada 385. I plan to backport
-> to v5.15 and test with the other router that I have (mvebu / Armada XP), a
-> laptop and two x86_64 desktops, one of which has various PATA and SATA
-> controllers in all sorts of weird configurations. I hope to do it all this
-> weekend. Thank you for the patch!
-I did testing on Intel & AMD machines with different adpaters/drives/pmp that I
-have (AHCI, ASMedia and Marvell adapters). Everything was OK on my end.
+I'm happy to see that DEPT reports a real problem in practice. See:
 
-The tag is for this kernel only. If backporting to 5.15 does not solve the
-issue, we will need to take that separately and redo debugging on that version.
-I would like to send the patch to Linus by the end of the week...
+   https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
+   https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
 
-> 
-> Marius Dinu
-> 
+Nevertheless, I apologize for the lack of document. I promise to add it
+before it gets needed to use DEPT's APIs by users. For now, you can use
+DEPT just with CONFIG_DEPT on.
+
+---
+
+Hi Linus and folks,
+
+I've been developing a tool for detecting deadlock possibilities by
+tracking wait/event rather than lock(?) acquisition order to try to
+cover all synchonization machanisms. It's done on v6.2-rc2.
+
+https://github.com/lgebyungchulpark/linux-dept/commits/dept2.4_on_v6.2-rc2
+
+Benifit:
+
+	0. Works with all lock primitives.
+	1. Works with wait_for_completion()/complete().
+	2. Works with 'wait' on PG_locked.
+	3. Works with 'wait' on PG_writeback.
+	4. Works with swait/wakeup.
+	5. Works with waitqueue.
+	6. Works with wait_bit.
+	7. Multiple reports are allowed.
+	8. Deduplication control on multiple reports.
+	9. Withstand false positives thanks to 6.
+	10. Easy to tag any wait/event.
+
+Future work:
+
+	0. To make it more stable.
+	1. To separates Dept from Lockdep.
+	2. To improves performance in terms of time and space.
+	3. To use Dept as a dependency engine for Lockdep.
+	4. To add any missing tags of wait/event in the kernel.
+	5. To deduplicate stack trace.
+
+How to interpret reports:
+
+	1. E(event) in each context cannot be triggered because of the
+	   W(wait) that cannot be woken.
+	2. The stack trace helping find the problematic code is located
+	   in each conext's detail.
+
+Thanks,
+Byungchul
+
+---
+
+Changes from v8:
+
+	1. Fix build error by adding EXPORT_SYMBOL(PG_locked_map) and
+	   EXPORT_SYMBOL(PG_writeback_map) for kernel module build -
+	   appologize for that. (reported by kernel test robot)
+	2. Fix build error by removing header file's circular dependency
+	   that was caused by "atomic.h", "kernel.h" and "irqflags.h",
+	   which I introduced - appolgize for that. (reported by kernel
+	   test robot)
+
+Changes from v7:
+
+	1. Fix a bug that cannot track rwlock dependency properly,
+	   introduced in v7. (reported by Boqun and lockdep selftest)
+	2. Track wait/event of PG_{locked,writeback} more aggressively
+	   assuming that when a bit of PG_{locked,writeback} is cleared
+	   there might be waits on the bit. (reported by Linus, Hillf
+	   and syzbot)
+	3. Fix and clean bad style code e.i. unnecessarily introduced
+	   a randome pattern and so on. (pointed out by Linux)
+	4. Clean code for applying DEPT to wait_for_completion().
+
+Changes from v6:
+
+	1. Tie to task scheduler code to track sleep and try_to_wake_up()
+	   assuming sleeps cause waits, try_to_wake_up()s would be the
+	   events that those are waiting for, of course with proper DEPT
+	   annotations, sdt_might_sleep_weak(), sdt_might_sleep_strong()
+	   and so on. For these cases, class is classified at sleep
+	   entrance rather than the synchronization initialization code.
+	   Which would extremely reduce false alarms.
+	2. Remove the DEPT associated instance in each page struct for
+	   tracking dependencies by PG_locked and PG_writeback thanks to
+	   the 1. work above.
+	3. Introduce CONFIG_DEPT_AGGRESIVE_TIMEOUT_WAIT to suppress
+	   reports that waits with timeout set are involved, for those
+	   who don't like verbose reporting.
+	4. Add a mechanism to refill the internal memory pools on
+	   running out so that DEPT could keep working as long as free
+	   memory is available in the system.
+	5. Re-enable tracking hashed-waitqueue wait. That's going to no
+	   longer generate false positives because class is classified
+	   at sleep entrance rather than the waitqueue initailization.
+	6. Refactor to make it easier to port onto each new version of
+	   the kernel.
+	7. Apply DEPT to dma fence.
+	8. Do trivial optimizaitions.
+
+Changes from v5:
+
+	1. Use just pr_warn_once() rather than WARN_ONCE() on the lack
+	   of internal resources because WARN_*() printing stacktrace is
+	   too much for informing the lack. (feedback from Ted, Hyeonggon)
+	2. Fix trivial bugs like missing initializing a struct before
+	   using it.
+	3. Assign a different class per task when handling onstack
+	   variables for waitqueue or the like. Which makes Dept
+	   distinguish between onstack variables of different tasks so
+	   as to prevent false positives. (reported by Hyeonggon)
+	4. Make Dept aware of even raw_local_irq_*() to prevent false
+	   positives. (reported by Hyeonggon)
+	5. Don't consider dependencies between the events that might be
+	   triggered within __schedule() and the waits that requires
+	    __schedule(), real ones. (reported by Hyeonggon)
+	6. Unstage the staged wait that has prepare_to_wait_event()'ed
+	   *and* yet to get to __schedule(), if we encounter __schedule()
+	   in-between for another sleep, which is possible if e.g. a
+	   mutex_lock() exists in 'condition' of ___wait_event().
+	7. Turn on CONFIG_PROVE_LOCKING when CONFIG_DEPT is on, to rely
+	   on the hardirq and softirq entrance tracing to make Dept more
+	   portable for now.
+
+Changes from v4:
+
+	1. Fix some bugs that produce false alarms.
+	2. Distinguish each syscall context from another *for arm64*.
+	3. Make it not warn it but just print it in case Dept ring
+	   buffer gets exhausted. (feedback from Hyeonggon)
+	4. Explicitely describe "EXPERIMENTAL" and "Dept might produce
+	   false positive reports" in Kconfig. (feedback from Ted)
+
+Changes from v3:
+
+	1. Dept shouldn't create dependencies between different depths
+	   of a class that were indicated by *_lock_nested(). Dept
+	   normally doesn't but it does once another lock class comes
+	   in. So fixed it. (feedback from Hyeonggon)
+	2. Dept considered a wait as a real wait once getting to
+	   __schedule() even if it has been set to TASK_RUNNING by wake
+	   up sources in advance. Fixed it so that Dept doesn't consider
+	   the case as a real wait. (feedback from Jan Kara)
+	3. Stop tracking dependencies with a map once the event
+	   associated with the map has been handled. Dept will start to
+	   work with the map again, on the next sleep.
+
+Changes from v2:
+
+	1. Disable Dept on bit_wait_table[] in sched/wait_bit.c
+	   reporting a lot of false positives, which is my fault.
+	   Wait/event for bit_wait_table[] should've been tagged in a
+	   higher layer for better work, which is a future work.
+	   (feedback from Jan Kara)
+	2. Disable Dept on crypto_larval's completion to prevent a false
+	   positive.
+
+Changes from v1:
+
+	1. Fix coding style and typo. (feedback from Steven)
+	2. Distinguish each work context from another in workqueue.
+	3. Skip checking lock acquisition with nest_lock, which is about
+	   correct lock usage that should be checked by Lockdep.
+
+Changes from RFC(v0):
+
+	1. Prevent adding a wait tag at prepare_to_wait() but __schedule().
+	   (feedback from Linus and Matthew)
+	2. Use try version at lockdep_acquire_cpus_lock() annotation.
+	3. Distinguish each syscall context from another.
+
+Byungchul Park (25):
+  llist: Move llist_{head,node} definition to types.h
+  dept: Implement Dept(Dependency Tracker)
+  dept: Add single event dependency tracker APIs
+  dept: Add lock dependency tracker APIs
+  dept: Tie to Lockdep and IRQ tracing
+  dept: Add proc knobs to show stats and dependency graph
+  dept: Apply sdt_might_sleep_{start,end}() to
+    wait_for_completion()/complete()
+  dept: Apply sdt_might_sleep_{start,end}() to PG_{locked,writeback}
+    wait
+  dept: Apply sdt_might_sleep_{start,end}() to swait
+  dept: Apply sdt_might_sleep_{start,end}() to waitqueue wait
+  dept: Apply sdt_might_sleep_{start,end}() to hashed-waitqueue wait
+  dept: Distinguish each syscall context from another
+  dept: Distinguish each work from another
+  dept: Add a mechanism to refill the internal memory pools on running
+    out
+  locking/lockdep, cpu/hotplus: Use a weaker annotation in AP thread
+  dept: Apply sdt_might_sleep_{start,end}() to dma fence wait
+  dept: Track timeout waits separately with a new Kconfig
+  dept: Apply timeout consideration to wait_for_completion()/complete()
+  dept: Apply timeout consideration to swait
+  dept: Apply timeout consideration to waitqueue wait
+  dept: Apply timeout consideration to hashed-waitqueue wait
+  dept: Apply timeout consideration to dma fence wait
+  dept: Record the latest one out of consecutive waits of the same class
+  dept: Make Dept able to work with an external wgen
+  dept: Track the potential waits of PG_{locked,writeback}
+
+ arch/arm64/kernel/syscall.c         |    2 +
+ arch/x86/entry/common.c             |    4 +
+ drivers/dma-buf/dma-fence.c         |    5 +
+ include/linux/completion.h          |   30 +-
+ include/linux/dept.h                |  614 +++++++
+ include/linux/dept_ldt.h            |   77 +
+ include/linux/dept_sdt.h            |   66 +
+ include/linux/hardirq.h             |    3 +
+ include/linux/irqflags.h            |   22 +-
+ include/linux/llist.h               |    8 -
+ include/linux/local_lock_internal.h |    1 +
+ include/linux/lockdep.h             |  102 +-
+ include/linux/lockdep_types.h       |    3 +
+ include/linux/mm_types.h            |    3 +
+ include/linux/mutex.h               |    1 +
+ include/linux/page-flags.h          |  112 +-
+ include/linux/pagemap.h             |    7 +-
+ include/linux/percpu-rwsem.h        |    2 +-
+ include/linux/rtmutex.h             |    1 +
+ include/linux/rwlock_types.h        |    1 +
+ include/linux/rwsem.h               |    1 +
+ include/linux/sched.h               |    3 +
+ include/linux/seqlock.h             |    2 +-
+ include/linux/spinlock_types_raw.h  |    3 +
+ include/linux/srcu.h                |    2 +-
+ include/linux/swait.h               |    3 +
+ include/linux/types.h               |    8 +
+ include/linux/wait.h                |    3 +
+ include/linux/wait_bit.h            |    3 +
+ init/init_task.c                    |    2 +
+ init/main.c                         |    2 +
+ kernel/Makefile                     |    1 +
+ kernel/cpu.c                        |    2 +-
+ kernel/dependency/Makefile          |    4 +
+ kernel/dependency/dept.c            | 3167 +++++++++++++++++++++++++++++++++++
+ kernel/dependency/dept_hash.h       |   10 +
+ kernel/dependency/dept_internal.h   |   26 +
+ kernel/dependency/dept_object.h     |   13 +
+ kernel/dependency/dept_proc.c       |   93 +
+ kernel/exit.c                       |    1 +
+ kernel/fork.c                       |    2 +
+ kernel/locking/lockdep.c            |   23 +
+ kernel/module/main.c                |    2 +
+ kernel/sched/completion.c           |    2 +-
+ kernel/sched/core.c                 |    9 +
+ kernel/workqueue.c                  |    3 +
+ lib/Kconfig.debug                   |   37 +
+ lib/locking-selftest.c              |    2 +
+ mm/filemap.c                        |   18 +
+ mm/page_alloc.c                     |    3 +
+ 50 files changed, 4459 insertions(+), 55 deletions(-)
+ create mode 100644 include/linux/dept.h
+ create mode 100644 include/linux/dept_ldt.h
+ create mode 100644 include/linux/dept_sdt.h
+ create mode 100644 kernel/dependency/Makefile
+ create mode 100644 kernel/dependency/dept.c
+ create mode 100644 kernel/dependency/dept_hash.h
+ create mode 100644 kernel/dependency/dept_internal.h
+ create mode 100644 kernel/dependency/dept_object.h
+ create mode 100644 kernel/dependency/dept_proc.c
 
 -- 
-Damien Le Moal
-Western Digital Research
+1.9.1
 

@@ -2,96 +2,63 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E506875FC
-	for <lists+linux-ide@lfdr.de>; Thu,  2 Feb 2023 07:42:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10B1D687AED
+	for <lists+linux-ide@lfdr.de>; Thu,  2 Feb 2023 11:56:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230004AbjBBGma (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 2 Feb 2023 01:42:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38130 "EHLO
+        id S231520AbjBBKz7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 2 Feb 2023 05:55:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231478AbjBBGm3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 2 Feb 2023 01:42:29 -0500
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56680820E1;
-        Wed,  1 Feb 2023 22:42:27 -0800 (PST)
-Received: by mail-wm1-x335.google.com with SMTP id d4-20020a05600c3ac400b003db1de2aef0so554050wms.2;
-        Wed, 01 Feb 2023 22:42:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pDcYVndzbrv1IhY57IErydYh8H4ITxzj3QsSNm1fvUA=;
-        b=AXaOSqmOyNDB0cPQs544EL34IAo7P7AeMOLwOz/4Fs8kngmdK+YZhXeluZdAfM322d
-         qcKvYIebP5Mc+HTTt6X9TmYJj8YUTzC0FNOuwhziTDkNXEzBJKR76fywmbWYGYwxZ05P
-         sY26q40Qp7g7ebwdOayLzfRrov4uWHu05aLmVxGTYgKNWdgprJmSu9o9wT0Hj0YCd1lK
-         37DXLwrnb/SAC660mm8OFX4I8ZNQkzwWX7DZLVXe3CyIbBRDYgSXJ8ViXc+Bkx8hEcic
-         vg/By/cGlo8syvUIxT0qYplS0Iev7dXbjLvquGRIYtr3zQXeUf+0mwOoC90LF9xraT4X
-         xAxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pDcYVndzbrv1IhY57IErydYh8H4ITxzj3QsSNm1fvUA=;
-        b=g2/IOe00fD4FtBXcq/SB+2s8SA8kcBw9Z3rcSCg3aXHqqVwdunjx1YN7jw2kYZIKo/
-         u76td5cAdTSsE9De1T/K8Y+S14YJsiXwdmweFqsJbuD80KHo7TPNCdNZeFJBbXy7l0A8
-         0o9m4eAOnw166wpSUuFgyh9jz39/cDhr4OUlIMvF895S5vs8TSIVJzbVAsCYtKYDu/70
-         kWfBeRbgsIXf/voEbKaVcVoJ4VSgvHokW+5k5gvjGbwIdsBSRq9YDvIyRwHt8GEXhh29
-         A5Zfbu5WP2ZD8ZcIvm3AvFeljlbZFfv3Hg4ZNxsG9e1G9J6+xDysDvLBapklGvI9DssL
-         r41Q==
-X-Gm-Message-State: AO0yUKUOEgZtpHAD/LLg6uMITeIuN0gHmOHRrrC36ROIM/68IYE7ZcfT
-        gs3prcRARHqN/+WZ0gZ0t0s=
-X-Google-Smtp-Source: AK7set+RF5RVbaknUR6I652giSlyDxqIgRU4c27KGqjBnEb9NkAcBImhZ9z6ul97LXr0y1n02I27bQ==
-X-Received: by 2002:a05:600c:4f06:b0:3da:fd07:1e3 with SMTP id l6-20020a05600c4f0600b003dafd0701e3mr4566739wmq.22.1675320145722;
-        Wed, 01 Feb 2023 22:42:25 -0800 (PST)
-Received: from localhost ([102.36.222.112])
-        by smtp.gmail.com with ESMTPSA id i22-20020a1c5416000000b003dc3f3d77e3sm3884532wmb.7.2023.02.01.22.42.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Feb 2023 22:42:25 -0800 (PST)
-Date:   Thu, 2 Feb 2023 09:42:12 +0300
-From:   Dan Carpenter <error27@gmail.com>
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>
-Cc:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ata: pata_hpt37x: fix potential forever loop
-Message-ID: <Y9tbRLRgPZb5AQ+/@kadam>
-References: <Y9py1vjPW5HgRwOR@kili>
- <98e8e8cb-53a3-c247-078e-85724079ecad@omp.ru>
- <eb44fe29-47bb-315e-c340-10918a6250f6@omp.ru>
+        with ESMTP id S231594AbjBBKz7 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 2 Feb 2023 05:55:59 -0500
+X-Greylist: delayed 90600 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Feb 2023 02:55:56 PST
+Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E6719C
+        for <linux-ide@vger.kernel.org>; Thu,  2 Feb 2023 02:55:56 -0800 (PST)
+Received: by mail.corrib.pl (Postfix, from userid 1001)
+        id C822EA36A7; Wed,  1 Feb 2023 09:06:46 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
+        t=1675242433; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
+        h=Date:From:To:Subject:From;
+        b=DA+6xyzYOo/mjSoZcTJTG/lLaf60rvVq7CtlUMwwQWeFMRLnZcts5NRKbVbnGFlIs
+         08LJai/WodIA5GuSIm62qXFXtFI+Xh00eQ16LOX3ZLTjbhpDr+aqleB7Rfh0+OmydE
+         9x+mymt8Y7TR9/k4PO20SpFmL/NeLaqTeNiipv4SXleeXQ82gU94DgtdMhunVCdonH
+         tercKqaVJO40bVmwcNehIG8Z9BxFHb8nbd8l9qAeymk4LeqtYgEamvbVNFhxxaKuAO
+         mzOF9vvfp3KliTdFABU6VRFEi0mlOlRGKJA6jgsh4c19BzJ+KvnLq+ctlIgKb4kSVi
+         kZWBfJiz5gbmg==
+Received: by mail.corrib.pl for <linux-ide@vger.kernel.org>; Wed,  1 Feb 2023 09:06:19 GMT
+Message-ID: <20230201074500-0.1.58.fi5f.0.9a2gg9xnij@corrib.pl>
+Date:   Wed,  1 Feb 2023 09:06:19 GMT
+From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
+        <szczepan.kielbasa@corrib.pl>
+To:     <linux-ide@vger.kernel.org>
+Subject: Faktoring
+X-Mailer: mail.corrib.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <eb44fe29-47bb-315e-c340-10918a6250f6@omp.ru>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Wed, Feb 01, 2023 at 08:18:13PM +0300, Sergey Shtylyov wrote:
-> On 2/1/23 5:59 PM, Sergey Shtylyov wrote:
-> [...]
-> >> This code accidentally reuses the "tries" iterator for both the inside
-> >> and outside loops.  It could result in a forever loop if the "tries"
-> >> variable gets reset to 0x1000 and never reaches 0x5000.
-> 
->    Have you actually seen this happening?
-> 
+Dzie=C5=84 dobry,
 
-No, this is from static analysis.
+rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
+ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
+wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
 
-drivers/ata/pata_hpt3x2n.c:390 hpt3xn_calibrate_dpll() warn: reusing outside iterator: 'tries'
+Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
+stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
+z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
+ kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
+adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
+Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
 
-You're right that this is a false positive.  I thought I had addressed
-that particular type of false positive so the check wouldn't warn about
-it but apparently I hadn't.  Sorry!
 
-Thanks again for reviewing this.
-
-regards,
-dan carpenter
-
+Pozdrawiam
+Szczepan Kie=C5=82basa

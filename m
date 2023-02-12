@@ -2,92 +2,54 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C83436933E3
-	for <lists+linux-ide@lfdr.de>; Sat, 11 Feb 2023 21:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52B0E693612
+	for <lists+linux-ide@lfdr.de>; Sun, 12 Feb 2023 05:52:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229597AbjBKU75 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 11 Feb 2023 15:59:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33160 "EHLO
+        id S229496AbjBLEwr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 11 Feb 2023 23:52:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjBKU74 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 11 Feb 2023 15:59:56 -0500
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F36C61448C;
-        Sat, 11 Feb 2023 12:59:53 -0800 (PST)
-Received: from [192.168.1.103] (31.173.83.74) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 11 Feb
- 2023 23:59:45 +0300
-Subject: Re: [PATCH 0/12] pata_parport: protocol drivers cleanups
-To:     Ondrej Zary <linux@zary.sk>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>
-CC:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        Tim Waugh <tim@cyberelk.net>, <linux-block@vger.kernel.org>,
-        <linux-parport@lists.infradead.org>, <linux-ide@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20230211144232.15138-1-linux@zary.sk>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <c129c6e6-a386-e351-6e67-3631326f6b0a@omp.ru>
-Date:   Sat, 11 Feb 2023 23:59:46 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S229447AbjBLEwp (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 11 Feb 2023 23:52:45 -0500
+X-Greylist: delayed 1858 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 11 Feb 2023 20:52:44 PST
+Received: from kingdom.moryum.com (kingdom.moryum.com [95.173.185.108])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F32112F1A;
+        Sat, 11 Feb 2023 20:52:44 -0800 (PST)
+Received: from localhost (localhost [IPv6:::1])
+        by kingdom.moryum.com (Postfix) with ESMTPA id DB6A918281E;
+        Sun, 12 Feb 2023 06:05:04 +0200 (EET)
 MIME-Version: 1.0
-In-Reply-To: <20230211144232.15138-1-linux@zary.sk>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [31.173.83.74]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 02/11/2023 20:33:15
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 175452 [Feb 11 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 502 502 69dee8ef46717dd3cb3eeb129cb7cc8dab9e30f6
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.83.74 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;31.173.83.74:7.1.2;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.83.74
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 02/11/2023 20:35:00
-X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 2/11/2023 7:25:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Date:   Sun, 12 Feb 2023 05:05:04 +0100
+From:   Douglas Hadgraft <dm4@spectra-bd.com>
+To:     undisclosed-recipients:;
+Subject: 2023 Loan offer
+Reply-To: Douglas Hadgraft <djhadgraft@inichemjayemakmur.com>
+User-Agent: Roundcube Webmail/1.4.11
+Message-ID: <923ab83ddd240da0dca0c32b7a21f695@spectra-bd.com>
+X-Sender: dm4@spectra-bd.com
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=2.1 required=5.0 tests=BAYES_50,RCVD_IN_VALIDITY_RPBL,
+        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2/11/23 5:42 PM, Ondrej Zary wrote:
+Hello,
 
-> This patch series cleans up pata_parport protocol drivers, making the code
-> simpler with no changes in behavior (except logged messages).
-> 
-> Signed-off-by: Ondrej Zary <linux@zary.sk>
-[...]
+We αre α kuwait Bαse ιnvestment compαny offerιng Corporαte αnd personαl 
+Loαn αt 3% ιnterest rαte for the durαtιon of 10 yeαrs. We αlso pαy 1% 
+commιssιon to brokers, who ιntroduce project owners for fιnαnce or other 
+opportunιtιes.
 
-   Will continue reviewing this series on Monday prolly...
+Pleαse get bαck to me ιf you αre ιnterested ιn more detαιls.
 
-MBR, Sergey
+Best regαrds,
+Douglas Hadgraft
+Project Supervisor
+Globαl Fιnαnciαl Investment
+Email: djhadgraft@inichemjayemakmur.com

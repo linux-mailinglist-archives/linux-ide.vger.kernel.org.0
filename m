@@ -2,116 +2,100 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABBFC699B32
-	for <lists+linux-ide@lfdr.de>; Thu, 16 Feb 2023 18:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E914069A5B1
+	for <lists+linux-ide@lfdr.de>; Fri, 17 Feb 2023 07:42:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjBPRYA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Feb 2023 12:24:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44910 "EHLO
+        id S229731AbjBQGmG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 17 Feb 2023 01:42:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229737AbjBPRX7 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Feb 2023 12:23:59 -0500
-Received: from mx.socionext.com (mx.socionext.com [202.248.49.38])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 200CB4D601;
-        Thu, 16 Feb 2023 09:23:52 -0800 (PST)
-Received: from unknown (HELO kinkan2-ex.css.socionext.com) ([172.31.9.52])
-  by mx.socionext.com with ESMTP; 17 Feb 2023 02:23:51 +0900
-Received: from mail.mfilter.local (mail-arc02.css.socionext.com [10.213.46.40])
-        by kinkan2-ex.css.socionext.com (Postfix) with ESMTP id CF5402020789;
-        Fri, 17 Feb 2023 02:23:51 +0900 (JST)
-Received: from kinkan2.css.socionext.com ([172.31.9.51]) by m-FILTER with ESMTP; Fri, 17 Feb 2023 02:23:51 +0900
-Received: from [10.212.158.143] (unknown [10.212.158.143])
-        by kinkan2.css.socionext.com (Postfix) with ESMTP id 4F226A855B;
-        Fri, 17 Feb 2023 02:23:51 +0900 (JST)
-Message-ID: <c6b86d56-a8a4-825d-ac34-7a9f00e43b42@socionext.com>
-Date:   Fri, 17 Feb 2023 02:23:50 +0900
+        with ESMTP id S229477AbjBQGmC (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 17 Feb 2023 01:42:02 -0500
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 066304E5DD
+        for <linux-ide@vger.kernel.org>; Thu, 16 Feb 2023 22:41:57 -0800 (PST)
+Received: by mail-vk1-xa2a.google.com with SMTP id s24so837351vkf.8
+        for <linux-ide@vger.kernel.org>; Thu, 16 Feb 2023 22:41:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O+3r6Lwvhms6XJ6bo2c6l90xkWazMwajl6iI1ojTsco=;
+        b=MZN1hnRVVqw6S02YR9BFZ1XIx034Snwz/Cn2OZs36LCZwUC7Xhfw+YsdhYZeWKd85Y
+         BPnse0qWqhCec4Qa0Gnz2zKyl/M+nrWmC9C75n3rWxyckxckb1fArc+5/n6nmh16n6bi
+         YQUOAaPSfI6AQP2KOMy6yoUTY8tNGOZE5bgpMVFjQi3HVib5GzUZjLRJnatjMln9CwNy
+         Fz6yC7xcDDPtmO2j/VtLfCBe7/uVRhSVNYo5Y2Xyj1GEN7PK1502JSC/l5NlQ+x6j+PR
+         8OhtvMZ9ss81cskrQOM8toEEp+1c2DYuMZ8EjBnu+bZJPZe/E57080u0zkdJPxva4SlD
+         7y1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O+3r6Lwvhms6XJ6bo2c6l90xkWazMwajl6iI1ojTsco=;
+        b=2lsoqSE7I8N4H4fi3K2iGfqvFXJ4nIjz8ZtxvtxCg2Yj4DTzjnnOAYIRZWU6E1MavO
+         8BApWZYQxcDodsZK92ePFO1QXsEKHAqVgTyFfca2W/90BdkquLq5tA8PilEelGqIMxZ3
+         QF4I2VkySPuqUyKTr+neJzHtImLJdv96s3H3oV6jWzHDfDGlcANkBGRJnkspai6zBG3K
+         SXMsEmsRra8wWJ5cyG0MaK9gQyW/TYDu5LiundEAjcwTw25Vd0/SwEPI4j8e/ZMuF6/I
+         PPqOFl3QSbURlbm+opAgExzwwQL29e/ANn3iLCbEfTLAZdjoBAXOcqDNHzn072Q+rhMI
+         gT2Q==
+X-Gm-Message-State: AO0yUKV0k57lDqmqGhJWkm8u7/L497A8+QaDmFlLtoEi/I1q+nBynsVS
+        3eFtfuLJ6+26YFZnMBG0Oqt1rqywmJcE2U6EJFw=
+X-Google-Smtp-Source: AK7set8T23btIryZWkVhuq3unfRZ1y/qWOgjeFkTzeONfKsB68vNpviltx2TNlhaWNNI2QrEoY1efH8u429LjqEapoI=
+X-Received: by 2002:a1f:9e0f:0:b0:401:355e:e0be with SMTP id
+ h15-20020a1f9e0f000000b00401355ee0bemr1340450vke.17.1676616115815; Thu, 16
+ Feb 2023 22:41:55 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Subject: Re: [PATCH v2] dt-bindings: ata: Add UniPhier controller binding
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>
-Cc:     linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230213045432.32614-1-hayashi.kunihiko@socionext.com>
- <2d76ec86-6580-28b0-0f80-a5c497f8cef7@linaro.org>
- <ed864d57-0de3-a169-ebde-628eb84b8a21@socionext.com>
- <0c6dc673-7e11-eec5-ec2d-e00fb2060bf3@linaro.org>
-Content-Language: en-US
-From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-In-Reply-To: <0c6dc673-7e11-eec5-ec2d-e00fb2060bf3@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a59:d8ae:0:b0:3a3:49d7:7bd0 with HTTP; Thu, 16 Feb 2023
+ 22:41:55 -0800 (PST)
+Reply-To: zongjianxin14@gmail.com
+From:   Zong Jianxin <majisamuel02@gmail.com>
+Date:   Fri, 17 Feb 2023 07:41:55 +0100
+Message-ID: <CANV+rvwyKObzQL=Mnozu7TV_k2kADXb-gJXcQBximwB3kFDq3g@mail.gmail.com>
+Subject: Urgent
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:a2a listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [zongjianxin14[at]gmail.com]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [majisamuel02[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [majisamuel02[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  3.0 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2023/02/14 18:42, Krzysztof Kozlowski wrote:
-> On 14/02/2023 10:33, Kunihiko Hayashi wrote:
->> Hi Krzysztof,
->>
->> On 2023/02/13 18:10, Krzysztof Kozlowski wrote:
->>> On 13/02/2023 05:54, Kunihiko Hayashi wrote:
->>>> Add UniPhier SATA controller compatible string to the platform binding.
->>>> This controller needs maximum three reset controls.
->>>>
->>>> Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
->>>> ---
->>>>    .../devicetree/bindings/ata/ahci-platform.yaml  | 17 +++++++++++++++++
->>>>    1 file changed, 17 insertions(+)
->>>>
->>>> Changes since v1:
->>>> - Restrict resets property changes with compatible strings
->>>> - Fix maxItems from two to three
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.yaml
->>>> b/Documentation/devicetree/bindings/ata/ahci-platform.yaml
->>>> index 7dc2a2e8f598..25dd5ffaa517 100644
->>>> --- a/Documentation/devicetree/bindings/ata/ahci-platform.yaml
->>>> +++ b/Documentation/devicetree/bindings/ata/ahci-platform.yaml
->>>> @@ -45,6 +45,9 @@ properties:
->>>>                  - marvell,armada-8k-ahci
->>>>                  - marvell,berlin2-ahci
->>>>                  - marvell,berlin2q-ahci
->>>> +              - socionext,uniphier-pro4-ahci
->>>> +              - socionext,uniphier-pxs2-ahci
->>>> +              - socionext,uniphier-pxs3-ahci
->>>>              - const: generic-ahci
->>>>          - enum:
->>>
->>> Top level is saying reset=1, so did you test your bindings?
->>
->> Umm, I didn't see any errors on dt_binding_check, anyway I'll add
->> initial minItems:1 and maxItems:3 on top level first.
-> 
-> You need to test also all DTS using these bindings. Yours and others.
-> If you tested the DTS (with proper binding, not one which is basically
-> noop):
-> 
-> uniphier-pro4-ace.dtb: sata@65600000: resets: [[27, 12], [27, 28], [37,
-> 3]] is too long
+-- 
+Did you receive my previous email? I have a Profitable deal for you.
 
-I've tried updating tools and doing dtbs_check, but I couldn't find this
-error. It seems that this error can't be detected unless there is the
-specified compatible in "select:".
+Thanks
 
-> BTW, the patch has other errors - just look at the beginning of the
-> file. I cannot see it here in the diff, but when you open the file you
-> should notice it.
-
-Sorry, but I cannot see anything wrong.
-I'll check the header or something...
-
-Thank you,
-
----
-Best Regards
-Kunihiko Hayashi
+Zong Jianxin

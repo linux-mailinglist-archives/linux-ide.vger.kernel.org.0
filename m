@@ -2,86 +2,67 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC95E6BD847
-	for <lists+linux-ide@lfdr.de>; Thu, 16 Mar 2023 19:41:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2E6E6BE1C0
+	for <lists+linux-ide@lfdr.de>; Fri, 17 Mar 2023 08:08:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbjCPSlg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 16 Mar 2023 14:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44696 "EHLO
+        id S229755AbjCQHIR (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 17 Mar 2023 03:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229473AbjCPSl1 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 16 Mar 2023 14:41:27 -0400
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6956BBD4C8;
-        Thu, 16 Mar 2023 11:41:26 -0700 (PDT)
-Received: by mail-pj1-f50.google.com with SMTP id y2so2564690pjg.3;
-        Thu, 16 Mar 2023 11:41:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678992086;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAO8ipnGlaW7Dsdpbu2ZfEHDL1dEpEJ1pzRe9Xj45k0=;
-        b=ln0XI09uQYWjrapTiNHLCbUGmeDNZ5cs7gnwYyDufiUfXiYP1OOXpbnRlw09f5G+gG
-         Z2AV9WEQYshpp2i9TGXPdatlCbuJtwM/oE2uBFsNswByIKG1qDVHsQtaUqWDqBqGmBMK
-         3q6JiBoOGbAROLAt1Qr8tX1+mTluchJwWfL7BV5KsT6E+pb6GWmmW6Jlr69SVLsuOrZt
-         XdaHt6XiLi7BSeIfeZ5ALzNFd9zDNVJlS8EC/WMAKh/JJMy1eIvKmb15/RKZ+1+jR3+W
-         x7LYriC5rgYCwTolv1+9DWc526LlR8pVHnRWrsKKE0vGQ5x9u3Wz/dwVUJDPBmpNEOmE
-         7dmQ==
-X-Gm-Message-State: AO0yUKUbpmeWpeQ69Lp5dIPxE/UBeQNgR9u5J+7ddxaqjM+DG5jHjfLT
-        rxBzx84S8we8WeDOEHSP5D4=
-X-Google-Smtp-Source: AK7set8CHdRUEDH1kXpv7Ln9kRiMK77wVthfB0Yo62w5ZO6f2T4CZZigqQzLsymhio37ow9nEn+X2Q==
-X-Received: by 2002:a05:6a20:65a2:b0:d6:a2f9:ca9a with SMTP id p34-20020a056a2065a200b000d6a2f9ca9amr3901085pzh.42.1678992085744;
-        Thu, 16 Mar 2023 11:41:25 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:ad26:bef0:6406:d659? ([2620:15c:211:201:ad26:bef0:6406:d659])
-        by smtp.gmail.com with ESMTPSA id c25-20020aa78c19000000b00623f72df4e2sm9088pfd.203.2023.03.16.11.41.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Mar 2023 11:41:24 -0700 (PDT)
-Message-ID: <70b757f9-cc0c-ebd9-a597-f6ea14acbedb@acm.org>
-Date:   Thu, 16 Mar 2023 11:41:21 -0700
+        with ESMTP id S229562AbjCQHIR (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 17 Mar 2023 03:08:17 -0400
+Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 20C483866A
+        for <linux-ide@vger.kernel.org>; Fri, 17 Mar 2023 00:08:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
+         h=mime-version:content-type:content-transfer-encoding:date:from
+        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=TyaGlRzxaV6ead5kFlkuFBRx
+        MS7Zs2D5RUA43s4JLPJHiXEz7JeRQrtnhHl3rJKjKXtZXlfeHJewfTDXPE8nl3Z6
+        EH3pCX5aGa8FiHNcfuzAtLQiFV93dlmtrrl17+yyoyroQ41LzC1WzLNWnZy3ZpDP
+        WBmGGvb9WplF0t4Or3jHCwKdEicHphzBTMxww/lKhz3GD1ZUIwYKFoCEs2eJJD9G
+        y3nI9LO5ST/uUNqyuqi2kSHroM9aSyczff+OX6/49qIFwK0DkLu0vHt/+xmUMpCM
+        t5ZzuoJIrwFr1YMY8hFkFNrsN5hOMqIWbxSoXtOJ+K03aoZg3mX9/UjwVXNmEA==
+Received: (qmail 64684 invoked from network); 14 Mar 2023 19:53:38 -0000
+Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
+  by localhost with SMTP; 14 Mar 2023 19:53:38 -0000
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v4 02/19] block: introduce ioprio hints
-Content-Language: en-US
-To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Hannes Reinecke <hare@suse.de>,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-block@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>
-References: <20230309215516.3800571-1-niklas.cassel@wdc.com>
- <20230309215516.3800571-3-niklas.cassel@wdc.com>
- <c91be70e-14a9-7ad6-ba7c-975a640a34d3@opensource.wdc.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <c91be70e-14a9-7ad6-ba7c-975a640a34d3@opensource.wdc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Date:   Tue, 14 Mar 2023 12:53:37 -0700
+From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
+To:     undisclosed-recipients:;
+Subject: <LOAN OPPORTUNITY AT LOW-INTEREST RATE>
+Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
+Message-ID: <3571110bf1207008ae1b296efa4c8f03@sragenkab.go.id>
+X-Sender: jurnalsukowati@sragenkab.go.id
+User-Agent: Roundcube Webmail/0.8.1
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
+        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 3/15/23 19:00, Damien Le Moal wrote:
-> Bart,
-> 
-> I would like to hear your opinion as well.
 
-Isn't sending a ping after only three days a bit soon for such a large 
-patch?
 
-Regarding your question: I like the block/ioprio.c changes in this 
-version of this patch series much better than the changes in the 
-previous version of this patch series.
+-- 
+Greetings,
+   I am contacting you based on the Investment/Loan opportunity for 
+companies in need of financing a project/business, We have developed a 
+new method of financing that doesn't take long to receive financing from 
+our clients.
+    If you are looking for funds to finance your project/Business or if 
+you are willing to work as our agent in your country to find clients in 
+need of financing and earn commissions, then get back to me for more 
+details.
 
-No objections from my side about the changes in this patch (02/19).
-
-Thanks,
-
-Bart.
-
+Regards,
+Ibrahim Tafa
+ABIENCE INVESTMENT GROUP FZE, United Arab Emirates

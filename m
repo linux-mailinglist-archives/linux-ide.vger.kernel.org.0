@@ -2,134 +2,82 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EBF96C7332
-	for <lists+linux-ide@lfdr.de>; Thu, 23 Mar 2023 23:38:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4628D6C8E89
+	for <lists+linux-ide@lfdr.de>; Sat, 25 Mar 2023 14:31:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230078AbjCWWiB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 23 Mar 2023 18:38:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55972 "EHLO
+        id S231905AbjCYNba (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 25 Mar 2023 09:31:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjCWWiA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 23 Mar 2023 18:38:00 -0400
-Received: from esa4.hgst.iphmx.com (esa4.hgst.iphmx.com [216.71.154.42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AF2D19B0
-        for <linux-ide@vger.kernel.org>; Thu, 23 Mar 2023 15:37:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1679611079; x=1711147079;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vHziMEpRTG/Xm7IGduGXmXkvW8yHuQd9ddphiPn/Ms0=;
-  b=PMSpGI6nxUWA0iCkCwM08PExVLehyQ7NgDBeZryauRptOtxWHny2cfLK
-   yZTN/dEbvv4RltZJxOgXFLlsDuBpq0TFdnAFx6BCF5eh7fklNPOp2cpmS
-   78irMihDq5RJLf3o7nBe/NCvMoBVF5NndKKIZQ530BoDVq5neSDM9vlZp
-   rpAVIgCevkJikKHD4Q7iNbAOwu8qepH4mV5SYV9wEJHb2W/Uk0dq0yUeV
-   z4Biz1+wGTH9EqRh8KyyVtFGay2vqzyxHzPSAkmCrnuFGCMrobvEY9zTz
-   69VvIc3z9E57vG5PtyCm8+tdlCr0Qfy/JkufGqugMB5sSX9xR5rAYMI4D
-   g==;
-X-IronPort-AV: E=Sophos;i="5.98,286,1673884800"; 
-   d="scan'208";a="224655533"
-Received: from h199-255-45-15.hgst.com (HELO uls-op-cesaep02.wdc.com) ([199.255.45.15])
-  by ob1.hgst.iphmx.com with ESMTP; 24 Mar 2023 06:37:58 +0800
-IronPort-SDR: o+K7Uk/qRSdTyMknHqmq//8vmCA1zp2Sggg41pulQKCWE9NCxQfX8mxhUGtuU7PWVYtjPABQs0
- cb858g2yfLRM/paFvHQPENLvs0IQN8VPnQtEw2s58M+8ugccF4ztQZZgXMsfZyv5e+uVywgXH4
- av7zpE2ANavmnAt7iMIL7CT2TVEdABauTIPdkjAkRX+JGTCPAd5JKhbGb4ZhjjCM4EsUPvPAeK
- iMk1+UDQpjOjaKU8EvelQz1iycw3ulRRaCEaLE0KM8rVtegweg1veS/0w4eEdj5ew0lNd8EG7m
- uNs=
-Received: from uls-op-cesaip02.wdc.com ([10.248.3.37])
-  by uls-op-cesaep02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Mar 2023 14:48:33 -0700
-IronPort-SDR: y1PUHqV94GzQNYETefGtttYZqtA9cKpELhpcI6xDEUHE/mClIYK1VQ/nRJuqvCudv6uDD69cpN
- Y09uNFkBA1UabT2RNBKWvVF7kIXrpo4kGym+Zf+TmCvhvSeIa3Zkncew5U/ia7U1H673/Ex0K/
- 2GcLh+B1vCghR10v7fkzzPd268thmNGWQhkT8vt2Ix1fJsg6dUStMvlivDglg0Zj4JwQFJownj
- j4azQqATTfo1rhNGRiFj1P8vD59tsyd/vNagJyYyUau9GqpAfcNElrHh6m5CFrEh7F3UNCVlNH
- eP4=
-WDCIronportException: Internal
-Received: from usg-ed-osssrv.wdc.com ([10.3.10.180])
-  by uls-op-cesaip02.wdc.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 23 Mar 2023 15:37:58 -0700
-Received: from usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTP id 4PjKx20blyz1RtVp
-        for <linux-ide@vger.kernel.org>; Thu, 23 Mar 2023 15:37:58 -0700 (PDT)
-Authentication-Results: usg-ed-osssrv.wdc.com (amavisd-new); dkim=pass
-        reason="pass (just generated, assumed good)"
-        header.d=opensource.wdc.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=
-        opensource.wdc.com; h=content-transfer-encoding:content-type
-        :in-reply-to:organization:from:content-language:references:to
-        :subject:user-agent:mime-version:date:message-id; s=dkim; t=
-        1679611077; x=1682203078; bh=vHziMEpRTG/Xm7IGduGXmXkvW8yHuQd9ddp
-        hiPn/Ms0=; b=uAcI9XJxTFZp7enN1BpyJLDMUi6wLRNrYI7NQh3iknme2Bz4UYC
-        6fAXbojRPe4KuOs6UZ1QvU62ep2j2d9SrMHlOJfLkNggkP7FZvBzneCW27p+13zG
-        blRdLIUgKT/r3tGRp+j6KBO6b9L1nETK1qrZdNATzKyfRPX2h8wqCH/mGl8yDMbG
-        yLVnIrFP66CGck0ir7Pz5n8lA20+xDC6hUHKUZhQZcDm9tSE38LTrANUbL97FoBs
-        UWTVmeW/wUVuwMv65koey3FpKALM+p9hNrid6Y5nYE4C5XnGxPdUL2PcyfEcIl/I
-        eLPk96MoDvdOTGiYuVbxRbcuZJIKHoehvzg==
-X-Virus-Scanned: amavisd-new at usg-ed-osssrv.wdc.com
-Received: from usg-ed-osssrv.wdc.com ([127.0.0.1])
-        by usg-ed-osssrv.wdc.com (usg-ed-osssrv.wdc.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Efw6nm4roieK for <linux-ide@vger.kernel.org>;
-        Thu, 23 Mar 2023 15:37:57 -0700 (PDT)
-Received: from [10.225.163.99] (unknown [10.225.163.99])
-        by usg-ed-osssrv.wdc.com (Postfix) with ESMTPSA id 4PjKx10vZQz1RtVm;
-        Thu, 23 Mar 2023 15:37:56 -0700 (PDT)
-Message-ID: <e3efecbe-408a-60f7-7845-788bdc235012@opensource.wdc.com>
-Date:   Fri, 24 Mar 2023 07:37:55 +0900
+        with ESMTP id S231873AbjCYNb3 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 25 Mar 2023 09:31:29 -0400
+Received: from mail-oo1-xc43.google.com (mail-oo1-xc43.google.com [IPv6:2607:f8b0:4864:20::c43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AD0E1164E
+        for <linux-ide@vger.kernel.org>; Sat, 25 Mar 2023 06:31:28 -0700 (PDT)
+Received: by mail-oo1-xc43.google.com with SMTP id f5-20020a4ad805000000b005399cfd276bso693945oov.6
+        for <linux-ide@vger.kernel.org>; Sat, 25 Mar 2023 06:31:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=salesforce-data-com.20210112.gappssmtp.com; s=20210112; t=1679751087;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=wiMO8UZ0+pta0GDPVyxAsdnF8tCIEhzYVyAx+cWEZSU=;
+        b=Ai0/YL3uPcgGD3jvE8N+rRUrXANm7Z7OsHwBiF7FiMG9och5VUE267R1SRmTAb3r8E
+         P+tCKYj9cQcZPQIBQQDeaUD3+UR2kKAw7FcORl3DJSuewzuN2axvK9tpLsO6BPn9i+NS
+         5zWLoNoMb4lLQxkUC10KRAPnczMIVksLxy5uWZUpsE8IJIXIhEPeuq1r719tXd4UlXid
+         zeQGw1UCeVerH3jv+icjYd7BD0hloQe2+5/AnJfY2xTO70dqkFWHHmaGxbd4cskxaSnd
+         r8tiWtQY+eebu7SxFQpSZgybGwp3a9aUBntH8PLYkoUizSCDe3bZRmqxE8FDsWh3BSBp
+         y9Wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679751087;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wiMO8UZ0+pta0GDPVyxAsdnF8tCIEhzYVyAx+cWEZSU=;
+        b=FYxnA56ktQPE5EaODf0tYgEF9Pt0hsaSP43HYcbqgXT1+T/XXMXcUhmoiR7h2BAXxn
+         4K7jMSWcLtqU5AyldEc3k1Ln7WSA66edIWryiGSP0ghOG6QFCP1s8hntDST1LeacwLTT
+         yGIwHKEibU3RV+gnvzt1fpCbXvM2TRIpJMGIf9PM1F/5lNcjcHeI4//ZDeHhpqoTp3k0
+         3C3mMTXFK7tZbMHxWup+nGh1AMP4xP0OmQgMDmkZi47kyqljqJBMF3004GmojQ3S+GBm
+         xOqTNrrg/DTDIKTF1w/uQ2Glv/y2lYV7xYSVzoUAexO3J4lR1XyXZAVPDFhgwiDY2of8
+         pLAw==
+X-Gm-Message-State: AO0yUKWWkdENpsD1mCX6U4GRiQp0p5oKE4toXwXR7UZ2NnjyN7HlaVw3
+        pw4idJggJJU/8p3fz7JBxwn3A5C5n3mtvjRnr7fJ+w==
+X-Google-Smtp-Source: AK7set+v0YVMM4uF3j3pAzF85SIIHyEzgZucnvYddLd47LPFHbwB/JCUhblRb+SlMFI1bYNA+a8Q8DIEGZ7/JqCWwpo=
+X-Received: by 2002:a4a:e243:0:b0:525:5f43:215a with SMTP id
+ c3-20020a4ae243000000b005255f43215amr4145265oot.1.1679751087563; Sat, 25 Mar
+ 2023 06:31:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH 1/2] ata: pata_parport-bpck6: Remove dependency on 64BIT
-To:     Ondrej Zary <linux@zary.sk>
-Cc:     linux-ide@vger.kernel.org, Sergey Shtylyov <s.shtylyov@omp.ru>
-References: <20230323033836.352672-1-damien.lemoal@opensource.wdc.com>
- <20230323033836.352672-2-damien.lemoal@opensource.wdc.com>
- <202303232201.02920.linux@zary.sk>
-Content-Language: en-US
-From:   Damien Le Moal <damien.lemoal@opensource.wdc.com>
-Organization: Western Digital Research
-In-Reply-To: <202303232201.02920.linux@zary.sk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+From:   Paula Henderson <paula@salesforce-data.com>
+Date:   Sat, 25 Mar 2023 19:01:16 +0530
+Message-ID: <CAF7sO0bmPoGgTputR+s-+FxC5+bG-_TZTFMbmDcD+RWuAxWvOQ@mail.gmail.com>
+Subject: RE:BIO International Convention Attendees Email List-2023
+To:     Paula Henderson <paula@salesforce-data.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=2.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        FILL_THIS_FORM,FILL_THIS_FORM_LONG,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 3/24/23 06:01, Ondrej Zary wrote:
-> On Thursday 23 March 2023 04:38:35 Damien Le Moal wrote:
->> There is no reason to have compilation of the bpck6 protocol module
->> being dependent on 64BIT. Remove this dependency.
-> 
-> Great, I planned to do this but forgot. Thanks.
+Hi,
 
-Can you send a reviewed-by ?
+Would you be interested in acquiring BIO International Convention
+Attendees Email List 2023?
 
->  
->> Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
->> ---
->>  drivers/ata/pata_parport/Kconfig | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/ata/pata_parport/Kconfig b/drivers/ata/pata_parport/Kconfig
->> index 0893a13e7979..2c953f5d1396 100644
->> --- a/drivers/ata/pata_parport/Kconfig
->> +++ b/drivers/ata/pata_parport/Kconfig
->> @@ -25,7 +25,7 @@ config PATA_PARPORT_BPCK
->>  
->>  config PATA_PARPORT_BPCK6
->>  	tristate "MicroSolutions backpack (Series 6) protocol"
->> -	depends on (PATA_PARPORT) && !64BIT
->> +	depends on PATA_PARPORT
->>  	help
->>  	  This option enables support for the Micro Solutions BACKPACK
->>  	  parallel port Series 6 IDE protocol.  (Most BACKPACK drives made
-> 
-> 
+List Includes: Company Name, First Name, Last Name, Full Name, Contact
+Job Title, Verified Email Address, Website URL, Mailing address, Phone
+number, Industry and many more=E2=80=A6
 
--- 
-Damien Le Moal
-Western Digital Research
+Number of Contacts :18,632
+Cost : $ 1,764
 
+If you=E2=80=99re interested please let me know I will assist you with furt=
+her details.
+
+Kind Regards,
+Paula Henderson
+Marketing Coordinators

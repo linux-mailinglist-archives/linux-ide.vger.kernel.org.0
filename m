@@ -2,121 +2,134 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D6DA6C9F2A
-	for <lists+linux-ide@lfdr.de>; Mon, 27 Mar 2023 11:16:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAB7D6CAB31
+	for <lists+linux-ide@lfdr.de>; Mon, 27 Mar 2023 19:01:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233165AbjC0JQ0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 27 Mar 2023 05:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59838 "EHLO
+        id S229874AbjC0RBP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 27 Mar 2023 13:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233104AbjC0JQZ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 27 Mar 2023 05:16:25 -0400
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F4AC44A2
-        for <linux-ide@vger.kernel.org>; Mon, 27 Mar 2023 02:16:24 -0700 (PDT)
-Received: by mail-pf1-x429.google.com with SMTP id g7so5152557pfu.2
-        for <linux-ide@vger.kernel.org>; Mon, 27 Mar 2023 02:16:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679908584;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HgMR0rh/4y7PUWkgjC5D1ZLTIu4Xe0fvcNc/5RhdQ/Y=;
-        b=Tf3VlODMFHBHv+1/ruZ9mzU/s9xIJ5lj6UCtpOOF778BZ/hXE+m/y0NHp81l/I16wo
-         oSAK6z22iwfXLjtc9TRRJQVTiDcM6BXDptxMtOy6Ke/gCW6MxAfjBv0eShsgq3aKheLz
-         0IcqfsS5oquDJ/S5Zl2Bv2yNsNxhCMu7FKhS/TiZeEJkZXZhi18Fg0K/aX19BKYKUgcf
-         ucN3OHRwIIbMbw3Em0Zo7WY27nut/4i3Jf+oFVg4mBSNl/fpwfEvy/Bn63oSpMtC29fI
-         QEu02R6/UIVLj8wRit6d3xl3MGuI/+uxUxAJ91/OHRcIZP660R5XrQGJI95AL67XZPH/
-         St+Q==
+        with ESMTP id S229751AbjC0RBO (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 27 Mar 2023 13:01:14 -0400
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96E3F30D0;
+        Mon, 27 Mar 2023 10:01:13 -0700 (PDT)
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-17997ccf711so9991991fac.0;
+        Mon, 27 Mar 2023 10:01:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679908584;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HgMR0rh/4y7PUWkgjC5D1ZLTIu4Xe0fvcNc/5RhdQ/Y=;
-        b=DSMDYSJOUFq5/9kWnN5XKJj3pcILss5VzUEwWjJ2phjhg9HUS/ibOqm7aAuvheov1g
-         0H7Vhhxcqo4KlF1CSjZ52Tq2kQG6rF5yib0l82/Ol48n0R2sFSZNfPKAwQyIxaTIAVx0
-         3mNbE/7UUDfGI4Dnc7aVbA+egU5xrvzQLlLyG+TKpwX9S03CGPSXdC07fivQO7qUr1Ji
-         RtfosUOEAb3tiuDYPQBsCQaxGxyeTM64UsAU54oeZnPNSKkWlpdhzIyUd/oFE5i0j1UR
-         +JFRnjPSs1zR3PQfQMTfpN9p+wG8S6Ab9tvsAbp+lCNd5JRSAr2IjyeTuOtSdG59YrFl
-         SDiQ==
-X-Gm-Message-State: AAQBX9e03yIO+A3vhvEutTIOr+ek3irFAnDUkpFItMRXJv5YNtIGZFkH
-        28Ii7470hQSvNqXrytO3waKuGvyd4jM+BBDIPIA=
-X-Google-Smtp-Source: AKy350b+2BjvoaB0h1h5RqdVuPNI4IheZ03EvkSuB5OrSam0bFfwHf6zKvERWVTVaMsqRMllge4H6b00STs3LUq8pUY=
-X-Received: by 2002:a05:6a00:2d27:b0:627:e677:bc54 with SMTP id
- fa39-20020a056a002d2700b00627e677bc54mr5637021pfb.5.1679908583864; Mon, 27
- Mar 2023 02:16:23 -0700 (PDT)
+        d=1e100.net; s=20210112; t=1679936473;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PzJOwXJGnpewWNNi+yNJmLTRAbz5urBiQadDRHFSL6c=;
+        b=G94gmNO61AGdTV3QALGNnxWhgpLZIjGJIkyKj78EtNajbQND+pqgcdoeUsa2vZJTnK
+         9peEtkP/JaByylj6EHPrIa41ePmJlinqFOVcl4iWA1VdHoXjNjSyFdrScwaNfuh0tX2T
+         oCevyR3OxAtairA//o1URnmChIsnd2tzK8CiKotKtDxrJJFEv3I5NDnBOHRoKWvc2yTK
+         HbMIoU3vSBSxpHaeCCJme8KqpXdtuXiXwheQtnr8abjoSIOnXakHHmkla69SzJsctID/
+         as9x5Zg/eRTt5yw1k/MiUJ0tETtFLbQka1kvcOVJobDJ2wZ4JqhsTozspJSV4XLNgsO4
+         gYow==
+X-Gm-Message-State: AO0yUKXJnVQ2W+01mAIEIUcgNyLA7bl6YsOHqD2Nn5jDzWEBSTSZFYAJ
+        8XVKXlHnzPJjThWVNJ0AeA==
+X-Google-Smtp-Source: AKy350Z+Kjw1i/JksSjolvq7a2t5f+4ZePOoRduRRvCMM6+RJnEwzPjGBbNXpHwywbmrYn/4T9J30A==
+X-Received: by 2002:a05:6870:a454:b0:176:26b7:44b3 with SMTP id n20-20020a056870a45400b0017626b744b3mr8893265oal.36.1679936472726;
+        Mon, 27 Mar 2023 10:01:12 -0700 (PDT)
+Received: from robh_at_kernel.org (66-90-144-107.dyn.grandenetworks.net. [66.90.144.107])
+        by smtp.gmail.com with ESMTPSA id u6-20020a056870b0c600b00172289de1besm9527286oag.18.2023.03.27.10.01.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Mar 2023 10:01:11 -0700 (PDT)
+Received: (nullmailer pid 4102273 invoked by uid 1000);
+        Mon, 27 Mar 2023 17:01:10 -0000
+From:   Rob Herring <robh@kernel.org>
+To:     Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc:     linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Subject: [PATCH] dt-bindings: ata: Drop unneeded quotes
+Date:   Mon, 27 Mar 2023 12:00:53 -0500
+Message-Id: <20230327170053.4100949-1-robh@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Received: by 2002:a05:7300:3db:b0:9f:d19a:fd79 with HTTP; Mon, 27 Mar 2023
- 02:16:23 -0700 (PDT)
-Reply-To: annamalgorzata587@gmail.com
-From:   "Leszczynska Anna Malgorzata." <mrsstewartprisca@gmail.com>
-Date:   Mon, 27 Mar 2023 02:16:23 -0700
-Message-ID: <CAFoYun0pOf7h6MXemKOxx_VJ9qat6_H9Si4pXTKnow3m+j_=JA@mail.gmail.com>
-Subject: Mrs. Leszczynska Anna Malgorzata.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_5_NEW,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM,UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:429 listed in]
-        [list.dnswl.org]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mrsstewartprisca[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [annamalgorzata587[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.8 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.7 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
+Cleanup bindings dropping unneeded quotes. Once all these are fixed,
+checking for this can be enabled in yamllint.
+
+Signed-off-by: Rob Herring <robh@kernel.org>
+---
+ Documentation/devicetree/bindings/ata/ahci-common.yaml      | 6 +++---
+ Documentation/devicetree/bindings/ata/ahci-platform.yaml    | 2 +-
+ .../devicetree/bindings/ata/renesas,rcar-sata.yaml          | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/ata/ahci-common.yaml b/Documentation/devicetree/bindings/ata/ahci-common.yaml
+index 94d72aeaad0f..7fdf40954a4c 100644
+--- a/Documentation/devicetree/bindings/ata/ahci-common.yaml
++++ b/Documentation/devicetree/bindings/ata/ahci-common.yaml
+@@ -59,7 +59,7 @@ properties:
+     const: sata-phy
+ 
+   hba-cap:
+-    $ref: '/schemas/types.yaml#/definitions/uint32'
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+       Bitfield of the HBA generic platform capabilities like Staggered
+       Spin-up or Mechanical Presence Switch support. It can be used to
+@@ -67,7 +67,7 @@ properties:
+       in case if the system firmware hasn't done it.
+ 
+   ports-implemented:
+-    $ref: '/schemas/types.yaml#/definitions/uint32'
++    $ref: /schemas/types.yaml#/definitions/uint32
+     description:
+       Mask that indicates which ports the HBA supports. Useful if PI is not
+       programmed by the BIOS, which is true for some embedded SoC's.
+@@ -110,7 +110,7 @@ $defs:
+         description: Power regulator for SATA port target device
+ 
+       hba-port-cap:
+-        $ref: '/schemas/types.yaml#/definitions/uint32'
++        $ref: /schemas/types.yaml#/definitions/uint32
+         description:
+           Bitfield of the HBA port-specific platform capabilities like Hot
+           plugging, eSATA, FIS-based Switching, etc (see AHCI specification
+diff --git a/Documentation/devicetree/bindings/ata/ahci-platform.yaml b/Documentation/devicetree/bindings/ata/ahci-platform.yaml
+index 7dc2a2e8f598..6d9e33276ba7 100644
+--- a/Documentation/devicetree/bindings/ata/ahci-platform.yaml
++++ b/Documentation/devicetree/bindings/ata/ahci-platform.yaml
+@@ -34,7 +34,7 @@ select:
+     - compatible
+ 
+ allOf:
+-  - $ref: "ahci-common.yaml#"
++  - $ref: ahci-common.yaml#
+ 
+ properties:
+   compatible:
+diff --git a/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml b/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
+index c4e4a9eab658..fe0909554790 100644
+--- a/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
++++ b/Documentation/devicetree/bindings/ata/renesas,rcar-sata.yaml
+@@ -1,8 +1,8 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: "http://devicetree.org/schemas/ata/renesas,rcar-sata.yaml#"
+-$schema: "http://devicetree.org/meta-schemas/core.yaml#"
++$id: http://devicetree.org/schemas/ata/renesas,rcar-sata.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
+ 
+ title: Renesas R-Car Serial-ATA Interface
+ 
 -- 
-I am Mrs. Leszczynska Anna Malgorzatafrom Germany . Presently admitted
- in one of the hospitals here in Ivory Coast.
+2.39.2
 
-I and my late husband do not have any child that is why I am donating
-this money to you having known my condition that I will join my late
-husband soonest.
-
-I wish to donate towards education and the less privileged I ask for
-your assistance. I am suffering from colon cancer I have some few
-weeks to live according to my doctor.
-
-The money should be used for this purpose.
-Motherless babies
-Children orphaned by aids.
-Destitute children
-Widows and Widowers.
-Children who cannot afford education.
-
-My husband stressed the importance of education and the less
-privileged I feel that this is what he would have wanted me to do with
-the money that he left for charity.
-
-These services bring so much joy to the kids. Together we are
-transforming lives and building brighter futures - but without you, it
-just would not be possible.
-
-Sincerely,
-
-Mrs. Leszczynska Anna Malgorzata.

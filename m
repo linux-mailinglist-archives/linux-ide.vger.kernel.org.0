@@ -2,211 +2,160 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E228F6D745D
-	for <lists+linux-ide@lfdr.de>; Wed,  5 Apr 2023 08:26:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C44CD6D84F8
+	for <lists+linux-ide@lfdr.de>; Wed,  5 Apr 2023 19:33:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229907AbjDEG0H (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 5 Apr 2023 02:26:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38336 "EHLO
+        id S229507AbjDERd3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 5 Apr 2023 13:33:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236802AbjDEG0G (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Apr 2023 02:26:06 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D267730D4;
-        Tue,  4 Apr 2023 23:26:03 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 514691FDCF;
-        Wed,  5 Apr 2023 06:26:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1680675962; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fPklOGrK0wvx9foU45fbSO1T7AAWrRW0ezTW2IuveIs=;
-        b=W1BxH9INLTbRXuhqHrkuflqGKzVtAQKZPVfONL9HDieGVaM8S2yyIY/uYwDRh/dfj3cvxT
-        bQxtl1Saj3DwErlTC+PM5Le7yyqvuS3c1Wzf8MY1/Dm9H57L6OXR1S6EBL1Z63f0Yerkg/
-        q0T/BIzLomrr8RrLEvm4w/f6WuP17i0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1680675962;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=fPklOGrK0wvx9foU45fbSO1T7AAWrRW0ezTW2IuveIs=;
-        b=/uwtE0c0WiNQgRjZo0OuSEpwoVWPzoUvm+zeb2gkLi0Ueun+GkD2WH+PW2OoIrJPJoQGun
-        EdX2SnYJ6N3d7MAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 6855113A10;
-        Wed,  5 Apr 2023 06:26:01 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id CH8TFnkULWRMfwAAMHmgww
-        (envelope-from <hare@suse.de>); Wed, 05 Apr 2023 06:26:01 +0000
-Message-ID: <c94c94f7-1a22-72b0-bcf6-a6de6c61a3ec@suse.de>
-Date:   Wed, 5 Apr 2023 08:26:00 +0200
+        with ESMTP id S229481AbjDERd1 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 5 Apr 2023 13:33:27 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480E0C6;
+        Wed,  5 Apr 2023 10:33:26 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id n14so19232128plc.8;
+        Wed, 05 Apr 2023 10:33:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680716005; x=1683308005;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dfIxSAgBnjoBsJTsm7apfl83bnVQsBjbMBbd20jd8Yo=;
+        b=BVf6VqQ84/eKA/OKP0d392ZFkWvfA0Havc7uTLgejYFMbKIZOroTgT7FBFH6wCXKR0
+         P4syjSTVOsTJaFW+gMDyQMwRDIqhOzc9CE5ie6oNwEdBfg6axPYAJkS4x3+9KsKhxXaJ
+         3LDk7MEuwCN18Yhqtul9GzIrOvKFQypQBv5USw3QnSvPjDhSUrU7px+THEfuUFEvQFiw
+         CvXxqvgsAJqgJelxJwebbjZ38kwZQuvdn6X3Q7g1/B896+LzaYRg3REofOMfqLNYKQIA
+         ijyJeuxngNS1qSwCMGwFI/NUK6mmxZ7mkgNLeCILwoTtQBY9S4CrbqOX7pSwAsOR+3/D
+         LpWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680716005; x=1683308005;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dfIxSAgBnjoBsJTsm7apfl83bnVQsBjbMBbd20jd8Yo=;
+        b=Qouo/KdkeX0HPbIwGaki8xKNpLQdK/hdng/gh3LW0EJkJP9iNkOGZkPpYs+zxlND4y
+         +enTWdYfBFUHnt8vWEscLjMrDYnfFBa//0wM/KuCTD4/TDNy3CfERKrqJytaqhev9RNK
+         BQLd8eqKtGRs2usaIGNw0D6rgT1lPzEY9rFggOy4f2rQwaK417hYtFpa9ACLLg6xylRk
+         hkNR3R+npq7gbF0/EYmUdVLC9hLkZ+1a1YJbylxvnbWLlzi29dwv0W+kWn0AzX3xAupa
+         o9ssqtp5XKpbjF/hSxpLKTVSsPnbiPd3hxWXK+xg2+sgf+nwaBMYSl82Vgt6Q4SHnuhv
+         34gQ==
+X-Gm-Message-State: AAQBX9dkKwyNpgsqcaqbzjxeGJzVot6GYEACzWydewyJVTrs6f5ZI3O4
+        zdn3gRlnyhjbKwROKBwQbAZPVXi5SxA6S/IPtWBUB+nBeqO9Wg==
+X-Google-Smtp-Source: AKy350bDm99Rv+LuGpHQe773/4/0M8pyMVzIe2nOEMsW2ByGSDXab5KTd3RQx85MZpH+bfrQlgOm+ma8ibTz30cHp5g=
+X-Received: by 2002:a17:903:443:b0:1a2:ab1b:b62c with SMTP id
+ iw3-20020a170903044300b001a2ab1bb62cmr2876155plb.4.1680716005362; Wed, 05 Apr
+ 2023 10:33:25 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v5 08/19] scsi: detect support for command duration limits
-Content-Language: en-US
-To:     Damien Le Moal <dlemoal@fastmail.com>,
-        Niklas Cassel <nks@flawful.org>, Jens Axboe <axboe@kernel.dk>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc:     Bart Van Assche <bvanassche@acm.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
-        linux-block@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>
-References: <20230404182428.715140-1-nks@flawful.org>
- <20230404182428.715140-9-nks@flawful.org>
- <d55ac074-73df-eab3-f0b8-c70d8efb4b72@suse.de>
- <d25d8427-1313-5696-8e23-87eadc4e6d6b@fastmail.com>
-From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <d25d8427-1313-5696-8e23-87eadc4e6d6b@fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Received: by 2002:a05:6a10:2d49:b0:3bc:b7f6:a3f2 with HTTP; Wed, 5 Apr 2023
+ 10:33:25 -0700 (PDT)
+Reply-To: yapcoylillia52@gmail.com
+From:   Lillia Yapcoy <lilliayapcoy@gmail.com>
+Date:   Wed, 5 Apr 2023 19:33:25 +0200
+Message-ID: <CAHZfu_mb4Oa1JFx4NGpXr9yQ+Tkife=CnpZJh8-BoJiVQA=K2g@mail.gmail.com>
+Subject: Succession Opportunity
+To:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.6 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,LOTS_OF_MONEY,
+        MONEY_FRAUD_8,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,XFER_LOTSA_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:631 listed in]
+        [list.dnswl.org]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [lilliayapcoy[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [yapcoylillia52[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  1.5 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.0 XFER_LOTSA_MONEY Transfer a lot of money
+        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 4/5/23 01:27, Damien Le Moal wrote:
-> On 4/5/23 03:48, Hannes Reinecke wrote:
->> On 4/4/23 20:24, Niklas Cassel wrote:
->>> From: Damien Le Moal <damien.lemoal@opensource.wdc.com>
->>>
->>> Introduce the function scsi_cdl_check() to detect if a device supports
->>> command duration limits (CDL). Support for the READ 16, WRITE 16,
->>> READ 32 and WRITE 32 commands are checked using the function
->>> scsi_report_opcode() to probe the rwcdlp and cdlp bits as they indicate
->>> the mode page defining the command duration limits descriptors that
->>> apply to the command being tested.
->>>
->>> If any of these commands support CDL, the field cdl_supported of
->>> struct scsi_device is set to 1 to indicate that the device supports CDL.
->>>
->>> Support for CDL for a device is advertizes through sysfs using the new
->>> cdl_supported device attribute. This attribute value is 1 for a device
->>> supporting CDL and 0 otherwise.
->>>
->>> Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
->>> Co-developed-by: Niklas Cassel <niklas.cassel@wdc.com>
->>> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
->>> ---
->>>    Documentation/ABI/testing/sysfs-block-device |  9 +++
->>>    drivers/scsi/scsi.c                          | 81 ++++++++++++++++++++
->>>    drivers/scsi/scsi_scan.c                     |  3 +
->>>    drivers/scsi/scsi_sysfs.c                    |  2 +
->>>    include/scsi/scsi_device.h                   |  3 +
->>>    5 files changed, 98 insertions(+)
->>>
->>> diff --git a/Documentation/ABI/testing/sysfs-block-device b/Documentation/ABI/testing/sysfs-block-device
->>> index 7ac7b19b2f72..ee3610a25845 100644
->>> --- a/Documentation/ABI/testing/sysfs-block-device
->>> +++ b/Documentation/ABI/testing/sysfs-block-device
->>> @@ -95,3 +95,12 @@ Description:
->>>    		This file does not exist if the HBA driver does not implement
->>>    		support for the SATA NCQ priority feature, regardless of the
->>>    		device support for this feature.
->>> +
->>> +
->>> +What:		/sys/block/*/device/cdl_supported
->>> +Date:		Mar, 2023
->>> +KernelVersion:	v6.4
->>> +Contact:	linux-scsi@vger.kernel.org
->>> +Description:
->>> +		(RO) Indicates if the device supports the command duration
->>> +		limits feature found in some ATA and SCSI devices.
->>> diff --git a/drivers/scsi/scsi.c b/drivers/scsi/scsi.c
->>> index 62d9472e08e9..c03814ce23ca 100644
->>> --- a/drivers/scsi/scsi.c
->>> +++ b/drivers/scsi/scsi.c
->>> @@ -570,6 +570,87 @@ int scsi_report_opcode(struct scsi_device *sdev, unsigned char *buffer,
->>>    }
->>>    EXPORT_SYMBOL(scsi_report_opcode);
->>>    
->>> +#define SCSI_CDL_CHECK_BUF_LEN	64
->>> +
->>> +static bool scsi_cdl_check_cmd(struct scsi_device *sdev, u8 opcode, u16 sa,
->>> +			       unsigned char *buf)
->>> +{
->>> +	int ret;
->>> +	u8 cdlp;
->>> +
->>> +	/* Check operation code */
->>> +	ret = scsi_report_opcode(sdev, buf, SCSI_CDL_CHECK_BUF_LEN, opcode, sa);
->>> +	if (ret <= 0)
->>> +		return false;
->>> +
->>> +	if ((buf[1] & 0x03) != 0x03)
->>> +		return false;
->>> +
->>> +	/* See SPC-6, one command format of REPORT SUPPORTED OPERATION CODES */
->>> +	cdlp = (buf[1] & 0x18) >> 3;
->>> +	if (buf[0] & 0x01) {
->>> +		/* rwcdlp == 1 */
->>> +		switch (cdlp) {
->>> +		case 0x01:
->>> +			/* T2A page */
->>> +			return true;
->>> +		case 0x02:
->>> +			/* T2B page */
->>> +			return true;
->>> +		}
->>> +	} else {
->>> +		/* rwcdlp == 0 */
->>> +		switch (cdlp) {
->>> +		case 0x01:
->>> +			/* A page */
->>> +			return true;
->>> +		case 0x02:
->>> +			/* B page */
->>> +			return true;
->>> +		}
->>> +	}
->>> +
->>> +	return false;
->>> +}
->>> +
->> Why do we need to check this when writing to sysfs? Shouldn't we detect
->> this during startup / revalidate?
-> 
-> Hmm, I think you missed the call chain on this one (the patch starting with the
-> sys attribute doc changes is a little confusing).
-> 
-> scsi_cdl_check_cmd() is called from scsi_cdl_check(), which is itself called
-> from scsi_add_lun() (for initial device scan) and scsi_rescan_device() for
-> revalidate. scsi_cdl_check() will set sdev->cdl_supported to 1 for devices
-> supporting CDL, which is what sysfs cdl_supported show method uses, and later,
-> the cdl_enable attribute show/store method use that too. That function is not
-> called from sysfs attributes methods.
-> 
-> Note that this function was moved from sd.c to scsi.c as CDL is defined is SPC,
-> not SBC.
-> 
-Indeed, you are right.
+Beloved in Christ.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
 
-Cheers,
 
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
-Myers, Andrew McDonald, Martje Boudien Moerman
+I know this news will surprise you as we have not met in person or
+worked on any type of business transaction in the past. In fact, I
+found your contact address in my search on google for a godly
+man/woman. Despite this, I have contacted you in good faith and I hope
+that I can believe that you have this opportunity, which is explained
+below.
 
+
+I am Mrs. Lillia Yapcoy from Cape Town, South Africa. I was married to
+the late Mr. Henry Yapcoy who worked in a construction company in
+Houston, Texas, USA for over 18 years before he passed away in 2019.
+We were married with no children. He died after a short illness that
+lasted only four days. Until his death we were all born again
+Christians. Since his death I have chosen not to remarry or have
+children outside of my marriage, which is against the Bible.
+
+
+When my late husband was alive, he deposited a sum of ($2.5 million)
+in a bank in Houston, Texas. Currently the money is still in the bank
+and recently my doctor told me that I will not last another 3 months
+due to my cancer. While it was my stroke that bothered me the most,
+once I knew my condition, I decided to donate the money to the church,
+or better yet, to a Christian person who will follow the instructions
+I outline here as the money can be used.
+
+
+I want a church or godly people to use it to fund churches, orphanages
+and widows to spread the word of God and ensure the house of God is
+upheld. The Bible teaches us that blessed hands are those that give. I
+made this decision because I have no children to inherit the money and
+my husband's relatives are not Christians and I do not want my
+husband's hard-earned money to be misused by non-believers.
+
+
+I don't want this money to be misused. Hence the reason for this bold
+decision. I'm not afraid of death, so I know where I'm going. I know I
+want to be in the arms of the Lord. Exodus 14 VS 14 says the Lord will
+defend me and I will be silent. Please, I don't need calls due to
+health reasons and my husband's relatives are always by my side. I
+don't want them to know about this development. With God all things
+are possible.
+
+
+As soon as I hear from you I will provide you with the bank details
+that you will use to contact them. I will also issue you with a Power
+of Attorney authorizing you as the original beneficiary of the fund. I
+hope you and the church will always pray for me because the Lord is my
+shepherd. I am fortunate to have lived a worthy Christian life.
+Whoever wants to serve the Lord must serve him in spirit and truth.
+
+Please keep praying all your life, any delay in your response would
+give me room to search for churches or individual Christians for the
+same purpose. Please assure me that you will act as I explain here.
+Hope to hear from you.
+
+
+Remain blessed in the name of the Lord.
+
+
+Yours in Christ.
+
+Mrs Lillia Yapcoy.

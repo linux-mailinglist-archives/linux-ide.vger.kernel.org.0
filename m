@@ -2,21 +2,21 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9967A6DD292
-	for <lists+linux-ide@lfdr.de>; Tue, 11 Apr 2023 08:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2444A6DD299
+	for <lists+linux-ide@lfdr.de>; Tue, 11 Apr 2023 08:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbjDKGR0 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 11 Apr 2023 02:17:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59552 "EHLO
+        id S230216AbjDKGRx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 11 Apr 2023 02:17:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229698AbjDKGRZ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 11 Apr 2023 02:17:25 -0400
+        with ESMTP id S230225AbjDKGRp (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 11 Apr 2023 02:17:45 -0400
 Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDF881986;
-        Mon, 10 Apr 2023 23:17:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD2819A6;
+        Mon, 10 Apr 2023 23:17:41 -0700 (PDT)
 Received: by verein.lst.de (Postfix, from userid 2407)
-        id 2DBEF68C7B; Tue, 11 Apr 2023 08:17:22 +0200 (CEST)
-Date:   Tue, 11 Apr 2023 08:17:21 +0200
+        id 3F93268BFE; Tue, 11 Apr 2023 08:17:39 +0200 (CEST)
+Date:   Tue, 11 Apr 2023 08:17:38 +0200
 From:   Christoph Hellwig <hch@lst.de>
 To:     Niklas Cassel <nks@flawful.org>
 Cc:     Jens Axboe <axboe@kernel.dk>,
@@ -27,14 +27,14 @@ Cc:     Jens Axboe <axboe@kernel.dk>,
         Damien Le Moal <dlemoal@fastmail.com>,
         linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org,
         linux-block@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>
-Subject: Re: [PATCH v6 12/19] ata: libata-scsi: remove unnecessary !cmd
- checks
-Message-ID: <20230411061721.GF18719@lst.de>
-References: <20230406113252.41211-1-nks@flawful.org> <20230406113252.41211-13-nks@flawful.org>
+Subject: Re: [PATCH v6 14/19] ata: libata: detect support for command
+ duration limits
+Message-ID: <20230411061738.GG18719@lst.de>
+References: <20230406113252.41211-1-nks@flawful.org> <20230406113252.41211-15-nks@flawful.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230406113252.41211-13-nks@flawful.org>
+In-Reply-To: <20230406113252.41211-15-nks@flawful.org>
 User-Agent: Mutt/1.5.17 (2007-11-01)
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
         autolearn=unavailable autolearn_force=no version=3.4.6

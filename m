@@ -2,68 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CD9B6E747C
-	for <lists+linux-ide@lfdr.de>; Wed, 19 Apr 2023 09:56:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D84D16EA0F1
+	for <lists+linux-ide@lfdr.de>; Fri, 21 Apr 2023 03:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229599AbjDSH4D (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 19 Apr 2023 03:56:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43734 "EHLO
+        id S231194AbjDUBQ4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 20 Apr 2023 21:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231577AbjDSH4C (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 19 Apr 2023 03:56:02 -0400
-X-Greylist: delayed 323 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 19 Apr 2023 00:56:01 PDT
-Received: from mail.mahavavy.com (mail.mahavavy.com [92.222.170.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B4D97
-        for <linux-ide@vger.kernel.org>; Wed, 19 Apr 2023 00:56:01 -0700 (PDT)
-Received: by mail.mahavavy.com (Postfix, from userid 1002)
-        id 4D44F234BE; Wed, 19 Apr 2023 07:50:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mahavavy.com; s=mail;
-        t=1681890635; bh=IfqQW79nVX/qUpmHcJiWDpV9BQnOf/s+Zcq9ON74QJY=;
-        h=Date:From:To:Subject:From;
-        b=jBNjvkeUzeuis5cj5BbveU2qgKrlhWf8bVEmT/bxjwx1YHzmKzAA0Gb71RjckxIkL
-         CGbVwGT/Z2Zebwg3OdnDLgea7UgR67hMPLKe00uLLIX4DoGzuRsFiiH6SKTud9ERbV
-         OtDzUIfyToJ84cykmHCuEb7SWvubSZr2AXzvCQiIYodEVj9QhqhqlaafUVV0xcoEz3
-         jY8WWK5ollFGTKO8nWwvEyxd2Mt7pqHR1QGg1XIM1OGyWW+p22+bT5XFLNfxVccIWg
-         sX4s9MBaGuQoz4xiCsDKCPgWNIX8E1ShFNnaY+E2kHM4Qx7dS7C3HVQZsPXSbd2iKY
-         Wgv6D8oVntZ9g==
-Received: by mail.mahavavy.com for <linux-ide@vger.kernel.org>; Wed, 19 Apr 2023 07:50:25 GMT
-Message-ID: <20230419064500-0.1.22.36ra.0.qc26c90aoq@mahavavy.com>
-Date:   Wed, 19 Apr 2023 07:50:25 GMT
-From:   =?UTF-8?Q? "Kristi=C3=A1n_Plet=C3=A1nek" ?= 
-        <kristian.pletanek@mahavavy.com>
-To:     <linux-ide@vger.kernel.org>
-Subject: =?UTF-8?Q?Tlakov=C4=9B_lit=C3=BD?=
-X-Mailer: mail.mahavavy.com
+        with ESMTP id S230521AbjDUBQz (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 20 Apr 2023 21:16:55 -0400
+X-Greylist: delayed 505 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 20 Apr 2023 18:16:54 PDT
+Received: from ODEDI148698.home (odedi148698.mywhc.ca [144.217.254.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CC5BE76
+        for <linux-ide@vger.kernel.org>; Thu, 20 Apr 2023 18:16:54 -0700 (PDT)
+DKIM-Signature: v=1; c=relaxed/relaxed; h=content-type:mime-version:content-transfer-encoding:content-description:subject:to:from:date:reply-to:message-id;
+ d=a2ict.com; s=default; a=rsa-sha256;
+ bh=FQE3y/+3GQQzdAQHGLO+y57Gs24Zx9iAkvAV5kT0Bhk=;
+ b=Vk3bn5xxeWsCLI6LeLwc+QMM8dKaa0b7DHWevr0cLAsxSZPydVygqOV5WGQ7MvFLs
+ cUzHzvSoPwTujuf6sFMYEtD/ePNWwThRHvRNyBhggX4JFkgY5bmnj2Pam1fR4uAC6/C
+ 8cTVNKcJtYMMOexRGhOIRrqF2S1E34gOIiag87Q=;
+Received: from [51.89.94.142] ([51.89.94.142]) by home with
+ MailEnable ESMTPA; Thu, 20 Apr 2023 18:29:40 +0000
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIXED_ES,SPF_HELO_NONE,SPF_PASS,
+Content-Description: Mail message body
+Subject: ich bin Edwin Castro
+To:     linux-ide@vger.kernel.org
+From:   "Mr. Edwin Castro" <admin@a2ict.com>
+Date:   Thu, 20 Apr 2023 11:29:40 -0700
+Reply-To: charityhome_edwin@yahoo.com
+Message-ID: <DFD8B9D239F2478886847D552B9A88D6.MAI@home>
+X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FORGED_REPLYTO,HK_NAME_MR_MRS,LOTS_OF_MONEY,
+        MONEY_FREEMAIL_REPTO,NIXSPAM_IXHASH,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: a2ict.com]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0003]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.5 DATE_IN_PAST_06_12 Date: is 6 to 12 hours before Received: date
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.0 HK_NAME_MR_MRS No description available.
+        *  2.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+Mein Name ist Edwin Castro, ich habe den Powerball-Jackpot gewonnen und ich=
+ spende die Summe von 2,8 Millionen Dollar an f=FCnf gl=FCckliche Menschen =
+auf der ganzen Welt...
 
-zaji=C5=A1=C5=A5ujeme technologii tlakov=C3=A9ho lit=C3=AD hlin=C3=ADku.
-
-M=C3=A1me v=C3=BDrobn=C3=AD z=C3=A1vody v Polsku, =C5=A0v=C3=A9dsku a =C4=
-=8C=C3=ADn=C4=9B se schopnost=C3=AD flexibiln=C4=9B p=C5=99esouvat v=C3=BD=
-robu mezi lokalitami.
-
-Na=C5=A1e lic=C3=AD bu=C5=88ky jsou v=C4=9Bt=C5=A1inou automatick=C3=A9 n=
-ebo poloautomatick=C3=A9, co=C5=BE umo=C5=BE=C5=88uje v=C3=BDrobu velk=C3=
-=BDch v=C3=BDrobn=C3=ADch s=C3=A9ri=C3=AD s vysokou flexibilitou detail=C5=
-=AF.
-=20
-Poskytujeme podporu v ka=C5=BEd=C3=A9 f=C3=A1zi v=C3=BDvoje projektu, vyv=
-=C3=ADj=C3=ADme strukturu detailu.
-
-Cht=C4=9Bli byste mluvit o spolupr=C3=A1ci v t=C3=A9to oblasti?
-
-Pozdravy
-Kristi=C3=A1n Plet=C3=A1nek
+Kontaktieren Sie mich unter meiner E-Mail:charityhome_edwin@yahoo.com f=FCr=
+ weitere Einzelheiten.

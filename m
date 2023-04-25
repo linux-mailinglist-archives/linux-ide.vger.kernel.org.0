@@ -2,149 +2,73 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38FC16EDB90
-	for <lists+linux-ide@lfdr.de>; Tue, 25 Apr 2023 08:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 129AE6EDECE
+	for <lists+linux-ide@lfdr.de>; Tue, 25 Apr 2023 11:12:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233081AbjDYGSi (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 25 Apr 2023 02:18:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40874 "EHLO
+        id S232430AbjDYJMh (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 25 Apr 2023 05:12:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232430AbjDYGSh (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 25 Apr 2023 02:18:37 -0400
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C64A59001;
-        Mon, 24 Apr 2023 23:18:35 -0700 (PDT)
-Received: from localhost.localdomain (unknown [10.101.196.174])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id 082993FC2B;
-        Tue, 25 Apr 2023 06:18:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1682403512;
-        bh=xpybMNqsIkCk472a+6jLgU3wLUPfUx2T87BEmh4vcf0=;
-        h=From:To:Cc:Subject:Date:Message-Id:MIME-Version;
-        b=Cvi96RZncRDEiCpOutJL541wj6f0hVJrhiEcsz47MUL8NZMYRuwZuxsfbe6xbhil0
-         KvCNVZ9akCc0poyuyzb5IMLy+8vY/A5JLDaN5GLLdoYk9PApGmrszoxnHS3DjDgaYr
-         nU2+mIBYRehdD0VLyunYzhEHPmjBhERcw3BL374aBYzrFOB5SLKcYb1cEBRa841oe1
-         frVx94SHbbno8i2QYvlOEEpRKYNuR/MVCjxOgCOd/0erl65SoLpXqwfTeEgFQ6n6VD
-         fi9RJNDGzXPMcfXEXTj0XU6L1Z/Q7SWo1RhpZ+XJYluRRDAHk9hFU1ZaYhMx7itQO0
-         0OSzqF2CiZolQ==
-From:   Kai-Heng Feng <kai.heng.feng@canonical.com>
-To:     jejb@linux.ibm.com, martin.petersen@oracle.com
-Cc:     bblock@linux.ibm.com, acelan.kao@canonical.com,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2] ata: libata: Defer rescan on suspended device
-Date:   Tue, 25 Apr 2023 14:17:45 +0800
-Message-Id: <20230425061746.503145-1-kai.heng.feng@canonical.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S233559AbjDYJMf (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 25 Apr 2023 05:12:35 -0400
+X-Greylist: delayed 2975 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 25 Apr 2023 02:12:34 PDT
+Received: from mail.camacfoy.pl (mail.camacfoy.pl [195.231.80.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5197410FE
+        for <linux-ide@vger.kernel.org>; Tue, 25 Apr 2023 02:12:34 -0700 (PDT)
+Received: by mail.camacfoy.pl (Postfix, from userid 1001)
+        id B4F4EA4A4E; Tue, 25 Apr 2023 08:36:58 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=camacfoy.pl; s=mail;
+        t=1682408282; bh=0DnDcjJl846YrSvLcp0W7cMkWp4Lfhp/OZAq4oBoaY8=;
+        h=Date:From:To:Subject:From;
+        b=iG/bwb7DElbD0UuxWWmuUWssT+C3ro+7gAotX2dIY+fjTgiPDoYOcjbKCspbibw3g
+         Ywz2qMCZWeOQk4B45C4sxzsoTmBtdlJgCiHqEeo7uEVodYcaiNwgXNEZ4C3AganIgK
+         H4I20JbkxYk/BABoqNTOR9tXop/bIv0xqknyV0fjGlhDKVgdl0YqTxrBcLg4lDx4qc
+         qfgwfGW3DyIZx4sBQBwXFDJC4ChhEc29mJ658IgTQyouzWkGZttbtEitzwfRzj1bwW
+         0G7+AKpKAChr46Qq2X8hNryz8CXtJe1EQL57NuudWA+yuPY/IGWVR3wWzQtCk35uxQ
+         KJpeNzlgu7N0g==
+Received: by mail.camacfoy.pl for <linux-ide@vger.kernel.org>; Tue, 25 Apr 2023 07:36:05 GMT
+Message-ID: <20230425074502-0.1.83.c0j2.0.yze15bmy4a@camacfoy.pl>
+Date:   Tue, 25 Apr 2023 07:36:05 GMT
+From:   "Krzysztof Maj" <krzysztof.maj@camacfoy.pl>
+To:     <linux-ide@vger.kernel.org>
+Subject: biznesowy angielski 
+X-Mailer: mail.camacfoy.pl
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-During system resume, if an EH is schduled after ATA host is resumed
-(i.e. ATA_PFLAG_PM_PENDING cleared), but before the disk device is
-fully resumed, the device_lock hold by scsi_rescan_device() is never
-released so the dpm_resume() of the disk is blocked forerver.
+Dzie=C5=84 dobry,=20
 
-That's because scsi_attach_vpd() is expecting the disk device is in
-operational state, as it doesn't work on suspended device.
+czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
+swoich pracownik=C3=B3w?
 
-To avoid such deadlock, defer rescan if the disk is still suspended so
-the resume process of the disk device can proceed. At the end of the
-resume process, use the complete() callback to schedule the rescan task.
+Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
+w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
+ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
+=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
 
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
----
-v2:
- - Schedule rescan task at the end of system resume phase.
- - Wording.
+Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
+=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
+re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
+o=C5=BCliwo=C5=9Bci biznesowe.=20
 
- drivers/ata/libata-core.c | 11 +++++++++++
- drivers/ata/libata-eh.c   | 11 +++++++++--
- include/linux/libata.h    |  1 +
- 3 files changed, 21 insertions(+), 2 deletions(-)
+Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
+ kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
+za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
+=2E
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 14c17c3bda4e..564d72bf1ec6 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5093,6 +5093,16 @@ static int ata_port_pm_poweroff(struct device *dev)
- 	return 0;
- }
- 
-+static void ata_port_pm_complete(struct device *dev)
-+{
-+	struct ata_port *ap = to_ata_port(dev);
-+
-+	if (ap->pflags & ATA_PFLAG_DEFER_RESCAN)
-+		schedule_work(&(ap->scsi_rescan_task));
-+
-+	ap->pflags &= ~ATA_PFLAG_DEFER_RESCAN;
-+}
-+
- static const unsigned int ata_port_resume_ehi = ATA_EHI_NO_AUTOPSY
- 						| ATA_EHI_QUIET;
- 
-@@ -5158,6 +5168,7 @@ static const struct dev_pm_ops ata_port_pm_ops = {
- 	.thaw = ata_port_pm_resume,
- 	.poweroff = ata_port_pm_poweroff,
- 	.restore = ata_port_pm_resume,
-+	.complete = ata_port_pm_complete,
- 
- 	.runtime_suspend = ata_port_runtime_suspend,
- 	.runtime_resume = ata_port_runtime_resume,
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index a6c901811802..0881b590fb7e 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -15,6 +15,7 @@
- #include <linux/blkdev.h>
- #include <linux/export.h>
- #include <linux/pci.h>
-+#include <linux/suspend.h>
- #include <scsi/scsi.h>
- #include <scsi/scsi_host.h>
- #include <scsi/scsi_eh.h>
-@@ -2983,8 +2984,14 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
- 			 */
- 			ehc->i.flags |= ATA_EHI_SETMODE;
- 
--			/* schedule the scsi_rescan_device() here */
--			schedule_work(&(ap->scsi_rescan_task));
-+			/* Schedule the scsi_rescan_device() here.
-+			 * Defer the rescan if it's in process of
-+			 * suspending or resuming.
-+			 */
-+			if (pm_suspend_target_state != PM_SUSPEND_ON)
-+				ap->pflags |= ATA_PFLAG_DEFER_RESCAN;
-+			else
-+				schedule_work(&(ap->scsi_rescan_task));
- 		} else if (dev->class == ATA_DEV_UNKNOWN &&
- 			   ehc->tries[dev->devno] &&
- 			   ata_class_enabled(ehc->classes[dev->devno])) {
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index a759dfbdcc91..aaa549444abc 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -189,6 +189,7 @@ enum {
- 	ATA_PFLAG_UNLOADING	= (1 << 9), /* driver is being unloaded */
- 	ATA_PFLAG_UNLOADED	= (1 << 10), /* driver is unloaded */
- 
-+	ATA_PFLAG_DEFER_RESCAN	= (1 << 16), /* peform deferred rescan on system resume */
- 	ATA_PFLAG_SUSPENDED	= (1 << 17), /* port is suspended (power) */
- 	ATA_PFLAG_PM_PENDING	= (1 << 18), /* PM operation pending */
- 	ATA_PFLAG_INIT_GTM_VALID = (1 << 19), /* initial gtm data valid */
--- 
-2.34.1
+Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
+w i opowiedzie=C4=87 jak dzia=C5=82amy?
 
+
+Pozdrawiam
+Krzysztof Maj

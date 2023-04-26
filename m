@@ -2,75 +2,162 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D319A6EFBD7
-	for <lists+linux-ide@lfdr.de>; Wed, 26 Apr 2023 22:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 532D36EFC00
+	for <lists+linux-ide@lfdr.de>; Wed, 26 Apr 2023 22:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234609AbjDZUsa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 26 Apr 2023 16:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59714 "EHLO
+        id S239900AbjDZU5N (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 26 Apr 2023 16:57:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229889AbjDZUs3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 26 Apr 2023 16:48:29 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07DE114
-        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:48:27 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-3ef302a642eso37229531cf.1
-        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:48:27 -0700 (PDT)
+        with ESMTP id S239894AbjDZU5J (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 26 Apr 2023 16:57:09 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 843612702
+        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:57:06 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-555e853d3c5so59562327b3.2
+        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:57:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1682542107; x=1685134107;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JL3yT3Q33W5/BCQtgOVvz2cK4S2v0dqNTi6RS5aes9g=;
-        b=jmyQ8oiwVLbRJnZSo+x1cDr0coVtWaDiYP+3X3xPymDpEeOKcoWwQMs9HDdAlmwc+4
-         ZJB3ppZgVFyKg6RaVgGEBBvMuy6+llkH2zwPaaA2pgTglzbH4fM8+naFiZyevBj5nSXb
-         1exaIFYkRPoUrSyF4KDnehDts/Y6reST15PJVpD+bh+Do+pzGglSc8KCgd90ZDY06r/d
-         y+ipc71M0PodCcvnJ627i6AawnQfSEcFtBG3KGML2lseXiC/D2Crb6aLQkAamA/A2byW
-         x94HymCt7+wR16bPLAZ1UsaO9B84+XLl/0c3vORIifh+daf4WEGeZ6tdZI03AN0PeksB
-         v7bw==
+        d=linaro.org; s=google; t=1682542625; x=1685134625;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PeyZTvE2qao9z3HUKls5t/zNMEefQNyhwIh3dGLQJIU=;
+        b=MLeMyFt/BrAb2CUUJZ7KmQTqlKOdl+nyYZc7PmyjnwYQvm0Yf7UbAGXqUUW6bmw5G8
+         d9v/M6N+1fVWgVUttzO6DbM8nQI6KJCXhAN7IozpaR9m8Bl7slG7VpsqTKwoquSQxGsD
+         jxjSQ3saNVE9cXwcQLcGF1jRtKLT/eEwI8kJvMSzxcIq2cDfiKWjYhMONbeUEU8V5mkj
+         6Wdd/04hTAUwScC/UEbqqr6+MnHBHQTixxYJ9LZKKkCtwlqFMN3MWW87ziN5fguiVzeh
+         4csevZGxcMK5tYzjndfSfWqBNcCl6Mif+sgasTPGERCLKwqXoxv35oil0C7Hw7NrwoqG
+         vwLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682542107; x=1685134107;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JL3yT3Q33W5/BCQtgOVvz2cK4S2v0dqNTi6RS5aes9g=;
-        b=Fvi2k4qg7soF4h8c9/OG2N3PeHOS6as7Oc9pSuhm9N9vFb3zxUDfIM6in/yOlNf/3s
-         bhFHbYZLfr4nhwSbUqLZE0Jo5NW7hOYV3dlrXLnCt0LVxasQbf/xHE7o8UKpMYBVax/b
-         ONZcN+I2fKjALHrJuOy1dSFkF0yiEtZJ5wgjAWHtsokkUgMjTnTf+eRbMSykDjXw/iHR
-         NAwviP8V2QT7KAi2AqLDE+kgVvq69JAMMRYdODavCiSnIXN4mdPEEsU9Tg1bmYssGToJ
-         UEJRMcnYCXVIfn6yOtizTqnjCNMqiCJLibXzys1zQc3HtVPxRCJCrphkJyBOA6iv6YCB
-         4wqQ==
-X-Gm-Message-State: AAQBX9eOcE5kKipFVrihQmbcLh4P4zacL2jWb0Tk2JLNb4wyL9G8j09w
-        265H6o5KBlV0FV9+NEw+5rKyPxrzQHxan7jvuw==
-X-Google-Smtp-Source: AKy350aekgc0UxvOYmM/T2pvntDGRe6KzuO8bAIxq0mkMGtsyePhGn+mHJJ9XfecAZK2KJL4xdSoC/j1gPwI55/1eIM=
-X-Received: by 2002:a05:622a:610:b0:3ef:5bbe:28ee with SMTP id
- z16-20020a05622a061000b003ef5bbe28eemr33278909qta.52.1682542106813; Wed, 26
- Apr 2023 13:48:26 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1682542625; x=1685134625;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PeyZTvE2qao9z3HUKls5t/zNMEefQNyhwIh3dGLQJIU=;
+        b=kABbGHMsPnT/2fYfqhWQQjCDsuucnZbhBRUJ8Tw5XFkmQTfSPT++vXli7Mwi6T+4a4
+         vgQhfS4oJxLTziLIBnotfv89Iy5aFf9tcoqHikSM/N6dKyLn1hhcpVkTW8LDE+WJPeEo
+         GfAHPniy3ptLCCoeOSlYMPqBlI9iCP158RUDzW+Y8O52FfPKlCmUYh4Q4X8FvFapTRYc
+         xVgHnL49qJ30yJz4cZRjje9ek9Cg1peDklfFzx4QOkrQXyRXluszu9tGBbeJZvtr6gz9
+         aLF/21uIkJBgY4Uo3nyv03f1ZU4l+zxrdSNawiYuQsoVJZu9FORiedfhDmZck1tubjkL
+         9zDw==
+X-Gm-Message-State: AAQBX9fOLblPeAVfbCBJZBysCpUDo1R+nVfweCDAA0IauS0tJRzIpA6e
+        yMBLJvYzGkeR5VBC+t3EGXiHXApBDzAR0FCUoDc0RQ==
+X-Google-Smtp-Source: AKy350ajEJHyhyynqyOl0isjddMpiNdULElT/xAxUEM8cmGuE9kOk2QPH86dypmLR0gOJToVISGwrFvJLTDtak1EsDI=
+X-Received: by 2002:a0d:ea0d:0:b0:552:a2e2:684e with SMTP id
+ t13-20020a0dea0d000000b00552a2e2684emr13680157ywe.52.1682542625695; Wed, 26
+ Apr 2023 13:57:05 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:622a:134b:b0:3ef:cc78:1761 with HTTP; Wed, 26 Apr 2023
- 13:48:26 -0700 (PDT)
-Reply-To: klassoumark@gmail.com
-From:   Mark Klassou <chardonlucas12@gmail.com>
-Date:   Wed, 26 Apr 2023 20:48:26 +0000
-Message-ID: <CAAWCeYcZ2O2WQwZ-6XdK7O58QzcdYFf=FYaLHonkkUM9rwiBDg@mail.gmail.com>
-Subject: Re
-To:     undisclosed-recipients:;
+References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
+In-Reply-To: <20230424123522.18302-1-nikita.shubin@maquefel.me>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Wed, 26 Apr 2023 22:56:53 +0200
+Message-ID: <CACRpkdarANFQ7-p=-Pi_iuk6L=PfSLDsD3_w4dEVqarwXkEGMQ@mail.gmail.com>
+Subject: Re: [PATCH 00/43] ep93xx device tree conversion
+To:     Nikita Shubin <nikita.shubin@maquefel.me>
+Cc:     Arnd Bergmann <arnd@kernel.org>, Linus Walleij <linusw@kernel.org>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        =?UTF-8?Q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Brian Norris <briannorris@chromium.org>,
+        Chuanhong Guo <gch981213@gmail.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Eric Dumazet <edumazet@google.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Hitomi Hasegawa <hasegawa-hitomi@fujitsu.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Jean Delvare <jdelvare@suse.de>, Joel Stanley <joel@jms.id.au>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Le Moal <damien.lemoal@opensource.wdc.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Liang Yang <liang.yang@amlogic.com>,
+        Lukasz Majewski <lukma@denx.de>, Lv Ruyi <lv.ruyi@zte.com.cn>,
+        Mark Brown <broonie@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Olof Johansson <olof@lixom.net>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Qin Jian <qinjian@cqplus1.com>,
+        Richard Weinberger <richard@nod.at>,
+        Rob Herring <robh+dt@kernel.org>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Russell King <linux@armlinux.org.uk>,
+        Sebastian Reichel <sre@kernel.org>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sumanth Korikkar <sumanthk@linux.ibm.com>,
+        Sven Peter <sven@svenpeter.dev>, Takashi Iwai <tiwai@suse.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Walker Chen <walker.chen@starfivetech.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        Yinbo Zhu <zhuyinbo@loongson.cn>, alsa-devel@alsa-project.org,
+        devicetree@vger.kernel.org, dmaengine@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-gpio@vger.kernel.org, linux-ide@vger.kernel.org,
+        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mtd@lists.infradead.org, linux-pm@vger.kernel.org,
+        linux-pwm@vger.kernel.org, linux-rtc@vger.kernel.org,
+        linux-spi@vger.kernel.org, linux-watchdog@vger.kernel.org,
+        netdev@vger.kernel.org, soc@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Good Morning,
+On Mon, Apr 24, 2023 at 11:35=E2=80=AFAM Nikita Shubin
+<nikita.shubin@maquefel.me> wrote:
 
-I was only wondering if you got my previous email? I have been trying
-to reach you by email. Kindly get back to me swiftly, it is very
-important.
+> This series aims to convert ep93xx from platform to full device tree supp=
+ort.
+>
+> Tested on ts7250 64 RAM/128 MiB Nand flash, edb9302.
 
-Yours faithfully
-Mark Klassou.
+Neat, I'd say let's merge this for 6.5 once the final rough edges are
+off. The DT bindings should be easy to fix.
+
+This is a big patch set and the improvement to the ARM kernel it
+brings is great, so I am a bit worried about over-review stalling the
+merged. If there start to be nitpicky comments I would prefer that
+we merge it and let minor comments and "nice-to-haves" be
+addressed in-tree during the development cycle.
+
+I encourage you to use b4 to manage the patch series if you
+have time to learn it, it could help you:
+https://people.kernel.org/monsieuricon/sending-a-kernel-patch-with-b4-part-=
+1
+
+Yours,
+Linus Walleij

@@ -2,73 +2,75 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 823926EFB98
-	for <lists+linux-ide@lfdr.de>; Wed, 26 Apr 2023 22:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D319A6EFBD7
+	for <lists+linux-ide@lfdr.de>; Wed, 26 Apr 2023 22:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239833AbjDZUNa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 26 Apr 2023 16:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49646 "EHLO
+        id S234609AbjDZUsa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 26 Apr 2023 16:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239891AbjDZUN3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 26 Apr 2023 16:13:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F11471A4
-        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:13:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AF8163032
-        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 20:13:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EF741C433EF;
-        Wed, 26 Apr 2023 20:13:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1682540004;
-        bh=WO/5+LGGviRdeBCSjr1Fdbi4Meqrk9SaSvIQtA3QZM4=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=DiZ+R1WCUpP/zDt9/sqsy/W1pyX1Nbq/SY4PaPz1wQlFKCQ4+OVg/cOwQhM4bsOtV
-         tWFORR89hbr8fLEltjSVmiJk/fYJmWzKIiVA11PaqpI7UZrOvXj+Udum01FkkxHkeE
-         RVBVDjneFlJbj98u8oYsE5OPL8HhqF4j1ASqsztHqFQfGCnD4pzvu8H0rzZUGujkfN
-         jbtjmnB+SO35sYniVo6+UPScen0r1b1h+PuYMAIkaR8sz6JxUEVgeDLS52mCpW8xF4
-         EtVgQfIgYte8lzmqZ4BzNw0zjYybZQavubxOW1idV5vqw+Sonm08Za6ed+/Awztc/G
-         tO2cwrNBU5k0A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id D6B06C43158;
-        Wed, 26 Apr 2023 20:13:23 +0000 (UTC)
-Subject: Re: [GIT PULL] ata changes for 6.4-rc1
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230425142311.186448-1-dlemoal@kernel.org>
-References: <20230425142311.186448-1-dlemoal@kernel.org>
-X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230425142311.186448-1-dlemoal@kernel.org>
-X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-6.4-rc1
-X-PR-Tracked-Commit-Id: 140b26035b2d379d94e6e3936ab2e0adf94efe46
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 36006b1d5c04692924f011aa949e8788f1c604de
-Message-Id: <168254000386.27655.682279311808732456.pr-tracker-bot@kernel.org>
-Date:   Wed, 26 Apr 2023 20:13:23 +0000
-To:     Damien Le Moal <dlemoal@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ide@vger.kernel.org
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        with ESMTP id S229889AbjDZUs3 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 26 Apr 2023 16:48:29 -0400
+Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E07DE114
+        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:48:27 -0700 (PDT)
+Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-3ef302a642eso37229531cf.1
+        for <linux-ide@vger.kernel.org>; Wed, 26 Apr 2023 13:48:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1682542107; x=1685134107;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JL3yT3Q33W5/BCQtgOVvz2cK4S2v0dqNTi6RS5aes9g=;
+        b=jmyQ8oiwVLbRJnZSo+x1cDr0coVtWaDiYP+3X3xPymDpEeOKcoWwQMs9HDdAlmwc+4
+         ZJB3ppZgVFyKg6RaVgGEBBvMuy6+llkH2zwPaaA2pgTglzbH4fM8+naFiZyevBj5nSXb
+         1exaIFYkRPoUrSyF4KDnehDts/Y6reST15PJVpD+bh+Do+pzGglSc8KCgd90ZDY06r/d
+         y+ipc71M0PodCcvnJ627i6AawnQfSEcFtBG3KGML2lseXiC/D2Crb6aLQkAamA/A2byW
+         x94HymCt7+wR16bPLAZ1UsaO9B84+XLl/0c3vORIifh+daf4WEGeZ6tdZI03AN0PeksB
+         v7bw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1682542107; x=1685134107;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JL3yT3Q33W5/BCQtgOVvz2cK4S2v0dqNTi6RS5aes9g=;
+        b=Fvi2k4qg7soF4h8c9/OG2N3PeHOS6as7Oc9pSuhm9N9vFb3zxUDfIM6in/yOlNf/3s
+         bhFHbYZLfr4nhwSbUqLZE0Jo5NW7hOYV3dlrXLnCt0LVxasQbf/xHE7o8UKpMYBVax/b
+         ONZcN+I2fKjALHrJuOy1dSFkF0yiEtZJ5wgjAWHtsokkUgMjTnTf+eRbMSykDjXw/iHR
+         NAwviP8V2QT7KAi2AqLDE+kgVvq69JAMMRYdODavCiSnIXN4mdPEEsU9Tg1bmYssGToJ
+         UEJRMcnYCXVIfn6yOtizTqnjCNMqiCJLibXzys1zQc3HtVPxRCJCrphkJyBOA6iv6YCB
+         4wqQ==
+X-Gm-Message-State: AAQBX9eOcE5kKipFVrihQmbcLh4P4zacL2jWb0Tk2JLNb4wyL9G8j09w
+        265H6o5KBlV0FV9+NEw+5rKyPxrzQHxan7jvuw==
+X-Google-Smtp-Source: AKy350aekgc0UxvOYmM/T2pvntDGRe6KzuO8bAIxq0mkMGtsyePhGn+mHJJ9XfecAZK2KJL4xdSoC/j1gPwI55/1eIM=
+X-Received: by 2002:a05:622a:610:b0:3ef:5bbe:28ee with SMTP id
+ z16-20020a05622a061000b003ef5bbe28eemr33278909qta.52.1682542106813; Wed, 26
+ Apr 2023 13:48:26 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:622a:134b:b0:3ef:cc78:1761 with HTTP; Wed, 26 Apr 2023
+ 13:48:26 -0700 (PDT)
+Reply-To: klassoumark@gmail.com
+From:   Mark Klassou <chardonlucas12@gmail.com>
+Date:   Wed, 26 Apr 2023 20:48:26 +0000
+Message-ID: <CAAWCeYcZ2O2WQwZ-6XdK7O58QzcdYFf=FYaLHonkkUM9rwiBDg@mail.gmail.com>
+Subject: Re
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Tue, 25 Apr 2023 23:23:11 +0900:
+Good Morning,
 
-> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-6.4-rc1
+I was only wondering if you got my previous email? I have been trying
+to reach you by email. Kindly get back to me swiftly, it is very
+important.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/36006b1d5c04692924f011aa949e8788f1c604de
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Yours faithfully
+Mark Klassou.

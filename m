@@ -2,122 +2,133 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D92F46F437C
-	for <lists+linux-ide@lfdr.de>; Tue,  2 May 2023 14:15:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A6B6F457B
+	for <lists+linux-ide@lfdr.de>; Tue,  2 May 2023 15:49:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234147AbjEBMPp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 2 May 2023 08:15:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43358 "EHLO
+        id S233936AbjEBNtF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 2 May 2023 09:49:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234145AbjEBMPo (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 2 May 2023 08:15:44 -0400
-Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 159EB30E8
-        for <linux-ide@vger.kernel.org>; Tue,  2 May 2023 05:15:43 -0700 (PDT)
-Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6a5f03551fdso2625859a34.0
-        for <linux-ide@vger.kernel.org>; Tue, 02 May 2023 05:15:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683029742; x=1685621742;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UFDCcpPxDmkQZsud8dmALV/HSiV3stf7Ud3TXlSZ1wA=;
-        b=Em96I0iTF2A6o3J/ORbPNgTQDb/X5WPO2+3u9AnRSaUwbbtikDeHttGXBticraotaC
-         RhxV9mGQVQj4tjbfZx7r1ccBoX4O4NEcXfPXZXGh3l7H4Ft7kgSuhN/9jh5Qd5fVK5pH
-         ikn71Tk8SZC48NhHClOCCgBDxC8NICVFpEXA4QupryUHJnT6vJkIKOfcUNoxeQ73oBjg
-         zgCC9JjagCyBOzCTZ44ZuzraHsbJd5sIBDHB6btrLz1e3AumteJRJ2PgbQOqa0qJ0qzh
-         a9bVc0YVl9KTEs6ZtbqpI2qzB1dCaBWlv+CKMPu+ftaGeXXB7+eiNN6jsTIVYw0kvRCD
-         kxEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683029742; x=1685621742;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UFDCcpPxDmkQZsud8dmALV/HSiV3stf7Ud3TXlSZ1wA=;
-        b=OPQvOaSwSARf2ssDWCzZtIcicaVvnFAY9ZwC/sNA2vSlA+IgJCr1Ov9NH32IHOCXAV
-         ze5BcEZWI3HVhSFGA6pxzDZk3EpSjkrrYXs+og/oiDMyG3LoIp4brSg7YDAswv2GKytM
-         LEhqVB8ymffPJdA7GfMlXZEhzVKlfYYNZ8R758OpnVBMR9NAVtnqjdRa8DjWo3HvD5Jx
-         Fays0igJ2xTN0lZy8vqMk5RPdV0wqXSOiGI+H8MvKDuGFSvYeqOcKApy5JF5Pci5EFtc
-         eKKGBuX6xsy3zrh5jIGSbmsWxCziMBHzU/VuCqBecwh0gqa9mo0B8yYDC0+GW/MxLbub
-         6+RA==
-X-Gm-Message-State: AC+VfDwDkKqokuWaH4OVoQUdxx8/vWSs12EOmdUTwUxwtDFe9TZVGfEw
-        K48mG5ckswL+N4FvpNaVG85//qVGXPJSLX7dxHtvHrJXPnY=
-X-Google-Smtp-Source: ACHHUZ7A6SbxrSbXo/QVeZo2lhTICROhzUdLaf9rigkMM+uiUSpVaVaKvSQGYPy7OvR9R+KnBp+8kdalZGV/1uhMq34=
-X-Received: by 2002:a05:6808:6:b0:38b:5349:e112 with SMTP id
- u6-20020a056808000600b0038b5349e112mr7478821oic.46.1683029741755; Tue, 02 May
- 2023 05:15:41 -0700 (PDT)
+        with ESMTP id S234196AbjEBNtD (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 2 May 2023 09:49:03 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2059.outbound.protection.outlook.com [40.107.223.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF91A6;
+        Tue,  2 May 2023 06:49:02 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PgSM6oUK3snH6uNRfjn1KaGOrf7UDdeQqikSU9n4s1Jm5UQkyKcPFRGrCR9qnJs+DKTV2PKiSIYjoWk0mdPFfZxKybahoYdTnjiSldpCdVDa3Zky4GNUyQTAAlRijHW8k26wga4Y9pDfPVvWIBUbX52Ze35DpxD103DWkA3IMj8WbB4cmOd+FbSVNmxcr8is86Hc1Vfmex61A28g/CyM47esADMYwH6Ohso72bGS6l6NZxhNwTteMKvddNxdMhGO0a7U9Z/YqZUAkfsZWQid4ZIjg2nLlfqZsZXTgRa+c2QdLS/wBcsAJGHanQK99yqUq/zZo3sWhlOyULhSd1mx9Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LRCfuFmnlObKnM7edyNCUmwI2OV4CSCIsQt19GZ6qNM=;
+ b=bCdTbj0Ckwxqt73db8bl/bPY3ecKylHyUh15C7Ac9QmAZ6niQ5HQP4SwpjA3hjL5Qv+pdMuOwLByp2LUpdtEwryZC3RuywSGBSKQu+s1ZKlgqNgnEgb0VDrNejkdO2u5Z7c6JPeEyqQruLfjySG/Y8Iq9ZCXs9n9878keyx4fXqXt+3LhD7+hylKwW7G2uEWlHNoYmXXnDl9N2bDamj9+MxXAtjCy0Njwwgq/LkK3Qi6O32ivuif+5jLd2WmCExdbHh9NPeE0wMY0X3tAJT+OiFN6N3W8BSq1/TNnih84xtrONjGjS21SYEAKzZDgLGGlkvRglvhhQSSkFfL2boT1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LRCfuFmnlObKnM7edyNCUmwI2OV4CSCIsQt19GZ6qNM=;
+ b=2AMiGN3tB0yMCAHX/BZcJuwMAHYppSyY6r26bsWxJvGeLLvnKOtnjmrBQhSOV9TLsTMzDi5KXywNBwObTo6fVIyTFId7sLkO2x9avIsgNsvxnSPdhTNITpvQsl2blpKc1lnw6EvlHruzt9Ta8yx7j26EQz77+8rUGPBvU2pN41w=
+Received: from DM6PR17CA0022.namprd17.prod.outlook.com (2603:10b6:5:1b3::35)
+ by DS0PR12MB6581.namprd12.prod.outlook.com (2603:10b6:8:d3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6340.30; Tue, 2 May
+ 2023 13:48:59 +0000
+Received: from DM6NAM11FT029.eop-nam11.prod.protection.outlook.com
+ (2603:10b6:5:1b3:cafe::3e) by DM6PR17CA0022.outlook.office365.com
+ (2603:10b6:5:1b3::35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6363.20 via Frontend
+ Transport; Tue, 2 May 2023 13:48:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DM6NAM11FT029.mail.protection.outlook.com (10.13.173.23) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6363.21 via Frontend Transport; Tue, 2 May 2023 13:48:59 +0000
+Received: from localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Tue, 2 May
+ 2023 08:48:58 -0500
+From:   Michal Simek <michal.simek@amd.com>
+To:     <linux-kernel@vger.kernel.org>, <monstr@monstr.eu>,
+        <michal.simek@xilinx.com>, <git@xilinx.com>
+CC:     Damien Le Moal <dlemoal@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Piyush Mehta <piyush.mehta@xilinx.com>,
+        Rob Herring <robh+dt@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-ide@vger.kernel.org>
+Subject: [PATCH] dt-bindings: ata: ahci-ceva: Cover all 4 iommus entries
+Date:   Tue, 2 May 2023 15:48:51 +0200
+Message-ID: <76a2bbd9fb944dbefdb8d429d0a85937d56a3d6f.1683035327.git.michal.simek@amd.com>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
-Sender: ericgloriapaul@gmail.com
-Received: by 2002:a05:6358:4903:b0:11a:758f:2411 with HTTP; Tue, 2 May 2023
- 05:15:41 -0700 (PDT)
-From:   Stepan CHERNOVETSKY <chernovetskyistepan@gmail.com>
-Date:   Tue, 2 May 2023 13:15:41 +0100
-X-Google-Sender-Auth: 8WASfav0oDciR8-v2NgO5GSztsc
-Message-ID: <CAApFGfT5BJC5HikDxBuWaOaLmtj1tR8g8GVbAKK9PMK+FuX7MQ@mail.gmail.com>
-Subject: Investment Inquiries.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=ADVANCE_FEE_5_NEW,BAYES_50,
-        DEAR_SOMETHING,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:32e listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4531]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [chernovetskyistepan[at]gmail.com]
-        *  2.0 DEAR_SOMETHING BODY: Contains 'Dear (something)'
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.0 ADVANCE_FEE_5_NEW Appears to be advance fee fraud (Nigerian
-        *      419)
-        *  3.1 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM11FT029:EE_|DS0PR12MB6581:EE_
+X-MS-Office365-Filtering-Correlation-Id: f5ee3211-1139-42d2-2f45-08db4b13fb71
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: M//2Ageb0sinUL1d0KmPuKX/lqMSKPP0SZj6LHflAkq0H55KiKPgpBR8US3SFjJLccUF3v0n+X6KRI739c1R9gPM+QImQGG6YbR6ie5eJ65cnZTbmI2Szmjsg6TP5udl53Mx1/p9VnHmOS94x85KOyQhQ3qg1QCjPQSURreX9IJT5i1CEFL4qvoOklOp+7O5XJBpbRNCjrAqJ0jlWlEKrzoqnxZ/JE0+MqpQ6RuyzbllRQSAwGxKjgplmbfLxirXtAjwwB1r5Z6ny2oAJGOcK8/hvKk9uW13VTDrk95uqzref10y3BQzjHRjY7KQ+YqSk+Wwc2/llFKGJCjNLOQqUY7Y2qiZ/VPn/r4JTT9K8OafgjwhvMF+e2UBrZV6+34QsoaiDx7iurfwW2ztlEmAjs+crhRa1zdUkXQH7/eW7dnEe5S7M7ST1URreOaIOjLJk/jLPCeDSunqK8YVxl5dLmitbIG+40tBJL/I9RTAnuCA6FLKkBvqSM3Y9kQ1bYh5ZpPxvE6s4uVULCDQgUMlfitXq43BimVh+k5RD1Wc3dDF921KpRAVjiUN7lPqPXNPoF3zuRNn2jGuRtYJzMuYJgb/EFXzFL0EM0mI8UZCRhOVvWFsgay8/Zf65zvFHNENyGf9Kcn5AAQXvnSrLAx2gCLgQN86U6geIVru+smvQgl5AI/gDpW5Mi5FDrH1p993rW4QOJXTxFGw60xqSQqheIhx7K7e3aOTQ2RqU9cZKH31xMqv9Iu+U4X/YtkpFiFt
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(376002)(346002)(136003)(451199021)(46966006)(36840700001)(40470700004)(86362001)(6666004)(54906003)(478600001)(83380400001)(47076005)(336012)(426003)(36860700001)(26005)(40480700001)(16526019)(186003)(36756003)(81166007)(2616005)(82740400003)(82310400005)(40460700003)(4326008)(70586007)(44832011)(70206006)(316002)(4744005)(356005)(8936002)(8676002)(41300700001)(5660300002)(2906002)(110136005)(36900700001)(2101003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2023 13:48:59.7236
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5ee3211-1139-42d2-2f45-08db4b13fb71
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM11FT029.eop-nam11.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6581
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear Sir/Madam,
+Current only one entry is enabled but IP itself is using 4 different IDs
+which are already listed in zynqmp.dtsi.
 
-Please do not be embarrassed for contacting you through this medium; I
-got your contact from Google people search and then decided to contact
-you. My goal is to establish a viable business relationship with you
-there in your country.
+sata: ahci@fd0c0000 {
+	compatible = "ceva,ahci-1v84";
+	...
+	iommus = <&smmu 0x4c0>, <&smmu 0x4c1>,
+		 <&smmu 0x4c2>, <&smmu 0x4c3>;
+};
 
-I am  Mr Stepan CHERNOVETSKYI from Kyiv (Ukraine); I was a
-businessman, Investor and Founder of Chernovetskyi Investment Group
-(CIG) in Kyiv before Russia=E2=80=99s Invasion of my country. My business h=
-as
-been destroyed by the Russian military troops and there are no
-meaningful economic activities going on in my country.
+Signed-off-by: Michal Simek <michal.simek@amd.com>
+---
 
-I am looking for your help and assistance to buy properties and other
-investment projects, I consider it necessary to diversify my
-investment project in your country, due to the invasion of Russia to
-my country, Ukraine and to safeguard the future of my family.
+ Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Please, I would like to discuss with you the possibility of how we can
-work together as business partners and invest in your country through
-your assistance, if you can help me.
+diff --git a/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml b/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
+index 9b31f864e071..71364c6081ff 100644
+--- a/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
++++ b/Documentation/devicetree/bindings/ata/ceva,ahci-1v84.yaml
+@@ -32,7 +32,7 @@ properties:
+     maxItems: 1
+ 
+   iommus:
+-    maxItems: 1
++    maxItems: 4
+ 
+   power-domains:
+     maxItems: 1
+-- 
+2.36.1
 
-Please, if you are interested in partnering with me, please respond
-urgently for more information.
-
-Yours Sincerely,
-Mr Stepan CHERNOVETSKYI Leonid.
-Chairman and founder of Chernovetskyi Investment Group (CIG)

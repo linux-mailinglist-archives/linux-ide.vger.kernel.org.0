@@ -2,68 +2,77 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBCAB6FDACC
-	for <lists+linux-ide@lfdr.de>; Wed, 10 May 2023 11:32:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5E4A6FE0AA
+	for <lists+linux-ide@lfdr.de>; Wed, 10 May 2023 16:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236463AbjEJJcH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 10 May 2023 05:32:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45000 "EHLO
+        id S237565AbjEJOnb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 10 May 2023 10:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236614AbjEJJcG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 May 2023 05:32:06 -0400
-X-Greylist: delayed 90599 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 10 May 2023 02:32:03 PDT
-Received: from mail.rawlinsfis.com (mail.rawlinsfis.com [89.40.118.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6083D3A88
-        for <linux-ide@vger.kernel.org>; Wed, 10 May 2023 02:32:03 -0700 (PDT)
-Received: by mail.rawlinsfis.com (Postfix, from userid 1001)
-        id 8AF84822CB; Tue,  9 May 2023 08:45:50 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rawlinsfis.com;
-        s=mail; t=1683618358;
-        bh=lDo1OjfzzJ3sOfR9tSDg5RMmT4aDyBP45hIVJCLtIrE=;
-        h=Date:From:To:Subject:From;
-        b=cijJ7mz8rHuMAR+6nvmjRK7aITkZICMvxP2elBqPuky5jeRxT2gfhFe84RzDVD1k9
-         XB8iuXvk8fxplxyXRLedEeTOklMl7ShZ9fFCUQXHPtBfB60ldRgZ2gDANo/Zg0NQvC
-         bFCFUy7WqGCT7J6tuvGgNUjVB2Syjd3jNYVghSqMYF3N/9KLF26qjZI+qZj+9yFs2C
-         bJJ0wyRLQ9gegH7z7bF35EOJ+A2up0PwYfcPKB92ypK5DNUT4hJL7BT2ntllkD3zjL
-         4U3NePBApr8EmKvkvdFy9nIMyRLPv63SnR8M24bZ5e5ta/fT824LKiibMq/3DRHXmI
-         ILC3TUqVSOlwg==
-Received: by mail.rawlinsfis.com for <linux-ide@vger.kernel.org>; Tue,  9 May 2023 07:45:46 GMT
-Message-ID: <20230509074500-0.1.3e.5pgu.0.qr77o3g8e7@rawlinsfis.com>
-Date:   Tue,  9 May 2023 07:45:46 GMT
-From:   "Damian Hordych" <damian.hordych@rawlinsfis.com>
-To:     <linux-ide@vger.kernel.org>
-Subject: =?UTF-8?Q?Pompy_ciep=C5=82a_-_nowe_warunki_?=
-X-Mailer: mail.rawlinsfis.com
+        with ESMTP id S237573AbjEJOn3 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 May 2023 10:43:29 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3F586A2
+        for <linux-ide@vger.kernel.org>; Wed, 10 May 2023 07:43:27 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-965ab8ed1fcso1326723366b.2
+        for <linux-ide@vger.kernel.org>; Wed, 10 May 2023 07:43:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1683729806; x=1686321806;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=l6To9sPEpSbIWjVuYFn3N8A4xyUkOSXWPU+gac7BMA1NKvt+vlSB4BSYdxIBeLdq6I
+         7J3FwoXiu9g48a3GUDp9he3aNiTphlqmPsAS57dP7BAAPxg7YaR5MkMEbW9qdJHJPI3B
+         TapmipPRJb44QBIEDWQhKCVzABz5zWw5J2x/KjMBQ5PPW7r3I9jt/uCGGgg9CPwM52ZJ
+         xWAsJlA9jtBg5BxLdh26ImhCHXPee2eC7QKZmXkcvZhZNRnwHvYwd2OcCcSyZVcwiYLR
+         oLs/rGfXRpqmiM5W0IDdhvbc5ugGTkbC50P9KESnX433/nodsVtKjUMeLRYYETlzfO+R
+         bmCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683729806; x=1686321806;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
+        b=DxyLI3qbak99TgufVr1HhIsVPiv0d87cCvM37DoeiJwMxzCZLPTpUaBRhnrrTGZlaG
+         RhXQ0wFQvFLyyBQuLhJc9W32jm4yqf4wecp0KJmWlS/dwPdWOtpalO9ZR1Sy+TKKunoL
+         OGrcoZOh1c9CVWhPqBMEMFw8pBhIf7RtzKH59cLgamRY7omyy3Q7M4s1GTuIQOuXBTGO
+         4UaZJucEi4hn2F9Kz70JazpDBt1taZgfnVATI0dKXYQ0aHfmpkuVZGPz5+o/FvQ+6U7o
+         Gos/6KYdKzctiiCz2uZJZn+3K/SpWjLksyOFGhrnwQc5VjPjHfjdO6IO44GyI+L7+ez2
+         VJNg==
+X-Gm-Message-State: AC+VfDzkiVT0Than0WoSwYDbIORiUc75P2qcCj8K6moq+ZFIovWPQDxQ
+        3CPHBA98vGwxa4PBtCs1I4shorrpxlt1JNtwK7k=
+X-Google-Smtp-Source: ACHHUZ6DN8RuAX6s2lS63jiwkU/AaCfNfZ6u9DthVIAEiXvwt46sQnPXhcpTtaIqDbw80DBuKTIBBlCxBKEmyC2yy7I=
+X-Received: by 2002:a17:906:db0d:b0:94a:35d1:59a with SMTP id
+ xj13-20020a170906db0d00b0094a35d1059amr14117358ejb.14.1683729806136; Wed, 10
+ May 2023 07:43:26 -0700 (PDT)
 MIME-Version: 1.0
+Received: by 2002:ab4:a502:0:b0:209:c5a4:ad9a with HTTP; Wed, 10 May 2023
+ 07:43:25 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <coulibalynina09@gmail.com>
+Date:   Wed, 10 May 2023 07:43:25 -0700
+Message-ID: <CABeZed7eVgREt4osqeMzVuuDy603jQNiA2_BewSMaEU+1Y+SXg@mail.gmail.com>
+Subject: from nina coulibaly
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Dear,
 
-w ramach nowej edycji programu Czyste Powietrze dla klient=C3=B3w indywid=
-ualnych mog=C4=85 otrzyma=C4=87 Pa=C5=84stwo do 135 tys. z=C5=82 wsparcia=
- na zakup pompy ciep=C5=82a.
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
 
-Pr=C3=B3cz wy=C5=BCszego dofinansowania program zak=C5=82ada m.in. podwy=C5=
-=BCszenie prog=C3=B3w dochodowych oraz mo=C5=BCliwo=C5=9B=C4=87 z=C5=82o=C5=
-=BCenia kolejnego wniosku o dofinansowanie dla tych, kt=C3=B3rzy ju=C5=BC=
- wcze=C5=9Bniej skorzystali z Programu.
+Best Regards.
 
-Jako firma specjalizuj=C4=85ca si=C4=99 w dostawie, monta=C5=BCu i serwis=
-ie pomp ciep=C5=82a pomo=C5=BCemy Pa=C5=84stwu w uzyskaniu dofinansowania=
- wraz z kompleksow=C4=85 realizacj=C4=85 ca=C5=82ego projektu.
-
-S=C4=85 Pa=C5=84stwo zainteresowani?
-
-Pozdrawiam
-Damian Hordych
+Mrs Nina Coulibaly

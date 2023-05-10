@@ -2,77 +2,85 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5E4A6FE0AA
-	for <lists+linux-ide@lfdr.de>; Wed, 10 May 2023 16:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19C7A6FE78C
+	for <lists+linux-ide@lfdr.de>; Thu, 11 May 2023 00:52:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237565AbjEJOnb (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 10 May 2023 10:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47956 "EHLO
+        id S236499AbjEJWwf (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 10 May 2023 18:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237573AbjEJOn3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 May 2023 10:43:29 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE3F586A2
-        for <linux-ide@vger.kernel.org>; Wed, 10 May 2023 07:43:27 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-965ab8ed1fcso1326723366b.2
-        for <linux-ide@vger.kernel.org>; Wed, 10 May 2023 07:43:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683729806; x=1686321806;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
-        b=l6To9sPEpSbIWjVuYFn3N8A4xyUkOSXWPU+gac7BMA1NKvt+vlSB4BSYdxIBeLdq6I
-         7J3FwoXiu9g48a3GUDp9he3aNiTphlqmPsAS57dP7BAAPxg7YaR5MkMEbW9qdJHJPI3B
-         TapmipPRJb44QBIEDWQhKCVzABz5zWw5J2x/KjMBQ5PPW7r3I9jt/uCGGgg9CPwM52ZJ
-         xWAsJlA9jtBg5BxLdh26ImhCHXPee2eC7QKZmXkcvZhZNRnwHvYwd2OcCcSyZVcwiYLR
-         oLs/rGfXRpqmiM5W0IDdhvbc5ugGTkbC50P9KESnX433/nodsVtKjUMeLRYYETlzfO+R
-         bmCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683729806; x=1686321806;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oDVdWICwavrWQ8UAVYhe8ynFXsBBW1vVQ7W08zgiq24=;
-        b=DxyLI3qbak99TgufVr1HhIsVPiv0d87cCvM37DoeiJwMxzCZLPTpUaBRhnrrTGZlaG
-         RhXQ0wFQvFLyyBQuLhJc9W32jm4yqf4wecp0KJmWlS/dwPdWOtpalO9ZR1Sy+TKKunoL
-         OGrcoZOh1c9CVWhPqBMEMFw8pBhIf7RtzKH59cLgamRY7omyy3Q7M4s1GTuIQOuXBTGO
-         4UaZJucEi4hn2F9Kz70JazpDBt1taZgfnVATI0dKXYQ0aHfmpkuVZGPz5+o/FvQ+6U7o
-         Gos/6KYdKzctiiCz2uZJZn+3K/SpWjLksyOFGhrnwQc5VjPjHfjdO6IO44GyI+L7+ez2
-         VJNg==
-X-Gm-Message-State: AC+VfDzkiVT0Than0WoSwYDbIORiUc75P2qcCj8K6moq+ZFIovWPQDxQ
-        3CPHBA98vGwxa4PBtCs1I4shorrpxlt1JNtwK7k=
-X-Google-Smtp-Source: ACHHUZ6DN8RuAX6s2lS63jiwkU/AaCfNfZ6u9DthVIAEiXvwt46sQnPXhcpTtaIqDbw80DBuKTIBBlCxBKEmyC2yy7I=
-X-Received: by 2002:a17:906:db0d:b0:94a:35d1:59a with SMTP id
- xj13-20020a170906db0d00b0094a35d1059amr14117358ejb.14.1683729806136; Wed, 10
- May 2023 07:43:26 -0700 (PDT)
+        with ESMTP id S230023AbjEJWwe (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 10 May 2023 18:52:34 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C8A61A4
+        for <linux-ide@vger.kernel.org>; Wed, 10 May 2023 15:52:23 -0700 (PDT)
+Received: from relay2.suse.de (relay2.suse.de [149.44.160.134])
+        by smtp-out1.suse.de (Postfix) with ESMTP id D697C2198E;
+        Wed, 10 May 2023 22:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1683759141; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=7I6gEUsPDPLHJG5F6lFv3u01NDEKoye1kqcNxdWAgG4=;
+        b=zvMdbZXErsOMeaVon5GpDSEVRI+FHK0IXwXHVxS7caqNJwl0Z4fWU8CZBNvC1K6hSb99M7
+        UAfxR70VMpb1bVp5SKDNXst2BcyMoJ4Hz+EsQ7w5TUyFQ+yx4dOjYfLXljQdHOlY8tN3ie
+        kceHVYPhTY0Nk5Z3wMtONL5L+jkti1w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1683759141;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=7I6gEUsPDPLHJG5F6lFv3u01NDEKoye1kqcNxdWAgG4=;
+        b=lCHwhdCS3+VLZ9QZqghgIwSBeR0LRVNvZRPCaumLqV3zb2fKNYfPnUFDMoMJZbJhVKrl0L
+        fJlGzCoJqsOXkXCQ==
+Received: from adalid.arch.suse.de (adalid.arch.suse.de [10.161.8.13])
+        by relay2.suse.de (Postfix) with ESMTP id C9D952C143;
+        Wed, 10 May 2023 22:52:21 +0000 (UTC)
+Received: by adalid.arch.suse.de (Postfix, from userid 16045)
+        id BA51051C34DF; Thu, 11 May 2023 00:52:21 +0200 (CEST)
+From:   Hannes Reinecke <hare@suse.de>
+To:     Damien LeMoal <dlemoal@kernel.org>
+Cc:     linux-ide@vger.kernel.org, Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 0/6] libata: remove references to 'old' error handler
+Date:   Thu, 11 May 2023 00:52:05 +0200
+Message-Id: <20230510225211.111113-1-hare@suse.de>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Received: by 2002:ab4:a502:0:b0:209:c5a4:ad9a with HTTP; Wed, 10 May 2023
- 07:43:25 -0700 (PDT)
-Reply-To: ninacoulibaly03@hotmail.com
-From:   nina coulibaly <coulibalynina09@gmail.com>
-Date:   Wed, 10 May 2023 07:43:25 -0700
-Message-ID: <CABeZed7eVgREt4osqeMzVuuDy603jQNiA2_BewSMaEU+1Y+SXg@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dear,
+Hi all,
 
-I am interested to invest with you in your country with total trust
-and i hope you will give me total support, sincerity and commitment.
-Please get back to me as soon as possible so that i can give you my
-proposed details of funding and others.
+now that the ipr driver has been modified to not hook into libata
+all drivers now use the 'new' error handler, so we can remove any
+references to it. And do a general cleanup to remove callbacks
+which are no longer needed.
 
-Best Regards.
+Hannes Reinecke (6):
+  ata: remove reference to non-existing error_handler()
+  ata,scsi: remove ata_sas_port_{start,stop} callbacks
+  ata,scsi: remove ata_sas_port_destroy()
+  ata: remove ata_sas_sync_probe()
+  ata: inline ata_port_probe()
+  ata,scsi: cleanup ata_port_probe()
 
-Mrs Nina Coulibaly
+ drivers/ata/libata-core.c          | 166 +++++++++++------------------
+ drivers/ata/libata-eh.c            | 148 +++++++++++--------------
+ drivers/ata/libata-sata.c          |  77 -------------
+ drivers/ata/libata-scsi.c          |  21 +---
+ drivers/ata/libata-sff.c           |  32 +++---
+ drivers/ata/libata.h               |   2 -
+ drivers/scsi/libsas/sas_ata.c      |   6 +-
+ drivers/scsi/libsas/sas_discover.c |   2 +-
+ include/linux/libata.h             |   6 +-
+ 9 files changed, 143 insertions(+), 317 deletions(-)
+
+-- 
+2.35.3
+

@@ -2,561 +2,288 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 178D1704EC2
-	for <lists+linux-ide@lfdr.de>; Tue, 16 May 2023 15:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3514A704F13
+	for <lists+linux-ide@lfdr.de>; Tue, 16 May 2023 15:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233144AbjEPNH3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 16 May 2023 09:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53256 "EHLO
+        id S233558AbjEPNTP (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 16 May 2023 09:19:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233501AbjEPNG4 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 16 May 2023 09:06:56 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C0857688
-        for <linux-ide@vger.kernel.org>; Tue, 16 May 2023 06:06:38 -0700 (PDT)
+        with ESMTP id S233065AbjEPNTO (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 16 May 2023 09:19:14 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58BA59DB;
+        Tue, 16 May 2023 06:18:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C2C09639D9
-        for <linux-ide@vger.kernel.org>; Tue, 16 May 2023 13:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4095C433D2;
-        Tue, 16 May 2023 13:06:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EB5C62C2A;
+        Tue, 16 May 2023 13:18:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E63EC433D2;
+        Tue, 16 May 2023 13:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1684242382;
-        bh=fZCXzRxPA0ckYvTh2NUoDsFDWUHp12jg3NwXenGrjQc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HNIVE53uUI1QDtZvwp9+LeXmg7GdxWhPGojZ4HUPVXXrvXs5EteBxXG8l0NC2gXWX
-         3tskLqB7/zyLQ62J0JhY9SugkBbNwcUxSzLNnjzFfaQ3UecqZgTv5866fKULJjmGOy
-         0JF1KB7a2KctHnRYxJRIeV0F4PilhfuTMUNtzvuGbLOi/mp6R7StEvA3NQoy3n18o3
-         BQ54l/8Lf+PMnWTs2siztiNlKmDuV7Ys4Zm5SZOOvkQca3g2ADAg+OV0DF8oiVhiOI
-         jncQVH9LDu7utIFYCDxyGubTB7JGrae6uE+AR8L7+G670ZeCT8Ite0U3/rVU0GPxTp
-         JAV2XiIBwwFtA==
-From:   Damien Le Moal <dlemoal@kernel.org>
-To:     linux-ide@vger.kernel.org, Ondrej Zary <linux@zary.sk>
-Cc:     Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH 13/13] ata: pata_parport: Fix on26 module code indentation and style
-Date:   Tue, 16 May 2023 22:06:11 +0900
-Message-Id: <20230516130611.109932-14-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230516130611.109932-1-dlemoal@kernel.org>
-References: <20230516130611.109932-1-dlemoal@kernel.org>
+        s=k20201202; t=1684243135;
+        bh=l+TOO1Dk3k3Kwj++5U0cW9Nicomgwx4qf3m+Wt6zHVs=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=AQL0NL6tcgWfZ5U0ee67jeDyx+up+IMCssBI/knNLV1wNFw3djbq/wqN8ONRf27Tu
+         6L71XfM1F1sR7QEg26E4tsU0tNz9seZDOPSwi1cGeS0mVtkiJpgxIS4jc6j2uWmn1v
+         8Dn7xlYkE8MBvddFgSj82lujKHPIWi3PqHLqcdUL4nzmwxi0QU/QvYSj8IMik0bhtF
+         OFiO0s878ISTNbnhvE7zAok8e7MMDFu8XitE9ScDEbzapDXPr8XRdoFgfTiBSSVhTJ
+         BbE6ExkMLlKw5enq6+e8W2SRwWWeGDA00XnYEZXFi+8NNedv+s8IOGRTCuPklDHnCg
+         FQUxA4qei/akQ==
+Message-ID: <da77a377-4a9e-be8d-7b14-aeb270b7183e@kernel.org>
+Date:   Tue, 16 May 2023 22:18:52 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH v4 02/41] ata: add HAS_IOPORT dependencies
+To:     Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        linux-ide@vger.kernel.org
+References: <20230516110038.2413224-1-schnelle@linux.ibm.com>
+ <20230516110038.2413224-3-schnelle@linux.ibm.com>
+Content-Language: en-US
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20230516110038.2413224-3-schnelle@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Fix the header, indentation and coding style in the on26 pata parport
-protocol module to suppress warnings from smatch and other static code
-analyzers.
+On 5/16/23 19:59, Niklas Schnelle wrote:
+> In a future patch HAS_IOPORT=n will result in inb()/outb() and friends
+> not being declared. We thus need to add HAS_IOPORT as dependency for
+> those drivers using them.
+> 
+> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
+> Signed-off-by: Arnd Bergmann <arnd@kernel.org>
+> Acked-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
+> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> ---
+> Note: The HAS_IOPORT Kconfig option was added in v6.4-rc1 so
+>       per-subsystem patches may be applied independently
+> 
+>  drivers/ata/Kconfig       | 28 ++++++++++++++--------------
+>  drivers/ata/ata_generic.c |  2 ++
+>  drivers/ata/libata-sff.c  |  2 ++
+>  include/linux/libata.h    |  2 ++
+>  4 files changed, 20 insertions(+), 14 deletions(-)
+> 
+> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
+> index 42b51c9812a0..c521cdc51f8c 100644
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -557,7 +557,7 @@ comment "PATA SFF controllers with BMDMA"
+>  
+>  config PATA_ALI
+>  	tristate "ALi PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	select PATA_TIMINGS
+>  	help
+>  	  This option enables support for the ALi ATA interfaces
+> @@ -567,7 +567,7 @@ config PATA_ALI
+>  
+>  config PATA_AMD
+>  	tristate "AMD/NVidia PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	select PATA_TIMINGS
+>  	help
+>  	  This option enables support for the AMD and NVidia PATA
+> @@ -585,7 +585,7 @@ config PATA_ARASAN_CF
+>  
+>  config PATA_ARTOP
+>  	tristate "ARTOP 6210/6260 PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for ARTOP PATA controllers.
+>  
+> @@ -612,7 +612,7 @@ config PATA_ATP867X
+>  
+>  config PATA_CMD64X
+>  	tristate "CMD64x PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	select PATA_TIMINGS
+>  	help
+>  	  This option enables support for the CMD64x series chips
+> @@ -659,7 +659,7 @@ config PATA_CS5536
+>  
+>  config PATA_CYPRESS
+>  	tristate "Cypress CY82C693 PATA support (Very Experimental)"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	select PATA_TIMINGS
+>  	help
+>  	  This option enables support for the Cypress/Contaq CY82C693
+> @@ -707,7 +707,7 @@ config PATA_HPT366
+>  
+>  config PATA_HPT37X
+>  	tristate "HPT 370/370A/371/372/374/302 PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for the majority of the later HPT
+>  	  PATA controllers via the new ATA layer.
+> @@ -716,7 +716,7 @@ config PATA_HPT37X
+>  
+>  config PATA_HPT3X2N
+>  	tristate "HPT 371N/372N/302N PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for the N variant HPT PATA
+>  	  controllers via the new ATA layer.
+> @@ -819,7 +819,7 @@ config PATA_MPC52xx
+>  
+>  config PATA_NETCELL
+>  	tristate "NETCELL Revolution RAID support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for the Netcell Revolution RAID
+>  	  PATA controller.
+> @@ -855,7 +855,7 @@ config PATA_OLDPIIX
+>  
+>  config PATA_OPTIDMA
+>  	tristate "OPTI FireStar PATA support (Very Experimental)"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables DMA/PIO support for the later OPTi
+>  	  controllers found on some old motherboards and in some
+> @@ -865,7 +865,7 @@ config PATA_OPTIDMA
+>  
+>  config PATA_PDC2027X
+>  	tristate "Promise PATA 2027x support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for Promise PATA pdc20268 to pdc20277 host adapters.
+>  
+> @@ -873,7 +873,7 @@ config PATA_PDC2027X
+>  
+>  config PATA_PDC_OLD
+>  	tristate "Older Promise PATA controller support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for the Promise 20246, 20262, 20263,
+>  	  20265 and 20267 adapters.
+> @@ -901,7 +901,7 @@ config PATA_RDC
+>  
+>  config PATA_SC1200
+>  	tristate "SC1200 PATA support"
+> -	depends on PCI && (X86_32 || COMPILE_TEST)
+> +	depends on PCI && (X86_32 || COMPILE_TEST) && HAS_IOPORT
+>  	help
+>  	  This option enables support for the NatSemi/AMD SC1200 SoC
+>  	  companion chip used with the Geode processor family.
+> @@ -919,7 +919,7 @@ config PATA_SCH
+>  
+>  config PATA_SERVERWORKS
+>  	tristate "SERVERWORKS OSB4/CSB5/CSB6/HT1000 PATA support"
+> -	depends on PCI
+> +	depends on PCI && HAS_IOPORT
+>  	help
+>  	  This option enables support for the Serverworks OSB4/CSB5/CSB6 and
+>  	  HT1000 PATA controllers, via the new ATA layer.
+> @@ -1183,7 +1183,7 @@ config ATA_GENERIC
+>  
+>  config PATA_LEGACY
+>  	tristate "Legacy ISA PATA support (Experimental)"
+> -	depends on (ISA || PCI)
+> +	depends on (ISA || PCI) && HAS_IOPORT
+>  	select PATA_TIMINGS
+>  	help
+>  	  This option enables support for ISA/VLB/PCI bus legacy PATA
+> diff --git a/drivers/ata/ata_generic.c b/drivers/ata/ata_generic.c
+> index 2f57ec00ab82..2d391d117f74 100644
+> --- a/drivers/ata/ata_generic.c
+> +++ b/drivers/ata/ata_generic.c
+> @@ -197,8 +197,10 @@ static int ata_generic_init_one(struct pci_dev *dev, const struct pci_device_id
+>  	if (!(command & PCI_COMMAND_IO))
+>  		return -ENODEV;
+>  
+> +#ifdef CONFIG_PATA_ALI
+>  	if (dev->vendor == PCI_VENDOR_ID_AL)
+>  		ata_pci_bmdma_clear_simplex(dev);
+> +#endif /* CONFIG_PATA_ALI */
 
-No functional changes.
+You can drop this change if...
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
----
- drivers/ata/pata_parport/on26.c | 414 +++++++++++++++++---------------
- 1 file changed, 217 insertions(+), 197 deletions(-)
+>  
+>  	if (dev->vendor == PCI_VENDOR_ID_ATI) {
+>  		int rc = pcim_enable_device(dev);
+> diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
+> index 9d28badfe41d..80137edb7ebf 100644
+> --- a/drivers/ata/libata-sff.c
+> +++ b/drivers/ata/libata-sff.c
+> @@ -3031,6 +3031,7 @@ EXPORT_SYMBOL_GPL(ata_bmdma_port_start32);
+>  
+>  #ifdef CONFIG_PCI
+>  
+> +#ifdef CONFIG_HAS_IOPORT
+>  /**
+>   *	ata_pci_bmdma_clear_simplex -	attempt to kick device out of simplex
+>   *	@pdev: PCI device
+> @@ -3056,6 +3057,7 @@ int ata_pci_bmdma_clear_simplex(struct pci_dev *pdev)
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(ata_pci_bmdma_clear_simplex);
+> +#endif /* CONFIG_HAS_IOPORT */
 
-diff --git a/drivers/ata/pata_parport/on26.c b/drivers/ata/pata_parport/on26.c
-index dc47a54b121f..5da317b394c1 100644
---- a/drivers/ata/pata_parport/on26.c
-+++ b/drivers/ata/pata_parport/on26.c
-@@ -1,11 +1,10 @@
--/* 
--        on26.c    (c) 1997-8  Grant R. Guenther <grant@torque.net>
--                              Under the terms of the GNU General Public License.
--
--        on26.c is a low-level protocol driver for the 
--        OnSpec 90c26 parallel to IDE adapter chip.
--
--*/
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * (c) 1997-1998  Grant R. Guenther <grant@torque.net>
-+ *
-+ * on26.c is a low-level protocol driver for the
-+ * OnSpec 90c26 parallel to IDE adapter chip.
-+ */
- 
- #include <linux/module.h>
- #include <linux/init.h>
-@@ -16,260 +15,281 @@
- #include <asm/io.h>
- #include "pata_parport.h"
- 
--/* mode codes:  0  nybble reads, 8-bit writes
--                1  8-bit reads and writes
--                2  8-bit EPP mode
--		3  EPP-16
--		4  EPP-32
--*/
-+/*
-+ * mode codes:  0  nybble reads, 8-bit writes
-+ *		1  8-bit reads and writes
-+ *		2  8-bit EPP mode
-+ *		3  EPP-16
-+ *		4  EPP-32
-+ */
- 
--#define j44(a,b)  (((a>>4)&0x0f)|(b&0xf0))
-+#define j44(a, b)	(((a >> 4) & 0x0f) | (b & 0xf0))
- 
--#define P1	w2(5);w2(0xd);w2(5);w2(0xd);w2(5);w2(4);
--#define P2	w2(5);w2(7);w2(5);w2(4);
-+#define P1						      \
-+	do {						      \
-+		w2(5); w2(0xd); w2(5); w2(0xd); w2(5); w2(4); \
-+	} while (0)
- 
--/* cont = 0 - access the IDE register file 
--   cont = 1 - access the IDE command set 
--*/
--
--static int on26_read_regr(struct pi_adapter *pi, int cont, int regr)
-+#define P2					\
-+	do {					\
-+		w2(5); w2(7); w2(5); w2(4);	\
-+	} while (0)
- 
--{       int     a, b, r;
-+/*
-+ * cont = 0 - access the IDE register file
-+ * cont = 1 - access the IDE command set
-+ */
- 
--	r = (regr<<2) + 1 + cont;
-+static int on26_read_regr(struct pi_adapter *pi, int cont, int regr)
-+{
-+	int a, b, r;
- 
--        switch (pi->mode)  {
-+	r = (regr << 2) + 1 + cont;
- 
--        case 0: w0(1); P1; w0(r); P2; w0(0); P1; 
-+	switch (pi->mode) {
-+	case 0:
-+		w0(1); P1; w0(r); P2; w0(0); P1;
- 		w2(6); a = r1(); w2(4);
- 		w2(6); b = r1(); w2(4);
- 		w2(6); w2(4); w2(6); w2(4);
--                return j44(a,b);
--
--        case 1: w0(1); P1; w0(r); P2; w0(0); P1;
-+		return j44(a, b);
-+	case 1:
-+		w0(1); P1; w0(r); P2; w0(0); P1;
- 		w2(0x26); a = r0(); w2(4); w2(0x26); w2(4);
--                return a;
--
-+		return a;
- 	case 2:
- 	case 3:
--        case 4: w3(1); w3(1); w2(5); w4(r); w2(4);
-+	case 4:
-+		w3(1); w3(1); w2(5); w4(r); w2(4);
- 		w3(0); w3(0); w2(0x24); a = r4(); w2(4);
- 		w2(0x24); (void)r4(); w2(4);
--                return a;
-+		return a;
-+	}
- 
--        }
--        return -1;
--}       
-+	return -1;
-+}
- 
- static void on26_write_regr(struct pi_adapter *pi, int cont, int regr, int val)
-+{
-+	int r = (regr << 2) + 1 + cont;
- 
--{       int  r;
--
--        r = (regr<<2) + 1 + cont;
--
--        switch (pi->mode)  {
--
--        case 0:
--        case 1: w0(1); P1; w0(r); P2; w0(0); P1;
-+	switch (pi->mode) {
-+	case 0:
-+	case 1:
-+		w0(1); P1; w0(r); P2; w0(0); P1;
- 		w0(val); P2; w0(val); P2;
- 		break;
--
- 	case 2:
- 	case 3:
--        case 4: w3(1); w3(1); w2(5); w4(r); w2(4);
--		w3(0); w3(0); 
-+	case 4:
-+		w3(1); w3(1); w2(5); w4(r); w2(4);
-+		w3(0); w3(0);
- 		w2(5); w4(val); w2(4);
- 		w2(5); w4(val); w2(4);
--                break;
--        }
-+		break;
-+	}
- }
- 
--#define  CCP(x)  w0(0xfe);w0(0xaa);w0(0x55);w0(0);w0(0xff);\
--		 w0(0x87);w0(0x78);w0(x);w2(4);w2(5);w2(4);w0(0xff);
-+#define CCP(x)						\
-+	do {						\
-+		w0(0xfe); w0(0xaa); w0(0x55); w0(0);	\
-+		w0(0xff); w0(0x87); w0(0x78); w0(x);	\
-+		w2(4); w2(5); w2(4); w0(0xff);		\
-+	} while (0)
- 
- static void on26_connect(struct pi_adapter *pi)
--
--{       int	x;
-+{
-+	int x;
- 
- 	pi->saved_r0 = r0();
--        pi->saved_r2 = r2();
-+	pi->saved_r2 = r2();
- 
--        CCP(0x20);
--	x = 8; if (pi->mode) x = 9;
-+	CCP(0x20);
-+	if (pi->mode)
-+		x = 9;
-+	else
-+		x = 8;
- 
- 	w0(2); P1; w0(8); P2;
- 	w0(2); P1; w0(x); P2;
- }
- 
- static void on26_disconnect(struct pi_adapter *pi)
--
--{       if (pi->mode >= 2) { w3(4); w3(4); w3(4); w3(4); }
--	              else { w0(4); P1; w0(4); P1; }
-+{
-+	if (pi->mode >= 2) {
-+		w3(4); w3(4); w3(4); w3(4);
-+	} else {
-+		w0(4); P1; w0(4); P1;
-+	}
- 	CCP(0x30);
--        w0(pi->saved_r0);
--        w2(pi->saved_r2);
--} 
-+	w0(pi->saved_r0);
-+	w2(pi->saved_r2);
-+}
- 
- #define	RESET_WAIT  200
- 
--static int on26_test_port(struct pi_adapter *pi)  /* hard reset */
-+/* hard reset */
-+static int on26_test_port(struct pi_adapter *pi)
-+{
-+	int i, m, d, x = 0, y = 0;
- 
--{       int     i, m, d, x=0, y=0;
--
--        pi->saved_r0 = r0();
--        pi->saved_r2 = r2();
--
--        d = pi->delay;
--        m = pi->mode;
--        pi->delay = 5;
--        pi->mode = 0;
--
--        w2(0xc);
--
--        CCP(0x30); CCP(0); 
--
--        w0(0xfe);w0(0xaa);w0(0x55);w0(0);w0(0xff);
--        i = ((r1() & 0xf0) << 4); w0(0x87);
--        i |= (r1() & 0xf0); w0(0x78);
--        w0(0x20);w2(4);w2(5);
--        i |= ((r1() & 0xf0) >> 4);
--        w2(4);w0(0xff);
--
--        if (i == 0xb5f) {
--
--            w0(2); P1; w0(0);   P2;
--            w0(3); P1; w0(0);   P2;
--            w0(2); P1; w0(8);   P2; udelay(100);
--            w0(2); P1; w0(0xa); P2; udelay(100);
--            w0(2); P1; w0(8);   P2; udelay(1000);
--            
--            on26_write_regr(pi,0,6,0xa0);
--
--            for (i=0;i<RESET_WAIT;i++) {
--                on26_write_regr(pi,0,6,0xa0);
--                x = on26_read_regr(pi,0,7);
--                on26_write_regr(pi,0,6,0xb0);
--                y = on26_read_regr(pi,0,7);
--                if (!((x&0x80)||(y&0x80))) break;
--                mdelay(100);
--            }
--
--	    if (i == RESET_WAIT) 
--		dev_err(&pi->dev, "on26: Device reset failed (%x,%x)\n", x, y);
--
--            w0(4); P1; w0(4); P1;
--        }
-+	pi->saved_r0 = r0();
-+	pi->saved_r2 = r2();
-+
-+	d = pi->delay;
-+	m = pi->mode;
-+	pi->delay = 5;
-+	pi->mode = 0;
-+
-+	w2(0xc);
-+
-+	CCP(0x30); CCP(0);
-+
-+	w0(0xfe); w0(0xaa); w0(0x55); w0(0); w0(0xff);
-+	i = ((r1() & 0xf0) << 4); w0(0x87);
-+	i |= (r1() & 0xf0); w0(0x78);
-+	w0(0x20); w2(4); w2(5);
-+	i |= ((r1() & 0xf0) >> 4);
-+	w2(4); w0(0xff);
-+
-+	if (i == 0xb5f) {
-+		w0(2); P1; w0(0);   P2;
-+		w0(3); P1; w0(0);   P2;
-+		w0(2); P1; w0(8);   P2; udelay(100);
-+		w0(2); P1; w0(0xa); P2; udelay(100);
-+		w0(2); P1; w0(8);   P2; udelay(1000);
-+
-+		on26_write_regr(pi, 0, 6, 0xa0);
-+
-+		for (i = 0; i < RESET_WAIT; i++) {
-+			on26_write_regr(pi, 0, 6, 0xa0);
-+			x = on26_read_regr(pi, 0, 7);
-+			on26_write_regr(pi, 0, 6, 0xb0);
-+			y = on26_read_regr(pi, 0, 7);
-+			if (!((x & 0x80) || (y & 0x80)))
-+				break;
-+			mdelay(100);
-+		}
-+
-+		if (i == RESET_WAIT)
-+			dev_err(&pi->dev,
-+				"on26: Device reset failed (%x,%x)\n", x, y);
-+
-+		w0(4); P1; w0(4); P1;
-+	}
- 
--        CCP(0x30);
-+	CCP(0x30);
- 
--        pi->delay = d;
--        pi->mode = m;
--        w0(pi->saved_r0);
--        w2(pi->saved_r2);
-+	pi->delay = d;
-+	pi->mode = m;
-+	w0(pi->saved_r0);
-+	w2(pi->saved_r2);
- 
--        return 5;
-+	return 5;
- }
- 
--
- static void on26_read_block(struct pi_adapter *pi, char *buf, int count)
-+{
-+	int k, a, b;
- 
--{       int     k, a, b;
--
--        switch (pi->mode) {
--
--        case 0: w0(1); P1; w0(1); P2; w0(2); P1; w0(0x18); P2; w0(0); P1;
-+	switch (pi->mode) {
-+	case 0:
-+		w0(1); P1; w0(1); P2; w0(2); P1; w0(0x18); P2; w0(0); P1;
- 		udelay(10);
--		for (k=0;k<count;k++) {
--                        w2(6); a = r1();
--                        w2(4); b = r1();
--                        buf[k] = j44(a,b);
--                }
--		w0(2); P1; w0(8); P2; 
--                break;
--
--        case 1: w0(1); P1; w0(1); P2; w0(2); P1; w0(0x19); P2; w0(0); P1;
-+		for (k = 0; k < count; k++) {
-+			w2(6); a = r1();
-+			w2(4); b = r1();
-+			buf[k] = j44(a, b);
-+		}
-+		w0(2); P1; w0(8); P2;
-+		break;
-+	case 1:
-+		w0(1); P1; w0(1); P2; w0(2); P1; w0(0x19); P2; w0(0); P1;
-+		udelay(10);
-+		for (k = 0; k < count / 2; k++) {
-+			w2(0x26); buf[2 * k] = r0();
-+			w2(0x24); buf[2 * k + 1] = r0();
-+		}
-+		w0(2); P1; w0(9); P2;
-+		break;
-+	case 2:
-+		w3(1); w3(1); w2(5); w4(1); w2(4);
-+		w3(0); w3(0); w2(0x24);
-+		udelay(10);
-+		for (k = 0; k < count; k++)
-+			buf[k] = r4();
-+		w2(4);
-+		break;
-+	case 3:
-+		w3(1); w3(1); w2(5); w4(1); w2(4);
-+		w3(0); w3(0); w2(0x24);
- 		udelay(10);
--                for (k=0;k<count/2;k++) {
--                        w2(0x26); buf[2*k] = r0();  
--			w2(0x24); buf[2*k+1] = r0();
--                }
--                w0(2); P1; w0(9); P2;
--                break;
--
--        case 2: w3(1); w3(1); w2(5); w4(1); w2(4);
-+		for (k = 0; k < count / 2; k++)
-+			((u16 *)buf)[k] = r4w();
-+		w2(4);
-+		break;
-+	case 4:
-+		w3(1); w3(1); w2(5); w4(1); w2(4);
- 		w3(0); w3(0); w2(0x24);
- 		udelay(10);
--                for (k=0;k<count;k++) buf[k] = r4();
--                w2(4);
--                break;
--
--        case 3: w3(1); w3(1); w2(5); w4(1); w2(4);
--                w3(0); w3(0); w2(0x24);
--                udelay(10);
--                for (k=0;k<count/2;k++) ((u16 *)buf)[k] = r4w();
--                w2(4);
--                break;
--
--        case 4: w3(1); w3(1); w2(5); w4(1); w2(4);
--                w3(0); w3(0); w2(0x24);
--                udelay(10);
--                for (k=0;k<count/4;k++) ((u32 *)buf)[k] = r4l();
--                w2(4);
--                break;
--
--        }
-+		for (k = 0; k < count / 4; k++)
-+			((u32 *)buf)[k] = r4l();
-+		w2(4);
-+		break;
-+	}
- }
- 
- static void on26_write_block(struct pi_adapter *pi, char *buf, int count)
--
--{       int	k;
--
--        switch (pi->mode) {
--
--        case 0: 
--        case 1: w0(1); P1; w0(1); P2; 
--		w0(2); P1; w0(0x18+pi->mode); P2; w0(0); P1;
-+{
-+	int k;
-+
-+	switch (pi->mode) {
-+	case 0:
-+	case 1:
-+		w0(1); P1; w0(1); P2;
-+		w0(2); P1; w0(0x18 + pi->mode); P2; w0(0); P1;
- 		udelay(10);
--		for (k=0;k<count/2;k++) {
--                        w2(5); w0(buf[2*k]); 
--			w2(7); w0(buf[2*k+1]);
--                }
--                w2(5); w2(4);
--		w0(2); P1; w0(8+pi->mode); P2;
--                break;
--
--        case 2: w3(1); w3(1); w2(5); w4(1); w2(4);
-+		for (k = 0; k < count / 2; k++) {
-+			w2(5); w0(buf[2 * k]);
-+			w2(7); w0(buf[2 * k + 1]);
-+		}
-+		w2(5); w2(4);
-+		w0(2); P1; w0(8 + pi->mode); P2;
-+		break;
-+	case 2:
-+		w3(1); w3(1); w2(5); w4(1); w2(4);
- 		w3(0); w3(0); w2(0xc5);
- 		udelay(10);
--                for (k=0;k<count;k++) w4(buf[k]);
-+		for (k = 0; k < count; k++)
-+			w4(buf[k]);
- 		w2(0xc4);
--                break;
--
--        case 3: w3(1); w3(1); w2(5); w4(1); w2(4);
--                w3(0); w3(0); w2(0xc5);
--                udelay(10);
--                for (k=0;k<count/2;k++) w4w(((u16 *)buf)[k]);
--                w2(0xc4);
--                break;
--
--        case 4: w3(1); w3(1); w2(5); w4(1); w2(4);
--                w3(0); w3(0); w2(0xc5);
--                udelay(10);
--                for (k=0;k<count/4;k++) w4l(((u32 *)buf)[k]);
--                w2(0xc4);
--                break;
--
--        }
--
-+		break;
-+	case 3:
-+		w3(1); w3(1); w2(5); w4(1); w2(4);
-+		w3(0); w3(0); w2(0xc5);
-+		udelay(10);
-+		for (k = 0; k < count / 2; k++)
-+			w4w(((u16 *)buf)[k]);
-+		w2(0xc4);
-+		break;
-+	case 4:
-+		w3(1); w3(1); w2(5); w4(1); w2(4);
-+		w3(0); w3(0); w2(0xc5);
-+		udelay(10);
-+		for (k = 0; k < count / 4; k++)
-+			w4l(((u32 *)buf)[k]);
-+		w2(0xc4);
-+		break;
-+	}
- }
- 
- static void on26_log_adapter(struct pi_adapter *pi)
-+{
-+	char *mode_string[5] = { "4-bit", "8-bit", "EPP-8", "EPP-16", "EPP-32" };
- 
--{       char    *mode_string[5] = {"4-bit","8-bit","EPP-8",
--				   "EPP-16","EPP-32"};
--
--	dev_info(&pi->dev, "OnSpec 90c26 at 0x%x, mode %d (%s), delay %d\n",
--		pi->port, pi->mode, mode_string[pi->mode], pi->delay);
-+	dev_info(&pi->dev,
-+		 "OnSpec 90c26 at 0x%x, mode %d (%s), delay %d\n",
-+		 pi->port, pi->mode, mode_string[pi->mode], pi->delay);
- }
- 
- static struct pi_protocol on26 = {
+...you move the #ifdef CONFIG_HAS_IOPORT inside the function as the first line
+and have the #endif right before the last "return 0;" (so the function only does
+return 0 for the !CONFIG_HAS_IOPORT case).
+
+>  
+>  static void ata_bmdma_nodma(struct ata_host *host, const char *reason)
+>  {
+> diff --git a/include/linux/libata.h b/include/linux/libata.h
+> index 311cd93377c7..90002d4a785b 100644
+> --- a/include/linux/libata.h
+> +++ b/include/linux/libata.h
+> @@ -2012,7 +2012,9 @@ extern int ata_bmdma_port_start(struct ata_port *ap);
+>  extern int ata_bmdma_port_start32(struct ata_port *ap);
+>  
+>  #ifdef CONFIG_PCI
+> +#ifdef CONFIG_HAS_IOPORT
+>  extern int ata_pci_bmdma_clear_simplex(struct pci_dev *pdev);
+> +#endif /* CONFIG_HAS_IOPORT */
+
+And then you do not need these #ifdef/endif here. Overall, a lot less of #ifdef
+which I personally really dislike to see in .c files :)
+
+>  extern void ata_pci_bmdma_init(struct ata_host *host);
+>  extern int ata_pci_bmdma_prepare_host(struct pci_dev *pdev,
+>  				      const struct ata_port_info * const * ppi,
+
 -- 
-2.40.1
+Damien Le Moal
+Western Digital Research
 

@@ -2,53 +2,95 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E220470C44D
-	for <lists+linux-ide@lfdr.de>; Mon, 22 May 2023 19:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2910070C460
+	for <lists+linux-ide@lfdr.de>; Mon, 22 May 2023 19:34:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbjEVRdL convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Mon, 22 May 2023 13:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
+        id S233131AbjEVRei (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 22 May 2023 13:34:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231439AbjEVRdK (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 22 May 2023 13:33:10 -0400
-X-Greylist: delayed 13986 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 22 May 2023 10:33:08 PDT
-Received: from freesmtp-001.cafe24.com (freesmtp-001.cafe24.com [116.126.142.92])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 963ECFA;
-        Mon, 22 May 2023 10:33:08 -0700 (PDT)
-Received: from [10.5.0.2] (unknown [185.225.234.172])
-        (using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        with ESMTP id S233022AbjEVRef (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 22 May 2023 13:34:35 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542B0109;
+        Mon, 22 May 2023 10:34:33 -0700 (PDT)
+Received: from jupiter.universe (dyndsl-091-248-208-162.ewe-ip-backbone.de [91.248.208.162])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
-        (Authenticated sender: angel12345@cafe24.com)
-        by freesmtp-001.cafe24.com (Postfix) with ESMTP id EE410BF7E1;
-        Sun, 21 May 2023 20:55:13 +0900 (KST)
-Content-Type: text/plain; charset="utf-8"
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 1A51266058F2;
+        Mon, 22 May 2023 18:34:31 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1684776871;
+        bh=2crkjF5hGrNF5+uW+vKBwvLEXML84W1Sv3l++t7Q9ZA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=FredDntETk0AslrVHCX+RH6xREF10lt453u7qYeN4hyQLhYZJw4JMZx0VVkHzdndQ
+         OnrnnyGJu1TFLUTjoYP7nmih2gIzpkZodMYwAaXkEZMpUtwwzKvlmWqglhxh7Rv65J
+         zsXEHrvGl6U3+a/kGpoRjn3Jdgd1rbPAcm28WzKHsx7xzUitbnWmSkmf+1FR2YH9VF
+         ZysJ7OrbLg1Tvnji5swHCthwiKBHYH6ovufwOqbHu0AmUbyALT+IawhGawIUk6Q1s5
+         xPfkNs1fTgk31iaSpbJyErXTFQxtOgzv8Qk6gBqOlrm5KQeueqCb0DdOWEmPa58e1H
+         XBeDgviuGmdlg==
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id 8950E4805CC; Mon, 22 May 2023 19:34:29 +0200 (CEST)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Heiko Stuebner <heiko@sntech.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        linux-ide@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v2 0/6] Add RK3588 SATA support
+Date:   Mon, 22 May 2023 19:34:17 +0200
+Message-Id: <20230522173423.64691-1-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Did you know??
-To:     Recipients <angel12345@cafe24.com>
-From:   angel12345@cafe24.com
-Date:   Sun, 21 May 2023 06:54:50 -0500
-Reply-To: francesandpatrickconnolly@aol.com
-Message-Id: <20230521115514.EE410BF7E1@freesmtp-001.cafe24.com>
-X-Spam-Status: Yes, score=5.9 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,NIXSPAM_IXHASH,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5002]
-        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [116.126.142.92 listed in wl.mailspike.net]
-        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hurry, you have been selected as one of the 10 lucky winners to receive €400,000 each through the Frances and Patrick Connolly Support Life charity project. For more information, please contact Ms. Nadine at francesandpatrickconnolly@aol.com
+Hi,
+
+This enables SATA support for RK3588.
+
+Changes since PATCHv1:
+ * https://lore.kernel.org/all/20230413182345.92557-1-sebastian.reichel@collabora.com/
+ * Rebase to v6.4-rc1
+ * Collect Acked-by for syscon DT binding update
+ * Use ASIC clock description suggested by Serge Semin
+ * Also add RBC clock (not used by RK3588)
+ * Add extra patch narrowing down the allowed clocks for RK356x and RK3588
+
+-- Sebastian
+
+Sebastian Reichel (6):
+  dt-bindings: soc: rockchip: add rk3588 pipe-phy syscon
+  dt-bindings: ata: ahci: add RK3588 AHCI controller
+  dt-bindings: ata: ahci: dwc: enforce rockchip clocks
+  dt-bindings: phy: rockchip: rk3588 has two reset lines
+  arm64: dts: rockchip: rk3588: add combo PHYs
+  arm64: dts: rockchip: rk3588: add SATA support
+
+ .../bindings/ata/snps,dwc-ahci-common.yaml    |  8 +-
+ .../bindings/ata/snps,dwc-ahci.yaml           | 40 +++++++--
+ .../phy/phy-rockchip-naneng-combphy.yaml      |  8 +-
+ .../devicetree/bindings/soc/rockchip/grf.yaml |  1 +
+ arch/arm64/boot/dts/rockchip/rk3588.dtsi      | 44 +++++++++
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi     | 90 +++++++++++++++++++
+ 6 files changed, 183 insertions(+), 8 deletions(-)
+
+-- 
+2.39.2
+

@@ -2,99 +2,135 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0B8720A71
-	for <lists+linux-ide@lfdr.de>; Fri,  2 Jun 2023 22:40:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ADC9721850
+	for <lists+linux-ide@lfdr.de>; Sun,  4 Jun 2023 17:54:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235481AbjFBUkd (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 2 Jun 2023 16:40:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56338 "EHLO
+        id S231355AbjFDPye (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 4 Jun 2023 11:54:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235646AbjFBUkc (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 2 Jun 2023 16:40:32 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41EA8E43;
-        Fri,  2 Jun 2023 13:40:21 -0700 (PDT)
-Received: from [192.168.1.103] (31.173.82.21) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Fri, 2 Jun 2023
- 23:40:13 +0300
-Subject: Re: [PATCH v1 38/43] pata: cirrus: drop legacy pinctrl
+        with ESMTP id S229904AbjFDPyd (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 4 Jun 2023 11:54:33 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1727BB;
+        Sun,  4 Jun 2023 08:54:31 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-5147e8972a1so5975198a12.0;
+        Sun, 04 Jun 2023 08:54:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1685894070; x=1688486070;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TsvcyukdSS1lKPeAFb0MO21Iif9mAo0wy8+BZHk6XCA=;
+        b=r9RnHmU6Pa0FtsM/qHVFqFiCYlBYyvtIkLeKoNPRIk8smrMsqYFJGWCQjT7VU72eDe
+         BlragftM9BcqClhhfhrjXu+KMSBuqSe+KNwPFU0KBNJlL713GE9o6QJnGFo2MVVjPP+P
+         tQT4bqbQqIIjRH39Ls+d3YC1mLwWHW3tHKnUmfhzbMfPeeq5TIZAMtwSAuYi3ZYPbltW
+         zBx3Pm7HZhbXZBrcB4iAF+MkhkDQusDxPerLMNjJ9M9evb0iQB/WGEScO2q3pwVkwkGJ
+         xiks1hYnTowy+2gYSWDJ+qp4ig7OfRGINcmiTLnuJchPscxcbqDF/ro1Gt8cNoeiUHiy
+         SK0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685894070; x=1688486070;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TsvcyukdSS1lKPeAFb0MO21Iif9mAo0wy8+BZHk6XCA=;
+        b=QdjS9YW+NB/nZfOXhs5NvVuHKMm+ZsgU88hN7z3SHbZX49pfaJOf/yYd7KX5+ZJjkq
+         DXndWVuz2i+vSckuvlupYlCwVWUfOIJY/KXoHFUTjei9QO1nWUSs9Wgns+ZZ6Wx8ykLt
+         RzmpHIX3ZDUAiADbVtpMJHT0jk0uy1l1aPvSyp4MaFLgqxUob21WxbDbGnJr9zSAS+VI
+         mlWem+Cgp+TuWH1uflprDVuWcJeXnKFDYrwfvMcU9NdsA9QAn7hoDUJAuEvqa6zbow3u
+         PpPQKQdV1E/hm0aqz9nr5m+71BH70okfp6MZ4HDoXnjNwkpX8fyHWsDrSt09KHzSKQK2
+         O5Mg==
+X-Gm-Message-State: AC+VfDytwp4pLZVnnfiRdfjebawSFrLgcsIOaK272Er3P5dwV1A3LPlH
+        7s+jYlBF3kiOuaGQZZrxtwY=
+X-Google-Smtp-Source: ACHHUZ6AHXuZcLeVYAiKN3Lakw7/5eyPw2g9gXmYKU2Z87ULJVZcNauonQPfi8yZtMpFNZvTXucpWg==
+X-Received: by 2002:a17:907:6d08:b0:974:5e2c:8721 with SMTP id sa8-20020a1709076d0800b009745e2c8721mr4687955ejc.38.1685894070095;
+        Sun, 04 Jun 2023 08:54:30 -0700 (PDT)
+Received: from giga-mm.home ([2a02:1210:8629:800:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with ESMTPSA id h21-20020a170906111500b00974530bd213sm3241020eja.143.2023.06.04.08.54.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Jun 2023 08:54:29 -0700 (PDT)
+Message-ID: <1492a131cd474c47e2a2b14defd46284f695b0ef.camel@gmail.com>
+Subject: Re: [PATCH v1 00/43] ep93xx device tree conversion
+From:   Alexander Sverdlin <alexander.sverdlin@gmail.com>
 To:     Nikita Shubin <nikita.shubin@maquefel.me>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
         Arnd Bergmann <arnd@arndb.de>,
         Linus Walleij <linus.walleij@linaro.org>,
-        Damien Le Moal <dlemoal@kernel.org>
-CC:     Michael Peters <mpeters@embeddedTS.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <brgl@bgdev.pl>,
+        Christophe Kerello <christophe.kerello@foss.st.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Hartley Sweeten <hsweeten@visionengravers.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Hitomi Hasegawa <hasegawa-hitomi@fujitsu.com>,
+        Jean Delvare <jdelvare@suse.de>, Joel Stanley <joel@jms.id.au>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Jonathan =?ISO-8859-1?Q?Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Le Moal <dlemoal@kernel.org>,
+        Liang Yang <liang.yang@amlogic.com>,
+        Mark Brown <broonie@kernel.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Nicolas Saenz Julienne <nsaenz@kernel.org>,
+        Richard Weinberger <richard@nod.at>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Walker Chen <walker.chen@starfivetech.com>,
+        Yinbo Zhu <zhuyinbo@loongson.cn>
+Cc:     Michael Peters <mpeters@embeddedTS.com>,
         Kris Bahnsen <kris@embeddedTS.com>,
-        <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
- <20230601054549.10843-20-nikita.shubin@maquefel.me>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <1057f409-1794-7c4c-eb00-dda25e473a7d@omp.ru>
-Date:   Fri, 2 Jun 2023 23:40:12 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        alsa-devel@alsa-project.org, devicetree@vger.kernel.org,
+        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+        linux-ide@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org,
+        linux-pm@vger.kernel.org, linux-pwm@vger.kernel.org,
+        linux-rtc@vger.kernel.org, linux-spi@vger.kernel.org,
+        linux-watchdog@vger.kernel.org, netdev@vger.kernel.org
+Date:   Sun, 04 Jun 2023 17:54:27 +0200
+In-Reply-To: <20230601053546.9574-1-nikita.shubin@maquefel.me>
+References: <20230601053546.9574-1-nikita.shubin@maquefel.me>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.2 
 MIME-Version: 1.0
-In-Reply-To: <20230601054549.10843-20-nikita.shubin@maquefel.me>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [31.173.82.21]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 06/02/2023 20:18:59
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 177822 [Jun 02 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 515 515 1b17fc6ab778ab3730d780f30d802773a7d822ac
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_no_received}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.82.21 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1;31.173.82.21:7.7.1,7.7.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.82.21
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/02/2023 20:25:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/2/2023 6:52:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 6/1/23 8:45 AM, Nikita Shubin wrote:
+Hi Nikita,
 
-> Drop legacy acquire/release since we are using
-> pinctrl for this now.
-> 
-> Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+On Thu, 2023-06-01 at 08:33 +0300, Nikita Shubin wrote:
+> This series aims to convert ep93xx from platform to full device tree supp=
+ort.
+>=20
+> Alexander, Kris - there are some significant changes in clk and pinctrl s=
+o can i ask you to tests all once again.
 
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+I have quickly tested network and sound on EDB9302 and I neither have probl=
+ems with
+these functions, nor did I spot any new error messages, overall looks good =
+to me,
+thanks for your efforts!
 
-[...]
+--=20
+Alexander Sverdlin.
 
-MBR, Sergey

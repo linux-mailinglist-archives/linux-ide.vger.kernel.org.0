@@ -2,135 +2,140 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7B447218A9
-	for <lists+linux-ide@lfdr.de>; Sun,  4 Jun 2023 18:29:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24C76721B6C
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Jun 2023 03:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231841AbjFDQ3j (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 4 Jun 2023 12:29:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50924 "EHLO
+        id S230493AbjFEBZH (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 4 Jun 2023 21:25:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231368AbjFDQ3j (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 4 Jun 2023 12:29:39 -0400
-Received: from forward502c.mail.yandex.net (forward502c.mail.yandex.net [IPv6:2a02:6b8:c03:500:1:45:d181:d502])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B060B3;
-        Sun,  4 Jun 2023 09:29:37 -0700 (PDT)
-Received: from mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net [IPv6:2a02:6b8:c14:c83:0:640:84f9:0])
-        by forward502c.mail.yandex.net (Yandex) with ESMTP id 8DE955E7D4;
-        Sun,  4 Jun 2023 19:29:35 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id YTUVaSkWwGk0-fmMbjBf0;
-        Sun, 04 Jun 2023 19:29:34 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maquefel.me; s=mail; t=1685896174;
-        bh=qoROymkVmkGkOdy5uIWZJj6wLlMG+g04m/Wm+5N/tGk=;
-        h=References:Date:In-Reply-To:Cc:To:From:Subject:Message-ID;
-        b=mEfzG2iaO4HhMY8fIX+qHpwZa2R1nFWXq0KwfViPIRzFWmHCojnJwS8/CwlD+vyCW
-         OnccQ5Hd6tz/bBc+t1rTRBjTXXLMChYf6PmwugrasT1x0T1j8AEkRlR6Q4aN4gzQVk
-         BprNYVCDg2vV79T4ofn76F9GLUNefnuQkNYC7AQs=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.sas.yp-c.yandex.net; dkim=pass header.i=@maquefel.me
-Message-ID: <b48f2218c0a13273f9976aa082ebb67c3e3d5e75.camel@maquefel.me>
-Subject: Re: [PATCH v1 26/43] pata: cirrus: add DT support for Cirrus EP93xx
-From:   Nikita Shubin <nikita.shubin@maquefel.me>
-To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Damien Le Moal <dlemoal@kernel.org>
-Cc:     Michael Peters <mpeters@embeddedTS.com>,
-        Kris Bahnsen <kris@embeddedTS.com>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Date:   Sun, 04 Jun 2023 22:29:35 +0300
-In-Reply-To: <32a041b0-d02d-4353-4794-094b96271e3a@omp.ru>
-References: <20230424123522.18302-1-nikita.shubin@maquefel.me>
-         <20230601054549.10843-8-nikita.shubin@maquefel.me>
-         <32a041b0-d02d-4353-4794-094b96271e3a@omp.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 
+        with ESMTP id S230193AbjFEBZG (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 4 Jun 2023 21:25:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F075BC;
+        Sun,  4 Jun 2023 18:25:05 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD2D561A2F;
+        Mon,  5 Jun 2023 01:25:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFF2C433EF;
+        Mon,  5 Jun 2023 01:25:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685928304;
+        bh=teqiMI7UUCVjK/7yI2f15PMQvhq/+yLenzwuvONpNwo=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=h8PntbVBbNmfwqtBq+nUGUbecQvWZEv8Ce1b4iMeqFic2HcYumg5IY/uXreJH7aR8
+         4A/cJ75kWI/4DelScV7z6WfvS0RKWAo8x4bri38hhSR4GlCQP+QBC7Xe3VU/61/MRT
+         ealdsNfdD6x0E+muxYr/OcKg65AwW+cQD3A/mnhczp784RfPH/96G0j9AKQBOH0oPo
+         UNINdRF/gONZopxzoL13m/tKwTPF8+V+oKZvsVSQMDevVxF3LSok+49TJpmQ6gml3U
+         vwO7AxPCYfER8MDcMYW9J2p6eBoYiXh2Ub20WZsUQefqYBhLZusVRuAKW6d2qi0dav
+         jLBucWZBcOKeQ==
+Message-ID: <c7507777-a4ac-55f5-698c-bff33ab7038a@kernel.org>
+Date:   Mon, 5 Jun 2023 10:25:02 +0900
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.0
+Subject: Re: [PATCH] ata: libata-sata: Simplify ata_change_queue_depth()
+To:     John Garry <john.g.garry@oracle.com>, linux-ide@vger.kernel.org,
+        linux-scsi@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc:     Jason Yan <yanaijie@huawei.com>
+References: <20230601222607.263024-1-dlemoal@kernel.org>
+ <cdc68c52-4320-1820-028d-c0af9dfe38c1@oracle.com>
+Content-Language: en-US
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <cdc68c52-4320-1820-028d-c0af9dfe38c1@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello Sergey!
+On 6/2/23 17:02, John Garry wrote:
+> On 01/06/2023 23:26, Damien Le Moal wrote:
+>> Commit 141f3d6256e5 ("ata: libata-sata: Fix device queue depth control")
+>> added a struct ata_device argument to ata_change_queue_depth() to
+>> address problems with changing the queue depth of ATA devices managed
+>> through libsas. This was due to problems with ata_scsi_find_dev() which
+>> are now fixed with commit 7f875850f20a ("ata: libata-scsi: Use correct
+>> device no in ata_find_dev()").
+>>
+>> Undo some of the changes of commit 141f3d6256e5: remove the added struct
+>> ata_device aregument and use again ata_scsi_find_dev() to find the
+>> target ATA device structure. While doing this, also make sure that
+>> ata_scsi_find_dev() is called with ap->lock held, as it should.
+>>
+>> libsas and libata call sites of ata_change_queue_depth() are updated to
+>> match the modified function arguments.
+>>
+>> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+> 
+> Reviewed-by: John Garry <john.g.garry@oracle.com>
+> 
+> Thanks!
+> 
+> Just a reminder to all - I'm not asking anyone to fix it - we still have 
+> that funky libsas behaviour for attempting to set queue depth at 33:
+> 
+> https://lore.kernel.org/linux-scsi/db84e61a-1069-982a-5659-297fcffc14f4@huawei.com/
 
-On Fri, 2023-06-02 at 23:03 +0300, Sergey Shtylyov wrote:
-> Hello!
->=20
-> On 6/1/23 8:45 AM, Nikita Shubin wrote:
->=20
-> > - find register range from the device tree
-> > - get interrupts from device tree
->=20
-> =C2=A0=C2=A0 Hm... I'm not seeing such changes in your patch?
+I checked that again. For a libsas device, with this patch applied, we have:
 
-I meant that from now on it will take irq's and register from device
-tree:
-https://elixir.bootlin.com/linux/v6.4-rc4/source/drivers/ata/pata_ep93xx.c#=
-L928
+# echo 1 > /sys/block/sdg/device/queue_depth
+# cat /sys/block/sdg/device/queue_depth
+1
+# echo 33 > /sys/block/sdg/device/queue_depth; echo $?
+0		<-- success !
+# cat /sys/block/sdg/device/queue_depth
+32		<-- qd was capped
+# echo 33 > /sys/block/sdg/device/queue_depth; echo $?
+1		<-- error !
+# cat /sys/block/sdg/device/queue_depth
+32		<-- no change
 
-If CONFIG_OF_IRQ is enabled.
+For a libata device, we have:
 
-You are right
+# echo 1 > /sys/block/sdc/device/queue_depth
+# cat /sys/block/sdc/device/queue_depth
+1
+# echo 33 > /sys/block/sdc/device/queue_depth
+# echo $?
+1		<-- error !
+# cat /sys/block/sdc/device/queue_depth
+1		<-- no change
 
-> > get interrupts from device tree
+This is not consistent. The attempt to change from 1 to 33 with libsas should
+error and not change anything.
 
-Is confusing.
+That is because sdev->host->can_queue is larger than 32 for libsas devices as it
+indicates the number of commands that the HBA can queue rather than the device
+max queue depth.
 
 
->=20
-> > Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
-> > ---
-> >=20
-> > Notes:
-> > =C2=A0=C2=A0=C2=A0 v0 -> v1:
-> > =C2=A0=C2=A0=C2=A0=20
-> > =C2=A0=C2=A0=C2=A0 - fixed headers
-> > =C2=A0=C2=A0=C2=A0 - dropped coma in id table
-> >=20
-> > =C2=A0drivers/ata/pata_ep93xx.c | 8 ++++++++
-> > =C2=A01 file changed, 8 insertions(+)
-> >=20
-> > diff --git a/drivers/ata/pata_ep93xx.c b/drivers/ata/pata_ep93xx.c
-> > index c6e043e05d43..8d363bc71342 100644
-> > --- a/drivers/ata/pata_ep93xx.c
-> > +++ b/drivers/ata/pata_ep93xx.c
-> > @@ -40,6 +40,7 @@
-> > =C2=A0#include <linux/ata.h>
-> > =C2=A0#include <linux/libata.h>
-> > =C2=A0#include <linux/platform_device.h>
-> > +#include <linux/mod_devicetable.h>
-> > =C2=A0#include <linux/delay.h>
-> > =C2=A0#include <linux/dmaengine.h>
-> > =C2=A0#include <linux/ktime.h>
-> > @@ -1016,9 +1017,16 @@ static int ep93xx_pata_remove(struct
-> > platform_device *pdev)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
-> > =C2=A0}
-> > =C2=A0
-> > +static const struct of_device_id ep93xx_pata_of_ids[] =3D {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ .compatible =3D "cirrus,ep=
-9312-pata" },
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0{ /* sentinel */ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, ep93xx_pata_of_ids);
-> > +
-> > =C2=A0static struct platform_driver ep93xx_pata_platform_driver =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.driver =3D {
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0.name =3D DRV_NAME,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0.of_match_table =3D ep93xx_pata_of_ids,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.probe =3D ep93xx_pata_=
-probe,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.remove =3D ep93xx_pata=
-_remove,
->=20
-> MBR, Sergey
+>>   	/* NCQ enabled? */
+>> -	spin_lock_irqsave(ap->lock, flags);
+>>   	dev->flags &= ~ATA_DFLAG_NCQ_OFF;
+>>   	if (queue_depth == 1 || !ata_ncq_enabled(dev)) {
+> 
+> Apart from this change, should we call ata_ncq_supported() here (instead 
+> of ata_ncq_enabled())? ata_ncq_enabled() checks if ATA_DFLAG_NCQ_OFF is 
+> not set, which we have already ensured.
+
+Good catch. ata_ncq_enabled() calls ata_ncq_supported(), so this is not really a
+bug, but it would be indeed cleaner (and less confusing) to call
+ata_ncq_supported().
+
+I am sending a patch to clean this up.
+
+-- 
+Damien Le Moal
+Western Digital Research
 

@@ -2,121 +2,120 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BFB3722AA3
-	for <lists+linux-ide@lfdr.de>; Mon,  5 Jun 2023 17:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 526EC72477B
+	for <lists+linux-ide@lfdr.de>; Tue,  6 Jun 2023 17:20:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233461AbjFEPOS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 5 Jun 2023 11:14:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49036 "EHLO
+        id S232681AbjFFPUB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 6 Jun 2023 11:20:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234793AbjFEPN2 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 5 Jun 2023 11:13:28 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.220.28])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 140D610EF
-        for <linux-ide@vger.kernel.org>; Mon,  5 Jun 2023 08:12:52 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id C7F2C21B73;
-        Mon,  5 Jun 2023 15:12:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1685977946; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=M0BQyrXJM6aiH4fKwGBP5GtTZ49th4zGOwNwwI4KJBQ=;
-        b=zha2sypCU6nDZ3ptnE8jfmMZz3G1C4JLKSm4MzvJwIzVmqepkHnz/t6CHLGjO54HGos2dv
-        zmVh+yb8DrmgLwEVaSH8lHBntBJP7pbL3S+YdwGZifAGSXCYfA2mID3AelfFJa2ZRE42uo
-        +c8LmMJvoQxenrpXDpOMtXLW46ANfac=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1685977946;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=M0BQyrXJM6aiH4fKwGBP5GtTZ49th4zGOwNwwI4KJBQ=;
-        b=JAy2vFLYNuSLjvCx5icFQwfzZQZdzsaMvn+RyDtswY7/BDi/dAP8GF7e/0lbj/gQMsdHfq
-        fBYOSZlOijbW1uCg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id A17E4139C8;
-        Mon,  5 Jun 2023 15:12:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id p01JJlr7fWT1bAAAMHmgww
-        (envelope-from <hare@suse.de>); Mon, 05 Jun 2023 15:12:26 +0000
-Message-ID: <30256648-d329-c3f7-a4b0-37d5fa49bdab@suse.de>
-Date:   Mon, 5 Jun 2023 17:12:26 +0200
+        with ESMTP id S238663AbjFFPUA (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 6 Jun 2023 11:20:00 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9640E54
+        for <linux-ide@vger.kernel.org>; Tue,  6 Jun 2023 08:19:58 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4f4db9987f8so8892515e87.1
+        for <linux-ide@vger.kernel.org>; Tue, 06 Jun 2023 08:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686064797; x=1688656797;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=PXSnykSl2m8GUoGHPGyHMUT1Oob4xT3ddV97ZlLQSfo=;
+        b=gFhgmpMY05DjQ8KsKO/uybTiJ9yKPK2xD+mrm86hZm3kxTo0gvsPmO0dg1Zk44zvV4
+         exLmOivLJFGJMFyRwmA43Vo1gbtXtDiPD80eITDxvuEtrcRP0H4ybDXbek9y6dGBIAdk
+         nX4bsHQpZyoX4QV1tsGw5ZX7qvNuQmW2EOdfi02Kw08k1NnUcSiobTiO9cCh70ovT1Ia
+         VnrlZxy5SHVU28JlRHN2jpSpAFL9fPDbHKEgpfnRVSf/nMGp+GszSWrtUkt63qZI/w0D
+         VEaR91u11dtZBtb/EsevqMkevj7oRgMFyMHOnbrr2rfXiwqQca1rhc2nJDUuQfwN5h5X
+         psGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686064797; x=1688656797;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PXSnykSl2m8GUoGHPGyHMUT1Oob4xT3ddV97ZlLQSfo=;
+        b=eb3i/n1v9vZaLxjtRhtizUMo/OjKJ8zOkPEDaHRpWKHt4rB/Qv0jM2dnPjY5GE/6pF
+         NUOZBpnVSbuXsO52EHhmxxpnf542pde6JKbBOM/qO7hjcKqNOMQznL1jTiCZJlfF2sHh
+         FCDiXsirzRkRDTHrZZ/oBVbCufK4CioDo5p6y1nBZwvNJvOoVecq5NTUKeTIAg1O3nCX
+         nagqfZnTfRYBYyb9phl4c+4XEWXI0xhRplZWqYEQoE9IzYd+StslWzq+mHtsC0Uq3LZV
+         MdOe4E4kJM2/1T3yUOPU+WSxyHyjW6wboai3p26wWdzjly8+c2dNsr057+TTbT9EtzXn
+         0Efw==
+X-Gm-Message-State: AC+VfDymXQ1q4/X9s1pBzbVRywEAr8hWC+EFjxpyP++Gbn2MfTTjiEs1
+        M1SNXg60Cyt7ZzULIBTqbyA65erCs7nGuyawHhg=
+X-Google-Smtp-Source: ACHHUZ5Bnc8SwAKxEjMAjEKFmdYjpebbkLljMTFnQAv85r7Hx5hcuzvq30JLw7RoxUyeqYz79wwD4jxUqh3vYW3vLHs=
+X-Received: by 2002:a05:6512:33c5:b0:4f4:f38a:4423 with SMTP id
+ d5-20020a05651233c500b004f4f38a4423mr5677644lfg.27.1686064796697; Tue, 06 Jun
+ 2023 08:19:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [PATCH 0/6] libata: remove references to 'old' error handler
-Content-Language: en-US
-To:     Niklas Cassel <Niklas.Cassel@wdc.com>
-Cc:     Damien Le Moal <dlemoal@kernel.org>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>
-References: <20230510225211.111113-1-hare@suse.de>
- <a8083851-dc1e-25bd-9790-2c5f8a851c02@kernel.org>
- <9db022f9-8f5d-fd79-9970-8a515ed4c37b@suse.de> <ZH3uZZ/Gqi6HqEwU@x1-carbon>
-From:   Hannes Reinecke <hare@suse.de>
-In-Reply-To: <ZH3uZZ/Gqi6HqEwU@x1-carbon>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Sender: traoreseriba174@gmail.com
+Received: by 2002:a2e:8506:0:b0:2b1:b972:80e1 with HTTP; Tue, 6 Jun 2023
+ 08:19:55 -0700 (PDT)
+From:   Maya olivier <madamoliviermaya@gmail.com>
+Date:   Tue, 6 Jun 2023 08:19:55 -0700
+X-Google-Sender-Auth: mW5_BVm4uCr6nQhKewon7buTT3o
+Message-ID: <CAKViA0XbyYvDnKXdMQjxVoM++uvCRnbWwaUhNbbL0FNXqy1rww@mail.gmail.com>
+Subject: Have a nice weekend,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:135 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [traoreseriba174[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [traoreseriba174[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.0 FREEMAIL_REPLY From and body contain different freemails
+        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 6/5/23 16:43, Niklas Cassel wrote:
-> On Mon, May 22, 2023 at 08:46:18AM +0200, Hannes Reinecke wrote:
->> On 5/22/23 02:46, Damien Le Moal wrote:
->>> On 5/11/23 07:52, Hannes Reinecke wrote:
->>>> Hi all,
->>>>
->>>> now that the ipr driver has been modified to not hook into libata
->>>> all drivers now use the 'new' error handler, so we can remove any
->>>> references to it. And do a general cleanup to remove callbacks
->>>> which are no longer needed.
->>>
->>> Hannes,
->>>
->>> Are you sending a v2 to address the comments ?
->>>
->> Sure. Just catching up wfter yet another week of conference.
-> 
-> Hello Hannes,
-> 
-> Are you planning on sending a V2?
-> 
-> It would be nice for the series to cook in linux-next for the customary
-> 2+ weeks before being sent to Linus, especially considering the kernel
-> test robot regression report.
-> 
-> I assume that the regression report is related to the review comment
-> that I gave, i.e. that ata_dump_status() is now called unconditionally:
-> 
->           %stddev     %change         %stddev
-> pp.vprintk_emit._printk.ata_dump_status.ata_scsi_qc_complete.ata_qc_complete_multiple
->        0.00           +22.4       22.41 ±  8%  perf-profile.calltrace.cycles-
-> 
-> 
-Ah, right. Yes, will be resending.
-
-Cheers,
-
-Hannes
--- 
-Dr. Hannes Reinecke                Kernel Storage Architect
-hare@suse.de                              +49 911 74053 688
-SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
-HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
-Myers, Andrew McDonald, Martje Boudien Moerman
-
+I am Mrs. Maya Oliver,
+From the United Kingdom. Firstly, I am married to Mr. Patrick Oliver,
+A diamond and gold merchant who owns a small gold Mine in Thailand
+Bangkok; He died of Cardiovascular Disease in mid-March 2011. During
+his lifetime he deposited the sum of =E2=82=AC 12.7 Euros in a bank in Bang=
+kok
+the capital city of Thailand. The deposited money was from the sale of
+the shares, death benefits payment and entitlements of my deceased
+husband by his company. Since his death I decided not to remarry, when
+my late husband was Alive he deposited the sum of =E2=82=AC 12.7 Million Eu=
+ro)
+Twelve million, Seven hundred Thousand Euro) in a bank in Thailand,
+Presently this money is Still in the bank. And My Doctor told me that
+I don't have much time to leave because of the cancer problem, having
+known my condition I decided to hand you over this fund to take Care
+of the less-privileged people
+Meanwhile i have concluded with the bank to transfer the funds to you,
+through the listed options below 1, Money gram 2, ATM card,3 RIA 4,
+Online Transfer
+ Please i will be glad to hear from you before i can send you the
+contact details of the bank.
+You can contact the bank for the transaction with the email below:
+transferriamoney0@gmail.com
+Mrs. Maya Oliver

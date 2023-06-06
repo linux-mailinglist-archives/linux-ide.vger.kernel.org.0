@@ -2,120 +2,70 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 526EC72477B
-	for <lists+linux-ide@lfdr.de>; Tue,  6 Jun 2023 17:20:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D1F37249CA
+	for <lists+linux-ide@lfdr.de>; Tue,  6 Jun 2023 19:07:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232681AbjFFPUB (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 6 Jun 2023 11:20:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45726 "EHLO
+        id S238399AbjFFRH3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 6 Jun 2023 13:07:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238663AbjFFPUA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 6 Jun 2023 11:20:00 -0400
-Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9640E54
-        for <linux-ide@vger.kernel.org>; Tue,  6 Jun 2023 08:19:58 -0700 (PDT)
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-4f4db9987f8so8892515e87.1
-        for <linux-ide@vger.kernel.org>; Tue, 06 Jun 2023 08:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686064797; x=1688656797;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PXSnykSl2m8GUoGHPGyHMUT1Oob4xT3ddV97ZlLQSfo=;
-        b=gFhgmpMY05DjQ8KsKO/uybTiJ9yKPK2xD+mrm86hZm3kxTo0gvsPmO0dg1Zk44zvV4
-         exLmOivLJFGJMFyRwmA43Vo1gbtXtDiPD80eITDxvuEtrcRP0H4ybDXbek9y6dGBIAdk
-         nX4bsHQpZyoX4QV1tsGw5ZX7qvNuQmW2EOdfi02Kw08k1NnUcSiobTiO9cCh70ovT1Ia
-         VnrlZxy5SHVU28JlRHN2jpSpAFL9fPDbHKEgpfnRVSf/nMGp+GszSWrtUkt63qZI/w0D
-         VEaR91u11dtZBtb/EsevqMkevj7oRgMFyMHOnbrr2rfXiwqQca1rhc2nJDUuQfwN5h5X
-         psGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686064797; x=1688656797;
-        h=content-transfer-encoding:to:subject:message-id:date:from:sender
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PXSnykSl2m8GUoGHPGyHMUT1Oob4xT3ddV97ZlLQSfo=;
-        b=eb3i/n1v9vZaLxjtRhtizUMo/OjKJ8zOkPEDaHRpWKHt4rB/Qv0jM2dnPjY5GE/6pF
-         NUOZBpnVSbuXsO52EHhmxxpnf542pde6JKbBOM/qO7hjcKqNOMQznL1jTiCZJlfF2sHh
-         FCDiXsirzRkRDTHrZZ/oBVbCufK4CioDo5p6y1nBZwvNJvOoVecq5NTUKeTIAg1O3nCX
-         nagqfZnTfRYBYyb9phl4c+4XEWXI0xhRplZWqYEQoE9IzYd+StslWzq+mHtsC0Uq3LZV
-         MdOe4E4kJM2/1T3yUOPU+WSxyHyjW6wboai3p26wWdzjly8+c2dNsr057+TTbT9EtzXn
-         0Efw==
-X-Gm-Message-State: AC+VfDymXQ1q4/X9s1pBzbVRywEAr8hWC+EFjxpyP++Gbn2MfTTjiEs1
-        M1SNXg60Cyt7ZzULIBTqbyA65erCs7nGuyawHhg=
-X-Google-Smtp-Source: ACHHUZ5Bnc8SwAKxEjMAjEKFmdYjpebbkLljMTFnQAv85r7Hx5hcuzvq30JLw7RoxUyeqYz79wwD4jxUqh3vYW3vLHs=
-X-Received: by 2002:a05:6512:33c5:b0:4f4:f38a:4423 with SMTP id
- d5-20020a05651233c500b004f4f38a4423mr5677644lfg.27.1686064796697; Tue, 06 Jun
- 2023 08:19:56 -0700 (PDT)
+        with ESMTP id S237745AbjFFRH2 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 6 Jun 2023 13:07:28 -0400
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C950121;
+        Tue,  6 Jun 2023 10:07:27 -0700 (PDT)
+Received: from [91.65.34.120] (helo=phil.lan)
+        by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <heiko@sntech.de>)
+        id 1q6a9P-0001ED-2c; Tue, 06 Jun 2023 19:07:19 +0200
+From:   Heiko Stuebner <heiko@sntech.de>
+To:     Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc:     Heiko Stuebner <heiko@sntech.de>, linux-phy@lists.infradead.org,
+        Serge Semin <fancer.lancer@gmail.com>,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        kernel@collabora.com,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        linux-ide@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        linux-kernel@vger.kernel.org, Rob Herring <robh+dt@kernel.org>
+Subject: Re: (subset) [PATCH v2 0/6] Add RK3588 SATA support
+Date:   Tue,  6 Jun 2023 19:07:13 +0200
+Message-Id: <168607097305.1436521.3168877133799952042.b4-ty@sntech.de>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20230522173423.64691-1-sebastian.reichel@collabora.com>
+References: <20230522173423.64691-1-sebastian.reichel@collabora.com>
 MIME-Version: 1.0
-Sender: traoreseriba174@gmail.com
-Received: by 2002:a2e:8506:0:b0:2b1:b972:80e1 with HTTP; Tue, 6 Jun 2023
- 08:19:55 -0700 (PDT)
-From:   Maya olivier <madamoliviermaya@gmail.com>
-Date:   Tue, 6 Jun 2023 08:19:55 -0700
-X-Google-Sender-Auth: mW5_BVm4uCr6nQhKewon7buTT3o
-Message-ID: <CAKViA0XbyYvDnKXdMQjxVoM++uvCRnbWwaUhNbbL0FNXqy1rww@mail.gmail.com>
-Subject: Have a nice weekend,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,FREEMAIL_REPLY,LOTS_OF_MONEY,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:135 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [traoreseriba174[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [traoreseriba174[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  1.0 FREEMAIL_REPLY From and body contain different freemails
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,T_SPF_HELO_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-I am Mrs. Maya Oliver,
-From the United Kingdom. Firstly, I am married to Mr. Patrick Oliver,
-A diamond and gold merchant who owns a small gold Mine in Thailand
-Bangkok; He died of Cardiovascular Disease in mid-March 2011. During
-his lifetime he deposited the sum of =E2=82=AC 12.7 Euros in a bank in Bang=
-kok
-the capital city of Thailand. The deposited money was from the sale of
-the shares, death benefits payment and entitlements of my deceased
-husband by his company. Since his death I decided not to remarry, when
-my late husband was Alive he deposited the sum of =E2=82=AC 12.7 Million Eu=
-ro)
-Twelve million, Seven hundred Thousand Euro) in a bank in Thailand,
-Presently this money is Still in the bank. And My Doctor told me that
-I don't have much time to leave because of the cancer problem, having
-known my condition I decided to hand you over this fund to take Care
-of the less-privileged people
-Meanwhile i have concluded with the bank to transfer the funds to you,
-through the listed options below 1, Money gram 2, ATM card,3 RIA 4,
-Online Transfer
- Please i will be glad to hear from you before i can send you the
-contact details of the bank.
-You can contact the bank for the transaction with the email below:
-transferriamoney0@gmail.com
-Mrs. Maya Oliver
+On Mon, 22 May 2023 19:34:17 +0200, Sebastian Reichel wrote:
+> This enables SATA support for RK3588.
+> 
+> Changes since PATCHv1:
+>  * https://lore.kernel.org/all/20230413182345.92557-1-sebastian.reichel@collabora.com/
+>  * Rebase to v6.4-rc1
+>  * Collect Acked-by for syscon DT binding update
+>  * Use ASIC clock description suggested by Serge Semin
+>  * Also add RBC clock (not used by RK3588)
+>  * Add extra patch narrowing down the allowed clocks for RK356x and RK3588
+> 
+> [...]
+
+Applied, thanks!
+
+[1/6] dt-bindings: soc: rockchip: add rk3588 pipe-phy syscon
+      commit: ea85370df14011255c60e1951ef4ef749806aa5c
+
+Best regards,
+-- 
+Heiko Stuebner <heiko@sntech.de>

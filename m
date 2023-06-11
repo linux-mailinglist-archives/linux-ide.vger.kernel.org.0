@@ -2,117 +2,169 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60D8C72AEB9
-	for <lists+linux-ide@lfdr.de>; Sat, 10 Jun 2023 22:40:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A68772AFFE
+	for <lists+linux-ide@lfdr.de>; Sun, 11 Jun 2023 04:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjFJUkD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 10 Jun 2023 16:40:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45228 "EHLO
+        id S233099AbjFKCMp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 10 Jun 2023 22:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjFJUkC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 10 Jun 2023 16:40:02 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B2426B2;
-        Sat, 10 Jun 2023 13:39:56 -0700 (PDT)
-Received: from [192.168.1.103] (31.173.85.118) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 10 Jun
- 2023 23:40:13 +0300
-Subject: Re: [PATCH] ata: Use of_property_read_reg() to parse "reg"
-To:     Rob Herring <robh@kernel.org>, Damien Le Moal <dlemoal@kernel.org>
-CC:     <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20230609183125.1765780-1-robh@kernel.org>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <26a907e3-f362-09c8-3cc6-fb68ba87c64c@omp.ru>
-Date:   Sat, 10 Jun 2023 23:39:46 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S232604AbjFKCMo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 10 Jun 2023 22:12:44 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524263594
+        for <linux-ide@vger.kernel.org>; Sat, 10 Jun 2023 19:12:43 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id d75a77b69052e-3f9d8aa9025so14806621cf.0
+        for <linux-ide@vger.kernel.org>; Sat, 10 Jun 2023 19:12:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686449562; x=1689041562;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eHgHDIfPsbLwHrOLOgwM6Gxgc+BbmIDY++L7flC9JxU=;
+        b=EB5aFYe2Nz/Kn8psWMSwvSZRy7ejMzFCx5VnlgthA4xv02Awth5dY71NigzZv/RLyo
+         o4VpLKHj2IVGV949yT9dhEgZQ9vX6E7v11yGlI02bXB06nx0mhQJafHhWyf94YLMncSO
+         IzmQB0TkJ25mziDT2SmzTM7fScMaSaAZn+OzNZGZOcyYDIqpxVoJZc6SfjFQEgyLDO/V
+         TcP3/+J8LZqsghzKn/Llzt56mjY6JzXyMNIV/d02f8JROcAUZW3MDoG8au8dUv4vd+K6
+         5EtfacnL9DtwNrzAQNZbWrjkbs5KGVzm7ojpETxpMCQDKsQUHjiq02mzZ2UwaWUTUE24
+         uNwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686449562; x=1689041562;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eHgHDIfPsbLwHrOLOgwM6Gxgc+BbmIDY++L7flC9JxU=;
+        b=W4gpWdZxolwnB8WZ7AJpAZnTanJ5ghNgHtJVVmgASMCAYqLjLHtncDQEIyIfMw1ZNL
+         lvg40ZbVSigP66Sb08Msts9/73ra7cUbsz+eBcWWlXPKPO9rp/NJNNG829EOm3Zy+2Dy
+         mST5zeST9WEyRlMUEqz0iZ/3EtftaJBk69y+Lym8BtMH7U7rqPF8b5elahMAozgPxbcm
+         6acY1FNOm3SWM4ARGSaFNrQxsdBw4fxju3Wi8qWBlpENClB0mLYjSDtIrxAnhjOIzo1X
+         4kObhAWy/pNdhCCH5tM3iBFyZl3arpsP9GkUgUy9ibwD3BXBGTxTe9c51QkDeul4ZA8V
+         53CQ==
+X-Gm-Message-State: AC+VfDzwYftYYeZSMsiPkzpkMzloakO0CVduUtI7FNfNVow8JAAYVAlC
+        naPC8qNVtQobVlbAhdQFh7NinL5WfCWFDjDGxX0=
+X-Google-Smtp-Source: ACHHUZ7AVE9c/wqegPLEU7mXF4yVXpRB0F5jObwOPZnvCLyycyF7gyqEsHk7SWeIqrutqs6xmaebIaVR6yXIlNfMdm4=
+X-Received: by 2002:ac8:7d42:0:b0:3f9:e6ac:f315 with SMTP id
+ h2-20020ac87d42000000b003f9e6acf315mr3778958qtb.48.1686449562277; Sat, 10 Jun
+ 2023 19:12:42 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20230609183125.1765780-1-robh@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [31.173.85.118]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 06/10/2023 20:10:09
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 177977 [Jun 09 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 516 516 efd4d74ff4b68f90ca62ae34a19f27bf46d81db5
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_no_received}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.85.118 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.85.118
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 06/10/2023 20:16:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 6/10/2023 5:50:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=1.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Received: by 2002:a59:afa2:0:b0:3d6:22a9:9d1a with HTTP; Sat, 10 Jun 2023
+ 19:12:41 -0700 (PDT)
+Reply-To: info.groupubabank.net@gmail.com
+From:   UNITED BANK FOR AFRICA <oliverleonard480@gmail.com>
+Date:   Sat, 10 Jun 2023 19:12:41 -0700
+Message-ID: <CAM5=D1JCsEQ=XcX6kX7hYRuM3NOxkGGY7sHNZZrE-n=4qRiLfQ@mail.gmail.com>
+Subject: =?UTF-8?B?1LzUsdWOINS81YjVktWQ?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello!
-
-On 6/9/23 9:31 PM, Rob Herring wrote:
-
-> Use the recently added of_property_read_reg() helper to get the
-> untranslated "reg" address value.
-> 
-> Signed-off-by: Rob Herring <robh@kernel.org>
-[...]
-
-
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-
-> diff --git a/drivers/ata/sata_svw.c b/drivers/ata/sata_svw.c
-> index c47c3fb434d5..b3cc23d891d5 100644
-> --- a/drivers/ata/sata_svw.c
-[...]
-> @@ -319,10 +320,10 @@ static int k2_sata_show_info(struct seq_file *m, struct Scsi_Host *shost)
->  	/* Match it to a port node */
->  	index = (ap == ap->host->ports[0]) ? 0 : 1;
->  	for (np = np->child; np != NULL; np = np->sibling) {
-> -		const u32 *reg = of_get_property(np, "reg", NULL);
-> -		if (!reg)
-> +		u64 reg;
-
-   An empty line wouldn't hurt here... :-)
-
-> +		if (of_property_read_reg(np, 0, &reg, NULL))
->  			continue;
-> -		if (index == *reg) {
-> +		if (index == reg) {
->  			seq_printf(m, "devspec: %pOF\n", np);
->  			break;
->  		}
-
-MBR, Sergey
+1LHWgNWq1bjWgtW11anVqyDVtNWr1bvVodWm1aPVodW11avVtiDVsNWr1bTVttWh1aTWgNWh1bQg
+KNSx1YTVgCkNCtWE1avVu9Wh1abVo9Wh1bXVq9W2INW61aHWgNW/1oTVqyDVtNWh1oDVtNWh1bYg
+1bTVq9Wh1b7VuNaALA0KIyAxOTAwLCDVhtSx1L3UsdSz1LHVgCDUsdWOLtS01YjVkg0K1YDUsdWC
+1LkuIC1YVkdOTjgyMDIzDQoNCtWI1oLVt9Wh1aTWgNW41oLVqdW11bjWgtW2INWA1aHWgNWj1aXV
+rNWrINWn1azWg9W41b3Vv9WrINW91aXWg9Wh1a/VodW21aHVv9Wl1oA6DQoNCtWT1aHVvdW/1bjW
+gNWl1bYsINW01aXVttaEINW21bjWgNWh1bbVt9Wh1bbVodWvINaG1avVttWh1bbVvdW21aXWgNWr
+INW21aHVrdWh1oDVodaA1asg1ocg1YTVq9Wh1b7VuNaA1b7VodWuINWh1abVo9Wl1oDVqw0K1a/V
+odWm1bTVodWv1aXWgNW61bjWgtWp1bXVodW2INSx1oDVqtW41oLVtdWp1asg1bTVq9Wh1b7VuNaA
+1asg1bLVpdWv1aHVvtWh1oAg1bTVodaA1bTVttWrINWv1bjVstW01avWgSDVrNWr1aHVptW41oDV
+vtWh1a4g1aXVttaEDQrVsNWl1b/VodaE1bbVttWl1awg1bnVutWh1bDVodW21bvVvtWh1a4g1bTV
+q9W71bjWgdW21aXWgNWoLCDVuNaA1bjVttaEINW+1aHVstW41oLWgSDVutWl1b/WhCDVpyDVsNWh
+1bXVv9W21b7VpdW2INWE1avVodW+1bjWgNW+1aHVrg0K1aHVptWj1aXWgNWrINWv1aHVptW01aHV
+r9Wl1oDVutW41oLVqdW11aHVtiDVr9Wh1bzVodW+1aHWgNWh1a/VodW2INWm1aHVtNWi1bXVuNaC
+1bLVuNaC1bQsINWr1bbVudWoINW/1aHVttW/1aXWgNWl1oDVq9W2DQrVt9aD1bjVqdW41oLVqdW1
+1aHVtiDVtNWl1bsg1acg1aPWgdWl1azVnSDVtNW/1aHVrtWl1azVuNW+LCDVuNaAINW21oDVodW2
+1oQuINW01aXWgCDVsNWl1b/VodaE1bbVttW41oLVqdW11aHVtiDVqNW21anVodaB1oTVuNaC1bQN
+CtWt1aHVotWl1bjWgtWp1bXVodW2INWl1bYg1aXVttWp1aHWgNWv1b7VpdWsINWE1avVodW+1bjW
+gNW+1aHVriDVodWm1aPVpdaA1asg1a/VodWm1bTVodWv1aXWgNW61bjWgtWp1bXVodW2INWh1bbV
+uNaC1bbVqA0K1oXVo9W/1aHVo9W41oDVrtW41bIg1a3VodWi1aXVotWh1bbVpdaA1ag6INWA1aHV
+tNWh1bHVodW11bYg1bTVpdaAINWw1aHVtNWh1a/VodaA1aPVqyDVv9W+1bXVodWs1bbVpdaA1asg
+1brVodWw1brVodW21bTVodW2DQrVo9aA1aHVttaB1aHVtNWh1b/VtdWh1bbVq9WdINWx1aXWgCDV
+p9WsLtaD1bjVvdW/1asg1bDVodW91oHVpdW41b4sINWB1aXWgCDVvtWz1aHWgNW41oLVtNWoINW2
+1aXWgNWh1bzVvtWh1a4g1acgMTUwDQrVt9Wh1bDVodW81bjWgtW21aXWgNWrINaB1aHVttWv1bjW
+gtW0LCDVuNaA1bjVttaEINWk1aHVvdWh1a/VodaA1aPVvtWh1a4g1aXVtiDVuNaA1brVpdW9Lg0K
+DQrVhNWl1bbWhCwg1asg1abVodaA1bDVuNaC1oDVodW21oQsINWw1aHVtdW/1bbVodWi1aXWgNW4
+1oLVtCDVpdW21oQsINW41oAg1bHVpdaAINW+1bPVodaA1bjWgtW01bYg1aHVttWw1aHWgNWv1asN
+CtWw1aXVv9Wh1bHVo9W+1aXVrCDVpyDVr9W41bzVuNaC1bTVutWh1oHVvtWh1a4g1LLVodW21a/V
+qyDVutWh1bfVv9W41bbVtdWh1bbVpdaA1asg1a/VuNWy1bTVq9aB1Z0g1oPVuNaA1bHVpdWs1bjV
+viDVrdWh1aLVpdWsINWx1aXWgA0K1obVuNW21aTVqCwg1avVttW51asg1bDVpdW/1ofVodW21oTV
+uNW+INWx1aXWgCDVr9W41bLVtNWr1oEg1bfVodW/INWv1bjWgNW41oLVvdW/1bbVpdaAINWl1bYg
+1aXVstWl1awg1ocg1bHVpdaAINW+1bPVodaA1bjWgtW01agNCtW91b/VodW21aHVrNW41oIg1aHV
+ttWw1aHWgNWv1asg1bjWgtW31aHWgdW41oLVtNW21aXWgNWoOiDVhNSx1L8t1agg1ocg1LHWgNWq
+1bjWgtW11anVqyDVtNWr1bvVodWm1aPVodW11avVtiDVsNWr1bTVttWh1aTWgNWh1bTVqA0KKNSx
+1YTVgCkg1ajVttW/1oDVpdWsINWl1bYg1oPVuNWt1bDVodW/1bjWgtaB1bTVodW2INWi1bjVrNW4
+1oAg1bTVq9W71bjWgdW21aXWgNWoIDE1MCDVh9Wh1bDVodW81bjWgtW21aXWgNWrDQrVgNW11bjW
+gtW91avVvdWh1bXVq9W2INSx1bTVpdaA1avVr9Wh1bXVuNaC1bQsINWA1aHWgNWh1b7VodW11avV
+tiDUsdW01aXWgNWr1a/VodW11bjWgtW0LCDUsdW01aXWgNWr1a/VodW11asg1YTVq9Wh1oHVtdWh
+1awNCtWG1aHVsNWh1bbVo9W21aXWgNW41oLVtCwg1LXVvtaA1bjVutWh1bXVuNaC1bQg1ocg1LHV
+vdWr1aHVtdW41oLVtCDWhyDVodW01aLVuNWy1bsg1aHVt9Wt1aHWgNWw1bjWgtW0INaE1aHWgNW/
+1asg1bTVq9W71bjWgdW41b46DQpWaXNhINWi1aHVttWv1bjVtNWh1b/VqCwg1oTVodW21asg1bjW
+gCDVvdWhINW+1bPVodaA1bjWgtW01bbVpdaA1asg1bDVodW01aHVt9Wt1aHWgNWw1aHVtdWr1bYg
+1b/VpdWt1bbVuNWs1bjVo9Wr1aEg1acsINW41oDVqA0K1anVuNaC1bXVrCDVpyDVv9Wh1azVq9W9
+INW91brVodW81bjVstW21aXWgNWr1bYsINWi1avVptW21aXVvdWr1bYsINaG1avVttWh1bbVvdWh
+1a/VodW2INWw1aHVvdW/1aHVv9W41oLVqdW11bjWgtW21bbVpdaA1avVtiDWhw0K1a/VodW81aHV
+vtWh1oDVuNaC1anVtdW41oLVttW21aXWgNWr1bYg1oXVo9W/1aHVo9W41oDVrtWl1awg1anVvtWh
+1bXVq9W2INWh1oDVqtW41oLVtdWp1Z0g1a/VodW21a3Vq9Wv1asg1ocg1bnVpdWv1aXWgNWrDQrW
+g9W41a3VodaA1aXVtjoNCg0K1YTVpdW21oQg1a/VodWm1bTVodWv1aXWgNW61aXVrCDVpdW21oQs
+INW41oAg1bHVpdaAINW+1bPVodaA1bjWgtW01agg1bHVpdWmINW+1bPVodaA1b7VqyBWaXNhINWi
+1aHVttWv1bjVtNWh1b/VodW11avVtg0K1oTVodaA1b/VqyDVtNWr1bvVuNaB1bjVviwg1ocg1aHV
+tdW2INWv1b/WgNW+1asg1bHVpdaAINWh1bbVuNaC1bbVuNW+INaHINWv1bjWgtWy1aHWgNWv1b7V
+qyDVodW21bTVq9W71aHVutWl1b0g1bHVpdaADQrVsNWh1b3WgdWl1bjVvtWdIERITC3VqyDVr9Wh
+1bQg1bHVpdaAINWl1oDVr9aA1bjWgtW0INWw1aHVvdWh1bbVpdWs1asg1oHVodW21a/VodaB1aHV
+riDVvdW41oLWgNWw1aHVttWk1aHVr9Wh1bXVq9W2DQrVrtWh1bzVodW11bjWgtWp1bXVodW2INW0
+1avVu9W41oHVuNW+OiDVhNWl1aYg1bDVpdW/INWv1aHVutW+1aXVrNW41oLWgSDVsNWl1b/VuCAx
+LjUwMC4wMDAuMDAg1LHVhNWGINWk1bjVrNWh1oANCtWj1bjWgtW01aHWgNWoINWv1aPWgNWh1bbW
+gdW+1asgVmlzYSDVotWh1bbVr9W41bTVodW/1aHVtdWr1bYg1oTVodaA1b/Vq9W2LCDWhyDVpNWh
+INWp1bjWgtW11awg1a/Vv9WhINWv1aHVttWt1avVr9Wh1oHVttWl1awNCtWx1aXWgCDVtNWr1bvV
+uNaB1bbVpdaA1agg1bHVpdaAINWl1oDVr9aA1asg1oHVodW21a/VodaB1aHVriDVotWh1bbVr9W4
+1bTVodW/1avWgdWdINaF1oDVodWv1aHVtiDVttW+1aHVptWh1aPVuNaC1bXVttWoIDEwLjAwMA0K
+1LHVhNWGINWk1bjVrNWh1oDVqyDVr9Wh1bbVrdWr1a/VodaB1bjWgtW01bjVvjog1YHVpdaAINW9
+1aHVsNW01aHVttWh1bnVodaD1agg1a/VodaA1bjVsiDVpyDVodW+1aXVrNWh1oHVvtWl1awg1bTV
+q9W21bnWhw0KMjAsMDAwLjAwINSx1YTVhiDVpNW41azVodaA1Z0g1ajVvdW/INW61aHVsNWh1bbV
+u9WrOiDUsdW11b0g1a/VodW61aHVr9aB1bjWgtWp1bXVodW01aIg1aTVuNaC1oQg1brVpdW/1oQg
+1acg1a/VodW61b7VpdaEDQrWhyDVv9aA1aHVtNWh1aTWgNWl1oQg1brVodWw1aHVttW71b7VuNWy
+INW/1aXVstWl1a/VodW/1b7VuNaC1anVtdW41oLVttWoINWE1avVu9Wh1abVo9Wh1bXVq9W2INW+
+1bPVodaA1bjWgtW01bbVpdaA1asg1ocNCtaD1bjVrdWh1bbWgdW41oLVtNW21aXWgNWrINW/1bbW
+hdaA1avVttW41oLVqdW11aHVttWoINWw1aXVv9aH1bXVodWs1bjVvi4NCg0KMS4g1YHVpdaAINWs
+1oDVq9W+INWh1bbVuNaC1bbVqCAo1aHVttW41oLVtiDWhyDVodWm1aPVodW21bjWgtW2KQ0KMi4g
+1YHVpdaAINWs1oDVq9W+INWi1bbVodWv1bjWgtWp1bXVodW2INWw1aHVvdaB1aXVtiDWhyDVsdWl
+1oAg1aXWgNWv1avWgNWoDQozLiDUsdWm1aPVuNaC1anVtdW41oLVtg0KNC4g1L7VttW21aTVtdWh
+1bYg1aHVtNW91aHVqdWr1b4gLyDVvdWl1bwNCjUuINS21aLVodWy1bTVuNaC1bbWhA0KNi4g1YDV
+pdW81aHVrdW41b0v1obVodaE1b3VqyDVsNWh1bTVodaADQo3LiDVgdWl1oAg1ajVttWv1aXWgNW4
+1oLVqdW11aHVtiDVp9Ws4oCkINWw1aHVvdaB1aXVtiAvINSx1bbVsdW21aHVr9Wh1bYg1afVrOKA
+pCDVsNWh1b3WgdWl1bbWiQ0KDQrVldWj1b/VodWj1bjWgNWu1aXWhCDVodW11b0g1a7VodWu1a/V
+odWj1avWgNWoICjVgNWy1bjWgtW0YCBDTElFTlRFLTk2Ni8xNikg1bjWgNW61aXVvSDVsdWl1oAg
+1afVrC7Wg9W41b3Vv9WrDQrVqdWl1bTVodWdINW21bjWgtW11bbVodWv1aHVttWh1oHVtNWh1bYg
+1bDVodW01aHWgCDWhyDWg9W41oDVsdWl1oQg1b/WgNWh1bTVodWk1oDVpdWsINW+1aXWgNWoINW2
+1bfVvtWh1a4NCtW/1aXVstWl1a/VodW/1b7VuNaC1anVtdW41oLVttWoINW91b/VuNaA1ocg1aPV
+v9W21b7VuNWyINWh1bfVrdWh1b/VodWv1avWgdW21aXWgNWr1bbVnSDVsdWl1oAgVmlzYSDVotWh
+1bbVr9W41bTVodW/1aHVtdWr1bYNCtaE1aHWgNW/1agg1b/WgNWh1bTVodWk1oDVpdWs1bjWgiDW
+hyDVodW81aHWhNWl1azVuNaCINWw1aHVtNWh1oAuDQoNCtWE1aXVttaEINWi1aHVttWv1aHVtdWr
+1bYg1aPVuNaA1a7VodWv1aHVrNWr1bYg1a3VuNaA1bDVuNaC1oDVpCDVpdW21oQg1b/VvtWl1awg
+1aLVodaB1aXVrCDVodW21bHVttWh1a/VodW2INWn1azWg9W41b3Vv9WrDQrVsNWh1b3WgdWlINW2
+1bjWgCDVsNWh1bTVodaA1bjVviwg1bjWgNWoINWp1bjWgtW11awg1a/Vv9WhINW01aXVpiDVvtWl
+1oDVodWw1b3Vr9Wl1awg1aHVtdW9INW+1bPVodaA1bjWgtW01agg1ocg1oPVuNWt1aHVttaB1aXV
+rA0K1bDVodWy1bjWgNWk1aHVr9aB1bjWgtWp1bXVuNaC1bbVttWl1oDVqNWdINWt1bjWgtW91aHW
+g9Wl1azVuNaCINWx1aXWgCDWhtW41bbVpNWrINWw1aXVv9Wh1aPVoSDVuNaC1bfVodaB1bjWgtW0
+1bbVpdaA1avWgSDVr9Wh1bQNCtW31aXVstW41oLVtNW21aXWgNWr1oE6INS91bbVpNaA1bjWgtW0
+INWl1bbWhCDVr9Wh1bog1bDVodW91b/VodW/1aXVrCDVsdWl1oAgVW5pdGVkIEJhbmst1asg1aPV
+uNaA1a7VodWv1aHVrNWrINWw1aXVv9WdDQrVsNWl1b/Wh9W11aHVrCDVr9W41bbVv9Wh1a/Vv9Wh
+1bXVq9W2INW/1b7VtdWh1azVttWl1oDVuNW+Lg0KDQrUv9W41bbVv9Wh1a/Vv9WdIE1SLiDVlNS1
+1YbUtdS01Lsg1YjVktS21YjUv9SxDQrVk9W41a3VsNWh1b/VuNaC1oHVtNWh1bYg1bTVq9W71bjW
+gdW21aXWgNWrINaD1bjVrdWh1bbWgdW01aHVtiDVotWh1arVq9W2ICjUsdaG1oDVq9Wv1aHVtdWr
+INWE1avVodaB1bXVodWsINWi1aHVttWvKQ0K1L/VuNW21b/VodWv1b/VodW11avVtiDVp9WsLtaD
+1bjVvdW/Lg0KDQrVhNWl1bbWhCDVutWh1bDVodW21bvVuNaC1bQg1aXVttaEINWx1aXWgCDVsNaA
+1aHVv9Wh1bog1brVodW/1aHVvdWt1aHVttW2INWh1bXVvSDVp9Ws1oPVuNW91b/Vq9W2LCDVq9W2
+1bnVutWl1b0g1bbVt9W+1aHVriDVpw0K1bDVpdW/1aHVo9WhINW41oLVt9Wh1oHVuNaC1bTVttWl
+1oDVq9aBINWt1bjWgtW91aHWg9Wl1azVuNaCINWw1aHVtNWh1oA6DQoNCiAg1YDVodaA1aPVodW2
+1oTVttWl1oDVuNW+DQogINWP1avVr9Wr1bYg1ZTWgNWr1b3Vv9Wh1azVq9W21aEg1LPVpdW41oDV
+o9Wr1ofVoQ0K

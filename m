@@ -2,162 +2,131 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3492D72BB3D
-	for <lists+linux-ide@lfdr.de>; Mon, 12 Jun 2023 10:52:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C708F72BBDD
+	for <lists+linux-ide@lfdr.de>; Mon, 12 Jun 2023 11:16:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233963AbjFLIwf (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 12 Jun 2023 04:52:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51594 "EHLO
+        id S230165AbjFLJQs (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 12 Jun 2023 05:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233773AbjFLIwQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jun 2023 04:52:16 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E92F1B3;
-        Mon, 12 Jun 2023 01:52:05 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b1b06af50eso46999481fa.1;
-        Mon, 12 Jun 2023 01:52:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686559923; x=1689151923;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vC6uwJ0JqcA9AI2hZ192LN4Lm6HljDsWRRLUQCbqRcI=;
-        b=ha+NLGOPK268A8Rm69MB2VrlRZ+bdLMoCKBLy0i1SKtuixABoEGpHl4oGE70nPdWrI
-         fWHYhWb5EBh38UF+ViInymqzwkg/Zad+alqWfDprpVo9fgantG3Tz2sziWPw8upec7ts
-         /Fv3t/yWt6xY9KXU53ybP9Y85wyqEazYhy6JiPo96nIX5SF4uRKG5GITBsqxWuCk1vQX
-         EkWAFhD8ZV+9RpimOe60IiIxpLQXcl/lff1tzJzFERRz1X4gJJh8cCQuDLq3wpAnM8wY
-         WWTst4ebBmy5XYqnnge0LQw1u/wcQ76+CfadGwNDS32TMQdIsStrT+N5jEUX9QHUrcCk
-         D7qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686559923; x=1689151923;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vC6uwJ0JqcA9AI2hZ192LN4Lm6HljDsWRRLUQCbqRcI=;
-        b=i0l5Dbz4oZrBwXUAkXHVFeZ7TxK0rZA95I9mLV51H4+VshpWkkQ4M3cFRW1Wn77gCf
-         kwxhr0FBsSWBAUMrKCV94zMNtYjYH28KTNQ0kr3cmmJlG92z3AA0nSjfQJR2e7BKaOmF
-         yM+olLohriLVAsGE+RJICsSgOnGBkew11lYXORLPNUqWf86+QzJWqRlKFqv5YJ2A04Rn
-         qNSOZIGI2VN4454iqsXY8g+7hyevJMFguQ8a3LLDceGSAn5DnT6lEpQXMhZzAqWoXXxK
-         vgSsknsJMkBVJ3obSW5lFkVffTuIfub3MpJ4NgyMubAaXV7WMM3ky+a5PRqHbM6zyBk+
-         MNQg==
-X-Gm-Message-State: AC+VfDzHqtwgSNirCeCPQ8pNHmuHPaJ3rXs5268hQHdLRvuKsrkaOTjw
-        6fYCxRp0MfLCd4stLJFn/b8=
-X-Google-Smtp-Source: ACHHUZ7EKA8vldamQ7vDC+e0lKSYEpHmgr+nXY6Twa32SsY75+3B3FPeePjMNjp0U0aabyKDkLIrCw==
-X-Received: by 2002:a05:651c:1039:b0:2af:d2ef:49d4 with SMTP id w25-20020a05651c103900b002afd2ef49d4mr2231817ljm.1.1686559923246;
-        Mon, 12 Jun 2023 01:52:03 -0700 (PDT)
-Received: from mobilestation ([95.79.140.35])
-        by smtp.gmail.com with ESMTPSA id s9-20020a2e9c09000000b002b31e0be2d7sm1003800lji.90.2023.06.12.01.52.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jun 2023 01:52:02 -0700 (PDT)
-Date:   Mon, 12 Jun 2023 11:52:00 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        linux-ide@vger.kernel.org, linux-phy@lists.infradead.org,
-        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel@collabora.com
-Subject: Re: [PATCH v3 2/5] dt-bindings: ata: dwc-ahci: add Rockchip RK3588
-Message-ID: <20230612085200.5okxcipiw5sofo62@mobilestation>
-References: <20230608162238.50078-1-sebastian.reichel@collabora.com>
- <20230608162238.50078-3-sebastian.reichel@collabora.com>
- <4c914503-c2e5-a5d8-97af-daaee0b4ec7c@linaro.org>
- <20230612083536.q3sq7w6cyiuxaqtv@mobilestation>
- <838ed0e6-985d-9a45-7ece-c607bda15871@linaro.org>
+        with ESMTP id S230248AbjFLJQN (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jun 2023 05:16:13 -0400
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40EF910F6;
+        Mon, 12 Jun 2023 02:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1686560920; x=1718096920;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=J/S7V8+HVwkpJMLv53fZLJ/jvv80wurEbD2/hKCUU1o=;
+  b=bK74TQ0Tt4Zay8w1tAsa69ggTMKAgNS+kwHPkzYM6lovCcphNmgz9cHd
+   o+M9YEH3dW7xQDA1JSQSqALeMcHy/rucMIbk/CWrr84YhFmgWLI/qu+KN
+   rJqyIwPD9139y2VFw7qaQ36UYSrPPzcKkV4zlT76u4tNRbjZVk/5+hOlv
+   KbNrkIe6ztNMuma4J3o9LH91Uy0gtXjqJQGF+eS5ccG9HLda+ofQw48M0
+   rgFtFEP7T0mkJL3B+RVgmbUeW3/fmO4VzBpEe4kHt2qp7bQj/CLDVEolG
+   Wrw4898YETlGNuro31a0lbHoYqHsSs/jdrLsgG/k+X7vHAgzNjPkHDM1u
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10738"; a="355484770"
+X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
+   d="scan'208";a="355484770"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 02:06:59 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10738"; a="885347093"
+X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
+   d="scan'208";a="885347093"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 02:06:55 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+        by kekkonen.fi.intel.com (Postfix) with SMTP id 500C7120BE1;
+        Mon, 12 Jun 2023 12:06:52 +0300 (EEST)
+Date:   Mon, 12 Jun 2023 09:06:52 +0000
+From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Damien Le Moal <dlemoal@kernel.org>,
+        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Daniel Scally <djrscally@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: Re: [PATCH v2 3/3] ata: ahci_platform: Make code agnostic to OF/ACPI
+Message-ID: <ZIbgLIEylgZsxXAB@kekkonen.localdomain>
+References: <20230609154900.43024-1-andriy.shevchenko@linux.intel.com>
+ <20230609154900.43024-4-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <838ed0e6-985d-9a45-7ece-c607bda15871@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230609154900.43024-4-andriy.shevchenko@linux.intel.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Mon, Jun 12, 2023 at 10:39:57AM +0200, Krzysztof Kozlowski wrote:
-> On 12/06/2023 10:35, Serge Semin wrote:
-> > On Mon, Jun 12, 2023 at 10:24:06AM +0200, Krzysztof Kozlowski wrote:
-> >> On 08/06/2023 18:22, Sebastian Reichel wrote:
-> >>> This adds Rockchip RK3588 AHCI binding. In order to narrow down the
-> >>> allowed clocks without bloating the generic binding, the description
-> >>> of Rockchip's AHCI controllers has been moved to its own file.
-> >>>
-> >>> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-> >>> ---
-> >>
-> >> ...
-> >>
-> >>> +
-> >>> +properties:
-> >>> +  compatible:
-> >>> +    items:
-> >>> +      - enum:
-> >>> +          - rockchip,rk3568-dwc-ahci
-> >>> +          - rockchip,rk3588-dwc-ahci
-> >>> +      - const: snps,dwc-ahci
-> >>> +
-> >>> +  ports-implemented:
-> >>> +    const: 1
-> >>> +
-> >>> +patternProperties:
-> >>> +  "^sata-port@[0-9a-e]$":
-> >>> +    $ref: /schemas/ata/snps,dwc-ahci-common.yaml#/$defs/dwc-ahci-port
-> >>> +
-> >>> +    unevaluatedProperties: false
-> >>
-> > 
-> >> You should be able to skip this patternProperties entirely, because it
-> >> comes from dwc-ahci-common -> ahci-common schema. Did you try the patch
-> >> without it?
-> > 
+Hi Andy,
 
-> > Please see my message about this. The "sata-port@[0-9a-e]$" sub-node
-> > bindings could be updated with the "reg" property constraint which,
-> > based on the "ports-implemented" property value, most likely is
-> > supposed to be always set to const: 1.
+On Fri, Jun 09, 2023 at 06:49:00PM +0300, Andy Shevchenko wrote:
+> With the help of a new device_is_compatible() make
+> the driver code agnostic to the OF/ACPI. This makes
+> it neater. As a side effect the header inclusions is
+> corrected (seems mod_devicetable.h was implicitly
+> included).
 > 
-> Then anyway the pattern is wrong as it should be @1 always.
-
-* I miscalculated a bit, it should have been zero but in general
-the pattern-property is indeed redundant.
-
-As a conclusion the change should look like this:
-
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - rockchip,rk3568-dwc-ahci
-+          - rockchip,rk3588-dwc-ahci
-+      - const: snps,dwc-ahci
-+
-+  ports-implemented:
-+    const: 1
-+
-+  "sata-port@0":
-+    $ref: /schemas/ata/snps,dwc-ahci-common.yaml#/$defs/dwc-ahci-port
-+
-+    properties:
-+      reg:
-+        const: 0
-+
-+    unevaluatedProperties: false
-+
-+ ...
-
-Right?
-
--Serge(y)
-
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  drivers/ata/ahci_platform.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 > 
-> Best regards,
-> Krzysztof
-> 
+> diff --git a/drivers/ata/ahci_platform.c b/drivers/ata/ahci_platform.c
+> index ab30c7138d73..81fc63f6b008 100644
+> --- a/drivers/ata/ahci_platform.c
+> +++ b/drivers/ata/ahci_platform.c
+> @@ -9,14 +9,14 @@
+>   */
+>  
+>  #include <linux/kernel.h>
+> +#include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+>  #include <linux/pm.h>
+>  #include <linux/device.h>
+> -#include <linux/of_device.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+>  #include <linux/libata.h>
+>  #include <linux/ahci_platform.h>
+> -#include <linux/acpi.h>
+>  #include <linux/pci_ids.h>
+>  #include "ahci.h"
+>  
+> @@ -56,10 +56,10 @@ static int ahci_probe(struct platform_device *pdev)
+>  	if (rc)
+>  		return rc;
+>  
+> -	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
+> +	if (device_is_compatible(dev, "hisilicon,hisi-ahci"))
+>  		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
+>  
+> -	port = acpi_device_get_match_data(dev);
+> +	port = device_get_match_data(dev);
+
+There are just a handful of users for acpi_device_get_match_data() in the
+tree. The code could be moved to acpi_fwnode_device_get_match_data() after
+coverting these. May be out of scope of this set though.
+
+>  	if (!port)
+>  		port = &ahci_port_info;
+>  
+
+-- 
+Kind regards,
+
+Sakari Ailus

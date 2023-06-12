@@ -2,67 +2,58 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC4C072CB1E
-	for <lists+linux-ide@lfdr.de>; Mon, 12 Jun 2023 18:12:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7140F72CC29
+	for <lists+linux-ide@lfdr.de>; Mon, 12 Jun 2023 19:13:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232963AbjFLQM4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 12 Jun 2023 12:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52342 "EHLO
+        id S237373AbjFLRNy (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 12 Jun 2023 13:13:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232662AbjFLQM4 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jun 2023 12:12:56 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C599C5;
-        Mon, 12 Jun 2023 09:12:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686586375; x=1718122375;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ekjCA2CGwiZrAX/o+zl26feODwMRZ9OhX+gAL/VO0z8=;
-  b=Nmw7Ixa/Wr1RI2UbrHa9u87RH4HNNdy/2HnMpNBxBVbHxr62fKjOuRNn
-   ceap7mDXxn+zU0xsqAGZumDjBu0gl1ssIJZBJ5jqzrxRrSmetdFQMTPx0
-   h3B0JX7bEzJQiccVFP89SqeM+pZHHPuIQYUTY7UOWQlmQ9qXp/zluXeZE
-   TTFozMNNexUZ58TE8s+QdsqTeFWvySujfMOt5y+P82K6wY6QaNSN+ehKo
-   Usf4vqbrdfkpH04kFFklg1reB4WUSH1L8zAsqNeAZtaogJpQaIfQtHV+p
-   H1by1CqNmksx5f/xtLLeKmrSGDjqNueDi07MqrXLASREFU/8l6/SMyWE6
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="360572639"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="360572639"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jun 2023 09:10:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="824031046"
-X-IronPort-AV: E=Sophos;i="6.00,236,1681196400"; 
-   d="scan'208";a="824031046"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga002.fm.intel.com with ESMTP; 12 Jun 2023 09:10:05 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-        id DC44C3BC; Mon, 12 Jun 2023 19:10:13 +0300 (EEST)
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>
-Subject: [PATCH v3 3/3] ata: ahci_platform: Make code agnostic to OF/ACPI
-Date:   Mon, 12 Jun 2023 19:10:11 +0300
-Message-Id: <20230612161011.86871-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.40.0.1.gaa8946217a0b
-In-Reply-To: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
-References: <20230612161011.86871-1-andriy.shevchenko@linux.intel.com>
+        with ESMTP id S233336AbjFLRNo (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jun 2023 13:13:44 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 034D710DA;
+        Mon, 12 Jun 2023 10:13:42 -0700 (PDT)
+Received: from jupiter.universe (dyndsl-091-248-210-131.ewe-ip-backbone.de [91.248.210.131])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: sre)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 0FFA76606ECF;
+        Mon, 12 Jun 2023 18:13:41 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1686590021;
+        bh=Bf6eekQkfS+tNXR2hhMUzuVzPovEGfpI2wuTSi/+qNc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=NKDg3R0ad4nTEofp9OPAxRwYSdVaJxwT44lcjFXKI4d7Xi+5x+bUQeGodtmYcg7lZ
+         CihWkGiV4YQGWK0XibuOsYBhPhKvBq5n2q++XkW34XRUU7hjedZvPWK45C6asQeytv
+         7HIznFxvsgFI2iSPYWq2Og73UhKwcKR99m82VmfFF9xtDaK7ErRHrShNnGe3Dv/OLq
+         BxYQbL67gBRVTOiG6Ts2iXwQgF5eUKvIU8/JItn9ZnimR5FsMTOqmWhysOgYFujqvh
+         Erp6KzRT109vU4ITvW+boUVxDRrWiJ9BODaLFbxN2cl7ZFC/CkhdyMdhf/3wftK5xL
+         wqxHgQwAIUznw==
+Received: by jupiter.universe (Postfix, from userid 1000)
+        id A23304805CC; Mon, 12 Jun 2023 19:13:38 +0200 (CEST)
+From:   Sebastian Reichel <sebastian.reichel@collabora.com>
+To:     Heiko Stuebner <heiko@sntech.de>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Serge Semin <fancer.lancer@gmail.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Kishon Vijay Abraham I <kishon@kernel.org>,
+        linux-ide@vger.kernel.org, linux-phy@lists.infradead.org,
+        linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        kernel@collabora.com
+Subject: [PATCH v4 0/5] Add RK3588 SATA support
+Date:   Mon, 12 Jun 2023 19:13:32 +0200
+Message-Id: <20230612171337.74576-1-sebastian.reichel@collabora.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,51 +61,55 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-With the help of a new device_is_compatible() make the driver code
-agnostic to the OF/ACPI. This makes it neater. As a side effect
-the header inclusions is corrected (seems mod_devicetable.h was
-implicitly included).
+Hi,
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/ata/ahci_platform.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+This enables SATA support for RK3588.
 
-diff --git a/drivers/ata/ahci_platform.c b/drivers/ata/ahci_platform.c
-index ab30c7138d73..81fc63f6b008 100644
---- a/drivers/ata/ahci_platform.c
-+++ b/drivers/ata/ahci_platform.c
-@@ -9,14 +9,14 @@
-  */
- 
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/pm.h>
- #include <linux/device.h>
--#include <linux/of_device.h>
- #include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/libata.h>
- #include <linux/ahci_platform.h>
--#include <linux/acpi.h>
- #include <linux/pci_ids.h>
- #include "ahci.h"
- 
-@@ -56,10 +56,10 @@ static int ahci_probe(struct platform_device *pdev)
- 	if (rc)
- 		return rc;
- 
--	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
-+	if (device_is_compatible(dev, "hisilicon,hisi-ahci"))
- 		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
- 
--	port = acpi_device_get_match_data(dev);
-+	port = device_get_match_data(dev);
- 	if (!port)
- 		port = &ahci_port_info;
- 
+Changes since PATCHv3:
+ * https://lore.kernel.org/all/20230608162238.50078-1-sebastian.reichel@collabora.com/
+ * Add Reviewed-by from Serge and Krzysztof to patch 1
+ * Update patch 2
+   - Add maxItems to 'clocks' property; without specifying minItems it's
+     implied to be the same
+   - Keep allOf above the properties in snps,dwc-ahci.yaml
+   - Add 'sata-port@0' to list of allowed properties
+   - Replace sata-port pattern property, so that it disallows using any
+     sata-port nodes besides @0 to override the pattern property from the
+     common binding
+ * Add Reviewed-by from Krzysztof to patch 3
+
+Changes since PATCHv2:
+ * https://lore.kernel.org/all/20230522173423.64691-1-sebastian.reichel@collabora.com/
+ * Drop patch 1 (applied by Heiko)
+ * Update SATA DT binding to split Rockchip into its own file
+ * Enforce correct resets numbers for the rk3568/rk3588 combo PHY
+
+Changes since PATCHv1:
+ * https://lore.kernel.org/all/20230413182345.92557-1-sebastian.reichel@collabora.com/
+ * Rebase to v6.4-rc1
+ * Collect Acked-by for syscon DT binding update
+ * Use ASIC clock description suggested by Serge Semin
+ * Also add RBC clock (not used by RK3588)
+ * Add extra patch narrowing down the allowed clocks for RK356x and RK3588
+
+-- Sebastian
+
+Sebastian Reichel (5):
+  dt-bindings: ata: dwc-ahci: add PHY clocks
+  dt-bindings: ata: dwc-ahci: add Rockchip RK3588
+  dt-bindings: phy: rockchip: rk3588 has two reset lines
+  arm64: dts: rockchip: rk3588: add combo PHYs
+  arm64: dts: rockchip: rk3588: add SATA support
+
+ .../bindings/ata/rockchip,dwc-ahci.yaml       | 124 ++++++++++++++++++
+ .../bindings/ata/snps,dwc-ahci-common.yaml    |   8 +-
+ .../bindings/ata/snps,dwc-ahci.yaml           |  13 +-
+ .../phy/phy-rockchip-naneng-combphy.yaml      |  34 ++++-
+ arch/arm64/boot/dts/rockchip/rk3588.dtsi      |  44 +++++++
+ arch/arm64/boot/dts/rockchip/rk3588s.dtsi     |  90 +++++++++++++
+ 6 files changed, 306 insertions(+), 7 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/ata/rockchip,dwc-ahci.yaml
+
 -- 
-2.40.0.1.gaa8946217a0b
+2.39.2
 

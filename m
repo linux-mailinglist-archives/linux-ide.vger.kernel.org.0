@@ -2,61 +2,60 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79B0A72BA2B
-	for <lists+linux-ide@lfdr.de>; Mon, 12 Jun 2023 10:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 514B272BA6B
+	for <lists+linux-ide@lfdr.de>; Mon, 12 Jun 2023 10:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229823AbjFLIVA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 12 Jun 2023 04:21:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54264 "EHLO
+        id S230079AbjFLI0v (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 12 Jun 2023 04:26:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233896AbjFLIUs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jun 2023 04:20:48 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B18115
-        for <linux-ide@vger.kernel.org>; Mon, 12 Jun 2023 01:20:46 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-5147f4bbfdaso5671616a12.0
-        for <linux-ide@vger.kernel.org>; Mon, 12 Jun 2023 01:20:46 -0700 (PDT)
+        with ESMTP id S232717AbjFLIZG (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 12 Jun 2023 04:25:06 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E8FA10EB
+        for <linux-ide@vger.kernel.org>; Mon, 12 Jun 2023 01:24:11 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-977d6aa3758so752591566b.0
+        for <linux-ide@vger.kernel.org>; Mon, 12 Jun 2023 01:24:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1686558045; x=1689150045;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+        d=linaro.org; s=google; t=1686558249; x=1689150249;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=YuaFtQBhTySWcwWuBPWolxBfBrmsW/EltaLg5KhduEM=;
-        b=prYV4Vfp+twLytv23bFpM/12uJ6o15SuH+KBCBEGZup97xeepSjtAAvrTD944DaozP
-         dCjjc9Ujk6QS+CQF86cl3MlHaFd5UN5kuHsSWjm4vXGlHVc98S6yQt5ZO28R8vq4WPys
-         ihK3woQF+UTH2aZsmhsFj/2qo41/3UH27bQTAGAcJTy+wCNJh1SNneIfI5ouoCjXxz+p
-         59gTP01LhXBhWowWJMccPaFA70F8edGy5v1/j5ztzutzZJh6+SRIOTNumpVbECOYmCeG
-         v2oIk9ltHs6P5LtcA5oGycO1Qpc4+Cx2+bPqcDqSQRPvAMRG6wk+98bjnDeq7G4fJjKC
-         SWTg==
+        bh=n6FRK4HFfgPWBirVfYDPjb6CoRt7wCHoD3lKJRadNg8=;
+        b=BcAOefkle/LHxvI52wscsD1HqlHwY9cHn03i0Pabfkmt86hqe0+VxKBNAR76O5qI4U
+         oLqb8BKDueIqWm4GSNHhEGDfoNaQbexuP1m7eBPGb8a2Uxj21DbG+GEMJ1BVRGNrnshz
+         eQZYMbseNSJgiAwZtB4UBKG/1G/8A+CBIuekb3tKyIP3UfzSSE4azrwQuqMhArBrH+Tw
+         2Snlj34SSBqT1VBYFj9ybvAo3gdaOviM2VsT4VqqoNaMfR1nr8P58VEisOVy9Thf79wo
+         TZc2mycYXjO1khtlD2A4o+g2VT2kYFhviWnFmxhUt7L/aHKCUVjl9DZpSoXTsSMzogDO
+         ri2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686558045; x=1689150045;
-        h=content-transfer-encoding:in-reply-to:references:cc:to:from
+        d=1e100.net; s=20221208; t=1686558249; x=1689150249;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YuaFtQBhTySWcwWuBPWolxBfBrmsW/EltaLg5KhduEM=;
-        b=SFTmA6YSA7qAfE20Vr+a10VIiGJ4futyM0vuyxykjYLGUDdLo2jcs3pAcEleK2kqPR
-         w5bn0NS3NYK6V8AqrKnTc63OmAr7LYfzL9oUW/adpQsY3e7SL0oMekTJ5jOPqRFi5fbY
-         pUyUI1HcsV33i4m85n3z6LiEUyV7i1X3u5M7tQtsypJLJ1Bb3oPz3vF+SPNpj+N8DSKE
-         Ixsl4sqp3a/aHsCMtu8sazv9Or3jUXs5ZLdILbOTNe9M8MzcupnIUrymlS93XgUGqNhR
-         7VXAAQspARBW6bKG90OvJEI5m3H8RM9gn1ifjixiv579RCWp4/cS6uQP+iipgOwBYTjC
-         OYRg==
-X-Gm-Message-State: AC+VfDx/I7hOA0rf16hv0R+2dk48Sw3IDzQsxnNPiGHHI6RKpOSdjz7o
-        fzooMwQdNeeUds5o6EcZnMeTXg==
-X-Google-Smtp-Source: ACHHUZ7CqvoolRP6p9vsNBwdjEzm/1deg6tIoE5CeBdTRO5Vjig2Mx8w6tz8HJgvL11K7BItxZRBYg==
-X-Received: by 2002:a17:907:985:b0:94e:e5fe:b54f with SMTP id bf5-20020a170907098500b0094ee5feb54fmr8999595ejc.23.1686558045382;
-        Mon, 12 Jun 2023 01:20:45 -0700 (PDT)
+        bh=n6FRK4HFfgPWBirVfYDPjb6CoRt7wCHoD3lKJRadNg8=;
+        b=a+L9qN6fbNj/qynn1EbikqaoxtZNvhXTnoNn+NmIik620hqyTTEIsArYCDHDxsTVaH
+         9PfZuQq6L7SRYu8gdZa3XmFQGPBWCbuT5NLhOpd30R2jGpZLDMV2dTOgTb3tsGBYAqWR
+         cAQxBhp9lla4+ZDaCiyMbXmmUoXdxZURnBXL+QrW4xygEy/NhKJQBSKE0cYc4UL/2jeI
+         werkvC0pRR1Xn8V7cv8/zqz+8AuQAco3XAtDNKrRdNZ6s88PQquJXGSGfJS6lubc4cLP
+         rRC8Mc/UC4ViLwMbUsgRlkT88LCazjwoqWlL3itglpNA7umFxYmKbyhd4+I73ytPUuDS
+         VQYA==
+X-Gm-Message-State: AC+VfDw+PBGV0mn1uqJureSQKFUa3SfOIS/YzKfgZJTL1bz0cTR9CVma
+        FY7zBpps42ZTVTGD1Dtvm7P+7g==
+X-Google-Smtp-Source: ACHHUZ6Pww7aFvpQWCcMrF5FzzrD5cGi0zKemQAOXPVxhZItaOEvFniBweIG13CsZzvJN+qjGnAFjA==
+X-Received: by 2002:a17:907:9710:b0:96a:ff7f:692 with SMTP id jg16-20020a170907971000b0096aff7f0692mr11003551ejc.68.1686558249516;
+        Mon, 12 Jun 2023 01:24:09 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.26])
-        by smtp.gmail.com with ESMTPSA id ot25-20020a170906ccd900b00965f5d778e3sm4800684ejb.120.2023.06.12.01.20.42
+        by smtp.gmail.com with ESMTPSA id pv12-20020a170907208c00b0096b4ec45e10sm4824008ejb.139.2023.06.12.01.24.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jun 2023 01:20:44 -0700 (PDT)
-Message-ID: <b5201498-f61b-c431-536d-6cfdce8c731f@linaro.org>
-Date:   Mon, 12 Jun 2023 10:20:41 +0200
+        Mon, 12 Jun 2023 01:24:08 -0700 (PDT)
+Message-ID: <4c914503-c2e5-a5d8-97af-daaee0b4ec7c@linaro.org>
+Date:   Mon, 12 Jun 2023 10:24:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
-Subject: Re: [PATCH v3 1/5] dt-bindings: ata: dwc-ahci: add PHY clocks
+Subject: Re: [PATCH v3 2/5] dt-bindings: ata: dwc-ahci: add Rockchip RK3588
 Content-Language: en-US
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 To:     Sebastian Reichel <sebastian.reichel@collabora.com>,
         Heiko Stuebner <heiko@sntech.de>
 Cc:     Rob Herring <robh+dt@kernel.org>,
@@ -69,9 +68,9 @@ Cc:     Rob Herring <robh+dt@kernel.org>,
         linux-rockchip@lists.infradead.org, devicetree@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel@collabora.com
 References: <20230608162238.50078-1-sebastian.reichel@collabora.com>
- <20230608162238.50078-2-sebastian.reichel@collabora.com>
- <2e6caba1-3781-156f-4e55-e261f56a10cb@linaro.org>
-In-Reply-To: <2e6caba1-3781-156f-4e55-e261f56a10cb@linaro.org>
+ <20230608162238.50078-3-sebastian.reichel@collabora.com>
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230608162238.50078-3-sebastian.reichel@collabora.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -84,51 +83,48 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 12/06/2023 10:18, Krzysztof Kozlowski wrote:
-> On 08/06/2023 18:22, Sebastian Reichel wrote:
->> Add PHY transmit and receive clocks as described by the
->> DW SATA AHCI HW manual.
->>
->> Suggested-by: Serge Semin <fancer.lancer@gmail.com>
->> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
->> ---
->>  .../devicetree/bindings/ata/snps,dwc-ahci-common.yaml     | 8 ++++++--
->>  1 file changed, 6 insertions(+), 2 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/ata/snps,dwc-ahci-common.yaml b/Documentation/devicetree/bindings/ata/snps,dwc-ahci-common.yaml
->> index c1457910520b..34c5bf65b02d 100644
->> --- a/Documentation/devicetree/bindings/ata/snps,dwc-ahci-common.yaml
->> +++ b/Documentation/devicetree/bindings/ata/snps,dwc-ahci-common.yaml
->> @@ -31,11 +31,11 @@ properties:
->>        PM-alive clock, RxOOB detection clock, embedded PHYs reference (Rx/Tx)
->>        clock, etc.
->>      minItems: 1
->> -    maxItems: 4
->> +    maxItems: 6
->>  
->>    clock-names:
->>      minItems: 1
->> -    maxItems: 4
->> +    maxItems: 6
->>      items:
->>        oneOf:
->>          - description: Application APB/AHB/AXI BIU clock
->> @@ -48,6 +48,10 @@ properties:
->>            const: pmalive
->>          - description: RxOOB detection clock
->>            const: rxoob
->> +        - description: PHY Transmit Clock
->> +          const: asic
->> +        - description: PHY Receive Clock
->> +          const: rbc
+On 08/06/2023 18:22, Sebastian Reichel wrote:
+> This adds Rockchip RK3588 AHCI binding. In order to narrow down the
+> allowed clocks without bloating the generic binding, the description
+> of Rockchip's AHCI controllers has been moved to its own file.
 > 
-> Conor's comment was not resolved. Adding entries in the middle breaks
-> existing users and commit msg does not explain this.
+> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+> ---
 
-Wait, this is oneOf, not a list. Damn context.
+...
 
+> +
+> +properties:
+> +  compatible:
+> +    items:
+> +      - enum:
+> +          - rockchip,rk3568-dwc-ahci
+> +          - rockchip,rk3588-dwc-ahci
+> +      - const: snps,dwc-ahci
+> +
+> +  ports-implemented:
+> +    const: 1
+> +
+> +patternProperties:
+> +  "^sata-port@[0-9a-e]$":
+> +    $ref: /schemas/ata/snps,dwc-ahci-common.yaml#/$defs/dwc-ahci-port
+> +
+> +    unevaluatedProperties: false
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+You should be able to skip this patternProperties entirely, because it
+comes from dwc-ahci-common -> ahci-common schema. Did you try the patch
+without it?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +  - clocks
+> +  - clock-names
+> +  - ports-implemented
+> +
+
 
 Best regards,
 Krzysztof

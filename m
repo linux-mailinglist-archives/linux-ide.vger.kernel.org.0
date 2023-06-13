@@ -2,71 +2,59 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BFF72DDAB
-	for <lists+linux-ide@lfdr.de>; Tue, 13 Jun 2023 11:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BD6672DE07
+	for <lists+linux-ide@lfdr.de>; Tue, 13 Jun 2023 11:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233854AbjFMJaA (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 13 Jun 2023 05:30:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51126 "EHLO
+        id S240044AbjFMJpT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 13 Jun 2023 05:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233791AbjFMJ37 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 13 Jun 2023 05:29:59 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD1FEB7;
-        Tue, 13 Jun 2023 02:29:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1686648598; x=1718184598;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9iJSS+fYCSN4GX9xxSm4DKGKOLWhgyVoGNnqxqQ6SbY=;
-  b=Yx3edj3QGpLLtRHETUdVeDc2Ldbqp2KlOiKv4ltcKpyJJmvwIZAom+Zc
-   oJxtnFRFEi0TY0vg4l7wwoma6AO/xYuhBYdvRO6iZ2tyZA5tbtlBEj4pJ
-   PTlUYXUyzo4wYD2+Sa3IzVDmpBWlbeV9c/7s5vksa0A5855JJAA4d9e1x
-   A1NDPuX5FigbBA5nUnWr4RjE7y5m2tcOHTfpvf0uzYd2vQm/E4++LBsnG
-   NYNRrWRximpbKfjKrKSQpunznjkzY/2DbmmR7Bi19o/KOvOGUPcQ2PcLN
-   P4HniG5m/FglHjP0jlmDiVhuuABWdFJvtDr1XymxU+98CVIVl327FA1nh
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="347932658"
-X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="347932658"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 02:27:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10739"; a="688946802"
-X-IronPort-AV: E=Sophos;i="6.00,239,1681196400"; 
-   d="scan'208";a="688946802"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jun 2023 02:27:27 -0700
-Received: from kekkonen.localdomain (localhost [IPv6:::1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id F3AFB1216CF;
-        Tue, 13 Jun 2023 12:27:24 +0300 (EEST)
-Date:   Tue, 13 Jun 2023 09:27:24 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
+        with ESMTP id S241789AbjFMJpO (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 13 Jun 2023 05:45:14 -0400
+Received: from post.baikalelectronics.com (post.baikalelectronics.com [213.79.110.86])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C9A7AAC;
+        Tue, 13 Jun 2023 02:45:10 -0700 (PDT)
+Received: from post.baikalelectronics.com (localhost.localdomain [127.0.0.1])
+        by post.baikalelectronics.com (Proxmox) with ESMTP id 494B9E0DEC;
+        Tue, 13 Jun 2023 12:45:09 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        baikalelectronics.ru; h=cc:cc:content-type:content-type:date
+        :from:from:in-reply-to:message-id:mime-version:references
+        :reply-to:subject:subject:to:to; s=post; bh=j7ofUeP49paxvIgDMuJ8
+        em4j9tJ1KL/nPsMR7budhZA=; b=odWiLvP75WDQntxsQowgHxcFLsn2NozBrF5K
+        27xbiiIbFZHCz9o4m3q7GzI1V897l5Un6LPwXudI8S+QIAKkeB23pWMfKN2bmb/v
+        PoSe6N7qykf654Pg+SRBD8MFTG5x1I8IustJ+PEBnTvIbnSxQVD+a3xVj/DNNyYP
+        SC/LGPY=
+Received: from mail.baikal.int (mail.baikal.int [192.168.51.25])
+        by post.baikalelectronics.com (Proxmox) with ESMTP id 1F878E0DE4;
+        Tue, 13 Jun 2023 12:45:09 +0300 (MSK)
+Received: from mobilestation (10.8.30.34) by mail (192.168.51.25) with
+ Microsoft SMTP Server (TLS) id 15.0.1395.4; Tue, 13 Jun 2023 12:45:08 +0300
+Date:   Tue, 13 Jun 2023 12:45:08 +0300
+From:   Serge Semin <Sergey.Semin@baikalelectronics.ru>
 To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Damien Le Moal <dlemoal@kernel.org>,
-        Serge Semin <Sergey.Semin@baikalelectronics.ru>,
+CC:     Damien Le Moal <dlemoal@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+        <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-acpi@vger.kernel.org>, Hans de Goede <hdegoede@redhat.com>,
         Jens Axboe <axboe@kernel.dk>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Len Brown <lenb@kernel.org>,
         Daniel Scally <djrscally@gmail.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH v2 3/3] ata: ahci_platform: Make code agnostic to OF/ACPI
-Message-ID: <ZIg2fAMxhHgHY1Lk@kekkonen.localdomain>
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>
+Subject: Re: [PATCH v2 2/3] device property: Implement device_is_compatible()
+Message-ID: <20230613094508.mnmktmmt4l657ymj@mobilestation>
 References: <20230609154900.43024-1-andriy.shevchenko@linux.intel.com>
- <20230609154900.43024-4-andriy.shevchenko@linux.intel.com>
- <ZIbgLIEylgZsxXAB@kekkonen.localdomain>
- <ZIc3enu+EW93WjW7@smile.fi.intel.com>
+ <20230609154900.43024-3-andriy.shevchenko@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <ZIc3enu+EW93WjW7@smile.fi.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+In-Reply-To: <20230609154900.43024-3-andriy.shevchenko@linux.intel.com>
+X-Originating-IP: [10.8.30.34]
+X-ClientProxiedBy: MAIL.baikal.int (192.168.51.25) To mail (192.168.51.25)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,36 +63,48 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Andy,
+On Fri, Jun 09, 2023 at 06:48:59PM +0300, Andy Shevchenko wrote:
+> Some users want to use the struct device pointer to see if the
+> device is compatible in terms of Open Firmware specifications,
+> i.e. if it has a 'compatible' property and it matches to the
+> given value. Provide inline helper for the users.
 
-On Mon, Jun 12, 2023 at 06:19:22PM +0300, Andy Shevchenko wrote:
-> On Mon, Jun 12, 2023 at 09:06:52AM +0000, Sakari Ailus wrote:
-> > On Fri, Jun 09, 2023 at 06:49:00PM +0300, Andy Shevchenko wrote:
+IMO much useful wrapper. Thanks for the patch.
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+
+-Serge(y)
+
 > 
-> ...
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  include/linux/property.h | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> > > -	if (of_device_is_compatible(dev->of_node, "hisilicon,hisi-ahci"))
-> > > +	if (device_is_compatible(dev, "hisilicon,hisi-ahci"))
-> > >  		hpriv->flags |= AHCI_HFLAG_NO_FBS | AHCI_HFLAG_NO_NCQ;
-> > >  
-> > > -	port = acpi_device_get_match_data(dev);
-> > > +	port = device_get_match_data(dev);
-> > 
-> > There are just a handful of users for acpi_device_get_match_data() in the
-> > tree. The code could be moved to acpi_fwnode_device_get_match_data() after
-> > coverting these. May be out of scope of this set though.
+> diff --git a/include/linux/property.h b/include/linux/property.h
+> index 695053c60306..0222b77dd75c 100644
+> --- a/include/linux/property.h
+> +++ b/include/linux/property.h
+> @@ -85,6 +85,18 @@ bool fwnode_device_is_compatible(const struct fwnode_handle *fwnode, const char
+>  	return fwnode_property_match_string(fwnode, "compatible", compat) >= 0;
+>  }
+>  
+> +/**
+> + * device_is_compatible - match 'compatible' property of the device with a given string
+> + * @dev: Pointer to the struct device
+> + * @compat: The string to match 'compatible' property with
+> + *
+> + * Returns: true if matches, otherwise false.
+> + */
+> +static inline bool device_is_compatible(const struct device *dev, const char *compat)
+> +{
+> +	return fwnode_device_is_compatible(dev_fwnode(dev), compat);
+> +}
+> +
+>  int fwnode_property_get_reference_args(const struct fwnode_handle *fwnode,
+>  				       const char *prop, const char *nargs_prop,
+>  				       unsigned int nargs, unsigned int index,
+> -- 
+> 2.40.0.1.gaa8946217a0b
 > 
-> Why do we need that one if we can use device_get_match_data() directly?
+> 
 
-That was what I wanted to point your attention to. ;-)
-
-> It will be also flexible in case one of OF code will need something like
-> this (custom info structure for the respective compatible string).
-> That said, I don't think we need to change to acpi_*() whatever.
-
-I agree.
-
--- 
-Kind regards,
-
-Sakari Ailus

@@ -2,216 +2,129 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6C9E73DF6F
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Jun 2023 14:40:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0392B73E00B
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Jun 2023 15:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229638AbjFZMk3 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 26 Jun 2023 08:40:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38398 "EHLO
+        id S231371AbjFZNCt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 26 Jun 2023 09:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229579AbjFZMk3 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Jun 2023 08:40:29 -0400
+        with ESMTP id S231163AbjFZNCl (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Jun 2023 09:02:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E0A10B;
-        Mon, 26 Jun 2023 05:40:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B40019F;
+        Mon, 26 Jun 2023 06:02:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D24B860E88;
-        Mon, 26 Jun 2023 12:40:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FDAC433C8;
-        Mon, 26 Jun 2023 12:40:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1687783226;
-        bh=wQ6Z/RpCgi70OuvzNQeJd1tpKawWzkWK8jQrKXYxy2g=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=aF585ll2jwU6U4JhXNmIBLhtu+HU25IlH7ZKu8FEqDjjEMPowz7borSneEWXW2bnb
-         tFLS8MpXqz4ZyhQ5cpIDlDqqmeacUD5SNxExbvglLRvPejcCox1GR5sX4Z8/9/5QzS
-         2A9V/ksfnAHU1chizpsw2ljN75OOISfsZMOFBkfiOAuJz30gSJCFOsZsHvwqv12NaW
-         oYAMcAc/TWnppC7wnphkrYYClQYp6/OuVe2H10u96hinIBQ9LtU89f7XC7EuyZucYI
-         lnAcdOWt+6Ozez/723wKCqBzk958Hlyqr+QDDrgsn/oOPtwlO2+Mi1RdigGK1lXEdl
-         ydPCjrLEaaO6Q==
-Message-ID: <330d93ee-b4b6-2397-2b7c-eb4d99676f87@kernel.org>
-Date:   Mon, 26 Jun 2023 21:40:24 +0900
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F2FE960E86;
+        Mon, 26 Jun 2023 13:02:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9A6C433C0;
+        Mon, 26 Jun 2023 13:02:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1687784546;
+        bh=qHCByCNDys2ECT6mI9nx7oOPVqRAJqAf0TdsDuDj2PI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=o53DZaDNvEAwptnEewGQrTiUVPR6v8FwlmTYX7yfgHWj/oUbJGR0mhRH1GL39WX5g
+         fp4oalcmiYuaNf5x8s65Ydy5ihYFrRckIWBUSM6GaHDjLwal1iUXFES1D/rhkOxDnz
+         cdPK4n96JJlMF7nWtd+JoN35UgJzBHocXT3XWUCw=
+Date:   Mon, 26 Jun 2023 15:02:22 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Byungchul Park <byungchul@sk.com>
+Cc:     linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+        torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+        linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+        linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+        will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+        joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+        duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+        tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+        amir73il@gmail.com, kernel-team@lge.com, linux-mm@kvack.org,
+        akpm@linux-foundation.org, mhocko@kernel.org, minchan@kernel.org,
+        hannes@cmpxchg.org, vdavydov.dev@gmail.com, sj@kernel.org,
+        jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+        penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+        ngupta@vflare.org, linux-block@vger.kernel.org,
+        paolo.valente@linaro.org, josef@toxicpanda.com,
+        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
+        jack@suse.cz, jlayton@kernel.org, dan.j.williams@intel.com,
+        hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+        melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+        42.hyeyoo@gmail.com, chris.p.wilson@intel.com,
+        gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+        boqun.feng@gmail.com, longman@redhat.com, hdanton@sina.com,
+        her0gyugyu@gmail.com
+Subject: Re: [PATCH v10 00/25] DEPT(Dependency Tracker)
+Message-ID: <2023062627-chooser-douche-6613@gregkh>
+References: <20230626115700.13873-1-byungchul@sk.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] Signed-off-by: Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
-Content-Language: en-US
-To:     Runa Guo-oc <RunaGuo-oc@zhaoxin.com>, linux-kernel@vger.kernel.org,
-        linux-ide@vger.kernel.org
-Cc:     CobeChen@zhaoxin.com, TimGuo@zhaoxin.com, TonyWWang@zhaoxin.com,
-        LeoLiu@zhaoxin.com, RunaGuo@zhaoxin.com
-References: <1686901766-4928-1-git-send-email-RunaGuo-oc@zhaoxin.com>
- <ccabf88b-2e2c-876d-e47a-8d142e27d638@kernel.org>
- <70853f13-f74e-d9bb-89f7-4c804f1fa8a4@zhaoxin.com>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <70853f13-f74e-d9bb-89f7-4c804f1fa8a4@zhaoxin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230626115700.13873-1-byungchul@sk.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 6/26/23 20:29, Runa Guo-oc wrote:
-> On 2023/6/16 16:34, Damien Le Moal wrote:
->> On 6/16/23 16:49, Runa Guo-oc wrote:
->>> [PATCH] ata:sata_zhaoxin: Add support for ZhaoXin Serial ATA
->>
->> Broken patch: the email subject is your SoB instead of the above line, which
->> should not be part of the message (it should be the subject). Please reformat
->> and resend.
->>
+On Mon, Jun 26, 2023 at 08:56:35PM +0900, Byungchul Park wrote:
+> >From now on, I can work on LKML again! I'm wondering if DEPT has been
+> helping kernel debugging well even though it's a form of patches yet.
 > 
-> Okay.
+> I'm happy to see that DEPT reports a real problem in practice. See:
 > 
->>>
->>> Add ZhaoXin Serial ATA support for ZhaoXin CUPs.
->>
->> What is "ZhaoXin" ?
+>    https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
+>    https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
 > 
-> Zhaoxin is a Chinese company that has mastered the core technology
-> of independent general-purpose processors and its system platform chips,
-> and is committed to providing users with efficient, compatible and secure
-> independent general-purpose processors, chipsets and other products.
-> for more information, you can visit here: https://www.zhaoxin.com/.
-
-A company marketing message is not very informative, technically speaking. What
-is this chipset and on what board/machine can it be found ? That is the more
-relevant information we need in this commit message.
-
+> Nevertheless, I apologize for the lack of document. I promise to add it
+> before it gets needed to use DEPT's APIs by users. For now, you can use
+> DEPT just with CONFIG_DEPT on.
 > 
->> And what is "CUPs" ? Please spell this out.
->>
+> ---
 > 
-> Yes, this is  a spelling error.
+> Hi Linus and folks,
 > 
->>>
->>> Signed-off-by: Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
->>> ---
->>>  drivers/ata/Kconfig        |   8 +
->>>  drivers/ata/Makefile       |   1 +
->>>  drivers/ata/sata_zhaoxin.c | 384 +++++++++++++++++++++++++++++++++++++++++++++
->>>  3 files changed, 393 insertions(+)
->>>  create mode 100644 drivers/ata/sata_zhaoxin.c
->>>
->>> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
->>> index 42b51c9..ae327f3 100644
->>> --- a/drivers/ata/Kconfig
->>> +++ b/drivers/ata/Kconfig
->>> @@ -553,6 +553,14 @@ config SATA_VITESSE
->>>  
->>>  	  If unsure, say N.
->>>  
->>> +config SATA_ZHAOXIN
->>> +	tristate "ZhaoXin SATA support"
-
-Same here. If ZhaoXin is only a company name, we need also a chipset model to be
-informative regarding which HW this driver serves.
-
->>> +	depends on PCI
->>> +	help
->>> +	  This option enables support for ZhaoXin Serial ATA.
->>> +
->>> +	  If unsure, say N.
->>> +
->>>  comment "PATA SFF controllers with BMDMA"
->>>  
->>>  config PATA_ALI
->>> diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
->>> index 20e6645..4b84669 100644
->>> --- a/drivers/ata/Makefile
->>> +++ b/drivers/ata/Makefile
->>> @@ -45,6 +45,7 @@ obj-$(CONFIG_SATA_SIL)		+= sata_sil.o
->>>  obj-$(CONFIG_SATA_SIS)		+= sata_sis.o
->>>  obj-$(CONFIG_SATA_SVW)		+= sata_svw.o
->>>  obj-$(CONFIG_SATA_ULI)		+= sata_uli.o
->>> +obj-$(CONFIG_SATA_ZHAOXIN)	+= sata_zhaoxin.o
->>
->> Please sort this alphabetically.
->>
+> I've been developing a tool for detecting deadlock possibilities by
+> tracking wait/event rather than lock(?) acquisition order to try to
+> cover all synchonization machanisms. It's done on v6.2-rc2.
 > 
-> Like this?
-> obj-$(CONFIG_SATA_VITESSE)	        += sata_vsc.o
-> obj-$(CONFIG_SATA_ZHAOXIN)	        += sata_zhaoxin.o
-
-Yes.
-
->>> +
->>> +		ata_link_err(link, "COMRESET success (errno=%d) ap=%d link %d\n",
->>> +					rc, link->ap->port_no, link->pmp);
->>> +	} else {
->>> +		ata_link_err(link, "COMRESET failed (errno=%d) ap=%d link %d\n",
->>> +					rc, link->ap->port_no, link->pmp);
->>
->> Reverse the if condition and exit early for this case. That will make the
->> function code nicer. And you can drop the error message as well since
->> sata_std_hardreset() prints one.
->>
+> Benifit:
 > 
-> Yes, I agree with your. I'll adjust the above codes like these?
+> 	0. Works with all lock primitives.
+> 	1. Works with wait_for_completion()/complete().
+> 	2. Works with 'wait' on PG_locked.
+> 	3. Works with 'wait' on PG_writeback.
+> 	4. Works with swait/wakeup.
+> 	5. Works with waitqueue.
+> 	6. Works with wait_bit.
+> 	7. Multiple reports are allowed.
+> 	8. Deduplication control on multiple reports.
+> 	9. Withstand false positives thanks to 6.
+> 	10. Easy to tag any wait/event.
 > 
-> if(!rc || rc == -EAGAIN){
->                 struct ata_port *ap = link->ap;
->                 int pmp = link->pmp;
->                 int tmprc;
->                 if(pmp){
->                         ap->ops->sff_dev_select(ap,pmp);
->                         tmprc=ata_sff_wait_ready(&ap->link,deadline);
->                 }else
->                         tmprc=ata_sff_wait_ready(link,deadline);
+> Future work:
 > 
->                 if(tmprc)
->                         ata_link_err(link,"COMRESET failed for
-> wait(errno=%d)\n",rc);
-> 
->                 ata_link_err(link,"COMRESET success (errno=%d) ap=%d
-> link%d\n",
->                                   rc,link->ap->port_no,link->pmp);
-> 
+> 	0. To make it more stable.
+> 	1. To separates Dept from Lockdep.
+> 	2. To improves performance in terms of time and space.
+> 	3. To use Dept as a dependency engine for Lockdep.
+> 	4. To add any missing tags of wait/event in the kernel.
+> 	5. To deduplicate stack trace.
 
-You did not understand my point. Doing:
+If you run this today, does it find any issues with any subsystems /
+drivers that the current lockdep code does not find?  Have you run your
+tool on patches sent to the different mailing lists for new drivers and
+code added to the tree to verify that it can find issues easily?
 
-	rc = sata_std_hardreset(link, class, deadline);
-	if (rc && rc != -EAGAIN) {
-		ata_link_err(link, "COMRESET failed (errno=%d) ap=%d link %d\n",
-			     rc, link->ap->port_no, link->pmp);
-		return rc;
-	}
+In other words, why do we need this at all?  What makes it 'better' than
+what we already have that works for us today?  What benifit is it?
 
-	/* rc == 0 || rc == -EAGAIN case */
-	...
+thanks,
 
-Makes the code much nicer.
-
-
-[...]
-
->>> +MODULE_AUTHOR("Yanchen:YanchenSun@zhaoxin.com");
->>> +MODULE_DESCRIPTION("SCSI low-level driver for ZX SATA controllers");
->>
->> This is not a scsi driver...
->>
-> 
-> I treat it as a scsi driver for the following reasons,  which may be not
-> accurate.
-> 1, IO path: vfs->fs->block layer->scsi layer->this driver;
-> 2, Extracted from the following link:
-> "SCSI Lower level drivers (LLDs) are variously called host bus adapter
-> (HBA) drivers and host drivers (HD)."
-
-Again, this is not a scsi driver. Even if in Linux all ATA drives seat under the
-scsi layer, this is an ATA subsytem driver for an ATA drive. Not SCSI.
-
--- 
-Damien Le Moal
-Western Digital Research
-
+greg k-h

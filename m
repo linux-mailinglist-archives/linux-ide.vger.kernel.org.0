@@ -2,684 +2,363 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6571873DD7A
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Jun 2023 13:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A5DC73DF7D
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Jun 2023 14:43:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjFZL33 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 26 Jun 2023 07:29:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33542 "EHLO
+        id S230019AbjFZMnr (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 26 Jun 2023 08:43:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229571AbjFZL32 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Jun 2023 07:29:28 -0400
-Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [203.110.167.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB5510C
-        for <linux-ide@vger.kernel.org>; Mon, 26 Jun 2023 04:29:25 -0700 (PDT)
-X-ASG-Debug-ID: 1687778961-1eb14e179f04ec0001-WJxGKN
-Received: from ZXSHMBX1.zhaoxin.com (ZXSHMBX1.zhaoxin.com [10.28.252.163]) by mx2.zhaoxin.com with ESMTP id 1XUFVM3E7TCnD2CA (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NO); Mon, 26 Jun 2023 19:29:21 +0800 (CST)
-X-Barracuda-Envelope-From: RunaGuo-oc@zhaoxin.com
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-Received: from zxbjmbx1.zhaoxin.com (10.29.252.163) by ZXSHMBX1.zhaoxin.com
- (10.28.252.163) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 26 Jun
- 2023 19:29:21 +0800
-Received: from [10.29.8.9] (10.29.8.9) by zxbjmbx1.zhaoxin.com (10.29.252.163)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.16; Mon, 26 Jun
- 2023 19:29:20 +0800
-X-Barracuda-RBL-Trusted-Forwarder: 10.28.252.163
-From:   Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
-X-Barracuda-RBL-Trusted-Forwarder: 10.29.8.9
-Subject: Re: [PATCH] Signed-off-by: Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
-References: <1686901766-4928-1-git-send-email-RunaGuo-oc@zhaoxin.com>
- <ccabf88b-2e2c-876d-e47a-8d142e27d638@kernel.org>
-X-ASG-Orig-Subj: Re: [PATCH] Signed-off-by: Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
-To:     Damien Le Moal <dlemoal@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-ide@vger.kernel.org>
-CC:     <CobeChen@zhaoxin.com>, <TimGuo@zhaoxin.com>,
-        <TonyWWang@zhaoxin.com>, <LeoLiu@zhaoxin.com>,
-        <RunaGuo@zhaoxin.com>
-Message-ID: <70853f13-f74e-d9bb-89f7-4c804f1fa8a4@zhaoxin.com>
-Date:   Mon, 26 Jun 2023 19:29:19 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <ccabf88b-2e2c-876d-e47a-8d142e27d638@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.29.8.9]
-X-ClientProxiedBy: ZXSHCAS1.zhaoxin.com (10.28.252.161) To
- zxbjmbx1.zhaoxin.com (10.29.252.163)
-X-Barracuda-Connect: ZXSHMBX1.zhaoxin.com[10.28.252.163]
-X-Barracuda-Start-Time: 1687778961
-X-Barracuda-Encrypted: ECDHE-RSA-AES128-GCM-SHA256
-X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
-X-Virus-Scanned: by bsmtpd at zhaoxin.com
-X-Barracuda-Scan-Msg-Size: 17197
-X-Barracuda-BRTS-Status: 1
-X-Barracuda-Bayes: INNOCENT GLOBAL 0.0000 1.0000 -2.0210
-X-Barracuda-Spam-Score: -2.02
-X-Barracuda-Spam-Status: No, SCORE=-2.02 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=9.0 tests=
-X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.110558
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------------------------
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229659AbjFZMnq (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 26 Jun 2023 08:43:46 -0400
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id BB8F910A
+        for <linux-ide@vger.kernel.org>; Mon, 26 Jun 2023 05:43:42 -0700 (PDT)
+X-AuditID: a67dfc5b-d85ff70000001748-86-64997d6a34e7
+From:   Byungchul Park <byungchul@sk.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel_team@skhynix.com, torvalds@linux-foundation.org,
+        damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+        adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+        mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+        tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+        sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+        johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+        willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+        gregkh@linuxfoundation.org, kernel-team@lge.com,
+        linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+        minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+        sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+        penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+        ngupta@vflare.org, linux-block@vger.kernel.org,
+        paolo.valente@linaro.org, josef@toxicpanda.com,
+        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk,
+        jack@suse.cz, jlayton@kernel.org, dan.j.williams@intel.com,
+        hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+        melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+        42.hyeyoo@gmail.com, chris.p.wilson@intel.com,
+        gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+        boqun.feng@gmail.com, longman@redhat.com, hdanton@sina.com,
+        her0gyugyu@gmail.com
+Subject: [PATCH v10 00/25] DEPT(Dependency Tracker)
+Date:   Mon, 26 Jun 2023 20:56:35 +0900
+Message-Id: <20230626115700.13873-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRjG+5+708lp3Y4WJQsriky70Btd6Et0iISiqEiiRjvkykvNtEw0
+        q2lqLizQ5YWaM+Ztls6KLq5M85aVK4eZzKGW6VJbaDMvM5tFXx5+8Hvf59PD4JJC0pdRRJwV
+        lBGyMCklIkRDXvmrT8VnywMftRNwIz0QnD9TCMi7b6DAfK8UgeHBJQzsdTvh4+gggsm3LTho
+        Ms0I8rs7cXhQb0NgKrpMQesXb7A4HRQ0ZV6j4ErBfQreD7gwsGbdxKDUGAzNGToMqsf7CNDY
+        KcjVXMHc0Y/BuL6EBn2iP/QU5dDg6g6CJlsbCaaOVZB920pBlamJgPrHPRi0Ps2jwGaYJqG5
+        vpEA8w01CWXfdRQMjOpx0DsdNHyo1mJQrnIXfXOZMEge+U1Cg7raTXcrMLB8eobgeUoXBkZD
+        GwW1zkEMKo2ZOEwU1iHouT5EQ1L6OA25l64juJaURUDLVAMJKusGmBzLo7Zv5msHHTivqjzH
+        m0a1BP9ax/FPcjppXvW8g+a1xmi+smglX1Blx/j8YSfJG0tSKd44fJPm04YsGG9tq6L47+/e
+        0XzjrUliz6LDoi1yIUwRIyjXbDsmCtUYdPRp45HzhmINmYjsO9KQB8Ox67myqTTsP1d8tv1l
+        il3OtbeP4zM8l/XjKtVfyTQkYnC2wJPra3xFz4g57DpOW9JMzDDB+nNDAzr3EcOI2Q3cdOn2
+        f51LuNLyanzml2N/MNxU3Rj+T/hwL4vaiQzkqUWzSpBEERETLlOErQ8IjY1QnA84HhluRO75
+        6ONdIY/RsHlfDWIZJPUSBy6+JZeQspio2PAaxDG4dK54/phGLhHLZbEXBGXkUWV0mBBVgxYy
+        hHSBeO3oObmEPSE7K5wShNOC8r/FGA/fRHSvJUF41XzxwMY5senH3mp3L7d5X0zvnt474ih8
+        cbKn3JfYsYusDY6nrPtYddemuMQsZOnf2deZcUbtSOoNbrn67FfqMufS0PqQFRbCOW+r6Ivz
+        o518WXUo/0mFy5p8x8+w2HUwxeu9Z7h24o1PXO9tRbF5OtD2cH9FwmzVyTFTh5SICpUFrcSV
+        UbI/NTFARToDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRyG/f/P1dnkYFYHu7KIoMjsMvhBFnb1FBVRH7oRNdopV7piS1NJ
+        8lZ5SVFBl7VsTlk2Z9ZZH6xcjVmmrdRSzMSkzDLvYE00LzWJvrw88L48n16WCEingliN9oKo
+        06oiFbSMlO3dkLLqTEKhOsTathRyr4eA51caCcZKGw1N98sR2B4lYeh9GQ4fRgcQTLxtJMCQ
+        34Sg+MsnAh7VdiJwlCXT0NztDy2eYRrq8zNpSCmppOFd/ySGjoI8DOXSHnDnmDE4x3tIMPTS
+        cMuQgr3xA8O4xcqAJXEZdJXdZGDyyxqo72yloOZ2PQWO9pVQWNRBQ7WjnoTaqi4MzU+MNHTa
+        /lDgrq0joSk3i4KKITMN/aMWAiyeYQbeO00YHqR6bX2TDgxXf05T8CrL6aXShxhaPj5F8Czt
+        MwbJ1kpDjWcAg13KJ+D33ZcIurIHGbhyfZyBW0nZCDKvFJDQOPWKgtQOJUyMGemwUKFmYJgQ
+        Uu0XBceoiRRem3nh8c1PjJD6rJ0RTFK0YC9bIZRU92KheMRDCZI1nRakkTxGyBhswUJHazUt
+        DDU0MELdjQly38IjslC1GKmJEXWrN52QRRhsZua8dCzWds9AJaLe7RnIl+W59fzDr514hmlu
+        Od/WNk7McCC3hLdnfacykIwluBI/vqfuBTNTzObW8Sarm5xhklvGD/abvSOWlXNK/k952D/n
+        Yr78gZPIQawJ+VhRoEYbE6XSRCqD9Wcj4rSa2OCT56Ik5D2IJWEytwr9ag53IY5FilnykEU3
+        1AGUKkYfF+VCPEsoAuVzxwzqALlaFRcv6s4d10VHinoXms+SinnyXQfFEwHcadUF8awonhd1
+        /1vM+gYlom15PaVK9+Vwq5M5Gr02Of2A8vDO9ju1b/qS/CuMOw53F3WPONyn4tOKsIdpUA9d
+        atrqv/5dBBTubtz4+pgxe7O2br+fjyuFvhrqM2fLN9PUwC5PEE449E0xUhyfWLBfKqgJWxCa
+        AO5reyT7WOvxa89dpTlicqzf6kWZvvP6fkwrSH2Eas0KQqdX/QWpUFA2HAMAAA==
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 2023/6/16 16:34, Damien Le Moal wrote:
-> On 6/16/23 16:49, Runa Guo-oc wrote:
->> [PATCH] ata:sata_zhaoxin: Add support for ZhaoXin Serial ATA
-> 
-> Broken patch: the email subject is your SoB instead of the above line, which
-> should not be part of the message (it should be the subject). Please reformat
-> and resend.
-> 
+From now on, I can work on LKML again! I'm wondering if DEPT has been
+helping kernel debugging well even though it's a form of patches yet.
 
-Okay.
+I'm happy to see that DEPT reports a real problem in practice. See:
 
->>
->> Add ZhaoXin Serial ATA support for ZhaoXin CUPs.
-> 
-> What is "ZhaoXin" ?
+   https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
+   https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
 
-Zhaoxin is a Chinese company that has mastered the core technology
-of independent general-purpose processors and its system platform chips,
-and is committed to providing users with efficient, compatible and secure
-independent general-purpose processors, chipsets and other products.
-for more information, you can visit here: https://www.zhaoxin.com/.
+Nevertheless, I apologize for the lack of document. I promise to add it
+before it gets needed to use DEPT's APIs by users. For now, you can use
+DEPT just with CONFIG_DEPT on.
 
-> And what is "CUPs" ? Please spell this out.
-> 
+---
 
-Yes, this is  a spelling error.
+Hi Linus and folks,
 
->>
->> Signed-off-by: Runa Guo-oc <RunaGuo-oc@zhaoxin.com>
->> ---
->>  drivers/ata/Kconfig        |   8 +
->>  drivers/ata/Makefile       |   1 +
->>  drivers/ata/sata_zhaoxin.c | 384 +++++++++++++++++++++++++++++++++++++++++++++
->>  3 files changed, 393 insertions(+)
->>  create mode 100644 drivers/ata/sata_zhaoxin.c
->>
->> diff --git a/drivers/ata/Kconfig b/drivers/ata/Kconfig
->> index 42b51c9..ae327f3 100644
->> --- a/drivers/ata/Kconfig
->> +++ b/drivers/ata/Kconfig
->> @@ -553,6 +553,14 @@ config SATA_VITESSE
->>  
->>  	  If unsure, say N.
->>  
->> +config SATA_ZHAOXIN
->> +	tristate "ZhaoXin SATA support"
->> +	depends on PCI
->> +	help
->> +	  This option enables support for ZhaoXin Serial ATA.
->> +
->> +	  If unsure, say N.
->> +
->>  comment "PATA SFF controllers with BMDMA"
->>  
->>  config PATA_ALI
->> diff --git a/drivers/ata/Makefile b/drivers/ata/Makefile
->> index 20e6645..4b84669 100644
->> --- a/drivers/ata/Makefile
->> +++ b/drivers/ata/Makefile
->> @@ -45,6 +45,7 @@ obj-$(CONFIG_SATA_SIL)		+= sata_sil.o
->>  obj-$(CONFIG_SATA_SIS)		+= sata_sis.o
->>  obj-$(CONFIG_SATA_SVW)		+= sata_svw.o
->>  obj-$(CONFIG_SATA_ULI)		+= sata_uli.o
->> +obj-$(CONFIG_SATA_ZHAOXIN)	+= sata_zhaoxin.o
-> 
-> Please sort this alphabetically.
-> 
+I've been developing a tool for detecting deadlock possibilities by
+tracking wait/event rather than lock(?) acquisition order to try to
+cover all synchonization machanisms. It's done on v6.2-rc2.
 
-Like this?
-obj-$(CONFIG_SATA_VITESSE)	        += sata_vsc.o
-obj-$(CONFIG_SATA_ZHAOXIN)	        += sata_zhaoxin.o
+Benifit:
 
->>  obj-$(CONFIG_SATA_VIA)		+= sata_via.o
->>  obj-$(CONFIG_SATA_VITESSE)	+= sata_vsc.o
->>  
->> diff --git a/drivers/ata/sata_zhaoxin.c b/drivers/ata/sata_zhaoxin.c
->> new file mode 100644
->> index 0000000..ef8c73a
->> --- /dev/null
->> +++ b/drivers/ata/sata_zhaoxin.c
->> @@ -0,0 +1,384 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + *  sata_zhaoxin.c - ZhaoXin Serial ATA controllers
->> + */
->> +
->> +#include <linux/kernel.h>
->> +#include <linux/module.h>
->> +#include <linux/pci.h>
->> +#include <linux/blkdev.h>
->> +#include <linux/delay.h>
->> +#include <linux/device.h>
->> +#include <scsi/scsi.h>
->> +#include <scsi/scsi_cmnd.h>
->> +#include <scsi/scsi_host.h>
->> +#include <linux/libata.h>
->> +
->> +#define DRV_NAME	"sata_zx"
->> +#define DRV_VERSION	"2.6.1"
-> 
-> Version is not needed. The driver comes with the kernel...
-> 
+	0. Works with all lock primitives.
+	1. Works with wait_for_completion()/complete().
+	2. Works with 'wait' on PG_locked.
+	3. Works with 'wait' on PG_writeback.
+	4. Works with swait/wakeup.
+	5. Works with waitqueue.
+	6. Works with wait_bit.
+	7. Multiple reports are allowed.
+	8. Deduplication control on multiple reports.
+	9. Withstand false positives thanks to 6.
+	10. Easy to tag any wait/event.
 
-Right, I'll remove it next time.
+Future work:
 
->> +
->> +enum board_ids_enum {
->> +	zx100s,
->> +};
->> +
->> +enum {
->> +	SATA_CHAN_ENAB		= 0x40, /* SATA channel enable */
->> +	SATA_INT_GATE		= 0x41, /* SATA interrupt gating */
->> +	SATA_NATIVE_MODE	= 0x42, /* Native mode enable */
->> +	PATA_UDMA_TIMING	= 0xB3, /* PATA timing for DMA/ cable detect */
->> +	PATA_PIO_TIMING		= 0xAB, /* PATA timing register */
->> +
->> +	PORT0			= (1 << 1),
->> +	PORT1			= (1 << 0),
->> +	ALL_PORTS		= PORT0 | PORT1,
->> +
->> +	NATIVE_MODE_ALL		= (1 << 7) | (1 << 6) | (1 << 5) | (1 << 4),
->> +
->> +	SATA_EXT_PHY		= (1 << 6), /* 0==use PATA, 1==ext phy */
->> +};
->> +
->> +static int zx_init_one(struct pci_dev *pdev, const struct pci_device_id *ent);
->> +static int zx_scr_read(struct ata_link *link, unsigned int scr, u32 *val);
->> +static int zx_scr_write(struct ata_link *link, unsigned int scr, u32 val);
->> +static int zx_hardreset(struct ata_link *link, unsigned int *class,
->> +				unsigned long deadline);
->> +
->> +static void zx_tf_load(struct ata_port *ap, const struct ata_taskfile *tf);
->> +
->> +static const struct pci_device_id zx_pci_tbl[] = {
->> +	{ PCI_VDEVICE(ZHAOXIN, 0x9002), zx100s },
->> +	{ PCI_VDEVICE(ZHAOXIN, 0x9003), zx100s },
->> +
-> 
-> Blank line not needed.
->>> +	{ }	/* terminate list */
-> 
-> Comment not needed.
-> 
+	0. To make it more stable.
+	1. To separates Dept from Lockdep.
+	2. To improves performance in terms of time and space.
+	3. To use Dept as a dependency engine for Lockdep.
+	4. To add any missing tags of wait/event in the kernel.
+	5. To deduplicate stack trace.
 
-The purpose of writing like this is convenient to add new device IDs in
-the future.
-Considering that this is not likely, remove it also fine.
+How to interpret reports:
 
->> +};
->> +
->> +static struct pci_driver zx_pci_driver = {
->> +	.name			= DRV_NAME,
->> +	.id_table		= zx_pci_tbl,
->> +	.probe			= zx_init_one,
->> +#ifdef CONFIG_PM_SLEEP
->> +	.suspend		= ata_pci_device_suspend,
->> +	.resume			= ata_pci_device_resume,
->> +#endif
->> +	.remove			= ata_pci_remove_one,
->> +};
->> +
->> +static struct scsi_host_template zx_sht = {
->> +	ATA_BMDMA_SHT(DRV_NAME),
->> +};
->> +
->> +static struct ata_port_operations zx_base_ops = {
->> +	.inherits		= &ata_bmdma_port_ops,
->> +	.sff_tf_load		= zx_tf_load,
->> +};
->> +
->> +static struct ata_port_operations zx_ops = {
->> +	.inherits		= &zx_base_ops,
->> +	.hardreset		= zx_hardreset,
->> +	.scr_read		= zx_scr_read,
->> +	.scr_write		= zx_scr_write,
->> +};
->> +
->> +static struct ata_port_info zx100s_port_info = {
->> +	.flags		= ATA_FLAG_SATA | ATA_FLAG_SLAVE_POSS,
->> +	.pio_mask	= ATA_PIO4,
->> +	.mwdma_mask	= ATA_MWDMA2,
->> +	.udma_mask	= ATA_UDMA6,
->> +	.port_ops	= &zx_ops,
->> +};
->> +
->> +
-> 
-> Extra blank line not needed.
-> 
+	1. E(event) in each context cannot be triggered because of the
+	   W(wait) that cannot be woken.
+	2. The stack trace helping find the problematic code is located
+	   in each conext's detail.
 
-I see
+Thanks,
+Byungchul
 
->> +static int zx_hardreset(struct ata_link *link, unsigned int *class,
->> +				unsigned long deadline)
-> 
-> Please align the arguments together.
-> 
+---
 
-Okay.
+Changes from v9:
 
->> +{
->> +	int rc;
->> +
->> +	rc = sata_std_hardreset(link, class, deadline);
->> +	if (!rc || rc == -EAGAIN) {
->> +		struct ata_port *ap = link->ap;
->> +		int pmp = link->pmp;
->> +		int tmprc;
->> +
->> +		if (pmp) {
->> +			ap->ops->sff_dev_select(ap, pmp);
->> +			tmprc = ata_sff_wait_ready(&ap->link, deadline);
->> +		} else {
->> +			tmprc = ata_sff_wait_ready(link, deadline);
->> +		}
->> +		if (tmprc)
->> +			ata_link_err(link, "COMRESET failed for wait (errno=%d)\n",
->> +					rc);
->> +		else
->> +			ata_link_err(link, "wait for bsy success\n");
-> 
-> Remove this. If it worked, be silent.
-> 
+	1. Fix a bug. SDT tracking didn't work well because of my big
+	   mistake that I should've used waiter's map to indentify its
+	   class but it had been working with waker's one. FYI,
+	   PG_locked and PG_writeback weren't affected. They still
+	   worked well. (reported by YoungJun)
+	
+Changes from v8:
 
-Okay.
+	1. Fix build error by adding EXPORT_SYMBOL(PG_locked_map) and
+	   EXPORT_SYMBOL(PG_writeback_map) for kernel module build -
+	   appologize for that. (reported by kernel test robot)
+	2. Fix build error by removing header file's circular dependency
+	   that was caused by "atomic.h", "kernel.h" and "irqflags.h",
+	   which I introduced - appolgize for that. (reported by kernel
+	   test robot)
 
->> +
->> +		ata_link_err(link, "COMRESET success (errno=%d) ap=%d link %d\n",
->> +					rc, link->ap->port_no, link->pmp);
->> +	} else {
->> +		ata_link_err(link, "COMRESET failed (errno=%d) ap=%d link %d\n",
->> +					rc, link->ap->port_no, link->pmp);
-> 
-> Reverse the if condition and exit early for this case. That will make the
-> function code nicer. And you can drop the error message as well since
-> sata_std_hardreset() prints one.
-> 
+Changes from v7:
 
-Yes, I agree with your. I'll adjust the above codes like these?
+	1. Fix a bug that cannot track rwlock dependency properly,
+	   introduced in v7. (reported by Boqun and lockdep selftest)
+	2. Track wait/event of PG_{locked,writeback} more aggressively
+	   assuming that when a bit of PG_{locked,writeback} is cleared
+	   there might be waits on the bit. (reported by Linus, Hillf
+	   and syzbot)
+	3. Fix and clean bad style code e.i. unnecessarily introduced
+	   a randome pattern and so on. (pointed out by Linux)
+	4. Clean code for applying DEPT to wait_for_completion().
 
-if(!rc || rc == -EAGAIN){
-                struct ata_port *ap = link->ap;
-                int pmp = link->pmp;
-                int tmprc;
-                if(pmp){
-                        ap->ops->sff_dev_select(ap,pmp);
-                        tmprc=ata_sff_wait_ready(&ap->link,deadline);
-                }else
-                        tmprc=ata_sff_wait_ready(link,deadline);
+Changes from v6:
 
-                if(tmprc)
-                        ata_link_err(link,"COMRESET failed for
-wait(errno=%d)\n",rc);
+	1. Tie to task scheduler code to track sleep and try_to_wake_up()
+	   assuming sleeps cause waits, try_to_wake_up()s would be the
+	   events that those are waiting for, of course with proper DEPT
+	   annotations, sdt_might_sleep_weak(), sdt_might_sleep_strong()
+	   and so on. For these cases, class is classified at sleep
+	   entrance rather than the synchronization initialization code.
+	   Which would extremely reduce false alarms.
+	2. Remove the DEPT associated instance in each page struct for
+	   tracking dependencies by PG_locked and PG_writeback thanks to
+	   the 1. work above.
+	3. Introduce CONFIG_DEPT_AGGRESIVE_TIMEOUT_WAIT to suppress
+	   reports that waits with timeout set are involved, for those
+	   who don't like verbose reporting.
+	4. Add a mechanism to refill the internal memory pools on
+	   running out so that DEPT could keep working as long as free
+	   memory is available in the system.
+	5. Re-enable tracking hashed-waitqueue wait. That's going to no
+	   longer generate false positives because class is classified
+	   at sleep entrance rather than the waitqueue initailization.
+	6. Refactor to make it easier to port onto each new version of
+	   the kernel.
+	7. Apply DEPT to dma fence.
+	8. Do trivial optimizaitions.
 
-                ata_link_err(link,"COMRESET success (errno=%d) ap=%d
-link%d\n",
-                                  rc,link->ap->port_no,link->pmp);
+Changes from v5:
 
->> +	}
->> +	return rc;
->> +}
->> +
->> +static int zx_scr_read(struct ata_link *link, unsigned int scr, u32 *val)
->> +{
->> +	static const u8 ipm_tbl[] = { 1, 2, 6, 0 };
->> +	struct pci_dev *pdev = to_pci_dev(link->ap->host->dev);
->> +	int slot = 2 * link->ap->port_no + link->pmp;
->> +	u32 v = 0;
->> +	u8 raw;
->> +
->> +	switch (scr) {
->> +	case SCR_STATUS:
->> +		pci_read_config_byte(pdev, 0xA0 + slot, &raw);
->> +
->> +		/* read the DET field, bit0 and 1 of the config byte */
->> +		v |= raw & 0x03;
->> +
->> +		/* read the SPD field, bit4 of the configure byte */
->> +		v |= raw & 0x30;
->> +
->> +		/* read the IPM field, bit2 and 3 of the config byte */
->> +		v |= ((ipm_tbl[(raw >> 2) & 0x3])<<8);
->> +		break;
->> +
->> +	case SCR_ERROR:
->> +		/* devices other than 5287 uses 0xA8 as base */
->> +		WARN_ON(pdev->device != 0x9002 && pdev->device != 0x9003);
->> +		pci_write_config_byte(pdev, 0x42, slot);
->> +		pci_read_config_dword(pdev, 0xA8, &v);
->> +		break;
->> +
->> +	case SCR_CONTROL:
->> +		pci_read_config_byte(pdev, 0xA4 + slot, &raw);
->> +
->> +		/* read the DET field, bit0 and bit1 */
->> +		v |= ((raw & 0x02) << 1) | (raw & 0x01);
->> +
->> +		/* read the IPM field, bit2 and bit3 */
->> +		v |= ((raw >> 2) & 0x03) << 8;
->> +
-> 
-> remove this blank line.
-> 
+	1. Use just pr_warn_once() rather than WARN_ONCE() on the lack
+	   of internal resources because WARN_*() printing stacktrace is
+	   too much for informing the lack. (feedback from Ted, Hyeonggon)
+	2. Fix trivial bugs like missing initializing a struct before
+	   using it.
+	3. Assign a different class per task when handling onstack
+	   variables for waitqueue or the like. Which makes Dept
+	   distinguish between onstack variables of different tasks so
+	   as to prevent false positives. (reported by Hyeonggon)
+	4. Make Dept aware of even raw_local_irq_*() to prevent false
+	   positives. (reported by Hyeonggon)
+	5. Don't consider dependencies between the events that might be
+	   triggered within __schedule() and the waits that requires
+	    __schedule(), real ones. (reported by Hyeonggon)
+	6. Unstage the staged wait that has prepare_to_wait_event()'ed
+	   *and* yet to get to __schedule(), if we encounter __schedule()
+	   in-between for another sleep, which is possible if e.g. a
+	   mutex_lock() exists in 'condition' of ___wait_event().
+	7. Turn on CONFIG_PROVE_LOCKING when CONFIG_DEPT is on, to rely
+	   on the hardirq and softirq entrance tracing to make Dept more
+	   portable for now.
 
-Okay.
+Changes from v4:
 
->> +		break;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +
->> +	*val = v;
->> +	return 0;
->> +}
->> +
->> +static int zx_scr_write(struct ata_link *link, unsigned int scr, u32 val)
->> +{
->> +	struct pci_dev *pdev = to_pci_dev(link->ap->host->dev);
->> +	int slot = 2 * link->ap->port_no + link->pmp;
->> +	u32 v = 0;
->> +
->> +	WARN_ON(pdev == NULL);
-> 
-> Warning about a null pointer and still dereferenceing it below is useless. The
-> kernel will crash... This should not happen, right ? So remove this.
-> 
+	1. Fix some bugs that produce false alarms.
+	2. Distinguish each syscall context from another *for arm64*.
+	3. Make it not warn it but just print it in case Dept ring
+	   buffer gets exhausted. (feedback from Hyeonggon)
+	4. Explicitely describe "EXPERIMENTAL" and "Dept might produce
+	   false positive reports" in Kconfig. (feedback from Ted)
 
-Okay.
+Changes from v3:
 
->> +
->> +	switch (scr) {
->> +	case SCR_ERROR:
->> +		/* devices 0x9002 uses 0xA8 as base */
->> +		WARN_ON(pdev->device != 0x9002 && pdev->device != 0x9003);
->> +		pci_write_config_byte(pdev, 0x42, slot);
->> +		pci_write_config_dword(pdev, 0xA8, val);
->> +		return 0;
->> +
->> +	case SCR_CONTROL:
->> +		/* set the DET field */
->> +		v |= ((val & 0x4) >> 1) | (val & 0x1);
->> +
->> +		/* set the IPM field */
->> +		v |= ((val >> 8) & 0x3) << 2;
->> +
->> +
->> +		pci_write_config_byte(pdev, 0xA4 + slot, v);
->> +
->> +
-> 
-> Way too many blank lines.
-> 
+	1. Dept shouldn't create dependencies between different depths
+	   of a class that were indicated by *_lock_nested(). Dept
+	   normally doesn't but it does once another lock class comes
+	   in. So fixed it. (feedback from Hyeonggon)
+	2. Dept considered a wait as a real wait once getting to
+	   __schedule() even if it has been set to TASK_RUNNING by wake
+	   up sources in advance. Fixed it so that Dept doesn't consider
+	   the case as a real wait. (feedback from Jan Kara)
+	3. Stop tracking dependencies with a map once the event
+	   associated with the map has been handled. Dept will start to
+	   work with the map again, on the next sleep.
 
-I see
+Changes from v2:
 
->> +		return 0;
->> +
->> +	default:
->> +		return -EINVAL;
->> +	}
->> +}
->> +
->> +
->> +/**
->> + *	zx_tf_load - send taskfile registers to host controller
->> + *	@ap: Port to which output is sent
->> + *	@tf: ATA taskfile register set
->> + *
->> + *	Outputs ATA taskfile to standard ATA host controller.
->> + *
->> + *	This is to fix the internal bug of zx chipsets, which will
->> + *	reset the device register after changing the IEN bit on ctl
->> + *	register.
->> + */
->> +static void zx_tf_load(struct ata_port *ap, const struct ata_taskfile *tf)
->> +{
->> +	struct ata_taskfile ttf;
->> +
->> +	if (tf->ctl != ap->last_ctl)  {
->> +		ttf = *tf;
->> +		ttf.flags |= ATA_TFLAG_DEVICE;
->> +		tf = &ttf;
-> 
-> This is very strange... Why the need for the extra local copy ? A comment would
-> be nice.
-> 
+	1. Disable Dept on bit_wait_table[] in sched/wait_bit.c
+	   reporting a lot of false positives, which is my fault.
+	   Wait/event for bit_wait_table[] should've been tagged in a
+	   higher layer for better work, which is a future work.
+	   (feedback from Jan Kara)
+	2. Disable Dept on crypto_larval's completion to prevent a false
+	   positive.
 
-tf, pointer to const, the content it pointed to is constant and cannot
-be changed
-directly.
-ttf, it is a variable.
-Firstly, we change its content based on *tf;
-Then, make tf pointed to it;
-Lastly, *tf's content will be changed undirectly.
+Changes from v1:
 
->> +	}
->> +	ata_sff_tf_load(ap, tf);
->> +}
->> +
->> +static const unsigned int zx_bar_sizes[] = {
->> +	8, 4, 8, 4, 16, 256
->> +};
->> +
->> +static const unsigned int zx100s_bar_sizes0[] = {
->> +	8, 4, 8, 4, 16, 0
->> +};
->> +
->> +static const unsigned int zx100s_bar_sizes1[] = {
->> +	8, 4, 0, 0, 16, 0
->> +};
->> +
->> +static int zx_prepare_host(struct pci_dev *pdev, struct ata_host **r_host)
->> +{
->> +	const struct ata_port_info *ppi0[] = {
->> +		&zx100s_port_info, NULL
->> +	};
->> +	const struct ata_port_info *ppi1[] = {
->> +		&zx100s_port_info, &ata_dummy_port_info
->> +	};
->> +	struct ata_host *host;
->> +	int i, rc;
->> +
->> +	if (pdev->device == 0x9002)
->> +		rc = ata_pci_bmdma_prepare_host(pdev, ppi0, &host);
->> +	else if (pdev->device == 0x9003)
->> +		rc = ata_pci_bmdma_prepare_host(pdev, ppi1, &host);
->> +	else
->> +		rc = -EINVAL;
->> +
-> 
-> Remove the blank line here.
-> 
+	1. Fix coding style and typo. (feedback from Steven)
+	2. Distinguish each work context from another in workqueue.
+	3. Skip checking lock acquisition with nest_lock, which is about
+	   correct lock usage that should be checked by Lockdep.
 
-Okay.
+Changes from RFC(v0):
 
->> +	if (rc)
->> +		return rc;
->> +
->> +	*r_host = host;
->> +
->> +	/* 9002 hosts four sata ports as M/S of the two channels */
->> +	/* 9003 hosts two sata ports as M/S of the one channel */
-> 
-> Multi-line comment format:
-> 
-> 	/*
->  	 * ...
-> 	 * ...
-> 	 */
-> 
+	1. Prevent adding a wait tag at prepare_to_wait() but __schedule().
+	   (feedback from Linus and Matthew)
+	2. Use try version at lockdep_acquire_cpus_lock() annotation.
+	3. Distinguish each syscall context from another.
 
-I got it.
+Byungchul Park (25):
+  llist: Move llist_{head,node} definition to types.h
+  dept: Implement Dept(Dependency Tracker)
+  dept: Add single event dependency tracker APIs
+  dept: Add lock dependency tracker APIs
+  dept: Tie to Lockdep and IRQ tracing
+  dept: Add proc knobs to show stats and dependency graph
+  dept: Apply sdt_might_sleep_{start,end}() to
+    wait_for_completion()/complete()
+  dept: Apply sdt_might_sleep_{start,end}() to PG_{locked,writeback}
+    wait
+  dept: Apply sdt_might_sleep_{start,end}() to swait
+  dept: Apply sdt_might_sleep_{start,end}() to waitqueue wait
+  dept: Apply sdt_might_sleep_{start,end}() to hashed-waitqueue wait
+  dept: Distinguish each syscall context from another
+  dept: Distinguish each work from another
+  dept: Add a mechanism to refill the internal memory pools on running
+    out
+  locking/lockdep, cpu/hotplus: Use a weaker annotation in AP thread
+  dept: Apply sdt_might_sleep_{start,end}() to dma fence wait
+  dept: Track timeout waits separately with a new Kconfig
+  dept: Apply timeout consideration to wait_for_completion()/complete()
+  dept: Apply timeout consideration to swait
+  dept: Apply timeout consideration to waitqueue wait
+  dept: Apply timeout consideration to hashed-waitqueue wait
+  dept: Apply timeout consideration to dma fence wait
+  dept: Record the latest one out of consecutive waits of the same class
+  dept: Make Dept able to work with an external wgen
+  dept: Track the potential waits of PG_{locked,writeback}
 
->> +	for (i = 0; i < host->n_ports; i++)
->> +		ata_slave_link_init(host->ports[i]);
->> +
->> +	return 0;
->> +}
->> +
->> +static void zx_configure(struct pci_dev *pdev, int board_id)
->> +{
->> +	u8 tmp8;
->> +
->> +	pci_read_config_byte(pdev, PCI_INTERRUPT_LINE, &tmp8);
->> +	dev_info(&pdev->dev, "routed to hard irq line %d\n",
->> +		 (int) (tmp8 & 0xf0) == 0xf0 ? 0 : tmp8 & 0x0f);
->> +
->> +	/* make sure SATA channels are enabled */
->> +	pci_read_config_byte(pdev, SATA_CHAN_ENAB, &tmp8);
->> +	if ((tmp8 & ALL_PORTS) != ALL_PORTS) {
->> +		dev_dbg(&pdev->dev, "enabling SATA channels (0x%x)\n",
->> +			(int)tmp8);
->> +		tmp8 |= ALL_PORTS;
->> +		pci_write_config_byte(pdev, SATA_CHAN_ENAB, tmp8);
->> +	}
->> +
->> +	/* make sure interrupts for each channel sent to us */
->> +	pci_read_config_byte(pdev, SATA_INT_GATE, &tmp8);
->> +	if ((tmp8 & ALL_PORTS) != ALL_PORTS) {
->> +		dev_dbg(&pdev->dev, "enabling SATA channel interrupts (0x%x)\n",
->> +			(int) tmp8);
->> +		tmp8 |= ALL_PORTS;
->> +		pci_write_config_byte(pdev, SATA_INT_GATE, tmp8);
->> +	}
->> +
->> +	/* make sure native mode is enabled */
->> +	pci_read_config_byte(pdev, SATA_NATIVE_MODE, &tmp8);
->> +	if ((tmp8 & NATIVE_MODE_ALL) != NATIVE_MODE_ALL) {
->> +		dev_dbg(&pdev->dev,
->> +			"enabling SATA channel native mode (0x%x)\n",
->> +			(int) tmp8);
->> +		tmp8 |= NATIVE_MODE_ALL;
->> +		pci_write_config_byte(pdev, SATA_NATIVE_MODE, tmp8);
->> +	}
->> +}
->> +
->> +static int zx_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->> +{
->> +	unsigned int i;
->> +	int rc;
->> +	struct ata_host *host = NULL;
->> +	int board_id = (int) ent->driver_data;
->> +	const unsigned int *bar_sizes;
->> +	int legacy_mode = 0;
->> +
->> +	ata_print_version_once(&pdev->dev, DRV_VERSION);
->> +
->> +	if (pdev->device == 0x9002 || pdev->device == 0x9003) {
->> +		if ((pdev->class >> 8) == PCI_CLASS_STORAGE_IDE) {
->> +			u8 tmp8, mask;
->> +
->> +			/* TODO: What if one channel is in native mode ... */
-> 
-> I do not know... What about it ? If this is not expected to work/not supported,
-> then return an error.
-> 
+ arch/arm64/kernel/syscall.c         |    2 +
+ arch/x86/entry/common.c             |    4 +
+ drivers/dma-buf/dma-fence.c         |    5 +
+ include/linux/completion.h          |   30 +-
+ include/linux/dept.h                |  614 ++++++
+ include/linux/dept_ldt.h            |   77 +
+ include/linux/dept_sdt.h            |   66 +
+ include/linux/hardirq.h             |    3 +
+ include/linux/irqflags.h            |   22 +-
+ include/linux/llist.h               |    8 -
+ include/linux/local_lock_internal.h |    1 +
+ include/linux/lockdep.h             |  102 +-
+ include/linux/lockdep_types.h       |    3 +
+ include/linux/mm_types.h            |    3 +
+ include/linux/mutex.h               |    1 +
+ include/linux/page-flags.h          |  112 +-
+ include/linux/pagemap.h             |    7 +-
+ include/linux/percpu-rwsem.h        |    2 +-
+ include/linux/rtmutex.h             |    1 +
+ include/linux/rwlock_types.h        |    1 +
+ include/linux/rwsem.h               |    1 +
+ include/linux/sched.h               |    3 +
+ include/linux/seqlock.h             |    2 +-
+ include/linux/spinlock_types_raw.h  |    3 +
+ include/linux/srcu.h                |    2 +-
+ include/linux/swait.h               |    3 +
+ include/linux/types.h               |    8 +
+ include/linux/wait.h                |    3 +
+ include/linux/wait_bit.h            |    3 +
+ init/init_task.c                    |    2 +
+ init/main.c                         |    2 +
+ kernel/Makefile                     |    1 +
+ kernel/cpu.c                        |    2 +-
+ kernel/dependency/Makefile          |    4 +
+ kernel/dependency/dept.c            | 3167 +++++++++++++++++++++++++++
+ kernel/dependency/dept_hash.h       |   10 +
+ kernel/dependency/dept_internal.h   |   26 +
+ kernel/dependency/dept_object.h     |   13 +
+ kernel/dependency/dept_proc.c       |   93 +
+ kernel/exit.c                       |    1 +
+ kernel/fork.c                       |    2 +
+ kernel/locking/lockdep.c            |   23 +
+ kernel/module/main.c                |    2 +
+ kernel/sched/completion.c           |    2 +-
+ kernel/sched/core.c                 |    9 +
+ kernel/workqueue.c                  |    3 +
+ lib/Kconfig.debug                   |   37 +
+ lib/locking-selftest.c              |    2 +
+ mm/filemap.c                        |   18 +
+ mm/page_alloc.c                     |    3 +
+ 50 files changed, 4459 insertions(+), 55 deletions(-)
+ create mode 100644 include/linux/dept.h
+ create mode 100644 include/linux/dept_ldt.h
+ create mode 100644 include/linux/dept_sdt.h
+ create mode 100644 kernel/dependency/Makefile
+ create mode 100644 kernel/dependency/dept.c
+ create mode 100644 kernel/dependency/dept_hash.h
+ create mode 100644 kernel/dependency/dept_internal.h
+ create mode 100644 kernel/dependency/dept_object.h
+ create mode 100644 kernel/dependency/dept_proc.c
 
-Yes, you're right. Zhaoxin sata controllers do not support legacy mode.
-So we return an error here.
-
-Based on the latest kernel code, this part may be adjusted like these:
-
-	u8 tmp8, mask = 0;
-     	pci_read_config_byte(pdev, PCI_CLASS_PROG, &tmp8);
-                if (!ata_port_is_dummy(host->ports[0]))
-                        mask |= (1 << 0);
-                if (!ata_port_is_dummy(host->ports[1]))
-                        mask |= (1 << 2);
-                if ((tmp8 & mask) != mask)
-                        legacy_mode = 1;
-
->> +			pci_read_config_byte(pdev, PCI_CLASS_PROG, &tmp8);
->> +			mask = (1 << 2) | (1 << 0);
->> +			if ((tmp8 & mask) != mask)
->> +				legacy_mode = 1;
->> +		}
->> +		if (legacy_mode)
->> +			return -EINVAL;
->> +	}
->> +
->> +	rc = pcim_enable_device(pdev);
->> +	if (rc)
->> +		return rc;
->> +
->> +	if (board_id == zx100s && pdev->device == 0x9002)
->> +		bar_sizes = &zx100s_bar_sizes0[0];
->> +	else if (board_id == zx100s && pdev->device == 0x9003)
->> +		bar_sizes = &zx100s_bar_sizes1[0];
->> +	else
->> +		bar_sizes = &zx_bar_sizes[0];
->> +
->> +	for (i = 0; i < ARRAY_SIZE(zx_bar_sizes); i++) {
->> +		if ((pci_resource_start(pdev, i) == 0) ||
->> +		    (pci_resource_len(pdev, i) < bar_sizes[i])) {
->> +			if (bar_sizes[i] == 0)
->> +				continue;
->> +
->> +			dev_err(&pdev->dev,
->> +				"invalid PCI BAR %u (sz 0x%llx, val 0x%llx)\n",
->> +				i,
->> +				(unsigned long long)pci_resource_start(pdev, i),
->> +				(unsigned long long)pci_resource_len(pdev, i));
->> +
->> +			return -ENODEV;
->> +		}
->> +	}
->> +
->> +	switch (board_id) {
->> +	case zx100s:
->> +		rc = zx_prepare_host(pdev, &host);
->> +		break;
->> +	default:
->> +		rc = -EINVAL;
->> +	}
->> +	if (rc)
->> +		return rc;
->> +
->> +	zx_configure(pdev, board_id);
->> +
->> +	pci_set_master(pdev);
->> +	return ata_host_activate(host, pdev->irq, ata_bmdma_interrupt,
->> +				 IRQF_SHARED, &zx_sht);
->> +}
->> +
->> +module_pci_driver(zx_pci_driver);
->> +
->> +MODULE_AUTHOR("Yanchen:YanchenSun@zhaoxin.com");
->> +MODULE_DESCRIPTION("SCSI low-level driver for ZX SATA controllers");
-> 
-> This is not a scsi driver...
-> 
-
-I treat it as a scsi driver for the following reasons,  which may be not
-accurate.
-1, IO path: vfs->fs->block layer->scsi layer->this driver;
-2, Extracted from the following link:
-"SCSI Lower level drivers (LLDs) are variously called host bus adapter
-(HBA) drivers and host drivers (HD)."
-
-https://www.kernel.org/doc/html/latest/scsi/scsi_mid_low_api.html
-
-Maybe I shall delete it next time.
-
->> +MODULE_LICENSE("GPL");
->> +MODULE_DEVICE_TABLE(pci, zx_pci_tbl);
->> +MODULE_VERSION(DRV_VERSION);
-> 
+-- 
+2.17.1
 

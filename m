@@ -2,207 +2,362 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6ECEF745815
-	for <lists+linux-ide@lfdr.de>; Mon,  3 Jul 2023 11:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE127458D6
+	for <lists+linux-ide@lfdr.de>; Mon,  3 Jul 2023 11:49:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230397AbjGCJJT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 3 Jul 2023 05:09:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56322 "EHLO
+        id S231260AbjGCJtv (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 3 Jul 2023 05:49:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230387AbjGCJJQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 3 Jul 2023 05:09:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ADC21AA;
-        Mon,  3 Jul 2023 02:09:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F40160E8B;
-        Mon,  3 Jul 2023 09:09:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197C8C433C7;
-        Mon,  3 Jul 2023 09:09:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1688375352;
-        bh=2sRwpF29lKch9gUGFa8Xo3m/1780odiTFeHlY6F3e5w=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=euOZ3FtkYVhTFBWJrw+SKaw8HbCJQoG95szohCEiWJ9i6rGUT//UFlcnvcg0BWYkA
-         TRXWKMsujDpj5q5+L7y1/h8SYQLCXusLFJjw/qK3jAvR6kcafZt6alJ2ty8etIzwA6
-         UtRsCJd9FTFwKVbR9mj2nqr6Ml+/ayCJTs9vOEJrBSmK1Iod4pjiZ/GyID5JvmeT1I
-         pqx7Qv++rn9W5aLm99jBnqTQ5rGp1RUXDssY89zM8Nz/n1yDjOZNfjZO/HGxD4F1E9
-         gzDza+ZyuzeuqCTmIdXlqYLn54i15byjN1dPI/KaksuZj+eyg32mzMTpaHYTJ83sqj
-         HTWdepogfb/pQ==
-Message-ID: <a0c5a05f-2836-08ec-8974-431e487fba3c@kernel.org>
-Date:   Mon, 3 Jul 2023 18:09:10 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] ata: libata-scsi: fix bogus SCSI sense after abort
-Content-Language: en-US
-To:     Lorenz Brun <lorenz@brun.one>
-Cc:     Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230623181908.2032764-1-lorenz@brun.one>
- <1b44168a-195d-79bd-50cc-bc8baa0d8f16@kernel.org>
- <187b1b46-470c-8fe2-9969-051abf93199b@suse.de>
- <3373decb-56dc-2e18-5c3b-778f344bab4d@kernel.org>
- <ZY31XR.9LODJ0CBUU6X@brun.one>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <ZY31XR.9LODJ0CBUU6X@brun.one>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231195AbjGCJtr (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 3 Jul 2023 05:49:47 -0400
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7E76C1B2;
+        Mon,  3 Jul 2023 02:49:40 -0700 (PDT)
+X-AuditID: a67dfc5b-d85ff70000001748-d9-64a299b1d587
+From:   Byungchul Park <byungchul@sk.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     kernel_team@skhynix.com, torvalds@linux-foundation.org,
+        damien.lemoal@opensource.wdc.com, linux-ide@vger.kernel.org,
+        adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+        mingo@redhat.com, peterz@infradead.org, will@kernel.org,
+        tglx@linutronix.de, rostedt@goodmis.org, joel@joelfernandes.org,
+        sashal@kernel.org, daniel.vetter@ffwll.ch, duyuyang@gmail.com,
+        johannes.berg@intel.com, tj@kernel.org, tytso@mit.edu,
+        willy@infradead.org, david@fromorbit.com, amir73il@gmail.com,
+        gregkh@linuxfoundation.org, kernel-team@lge.com,
+        linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+        minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+        sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+        penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+        ngupta@vflare.org, linux-block@vger.kernel.org,
+        josef@toxicpanda.com, linux-fsdevel@vger.kernel.org,
+        viro@zeniv.linux.org.uk, jack@suse.cz, jlayton@kernel.org,
+        dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+        dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+        melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+        42.hyeyoo@gmail.com, chris.p.wilson@intel.com,
+        gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+        boqun.feng@gmail.com, longman@redhat.com, hdanton@sina.com,
+        her0gyugyu@gmail.com
+Subject: [PATCH v10 rebased on v6.4 00/25] DEPT(Dependency Tracker)
+Date:   Mon,  3 Jul 2023 18:47:27 +0900
+Message-Id: <20230703094752.79269-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSe0iTexjH/f3eq6vF25LOW0HFQCKj0ih7ioig248gzMqCInK1l1xNjXlJ
+        OxaW09PxEmXpakrNKWup3TaDMlfL8t7FUnamqKVJJ9FpWRst7XS06J8vH/g8z/evL08pSpnZ
+        vCYuUdLFqbRKVkbLPFNLFtsum9WhOW4azueGgvfLGRqKb1Wy0HqzAkFl1SkMA3Wb4R/fEIKx
+        5y8pMBS0Iijp7aagqr4HgcN6moW2/mnQ7h1hoakgh4WM0lssvBocx9BVmI+hwrYVWs6ZMTj9
+        /9JgGGChyJCBJ+IDBr+lnANLejD0WY0cjPeGQVOPiwFH5yK4fKWLhRpHEw319/owtFUXs9BT
+        +YOBlvpGGlrP5zFwY9jMwqDPQoHFO8LBa6cJw239RFHW5/8YaMhzYsgqu4OhveMBgodn3mKw
+        VbpYeOIdwmC3FVDw7Vodgr6zHg4yc/0cFJ06iyAns5CGl98bGNB3rYCxr8XsutXkydAIRfT2
+        Y8ThM9Gk2SyS+8ZujugfdnLEZEsidmsIKa0ZwKRk1MsQW/nfLLGN5nMk29OOyfCLFxxpvDRG
+        k/52A942Z49sjVrSapIl3dK10bKYrIo6fLR6X4rpqx+no6GN2SiQF4XlovFRFfObXe983CSz
+        wgLR7fZTkxwkzBftee8nbmQ8Jfw1RbR+fM5OihnCevGN8cJPpoVg0Vmt/8lyYYXosmawv0rn
+        iRW3ndTksyh84cVPD4a5X2KW+Njqps+hKSYUUI4UmrjkWJVGu3xJTGqcJmXJwfhYG5qYjuXE
+        +N57aLR1Ry0SeKScKnf/WaJWMKrkhNTYWiTylDJIntF7Va2Qq1WpxyVd/H5dklZKqEVzeFr5
+        h3yZ75haIRxSJUpHJOmopPttMR84Ox0lPXV3XoxcWPs5bYZGfNW2K9R48m50AymYGxIcC/Ok
+        6OzTERHdG8febyoLf7rFXBjYkesYfGfvXbimY/pcT3PLqsRZ4a7xdc3bV0aOmA4HLc2cGblh
+        lSdqxyJt9U1/mON14YH6xk/SzpVl96NqnqW5v6XVbf8RYIjID0jpN4Rfj9odr6QTYlRhIZQu
+        QfU/cnbScjYDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSf0zMfxzHvd+fz+f9+XTfjo9kPvhuOG6MoazmNb5fsxm9Z/N7k9naOe4z
+        3VTsjkixuLv4RlbspB+4wrnVUe7a0A9OrZLWD0piidLQlOjb3Trl+1XMP889tsf2+OspMEEW
+        boagjzsoG+K0MSqiYBUbV5oW38nK14VYBudBxtkQ8A6dZiG3yEmg+XYhAmfJCQy91RHwwteH
+        YKShiYFMazOCvK7XDJTUdCKocJwk0NIzEVq9AwTqrGcImK4VEXj6aRRDx8XzGApdG6A+PR+D
+        x/+BhcxeAjmZJjw2HzH47QU82JPV0O3I5mG0KxTqOts4qLpcx0HFq0WQdaWDQHlFHQs197ox
+        tJTmEuh0/s9Bfc1jFpoz0ji49TmfwCefnQG7d4CHZx4bhmLzWC3l3/84qE3zYEi5fgdD68sy
+        BA9Ov8XgcrYRqPL2YXC7rAx8u1mNoPtcPw+Ws34eck6cQ3DGcpGFpu+1HJg7wmFkOJesXkmr
+        +gYYanYfphU+G0uf5Ev0fvZrnpofvOKpzXWIuh0L6bXyXkzzBr0cdRX8Q6hr8DxPU/tbMf3c
+        2MjTx5dGWNrTmok3/7lT8ZdOjtHHy4alq3YpolMKq/GB0qgjtmE/TkZ9a1NRgCCJYVLbOx8/
+        zkScL7W3+5lxDhZnS+6091wqUgiMeOoPyfGlgYyLKeIa6U32hZ/MimrJU2r+yUoxXGpzmMiv
+        6CypsNjDpCPBhiYUoGB9XHysVh8TvsS4LzohTn9kyZ79sS40dg77sdGMe2ioJaISiQJSBSrb
+        E/N0QZw23pgQW4kkgVEFK01dV3VBSp024ahs2K8xHIqRjZVopsCqpinXR8q7gsS92oPyPlk+
+        IBt+WywEzEhG7nTzjb+HNe2a0AXLv0yKiCzwB3gu5ExbFDa3AQVMT5xaNkwat876trY2cHv9
+        sas71kVpVleXlt9ctS1sTv/x2jL6cIWrZkoP6zv5sLvFavlapOr9QBOztkUliUWPkq0a4fkQ
+        TdqUFLLl2ZrvzmVNA2p1NL6bBIER9pKezepNk3erWGO0NnQhYzBqfwBW2XDWGAMAAA==
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 6/30/23 04:11, Lorenz Brun wrote:
-> 
-> Am Mo, 26. Jun 2023 um 16:51:47 +09:00:00 schrieb Damien Le Moal 
-> <dlemoal@kernel.org>:
->> On 6/26/23 16:46, Hannes Reinecke wrote:
->>>  On 6/26/23 09:29, Damien Le Moal wrote:
->>>>  On 6/24/23 03:19, Lorenz Brun wrote:
->>>>>  Since commit 058e55e120ca which fixed that commands without valid
->>>>>  error/status codes did not result in any sense error, the 
->>>>> returned sense
->>>>>  errors were completely bogus as ata_to_sense_error did not have 
->>>>> valid
->>>>>  inputs in the first place.
->>>>>
->>>>>  For example the following ATA error
->>>>>
->>>>>  exception Emask 0x10 SAct 0x20c000 SErr 0x280100 action 0x6 frozen
->>>>>  irq_stat 0x08000000, interface fatal error
->>>>>  SError: { UnrecovData 10B8B BadCRC }
->>>>>  failed command: READ FPDMA QUEUED
->>>>>  cmd 60/e0:70:20:0a:00/00:00:00:00:00/40 tag 14 ncq dma 114688 in
->>>>>  res 40/00:ac:20:5e:50/00:00:5d:01:00/40 Emask 0x10 (ATA bus error)
->>>>>  status: { DRDY }
+From now on, I can work on LKML again! I'm wondering if DEPT has been
+helping kernel debugging well even though it's a form of patches yet.
 
-If the command error field is non-zero, there should be a line printed here
-"error: { ... }". See the end of the function ata_eh_link_report(). Given that
-you do not seem to be getting this message, I assume it is 0. However, your
-status field only has ATA_DRDY set (0x40). With that, the function
-ata_to_sense_error() hits the second entry of stat_table, which is:
+I'm happy to see that DEPT reports a real problem in practice. See:
 
-{0x40,          ILLEGAL_REQUEST, 0x21, 0x04},
-// Device ready, unaligned write command
+   https://lore.kernel.org/lkml/6383cde5-cf4b-facf-6e07-1378a485657d@I-love.SAKURA.ne.jp/#t
+   https://lore.kernel.org/lkml/1674268856-31807-1-git-send-email-byungchul.park@lge.com/
 
-(This table comments are extremely confusing and need cleanup)
+Nevertheless, I apologize for the lack of document. I promise to add it
+before it gets needed to use DEPT's APIs by users. For now, you can use
+DEPT just with CONFIG_DEPT on.
 
-Hence the sense data error that you see. And if you check SAT section 11.6 (ATA
-Fixed error translation), you will see that this case is not defined in that
-table. In fact, only entry 4 is defined:
+---
 
-{0x04,          RECOVERED_ERROR, 0x11, 0x00},
-// Recovered ECC error    Medium error, recovered
+Hi Linus and folks,
 
-The sense_table table cover the cases for the error field bits, separated from
-the status field bits, which is unlike what SAT defines. Not sure where these
-definitions come from, or if they are accumulated "black magic" from decades of
-dealing with weird ATA devices and adapters. Need to dig on that.
+I've been developing a tool for detecting deadlock possibilities by
+tracking wait/event rather than lock(?) acquisition order to try to
+cover all synchonization machanisms. It's done on v6.4, the latest.
 
-[...]
+Benifit:
 
->>>>  Did you check SATA IO specs and/or AHCI to see if that says 
->>>> anything about these
->>>>  ? And I wonder if we should check if we have something in 
->>>> tf->status and
->>>>  tf->error...
->>>>
->>>  We really should. The above combination of error masks seems pretty
->>>  arbitrary, as actually you do _not_ want to check for there error 
->>> mask,
->>>  but rather for the fact that the sense code is bogus.
->>>  So shouldn't we rather test for that one directly?
-> SCISI / ATA Translation (SAT)-5 has the following to say about it:
-> 
-> A SATL that detects a link reset sequence for a Serial ATA device or 
-> initiates any reset of an ATA device shall
-> establish a unit attention condition on behalf of the emulated logical 
-> unit corresponding to the ATA device with
-> the sense key set to UNIT ATTENTION and the additional sense code set 
-> to POWER ON, RESET, OR BUS
-> DEVICE RESET OCCURRED for the SCSI initiator port associated with each 
-> I_T nexus. The method a SATL
-> uses to detect a link reset sequence on the SATA link is vendor 
-> specific.
-> 
-> I am however not sufficiently familiar with SCSI and especially the 
-> SCSI midlayer in Linux to know how this Unit Attention causes the 
-> requests to be aborted.
+	0. Works with all lock primitives.
+	1. Works with wait_for_completion()/complete().
+	2. Works with 'wait' on PG_locked.
+	3. Works with 'wait' on PG_writeback.
+	4. Works with swait/wakeup.
+	5. Works with waitqueue.
+	6. Works with wait_bit.
+	7. Multiple reports are allowed.
+	8. Deduplication control on multiple reports.
+	9. Withstand false positives thanks to 6.
+	10. Easy to tag any wait/event.
 
-Yes, found that text as well. But my thiniking is that strictly speaking, the
-reset is not initiated by the translation code. It is libata-eh that decide that
-the bad CRC error you are getting is serious enough to warrant a reset. The
-point remain that for that command, the adpater returned an error field not
-having any of the ATA_ICRC | ATA_UNC | ATA_AMNF | ATA_IDNF | ATA_ABORTED bits
-set, and status field only having ATA_DRDY set. Which is weird. I would expect
-ATA_ICRC to be set in error and ATA_ERR to be set in status.
+Future work:
 
-> As a simpler fix I checked which err_maks cause a reset and in that 
-> case report this error. I'd be happier with the proper SAT-5 solution, 
-> but it looks like it would be quite a significant change.
+	0. To make it more stable.
+	1. To separates Dept from Lockdep.
+	2. To improves performance in terms of time and space.
+	3. To use Dept as a dependency engine for Lockdep.
+	4. To add any missing tags of wait/event in the kernel.
+	5. To deduplicate stack trace.
 
-I have a setup that returns:
+How to interpret reports:
 
-[ 1531.680502] ata4: SError: { Proto TrStaTrns UnrecFIS }
+	1. E(event) in each context cannot be triggered because of the
+	   W(wait) that cannot be woken.
+	2. The stack trace helping find the problematic code is located
+	   in each conext's detail.
 
-due to bad data transmission over the wire. But for these failures, I get:
+Thanks,
+Byungchul
 
-[ 1531.728008] ata4.00: status: { DRDY SENSE ERR }
-[ 1531.737741] ata4.00: error: { ICRC ABRT }
+---
 
-Which gives me a hit on the sense_table entry:
+Changes from v9:
 
-/* ICRC|ABRT */         /* NB: ICRC & !ABRT is BBD */
-{0x84,          ABORTED_COMMAND, 0x47, 0x00},
+	1. Fix a bug. SDT tracking didn't work well because of my big
+	   mistake that I should've used waiter's map to indentify its
+	   class but it had been working with waker's one. FYI,
+	   PG_locked and PG_writeback weren't affected. They still
+	   worked well. (reported by YoungJun)
+	
+Changes from v8:
 
-SO an "internal target failure". Which makes more sense than the unaligned write
-error. Not sure why your setup is not more verbose with error and status. What
-adapter are you using ? AHCI ? If yes, which one ? (lspci)
+	1. Fix build error by adding EXPORT_SYMBOL(PG_locked_map) and
+	   EXPORT_SYMBOL(PG_writeback_map) for kernel module build -
+	   appologize for that. (reported by kernel test robot)
+	2. Fix build error by removing header file's circular dependency
+	   that was caused by "atomic.h", "kernel.h" and "irqflags.h",
+	   which I introduced - appolgize for that. (reported by kernel
+	   test robot)
 
-Need to dig further in SATA-IO to see if I can find more hints about how to
-handle this case.
+Changes from v7:
 
-[...]
+	1. Fix a bug that cannot track rwlock dependency properly,
+	   introduced in v7. (reported by Boqun and lockdep selftest)
+	2. Track wait/event of PG_{locked,writeback} more aggressively
+	   assuming that when a bit of PG_{locked,writeback} is cleared
+	   there might be waits on the bit. (reported by Linus, Hillf
+	   and syzbot)
+	3. Fix and clean bad style code e.i. unnecessarily introduced
+	   a randome pattern and so on. (pointed out by Linux)
+	4. Clean code for applying DEPT to wait_for_completion().
 
->> Need to check what SAT says about all this as well... Will do some 
->> spec reading.
->> The default sense code for when we cannot figure out proper sense 
->> based on
->> status and error is ABORTED COMMAND/0/0. That seems good enough to 
->> me. The issue
->> may be that we do not reach that default case when we have bogus 
->> status/error.
->> The test:
->>
->> 	if (qc->err_mask ||
->> 	    tf->status & (ATA_BUSY | ATA_DF | ATA_ERR | ATA_DRQ)) {
->>
->> in ata_gen_ata_sense() is sketchy... Why is that qc->err_mask there ? 
->> It does
->> not seem needed at all. If removed, then we would fall back to 
->> aborted command
->> default.
->  From reading SAT-5 I think most of this function is bogus, but I don't 
-> know enough about the pieces involved to come up with the "correct" fix.
+Changes from v6:
 
-I would not put it as "bogus". It is certainly hard to map this to the specs,
-but I suspect a lot of that is historical reason. Need to dig in git history,
-but most of this may actually predate git :)
+	1. Tie to task scheduler code to track sleep and try_to_wake_up()
+	   assuming sleeps cause waits, try_to_wake_up()s would be the
+	   events that those are waiting for, of course with proper DEPT
+	   annotations, sdt_might_sleep_weak(), sdt_might_sleep_strong()
+	   and so on. For these cases, class is classified at sleep
+	   entrance rather than the synchronization initialization code.
+	   Which would extremely reduce false alarms.
+	2. Remove the DEPT associated instance in each page struct for
+	   tracking dependencies by PG_locked and PG_writeback thanks to
+	   the 1. work above.
+	3. Introduce CONFIG_DEPT_AGGRESIVE_TIMEOUT_WAIT to suppress
+	   reports that waits with timeout set are involved, for those
+	   who don't like verbose reporting.
+	4. Add a mechanism to refill the internal memory pools on
+	   running out so that DEPT could keep working as long as free
+	   memory is available in the system.
+	5. Re-enable tracking hashed-waitqueue wait. That's going to no
+	   longer generate false positives because class is classified
+	   at sleep entrance rather than the waitqueue initailization.
+	6. Refactor to make it easier to port onto each new version of
+	   the kernel.
+	7. Apply DEPT to dma fence.
+	8. Do trivial optimizaitions.
 
-Let me dig further to see if I can come up with something. Can you reliably
-trigger these errors for testing any patch ?
+Changes from v5:
+
+	1. Use just pr_warn_once() rather than WARN_ONCE() on the lack
+	   of internal resources because WARN_*() printing stacktrace is
+	   too much for informing the lack. (feedback from Ted, Hyeonggon)
+	2. Fix trivial bugs like missing initializing a struct before
+	   using it.
+	3. Assign a different class per task when handling onstack
+	   variables for waitqueue or the like. Which makes Dept
+	   distinguish between onstack variables of different tasks so
+	   as to prevent false positives. (reported by Hyeonggon)
+	4. Make Dept aware of even raw_local_irq_*() to prevent false
+	   positives. (reported by Hyeonggon)
+	5. Don't consider dependencies between the events that might be
+	   triggered within __schedule() and the waits that requires
+	    __schedule(), real ones. (reported by Hyeonggon)
+	6. Unstage the staged wait that has prepare_to_wait_event()'ed
+	   *and* yet to get to __schedule(), if we encounter __schedule()
+	   in-between for another sleep, which is possible if e.g. a
+	   mutex_lock() exists in 'condition' of ___wait_event().
+	7. Turn on CONFIG_PROVE_LOCKING when CONFIG_DEPT is on, to rely
+	   on the hardirq and softirq entrance tracing to make Dept more
+	   portable for now.
+
+Changes from v4:
+
+	1. Fix some bugs that produce false alarms.
+	2. Distinguish each syscall context from another *for arm64*.
+	3. Make it not warn it but just print it in case Dept ring
+	   buffer gets exhausted. (feedback from Hyeonggon)
+	4. Explicitely describe "EXPERIMENTAL" and "Dept might produce
+	   false positive reports" in Kconfig. (feedback from Ted)
+
+Changes from v3:
+
+	1. Dept shouldn't create dependencies between different depths
+	   of a class that were indicated by *_lock_nested(). Dept
+	   normally doesn't but it does once another lock class comes
+	   in. So fixed it. (feedback from Hyeonggon)
+	2. Dept considered a wait as a real wait once getting to
+	   __schedule() even if it has been set to TASK_RUNNING by wake
+	   up sources in advance. Fixed it so that Dept doesn't consider
+	   the case as a real wait. (feedback from Jan Kara)
+	3. Stop tracking dependencies with a map once the event
+	   associated with the map has been handled. Dept will start to
+	   work with the map again, on the next sleep.
+
+Changes from v2:
+
+	1. Disable Dept on bit_wait_table[] in sched/wait_bit.c
+	   reporting a lot of false positives, which is my fault.
+	   Wait/event for bit_wait_table[] should've been tagged in a
+	   higher layer for better work, which is a future work.
+	   (feedback from Jan Kara)
+	2. Disable Dept on crypto_larval's completion to prevent a false
+	   positive.
+
+Changes from v1:
+
+	1. Fix coding style and typo. (feedback from Steven)
+	2. Distinguish each work context from another in workqueue.
+	3. Skip checking lock acquisition with nest_lock, which is about
+	   correct lock usage that should be checked by Lockdep.
+
+Changes from RFC(v0):
+
+	1. Prevent adding a wait tag at prepare_to_wait() but __schedule().
+	   (feedback from Linus and Matthew)
+	2. Use try version at lockdep_acquire_cpus_lock() annotation.
+	3. Distinguish each syscall context from another.
+
+Byungchul Park (25):
+  llist: Move llist_{head,node} definition to types.h
+  dept: Implement Dept(Dependency Tracker)
+  dept: Add single event dependency tracker APIs
+  dept: Add lock dependency tracker APIs
+  dept: Tie to Lockdep and IRQ tracing
+  dept: Add proc knobs to show stats and dependency graph
+  dept: Apply sdt_might_sleep_{start,end}() to
+    wait_for_completion()/complete()
+  dept: Apply sdt_might_sleep_{start,end}() to PG_{locked,writeback}
+    wait
+  dept: Apply sdt_might_sleep_{start,end}() to swait
+  dept: Apply sdt_might_sleep_{start,end}() to waitqueue wait
+  dept: Apply sdt_might_sleep_{start,end}() to hashed-waitqueue wait
+  dept: Distinguish each syscall context from another
+  dept: Distinguish each work from another
+  dept: Add a mechanism to refill the internal memory pools on running
+    out
+  locking/lockdep, cpu/hotplus: Use a weaker annotation in AP thread
+  dept: Apply sdt_might_sleep_{start,end}() to dma fence wait
+  dept: Track timeout waits separately with a new Kconfig
+  dept: Apply timeout consideration to wait_for_completion()/complete()
+  dept: Apply timeout consideration to swait
+  dept: Apply timeout consideration to waitqueue wait
+  dept: Apply timeout consideration to hashed-waitqueue wait
+  dept: Apply timeout consideration to dma fence wait
+  dept: Record the latest one out of consecutive waits of the same class
+  dept: Make Dept able to work with an external wgen
+  dept: Track the potential waits of PG_{locked,writeback}
+
+ arch/arm64/kernel/syscall.c         |    2 +
+ arch/x86/entry/common.c             |    4 +
+ drivers/dma-buf/dma-fence.c         |    5 +
+ include/linux/completion.h          |   30 +-
+ include/linux/dept.h                |  614 ++++++
+ include/linux/dept_ldt.h            |   77 +
+ include/linux/dept_sdt.h            |   66 +
+ include/linux/hardirq.h             |    3 +
+ include/linux/irqflags.h            |   22 +-
+ include/linux/llist.h               |    8 -
+ include/linux/local_lock_internal.h |    1 +
+ include/linux/lockdep.h             |  102 +-
+ include/linux/lockdep_types.h       |    3 +
+ include/linux/mm_types.h            |    3 +
+ include/linux/mutex.h               |    1 +
+ include/linux/page-flags.h          |  112 +-
+ include/linux/pagemap.h             |    7 +-
+ include/linux/percpu-rwsem.h        |    2 +-
+ include/linux/rtmutex.h             |    1 +
+ include/linux/rwlock_types.h        |    1 +
+ include/linux/rwsem.h               |    1 +
+ include/linux/sched.h               |    3 +
+ include/linux/seqlock.h             |    2 +-
+ include/linux/spinlock_types_raw.h  |    3 +
+ include/linux/srcu.h                |    2 +-
+ include/linux/swait.h               |    3 +
+ include/linux/types.h               |    8 +
+ include/linux/wait.h                |    3 +
+ include/linux/wait_bit.h            |    3 +
+ init/init_task.c                    |    2 +
+ init/main.c                         |    2 +
+ kernel/Makefile                     |    1 +
+ kernel/cpu.c                        |    2 +-
+ kernel/dependency/Makefile          |    4 +
+ kernel/dependency/dept.c            | 3167 +++++++++++++++++++++++++++
+ kernel/dependency/dept_hash.h       |   10 +
+ kernel/dependency/dept_internal.h   |   26 +
+ kernel/dependency/dept_object.h     |   13 +
+ kernel/dependency/dept_proc.c       |   93 +
+ kernel/exit.c                       |    1 +
+ kernel/fork.c                       |    2 +
+ kernel/locking/lockdep.c            |   23 +
+ kernel/module/main.c                |    4 +
+ kernel/sched/completion.c           |    2 +-
+ kernel/sched/core.c                 |    9 +
+ kernel/workqueue.c                  |    3 +
+ lib/Kconfig.debug                   |   37 +
+ lib/locking-selftest.c              |    2 +
+ mm/filemap.c                        |   18 +
+ mm/mm_init.c                        |    3 +
+ 50 files changed, 4461 insertions(+), 55 deletions(-)
+ create mode 100644 include/linux/dept.h
+ create mode 100644 include/linux/dept_ldt.h
+ create mode 100644 include/linux/dept_sdt.h
+ create mode 100644 kernel/dependency/Makefile
+ create mode 100644 kernel/dependency/dept.c
+ create mode 100644 kernel/dependency/dept_hash.h
+ create mode 100644 kernel/dependency/dept_internal.h
+ create mode 100644 kernel/dependency/dept_object.h
+ create mode 100644 kernel/dependency/dept_proc.c
 
 -- 
-Damien Le Moal
-Western Digital Research
+2.17.1
 

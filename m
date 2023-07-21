@@ -2,128 +2,138 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D663875CF86
-	for <lists+linux-ide@lfdr.de>; Fri, 21 Jul 2023 18:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F8D175CF75
+	for <lists+linux-ide@lfdr.de>; Fri, 21 Jul 2023 18:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230457AbjGUQf4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 21 Jul 2023 12:35:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36430 "EHLO
+        id S231189AbjGUQep (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 21 Jul 2023 12:34:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231261AbjGUQfo (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 21 Jul 2023 12:35:44 -0400
-Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1FDC3C01;
-        Fri, 21 Jul 2023 09:35:24 -0700 (PDT)
-X-IronPort-AV: E=McAfee;i="6600,9927,10778"; a="370668031"
-X-IronPort-AV: E=Sophos;i="6.01,222,1684825200"; 
-   d="scan'208";a="370668031"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jul 2023 09:32:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="868287915"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP; 21 Jul 2023 09:32:08 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andy@kernel.org>)
-        id 1qMt2w-00Ca3G-35;
-        Fri, 21 Jul 2023 19:32:02 +0300
-Date:   Fri, 21 Jul 2023 19:32:02 +0300
-From:   Andy Shevchenko <andy@kernel.org>
-To:     nikita.shubin@maquefel.me
-Cc:     Hartley Sweeten <hsweeten@visionengravers.com>,
-        Lennert Buytenhek <kernel@wantstofly.org>,
-        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Lukasz Majewski <lukma@denx.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <brgl@bgdev.pl>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sebastian Reichel <sre@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Mark Brown <broonie@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Olof Johansson <olof@lixom.net>,
-        soc@kernel.org, Liam Girdwood <lgirdwood@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Michael Peters <mpeters@embeddedts.com>,
-        Kris Bahnsen <kris@embeddedts.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-gpio@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-clk@vger.kernel.org, linux-rtc@vger.kernel.org,
-        linux-watchdog@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-        netdev@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-mtd@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-input@vger.kernel.org, alsa-devel@alsa-project.org,
-        Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCH v3 20/42] net: cirrus: add DT support for Cirrus EP93xx
-Message-ID: <ZLqzAhWoZ2h7kNEP@smile.fi.intel.com>
-References: <20230605-ep93xx-v3-0-3d63a5f1103e@maquefel.me>
- <20230605-ep93xx-v3-20-3d63a5f1103e@maquefel.me>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230605-ep93xx-v3-20-3d63a5f1103e@maquefel.me>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S231172AbjGUQed (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 21 Jul 2023 12:34:33 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B834F3AB6;
+        Fri, 21 Jul 2023 09:33:54 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2b743161832so31314741fa.1;
+        Fri, 21 Jul 2023 09:33:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1689957205; x=1690562005;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=B+5Ukit2FxcxgjHkUY+QbDH5w+IxYlIfRyHm82V8uec=;
+        b=Q39l2eKbnb4bKRrccYeIw8M5cruOCW1qmp6yBeSDcOB4+bp8OYHg0ZVoT48SbZrqMQ
+         yzooZ9qqTYt/rw7QLtkUe4m+kOjff89cst6XrkBOmSwRLX0YH/bh/ERlik3W2cVhs0wa
+         7+89mNnuahwT6GiMIF7toVqXxsdE7QP7YMnPKWdnayHrFE/PDN1NWYtTpD9Ack8VBdQj
+         lWFX3Q8wvHaJm9NkeOyxWj80SaZ3y2+zlOH7947qIU/TFxmG91saDUkPatEtCz1PnG8Q
+         FkOimJ3Ns65T03DcSagCMZt034dHRTjQ4FXImwwUbT5rQZMBqFvxB2imV4MaFxhPPyTg
+         2LCw==
+X-Gm-Message-State: ABy/qLY14Z8av5xpls1F0lddBcYmYaqTu5ni4A0IcPbfGGleduUglzZz
+        Y31n9ia8496nXpYoyxafXfnnS3cyb0kPUA==
+X-Google-Smtp-Source: APBJJlHf1l1ZLxwEZmRg7cHHrXpQOpf6fwl/G+MJb0ZISOlLpWVSJav3MsD1ue9mJ9hNFMug1ADu1Q==
+X-Received: by 2002:a2e:b008:0:b0:2b6:ce35:2e9e with SMTP id y8-20020a2eb008000000b002b6ce352e9emr1969589ljk.44.1689957204835;
+        Fri, 21 Jul 2023 09:33:24 -0700 (PDT)
+Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se. [85.226.240.245])
+        by smtp.gmail.com with ESMTPSA id e7-20020a2e8ec7000000b002b6ece2456csm1009196ljl.121.2023.07.21.09.33.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jul 2023 09:33:24 -0700 (PDT)
+Received: by flawful.org (Postfix, from userid 112)
+        id 789C33F57; Fri, 21 Jul 2023 18:33:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+        t=1689957203; bh=IcQXzCMZzGegOEzqm5XLHIAK+6jYi9nCTuu4TpnQApE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=dhVhW3AlonK3565XUJ1UAq7HPVWRzknJYcaJd65hmG9jUft/4lZBR0qphqhlXz6Ke
+         bOjcHdln+gwtChgvTSxUVR2VOZZLEsXYL9fV2nXlCWjRynPzBgExTVbigCtooJ1/wM
+         6K25MWd2+ZITY+r+Ji28mrvP/qTN8h+En3i0F/qw=
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
+Received: from x1-carbon.lan (OpenWrt.lan [192.168.1.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by flawful.org (Postfix) with ESMTPSA id 18E683F16;
+        Fri, 21 Jul 2023 18:32:40 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
+        t=1689957169; bh=IcQXzCMZzGegOEzqm5XLHIAK+6jYi9nCTuu4TpnQApE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qmzNXZjH1eP/dm9bcXvNimEeJDtL2439cA0ftKI5uEOiOC71CMZmV2YieTW1Bu5qK
+         ovyZforzqsK3241/3la2fMuftrtvxK3hg517+8x8qvMNjofO/2lqfHGOkfW59SXKM4
+         NTnLEv6QDH0LjIGMHU2yHVJJkZbTJXEfs4aB/AUE=
+From:   Niklas Cassel <nks@flawful.org>
+To:     Damien Le Moal <dlemoal@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        John Garry <john.g.garry@oracle.com>,
+        Jason Yan <yanaijie@huawei.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     Hannes Reinecke <hare@suse.com>, linux-ide@vger.kernel.org,
+        linux-scsi@vger.kernel.org, Niklas Cassel <niklas.cassel@wdc.com>,
+        linux-doc@vger.kernel.org
+Subject: [PATCH v3 0/9] libata: remove references to 'old' error handler
+Date:   Fri, 21 Jul 2023 18:32:11 +0200
+Message-ID: <20230721163229.399676-1-nks@flawful.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Jul 20, 2023 at 02:29:20PM +0300, Nikita Shubin via B4 Relay wrote:
-> From: Nikita Shubin <nikita.shubin@maquefel.me>
-> 
-> - add OF ID match table
-> - get phy_id from the device tree, as part of mdio
-> - copy_addr is now always used, as there is no SoC/board that aren't
-> - dropped platform header
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-...
+Hi all,
 
-> +	base_addr = ioremap(mem->start, resource_size(mem));
-> +	if (!base_addr)
-> +		return dev_err_probe(&pdev->dev, -EIO, "Failed to ioremap ethernet registers\n");
-> +
-> +	np = of_parse_phandle(pdev->dev.of_node, "phy-handle", 0);
+now that the ipr driver has been modified to not hook into libata
+all drivers now use the 'new' error handler, so we can remove any
+references to it. And do a general cleanup to remove callbacks
+which are no longer needed.
 
-Isn't it something which is done in PHY core should do for you?
-Maybe Andrew Lunn can comment on this.
 
-> +	if (!np)
+Changes since v2:
+-Fixed comments from John, thank you John!
+-Fixed comments from Jason, thank you Jason!
+-Patch 9/9 which actually removed the old eh callbacks from
+ struct ata_port_operations is new in V3.
+-Updated the documentation to remove references to functions
+ that do no longer exist.
+-Updated documentation to be in line with the current libata
+ EH code.
 
-Yeah, right, let's leak mapped IO address space...
-And so on.
 
-> +		return dev_err_probe(&pdev->dev, -ENODEV, "Please provide \"phy-handle\"\n");
+Hannes Reinecke (6):
+  ata: remove reference to non-existing error_handler()
+  ata,scsi: remove ata_sas_port_{start,stop} callbacks
+  ata,scsi: remove ata_sas_port_destroy()
+  ata: remove ata_sas_sync_probe()
+  ata: inline ata_port_probe()
+  ata,scsi: cleanup __ata_port_probe()
+
+Niklas Cassel (3):
+  ata: sata_sx4: drop already completed TODO
+  ata: remove ata_bus_probe()
+  ata: remove deprecated EH callbacks
+
+ Documentation/driver-api/libata.rst |  38 +--
+ drivers/ata/libata-core.c           | 355 +++++++---------------------
+ drivers/ata/libata-eh.c             | 152 +++++-------
+ drivers/ata/libata-sata.c           |  77 ------
+ drivers/ata/libata-scsi.c           | 161 +------------
+ drivers/ata/libata-sff.c            |  30 +--
+ drivers/ata/libata.h                |   3 -
+ drivers/ata/pata_sl82c105.c         |   3 +-
+ drivers/ata/sata_sx4.c              |   1 -
+ drivers/scsi/libsas/sas_ata.c       |   6 +-
+ drivers/scsi/libsas/sas_discover.c  |   2 +-
+ include/linux/libata.h              |  15 +-
+ 12 files changed, 181 insertions(+), 662 deletions(-)
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.41.0
 

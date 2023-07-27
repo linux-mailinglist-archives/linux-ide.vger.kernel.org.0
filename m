@@ -2,83 +2,65 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52F257651B3
-	for <lists+linux-ide@lfdr.de>; Thu, 27 Jul 2023 12:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 215E6766068
+	for <lists+linux-ide@lfdr.de>; Fri, 28 Jul 2023 01:54:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229801AbjG0Ky6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 27 Jul 2023 06:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41942 "EHLO
+        id S229600AbjG0Xyn (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 27 Jul 2023 19:54:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231761AbjG0Ky4 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 27 Jul 2023 06:54:56 -0400
-Received: from mail.skyhub.de (mail.skyhub.de [5.9.137.197])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F36E2696
-        for <linux-ide@vger.kernel.org>; Thu, 27 Jul 2023 03:54:55 -0700 (PDT)
-Received: from mail.alien8.de (mail.alien8.de [IPv6:2a01:4f9:3051:3f93::2])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A19D61EC0D52;
-        Thu, 27 Jul 2023 12:54:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1690455293;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=5Vew3gv93sZeuVPW9h/If9SqB6vF7uze8gARGuyUYU4=;
-        b=i6Xb9ODDP9V5rGcfOtRIoeAgf3VySpSP1MeAWFv4nMPAxJ7S6u72cwyyvOSY2ZXO8pGubD
-        qDuss7Hjz3DfLNpE8Tm3ehrybXnVZ/CVHBe3SmzxvwCtc7DeMcUWs9Z++E27pOrHpRhdOL
-        MVcAUpF9Jrv1r9Tl6SH+u/yaJf1H8/Q=
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-        header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id EQL-U382SWod; Thu, 27 Jul 2023 10:54:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1690455289; bh=5Vew3gv93sZeuVPW9h/If9SqB6vF7uze8gARGuyUYU4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VJVl0iGb0d9aNkMJqPYIqvxuTl3sTiYfecnaO6Yge3Rs+G+k+LC7hIKGxz0yS+CTP
-         pPWwG/xbf7++T9HXnI2N1LoaTQLtJ9isjdvcu4Ia1GGmy3HHoZZdnnwlCV1vdzfm3X
-         O+nC06LVtTwYZR8HfxFYEYnT8CYvHnHi+bbNSCEsb5rHae9dRZZKA2Wl6J6RRINVUd
-         CEAEZglpHoo3GqEDjN3E5/rb5kH8SDGUgHWkZk+bTKlf7vCdUcPWk/Go//Q0kGf9QN
-         LH1pqAzjOuNBeF3VaBogkWxtgXo3Ucyb5d4yUqkLh2wyRQw4SsyTf+5KnTuOuwhWiH
-         daez6+yzM25phZUQImZWruFN1ZqOURsi6at3TpuubSIg1KMyqQs2H8+4IpjfDf64xH
-         DaWcU4+XFg3uHaG3493lyn3QEvH+kEi1xmnRrc3b5IYL+tq4D46tdd4DC0PEh1zb8J
-         etcJKJbP3cLLhtu9KFoFBlme1rDh0k6t/pUBVmIN2M6dIhwPW7nVBoIzv58l7EjeNG
-         W9ii1gGHxqZzsF88gUYPcuvWs+1MomgXGeNUrZSIzR4rQxoYVmI7uv1SxQ041CPL7l
-         drLUdF4hNqFuQnDNd9QH67q5JOcxILIk6XA+G1zhvBFHR1etd5A436jdM3OxGczzTo
-         nWAHBk6tj3ylCnOwqxlJSgVo=
-Received: from zn.tnic (pd9530d32.dip0.t-ipconnect.de [217.83.13.50])
+        with ESMTP id S229539AbjG0Xym (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 27 Jul 2023 19:54:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23379E0
+        for <linux-ide@vger.kernel.org>; Thu, 27 Jul 2023 16:54:42 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AC6DB40E019D;
-        Thu, 27 Jul 2023 10:54:43 +0000 (UTC)
-Date:   Thu, 27 Jul 2023 12:54:39 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Niklas Cassel <nks@flawful.org>
-Cc:     Damien Le Moal <dlemoal@kernel.org>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB55E61F24
+        for <linux-ide@vger.kernel.org>; Thu, 27 Jul 2023 23:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F73BC433C8;
+        Thu, 27 Jul 2023 23:54:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1690502081;
+        bh=4VcpDwLxvBGwD4UWZHNLM6w62eClU9YfLKmhZb9nE8c=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=dGUqJP1zNqog5TLfn9dSFAhWPf27GZlRNRsihq6BUte4aWbbgGxOmBiTHilPkfEDw
+         7OvhGyOcrITIsz6/zPyL/U09u2MvfkhWZV1CdF4ZWmLuSIJLa7fjuiauYcVy8R8Jpq
+         XC7HPjgP4nVIeKah3vuP7EMicR2rz44BlemsjZpukrfdeEXGy2IJ6hHb8dDxVQcGji
+         tPvnj5bCXhJRK9LsQc5S8sbh57sv1CfIKzgzL4ufi5NtgvO6oD00wwNIAtSHDdfHBQ
+         ItK4oKh+FowVnTQhMHtt9ksc9ibr3vTumjWVzoWhrhtUKny+PpdHMhL/8y1k4E32AG
+         9zElEA4AMpm/g==
+Message-ID: <fde085a6-b212-9b77-2a60-ca9cd5419532@kernel.org>
+Date:   Fri, 28 Jul 2023 08:54:39 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ata: fix when to fetch sense data for successful commands
+Content-Language: en-US
+To:     Niklas Cassel <nks@flawful.org>,
         Niklas Cassel <niklas.cassel@wdc.com>,
         Hannes Reinecke <hare@suse.de>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-ide@vger.kernel.org
-Subject: Re: [PATCH] ata: fix when to fetch sense data for successful commands
-Message-ID: <20230727105439.GHZMJM77d44WK4fsgS@fat_crate.local>
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc:     Borislav Petkov <bp@alien8.de>, linux-ide@vger.kernel.org
 References: <20230723130315.427513-1-nks@flawful.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
 In-Reply-To: <20230723130315.427513-1-nks@flawful.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Sun, Jul 23, 2023 at 03:03:14PM +0200, Niklas Cassel wrote:
+On 7/23/23 22:03, Niklas Cassel wrote:
 > From: Niklas Cassel <niklas.cassel@wdc.com>
 > 
 > The condition to fetch sense data was supposed to be:
@@ -99,16 +81,11 @@ On Sun, Jul 23, 2023 at 03:03:14PM +0200, Niklas Cassel wrote:
 > Reported-by: Borislav Petkov <bp@alien8.de>
 > Closes: https://lore.kernel.org/linux-ide/20230722155621.GIZLv8JbURKzHtKvQE@fat_crate.local/
 > Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
-> ---
->  drivers/ata/libata-core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Looks good, thanks!
+Applied to for-6.5-fixes. Thanks !
 
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
 
 -- 
-Regards/Gruss,
-    Boris.
+Damien Le Moal
+Western Digital Research
 
-https://people.kernel.org/tglx/notes-about-netiquette

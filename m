@@ -2,27 +2,27 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77E4C7681C7
-	for <lists+linux-ide@lfdr.de>; Sat, 29 Jul 2023 22:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63C337681C8
+	for <lists+linux-ide@lfdr.de>; Sat, 29 Jul 2023 22:18:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjG2USS (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 29 Jul 2023 16:18:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
+        id S229572AbjG2UST (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 29 Jul 2023 16:18:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229572AbjG2USQ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Jul 2023 16:18:16 -0400
+        with ESMTP id S229577AbjG2USR (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Jul 2023 16:18:17 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEC611C
-        for <linux-ide@vger.kernel.org>; Sat, 29 Jul 2023 13:18:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4904D1FC4
+        for <linux-ide@vger.kernel.org>; Sat, 29 Jul 2023 13:18:16 -0700 (PDT)
 Received: from localhost.localdomain (178.176.75.102) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 29 Jul
- 2023 23:18:03 +0300
+ 2023 23:18:04 +0300
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 To:     Damien Le Moal <dlemoal@kernel.org>, <linux-ide@vger.kernel.org>
-Subject: [PATCH v2 6/8] ata: libahci: fix parameter type of ahci_exec_polled_cmd()
-Date:   Sat, 29 Jul 2023 23:17:51 +0300
-Message-ID: <20230729201753.37600-7-s.shtylyov@omp.ru>
+Subject: [PATCH v2 7/8] ata: ahci_xgene: fix parameter types of xgene_ahci_poll_reg_val()
+Date:   Sat, 29 Jul 2023 23:17:52 +0300
+Message-ID: <20230729201753.37600-8-s.shtylyov@omp.ru>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20230729201753.37600-1-s.shtylyov@omp.ru>
 References: <20230729201753.37600-1-s.shtylyov@omp.ru>
@@ -48,7 +48,7 @@ X-KSE-AntiSpam-Info: {relay has no DNS name}
 X-KSE-AntiSpam-Info: {SMTP from is not routable}
 X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.75.102 in (user)
  b.barracudacentral.org}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;178.176.75.102:7.1.2
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
 X-KSE-AntiSpam-Info: FromAlignment: s
 X-KSE-AntiSpam-Info: {rdns complete}
 X-KSE-AntiSpam-Info: {fromrtbl complete}
@@ -77,38 +77,31 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-ahci_exec_polled_cmd() passes its 'unsigned long timeout_msec' parameter
-to ata_wait_register() that now takes 'unsigned int' -- eliminate unneeded
-implicit casts, not forgetting about ahci_do_softreset()...
+xgene_ahci_poll_reg_val() passes its 'unsigned long {interval|timeout}'
+params verbatim to ata_{msleep|deadline}() that just take 'unsigned int'
+param for the time intervals in ms -- eliminate unneeded implicit cast...
 
 Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 ---
- drivers/ata/libahci.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/ata/ahci_xgene.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-index ad2bfcbff3bc..e2bacedf28ef 100644
---- a/drivers/ata/libahci.c
-+++ b/drivers/ata/libahci.c
-@@ -1403,7 +1403,7 @@ EXPORT_SYMBOL_GPL(ahci_kick_engine);
- 
- static int ahci_exec_polled_cmd(struct ata_port *ap, int pmp,
- 				struct ata_taskfile *tf, int is_cmd, u16 flags,
--				unsigned long timeout_msec)
-+				unsigned int timeout_msec)
+diff --git a/drivers/ata/ahci_xgene.c b/drivers/ata/ahci_xgene.c
+index 8e88c86a2a78..ccef5e63bdf9 100644
+--- a/drivers/ata/ahci_xgene.c
++++ b/drivers/ata/ahci_xgene.c
+@@ -110,9 +110,8 @@ static int xgene_ahci_init_memram(struct xgene_ahci_context *ctx)
+  * @timeout : timeout for achieving the value.
+  */
+ static int xgene_ahci_poll_reg_val(struct ata_port *ap,
+-				   void __iomem *reg, unsigned
+-				   int val, unsigned long interval,
+-				   unsigned long timeout)
++				   void __iomem *reg, unsigned int val,
++				   unsigned int interval, unsigned int timeout)
  {
- 	const u32 cmd_fis_len = 5; /* five dwords */
- 	struct ahci_port_priv *pp = ap->private_data;
-@@ -1448,7 +1448,8 @@ int ahci_do_softreset(struct ata_link *link, unsigned int *class,
- 	struct ahci_host_priv *hpriv = ap->host->private_data;
- 	struct ahci_port_priv *pp = ap->private_data;
- 	const char *reason = NULL;
--	unsigned long now, msecs;
-+	unsigned long now;
-+	unsigned int msecs;
- 	struct ata_taskfile tf;
- 	bool fbs_disabled = false;
- 	int rc;
+ 	unsigned long deadline;
+ 	unsigned int tmp;
 -- 
 2.26.3
 

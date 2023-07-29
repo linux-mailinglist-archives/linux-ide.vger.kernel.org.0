@@ -2,78 +2,114 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12A34767C34
-	for <lists+linux-ide@lfdr.de>; Sat, 29 Jul 2023 06:55:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D82D17681C1
+	for <lists+linux-ide@lfdr.de>; Sat, 29 Jul 2023 22:18:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230054AbjG2Ezg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sat, 29 Jul 2023 00:55:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57750 "EHLO
+        id S229463AbjG2USJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 29 Jul 2023 16:18:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229617AbjG2Ezf (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Jul 2023 00:55:35 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C08449E0
-        for <linux-ide@vger.kernel.org>; Fri, 28 Jul 2023 21:55:34 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99bcd6c0282so385802466b.1
-        for <linux-ide@vger.kernel.org>; Fri, 28 Jul 2023 21:55:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690606533; x=1691211333;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RE5l1VpxCufAhFhvUtJmOdSBkyXi7tvoVHorDEIVEKk=;
-        b=nxd6zkfhRa77k/sVEhnV9dll8oNuxMxY0QjqxWyiNvbQhxby7vUsDAAGI9GZuaXRQX
-         /XxSTurUjetIvhkboz3T/QhdQzMnWHwQK3d+ZPXkI3CmGkAhNcZh6eg/9aEK7/oixX8u
-         Zmv98XBTxAwMaoxsW7LsdvAQU+uBg2eJK45woj8WewwW24ocJeeLTovYEcZSiaas39NO
-         Ph6RSszsjSVpyC3drSnjf4MYL9FzPlKNIed+vNcELJdU/4g6eOAPdMA9Ym5xwh1Y7kPS
-         3DDAvJJ3GowOh7CE7pfIp6h7/azpsDwmxWgFzihEPDaAwFeYOJy/L38sWIFJddRzIJob
-         Rlrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690606533; x=1691211333;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RE5l1VpxCufAhFhvUtJmOdSBkyXi7tvoVHorDEIVEKk=;
-        b=iXw/23YiAjrLq4k0wk/uZe/UaVEgL+V6yv2SWoD7pP8fq8FdWB4kvn4eJyrAmisaM8
-         NI1h+Tg28BKCbRXO0H2QFwBtwkZul4Kd/Qdk4MSxd97+BiZJhXB6z61WXm59h86ho+E4
-         9o5tlmYRlkhUzvDUO00EOQzYS5wOyQTdjd8TOrS+RVPXdJhgtllSaToOhhJ6ceM8LOrS
-         C8v0LPdy/ymWai5Ipig+5vwNyFsxA1IofdUa9P2m3/RKXbafkRM1XaMkXWbnmlu0CRyB
-         o8UZs2llqLZMjnajpf29Je+jJ9LTNqEXnexFhbBsq+joym0/V9mIxMY2kE08oylXc15g
-         UvVg==
-X-Gm-Message-State: ABy/qLbDLzqddBhQ6NMQTW/b8q2d5MTCexrNUcheAuh0nxnhmEBiLnbQ
-        w51FhyP5M4nr06d6Q0S+3KKpWcEx9uRQVZLLAHc=
-X-Google-Smtp-Source: APBJJlHUUa4spVV0ZJyciOkfr4OHYfgfO/iKkzi1vIWABHPQ1E2QNw8x6qCNgIqNPx2M8FQZqqOqo9SiUSw5JHWd8wE=
-X-Received: by 2002:a17:907:7854:b0:957:2e48:5657 with SMTP id
- lb20-20020a170907785400b009572e485657mr1180515ejc.68.1690606532423; Fri, 28
- Jul 2023 21:55:32 -0700 (PDT)
+        with ESMTP id S229448AbjG2USI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Jul 2023 16:18:08 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF8BE11C
+        for <linux-ide@vger.kernel.org>; Sat, 29 Jul 2023 13:18:06 -0700 (PDT)
+Received: from localhost.localdomain (178.176.75.102) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 29 Jul
+ 2023 23:17:59 +0300
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+To:     Damien Le Moal <dlemoal@kernel.org>, <linux-ide@vger.kernel.org>
+Subject: [PATCH v2 0/8] Fix the remaining sloppy timeout typing in libata
+Date:   Sat, 29 Jul 2023 23:17:45 +0300
+Message-ID: <20230729201753.37600-1-s.shtylyov@omp.ru>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-Received: by 2002:a05:6f02:431a:b0:54:11f1:1129 with HTTP; Fri, 28 Jul 2023
- 21:55:31 -0700 (PDT)
-Reply-To: bintu37999@gmail.com
-From:   BINTU FELICIA <bintu561@gmail.com>
-Date:   Sat, 29 Jul 2023 05:55:31 +0100
-Message-ID: <CA+j4OhMtq3Dnmgv8yhPOHNX_OxGMYShx34ia0Fh8Tx8vbaKXpQ@mail.gmail.com>
-Subject: HELLO,.....
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [178.176.75.102]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 07/29/2023 19:54:20
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 178952 [Jul 29 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 526 526 7a6a9b19f6b9b3921b5701490f189af0e0cd5310
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.75.102 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;178.176.75.102:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: {rdns complete}
+X-KSE-AntiSpam-Info: {fromrtbl complete}
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.102
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 07/29/2023 19:59:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 7/29/2023 4:55:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=1.4 required=5.0 tests=BAYES_00,RCVD_IN_SBL_CSS,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-How are you today? I hope you are fine. My name is Miss
-Bintu Felicia . l am single looking for honest and nice
-person whom i can partner with . I don't care about
-your color, ethnicity, Status or Sex. Upon your reply to
-this mail I will tell you more about myself and send you
-more of my picture .I am sending you this beautiful mail,
-with a wish for much happiness.
+Here are 8 patches against the 'for-next' branch of Damien's 'libata.git' repo.
 
-Warm regards,
+The libata code still often uses the 'unsigned long' type for the millisecond
+timeouts, while the kernel functions like msecs_to_jiffies() or msleep() only
+take 'unsigned int' parameters for those. I've started fixing the timeout types
+from ata_exec_internal[_sg]() that tripped the Svace static analyzer and posted
+couple patches, promising to post a large continuation series somewhat later...
+in my worst nightmare I couldn't imagine that this would take a whole year! :-(
 
-Felicia Bintu
+Sergey Shtylyov (8):
+  ata: libata: fix parameter type of ata_deadline()
+  ata: libata-core: fix parameter types of ata_wait_register()
+  ata: libata-eh: fix reset timeout type
+  ata: fix debounce timings type
+  ata: libata-scsi: fix timeout type in ata_scsi_park_store()
+  ata: libahci: fix parameter type of ahci_exec_polled_cmd()
+  ata: ahci_xgene: fix parameter types of xgene_ahci_poll_reg_val()
+  ata: sata_sil24: fix parameter type of sil24_exec_polled_cmd()
+
+ drivers/ata/ahci.c          |  2 +-
+ drivers/ata/ahci_qoriq.c    |  2 +-
+ drivers/ata/ahci_xgene.c    |  7 +++----
+ drivers/ata/libahci.c       |  7 ++++---
+ drivers/ata/libata-core.c   |  6 +++---
+ drivers/ata/libata-eh.c     |  6 +++---
+ drivers/ata/libata-sata.c   | 16 ++++++++--------
+ drivers/ata/libata-scsi.c   |  4 ++--
+ drivers/ata/libata-sff.c    |  2 +-
+ drivers/ata/sata_highbank.c |  2 +-
+ drivers/ata/sata_inic162x.c |  2 +-
+ drivers/ata/sata_mv.c       |  2 +-
+ drivers/ata/sata_nv.c       |  2 +-
+ drivers/ata/sata_sil24.c    |  4 ++--
+ include/linux/libata.h      | 24 ++++++++++++------------
+ 15 files changed, 44 insertions(+), 44 deletions(-)
+
+-- 
+2.26.3

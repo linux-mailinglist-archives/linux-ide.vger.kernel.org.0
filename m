@@ -2,74 +2,78 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE2B5767B51
-	for <lists+linux-ide@lfdr.de>; Sat, 29 Jul 2023 03:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A34767C34
+	for <lists+linux-ide@lfdr.de>; Sat, 29 Jul 2023 06:55:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232083AbjG2Bo4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 28 Jul 2023 21:44:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53610 "EHLO
+        id S230054AbjG2Ezg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 29 Jul 2023 00:55:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237730AbjG2Bmn (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 28 Jul 2023 21:42:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC6A55249
-        for <linux-ide@vger.kernel.org>; Fri, 28 Jul 2023 18:42:08 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AE42F62224
-        for <linux-ide@vger.kernel.org>; Sat, 29 Jul 2023 01:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 21E6CC433C7;
-        Sat, 29 Jul 2023 01:42:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1690594923;
-        bh=/Pqti8DNRKaLRpeEVBJu4foeaNdXODKkiZN40FSDTnE=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=HPDGH55beDX3uolLVGPca8pURDScO2a2ejHPI7KNhBlcPWAsLTN9PZLBv4cegulWr
-         +snGgNr2KsIubwaI+vFNuiyvKcZ/7bEDhKXPjvXPcNrAjuthAvqWgVGku9wbApsfiW
-         Ju6Ci8s6HgDU3Ho08e7alzSo4gy45WswlFO3lJutVI+Pn6CrKV1Yx3X3DVTWLO91j7
-         kJWReQEzcDXh3jLK1pPrPosdO8R0filI6SBRe0w31SLwhyRN2rrB9ExTOFfYs2oU3/
-         aBLnihWrbfg+bzfvPN5apH3Sf/NFKh5sR/Mls6xTqX7ID0QjjmcOstXKSt8XfMEySP
-         IyhDS+KoOhXuA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 00570C39562;
-        Sat, 29 Jul 2023 01:42:03 +0000 (UTC)
-Subject: Re: [GIT PULL] ata fixes for 6.5-rc4
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <20230729005612.424560-1-dlemoal@kernel.org>
-References: <20230729005612.424560-1-dlemoal@kernel.org>
-X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20230729005612.424560-1-dlemoal@kernel.org>
-X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-6.5-rc4
-X-PR-Tracked-Commit-Id: 3ac873c76d79f055e1712754d9f2e90e41582f04
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: ffabf7c731765da3dbfaffa4ed58b51ae9c2e650
-Message-Id: <169059492299.9383.17585995182257570757.pr-tracker-bot@kernel.org>
-Date:   Sat, 29 Jul 2023 01:42:02 +0000
-To:     Damien Le Moal <dlemoal@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ide@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229617AbjG2Ezf (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 29 Jul 2023 00:55:35 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C08449E0
+        for <linux-ide@vger.kernel.org>; Fri, 28 Jul 2023 21:55:34 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99bcd6c0282so385802466b.1
+        for <linux-ide@vger.kernel.org>; Fri, 28 Jul 2023 21:55:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1690606533; x=1691211333;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RE5l1VpxCufAhFhvUtJmOdSBkyXi7tvoVHorDEIVEKk=;
+        b=nxd6zkfhRa77k/sVEhnV9dll8oNuxMxY0QjqxWyiNvbQhxby7vUsDAAGI9GZuaXRQX
+         /XxSTurUjetIvhkboz3T/QhdQzMnWHwQK3d+ZPXkI3CmGkAhNcZh6eg/9aEK7/oixX8u
+         Zmv98XBTxAwMaoxsW7LsdvAQU+uBg2eJK45woj8WewwW24ocJeeLTovYEcZSiaas39NO
+         Ph6RSszsjSVpyC3drSnjf4MYL9FzPlKNIed+vNcELJdU/4g6eOAPdMA9Ym5xwh1Y7kPS
+         3DDAvJJ3GowOh7CE7pfIp6h7/azpsDwmxWgFzihEPDaAwFeYOJy/L38sWIFJddRzIJob
+         Rlrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1690606533; x=1691211333;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RE5l1VpxCufAhFhvUtJmOdSBkyXi7tvoVHorDEIVEKk=;
+        b=iXw/23YiAjrLq4k0wk/uZe/UaVEgL+V6yv2SWoD7pP8fq8FdWB4kvn4eJyrAmisaM8
+         NI1h+Tg28BKCbRXO0H2QFwBtwkZul4Kd/Qdk4MSxd97+BiZJhXB6z61WXm59h86ho+E4
+         9o5tlmYRlkhUzvDUO00EOQzYS5wOyQTdjd8TOrS+RVPXdJhgtllSaToOhhJ6ceM8LOrS
+         C8v0LPdy/ymWai5Ipig+5vwNyFsxA1IofdUa9P2m3/RKXbafkRM1XaMkXWbnmlu0CRyB
+         o8UZs2llqLZMjnajpf29Je+jJ9LTNqEXnexFhbBsq+joym0/V9mIxMY2kE08oylXc15g
+         UvVg==
+X-Gm-Message-State: ABy/qLbDLzqddBhQ6NMQTW/b8q2d5MTCexrNUcheAuh0nxnhmEBiLnbQ
+        w51FhyP5M4nr06d6Q0S+3KKpWcEx9uRQVZLLAHc=
+X-Google-Smtp-Source: APBJJlHUUa4spVV0ZJyciOkfr4OHYfgfO/iKkzi1vIWABHPQ1E2QNw8x6qCNgIqNPx2M8FQZqqOqo9SiUSw5JHWd8wE=
+X-Received: by 2002:a17:907:7854:b0:957:2e48:5657 with SMTP id
+ lb20-20020a170907785400b009572e485657mr1180515ejc.68.1690606532423; Fri, 28
+ Jul 2023 21:55:32 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a05:6f02:431a:b0:54:11f1:1129 with HTTP; Fri, 28 Jul 2023
+ 21:55:31 -0700 (PDT)
+Reply-To: bintu37999@gmail.com
+From:   BINTU FELICIA <bintu561@gmail.com>
+Date:   Sat, 29 Jul 2023 05:55:31 +0100
+Message-ID: <CA+j4OhMtq3Dnmgv8yhPOHNX_OxGMYShx34ia0Fh8Tx8vbaKXpQ@mail.gmail.com>
+Subject: HELLO,.....
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pull request you sent on Sat, 29 Jul 2023 09:56:12 +0900:
+How are you today? I hope you are fine. My name is Miss
+Bintu Felicia . l am single looking for honest and nice
+person whom i can partner with . I don't care about
+your color, ethnicity, Status or Sex. Upon your reply to
+this mail I will tell you more about myself and send you
+more of my picture .I am sending you this beautiful mail,
+with a wish for much happiness.
 
-> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-6.5-rc4
+Warm regards,
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/ffabf7c731765da3dbfaffa4ed58b51ae9c2e650
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Felicia Bintu

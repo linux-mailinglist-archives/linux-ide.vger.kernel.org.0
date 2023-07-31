@@ -2,43 +2,44 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F21E769148
-	for <lists+linux-ide@lfdr.de>; Mon, 31 Jul 2023 11:16:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8225769157
+	for <lists+linux-ide@lfdr.de>; Mon, 31 Jul 2023 11:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbjGaJQt (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 31 Jul 2023 05:16:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45030 "EHLO
+        id S232050AbjGaJRG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 31 Jul 2023 05:17:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231889AbjGaJQs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 31 Jul 2023 05:16:48 -0400
+        with ESMTP id S231808AbjGaJQx (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 31 Jul 2023 05:16:53 -0400
 Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [IPv6:2001:67c:670:201:290:27ff:fe1d:cc33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F7C126
-        for <linux-ide@vger.kernel.org>; Mon, 31 Jul 2023 02:16:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0126123
+        for <linux-ide@vger.kernel.org>; Mon, 31 Jul 2023 02:16:48 -0700 (PDT)
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
         by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qQP1B-0000C3-Ux; Mon, 31 Jul 2023 11:16:45 +0200
+        id 1qQP1C-0000CL-Bn; Mon, 31 Jul 2023 11:16:46 +0200
 Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
         by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qQP1B-0005l4-AK; Mon, 31 Jul 2023 11:16:45 +0200
+        id 1qQP1B-0005lG-NO; Mon, 31 Jul 2023 11:16:45 +0200
 Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
         (envelope-from <ukl@pengutronix.de>)
-        id 1qQP1A-009GVl-9J; Mon, 31 Jul 2023 11:16:44 +0200
+        id 1qQP1A-009GVo-Fh; Mon, 31 Jul 2023 11:16:44 +0200
 From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
         <u.kleine-koenig@pengutronix.de>
-To:     Damien Le Moal <dlemoal@kernel.org>
+To:     Linus Walleij <linus.walleij@linaro.org>,
+        Damien Le Moal <dlemoal@kernel.org>
 Cc:     linux-ide@vger.kernel.org, kernel@pengutronix.de
-Subject: [PATCH 09/12] ata/sata_fsl: Convert to platform remove callback returning void
-Date:   Mon, 31 Jul 2023 11:16:33 +0200
-Message-Id: <20230731091636.693193-10-u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 10/12] ata/sata_gemini: Convert to platform remove callback returning void
+Date:   Mon, 31 Jul 2023 11:16:34 +0200
+Message-Id: <20230731091636.693193-11-u.kleine-koenig@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230731091636.693193-1-u.kleine-koenig@pengutronix.de>
 References: <20230731091636.693193-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1874; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=108KFMwRcujgeu+c9h5PdNygcoOpYEEklqzb8TjHamA=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkx3uHqy/LJVY5n9YJtaHDjrfrG0Lm6koLGRZj9 tyq6sTJ4DGJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZMd7hwAKCRCPgPtYfRL+ TrbCB/48Z4JpUPfmNVIA6x30BQ7UGohYPb5y07LVNw/JoxYaMleFCr65cKt8VPt7L+fr4wA+L/H +fQSUUenpzEmwQNhDIdwDCMkz/sbcadNqY9EXBHF2soErK/E/5oO07F+e71bQxqNuX33DLP/vM1 aI18Keh3S4l1iqXSc8JP0ccUWUaNlOuo95FClbjslO/veAcJNPmydFJom4FAJ6CKd2xFYmu0AMh 6ufx/Tgs0POaXnD/W3NlbLtmq0MnywWzhE4+1au0sD4f4ukG/SCxUUqm8xGD2BXTdpCPL0ehg0+ yINnFFq33MjaES3ke9RlpOMqyEnnzpx1rp+0P9zxnH2tdYBN
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1821; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=LqpaDW1WLOTsK730jj7ErLVlvRs2+wZ4omftvew40Ls=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBkx3uI5yId3Lkis7o0rTTawOI/W8mKZ/Eh0gVBi jmJ0Mtie/WJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZMd7iAAKCRCPgPtYfRL+ Tk00B/9DB02yJmSqebpIhnVvx0q1OagkONh4vfNmZl4w3Qds2Go0X9ziahQ0ssxq0yMIbt4ZuEc 5QnuzbhF+Wl3SAL6aTTLJ8+pTC5/ZcfHnoRqA9pejrZwxx5vWN9TLm02aqR2Xb9QEoQ17FYCaLt rOrSTgKeKxeFSCDhI1NpitefpeDyILbEl/sFwZWyGsbqA9b17+jiOt03M2aO/ehLpMQgWnMDUM7 VF0+BH8g4iJKEZXGTBFQxpnyxwjyDtjW/GLzZ1g8tyIVIBvjJb7cKEwnbB0Iz9w8fe0AxiA4mWT kl62kFFe7is53WWsK+QGlRPUfKPvzS61qKDTplAO391oaH9b
 X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -68,40 +69,40 @@ callback to the void returning variant.
 
 Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/ata/sata_fsl.c | 6 ++----
+ drivers/ata/sata_gemini.c | 6 ++----
  1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/ata/sata_fsl.c b/drivers/ata/sata_fsl.c
-index ccd99b9aa9ff..744b91fb0022 100644
---- a/drivers/ata/sata_fsl.c
-+++ b/drivers/ata/sata_fsl.c
-@@ -1526,7 +1526,7 @@ static int sata_fsl_probe(struct platform_device *ofdev)
- 	return retval;
+diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
+index c42cc9bbbc4e..94bbb9b69f50 100644
+--- a/drivers/ata/sata_gemini.c
++++ b/drivers/ata/sata_gemini.c
+@@ -400,7 +400,7 @@ static int gemini_sata_probe(struct platform_device *pdev)
+ 	return ret;
  }
  
--static int sata_fsl_remove(struct platform_device *ofdev)
-+static void sata_fsl_remove(struct platform_device *ofdev)
+-static int gemini_sata_remove(struct platform_device *pdev)
++static void gemini_sata_remove(struct platform_device *pdev)
  {
- 	struct ata_host *host = platform_get_drvdata(ofdev);
- 	struct sata_fsl_host_priv *host_priv = host->private_data;
-@@ -1535,8 +1535,6 @@ static int sata_fsl_remove(struct platform_device *ofdev)
- 	device_remove_file(&ofdev->dev, &host_priv->rx_watermark);
+ 	struct sata_gemini *sg = platform_get_drvdata(pdev);
  
- 	ata_host_detach(host);
+@@ -409,8 +409,6 @@ static int gemini_sata_remove(struct platform_device *pdev)
+ 		clk_unprepare(sg->sata0_pclk);
+ 	}
+ 	sg_singleton = NULL;
 -
 -	return 0;
  }
  
- #ifdef CONFIG_PM_SLEEP
-@@ -1591,7 +1589,7 @@ static struct platform_driver fsl_sata_driver = {
- 		.of_match_table = fsl_sata_match,
+ static const struct of_device_id gemini_sata_of_match[] = {
+@@ -424,7 +422,7 @@ static struct platform_driver gemini_sata_driver = {
+ 		.of_match_table = gemini_sata_of_match,
  	},
- 	.probe		= sata_fsl_probe,
--	.remove		= sata_fsl_remove,
-+	.remove_new	= sata_fsl_remove,
- #ifdef CONFIG_PM_SLEEP
- 	.suspend	= sata_fsl_suspend,
- 	.resume		= sata_fsl_resume,
+ 	.probe = gemini_sata_probe,
+-	.remove = gemini_sata_remove,
++	.remove_new = gemini_sata_remove,
+ };
+ module_platform_driver(gemini_sata_driver);
+ 
 -- 
 2.39.2
 

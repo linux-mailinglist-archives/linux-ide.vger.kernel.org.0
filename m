@@ -2,39 +2,44 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B62177814F
-	for <lists+linux-ide@lfdr.de>; Thu, 10 Aug 2023 21:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E64AB7788C6
+	for <lists+linux-ide@lfdr.de>; Fri, 11 Aug 2023 10:11:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232953AbjHJTTC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Thu, 10 Aug 2023 15:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47952 "EHLO
+        id S231254AbjHKIL2 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 11 Aug 2023 04:11:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236419AbjHJTSs (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 10 Aug 2023 15:18:48 -0400
-X-Greylist: delayed 321 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 10 Aug 2023 12:18:48 PDT
-Received: from smtp.derooysewissel.nl (C323FAC3.static.ziggozakelijk.nl [195.35.250.195])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A6F30CF
-        for <linux-ide@vger.kernel.org>; Thu, 10 Aug 2023 12:18:48 -0700 (PDT)
-Received: from exchange02.ogh-drw.local (192.168.10.156) by
- exchange01.ogh-drw.local (192.168.10.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.20; Thu, 10 Aug 2023 21:13:00 +0200
-Received: from [94.156.102.62] (192.168.10.245) by relay.derooysewissel.nl
- (192.168.10.156) with Microsoft SMTP Server id 15.2.1118.20 via Frontend
- Transport; Thu, 10 Aug 2023 21:13:00 +0200
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229544AbjHKIL2 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 11 Aug 2023 04:11:28 -0400
+Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 176BB2130
+        for <linux-ide@vger.kernel.org>; Fri, 11 Aug 2023 01:11:26 -0700 (PDT)
+Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
+        id CA700460D3; Fri, 11 Aug 2023 08:11:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
+        s=mail; t=1691741483;
+        bh=Mjfq+hZZ0+rPTC06HjjASvlnsTMgj1yAndWxi/OAu2M=;
+        h=Date:From:To:Subject:From;
+        b=U2DywYFrbeEYhwEDEIGz1l6OUUI4DrcG0HJhZs8cuXydHTIfOnenVM/p83QP+ImbO
+         ns0qcdraWV5sTTx/CeUHQ9sjB8HH6QXIkeCyQEybWsIJdrNCASV+roODv9eESQVOzh
+         TVYMWitUS5L2c4HEami8P9ZKMJRyYHnDWIqvkoRBY/SSGfGOUX+3QcVyP79EKDP+ac
+         xn5edj+DVoTvROVSew2YkGftCgtgZAdTl+NVvMw8O70+P4WbYLj7Z9KML9nzscSb8i
+         xu9qRWlVnVH/2e4wSJ5Mp0SgReqeCcKJeJupib57qWNA/+DXPfhSVi1KKM6O7TyjW2
+         xy5zCVoN532Mg==
+Received: by mail.venturelinkbiz.com for <linux-ide@vger.kernel.org>; Fri, 11 Aug 2023 08:11:11 GMT
+Message-ID: <20230811064500-0.1.1r.4lm8.0.dm17syfmqa@venturelinkbiz.com>
+Date:   Fri, 11 Aug 2023 08:11:11 GMT
+From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
+To:     <linux-ide@vger.kernel.org>
+Subject: =?UTF-8?Q?Syst=C3=A9m_sledov=C3=A1n=C3=AD_a_optimalizace_v=C3=BDroby?=
+X-Mailer: mail.venturelinkbiz.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: my subjectInvestment Bank of London 
-To:     Recipients <mdings@derooysewissel.nl>
-From:   "Mr. Kerry Morgan" <mdings@derooysewissel.nl>
-Date:   Thu, 10 Aug 2023 21:12:59 +0200
-Reply-To: <unitednation.kerrymorgan@yandex.com>
-Message-ID: <291f4c27-24c5-41e9-9f80-8d832c7f255c@exchange02.ogh-drw.local>
-X-Spam-Status: No, score=3.9 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,HK_NAME_MR_MRS,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED,URIBL_CSS_A,
+        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,18 +47,22 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Achtung: Begünstigter des Fonds,
+Dobr=C3=A9 r=C3=A1no
 
- Wir wurden von der European Investment Bank of London und dem IWF beauftragt, den Grund für die unnötige Verzögerung bei rechtlich genehmigten Fonds zu untersuchen. Während unserer Untersuchung haben wir festgestellt, dass Ihre Zahlung durch korrupte Bankangestellte verzögert wurde, die versuchten, Ihr Geld auf Ihre persönlichen Konten umzuleiten.
+Zn=C3=A1te syst=C3=A9m, kter=C3=BD nejen hl=C3=ADd=C3=A1, ale i optimaliz=
+uje v=C3=BDrobu a p=C5=99in=C3=A1=C5=A1=C3=AD st=C3=A1l=C3=BD p=C5=99=C3=AD=
+jem?
 
-Um diesen zweifelhaften Akt zu verhindern, haben wir eine Vereinbarung mit der Europäischen Investitionsbank in London und dem Internationalen Währungsfonds (IWF), dass wir diese Zahlung verwalten und überwachen können. Vermeiden Sie verzweifelte Situationen mit Banken und anderen kriminellen Behörden.
-Wir haben eine unwiderrufliche Zahlungsgarantie für Ihre MFI-Zahlung erhalten. Hiermit teilen wir Ihnen mit, dass die Europäische Investitionsbank beschlossen hat, Ihnen den Betrag von 3.500.000,00 € zu erstatten und per Banküberweisung auf Ihr Bankkonto zu überweisen.
+D=C3=ADky nejnov=C4=9Bj=C5=A1=C3=ADm technologi=C3=ADm a anal=C3=BDze dat=
+ na=C5=A1e =C5=99e=C5=A1en=C3=AD identifikuje oblasti optimalizace, zv=C3=
+=BD=C5=A1en=C3=AD efektivity a sn=C3=AD=C5=BEen=C3=AD n=C3=A1klad=C5=AF. =
+Na=C5=A1i klienti zaznamenali n=C3=A1r=C5=AFst p=C5=99=C3=ADjm=C5=AF v pr=
+=C5=AFm=C4=9Bru o 20 % a dnes si to m=C5=AF=C5=BEete vyzkou=C5=A1et na 60=
+ dn=C3=AD zdarma.
 
-Bitte wenden Sie sich unter der unten angegebenen E-Mail-Adresse
-an die Korrespondentin Herr Kerry MorganE-Mail: unitednation.kerrymorgan@yandex.com
+Pokud chcete dal=C5=A1=C3=AD podrobnosti, odpov=C4=9Bzte pros=C3=ADm na k=
+ontaktn=C3=AD =C4=8D=C3=ADslo.
 
-Sie können mir auch Ihre WhatsApp-Nummer sendenSie sollten die angeforderten Informationen daher schnellstmöglich an Herr Seiji Yosh senden, um unnötige Verzögerungen zu vermeiden. Die Europäische Investitionsbank muss Ihr Geld unverzüglich auf Ihr Bankkonto überweisen. Derzeit können wir nichts Wesentliches tun, ohne die erforderlichen Informationen von Ihnen gemäß unseren Bankprotokollen zu erheben. Wir möchten Sie daher bitten, die entsprechenden Informationen in den folgenden Tools sorgfältig zu lesen und auszufüllen, um eine sofortige Bearbeitung Ihrer Ansprüche zu ermöglichen.
-Danke
 
-Herr Kerry Morgan
-unitednation.kerrymorgan@yandex.com
+Pozdravy
+Michal Rmoutil

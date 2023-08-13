@@ -2,36 +2,36 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F46577A818
-	for <lists+linux-ide@lfdr.de>; Sun, 13 Aug 2023 17:54:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6506277A8BF
+	for <lists+linux-ide@lfdr.de>; Sun, 13 Aug 2023 18:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231620AbjHMPxo (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Sun, 13 Aug 2023 11:53:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49798 "EHLO
+        id S231876AbjHMQFU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sun, 13 Aug 2023 12:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231893AbjHMPxE (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Sun, 13 Aug 2023 11:53:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6FDC1BF9;
-        Sun, 13 Aug 2023 08:52:34 -0700 (PDT)
+        with ESMTP id S231639AbjHMQE4 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sun, 13 Aug 2023 12:04:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC6031BF7;
+        Sun, 13 Aug 2023 09:04:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 88BC863345;
-        Sun, 13 Aug 2023 15:52:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E24C433C8;
-        Sun, 13 Aug 2023 15:52:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CA6FF6369A;
+        Sun, 13 Aug 2023 16:03:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4BDC433C8;
+        Sun, 13 Aug 2023 16:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1691941954;
-        bh=CIoXN1vFQHFotOHTx6OeSkrhly9vPo0mvFHSoT31VUw=;
+        s=k20201202; t=1691942628;
+        bh=Ktz6GUFjtE/wS7SH9QxNxGF9v19Hltjlw0vZGd0JUXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AZwufX9r+36F8KClRNvy8A5I7B1hecLsbypujqrF5acjj5wTv30l00XORF5sWUgZq
-         VvbmwyDiq4JMNWVIhAKjQMQAfd/komVPzM8fRcVqhbH7kBxWkml6IF+Dh64ycgefj2
-         oDkXSw1n+p+A/y3P2YJrqiZxdygT0a21i35RJH7DBf+XhIiDjH3+wwCZvyVcJwyorR
-         m8EJbrE4GujPHmWiUGAISHjfTsqr46LdERwq7+cCWhHoA/UXNmsKzwvzLYblnqQVr6
-         NSNVDCfNA4/si1HzOs/Px3sRicx0axgv9d6eErNVrLeAhZqbPQ8ENzSQELnoJxVEbD
-         aZN8Fkz2jxuvg==
+        b=IeP2nmToSI8JU9b3XDA6hDxXRUBXidJQp9ko4oH90QSf8OtjWkrgIa4huZ4r05G4Z
+         UVgHm6vl4KOsFcesI0KKnOpK+KebRWvMJS8ctPLMi4Mn1tlGmcjF/tSpZ/tmV4Q47z
+         1G+31ynf6Pl3a18xfzReR22a6DlAuvrMVssj/N/OJNMfmcveco7Rd+xY/wGd2hVG86
+         kFeYn6qVzh19uhy4oZD123BfgTnfPMMeKVaWesU5W8civLsgwpTgIQdHZoyUnEhsgm
+         aCzvXGCinH3mebBdpxT06mBL7Bm+wpEq/VxLj4yKtZ5AlJPGyqzdszaRU14+jP6e7u
+         Kot1/2R4+ynKg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Minjie Du <duminjie@vivo.com>,
@@ -40,19 +40,19 @@ Cc:     Minjie Du <duminjie@vivo.com>,
         Damien Le Moal <dlemoal@kernel.org>,
         Sasha Levin <sashal@kernel.org>, vireshk@kernel.org,
         linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 46/54] ata: pata_arasan_cf: Use dev_err_probe() instead dev_err() in data_xfer()
-Date:   Sun, 13 Aug 2023 11:49:25 -0400
-Message-Id: <20230813154934.1067569-46-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 41/47] ata: pata_arasan_cf: Use dev_err_probe() instead dev_err() in data_xfer()
+Date:   Sun, 13 Aug 2023 11:59:36 -0400
+Message-Id: <20230813160006.1073695-41-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230813154934.1067569-1-sashal@kernel.org>
-References: <20230813154934.1067569-1-sashal@kernel.org>
+In-Reply-To: <20230813160006.1073695-1-sashal@kernel.org>
+References: <20230813160006.1073695-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.4.10
+X-stable-base: Linux 6.1.45
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,7 +78,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/ata/pata_arasan_cf.c b/drivers/ata/pata_arasan_cf.c
-index 6ab294322e792..314eaa1679540 100644
+index e89617ed9175b..46588fc829432 100644
 --- a/drivers/ata/pata_arasan_cf.c
 +++ b/drivers/ata/pata_arasan_cf.c
 @@ -529,7 +529,8 @@ static void data_xfer(struct work_struct *work)

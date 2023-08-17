@@ -2,92 +2,64 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB5CB77FF21
-	for <lists+linux-ide@lfdr.de>; Thu, 17 Aug 2023 22:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62D797800EB
+	for <lists+linux-ide@lfdr.de>; Fri, 18 Aug 2023 00:14:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354939AbjHQUdL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 17 Aug 2023 16:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41982 "EHLO
+        id S1355656AbjHQWNc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 17 Aug 2023 18:13:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354999AbjHQUdG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 17 Aug 2023 16:33:06 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA83A2698;
-        Thu, 17 Aug 2023 13:33:04 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.75.135) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Thu, 17 Aug
- 2023 23:33:02 +0300
-Subject: Re: [PATCH 8/9] ata: pata_gayle: Remove #include <asm/ide.h>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Russell King <linux@armlinux.org.uk>,
-        "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "David S . Miller" <davem@davemloft.net>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <sparclinux@vger.kernel.org>, <linux-ide@vger.kernel.org>,
-        <linux-m68k@lists.linux-m68k.org>, <linux-arch@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <cover.1692288018.git.geert@linux-m68k.org>
- <8a6ff4d7caad33dcb6b32ab49329b7bc4ec0c29b.1692288018.git.geert@linux-m68k.org>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <5dbbce1d-eb01-1e8d-b82f-2aae50f07ca5@omp.ru>
-Date:   Thu, 17 Aug 2023 23:33:01 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <8a6ff4d7caad33dcb6b32ab49329b7bc4ec0c29b.1692288018.git.geert@linux-m68k.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.75.135]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 08/17/2023 20:16:19
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 179312 [Aug 17 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 526 526 7a6a9b19f6b9b3921b5701490f189af0e0cd5310
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.75.135 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;178.176.75.135:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: {rdns complete}
-X-KSE-AntiSpam-Info: {fromrtbl complete}
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.135
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 08/17/2023 20:19:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 8/17/2023 6:04:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        with ESMTP id S1355644AbjHQWNE (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 17 Aug 2023 18:13:04 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F03C35BF;
+        Thu, 17 Aug 2023 15:12:40 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1bc83a96067so2559605ad.0;
+        Thu, 17 Aug 2023 15:12:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692310360; x=1692915160;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MopfytwMbhLxFvzM4qyCDRXu7obMAHHg9ZDiWMyOk4w=;
+        b=eop6vqFubZ/IOTNrQaz2mkg2MUbelCekaa/yMHkh3L+aGFnGXj6SaSnH4EXU/duQp0
+         UCHSWX4oB9I/5Wa5ZeCJjhd8gOgD6WENv81Ze/+Q0wZUGN0w3iro8KocsaKzfPBsY9Z3
+         sReCNMfk56/C4/VnmD0kBxK2caae5HDMdrqQpOn+pLCY3OHyJw0UtB1JyMfnKBpzfC66
+         GgS4Ax/5Z+xXU17LMGlDXkZ1UvO5K0Gwk9x3ra8KFkhNUJ7MNrOZwAw9zABz9+fKfwAb
+         sVLOdQgtX4Xs/eUw8sLi/Ez/XYePg23UsYCMMuO9KWHS0rRUbmBqIHI+s7hw0S0a3TCh
+         HYog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692310360; x=1692915160;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MopfytwMbhLxFvzM4qyCDRXu7obMAHHg9ZDiWMyOk4w=;
+        b=lIRtyvJytLimU2ZD46mfiCFlLmMDydPApvbatrwniRq1AxDwK5Bp+KYrtv0uQrxIzA
+         ZCzWVCCYkK9KddwVvaK/hTYp8zithiTsxNc31s7A8wK4a8TAkmf1k5WiKjj+kuP3Pr8J
+         DoMNFRBEFkoLI51UZFaz+vNXYf2uARfJA1aCZfnqAoCWvhL3pzlVGgIf2p8jKnh8U65X
+         1o1B7pueHZcP+qWm0/dRnmmhPl/c4Y0Z4IDs0oRya4BQ3lKieZV6YNiH65H+MOSFVIg9
+         9KPYBSh+EgzUNjDrY8+C7ZDTbaaDHn8qVXMkjziKMQF3ZQOHJFWcOPpTOwHuAaHJFIQk
+         SQiQ==
+X-Gm-Message-State: AOJu0YyYVhqq209W79yFdIB0yvWo5fv90Eta1kIHS8h9mTeHQUW+moie
+        N1d26gzzvIzN+m583VpF7sljrPL4Kvo=
+X-Google-Smtp-Source: AGHT+IE65KhX1/S+o0LqB5aYWOhE3vHQYlM0AmjjEaJ5VKCyP3/E6gJISy0iUQ1QZSUI3xLKPp6MmQ==
+X-Received: by 2002:a17:902:c14b:b0:1bf:13a7:d3ef with SMTP id 11-20020a170902c14b00b001bf13a7d3efmr652711plj.66.1692310359907;
+        Thu, 17 Aug 2023 15:12:39 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (122-62-141-252-fibre.sparkbb.co.nz. [122.62.141.252])
+        by smtp.gmail.com with ESMTPSA id az10-20020a170902a58a00b001a6f7744a27sm266418plb.87.2023.08.17.15.12.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 17 Aug 2023 15:12:39 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id A7F00360334; Fri, 18 Aug 2023 10:12:35 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     s.shtylyov@omp.ru, linux-ide@vger.kernel.org,
+        linux-m68k@vger.kernel.org
+Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org
+Subject: [PATCH 0/3] Q40 IDE fixes
+Date:   Fri, 18 Aug 2023 10:12:29 +1200
+Message-Id: <20230817221232.22035-1-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -95,14 +67,34 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 8/17/23 7:07 PM, Geert Uytterhoeven wrote:
+The pata_falcon IDE driver for m68k Q40 has been broken since Q40
+was converted to use pata_falcon in preparation for removal of the
+legacy IDE core in v5.14. A bug has only recently been reported.
 
-> The Amiga Gayle PATA driver does not need anything from <asm/ide.h>.
-> 
-> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+This patch series to fix the bug has seen some discussion and review
+on linux-m68k in the past week. It's also been tested on both Q40
+and Atari.
 
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+The bug reporter has since found that he can use pata_legacy for
+his Q40, but that is solely due to his disk written in the default
+IDE byte order. Other users of Q40 will have data on disk in
+big-endian order, and will have to use the pata_falcon driver
+which does not attempt byte swapping to host byte order in its
+data_xfer() function.
 
-[...]
+Patch 1 fixes the bug introduced in v5.14. That one ought not
+to be controversial (I hope).
 
-MBR, Sergey
+Patch 2 adds a module parameter to select drives to have byte
+swapping to host byte order applied (useful for connecting drives
+in IDE default byte order to Q40 and Atari for interoperability).
+
+Patch 3 changes the Atari Falcon IDE platform device to use a
+device ID compatible with the byte swapping scheme. This patch
+should go through the m68k tree, not IDE.
+
+Feedback welcome!
+
+Cheers,
+
+   Michael

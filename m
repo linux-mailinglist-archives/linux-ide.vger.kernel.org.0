@@ -2,99 +2,178 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36ECF780630
-	for <lists+linux-ide@lfdr.de>; Fri, 18 Aug 2023 09:15:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B22D7780684
+	for <lists+linux-ide@lfdr.de>; Fri, 18 Aug 2023 09:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358128AbjHRHOp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 18 Aug 2023 03:14:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45548 "EHLO
+        id S1358239AbjHRHoI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 18 Aug 2023 03:44:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358095AbjHRHOP (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 18 Aug 2023 03:14:15 -0400
-Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A44130D6;
-        Fri, 18 Aug 2023 00:14:14 -0700 (PDT)
-Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-26b67b38b61so460960a91.0;
-        Fri, 18 Aug 2023 00:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692342853; x=1692947653;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OsNAOjMPs6W5o5PXzHV9cWMtIz8YuQ5vDN9CHwvmKIo=;
-        b=jaiF56W15MzZltA+aH0r65qODXUJF/X8A19XV7wYt+SAoiiy5dB/KPBFQktZVNSCmi
-         ETbYm1PhzZeFc2oi80uTSQERDcMMkR9SE1T6zFgj4iakGV80pQQebMlygXRv722iSt3j
-         4/rf3zD0vsxKAxAQruMDYCUmQhKuJqHt/OdSgG84N+GZEIjfcVWXzIr0wFk/xbT+DiU9
-         kaYsBwTPm5r0un8bxGdedzAbTIIl+qoD0KXGomhJmyA/nucqo5p+w3vKUWuiMsnZ+Dza
-         yMeI+r9tQG3Jc0PqFbNPkfXO5pVWpr6cw3E9mhENhsho8e+1aF9g1NnOfhf9GYwxtVZz
-         IkuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692342853; x=1692947653;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OsNAOjMPs6W5o5PXzHV9cWMtIz8YuQ5vDN9CHwvmKIo=;
-        b=XhVdfCwp9w6gT8ET42bBo4EU7W/k/gtaQOK4itEwgYcEjUcytYMepCWdnmiu8+0hCl
-         tBhbnrTj2iUUTS5ijJfyqVm1i7WiRRRaXgCMlIinPXlE3nHTaT1wSvv+HYYK0MQWEHaB
-         4Z+s1RhfTRMd4WA8M+MoJITMnW1bcChE2Wwt6C2tdTpKgD7kYUQslPHEfsbDyAjvCUYe
-         SgXROEJFLmWTgzlJopNAAVoL7Z6abApTkuzbxM5gpS7SUXoRWG5d7WHMs1YUwXyliqKa
-         bBA3WouF3PHyXTlx1mpi0HRkaI1NMS7J23+6fyjpX4l32mbwyqqtX8gPqqD2Cr0ndBHC
-         AFnw==
-X-Gm-Message-State: AOJu0Yz2p/nXB8gzrddcKBwZ0sNgjW5R7r8Q/gYMrTqNcs3f5mIrVVxD
-        RQxeRCy3v8NLkjcsZY7WBvElw/AT0Mk=
-X-Google-Smtp-Source: AGHT+IEjyEc4YFLJVBaKZDLjP0+YrWFtUvyg0yJ5VOk5ow/R9IP7UrZzHhjkBCf5rT/7tJA3tajJMA==
-X-Received: by 2002:a17:90a:b017:b0:259:466:940f with SMTP id x23-20020a17090ab01700b002590466940fmr1514172pjq.22.1692342853643;
-        Fri, 18 Aug 2023 00:14:13 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (122-62-141-252-fibre.sparkbb.co.nz. [122.62.141.252])
-        by smtp.gmail.com with ESMTPSA id mm8-20020a17090b358800b0026b6b17ca5dsm882458pjb.54.2023.08.18.00.14.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Aug 2023 00:14:13 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id 74FC636043C; Fri, 18 Aug 2023 19:14:09 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     dlemoal@kernel.org, linux-ide@vger.kernel.org,
-        linux-m68k@vger.kernel.org
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>
-Subject: [PATCH v2 3/3] m68k/atari: change Falcon IDE platform device to id 0
-Date:   Fri, 18 Aug 2023 19:14:05 +1200
-Message-Id: <20230818071405.28581-4-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230818071405.28581-1-schmitzmic@gmail.com>
-References: <20230818071405.28581-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1353097AbjHRHnd (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 18 Aug 2023 03:43:33 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF0E030FE;
+        Fri, 18 Aug 2023 00:43:31 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 6A3615C0109;
+        Fri, 18 Aug 2023 03:43:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Fri, 18 Aug 2023 03:43:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1692344608; x=1692431008; bh=dgynFTvpIcFvK
+        Eo0nbMvK3p2F9Xe31fJomXDBpjns84=; b=TpTIbyFzJgFY+xQiL0O6OXZLQFwzq
+        gIQLlb5lIW2WuMN2aJ2lBWXqluX6mIL1wkgQSnMrrVgephGHF7BLk+v0vbSXy/91
+        zxSgwt7DKzspEYNNUNIj2uLQ/G5dnJCMspoQx20c/MlQA6fLMghNv8yN5Onwk0GO
+        jFlKAAwY2XRH1dtKcx4H2gdW5SR73LoJ7RKiv6Qf43WLOY/uG3x6ZmjGvFU+7GmX
+        iV6hS+X6HJMDw7EoQxnKRR1mu04091qb2KFfwIgK9f820EJWACZR1UEc8ueDQHxi
+        QlIbNaeelrVYm33VI/0ycn/Y8FfOmIrfTq0RB1ljmNiBurrtDyaeP344w==
+X-ME-Sender: <xms:ICHfZOoLh-8fHw-qBVBYYnpBzl2x7p-PxFzkJsJ-QzBm94RRQIsxEQ>
+    <xme:ICHfZMpq4oDUWww-qOCJv8HYuDVWcWH3GXIrFlAPjAaa_ooms-zIySND8kkqEzbsU
+    a20iZs5aelLFxgTlaE>
+X-ME-Received: <xmr:ICHfZDNM8eFC3GSNFBUQQfartGYmMEQlUKYtvdXjJZkCbOsz9Qj_BxkuPW9O4AmJd0PtuTkdonp0AtU9Z67oSyP7TIeuO72ljUw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudduvddguddvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhn
+    ucfvhhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrf
+    grthhtvghrnhepleeuheelheekgfeuvedtveetjeekhfffkeeffffftdfgjeevkeegfedv
+    ueehueelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epfhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgh
+X-ME-Proxy: <xmx:ICHfZN6vGrypVU_jOpxPUs9uiPX97Uv3iR0EuCTc2OhzRYzMombsdg>
+    <xmx:ICHfZN4ZSvIN9teEZbbDOrnAp7zXBd0pjI2McVPLnqAm35ii5U7lsQ>
+    <xmx:ICHfZNgTWZou1vRt-dt8sRLqfqOEjAJov-n0C20XmTen4mTYqxeoUw>
+    <xmx:ICHfZA11Q_hpwswz2yhaFQ34RrGipTpPvgFZdY5lxRyBQjwTwEM-TA>
+Feedback-ID: i58a146ae:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 18 Aug 2023 03:43:26 -0400 (EDT)
+Date:   Fri, 18 Aug 2023 17:43:40 +1000 (AEST)
+From:   Finn Thain <fthain@linux-m68k.org>
+To:     Michael Schmitz <schmitzmic@gmail.com>
+cc:     dlemoal@kernel.org, linux-ide@vger.kernel.org,
+        linux-m68k@vger.kernel.org, will@sowerbutts.com, rz@linux-m68k.org,
+        geert@linux-m68k.org
+Subject: Re: [PATCH v2 2/3] ata: pata_falcon: add data_swab option to byte-swap
+ disk data
+In-Reply-To: <20230818071405.28581-3-schmitzmic@gmail.com>
+Message-ID: <16f01be8-de2e-4fb2-50c3-95f030e740ac@linux-m68k.org>
+References: <20230818071405.28581-1-schmitzmic@gmail.com> <20230818071405.28581-3-schmitzmic@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The pata_falcon data byte swapping patch relies on pdev->id
-being 0 or 1. Q40 uses these IDs, but Atari used -1. Change
-pdev->id to 0 for Atari Falcon IDE platform device so
-selection of drive to byte-swap through pata_falcon.data_swab
-can be used on Falcon as well.
-Tested on ARAnyM so far.
 
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
----
- arch/m68k/atari/config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Fri, 18 Aug 2023, Michael Schmitz wrote:
 
-diff --git a/arch/m68k/atari/config.c b/arch/m68k/atari/config.c
-index 38a7c0578105..e3e437cd0f84 100644
---- a/arch/m68k/atari/config.c
-+++ b/arch/m68k/atari/config.c
-@@ -925,7 +925,7 @@ int __init atari_platform_init(void)
- #endif
- 
- 	if (ATARIHW_PRESENT(IDE)) {
--		pdev = platform_device_register_simple("atari-falcon-ide", -1,
-+		pdev = platform_device_register_simple("atari-falcon-ide", 0,
- 			atari_falconide_rsrc, ARRAY_SIZE(atari_falconide_rsrc));
- 		if (IS_ERR(pdev))
- 			rv = PTR_ERR(pdev);
--- 
-2.17.1
+> Some users of pata_falcon on Q40 have IDE disks in default
+> IDE little endian byte order, whereas legacy disks use
+> host-native big-endian byte order as on the Atari Falcon.
+> 
+> Add module parameter 'data_swab' to allow connecting drives
+> with non-native data byte order. Drives selected by the
+> data_swap bit mask will have their user data byte-swapped to
+> host byte order, i.e. 'pata_falcon.data_swab=2' will byte-swap
+> all user data on drive B, leaving data on drive A in native
+> byte order. On Q40, drives on a second IDE interface may be
+> added to the bit mask as bits 2 and 3.
+> 
+> Default setting is no byte swapping, i.e. compatibility with
+> the native Falcon or Q40 operating system disk format.
+> 
+> Cc: William R Sowerbutts <will@sowerbutts.com>
+> Cc: Finn Thain <fthain@linux-m68k.org>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+> 
+> ---
+> 
+> Changes since v1:
+> 
+> Damien Le Moal:
+> - change patch title
+> - drop swap_data flag
+> 
+> Finn Thain:
+> - drop allocation of ap->private struct, use field as bitmask
+> 
+> Changes since RFC v4:
+> 
+> Geert Uytterhoeven:
+> - don't shift static module parameter for drive 3/4 bitmask
+> - simplify bit mask calculation to always use pdev->id
+> 
+> Finn Thain:
+> - correct bit numbers for drive 3/4
+> 
+> Changes since RFC v3:
+> 
+> - split off this byte swap handling into separate patch
+> 
+> - add hint regarding third and fourth drive on Q40
+> 
+> Finn Thain:
+> - rename module parameter to 'data_swab' to better reflect its use
+> 
+> William Sowerbutts:
+> - correct IDE drive number used in data swap conditional
+> ---
+>  drivers/ata/pata_falcon.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
+> index 346259e3bbc8..27443cb757de 100644
+> --- a/drivers/ata/pata_falcon.c
+> +++ b/drivers/ata/pata_falcon.c
+> @@ -33,6 +33,11 @@
+>  #define DRV_NAME "pata_falcon"
+>  #define DRV_VERSION "0.1.0"
+>  
+> +static int pata_falcon_swap_mask;
+> +
+> +module_param_named(data_swab, pata_falcon_swap_mask, int, 0444);
+> +MODULE_PARM_DESC(data_swab, "Data byte swap enable/disable bitmap (0x1==drive1, 0x2==drive2, 0x4==drive3, 0x8==drive4, default==0)");
+> +
+>  static const struct scsi_host_template pata_falcon_sht = {
+>  	ATA_PIO_SHT(DRV_NAME),
+>  };
+> @@ -46,11 +51,12 @@ static unsigned int pata_falcon_data_xfer(struct ata_queued_cmd *qc,
+>  	void __iomem *data_addr = ap->ioaddr.data_addr;
+>  	unsigned int words = buflen >> 1;
+>  	struct scsi_cmnd *cmd = qc->scsicmd;
+> +	int dev_id = dev->devno;
 
+Is that variable really needed?
+
+>  	bool swap = 1;
+>  
+>  	if (dev->class == ATA_DEV_ATA && cmd &&
+>  	    !blk_rq_is_passthrough(scsi_cmd_to_rq(cmd)))
+> -		swap = 0;
+> +		swap = (uintptr_t)ap->private_data & BIT(dev_id);
+>  
+>  	/* Transfer multiple of 2 bytes */
+>  	if (rw == READ) {
+> @@ -199,6 +205,8 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
+>  	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
+>  	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
+>  
+> +	ap->private_data = (void *)(uintptr_t)(pata_falcon_swap_mask >> (2 * pdev->id));
+> +
+
+My compiler doesn't need that extra type cast in there...
+
+>  	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+>  	if (irq_res && irq_res->start > 0) {
+>  		irq = irq_res->start;
+> 

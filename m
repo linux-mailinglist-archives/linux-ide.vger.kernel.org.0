@@ -2,121 +2,138 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0F71781621
-	for <lists+linux-ide@lfdr.de>; Sat, 19 Aug 2023 02:52:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 220427817DE
+	for <lists+linux-ide@lfdr.de>; Sat, 19 Aug 2023 09:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243070AbjHSAky (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 18 Aug 2023 20:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45474 "EHLO
+        id S1343915AbjHSHDx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 19 Aug 2023 03:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243185AbjHSAk0 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 18 Aug 2023 20:40:26 -0400
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 332D74205;
-        Fri, 18 Aug 2023 17:40:25 -0700 (PDT)
-Received: by mail-oi1-x236.google.com with SMTP id 5614622812f47-3a412653352so1035806b6e.0;
-        Fri, 18 Aug 2023 17:40:25 -0700 (PDT)
+        with ESMTP id S1343955AbjHSHDV (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 19 Aug 2023 03:03:21 -0400
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0588F4480
+        for <linux-ide@vger.kernel.org>; Sat, 19 Aug 2023 00:03:17 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id 5614622812f47-3a7d7de894bso1169431b6e.3
+        for <linux-ide@vger.kernel.org>; Sat, 19 Aug 2023 00:03:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692405624; x=1693010424;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=flupLnMUUcV6PyPpu0plxL80rcplTFaDkiD0oNbhwOE=;
-        b=cP1mHfblvKXMP2KRjfaoB6mo4sUPkB7rEEW2Du04VGHEjlpZTLcpBgC0qMTNKFaiwk
-         q52H8PbpZxM5C3c2zaQw1XtzBqrZPSaQh42PYQTAolTiHKrCjVt0AqxBa2/Z03RDVIC+
-         0i1+54CdABpJGxU6LtxBX4ITJslGsM+Zs2PXaCDfdObeWxvbx5ldzxZKgZdqe+b0nvRL
-         FrkeLfqZqO6dDz8RGo8sny9hOOx5xYwLGiJgbwuBknqUqfd7RkYlxqDsLx6tBZZo9MqO
-         k35TCI8RgTtyoqQy2Rvflz5V/1FF2JAhxzqaMruzspyNr+DCTHQ+/7BQasW0Whd/KZ2r
-         tnIA==
+        d=gmail.com; s=20221208; t=1692428597; x=1693033397;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :reply-to:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9kydyMnwD//o0quRqImkimRYfrWW9k+FT8t/oHoxyE8=;
+        b=nLON0lFU1HFxhxnwtvUZc9wvmWS7rbdnt2RdpqIoCtsDwWwHx0Gyjn1xZGSC5eb2FC
+         WmmpNW+ObIBj4H3oVA528E09LKJ9Oh4DAMKSu6pEL6PL1RhqFN61P9gLSK/8SD4vx9bP
+         JUWK2MGIfhLYg/xJvX06ahmCeb/lUSvcNrFKmvYLJLEYQO5IwjUSUqLNIk0w8cK+2/XQ
+         dSqtK5eCnXC+wrkDAzHrF00pkROWtcttibp6ntDQXOVUlo6vsHjNyWdY7UHT1JYeF2xL
+         PB0ef0uQvzc5mw6gaoXP2KOWKvpRua/iGaOI4B4VGugPnWVRf5iIcCLUY0NkKk3Xl8rO
+         5wkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692405624; x=1693010424;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=flupLnMUUcV6PyPpu0plxL80rcplTFaDkiD0oNbhwOE=;
-        b=cVrystc3Ae4/5qneXIpYbTDLv8MOi5pgeI7OGR8p67gVZ4aB+hmT1IajDFj7wj43U9
-         T9l0JHI+tjQhl3PCNzGDliyTv8HkYktl9jt+oHIcYIYXVLw5ZcahWAscabq9oi2sshay
-         N6f1ovI7m8D9koHeO/RPMRHz6GF/gtfk7d7bsbCpk5YGOv0A1TnK/FZ/BILD46D4cqao
-         8mGTFd/B3eMRfiqSJdi6c57z78F4bG4OYioh2uwZfcUOA3++ugaho0roTAwr0ZA7vCvb
-         6ZX6NT/GlSOuryJJT9MafPGcRfbOeV3VesXwk6Bcu0jmZImgiwsq0tQ854cfQnCNYI63
-         A9tQ==
-X-Gm-Message-State: AOJu0Yzve9TwZLlAM0YR4uwBrxpkvOlSWmUugJAafpo5uoySGkNL5d4c
-        63wqVQRjb80HKHpDt1yOvTRZmX1uXKw=
-X-Google-Smtp-Source: AGHT+IECMvC7JOBiX/UkRfw9UKMmnLELOGR/lJuNZR6r/lVFqUwNhcfcvhQKsXp9ug5jgJ9YMdIm0w==
-X-Received: by 2002:a05:6808:150a:b0:3a7:62ad:af39 with SMTP id u10-20020a056808150a00b003a762adaf39mr1134030oiw.13.1692405624446;
-        Fri, 18 Aug 2023 17:40:24 -0700 (PDT)
-Received: from [10.1.1.24] (122-62-141-252-fibre.sparkbb.co.nz. [122.62.141.252])
-        by smtp.gmail.com with ESMTPSA id u15-20020a62ed0f000000b006887be16675sm2070027pfh.205.2023.08.18.17.40.16
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 18 Aug 2023 17:40:24 -0700 (PDT)
-Subject: Re: [PATCH v2 3/3] m68k/atari: change Falcon IDE platform device to
- id 0
-To:     Finn Thain <fthain@linux-m68k.org>
-References: <20230818071405.28581-1-schmitzmic@gmail.com>
- <20230818071405.28581-4-schmitzmic@gmail.com>
- <CAMuHMdUkzk9DxAicq7U5yp3LT0mzaP+tgbwcSYNFx7sripBDcg@mail.gmail.com>
- <41d64e82-5995-4e5c-68f5-3e9248ece153@gmail.com>
- <5cb447ce-6436-38e1-b6e9-8a5547202a47@linux-m68k.org>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>, dlemoal@kernel.org,
-        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org,
-        will@sowerbutts.com, rz@linux-m68k.org
-From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <76f0bb19-bcdd-00a6-7bf2-ad05e303ae60@gmail.com>
-Date:   Sat, 19 Aug 2023 12:40:13 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
+        d=1e100.net; s=20221208; t=1692428597; x=1693033397;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9kydyMnwD//o0quRqImkimRYfrWW9k+FT8t/oHoxyE8=;
+        b=GlA2deIq40oa8kR2gX+pndahJ8YiMGBormQChc3M1qrxDLJO6KTRJjK4o/15EXQxQh
+         7i3OQFuqdF0r2E23/NXTDOrjgrp5g/rPBji9+54CW3LFYk3VKX9vhtC1HIKOtsONM6zF
+         fvMJgy/SM4obio3AZex9vqpqhVHT7kCzrFgeQ/skFH9IAs/kJv/544E3QfsSNhj4zusr
+         1nI70H2/GDfD68vGmR26PC7Fj6q0URTWdnRYMXtYMlCdUg7cvz3H6lwjcyUjK5wcJL73
+         hJA6/fSDd1f2962Krfp5YSxfGwiuDaLbQ2sH+e45/ZZ0K+oNoH124FdzL2+bRrSLshI1
+         cL8Q==
+X-Gm-Message-State: AOJu0YwyqY3O+FnpBZpV2LsIPr8rDXijwRtzEgirF32SRtYjJmmSZQLg
+        rsaLbZAqZ7qwS5Gge9u41FUpVE6A167vv7w9GW7Xteob+prmjQ==
+X-Google-Smtp-Source: AGHT+IHBFHux9W7amy752XAKQ4G+pXj9K8KLABgekYkKVjTaNiUovhqWPJjy5q7mdLIzANUAVG24gzrYlmHT6Kjn7Kk=
+X-Received: by 2002:a81:8782:0:b0:589:a9fc:ffcd with SMTP id
+ x124-20020a818782000000b00589a9fcffcdmr1407212ywf.20.1692428576106; Sat, 19
+ Aug 2023 00:02:56 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <5cb447ce-6436-38e1-b6e9-8a5547202a47@linux-m68k.org>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Reply-To: razumkoykhailo@gmail.com
+Sender: mrtombaba@gmail.com
+Received: by 2002:a05:7000:5395:b0:4f4:2174:eed4 with HTTP; Sat, 19 Aug 2023
+ 00:02:55 -0700 (PDT)
+From:   "Mr.Razum Khailo" <razumkoykhailo@gmail.com>
+Date:   Sat, 19 Aug 2023 00:02:55 -0700
+X-Google-Sender-Auth: TD1SbUwALQWUaG93zNo0ky4SaO8
+Message-ID: <CADXgghn2t3mU_VvtZDjHwnbadg2QnVcJ30yFd0kN8SL6NDhY1g@mail.gmail.com>
+Subject: Greetings from Ukraine,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,LOTS_OF_MONEY,
+        MILLION_USD,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:244 listed in]
+        [list.dnswl.org]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mrtombaba[at]gmail.com]
+        *  2.0 MILLION_USD BODY: Talks about millions of dollars
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        *  2.4 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  2.8 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Finn,
-
-Am 19.08.2023 um 12:07 schrieb Finn Thain:
->
-> On Sat, 19 Aug 2023, Michael Schmitz wrote:
->
->>>
->>> Iff this patch is accepted, it must go in before [PATCH v2 2/3], else
->>> the latter would cause a regression. And backporting to stable must
->>> take that into account, too.
->>
->> I don't see it as a regression - the driver still works OK, it's only
->> the byte swap option that's broken on Atari, and that's newly
->> introduced.
->>
->> But this patch changes the user space exposed platform device name, as
->> you point out elsewhere. That's reason enough to drop it.
->>
->
-> Such a script would be broken on q40 already.
-
-Not necessarily - what I thought of was something like the Debian 
-installer.
-
-I don't know for a fact that it relies on the device naming as it is at 
-present (or even that it supports Q40), but I'd rather not needlessly 
-change something that might break user space code.
-
-> When a fix has a dependency on a separate patch you can backport both by
-> specifying a cherry-picking sequence. We may need Geert to add those
-> commit hashes though. This is discussed in
-> Documentation/process/stable-kernel-rules.rst
-
-If Geert prefers to change the Atari IDE platform device ID, he's always 
-free to do that :-)
-
-The current patch will work either way.
-
-Cheers,
-
-	Michael
+R3JlZXRpbmdzwqBmcm9twqBVa3JhaW5lLA0KDQpNci7CoFJhenVta292wqBNeWtoYWlsbyzCoGFu
+wqBlbnRyZXByZW5ldXLCoGJ1c2luZXNzbWFuwqBmcm9twqBPZGVzc2ENClVrcmFpbmUuwqBXaXRo
+aW7CoGHCoHllYXLCoHBsdXPCoHNvbWXCoG1vbnRoc8Kgbm93LMKgbW9yZcKgdGhhbsKgOC4ywqBt
+aWxsaW9uDQpwZW9wbGXCoGFyb3VuZMKgdGhlwqBjaXRpZXPCoG9mwqBtecKgY291bnRyecKgVWty
+YWluZcKgaGF2ZcKgYmVlbsKgZXZhY3VhdGVkwqB0bw0KYcKgc2FmZcKgbG9jYXRpb27CoGFuZMKg
+b3V0wqBvZsKgdGhlwqBjb3VudHJ5LMKgbW9zdMKgZXNwZWNpYWxsecKgY2hpbGRyZW7CoHdpdGgN
+CnRoZWlywqBwYXJlbnRzLMKgbnVyc2luZ8KgbW90aGVyc8KgYW5kwqBwcmVnbmFudMKgd29tZW4s
+wqBhbmTCoHRob3NlwqB3aG/CoGhhdmUNCmJlZW7CoHNlcmlvdXNsecKgd291bmRlZMKgYW5kwqBu
+ZWVkwqB1cmdlbnTCoG1lZGljYWzCoGF0dGVudGlvbi7CoEnCoHdhc8KgYW1vbmcNCnRob3NlwqB0
+aGF0wqB3ZXJlwqBhYmxlwqB0b8KgZXZhY3VhdGXCoHRvwqBvdXLCoG5laWdoYm91cmluZ8KgY291
+bnRyaWVzwqBhbmTCoEnigJltDQpub3fCoGluwqB0aGXCoHJlZnVnZWXCoGNhbXDCoG9mwqBUZXLC
+oEFwZWzCoEdyb25pbmdlbsKgaW7CoHRoZcKgTmV0aGVybGFuZHMuDQoNCknCoG5lZWTCoGHCoGZv
+cmVpZ27CoHBhcnRuZXLCoHRvwqBlbmFibGXCoG1lwqB0b8KgdHJhbnNwb3J0wqBtecKgaW52ZXN0
+bWVudA0KY2FwaXRhbMKgYW5kwqB0aGVuwqByZWxvY2F0ZcKgd2l0aMKgbXnCoGZhbWlseSzCoGhv
+bmVzdGx5wqBpwqB3aXNowqBJwqB3aWxsDQpkaXNjdXNzwqBtb3JlwqBhbmTCoGdldMKgYWxvbmcu
+wqBJwqBuZWVkwqBhwqBwYXJ0bmVywqBiZWNhdXNlwqBtecKgaW52ZXN0bWVudA0KY2FwaXRhbMKg
+aXPCoGluwqBtecKgaW50ZXJuYXRpb25hbMKgYWNjb3VudC7CoEnigJltwqBpbnRlcmVzdGVkwqBp
+bsKgYnV5aW5nDQpwcm9wZXJ0aWVzLMKgaG91c2VzLMKgYnVpbGRpbmfCoHJlYWzCoGVzdGF0ZXMs
+wqBtecKgY2FwaXRhbMKgZm9ywqBpbnZlc3RtZW50DQppc8KgKCQzMMKgTWlsbGlvbsKgVVNEKcKg
+LsKgVGhlwqBmaW5hbmNpYWzCoGluc3RpdHV0aW9uc8KgaW7CoG15wqBjb3VudHJ5DQpVa3JhaW5l
+wqBhcmXCoGFsbMKgc2hvdMKgZG93bsKgZHVlwqB0b8KgdGhlwqBjcmlzaXPCoG9mwqB0aGlzwqB3
+YXLCoG9uwqBVa3JhaW5lDQpzb2lswqBiecKgdGhlwqBSdXNzaWFuwqBmb3JjZXMuwqBNZWFud2hp
+bGUswqBpZsKgdGhlcmXCoGlzwqBhbnnCoHByb2ZpdGFibGUNCmludmVzdG1lbnTCoHRoYXTCoHlv
+dcKgaGF2ZcKgc2/CoG11Y2jCoGV4cGVyaWVuY2XCoGluwqB5b3VywqBjb3VudHJ5LMKgdGhlbsKg
+d2UNCmNhbsKgam9pbsKgdG9nZXRoZXLCoGFzwqBwYXJ0bmVyc8Kgc2luY2XCoEnigJltwqBhwqBm
+b3JlaWduZXIuDQoNCknCoGNhbWXCoGFjcm9zc8KgeW91csKgZS1tYWlswqBjb250YWN0wqB0aHJv
+dWdowqBwcml2YXRlwqBzZWFyY2jCoHdoaWxlwqBpbsKgbmVlZA0Kb2bCoHlvdXLCoGFzc2lzdGFu
+Y2XCoGFuZMKgScKgZGVjaWRlZMKgdG/CoGNvbnRhY3TCoHlvdcKgZGlyZWN0bHnCoHRvwqBhc2vC
+oHlvdcKgaWYNCnlvdcKga25vd8KgYW55wqBsdWNyYXRpdmXCoGJ1c2luZXNzwqBpbnZlc3RtZW50
+wqBpbsKgeW91csKgY291bnRyecKgacKgY2FuDQppbnZlc3TCoG15wqBtb25lecKgc2luY2XCoG15
+wqBjb3VudHJ5wqBVa3JhaW5lwqBzZWN1cml0ecKgYW5kwqBlY29ub21pYw0KaW5kZXBlbmRlbnTC
+oGhhc8KgbG9zdMKgdG/CoHRoZcKgZ3JlYXRlc3TCoGxvd2VywqBsZXZlbCzCoGFuZMKgb3VywqBj
+dWx0dXJlwqBoYXMNCmxvc3TCoGluY2x1ZGluZ8Kgb3VywqBoYXBwaW5lc3PCoGhhc8KgYmVlbsKg
+dGFrZW7CoGF3YXnCoGZyb23CoHVzLsKgT3VywqBjb3VudHJ5DQpoYXPCoGJlZW7CoG9uwqBmaXJl
+wqBmb3LCoG1vcmXCoHRoYW7CoGHCoHllYXLCoG5vdy4NCg0KSWbCoHlvdcKgYXJlwqBjYXBhYmxl
+wqBvZsKgaGFuZGxpbmfCoHRoaXPCoGJ1c2luZXNzwqBwYXJ0bmVyc2hpcCzCoGNvbnRhY3TCoG1l
+DQpmb3LCoG1vcmXCoGRldGFpbHMswqBJwqB3aWxswqBhcHByZWNpYXRlwqBpdMKgaWbCoHlvdcKg
+Y2FuwqBjb250YWN0wqBtZQ0KaW1tZWRpYXRlbHkuwqBZb3XCoG1hecKgYXPCoHdlbGzCoHRlbGzC
+oG1lwqBhwqBsaXR0bGXCoG1vcmXCoGFib3V0wqB5b3Vyc2VsZi4NCkNvbnRhY3TCoG1lwqB1cmdl
+bnRsecKgdG/CoGVuYWJsZcKgdXPCoHRvwqBwcm9jZWVkwqB3aXRowqB0aGXCoGJ1c2luZXNzLsKg
+ScKgd2lsbA0KYmXCoHdhaXRpbmfCoGZvcsKgeW91csKgcmVzcG9uc2UuwqBNecKgc2luY2VyZcKg
+YXBvbG9naWVzwqBmb3LCoHRoZQ0KaW5jb252ZW5pZW5jZS4NCg0KDQpUaGFua8KgeW91IQ0KDQpN
+ci4gUmF6dW1rb3bCoE15a2hhaWxvLg0K

@@ -2,174 +2,108 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57046784CBE
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Aug 2023 00:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA82D784E61
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Aug 2023 03:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231564AbjHVWON (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 22 Aug 2023 18:14:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60056 "EHLO
+        id S232073AbjHWBp1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 22 Aug 2023 21:45:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231559AbjHVWOJ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Aug 2023 18:14:09 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04191CCB;
-        Tue, 22 Aug 2023 15:14:08 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-686be3cbea0so4028405b3a.0;
-        Tue, 22 Aug 2023 15:14:07 -0700 (PDT)
+        with ESMTP id S232089AbjHWBpW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Aug 2023 21:45:22 -0400
+X-Greylist: delayed 916 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 22 Aug 2023 18:45:20 PDT
+Received: from symantec4.comsats.net.pk (symantec4.comsats.net.pk [203.124.41.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02DACE4B
+        for <linux-ide@vger.kernel.org>; Tue, 22 Aug 2023 18:45:19 -0700 (PDT)
+X-AuditID: cb7c291e-06dff70000002aeb-8f-64e54c315fd8
+Received: from iesco.comsatshosting.com (iesco.comsatshosting.com [210.56.28.11])
+        (using TLS with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        by symantec4.comsats.net.pk (Symantec Messaging Gateway) with SMTP id EA.9C.10987.13C45E46; Wed, 23 Aug 2023 05:00:50 +0500 (PKT)
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns;
+        d=iesco.com.pk; s=default;
+        h=received:content-type:mime-version:content-transfer-encoding
+          :content-description:subject:to:from:date:reply-to;
+        b=FPeHwQymFr9KtTfwpVWkzstRC+g+ALivDbN7xfPDg7ybdr0zpgtD5RxIptnBm4MKG
+          Es72MKi+1HvjWvg/ceWzTtVgPFRxGh/S5ob4xjMWUyujCh8e2O/+GsPAL5QZnuknD
+          LCCL4hlMvOUQ/JvaGIm6ZjQ70h5XtTADjinS84MFE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692742447; x=1693347247;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=FhfFSWf7keK+MXdSC0rVYV2NnkwIJ14fQO+DFXX6fdE=;
-        b=CLn1ta1FKv55/ZDKuw+teoMSovZPgSCzC4u4wa7ozJ4VJFnN6gjP1/Qg7qlDkQVkCb
-         PHcglC4iXBrmu25eo5msMK+O9iVMQ/RmBHg4JNJtKQbHyr0JggvFUCzM8bwzdQTRwlc6
-         M6yRAL9CQhUXfC2fod7xYbKiqZwH6m/DKHvltAR9hzgf+dMCaO6L6c1qMzrhRQcHRT+H
-         /Vgn17LZHq8mYgVk9BXwnVDx4tcDU45DLzs2TlZx2l118e1Z8yRdwRCggjFG8XPaE8VZ
-         /aa29gY4Yu8BPm7mDnE0ixUv9juhjYrNO89+G1PvbT2CYsA4ZVl+iFGVYURhPT6h5ted
-         dlPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692742447; x=1693347247;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FhfFSWf7keK+MXdSC0rVYV2NnkwIJ14fQO+DFXX6fdE=;
-        b=SK412GecznjqGOs1C7qRipq+dJJC4zQHSMx8PBHk0TU9yjJes+yxUGvoVb7RQnhtZm
-         iZ4zTJnHzk7y8OJxDV5Pb09hc28Q4cN2boRamNJ7g2/YdHfZTFw/ViW/qCnQnUrqjma4
-         7lGlnkBrCii8PNEo2GHNsofmi0Kfatuq9sIYEXmVGrla1aD73suiowf2cifonNecJuUh
-         1eeej7x2pasYpwlH5eUmpsl7WWw5Yvd+8RmjtPuwhHXJzFvcrsfSh3aGNUYhxTurmqou
-         fNggXk4jGG4zvGQe3zopA15ucBdikTWpOIPxy8BPdJCp1FjU1s/ANlL21ZoBC/pZkU0X
-         W1uw==
-X-Gm-Message-State: AOJu0YzgbPg0TNxECs6aM5Lk+E8pk4a3yIlTyjzAyRygVT5D+3Dfcpog
-        lCWnFf0ZiSe2ShbusJQroKc=
-X-Google-Smtp-Source: AGHT+IHkjquDCSj3CIbQuolIq5o2HkqytEn7S48PwvQ9UHmLappkMs8mzWbRVvHxxOO2nK2w800BgA==
-X-Received: by 2002:a05:6a20:7f9d:b0:13e:90aa:8c8b with SMTP id d29-20020a056a207f9d00b0013e90aa8c8bmr17506578pzj.4.1692742447415;
-        Tue, 22 Aug 2023 15:14:07 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id s4-20020a63af44000000b005641fadb844sm8262209pgo.49.2023.08.22.15.14.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 15:14:06 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id A5E1D360447; Wed, 23 Aug 2023 10:14:02 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     sergei.shtylyov@gmail.com, dlemoal@kernel.org,
-        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v4 2/2] ata: pata_falcon: add data_swab option to byte-swap disk data
-Date:   Wed, 23 Aug 2023 10:13:59 +1200
-Message-Id: <20230822221359.31024-3-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230822221359.31024-1-schmitzmic@gmail.com>
-References: <20230822221359.31024-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        d=iesco.com.pk; s=default;
+        h=reply-to:date:from:to:subject:content-description
+          :content-transfer-encoding:mime-version:content-type;
+        bh=GMzYzcyTxDsE6wX/XHG6MHqAdAiHrhqbmmLQ/TZ1QnQ=;
+        b=PaMxYC0DQQVHQxMal7TISByB9od33FFXZtV7KIcxxIyzPV51Z8Ae6qDojYnOw3xdv
+          pPCCGNJRFcuIkElceMaZg2Eq2zx7rnm7OOP+XZXCyoyYMl7xbPcfEEsP59msCebSu
+          rhBEQNSvQ3Qtft3nikSmOeJi7VPOzr77w4sTaYV/w=
+Received: from [94.156.6.90] (UnknownHost [94.156.6.90]) by iesco.comsatshosting.com with SMTP;
+   Wed, 23 Aug 2023 04:31:02 +0500
+Message-ID: <EA.9C.10987.13C45E46@symantec4.comsats.net.pk>
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Re; Interest,
+To:     linux-ide@vger.kernel.org
+From:   "Chen Yun" <pso.chairmanbod@iesco.com.pk>
+Date:   Tue, 22 Aug 2023 16:31:16 -0700
+Reply-To: chnyne@gmail.com
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDLMWRmVeSWpSXmKPExsVyyUKGW9fI52mKweVLbBbHdjxicmD0+LxJ
+        LoAxissmJTUnsyy1SN8ugStjyboLLAW7mSva+hexNDA+Zupi5OCQEDCROPZPvYuRi0NIYA+T
+        xLfJ35lBHBaB1cwSPZuPskM4D5kl+pecZocoa2aUuNfYB1TGycErYC1x+u1lJhCbWUBP4sbU
+        KWwQcUGJkzOfsEDEtSWWLXzNDLKOWUBN4mtXCUhYWEBM4tO0ZewgtoiArET/x1NgrWwC+hIr
+        vjYzgtgsAqoSr85dA4sLCUhJbLyynm0CI/8sJNtmIdk2C8m2WQjbFjCyrGKUKK7MTQSGWrKJ
+        XnJ+bnFiSbFeXmqJXkH2JkZgGJ6u0ZTbwbj0UuIhRgEORiUe3p/rnqQIsSaWAXUdYpTgYFYS
+        4ZX+/jBFiDclsbIqtSg/vqg0J7X4EKM0B4uSOK+t0LNkIYH0xJLU7NTUgtQimCwTB6dUA2NQ
+        x0OXl7oSeUdtldvfl2z/d8x5+hyx4nzlJVmdwk03lPwm5hzuU/KxU/NpYOwX9rEJvDA3IvBy
+        Y7LvTUt/19R17bMavN4ulrB6zXrXMuTW6+Iv7ZNPvbHy+h7EuClW4fz0vy9DN8+69L38pN4B
+        g6UG/6dEFp9c9SXqeYpO+qGyG41vJz4XV1ViKc5INNRiLipOBADXr0pOPwIAAA==
+X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_SBL,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: iesco.com.pk]
+        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
+        *      [94.156.6.90 listed in zen.spamhaus.org]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        * -0.7 RCVD_IN_DNSWL_LOW RBL: Sender listed at https://www.dnswl.org/,
+        *       low trust
+        *      [203.124.41.30 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Some users of pata_falcon on Q40 have IDE disks in default
-IDE little endian byte order, whereas legacy disks use
-host-native big-endian byte order as on the Atari Falcon.
+Re; Interest,
 
-Add module parameter 'data_swab' to allow connecting drives
-with non-native data byte order. Drives selected by the
-data_swap bit mask will have their user data byte-swapped to
-host byte order, i.e. 'pata_falcon.data_swab=2' will byte-swap
-all user data on drive B, leaving data on drive A in native
-byte order. On Q40, drives on a second IDE interface may be
-added to the bit mask as bits 2 and 3.
+I am interested in discussing the Investment proposal as I explained
+in my previous mail. May you let me know your interest and the
+possibility of a cooperation aimed for mutual interest.
 
-Default setting is no byte swapping, i.e. compatibility with
-the native Falcon or Q40 operating system disk format.
+Looking forward to your mail for further discussion.
 
-Cc: William R Sowerbutts <will@sowerbutts.com>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Regards
 
----
-
-Changes since v2:
-
-Geert Uytterhoeven:
-- only shift swap bitmask if pdev->id > 0
-
-Finn Thain:
-- use pdev->devno directly for byte swap check
-
-Changes since v1:
-
-Damien Le Moal:
-- change patch title
-- drop swap_data flag
-
-Finn Thain:
-- drop allocation of ap->private struct, use field as bitmask
-
-Changes since RFC v4:
-
-Geert Uytterhoeven:
-- don't shift static module parameter for drive 3/4 bitmask
-- simplify bit mask calculation to always use pdev->id
-
-Finn Thain:
-- correct bit numbers for drive 3/4
-
-Changes since RFC v3:
-
-- split off this byte swap handling into separate patch
-
-- add hint regarding third and fourth drive on Q40
-
-Finn Thain:
-- rename module parameter to 'data_swab' to better reflect its use
-
-William Sowerbutts:
-- correct IDE drive number used in data swap conditional
----
- drivers/ata/pata_falcon.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
-index 3841ea200bcb..7cf15bd9764a 100644
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -33,6 +33,11 @@
- #define DRV_NAME "pata_falcon"
- #define DRV_VERSION "0.1.0"
- 
-+static int pata_falcon_swap_mask;
-+
-+module_param_named(data_swab, pata_falcon_swap_mask, int, 0444);
-+MODULE_PARM_DESC(data_swab, "Data byte swap enable/disable bitmap (0x1==drive1, 0x2==drive2, 0x4==drive3, 0x8==drive4, default==0)");
-+
- static const struct scsi_host_template pata_falcon_sht = {
- 	ATA_PIO_SHT(DRV_NAME),
- };
-@@ -50,7 +55,7 @@ static unsigned int pata_falcon_data_xfer(struct ata_queued_cmd *qc,
- 
- 	if (dev->class == ATA_DEV_ATA && cmd &&
- 	    !blk_rq_is_passthrough(scsi_cmd_to_rq(cmd)))
--		swap = 0;
-+		swap = (uintptr_t)ap->private_data & BIT(dev->devno);
- 
- 	/* Transfer multiple of 2 bytes */
- 	if (rw == READ) {
-@@ -194,6 +199,9 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	ata_port_desc(ap, "cmd %px ctl %px data %pa",
- 		      base, ctl_base, &ap->ioaddr.data_addr);
- 
-+	ap->private_data = (void *)(uintptr_t)(pdev->id > 0 ?
-+		pata_falcon_swap_mask >> 2 : pata_falcon_swap_mask);
-+
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
- 		irq = irq_res->start;
--- 
-2.17.1
+------
+Chen Yun - Chairman of CREC
+China Railway Engineering Corporation - CRECG
+China Railway Plaza, No.69 Fuxing Road, Haidian District, Beijing, P.R.
+China
 

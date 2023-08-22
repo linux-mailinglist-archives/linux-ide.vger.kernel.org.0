@@ -2,76 +2,63 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18999784B4B
-	for <lists+linux-ide@lfdr.de>; Tue, 22 Aug 2023 22:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8791E784CBD
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Aug 2023 00:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230475AbjHVUWF (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 22 Aug 2023 16:22:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48044 "EHLO
+        id S231555AbjHVWOJ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 22 Aug 2023 18:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229491AbjHVUWF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Aug 2023 16:22:05 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B0ACCC;
-        Tue, 22 Aug 2023 13:22:02 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1c09673b006so6742505ad.1;
-        Tue, 22 Aug 2023 13:22:02 -0700 (PDT)
+        with ESMTP id S231556AbjHVWOI (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 22 Aug 2023 18:14:08 -0400
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16C1ACD2;
+        Tue, 22 Aug 2023 15:14:07 -0700 (PDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1bdf4752c3cso30027145ad.2;
+        Tue, 22 Aug 2023 15:14:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692735722; x=1693340522;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1692742446; x=1693347246;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZoKjy7F1I0Ba/uu2yUZdhOR+kh54mpLL9cfM4YSAEZ8=;
-        b=gd8N9jIlvVQ4X1dUaoEBZ5JrNXWy+twcQbY9WSwcvsDcX/0nzQjg0G9yee4IDDQ6YQ
-         MEsoOrOLPJm11Pta7H7AJkqtlbQgElh5SaZM7MHPeWfcB6tyfC+U+yYF9mBZKtokFJ30
-         JASHlM1t+ico7lzLZ8rKEMsXRqspw5CuSoTHtNeIZCjPuUt8YcevNb3TvcHdjKjduioH
-         ldtnxMPjqBNS1pw7C8tuJ6QGiBwN9lzfnMVgIP83PdPXI4FQAF95CZMwPHrG1uXuQV7J
-         otvHr4DZeSWDysiFEzec33IYX5uwwa+l2KfBsCylWHEttqLg7meP+p4l8KW0x8Ym+nb6
-         daTw==
+        bh=mhrVf6seEAierk/yi9slekoheI/hQpejB3kp7KTu7Sk=;
+        b=nv7pfo/KYBY1sl411NcqE96i8r+CmR99/EeBwszDABnmvfGfcTGmvm9tMVPL6d9QJk
+         hOHJKc63IvBZbD3NMBdXlx3Ydm3n3kh3Xr2Y4jI1u/6Gu71eUNHlfW2HhmuYCTpAN8P/
+         SIKXWi2rbr/Sy/S4uN0RIyGKYpS8XXL3yH7bdWaeBy5y2V+zNVbzh9r1aYkXGYKnyuCm
+         XhUJUBADNlIRcSf6dhwRIQTaJmswNnVtgySFnUvoqsPjdYmd91+yopf3La53atv4y43l
+         1uoGnZQr+G9LdSwUmAdaTjkyKHFWtSFlg4xo2/FDx1OGa7rIE1m/ByC4fbaqEs6Kxg+P
+         hMxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692735722; x=1693340522;
-        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
-         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZoKjy7F1I0Ba/uu2yUZdhOR+kh54mpLL9cfM4YSAEZ8=;
-        b=SYMLSs2flctoACBBcmTYw+nBMzEc5b98fgBOPePu0mYrwtE2BPbH0iilABNulVXfoy
-         RHCUsMDLAhJzLp8jMR/7c1gHkef9RJcU6G8fueGa1ea4BPK8ECEI8hLNvJ0l1ZYUve3G
-         4Hsz0erDpDqbmRqLneqbXfxyYN/raGWWYBr7JxBnf52rXPniex819WX67hWQFptsNN3N
-         c7oWDy8ptPlBf6KaYdzZFTACvrmHj0woRUWo/1K/BeeJejQJExbNx0nUCEkZ5ttiVgRt
-         3hiky1s75jy5BkBESEtkpnN5d2LloUuYfvjH5M2YrqH5tDcctn2pUUwnud9Yhf45gDjZ
-         ABpA==
-X-Gm-Message-State: AOJu0Yzg9f2K6B9razGkkS/OETVxXDlOdYF1x2Rh4KYhnfnyQS+APOie
-        dNo3beHZuCd/NFFtiVDnE9Y=
-X-Google-Smtp-Source: AGHT+IEsmIzlr4NT+4duSfdw8VV7HtDnklmJS9o0xF+vXCwoTM/uFHSnGIhEnvq3U50bdrTCxGRH2Q==
-X-Received: by 2002:a17:902:e882:b0:1c0:8044:750b with SMTP id w2-20020a170902e88200b001c08044750bmr5951913plg.47.1692735721879;
-        Tue, 22 Aug 2023 13:22:01 -0700 (PDT)
-Received: from [10.1.1.24] (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id y16-20020a170902b49000b001a5260a6e6csm9467437plr.206.2023.08.22.13.21.57
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 22 Aug 2023 13:22:01 -0700 (PDT)
-Subject: Re: [PATCH 2/3] m68k/q40: add data_swab option for pata_falcon to
- byte-swap disk data
-To:     Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org
-References: <20230817221232.22035-1-schmitzmic@gmail.com>
- <20230817221232.22035-3-schmitzmic@gmail.com>
- <3af82526-1b8f-87bd-b936-9171e4d821df@omp.ru>
- <5e5217a4-837c-fac8-246c-15f8a2d46bfe@gmail.com>
- <7463b0e7-cc9c-c091-ab47-14d19a0daf07@gmail.com>
- <7dfabbb3-1bda-103d-d357-a6f167dab9b9@gmail.com>
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Finn Thain <fthain@linux-m68k.org>
+        d=1e100.net; s=20221208; t=1692742446; x=1693347246;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mhrVf6seEAierk/yi9slekoheI/hQpejB3kp7KTu7Sk=;
+        b=krhNnWNgTZ8lGPiMP1emZ8BE/McoI6cRTQCuSMLpaPVfh+dd1unkZ7qpt4Zw34Vx1e
+         +m8HP2JfGHf+BGXlhv1Z3XW7w2aNY1pHPajhwuZWqKgZcfvi+SjUy5TiFzT383dVvPNL
+         XUlbkb8tf7FClm3wyEZZmeI6F+6cV4k6RBNhrLis/S+bOQdwgAnBdl9Q4UV8+RgjLODE
+         aP+/tv1ErWpPUHp9D4vbsppMNc47MOmmuE0Czk8xZPIPvRRI/5NLdxUooyXJsd/lvPOy
+         z468a1C+1fAvdl2kTbFy/NlHNeFvLUqDHCKJPE08QfJoqbw8fm0JVhlWFeUNmdohsdxX
+         1FCA==
+X-Gm-Message-State: AOJu0Yxp33HjpnCr/e6zlQpu2xoav/D03IN4V0RdilkU8yjjBNVNMHcl
+        V8chlaxl686qI4GFH/bvUUw=
+X-Google-Smtp-Source: AGHT+IFHfaWpGXpO8BGc+OhFQjLxrekCfk6fvJFi85+6l4ZH+SJnOpxlSQfsuAXxkuD6/xLyDrYy4Q==
+X-Received: by 2002:a17:902:da82:b0:1bd:d446:6676 with SMTP id j2-20020a170902da8200b001bdd4466676mr9545217plx.31.1692742446478;
+        Tue, 22 Aug 2023 15:14:06 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id x2-20020a170902ea8200b001b9de4fb749sm9468348plb.20.2023.08.22.15.14.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 15:14:05 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id 85D72360324; Wed, 23 Aug 2023 10:14:01 +1200 (NZST)
 From:   Michael Schmitz <schmitzmic@gmail.com>
-Message-ID: <d7aa2e48-bf71-5ece-87e2-aaa63fdeb567@gmail.com>
-Date:   Wed, 23 Aug 2023 08:21:55 +1200
-User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
- Icedove/45.4.0
-MIME-Version: 1.0
-In-Reply-To: <7dfabbb3-1bda-103d-d357-a6f167dab9b9@gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+To:     sergei.shtylyov@gmail.com, dlemoal@kernel.org,
+        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org
+Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org
+Subject: [PATCH v4 0/2] Q40 IDE fixes
+Date:   Wed, 23 Aug 2023 10:13:57 +1200
+Message-Id: <20230822221359.31024-1-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,23 +67,17 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hi Sergey,
+Version 4 of the pata_falcon bugfix patch for Q40 support.
 
-Am 23.08.2023 um 07:44 schrieb Sergei Shtylyov:
-> On 8/22/23 10:10 PM, Sergei Shtylyov wrote:
-> [...]
->
->>> thanks for reviewing - this has mostly been addressed in v2 or v3 (which I forgot to send to you, sorry). Damien asked for the patch title to be changed (now 'ata: pata_falcon: add data_swab option to byte-swap disk data) so you might have missed it on the list.
->>
->>    I didn't want to repeat such request after him. :-)
->>    I'm subscribed to linux-ide thru my Gmail account, and I'm still not seeing
->> your further patch versions on the list... :-/
->
->    Had to reply from Gmail account as the OMP server rejected my msg.
-> Please be sure to always CC: me on the PATA patches!
-
-Will do - v4 to go out shortly (afer a final boot test).
+Changes to patch 1 only - now uses register shift instead of
+register step (or gap, or scale ...). Most drivers appear to
+use shift these days where platform integration differences
+have to be reconciled. ata_port_desc() will now report the
+MMIO address used by the data transfer function (which differs
+from command and control base address in the Q40 case).
 
 Cheers,
 
-	Michael
+   Michael
+
+

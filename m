@@ -2,117 +2,95 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB567853C8
-	for <lists+linux-ide@lfdr.de>; Wed, 23 Aug 2023 11:24:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EACB3785495
+	for <lists+linux-ide@lfdr.de>; Wed, 23 Aug 2023 11:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjHWJYN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Wed, 23 Aug 2023 05:24:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53236 "EHLO
+        id S234211AbjHWJuG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 23 Aug 2023 05:50:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235471AbjHWJVx (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Aug 2023 05:21:53 -0400
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A41659C8;
-        Wed, 23 Aug 2023 02:10:52 -0700 (PDT)
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-59231a1ca9eso26344457b3.1;
-        Wed, 23 Aug 2023 02:10:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692781851; x=1693386651;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wppR3OC0NNfgDsAa7KrzF1hDzSS0MVYBa/DcSmaU58Q=;
-        b=F5X9CKZ5gewnQOcpnTlnUcC6OptVzVJ+tRmTGkbKbJ3xWuzLEXm5n3yI+dJBPTUp2N
-         1on5Vhg5uQAft9k8ZSTcbvZlflZlfYnoCHeDSF4JAVKHjVkUNplAplUi6S6KliZT+iyK
-         9k9tlHVBwiC2TVSMY4d7sUXxYppHjexnu/p05b5kutzd0haS1vgHg75s2Z+uB713/5VG
-         +vq/CS6olwS56kirhIsJmg2bM69SLt4gmVY7aoOfQCtjb4t49FTnQmOngFaNVZtI6FV7
-         X8fHK14Pcae9NuBt5NXqWNTcG9MM32K0itotejl+RxydFhGAL7Cds9+5OF4Yo9HEpPEw
-         PKSw==
-X-Gm-Message-State: AOJu0YwNJdDfVbnYSVVKBeifDFAA1ql7BRWcBiAS66hGcm14Q0gVxjsX
-        1pArZRT7j348nAKcihB6Jjwk+2sk7o/KLw==
-X-Google-Smtp-Source: AGHT+IGcp+jyujQjBb+b1HbUKO5s9d1F2lKPb7dIpEfWqMXSb8DdRatkrdcPtbbv1FmHaFiTYjtEYg==
-X-Received: by 2002:a0d:df82:0:b0:583:c105:8501 with SMTP id i124-20020a0ddf82000000b00583c1058501mr12881147ywe.42.1692781851419;
-        Wed, 23 Aug 2023 02:10:51 -0700 (PDT)
-Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
-        by smtp.gmail.com with ESMTPSA id l74-20020a0de24d000000b00583d1fa1fccsm3241907ywe.0.2023.08.23.02.10.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Aug 2023 02:10:51 -0700 (PDT)
-Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-d6b0c2cca0aso5208377276.0;
-        Wed, 23 Aug 2023 02:10:51 -0700 (PDT)
-X-Received: by 2002:a25:b202:0:b0:d3c:2cb2:f678 with SMTP id
- i2-20020a25b202000000b00d3c2cb2f678mr12653431ybj.64.1692781850843; Wed, 23
- Aug 2023 02:10:50 -0700 (PDT)
+        with ESMTP id S236164AbjHWJtd (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 23 Aug 2023 05:49:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95642101;
+        Wed, 23 Aug 2023 02:47:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 24BA36211F;
+        Wed, 23 Aug 2023 09:47:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57752C433C7;
+        Wed, 23 Aug 2023 09:47:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692784058;
+        bh=krhBKvq/7yPmNk8KhXgmxPtGwbeLJ0wWfNZMNkB+FyY=;
+        h=From:Subject:Date:To:Cc:Reply-To:From;
+        b=fwRzH/lWWLYwwJ5gHFzcTKmH9rKezRrjsBMzYVzmuIPiZcQwZlmoV1rhMHbTYlesG
+         /9Cdu1bvxZMSfrHk75Li9LinWInmWVjb6Z38C781OrpjsGMKV+4KbBWdSq781wwHnZ
+         /jaO8bpz0afDswFnq1QJ+5RlLXEdXshZUlNTb8Ei5bdFP7LAzLDSPB1tQPvAT+PRew
+         1gsg+c3e7q4k4N4eF6qHfsWQpB8t3m3ItByMrU0sQfVoa3U97FDxl6Esw9aewtAHvH
+         rat6Twz1y/sG6+gk2F8YZuwOWKWtX1s7TI3Hy0zTGJEvCEVfglGZtkKQdMIF3Ld85P
+         a65k3qfZOAsaA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.lore.kernel.org (Postfix) with ESMTP id 2C616EE49B0;
+        Wed, 23 Aug 2023 09:47:38 +0000 (UTC)
+From:   Nikita Shubin via B4 Relay 
+        <devnull+nikita.shubin.maquefel.me@kernel.org>
+Subject: [PATCH 0/2] ata: pata_ep93xx: dt convert preparation fixes
+Date:   Wed, 23 Aug 2023 12:47:26 +0300
+Message-Id: <20230823-ep93xx_pata_fixes-v1-0-d7e7229be148@maquefel.me>
 MIME-Version: 1.0
-References: <20230822221359.31024-1-schmitzmic@gmail.com> <20230822221359.31024-3-schmitzmic@gmail.com>
- <CAMuHMdWaDzG_FJPnc_YEBB7RYrNcwfceeN4QgB-3Z_7PFqCGUw@mail.gmail.com>
-In-Reply-To: <CAMuHMdWaDzG_FJPnc_YEBB7RYrNcwfceeN4QgB-3Z_7PFqCGUw@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 23 Aug 2023 11:10:39 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWNfCHLx-nLy3C_afH2KpAMn18KdW=UjS+g5Rq16CWFiw@mail.gmail.com>
-Message-ID: <CAMuHMdWNfCHLx-nLy3C_afH2KpAMn18KdW=UjS+g5Rq16CWFiw@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] ata: pata_falcon: add data_swab option to
- byte-swap disk data
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     sergei.shtylyov@gmail.com, dlemoal@kernel.org,
-        linux-ide@vger.kernel.org, linux-m68k@vger.kernel.org,
-        will@sowerbutts.com, rz@linux-m68k.org,
-        Finn Thain <fthain@linux-m68k.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,RCVD_IN_SORBS_WEB,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAK7V5WQC/x3LUQqDMBCE4avIPjegCU1tr1JE1jjWfWgaslIC4
+ t0b+/jP8O2kyAKlR7NTxldUPrFGd2korBxfMDLXJtta1/bWGaS7K2VMvPG4SIGaq4f3tz7Mfum
+ ouokVZsocw3rKN+uGfB4p4y/q+hyO4wfSwjdCfAAAAA==
+To:     Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Nikita Shubin <nikita.shubin@maquefel.me>
+X-Mailer: b4 0.12.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1692784059; l=769;
+ i=nikita.shubin@maquefel.me; s=20230718; h=from:subject:message-id;
+ bh=krhBKvq/7yPmNk8KhXgmxPtGwbeLJ0wWfNZMNkB+FyY=; =?utf-8?q?b=3DR1E0ShJVgJ6+?=
+ =?utf-8?q?6M5JL8czSJJXXgcXGRt7mmcphEarVt02Mxf78/HoG4PiPHg3Aes8zSORUrvu2k/o?=
+ jPQZMvG+DgxQIpAoqr7qUCOcuhAfGoary9BGk2rr9lANs5zi8ygA
+X-Developer-Key: i=nikita.shubin@maquefel.me; a=ed25519;
+ pk=vqf5YIUJ7BJv3EJFaNNxWZgGuMgDH6rwufTLflwU9ac=
+X-Endpoint-Received: by B4 Relay for nikita.shubin@maquefel.me/20230718 with auth_id=65
+X-Original-From: Nikita Shubin <nikita.shubin@maquefel.me>
+Reply-To: <nikita.shubin@maquefel.me>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 11:10 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> On Wed, Aug 23, 2023 at 12:14 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> > Some users of pata_falcon on Q40 have IDE disks in default
-> > IDE little endian byte order, whereas legacy disks use
-> > host-native big-endian byte order as on the Atari Falcon.
-> >
-> > Add module parameter 'data_swab' to allow connecting drives
-> > with non-native data byte order. Drives selected by the
-> > data_swap bit mask will have their user data byte-swapped to
-> > host byte order, i.e. 'pata_falcon.data_swab=2' will byte-swap
-> > all user data on drive B, leaving data on drive A in native
-> > byte order. On Q40, drives on a second IDE interface may be
-> > added to the bit mask as bits 2 and 3.
-> >
-> > Default setting is no byte swapping, i.e. compatibility with
-> > the native Falcon or Q40 operating system disk format.
-> >
-> > Cc: William R Sowerbutts <will@sowerbutts.com>
-> > Cc: Finn Thain <fthain@linux-m68k.org>
-> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Tested-by: William R Sowerbutts <will@sowerbutts.com>
-> > Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-> >
-> > ---
-> >
-> > Changes since v2:
-> >
-> > Geert Uytterhoeven:
-> > - only shift swap bitmask if pdev->id > 0
->
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Sending some fixes in prior to "ep93xx device tree conversion" series,
+as per Sergey request:
 
-Oops, I meant
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-But it never hurts to have more review tags ;-)
+- simple replacement s/-ENXIO/-ENOMEM/ as it suits better.
+- second is s/ep93xx_chip_revision()/soc_device_match(), so i can drop 
+  ep93xx_chip_revision() entirely in later series.
 
-Gr{oetje,eeting}s,
+Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+---
+Nikita Shubin (2):
+      ata: pata_ep93xx: fix error return code in probe
+      ata: pata_ep93xx: use soc_device_match for UDMA modes
 
-                        Geert
+ drivers/ata/pata_ep93xx.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
+---
+base-commit: 89bf6209cad66214d3774dac86b6bbf2aec6a30d
+change-id: 20230823-ep93xx_pata_fixes-56e6678cd6f1
 
+Best regards,
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Nikita Shubin <nikita.shubin@maquefel.me>
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

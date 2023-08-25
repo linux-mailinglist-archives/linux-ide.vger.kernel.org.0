@@ -2,193 +2,181 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F018787CD4
-	for <lists+linux-ide@lfdr.de>; Fri, 25 Aug 2023 03:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5EFB787D33
+	for <lists+linux-ide@lfdr.de>; Fri, 25 Aug 2023 03:32:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235190AbjHYBN6 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 24 Aug 2023 21:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51770 "EHLO
+        id S236948AbjHYBcI (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 24 Aug 2023 21:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235801AbjHYBNo (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Aug 2023 21:13:44 -0400
-Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E2A1BFF;
-        Thu, 24 Aug 2023 18:13:42 -0700 (PDT)
-Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3a76d882052so335047b6e.0;
-        Thu, 24 Aug 2023 18:13:42 -0700 (PDT)
+        with ESMTP id S238873AbjHYBbt (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 24 Aug 2023 21:31:49 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 331D31FF6;
+        Thu, 24 Aug 2023 18:31:44 -0700 (PDT)
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37OJEJdt009502;
+        Fri, 25 Aug 2023 01:31:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2023-03-30;
+ bh=f8sOKxIbWaItjJJavN3HoW1GMHYsFtaGa3Wfdezokkk=;
+ b=QEnkP1/ZDWXbA3BWWlT7QHz9FIzx1lc1su47+Vybu1reDStyIfQbDA9SnUdRbB6MXpRh
+ hZtu5oc+HkmHkA5C0KSFGz1A9SeYGBeEtczFdXOd3Lv753I1Bvh0n3ESP59PD/6EU45W
+ wngz6pZ1D6Me9yZetVTLmpEmtRDCpALeT2pD915aM7bj/RJ9hqMcHZrcZsXuhuofUfQj
+ 4+kj87NbnIwWcz8Rh4vLgJ52SzSy8AgShS6YivYMWc2b11F1TPGmd93x7tOSr6YJhS10
+ b0TKICoyGC08MoA6lKcYxr0dWweWKd5IZwt40TUKUEDToQRO450VqlvXVt8g+hJy504J yQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3sn1ytwee8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 25 Aug 2023 01:31:29 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 37P0KVkh035809;
+        Fri, 25 Aug 2023 01:31:28 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
+        by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3sn1yq7j0m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 25 Aug 2023 01:31:28 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CLlwsUUJtNT4G0V4NYn06NJYMqwvSpJGYb0BXYplm0cNHySbYSeX24QJ4gqUnRClsmhlcIxNcVf+hRoS2xSd/jfR5s7a2D8cFgc5v8wNBzMSE27YdAuoYW51gwQ9kU8XVtsM5lxC+Tuh+iswpW6uj1vZVspAcsJ/IHbnyaT3cllYHLKzLCULoLdvQv3qJVBTPPvBYh2VQVb1YQovxQPQVUTlCYDxl126KCgVSl7jNsvnXNiHhllzwsDzFmlN3lLQhePLyKIeK/oQADQ6K9jsLk21CmoSg5bFhj50YwzOOzJOz1jIXvLwo84jiju0V6dqUFhP2+2vToyrIqbVqUlsXA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=f8sOKxIbWaItjJJavN3HoW1GMHYsFtaGa3Wfdezokkk=;
+ b=ARuCTLG/NmknDArwtrSaZ6y4VRhkQhXv86mu4sej2u+lxs/r53geM7Dvl4ayeGi4Dl1sjdA7zp/iZjtKhzM4D89yHstVom/6uSCRzmGhncQWrAuLMT0wImJVao/YRfYFoCdwufzBr3uSR9TCA194mF4pb3w1aTr9NtCOtzCy09hdnKlhSdoJgj933YuotFNERzolzrqVm24XDwSoTPRamiMGPSkJLjZc0rHLa94NH7H1SIn/os1M63JbKpUO5e9/ozRysgcOMGKUXK9YbWZw0aXvUcS8yY+1+JnLQ+SVozNie9kZjEtq2UsBPmFe2GZbBy2tpYybd/ti4EqZao4yEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692926021; x=1693530821;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EoAoxtgqzVrJU/fBQ+EbpVxGjsbEkiMEB7CyIEPnDFs=;
-        b=N5k8+rnarRp+nFsFSbwtUUMJZmZSVt0J5DEU1DNzwt9bpIFaT49XzdH4KZRpFhM+3V
-         lPKhqE3uTS9LGovFRcaBIGp6x6RxQMvNUG9kMjn4VsW34aSE5TYmshIQf8Fj5HvhVagL
-         blNsgqGB6ghV3NM6Z83VV1+mtz2+lMcutNiEcQ3P9MPmxgjbKH1b/L4wJnTvYzjUK0aQ
-         3k8A8hNPiWvFve4m9BCO4MKYMvLxpxsOVrM5izyN2y64YuALT0kc2TZUxM4CJUjaBt/7
-         70Jccx9EwjjMtrI6KSufSJYWwFJBmcrDHVkDYLg8UE6boY3qZWnf9U/ivoLhezlOrgOU
-         S3bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692926021; x=1693530821;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EoAoxtgqzVrJU/fBQ+EbpVxGjsbEkiMEB7CyIEPnDFs=;
-        b=B27El61QqCxWO4EUrTcyi822O1VqIHoYlc+4X71drUCEVI8SUCY0BNaBiiA391wXQG
-         S7REpsEoGsSmcEcQmslObVvle21Eks19UStMuPqKHkjFSoQ2YR1GcuZy6ZEt/Ub4QHE3
-         6K4YKxWc9Um1NlHiNsRpV6OC+X18+wI6WSOGE8rubVLWEVT+oUo5WnQWUCudatKzdCbc
-         NiDz41LxH5kbIwjbh3JSHwYoWSBBiqBV7Zqo1Fs1J7QwmrBWtxGgSBMLp28wS7MOwaIk
-         sLvv3gKXvCKwIICQipdjYsrAM4GrZpHiqiDlHAmqq1/MqApzfuoRyePAWPae2/i6Wcfy
-         v4cw==
-X-Gm-Message-State: AOJu0Yy7+hDhgx9ozali0716R/wZKkUVby7wQI/l1Ymm0giQkb39QTEw
-        SqBegYwRQksiTKv/5zE2w6I=
-X-Google-Smtp-Source: AGHT+IGG0QesE0j5hLHCxYelQIDOVUlluIC7fa6TMpVjfk2KTHMZlrXbg9bADEhOXOEg/7W8TxtNGg==
-X-Received: by 2002:a05:6808:30d:b0:3a7:3ab9:e589 with SMTP id i13-20020a056808030d00b003a73ab9e589mr1120457oie.35.1692926021728;
-        Thu, 24 Aug 2023 18:13:41 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id j22-20020a62b616000000b00689f1ce7dacsm356614pff.23.2023.08.24.18.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Aug 2023 18:13:41 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id D77AE36043B; Fri, 25 Aug 2023 13:13:37 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     s.shtylyov@omp.ru, dlemoal@kernel.org, linux-ide@vger.kernel.org,
-        linux-m68k@vger.kernel.org
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v5 2/2] ata: pata_falcon: add data_swab option to byte-swap disk data
-Date:   Fri, 25 Aug 2023 13:13:35 +1200
-Message-Id: <20230825011335.25808-3-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230825011335.25808-1-schmitzmic@gmail.com>
-References: <20230825011335.25808-1-schmitzmic@gmail.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=f8sOKxIbWaItjJJavN3HoW1GMHYsFtaGa3Wfdezokkk=;
+ b=ncImTAsqcLwzVy/7r3uWmP73Jx6DJBnVXecH8QHX7h8VAstPfw8+te4Xzc96rwjJkMcqn6TtKWIcAadFtH/tylaWxg9U0oC7upZ7yqMHaJGftIGSdpduInb95RcuA4fDh4zMgx7k9PjDwjOPHhiKkf5OmxKVSrSGJPLeHjGZ5D0=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by IA1PR10MB6855.namprd10.prod.outlook.com (2603:10b6:208:424::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Fri, 25 Aug
+ 2023 01:31:26 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::59f3:b30d:a592:36be]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::59f3:b30d:a592:36be%7]) with mapi id 15.20.6699.027; Fri, 25 Aug 2023
+ 01:31:26 +0000
+To:     Damien Le Moal <dlemoal@kernel.org>
+Cc:     Rodrigo Vivi <rodrigo.vivi@kernel.org>, linux-ide@vger.kernel.org,
+        linux-scsi@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Paul Ausbeck <paula@soe.ucsc.edu>,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        TW <dalzot@gmail.com>, regressions@lists.linux.dev,
+        Bart Van Assche <bvanassche@acm.org>
+Subject: Re: [PATCH] ata,scsi: do not issue START STOP UNIT on resume
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1zg2f3ocm.fsf@ca-mkp.ca.oracle.com>
+References: <20230731003956.572414-1-dlemoal@kernel.org>
+        <ZOehTysWO+U3mVvK@rdvivi-mobl4>
+        <40adc06d-0835-2786-0bfb-83239f546d92@kernel.org>
+Date:   Thu, 24 Aug 2023 21:31:23 -0400
+In-Reply-To: <40adc06d-0835-2786-0bfb-83239f546d92@kernel.org> (Damien Le
+        Moal's message of "Fri, 25 Aug 2023 08:42:13 +0900")
+Content-Type: text/plain
+X-ClientProxiedBy: DM6PR05CA0051.namprd05.prod.outlook.com
+ (2603:10b6:5:335::20) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|IA1PR10MB6855:EE_
+X-MS-Office365-Filtering-Correlation-Id: f214fe8b-0519-4735-e150-08dba50affc6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: vra6l/gNjJaWbh4cxmNgI2TG2tUTlBRoFKWkcal3Oqm7ZK6aN5l2hcspksq052WIQoJnml1KtenzqjmQZZ+CBzedxdSl2NUqvaCrheko2ieXjXkHn+EntcyUE4Uvo+sI+L/u+msXCTbHuD8Ha05cU1tWgaZBIAWe4GJMu6/tCIhkgx79UTud/eWcBgpPlB3Re5aOPBoOcfeZ1ob/aU2fHycRowNC5t8FhbgWP8r1IBGTGanCMn6ObqYCJTQZxOiaMZFoPrx02okSHFW4tVhrjFIcfVWjwo4cNdyidKxyec9Zs21OmflIVZM229kF2sHqqRh1Md9O3bY+samhpyWVswFsC/sPrHWS/ZExhtlGmg6h3GgLyvn0w8lcldTCOASPwSCeZpMf1p34Q8p16OLtrXqtaEjkOHjXUMKbsW8RQb9h5W4iU1iqvVQ2LStKAhZxHitCXHd0GBbha6hU/c/kpy3HtaVegsAzv9DN3/ECqmPHmYjArTqeG4KSPMjFUno2tisxzB6eNfmpxH9W/5KKaDVKeZ2S04KkhLHPgk4fpLFrbNYNlcffc0j8PR5gUdNg
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(376002)(366004)(346002)(396003)(136003)(186009)(1800799009)(451199024)(54906003)(66476007)(66946007)(66556008)(316002)(6916009)(478600001)(26005)(38100700002)(6666004)(41300700001)(6506007)(6486002)(86362001)(36916002)(2906002)(6512007)(4326008)(8676002)(8936002)(558084003)(5660300002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lUwzes0ZcFQA/9E2dJbNAfvB+fo7YLjBH1khzEfhqQ1wTxPLH0n/d6OpA6Bs?=
+ =?us-ascii?Q?2FDeHJ0zq7HdVEE4PWdOqN53dPfDh6S1JqZCO3nfTJjiJ4QiPt32j/xDgji2?=
+ =?us-ascii?Q?mk8a2t5r/7WIc7+6gDrMzgMGSCdbHEiYmtmDC5MY+YzImFPzRMqfQRwSUIaZ?=
+ =?us-ascii?Q?LHXomxSFiQbkuOxVA6H9WBs/39IG6bdM+dcK4w/e09LbuzC/1pyxArE2rb9s?=
+ =?us-ascii?Q?wp+hwWqmo3wRvu+/TDFEGIvj2whaGb33kPcpTxGHtNqAqz42x6I5mYhvWDpE?=
+ =?us-ascii?Q?MiesgwudzAx+DDC2+54x15t9fmtW1/CYdPkuJy1cWjAYfUdnhFd75EDIOMWB?=
+ =?us-ascii?Q?I+h/0/WY5f6GbgdD07OOjS7ylf+13I/b420JUXcYJNI8P2/+rS9bPrj3a8st?=
+ =?us-ascii?Q?DAsXPdj2SYP20JYf+IYfwCuHYINPPSQBYBMtDaeY6NLUmKZxKuznbVwgBTk1?=
+ =?us-ascii?Q?X7ITSqtPoZtT/mrQmsJexaSZBpqlRSKPSmr+8ePdXJxb9CNW7EK7ZhG7yJ9Q?=
+ =?us-ascii?Q?uoV0iqgWCbCCd3TyBiJbHmmLrGXiRxvL+UjDrd+9o7maDOQMna61OyBRlhMu?=
+ =?us-ascii?Q?8NYZ/DmCNRQLshE3JnjTg0+Z7rB36luvImPiugRe3gbrxQEPKa4HP5821LgL?=
+ =?us-ascii?Q?Yusm+iBNDvg2yr4JPcTsUbrcXGbZbu/u6fdLNVBrLsLMCOtJxQzoXSum3HWc?=
+ =?us-ascii?Q?KnudqJJuc0p8FZtduZYTKNwl1MS6W2LnaNlDtUnSgdnhLsxcTxhm4vpc35NM?=
+ =?us-ascii?Q?aNKSFPP5FSHWwGhdlInatGd4i+RZh5cvOFNpcgMQEZrPHNFxum7StwcvWIbV?=
+ =?us-ascii?Q?O0tLdBGBp1TuDUH5n2+IAV9T2fjSKR5CLH1G7YtBpA9OBdgHrpOGxDFx42j6?=
+ =?us-ascii?Q?GOw0Z8LQQ0CWiAllLw764e/MsYaqHKUPvJasKTlyWnSxPiyBF5pDTKziii51?=
+ =?us-ascii?Q?VTkdw32/BImWacL0gXll+U6jOK6q4nFo7o2YMyWFu/oy6N0YvSwxmGtsUDbW?=
+ =?us-ascii?Q?LgvYB3s92veC+wx73iF91kshiCSc8oIzS+4GtTkuTyUMxd8oVRtSlbGdV8Cy?=
+ =?us-ascii?Q?C+a5Edb9FfO/ND39fPnCmto2quvFGu/KSMGBf/x30hPB5kqduSdVO0B5D+f2?=
+ =?us-ascii?Q?+5hHaX3FUNJkLERwqMNc13EJbnHTrdCGyutL5ENXSRokp0OiLMiBA5muHwb0?=
+ =?us-ascii?Q?yCX/dvLqIgZSo4RCyxmhnvkyyH4Cgl2DnKzXpMc8SQbABNtr1ny8j73cDq71?=
+ =?us-ascii?Q?1DQduHsCqolgCIbzKR48Ty1fAuZ7X0/BVWe01LAPfAPBndOKS3uxWsz6ZfcQ?=
+ =?us-ascii?Q?39lAAhq19YVq2sKqOT2rHD8gzS+GzRlT4ML6BZIAhp99+7aBPNFjsD/e6Jw8?=
+ =?us-ascii?Q?clBkqf3J97eEsLsY0lUnpN3rZ0auTteOKESC9J4BXNi0h1wPv5BBFY9Ds5kc?=
+ =?us-ascii?Q?QH2JYg8FlVa5cVjgvJlzHEWaxpXfsPl9bewnBsjPSe9RpWo4eIOFLl2p1pYL?=
+ =?us-ascii?Q?Z5PGzLt3vD7bHN/rbEB2kqmajJk2sAnkYgbnz8nkg/lyjXfjuTGp6dqZMFZY?=
+ =?us-ascii?Q?jl9HwtEsGkz4xM5q1ydwnN0dkbJtm6e8Ypf47zPkSe3SMizb3qFMBSr5OdKX?=
+ =?us-ascii?Q?DQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?ak1jz5G424MmgqAwd1NcBHYsNOHYCnHIVHBEiQ7OY/2AQ+vPzzTE90J7zyKE?=
+ =?us-ascii?Q?20vvHlvDQw1EOo5vbFDmFSmAiRHPtXYUH59/63Zp10oqp7DzvdRQBt8Nco+8?=
+ =?us-ascii?Q?0Jo5fd1z8Ipocmnux6z667fgljZKFWBo70W9KOXjCPT5HD2zKXAx4XUsZVED?=
+ =?us-ascii?Q?AjL+STDOYIO0bq++fc/FMVggshtT12rnYCI6kb4MYAPxT3z5ZEtEDVCX5Wjs?=
+ =?us-ascii?Q?iVIqNaTiLr0RQwNus8Rbz5PXrfZMaw36lxxPDtd7bb0Vrbm0s6o0EOoDQKpC?=
+ =?us-ascii?Q?qAmkA7DJ4Zt2WtuyRwTgxVrzkIJW4Lnj7c7DxSeSlebFlYwo3d9h5ejxF08d?=
+ =?us-ascii?Q?7sFNQl8r/RMm2C0J13nJpfUxTaOb1/TKQ3v1wu0siDOJ5W8UyngcT+X9Enr/?=
+ =?us-ascii?Q?HbX/E/KAG6sL3+eABGk0gkr9F2FDeWRbtgeIaY6ZYyCr6k745y2/OoUng0GH?=
+ =?us-ascii?Q?65iQjkPGw5Ao+FFVHsra9Mdqfm2eY6AhRLRrq1SykjBjjaf51wJZs6jiuVEi?=
+ =?us-ascii?Q?FBL0SAAdfNsYWDHmnlaAZTSeXO04rciD18LYNgquEunooXvAgllmCVxMduU0?=
+ =?us-ascii?Q?PSkcPiie8prDMhEv8dBH/1SFDf15FgjE0VkaAV0qluGt6zjbfNfjR7/5Jr/8?=
+ =?us-ascii?Q?YDX/X/csy3V2Df8icMbQGJPoHbzctPDViMe/JOhsyZwN13CK+ph57RQ+4Tuh?=
+ =?us-ascii?Q?M/ZTQBYOPr7pykX2JcuJLJnHIqTGs+bk+J2EQLj251lKD/nVGmGE1DMXg+1v?=
+ =?us-ascii?Q?RlzbWXpNPitJEbpw6s5c5Q88mXUNd1QYGMMWggvAw8mnWhG6aYzFOceYidk2?=
+ =?us-ascii?Q?dgDv/UirwCTu0w/PpAtFcOsMQapBJ/VYrtM5KkqN0EDBVZDFOKLxSc5UVp1L?=
+ =?us-ascii?Q?Z4pBtBrorykkx5+2Iaq+ekSDiVfGKtRoIKb5i/NQV61imtvEw4l/833qSSQN?=
+ =?us-ascii?Q?wrw/hvQvt2ZLczecDi9G5g=3D=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f214fe8b-0519-4735-e150-08dba50affc6
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 01:31:26.3823
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: WFB2FEkywHN4N8LsUiZl7NQ2YiF+ITPsbEICucumWZZQMD4XaC1rZEQXEcI+A+qcC0fRLRYjigRd/RLSWsUzCCpKddckg/Gum4QlZ1RvP80=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB6855
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
+ definitions=2023-08-25_01,2023-08-24_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=835 malwarescore=0
+ adultscore=0 suspectscore=0 mlxscore=0 spamscore=0 phishscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2308100000 definitions=main-2308250011
+X-Proofpoint-ORIG-GUID: lwBMArLApX46A_DQ2jCwOZIcKnSCIcMp
+X-Proofpoint-GUID: lwBMArLApX46A_DQ2jCwOZIcKnSCIcMp
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Some users of pata_falcon on Q40 have IDE disks in default
-IDE little endian byte order, whereas legacy disks use
-host-native big-endian byte order as on the Atari Falcon.
 
-Add module parameter 'data_swab' to allow connecting drives
-with non-native data byte order. Drives selected by the
-data_swap bit mask will have their user data byte-swapped to
-host byte order, i.e. 'pata_falcon.data_swab=2' will byte-swap
-all user data on drive B, leaving data on drive A in native
-byte order. On Q40, drives on a second IDE interface may be
-added to the bit mask as bits 2 and 3.
+Damien,
 
-Default setting is no byte swapping, i.e. compatibility with
-the native Falcon or Q40 operating system disk format.
+> The main issue I think is that there is no direct ancestry between the
+> ata port (device) and scsi device,
 
-Cc: William R Sowerbutts <will@sowerbutts.com>
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+I really think this should be fixed. It is a major deficiency as far as
+I'm concerned and it affects other things than power management.
 
----
-
-Changes since v4:
-
-Damien Le Moal:
-- spell out bitmask shift calculation
-
-Changes since v2:
-
-Geert Uytterhoeven:
-- only shift swap bitmask if pdev->id > 0
-
-Finn Thain:
-- use pdev->devno directly for byte swap check
-
-Changes since v1:
-
-Damien Le Moal:
-- change patch title
-- drop swap_data flag
-
-Finn Thain:
-- drop allocation of ap->private struct, use field as bitmask
-
-Changes since RFC v4:
-
-Geert Uytterhoeven:
-- don't shift static module parameter for drive 3/4 bitmask
-- simplify bit mask calculation to always use pdev->id
-
-Finn Thain:
-- correct bit numbers for drive 3/4
-
-Changes since RFC v3:
-
-- split off this byte swap handling into separate patch
-
-- add hint regarding third and fourth drive on Q40
-
-Finn Thain:
-- rename module parameter to 'data_swab' to better reflect its use
-
-William Sowerbutts:
-- correct IDE drive number used in data swap conditional
----
- drivers/ata/pata_falcon.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
-index 616064b02de6..8da044fa1825 100644
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -33,6 +33,11 @@
- #define DRV_NAME "pata_falcon"
- #define DRV_VERSION "0.1.0"
- 
-+static int pata_falcon_swap_mask;
-+
-+module_param_named(data_swab, pata_falcon_swap_mask, int, 0444);
-+MODULE_PARM_DESC(data_swab, "Data byte swap enable/disable bitmap (0x1==drive1, 0x2==drive2, 0x4==drive3, 0x8==drive4, default==0)");
-+
- static const struct scsi_host_template pata_falcon_sht = {
- 	ATA_PIO_SHT(DRV_NAME),
- };
-@@ -50,7 +55,7 @@ static unsigned int pata_falcon_data_xfer(struct ata_queued_cmd *qc,
- 
- 	if (dev->class == ATA_DEV_ATA && cmd &&
- 	    !blk_rq_is_passthrough(scsi_cmd_to_rq(cmd)))
--		swap = 0;
-+		swap = (uintptr_t)ap->private_data & BIT(dev->devno);
- 
- 	/* Transfer multiple of 2 bytes */
- 	if (rw == READ) {
-@@ -124,7 +129,7 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	struct ata_host *host;
- 	struct ata_port *ap;
- 	void __iomem *base, *ctl_base;
--	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
-+	int irq = 0, io_offset = 1, reg_shift = 2, mask_shift; /* Falcon defaults */
- 
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
- 
-@@ -194,6 +199,12 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	ata_port_desc(ap, "cmd %px ctl %px data %px",
- 		      base, ctl_base, ap->ioaddr.data_addr);
- 
-+	if (pdev->id > 0)
-+		mask_shift = 2;
-+	else
-+		mask_shift = 0;
-+	ap->private_data = (void *)(uintptr_t)(pata_falcon_swap_mask >> mask_shift);
-+
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
- 		irq = irq_res->start;
 -- 
-2.17.1
-
+Martin K. Petersen	Oracle Linux Engineering

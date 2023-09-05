@@ -2,70 +2,174 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB60A7926DD
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:33:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94A4B792694
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:28:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234289AbjIEQUm (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50812 "EHLO
+        id S1344350AbjIEQVC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Sep 2023 12:21:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354071AbjIEJeY (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 05:34:24 -0400
-X-Greylist: delayed 4137 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 02:34:21 PDT
-Received: from mail.equinoxrise.pl (mail.equinoxrise.pl [217.61.112.157])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 271B71A7
-        for <linux-ide@vger.kernel.org>; Tue,  5 Sep 2023 02:34:21 -0700 (PDT)
-Received: by mail.equinoxrise.pl (Postfix, from userid 1002)
-        id 080A282F19; Mon,  4 Sep 2023 09:40:58 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=equinoxrise.pl;
-        s=mail; t=1693813315;
-        bh=v6OgBfK5dN7P5dQ0wCu59rOfZaiqziJeLNblJ8dOcGI=;
-        h=Date:From:To:Subject:From;
-        b=DT60S4GucsVd+fTSNtw5oeU//IO9DLop0s25zDNDaXiVobxwwrloiFMQNU3Nu1qef
-         qzLB8vrAeofFr+q2VNjKlY5Z5IpZkf2sB3JZkV4DscnM1MaHofdXv2iFaEAzt+lJk1
-         fzmzbwnF5PKnNhK2rW85Z+0GEZf3zUjEl2qblPnR7kRpok+aIHnnNSE4VnItk1ST8B
-         zgu83GQA9GF+OQuBHG50qnILaxjCkUKxbTohokvSw+qOk9XgXEdLWGmnM5FwjWSY6t
-         veO/z41y2I7XY5MdIEBXmN46QgP+zt//5ZMsAId230ZWS7JnfVKA87Et02yH8jhlm+
-         mwbbBQP6kT+kg==
-Received: by mail.equinoxrise.pl for <linux-ide@vger.kernel.org>; Mon,  4 Sep 2023 07:40:34 GMT
-Message-ID: <20230904084500-0.1.7.qjp.0.dkub6ygl4p@equinoxrise.pl>
-Date:   Mon,  4 Sep 2023 07:40:34 GMT
-From:   "Mateusz Talaga" <mateusz.talaga@equinoxrise.pl>
-To:     <linux-ide@vger.kernel.org>
-Subject: Prezentacja
-X-Mailer: mail.equinoxrise.pl
+        with ESMTP id S245752AbjIEC3W (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Sep 2023 22:29:22 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A1CFCC6
+        for <linux-ide@vger.kernel.org>; Mon,  4 Sep 2023 19:29:19 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 3E7E4CE0FBE
+        for <linux-ide@vger.kernel.org>; Tue,  5 Sep 2023 02:29:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F8AC433C8;
+        Tue,  5 Sep 2023 02:29:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693880955;
+        bh=gV6x/IK6A/XHXy35QuxNeoJfRxgv49bWbPzPDLXKliA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=CNVaKw8MdbWLoNVXo9xuW8oWGNmKpYwmL4Bpry8w/fCphr/n2FOgBcgE7oPcEeC33
+         uTW7+pWXXYGndWR5K7pE1YF5F8kusqHiOUhs7eBjw7AEaV7mSgA/+ECsG835b38Az5
+         t0zH8P3RlGzXlCarsTjKktGrUU6h+hqaZDmoblRa69FPQS7c0sX7tUIHlBxveHo73A
+         EU2aHO8xT6N4nFqTKvhcM/HvylqW+Zud8hB17z3s8wHZQMDYoMap1iZuuR1a3e/IPW
+         ut5Oppmij58mdb610gO7pOgTby1TAarzZtqryg7l/FA6t+EE4v0y0EFmU2aLZgAzB/
+         ql+HP72BPx55Q==
+Message-ID: <f83f8d45-b506-118f-d038-507bc87eeeef@kernel.org>
+Date:   Tue, 5 Sep 2023 11:29:13 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ata: libata: disallow dev-initiated LPM transitions to
+ unsupported states
+To:     Niklas Cassel <nks@flawful.org>
+Cc:     Runa Guo-oc <RunaGuo-oc@zhaoxin.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        linux-ide@vger.kernel.org
+References: <20230904204257.3296685-1-nks@flawful.org>
+Content-Language: en-US
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20230904204257.3296685-1-nks@flawful.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Dzie=C5=84 dobry!
+On 9/5/23 05:42, Niklas Cassel wrote:
+> From: Niklas Cassel <niklas.cassel@wdc.com>
+> 
+> In AHCI 1.3.1, the register description for CAP.SSC:
+> "When cleared to ‘0’, software must not allow the HBA to initiate
+> transitions to the Slumber state via agressive link power management nor
+> the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+> must be programmed to disallow device initiated Slumber requests."
+> 
+> In AHCI 1.3.1, the register description for CAP.PSC:
+> "When cleared to ‘0’, software must not allow the HBA to initiate
+> transitions to the Partial state via agressive link power management nor
+> the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+> must be programmed to disallow device initiated Partial requests."
+> 
+> Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
+> a device is not allowed to initiate transitions to power states which are
+> unsupported by the HBA.
+> 
+> DevSleep is always initiated by the HBA, however, for completeness, set the
+> corresponding bit in PxSCTL.IPM such that agressive link power management
+> cannot transition to DevSleep if DevSleep is not supported.
+> 
+> sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
+> However, only libahci has the ability to read the CAP/CAP2 register to see
+> if these features are supported. Therefore, in order to not introduce any
+> regressions on ata_piix or libata-pmp, create flags that indicate that the
+> respective feature is NOT supported. This way, the behavior for ata_piix
+> and libata-pmp should remain unchanged.
+> 
+> This change is based on a patch originally submitted by Runa Guo-oc.
+> 
+> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re umo=C5=
-=BCliwia monitoring ka=C5=BCdego auta w czasie rzeczywistym w tym jego po=
-zycj=C4=99, zu=C5=BCycie paliwa i przebieg?
+Looks good, but don't we need a Fixes tag for this ?
 
-Dodatkowo nasze narz=C4=99dzie minimalizuje koszty utrzymania samochod=C3=
-=B3w, skraca czas przejazd=C3=B3w, a tak=C5=BCe tworzenie planu tras czy =
-dostaw.
+> ---
+>  drivers/ata/ahci.c        |  9 +++++++++
+>  drivers/ata/libata-sata.c | 19 ++++++++++++++++---
+>  include/linux/libata.h    |  4 ++++
+>  3 files changed, 29 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index abb5911c9d09..08745e7db820 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -1883,6 +1883,15 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	else
+>  		dev_info(&pdev->dev, "SSS flag set, parallel bus scan disabled\n");
+>  
+> +	if (!(hpriv->cap & HOST_CAP_PART))
+> +		host->flags |= ATA_HOST_NO_PART;
+> +
+> +	if (!(hpriv->cap & HOST_CAP_SSC))
+> +		host->flags |= ATA_HOST_NO_SSC;
+> +
+> +	if (!(hpriv->cap2 & HOST_CAP2_SDS))
+> +		host->flags |= ATA_HOST_NO_DEVSLP;
+> +
+>  	if (pi.flags & ATA_FLAG_EM)
+>  		ahci_reset_em(host);
+>  
+> diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+> index 5d31c08be013..a701e1538482 100644
+> --- a/drivers/ata/libata-sata.c
+> +++ b/drivers/ata/libata-sata.c
+> @@ -396,10 +396,23 @@ int sata_link_scr_lpm(struct ata_link *link, enum ata_lpm_policy policy,
+>  	case ATA_LPM_MED_POWER_WITH_DIPM:
+>  	case ATA_LPM_MIN_POWER_WITH_PARTIAL:
+>  	case ATA_LPM_MIN_POWER:
+> -		if (ata_link_nr_enabled(link) > 0)
+> -			/* no restrictions on LPM transitions */
+> +		if (ata_link_nr_enabled(link) > 0) {
+> +			/* assume no restrictions on LPM transitions */
+>  			scontrol &= ~(0x7 << 8);
+> -		else {
+> +
+> +			/*
+> +			 * If the controller does not support partial, slumber,
+> +			 * or devsleep, then disallow these transitions.
+> +			 */
+> +			if (link->ap->host->flags & ATA_HOST_NO_PART)
+> +				scontrol |= (0x1 << 8);
+> +
+> +			if (link->ap->host->flags & ATA_HOST_NO_SSC)
+> +				scontrol |= (0x2 << 8);
+> +
+> +			if (link->ap->host->flags & ATA_HOST_NO_DEVSLP)
+> +				scontrol |= (0x4 << 8);
+> +		} else {
+>  			/* empty port, power off */
+>  			scontrol &= ~0xf;
+>  			scontrol |= (0x1 << 2);
+> diff --git a/include/linux/libata.h b/include/linux/libata.h
+> index 52d58b13e5ee..bf4913f4d7ac 100644
+> --- a/include/linux/libata.h
+> +++ b/include/linux/libata.h
+> @@ -222,6 +222,10 @@ enum {
+>  	ATA_HOST_PARALLEL_SCAN	= (1 << 2),	/* Ports on this host can be scanned in parallel */
+>  	ATA_HOST_IGNORE_ATA	= (1 << 3),	/* Ignore ATA devices on this host. */
+>  
+> +	ATA_HOST_NO_PART	= (1 << 4), /* Host does not support partial */
+> +	ATA_HOST_NO_SSC		= (1 << 5), /* Host does not support slumber */
+> +	ATA_HOST_NO_DEVSLP	= (1 << 6), /* Host does not support devslp */
+> +
+>  	/* bits 24:31 of host->flags are reserved for LLD specific flags */
+>  
+>  	/* various lengths of time */
 
-Z naszej wiedzy i do=C5=9Bwiadczenia korzysta ju=C5=BC ponad 49 tys. Klie=
-nt=C3=B3w. Monitorujemy 809 000 pojazd=C3=B3w na ca=C5=82ym =C5=9Bwiecie,=
- co jest nasz=C4=85 najlepsz=C4=85 wizyt=C3=B3wk=C4=85.
+-- 
+Damien Le Moal
+Western Digital Research
 
-Bardzo prosz=C4=99 o e-maila zwrotnego, je=C5=9Bli mogliby=C5=9Bmy wsp=C3=
-=B3lnie om=C3=B3wi=C4=87 potencja=C5=82 wykorzystania takiego rozwi=C4=85=
-zania w Pa=C5=84stwa firmie.
-
-
-Pozdrawiam
-Mateusz Talaga

@@ -2,159 +2,98 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03B257925DD
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249BA792673
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:28:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233083AbjIEQVG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 Sep 2023 12:21:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52788 "EHLO
+        id S236967AbjIEQUp (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344772AbjIEDxj (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 4 Sep 2023 23:53:39 -0400
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32A77CCB;
-        Mon,  4 Sep 2023 20:53:34 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Rfs6y0QmDz4f3wt3;
-        Tue,  5 Sep 2023 11:53:30 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.175.104.67])
-        by APP4 (Coremail) with SMTP id gCh0CgDHVqk5pvZkQLWYCQ--.57068S4;
-        Tue, 05 Sep 2023 11:53:31 +0800 (CST)
-From:   linan666@huaweicloud.com
-To:     dlemoal@kernel.org
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linan122@huawei.com, yukuai3@huawei.com, yi.zhang@huawei.com,
-        houtao1@huawei.com, yangerkun@huawei.com
-Subject: [PATCH v2] scsi: ata: Fix a race condition between scsi error handler and ahci interrupt
-Date:   Tue,  5 Sep 2023 11:48:40 +0800
-Message-Id: <20230905034840.478332-1-linan666@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S1350519AbjIEFEK (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 01:04:10 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A3CCC5;
+        Mon,  4 Sep 2023 22:04:06 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 15C2ACE1020;
+        Tue,  5 Sep 2023 05:04:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3746C433C7;
+        Tue,  5 Sep 2023 05:04:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693890242;
+        bh=rNZ6gSz952FnYbdOwNayc8WW+NGygaXz472YSAOluYk=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=b0GC0EYlTsTH7sHYMimcCh/EOaOHV4uGQ7vqQf/HuRw9Qulq+4xw75y80YOFRnkv9
+         b4LwteX6i6uFW4Fi/ztQKY0pa4fXglePRsstW5agm7HVr4h21wC+8G73P3d1omz09n
+         GGU1bpU3WQG8xLoTtxpVnQnHg6fx0QC3kZW9vs1ru7oUifErFtuAMkxJEKXZ7d4ht6
+         sryxO7lp4qym/OQ1QPl3o9iWxAJOcuRmQROuIxNSbTxRonsykbGilksIMBUfibE0jK
+         Q7wJoHWgM41x5ogHEVlUfkVJZSQroVIQvuP5b5/gvHNG2/fsm7hFKRlU03NC6GpKOD
+         +ekqiIr73cSXQ==
+Message-ID: <b5dcc85d-f709-a3a3-e7ad-9c71f278842a@kernel.org>
+Date:   Tue, 5 Sep 2023 14:04:00 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ata: sata_mv: Fix incorrect string length computation in
+ mv_dump_mem()
+Content-Language: en-US
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-ide@vger.kernel.org
+References: <1a35e114a3dcc33053ca7cca41cb06b8426d8c40.1693857262.git.christophe.jaillet@wanadoo.fr>
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <1a35e114a3dcc33053ca7cca41cb06b8426d8c40.1693857262.git.christophe.jaillet@wanadoo.fr>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: gCh0CgDHVqk5pvZkQLWYCQ--.57068S4
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZFy7XF4DWFWxGr1ftw1DZFb_yoW5JFy7pF
-        Z8Zw1DWryUtry2qr4qq3WrXryrGaykK3y2gryDGw1Svr4qka4rt39rCF90gFy3Kr97XF13
-        uan0g3sxCF18Zr7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkCb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-        0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487
-        Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aV
-        AFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4kE6xkIj40E
-        w7xC0wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14
-        v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkG
-        c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI
-        0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_Jr0_
-        Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUwc_TUU
-        UUU
-X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Li Nan <linan122@huawei.com>
+On 9/5/23 04:54, Christophe JAILLET wrote:
+> snprintf() returns the "number of characters which *would* be generated for
+> the given input", not the size *really* generated.
+> 
+> In order to avoid too large values for 'o' (and potential negative values
+> for "sizeof(linebuf) o") use scnprintf() instead of snprintf().
+> 
+> Note that given the "w < 4" in the for loop, the buffer can NOT
+> overflow, but using the *right* function is always better.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-If a disk is removed and quickly inserted when an I/O error is processing,
-the disk may not be able to be re-added. The function call timeline is as
-follows:
+Doesn't this need Fixes and CC stable tags ?
 
-  interrupt                            scsi_eh
+> ---
+>  drivers/ata/sata_mv.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/ata/sata_mv.c b/drivers/ata/sata_mv.c
+> index d105db5c7d81..45e48d653c60 100644
+> --- a/drivers/ata/sata_mv.c
+> +++ b/drivers/ata/sata_mv.c
+> @@ -1255,8 +1255,8 @@ static void mv_dump_mem(struct device *dev, void __iomem *start, unsigned bytes)
+>  
+>  	for (b = 0; b < bytes; ) {
+>  		for (w = 0, o = 0; b < bytes && w < 4; w++) {
+> -			o += snprintf(linebuf + o, sizeof(linebuf) - o,
+> -				      "%08x ", readl(start + b));
+> +			o += scnprintf(linebuf + o, sizeof(linebuf) - o,
+> +				       "%08x ", readl(start + b));
+>  			b += sizeof(u32);
+>  		}
+>  		dev_dbg(dev, "%s: %p: %s\n",
 
-  ahci_error_intr
-   ata_port_freeze
-    __ata_port_freeze
-     =>ahci_freeze (turn IRQ off)
-    ata_port_abort
-     ata_do_link_abort
-      ata_port_schedule_eh
-       =>ata_std_sched_eh
-        ata_eh_set_pending
-	 set EH_PENDING
-        scsi_schedule_eh
-         shost->host_eh_scheduled++ (=1)
-                                       scsi_error_handler
-                                        =>ata_scsi_error
-                                         ata_scsi_port_error_handler
-					  clear EH_PENDING
-                                          =>ahci_error_handler
-                                          . sata_pmp_error_handler
-                                          .  ata_eh_reset
-                                          .   ata_eh_thaw_port
-                                          .   . =>ahci_thaw (turn IRQ on)
-  ahci_error_intr			  .   .
-   ata_port_freeze			  .   .
-    __ata_port_freeze			  .   .
-     =>ahci_freeze (turn IRQ off)	  .   .
-    ...					  .   .
-        ata_eh_set_pending		  .   .
-	 set EH_PENDING			  .   .
-        scsi_schedule_eh		  .   .
-         shost->host_eh_scheduled++ (=2)  .   .
-					  .   clear EH_PENDING
-					  check EH_PENDING
-                                          =>ata_std_end_eh
-                                           host->host_eh_scheduled = 0;
-
-'host_eh_scheduled' is 0 and scsi eh thread will not be scheduled again.
-The ata port remain freeze and will never be enabled.
-
-Decrease ’host_eh_scheduled‘ instead of set it to 0 roughly and move
-WARN_ON of nr_active_links to ata_scsi_port_error_handler().
-
-Reported-by: luojian <luojian5@huawei.com>
-Signed-off-by: Li Nan <linan122@huawei.com>
----
-Changes in v2:
-  - fix the bug by decrease 'host_eh_scheduled’
-  - improve commit message.
-
- drivers/ata/libata-eh.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 159ba6ba19eb..b9454756ecde 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -735,6 +735,12 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
- 	 */
- 	ap->ops->end_eh(ap);
- 
-+	if (!ap->scsi_host->host_eh_scheduled) {
-+		/* make sure nr_active_links is zero after EH */
-+		WARN_ON(ap->nr_active_links);
-+		ap->nr_active_links = 0;
-+	}
-+
- 	spin_unlock_irqrestore(ap->lock, flags);
- 	ata_eh_release(ap);
- 
-@@ -948,7 +954,7 @@ void ata_std_end_eh(struct ata_port *ap)
- {
- 	struct Scsi_Host *host = ap->scsi_host;
- 
--	host->host_eh_scheduled = 0;
-+	host->host_eh_scheduled--;
- }
- EXPORT_SYMBOL(ata_std_end_eh);
- 
-@@ -3922,10 +3928,6 @@ void ata_eh_finish(struct ata_port *ap)
- 			}
- 		}
- 	}
--
--	/* make sure nr_active_links is zero after EH */
--	WARN_ON(ap->nr_active_links);
--	ap->nr_active_links = 0;
- }
- 
- /**
 -- 
-2.39.2
+Damien Le Moal
+Western Digital Research
 

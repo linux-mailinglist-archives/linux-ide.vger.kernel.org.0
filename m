@@ -2,131 +2,200 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF35B792856
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:43:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079B77925FA
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:25:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344081AbjIEQU7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40206 "EHLO
+        id S1343870AbjIEQU5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34338 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354591AbjIEMuL (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 08:50:11 -0400
-Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 110291A8
-        for <linux-ide@vger.kernel.org>; Tue,  5 Sep 2023 05:50:07 -0700 (PDT)
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-500c6ff99acso4011430e87.1
-        for <linux-ide@vger.kernel.org>; Tue, 05 Sep 2023 05:50:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693918205; x=1694523005;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:dkim-signature:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pOq+6iD2yCDq6yPstwNk6Mle2ruK4dj5uYmzVFcBN9Q=;
-        b=l6cDrEpYOENZEEwgz7zih4lBJa6XuoswCyLt/M1oG8AublYMcegaL1QkglM+0aQhA1
-         nrDuzMm7neBRB9Pwppu7NL0t51NTac8mRNWhqG5Z+OYx8WAZOpcJ5lubAmTYkb55JPXt
-         GUR9m4PYaU6zQ6Ddvj1Q+fGBvJZ2Poqr10IPkVlYjAcX5D/uz3ClW0PWbVi7KWcwXFXU
-         mmJnVWJCOO+Vw8CtPVQB/kyIJH6AyWg+hsy1YerKLCxa+MxLa0/hlUqa8KDMVfiJtNAk
-         nuEYLUDAgcarAnraTtSwFZ4i+PHWI22c0nOEipXaxXSti1SgEQaSLw2q87opoLllgIDw
-         idMA==
-X-Gm-Message-State: AOJu0YzgbMw2dj5in0c3ReIIFzU1WVEwChBeYGpNAqxJkVJdVmwiI9yS
-        RkuQ2NHVDJ7MoKbmobL92kLeEz6wQwBzTg==
-X-Google-Smtp-Source: AGHT+IFt/0Zx54+UtLeBffnUkay985fvc3bpuxBU6enRH/W/6PArrxyHH0XH1b1yYpbapMxSbqVqog==
-X-Received: by 2002:a05:6512:348e:b0:500:b890:fb3c with SMTP id v14-20020a056512348e00b00500b890fb3cmr3821382lfr.27.1693918205104;
-        Tue, 05 Sep 2023 05:50:05 -0700 (PDT)
-Received: from flawful.org (c-f5f0e255.011-101-6d6c6d3.bbcust.telenor.se. [85.226.240.245])
-        by smtp.gmail.com with ESMTPSA id h4-20020a0565123c8400b00501c12fe522sm270837lfv.73.2023.09.05.05.50.04
-        for <linux-ide@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 05:50:04 -0700 (PDT)
-Received: by flawful.org (Postfix, from userid 112)
-        id 9FC8DB98E; Tue,  5 Sep 2023 14:50:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
-        t=1693918203; bh=P8VQn4H+hezwEMXsSeRWmVh60wEQxSpIT0c/iUJmdBY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ddlnzeP3xN3L9Rz+I8Z/Onk5uYAOz76eXcPMyqcYpGiDbWohZ+3DpTIGNHpdLKHoS
-         3lZjUB2LvlNGzteazJ9isWJNNGBp89PYzlFn/N+f4vBZxnkW6uSjDUpJnoZQH+wTll
-         uPgz+m3eWUVDGdE6kvkARETvBajmvpkQWliebwEk=
+        with ESMTP id S1354634AbjIENJT (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 09:09:19 -0400
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBC7127;
+        Tue,  5 Sep 2023 06:09:14 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.30.67.143])
+        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Rg5S45Njzz4f3pFl;
+        Tue,  5 Sep 2023 21:09:08 +0800 (CST)
+Received: from [10.174.179.247] (unknown [10.174.179.247])
+        by APP4 (Coremail) with SMTP id gCh0CgA3xqhyKPdkZYq4CQ--.15031S3;
+        Tue, 05 Sep 2023 21:09:10 +0800 (CST)
+Message-ID: <8a34d182-0adb-fcf5-6c3f-0ffa8392f615@huaweicloud.com>
+Date:   Tue, 5 Sep 2023 21:09:06 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v2] scsi: ata: Fix a race condition between scsi error
+ handler and ahci interrupt
+To:     Damien Le Moal <dlemoal@kernel.org>
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linan122@huawei.com, yukuai3@huawei.com, yi.zhang@huawei.com,
+        houtao1@huawei.com, yangerkun@huawei.com
+References: <20230905034840.478332-1-linan666@huaweicloud.com>
+ <c4d397c4-1969-935f-6dc3-cf7775d96f5c@kernel.org>
+From:   Li Nan <linan666@huaweicloud.com>
+In-Reply-To: <c4d397c4-1969-935f-6dc3-cf7775d96f5c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: gCh0CgA3xqhyKPdkZYq4CQ--.15031S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxArWrGr48tw47Ary7GrWDXFb_yoW5Kr17pF
+        Z8J3WqgryUtry2vrsFq3W5XFyFgay8Kry2qrn8Gw1fZr4qya4rK39rCrZ0gF92kr97J3WI
+        9a1Yg39xCF10vaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+        0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l
+        5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67
+        AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07Al
+        zVAYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+        0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
+        IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+        AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6rW3Jr0E3s1lIxAIcVC2z280aVAFwI0_
+        Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+        VOJ7UUUUU==
+X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-Received: from x1-carbon.wdc.com (unknown [129.253.182.59])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by flawful.org (Postfix) with ESMTPSA id A4B16B968;
-        Tue,  5 Sep 2023 14:49:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=flawful.org; s=mail;
-        t=1693918193; bh=P8VQn4H+hezwEMXsSeRWmVh60wEQxSpIT0c/iUJmdBY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=U3Tg3jK+03EY2PWQdX3T8myGRS+ke4/3eoxsL1iHAQmf9yNzwZ6SzsaAyKxiLej7C
-         c3rX7zr3/dsg1Y9Z2vFQ5Y2mktkkgMzWCIcba9yBgde/s+lubQ+ah8VcUR7aqNf1eo
-         dQH/yHvXvg3VODqlE3N/TVHlvoi8OGV8JqB98zZU=
-From:   Niklas Cassel <nks@flawful.org>
-To:     Damien Le Moal <dlemoal@kernel.org>
-Cc:     Niklas Cassel <niklas.cassel@wdc.com>, linux-ide@vger.kernel.org
-Subject: [PATCH] ata: ahci: print the lpm policy on boot
-Date:   Tue,  5 Sep 2023 14:49:08 +0200
-Message-ID: <20230905124909.3334046-1-nks@flawful.org>
-X-Mailer: git-send-email 2.41.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-From: Niklas Cassel <niklas.cassel@wdc.com>
 
-The target LPM policy can be set using either a Kconfig or a kernel module
-parameter.
 
-However, if the board type is set to anything but board_ahci_low_power,
-then the LPM policy will overridden and set to ATA_LPM_UNKNOWN.
+在 2023/9/5 15:44, Damien Le Moal 写道:
+> On 9/5/23 12:48, linan666@huaweicloud.com wrote:
+>> From: Li Nan <linan122@huawei.com>
+> 
+> Please change the patch title to something like:
+> 
+> ata: libata-eh: Honor all EH scheduling requests
+> 
+> Because the issue could happen I think with other ata drivers than AHCI.
+> 
+> 
+>>
+>> If a disk is removed and quickly inserted when an I/O error is processing,
+>> the disk may not be able to be re-added. The function call timeline is as
+>> follows:
+>>
+>>    interrupt                            scsi_eh
+>>
+>>    ahci_error_intr
+>>     ata_port_freeze
+>>      __ata_port_freeze
+>>       =>ahci_freeze (turn IRQ off)
+>>      ata_port_abort
+>>       ata_do_link_abort
+>>        ata_port_schedule_eh
+>>         =>ata_std_sched_eh
+>>          ata_eh_set_pending
+>> 	 set EH_PENDING
+>>          scsi_schedule_eh
+>>           shost->host_eh_scheduled++ (=1)
+>>                                         scsi_error_handler
+>>                                          =>ata_scsi_error
+>>                                           ata_scsi_port_error_handler
+>> 					  clear EH_PENDING
+>>                                            =>ahci_error_handler
+>>                                            . sata_pmp_error_handler
+>>                                            .  ata_eh_reset
+>>                                            .   ata_eh_thaw_port
+>>                                            .   . =>ahci_thaw (turn IRQ on)
+>>    ahci_error_intr			  .   .
+>>     ata_port_freeze			  .   .
+>>      __ata_port_freeze			  .   .
+>>       =>ahci_freeze (turn IRQ off)	  .   .
+>>      ...					  .   .
+>>          ata_eh_set_pending		  .   .
+>> 	 set EH_PENDING			  .   .
+>>          scsi_schedule_eh		  .   .
+>>           shost->host_eh_scheduled++ (=2)  .   .
+>> 					  .   clear EH_PENDING
+>> 					  check EH_PENDING
+>>                                            =>ata_std_end_eh
+>>                                             host->host_eh_scheduled = 0;
+>>
+>> 'host_eh_scheduled' is 0 and scsi eh thread will not be scheduled again.
+>> The ata port remain freeze and will never be enabled.
+> 
+> s/remain freeze/remains frozen
+> 
+>>
+>> Decrease ’host_eh_scheduled‘ instead of set it to 0 roughly and move
+>> WARN_ON of nr_active_links to ata_scsi_port_error_handler().
+> 
+> To fix this issue, decrease ’host_eh_scheduled‘ instead of setting it to 0 so
+> that EH is scheduled again to re-enable the port. Also move the update of
+> nr_active_links to 0 when host_eh_scheduled is 0 to ata_scsi_port_error_handler().
+> 
 
-Additionally, if the default suspend is suspend to idle, depending on the
-hardware capabilities of the HBA, ahci_update_initial_lpm_policy() might
-override the LPM policy to either ATA_LPM_MIN_POWER_WITH_PARTIAL or
-ATA_LPM_MIN_POWER.
+Thanks for your review. I will improve the commmit message.
 
-All this means that it is very hard to know which LPM policy a user will
-actually be using on a given system.
+>>
+>> Reported-by: luojian <luojian5@huawei.com>
+>> Signed-off-by: Li Nan <linan122@huawei.com>
+>> ---
+>> Changes in v2:
+>>    - fix the bug by decrease 'host_eh_scheduled’
+>>    - improve commit message.
+>>
+>>   drivers/ata/libata-eh.c | 12 +++++++-----
+>>   1 file changed, 7 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+>> index 159ba6ba19eb..b9454756ecde 100644
+>> --- a/drivers/ata/libata-eh.c
+>> +++ b/drivers/ata/libata-eh.c
+>> @@ -735,6 +735,12 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
+>>   	 */
+>>   	ap->ops->end_eh(ap);
+>>   
+>> +	if (!ap->scsi_host->host_eh_scheduled) {
+>> +		/* make sure nr_active_links is zero after EH */
+>> +		WARN_ON(ap->nr_active_links);
+>> +		ap->nr_active_links = 0;> +	}
+>> +
+>>   	spin_unlock_irqrestore(ap->lock, flags);
+>>   	ata_eh_release(ap);
+>>   
+>> @@ -948,7 +954,7 @@ void ata_std_end_eh(struct ata_port *ap)
+>>   {
+>>   	struct Scsi_Host *host = ap->scsi_host;
+>>   
+>> -	host->host_eh_scheduled = 0;
+>> +	host->host_eh_scheduled--;
+> 
+> While at it, please drop the host variable:
+> 
+> 	ap->scsi_host->host_eh_scheduled--;
+> 
+> is just fine.
+> 
 
-In order to make it easier to debug LPM related issues, print the LPM
-policy on boot.
+I agree. I will change it in next version.
 
-One common LPM related issue is that the device fails to link up.
-Because of that, we cannot add this print to ata_dev_configure(), as that
-function is only called after a successful link up. Instead, add the info
-using ata_port_desc(). The port description is printed once during boot.
+>>   }
+>>   EXPORT_SYMBOL(ata_std_end_eh);
+>>   
+>> @@ -3922,10 +3928,6 @@ void ata_eh_finish(struct ata_port *ap)
+>>   			}
+>>   		}
+>>   	}
+>> -
+>> -	/* make sure nr_active_links is zero after EH */
+>> -	WARN_ON(ap->nr_active_links);
+>> -	ap->nr_active_links = 0;
+>>   }
+>>   
+>>   /**
+> 
 
-Before changes:
-ata1: SATA max UDMA/133 abar m524288@0xa5780000 port 0xa5780100 irq 170
-ata2: SATA max UDMA/133 abar m524288@0xa5780000 port 0xa5780180 irq 170
-
-After changes:
-ata1: SATA max UDMA/133 abar m524288@0xa5780000 port 0xa5780100 lpm-pol 4 irq 170
-ata2: SATA max UDMA/133 abar m524288@0xa5780000 port 0xa5780180 lpm-pol 4 irq 170
-
-Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
----
- drivers/ata/ahci.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index abb5911c9d09..541f6ec7f395 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1898,6 +1898,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
- 			ap->em_message_type = hpriv->em_msg_type;
- 
- 		ahci_update_initial_lpm_policy(ap, hpriv);
-+		ata_port_desc(ap, "lpm-pol %d", ap->target_lpm_policy);
- 
- 		/* disabled/not-implemented port */
- 		if (!(hpriv->port_map & (1 << i)))
 -- 
-2.41.0
+Thanks,
+Nan
 

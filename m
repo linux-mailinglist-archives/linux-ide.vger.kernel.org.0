@@ -2,185 +2,114 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23D7479280B
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 931BA792861
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343531AbjIEQUq (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47592 "EHLO
+        id S245284AbjIEQUg (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353734AbjIEHod (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 03:44:33 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E121A8;
-        Tue,  5 Sep 2023 00:44:30 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 656C3CE1084;
-        Tue,  5 Sep 2023 07:44:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A7AC433C7;
-        Tue,  5 Sep 2023 07:44:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693899866;
-        bh=+l3rfFLGFzBDr18wALmhu/B90ZUTWBu/id4MmC+UIgQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=UhWjRbUlfuJ2tN7GCYvW3E7bsjmpLghbeMv3jJV1a80bm1070gWcws1PQWwk74rUS
-         uqWVAS9xlN5aGEkpDGm2DCdOxxu4LMgkF7mxkSYAfIE2QvGByiYb/7UbSC8MmOHHJi
-         0S8gsykFqUOAhYbbGSB6d4ke55rr2sCABf7GfrIeZ0QikxPZWhIBp8I6PW1lL2DnD1
-         ZFtAEKaEcqBQti5eB1/E0ZGuBF4qnWVdIUds+5yEyot819V1Kq8BKt0r3odSNtDU6O
-         aVKdKYkEd1snVPRNP72E0eGF/x7eDxTHWVZ+uHNTEQf+oEjxLNZsF0EL/u/oBVke8D
-         Rvs8zXzXfxQ+Q==
-Message-ID: <c4d397c4-1969-935f-6dc3-cf7775d96f5c@kernel.org>
-Date:   Tue, 5 Sep 2023 16:44:23 +0900
+        with ESMTP id S1353837AbjIEIU5 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 04:20:57 -0400
+Received: from mail-lf1-x142.google.com (mail-lf1-x142.google.com [IPv6:2a00:1450:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EDD4CCF
+        for <linux-ide@vger.kernel.org>; Tue,  5 Sep 2023 01:20:53 -0700 (PDT)
+Received: by mail-lf1-x142.google.com with SMTP id 2adb3069b0e04-501bef6e0d3so520267e87.1
+        for <linux-ide@vger.kernel.org>; Tue, 05 Sep 2023 01:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693902051; x=1694506851; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
+        b=WyyvPMEfe4FOVqHOIWdr/B2P0p03RPzGq0eAy6olIuEmDr190DF60UMTUjSzD3ICzN
+         0WsAegs64/BiRqCpXkN1qURw3kJmTI2wMa8rTaukjr0/l9jhm+3ubCn9+y0oKw0Vf/Ks
+         YIRtHy/tktgd0JCbt9j66zUkqNxhaH1k0FzKmAu+yKNICqHvkjDH6q7yKGNLfZeY066C
+         rjUXbiHJ42XZriL2gTX15/F6y+Se4qD3ChTlmHmU/A+Bl1kzMG1cMn1BnC25iR+qjjlJ
+         Ikwy1nXebC5hCeU4AgcZQ4VZpVOWulwi6FywqPblj59NiPYUSn0tuU6Bbo6p4XZRvT/F
+         gtfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693902051; x=1694506851;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
+        b=hFteOTeK0cURlqOy8lBccm+L33qURY3myg2aJevhACdf7xhQsoyx51jnOmwJfi7wcB
+         etV7czy7eiN/g9sYNPsmfYjKPAGnJGdV8OurSzpY7ATX/xd8GDQsC/q74TDbdM5rTR0i
+         uxUe9WcmsJ1fphQh8CsXVug4mHmT+yvAtJKjZ5LGelG/O4o7aWaCAc8csuRpPLtLaZoB
+         Gl0Yhgb7PPbyB9Ft6p9sWITizi6s0P/rZwqmx7dmGmVTUYU5D1ylc67qH8aLKXDVHiVg
+         tF4gcdNBYP8Fhz7BI2A9MqTJwejrWpDS4dnAx8c2Md3uGL7wW8udiTPwajWiI0ZMvIvP
+         GnZg==
+X-Gm-Message-State: AOJu0Yz83DHYl+yUo0wT+fy8nQAPLnIXPIq0cxhsP+fhduFrOf/fqUYN
+        QbkK3phf5SDiLLJjUXIrnHtmL4i2xpJ+Lf07JKA=
+X-Google-Smtp-Source: AGHT+IHc9ajH3Rii9UZwOOqLrsXanmcTWvKjiURPKmJK5D52sTkbD7l1BRzq/bCfrfUZjlWt/04s1jIBCk3z7CpHIFE=
+X-Received: by 2002:a19:6755:0:b0:501:bf37:1fc0 with SMTP id
+ e21-20020a196755000000b00501bf371fc0mr624754lfj.33.1693902050884; Tue, 05 Sep
+ 2023 01:20:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] scsi: ata: Fix a race condition between scsi error
- handler and ahci interrupt
-Content-Language: en-US
-To:     linan666@huaweicloud.com
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linan122@huawei.com, yukuai3@huawei.com, yi.zhang@huawei.com,
-        houtao1@huawei.com, yangerkun@huawei.com
-References: <20230905034840.478332-1-linan666@huaweicloud.com>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20230905034840.478332-1-linan666@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Received: by 2002:a54:3ac4:0:b0:22f:40f:e031 with HTTP; Tue, 5 Sep 2023
+ 01:20:50 -0700 (PDT)
+Reply-To: wuwumoneytransfer5000@hotmail.com
+From:   "(IMF) SCAM VICTIMS" <mimichi4500@gmail.com>
+Date:   Tue, 5 Sep 2023 01:20:50 -0700
+Message-ID: <CAGhkD8USA9d9+1HDw3AKO0o45v_Z8cjdpcgnjTbVjdDUbiyg2w@mail.gmail.com>
+Subject: Betrugsopfer
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
         autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 9/5/23 12:48, linan666@huaweicloud.com wrote:
-> From: Li Nan <linan122@huawei.com>
-
-Please change the patch title to something like:
-
-ata: libata-eh: Honor all EH scheduling requests
-
-Because the issue could happen I think with other ata drivers than AHCI.
+Sehr geehrter E-Mail-Besitzer,
 
 
-> 
-> If a disk is removed and quickly inserted when an I/O error is processing,
-> the disk may not be able to be re-added. The function call timeline is as
-> follows:
-> 
->   interrupt                            scsi_eh
-> 
->   ahci_error_intr
->    ata_port_freeze
->     __ata_port_freeze
->      =>ahci_freeze (turn IRQ off)
->     ata_port_abort
->      ata_do_link_abort
->       ata_port_schedule_eh
->        =>ata_std_sched_eh
->         ata_eh_set_pending
-> 	 set EH_PENDING
->         scsi_schedule_eh
->          shost->host_eh_scheduled++ (=1)
->                                        scsi_error_handler
->                                         =>ata_scsi_error
->                                          ata_scsi_port_error_handler
-> 					  clear EH_PENDING
->                                           =>ahci_error_handler
->                                           . sata_pmp_error_handler
->                                           .  ata_eh_reset
->                                           .   ata_eh_thaw_port
->                                           .   . =>ahci_thaw (turn IRQ on)
->   ahci_error_intr			  .   .
->    ata_port_freeze			  .   .
->     __ata_port_freeze			  .   .
->      =>ahci_freeze (turn IRQ off)	  .   .
->     ...					  .   .
->         ata_eh_set_pending		  .   .
-> 	 set EH_PENDING			  .   .
->         scsi_schedule_eh		  .   .
->          shost->host_eh_scheduled++ (=2)  .   .
-> 					  .   clear EH_PENDING
-> 					  check EH_PENDING
->                                           =>ata_std_end_eh
->                                            host->host_eh_scheduled = 0;
-> 
-> 'host_eh_scheduled' is 0 and scsi eh thread will not be scheduled again.
-> The ata port remain freeze and will never be enabled.
 
-s/remain freeze/remains frozen
+Der Internationale W=C3=A4hrungsfonds (IWF) entsch=C3=A4digt alle Betrugsop=
+fer
+und Ihre E-Mail-Adresse wurde auf der Liste der Betrugsopfer gefunden.
 
-> 
-> Decrease ’host_eh_scheduled‘ instead of set it to 0 roughly and move
-> WARN_ON of nr_active_links to ata_scsi_port_error_handler().
+Dieses Western Union-B=C3=BCro wurde vom IWF beauftragt Ihnen Ihre
+Verg=C3=BCtung per Western Union Money Transfer zu =C3=BCberweisen.
 
-To fix this issue, decrease ’host_eh_scheduled‘ instead of setting it to 0 so
-that EH is scheduled again to re-enable the port. Also move the update of
-nr_active_links to 0 when host_eh_scheduled is 0 to ata_scsi_port_error_handler().
+Wir haben uns jedoch entschieden Ihre eigene Zahlung =C3=BCber Geldtransfer
+der Westunion in H=C3=B6he von =E2=82=AC5,000, pro Tag vorzunehmen bis die
+Gesamtsumme von =E2=82=AC1,500.000.00, vollst=C3=A4ndig an Sie =C3=BCberwie=
+sen wurde.
 
-> 
-> Reported-by: luojian <luojian5@huawei.com>
-> Signed-off-by: Li Nan <linan122@huawei.com>
-> ---
-> Changes in v2:
->   - fix the bug by decrease 'host_eh_scheduled’
->   - improve commit message.
-> 
->  drivers/ata/libata-eh.c | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-> index 159ba6ba19eb..b9454756ecde 100644
-> --- a/drivers/ata/libata-eh.c
-> +++ b/drivers/ata/libata-eh.c
-> @@ -735,6 +735,12 @@ void ata_scsi_port_error_handler(struct Scsi_Host *host, struct ata_port *ap)
->  	 */
->  	ap->ops->end_eh(ap);
->  
-> +	if (!ap->scsi_host->host_eh_scheduled) {
-> +		/* make sure nr_active_links is zero after EH */
-> +		WARN_ON(ap->nr_active_links);
-> +		ap->nr_active_links = 0;> +	}
-> +
->  	spin_unlock_irqrestore(ap->lock, flags);
->  	ata_eh_release(ap);
->  
-> @@ -948,7 +954,7 @@ void ata_std_end_eh(struct ata_port *ap)
->  {
->  	struct Scsi_Host *host = ap->scsi_host;
->  
-> -	host->host_eh_scheduled = 0;
-> +	host->host_eh_scheduled--;
+Wir k=C3=B6nnen die Zahlung m=C3=B6glicherweise nicht nur mit Ihrer
+E-Mail-Adresse senden daher ben=C3=B6tigen wir Ihre Informationen dar=C3=BC=
+ber
+wohin wir das Geld an Sie senden wie z. B.:
 
-While at it, please drop the host variable:
 
-	ap->scsi_host->host_eh_scheduled--;
+Name des Adressaten ________________
 
-is just fine.
+Adresse________________
 
->  }
->  EXPORT_SYMBOL(ata_std_end_eh);
->  
-> @@ -3922,10 +3928,6 @@ void ata_eh_finish(struct ata_port *ap)
->  			}
->  		}
->  	}
-> -
-> -	/* make sure nr_active_links is zero after EH */
-> -	WARN_ON(ap->nr_active_links);
-> -	ap->nr_active_links = 0;
->  }
->  
->  /**
+Land__________________
 
--- 
-Damien Le Moal
-Western Digital Research
+Telefonnummer________________
 
+Angeh=C3=A4ngte Kopie Ihres Ausweises______________
+
+Das Alter ________________________
+
+
+Wir beginnen mit der =C3=9Cbertragung sobald wir Ihre Informationen
+erhalten haben: Kontakt E-Mail: ( wuwumoneytransfer5000@hotmail.com)
+
+
+Getreu,
+
+
+Herr Anthony Duru,
+
+Direktor von Geldtransfer der Westunion

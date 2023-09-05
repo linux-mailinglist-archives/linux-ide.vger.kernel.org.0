@@ -2,306 +2,248 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D43F7926C4
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7C0A7926E8
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Sep 2023 18:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344007AbjIEQU5 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 5 Sep 2023 12:20:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42306 "EHLO
+        id S1343751AbjIEQUz (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 5 Sep 2023 12:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1351425AbjIEFUf (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 01:20:35 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0512184;
-        Mon,  4 Sep 2023 22:20:28 -0700 (PDT)
+        with ESMTP id S1353674AbjIEHML (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 5 Sep 2023 03:12:11 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3166CCCB
+        for <linux-ide@vger.kernel.org>; Tue,  5 Sep 2023 00:12:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 67259B8109E;
-        Tue,  5 Sep 2023 05:20:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD10C433C7;
-        Tue,  5 Sep 2023 05:20:24 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 51D7CCE10AF
+        for <linux-ide@vger.kernel.org>; Tue,  5 Sep 2023 07:12:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39526C433C8;
+        Tue,  5 Sep 2023 07:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693891226;
-        bh=f5WOGsoXqWS1m124AKwJbahncSQbHKdoPW6lNrOmqK0=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=fMmAgWLMEGrofS7H0q4grbWH9cGRJvIPuUBqqWaeful6OyuhpyAybGY9kwPC5o3jI
-         E8izU50R6q5RVlKXvJome/boc18c6Il3mb0ltN8c/5DQXC8l9ccIpva5/HFChkg6T5
-         qJ50OTc7I9ECId3UX3wv52y1/J4weEPIKDnUI/C5wpyDxLwiCrCfahbMj4Mk26OrQk
-         mlUij4td6u8Sxswv4dfQXm4cDDzuLUX42UJLm5SzMayspYDD5MbNEUhBpvK5Fe3KIN
-         xRLy8hfQOCdxp3fXiZlfhFLLPPTErDkfS2FjKtmXxA9Svh90KMs2mhheCE9oUuxBUD
-         qUwcTBuS0SGbg==
-Message-ID: <83ebb54c-a114-7cd9-4eb4-b9860f1afd26@kernel.org>
-Date:   Tue, 5 Sep 2023 14:20:23 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] ata,scsi: do not issue START STOP UNIT on resume
-Content-Language: en-US
-To:     "Vivi, Rodrigo" <rodrigo.vivi@intel.com>
-Cc:     "regressions@leemhuis.info" <regressions@leemhuis.info>,
-        "dalzot@gmail.com" <dalzot@gmail.com>,
-        "linux-ide@vger.kernel.org" <linux-ide@vger.kernel.org>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "paula@soe.ucsc.edu" <paula@soe.ucsc.edu>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "bvanassche@acm.org" <bvanassche@acm.org>,
-        "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-References: <20230731003956.572414-1-dlemoal@kernel.org>
- <ZOehTysWO+U3mVvK@rdvivi-mobl4>
- <40adc06d-0835-2786-0bfb-83239f546d92@kernel.org>
- <ZOjgJl4nlieu3+kL@rdvivi-mobl4>
- <ccf3d87c-6517-6f01-a32a-4c98b841c7d4@kernel.org>
- <ZO+/Rz4Q5+qvj5Bs@intel.com>
- <289a94c6-a437-626f-c7c4-f0d3aa8c2b79@kernel.org>
- <9e09411348ae7469b4a9a7d076a8c42f84d12823.camel@intel.com>
+        s=k20201202; t=1693897923;
+        bh=7g1ifMrfvCF57osZsx6cfyzLKmrBKUVcyn3S7gC6kIY=;
+        h=From:To:Subject:Date:From;
+        b=hbNawfSy6URxYc446Vb/V5lFGQvSjLpGIok6dJ4UCNE793awKAzc88O535+G82pev
+         U2h8hhfTMjX1R7NNGy5/h9TerIlPiv701PV//h4DLPUZ51wh00m/SOd+PxMTfaQvsr
+         4GMmbtBAvcq4FeUM5EWegWjG+AzxmPlIwqVB1Yy1t0EkuhcTGTouPSckYg+/cxUfDQ
+         VACrLx0dYZ+0TTxJIz4j0prA0ZItjHtbxuMmsmGz228lxhQdS6vCeFV1VPTSbuyf3j
+         kiIqgYz6YTAuqAc5EyUTQoZgQ8UkvCQy/eK2ynsuRHQj5DJA+By7rrq00vkz8IpIba
+         Dbh8Gh9SOYg7w==
 From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <9e09411348ae7469b4a9a7d076a8c42f84d12823.camel@intel.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-ide@vger.kernel.org
+Subject: [GIT PULL] ata changes for 6.6-rc1
+Date:   Tue,  5 Sep 2023 16:11:54 +0900
+Message-ID: <20230905071201.277320-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 8/31/23 10:48, Vivi, Rodrigo wrote:
-> On Thu, 2023-08-31 at 09:32 +0900, Damien Le Moal wrote:
->> On 8/31/23 07:14, Rodrigo Vivi wrote:
->>> On Tue, Aug 29, 2023 at 03:17:38PM +0900, Damien Le Moal wrote:
->>>> On 8/26/23 02:09, Rodrigo Vivi wrote:
->>>>>>> So, maybe we have some kind of disks/configuration out
->>>>>>> there where this
->>>>>>> start upon resume is needed? Maybe it is just a matter of
->>>>>>> timming to
->>>>>>> ensure some firmware underneath is up and back to life?
->>>>>>
->>>>>> I do not think so. Suspend will issue a start stop unit
->>>>>> command to put the drive
->>>>>> to sleep and resume will reset the port (which should wake up
->>>>>> the drive) and
->>>>>> then issue an IDENTIFY command (which will also wake up the
->>>>>> drive) and other
->>>>>> read logs etc to rescan the drive.
->>>>>> In both cases, if the commands do not complete, we would see
->>>>>> errors/timeout and
->>>>>> likely port reset/drive gone events. So I think this is
->>>>>> likely another subtle
->>>>>> race between scsi suspend and ata suspend that is causing a
->>>>>> deadlock.
->>>>>>
->>>>>> The main issue I think is that there is no direct ancestry
->>>>>> between the ata port
->>>>>> (device) and scsi device, so the change to scsi async pm ops
->>>>>> made a mess of the
->>>>>> suspend/resume operations ordering. For suspend, scsi device
->>>>>> (child of ata port)
->>>>>> should be first, then ata port device (parent). For resume,
->>>>>> the reverse order is
->>>>>> needed. PM normally ensures that parent/child ordering, but
->>>>>> we lack that
->>>>>> parent/child relationship. I am working on fixing that but it
->>>>>> is very slow
->>>>>> progress because I have been so far enable to recreate any of
->>>>>> the issues that
->>>>>> have been reported. I am patching "blind"...
->>>>>
->>>>> I believe your suspicious makes sense. And on these lines, that
->>>>> patch you
->>>>> attached earlier would fix that. However my initial tries of
->>>>> that didn't
->>>>> help. I'm going to run more tests and get back to you.
->>>>
->>>> Rodrigo,
->>>>
->>>> I pushed the resume-v2 branch to libata tree:
->>>>
->>>> git@gitolite.kernel.org:pub/scm/linux/kernel/git/dlemoal/libata
->>>> (or
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.gi
->>>> t)
->>>>
->>>> This branch adds 13 patches on top of 6.5.0 to cleanup libata
->>>> suspend/resume and
->>>> other device shutdown issues. The first 4 patches are the main
->>>> ones to fix
->>>> suspend resume. I tested that on 2 different machines with
->>>> different drives and
->>>> with qemu. All seems fine.
->>>>
->>>> Could you try to run this through your CI ? I am very interested
->>>> in seeing if it
->>>> survives your suspend/resume tests.
->>>
->>> well, in the end this didn't affect the CI machinery as I was
->>> afraid.
->>> it is only in my local DG2.
->>>
->>> https://intel-gfx-ci.01.org/tree/intel-xe/bat-
->>> all.html?testfilter=suspend
->>> (bat-dg2-oem2 one)
->>>
->>> I just got these 13 patches and applied to my branch and tested it
->>> again
->>> and it still *fails* for me.
->>
->> That is annoying... But I think the messages give us a hint as to
->> what is going
->> on. See below.
->>
->>>
->>> [   79.648328] [IGT] kms_pipe_crc_basic: finished subtest pipe-A-
->>> DP-2, SUCCESS
->>> [   79.657353] [IGT] kms_pipe_crc_basic: starting dynamic subtest
->>> pipe-B-DP-2
->>> [   80.375042] PM: suspend entry (deep)
->>> [   80.380799] Filesystems sync: 0.002 seconds
->>> [   80.386476] Freezing user space processes
->>> [   80.392286] Freezing user space processes completed (elapsed
->>> 0.001 seconds)
->>> [   80.399294] OOM killer disabled.
->>> [   80.402536] Freezing remaining freezable tasks
->>> [   80.408335] Freezing remaining freezable tasks completed
->>> (elapsed 0.001 seconds)
->>> [   80.439372] sd 5:0:0:0: [sdb] Synchronizing SCSI cache
->>> [   80.439716] serial 00:01: disabled
->>> [   80.448011] sd 4:0:0:0: [sda] Synchronizing SCSI cache
->>> [   80.448014] sd 7:0:0:0: [sdc] Synchronizing SCSI cache
->>> [   80.453600] ata6.00: Entering standby power mode
->>
->> This is sd 5:0:0:0. All good, ordered properly with the
->> "Synchronizing SCSI cache".
->>
->>> [   80.464217] ata5.00: Entering standby power mode
->>
->> Same here for sd 4:0:0:0.
->>
->>> [   80.812294] ata8: SATA link up 6.0 Gbps (SStatus 133 SControl
->>> 300)
->>> [   80.818520] ata8.00: Entering active power mode
->>> [   80.842989] ata8.00: configured for UDMA/133
->>
->> Arg ! sd 7:0:0:0 is resuming ! But the above "Synchronizing SCSI
->> cache" tells
->> us that it was suspending and libata EH did not yet put that drive to
->> standby...
->>
->>> [   80.847660] ata8.00: Entering standby power mode
->>
->> ... which happens here. So it looks like libata EH had both the
->> suspend and
->> resume requests at the same time, which is totally weird.
-> 
-> although it looks weird, it totally matches the 'use case'.
-> I mean, if I suspend, resume, and wait a bit before suspend and resume
-> again, it will work 100% of the time.
-> The issue is really only when another suspend comes right after the
-> resume, in a loop without any wait.
-> 
->>
->>> [   81.119426] xe 0000:03:00.0: [drm] GT0: suspended
->>> [   81.800508] PM: suspend of devices complete after 1367.829 msecs
->>> [   81.806661] PM: start suspend of devices complete after 1390.859
->>> msecs
->>> [   81.813244] PM: suspend devices took 1.398 seconds
->>> [   81.820101] PM: late suspend of devices complete after 2.036
->>> msecs
->>
->> ...and PM suspend completes here. Resume "starts" now (but clearly it
->> started
->> earlier already given that sd 7:0:0:0 was reactivated.
-> 
-> that is weird.
-> 
->>
->>> �[   82.403857] serial 00:01: activated
->>> [   82.489612] nvme nvme0: 16/0/0 default/read/poll queues
->>> [   82.563318] r8169 0000:07:00.0 enp7s0: Link is Down
->>> [   82.581444] xe REG[0x223a8-0x223af]: allow read access
->>> [   82.586704] xe REG[0x1c03a8-0x1c03af]: allow read access
->>> [   82.592071] xe REG[0x1d03a8-0x1d03af]: allow read access
->>> [   82.597423] xe REG[0x1c83a8-0x1c83af]: allow read access
->>> [   82.602765] xe REG[0x1d83a8-0x1d83af]: allow read access
->>> [   82.608113] xe REG[0x1a3a8-0x1a3af]: allow read access
->>> [   82.613281] xe REG[0x1c3a8-0x1c3af]: allow read access
->>> [   82.618454] xe REG[0x1e3a8-0x1e3af]: allow read access
->>> [   82.623634] xe REG[0x263a8-0x263af]: allow read access
->>> [   82.628816] xe 0000:03:00.0: [drm] GT0: resumed
->>> [   82.728005] ata7: SATA link down (SStatus 4 SControl 300)
->>> [   82.733531] ata5: SATA link up 6.0 Gbps (SStatus 133 SControl
->>> 300)
->>> [   82.739773] ata5.00: Entering active power mode
->>> [   82.744398] ata6: SATA link up 6.0 Gbps (SStatus 133 SControl
->>> 300)
->>> [   82.750618] ata6.00: Entering active power mode
->>> [   82.755961] ata5.00: configured for UDMA/133
->>> [   82.760479] ata5.00: Enabling discard_zeroes_data
->>> [   82.836266] ata6.00: configured for UDMA/133
->>> [   84.460081] ata8: SATA link up 6.0 Gbps (SStatus 133 SControl
->>> 300)
->>> [   84.466354] ata8.00: Entering active power mode
->>> [   84.497256] ata8.00: configured for UDMA/133
->>> ...
->>
->> And this looks all normal, the drives have all been transitioned to
->> active
->> power mode as expected. And yet, your system is stuck after this,
->> right ?
-> 
-> yes
+Linus,
 
-I think I have now figured it out, and fixed. I could reliably recreate the same
-hang both with qemu using a failed suspend (using a device not supporting
-suspend) and real hardware with a short rtc wake.
+The following changes since commit 5d0c230f1de8c7515b6567d9afba1f196fb4e2f4:
 
-It turns out that the root cause of the hang is ata_scsi_dev_rescan(), which is
-scheduled asynchronously from PM context on resume. With quick suspend after a
-resume, suspend may win the race against that ata_scsi_dev_rescan() task
-execution and we endup calling scsi_rescan_device() on a suspended device,
-causing that function to wait with the device_lock() held, which causes PM to
-deadlock when it needs to resume the scsi device. The recent commit 6aa0365a3c85
-("ata: libata-scsi: Avoid deadlock on rescan after device resume") was intended
-to fix that, but it did so less than ideally and the fix has a race on the scsi
-power state check, thus not always preventing the resume hang.
+  Linux 6.5-rc4 (2023-07-30 13:23:47 -0700)
 
-I pushed a new patch series that goes on top of 6.5.0: resume-v3 branch in the
-libata tree:
+are available in the Git repository at:
 
-https://git.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata.git
+  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-6.6-rc1
 
-This works very well for me. Using this script on real hardware:
+for you to fetch changes up to 27fd071040e3a5bbea9f44548c93f1092b451714:
 
-for (( i=0; i<20; i++ )); do
-	echo "+2" > /sys/class/rtc/rtc0/wakealarm
-	echo mem > /sys/power/state
-done
+  ata: libata-core: Disable NCQ_TRIM on Micron 1100 drives (2023-09-02 12:04:51 +0900)
 
-The system repeatedly suspends and resumes and comes back OK. Of note is that if
-I set the delay to +1 second, then I sometime do not see the system resume and
-the script stops. But using wakeup-on-lan (wol command) from another machine to
-wake it up, the machine resumes normally and continues executing the script. So
-it seems that setting the rtc alarm unreasonably early result in it being lost
-and the system suspending wating to be woken up.
+----------------------------------------------------------------
+ata changes for 6.6
 
-I also tested this in qemu. As mentioned before, I cannot get rtc alarm to wake
-up the VM guest though. However, using a virtio device that does not support
-suspend, resume strats in the middle of the suspend operation due to the suspend
-error reported by that device. And it turns out that systemd really insists on
-suspending the system despite the error, so when running "systemctl suspend" I
-see a retry for suspend right after the first failed one. That is enough to
-trigger the issue without the patches.
+ - Fix OF include file for ata platform drivers (Rob).
 
-Please test !
+ - Simplify various ahci, sata and pata platform drivers using the
+   function devm_platform_ioremap_resource() (Yangtao).
 
-Thanks.
+ - Cleanup libata time related argument types (e.g. timeouts values)
+   (Sergey).
 
--- 
-Damien Le Moal
-Western Digital Research
+ - Cleanup libata code around error handling as all ata drivers now
+   define a error_handler operation (Hannes and Niklas).
 
+ - Remove functions intended for libsas that are in fact unused
+   (Niklas).
+
+ - Change the remove device callback of platform drivers to a null
+   function (Uwe).
+
+ - Simplify the pata_imx driver using devm_clk_get_enabled() (Li).
+
+ - Remove old and uinused remnants of the ide code in arm, parisc,
+   powerpc, sparc and m68k architectures and associated drivers
+   (pata_buddha, pata_falcon and pata_gayle) (Geert).
+
+ - Add missing MODULE_DESCRIPTION() in the sata_gemini and pata_ftide010
+   drivers (me).
+
+ - Several fixes for the pata_ep93xx and pata_falcon drivers (Nikita,
+   Michael).
+
+ - Add Elkhart Lake AHCI controller support to the ahci driver (Werner).
+
+ - Disable NCQ trim on Micron 1100 drives (Pawel).
+
+----------------------------------------------------------------
+Damien Le Moal (2):
+      ata: pata_ftide010: Add missing MODULE_DESCRIPTION
+      ata: sata_gemini: Add missing MODULE_DESCRIPTION
+
+Geert Uytterhoeven (9):
+      ARM: Remove <asm/ide.h>
+      parisc: Remove <asm/ide.h>
+      powerpc: Remove <asm/ide.h>
+      sparc: Remove <asm/ide.h>
+      asm-generic: Remove ide_iops.h
+      ata: pata_buddha: Remove #include <asm/ide.h>
+      ata: pata_falcon: Remove #include <asm/ide.h>
+      ata: pata_gayle: Remove #include <asm/ide.h>
+      m68k: Remove <asm/ide.h>
+
+Hannes Reinecke (6):
+      ata: libata: remove references to non-existing error_handler()
+      ata,scsi: remove ata_sas_port_{start,stop} callbacks
+      ata,scsi: remove ata_sas_port_destroy()
+      ata: libata-sata: remove ata_sas_sync_probe()
+      ata: libata-core: inline ata_port_probe()
+      ata,scsi: cleanup __ata_port_probe()
+
+Li Zetao (1):
+      ata: pata_imx: Use helper function devm_clk_get_enabled()
+
+Michael Schmitz (2):
+      ata: pata_falcon: fix IO base selection for Q40
+      ata: pata_falcon: add data_swab option to byte-swap disk data
+
+Nikita Shubin (2):
+      ata: pata_ep93xx: fix error return code in probe
+      ata: pata_ep93xx: use soc_device_match for UDMA modes
+
+Niklas Cassel (4):
+      ata,scsi: remove ata_sas_port_init()
+      ata: sata_sx4: drop already completed TODO
+      ata: libata-core: remove ata_bus_probe()
+      ata: libata: remove deprecated EH callbacks
+
+Pawel Zmarzly (1):
+      ata: libata-core: Disable NCQ_TRIM on Micron 1100 drives
+
+Rob Herring (1):
+      ata: Explicitly include correct DT includes
+
+Sergey Shtylyov (8):
+      ata: libata: fix parameter type of ata_deadline()
+      ata: libata-core: fix parameter types of ata_wait_register()
+      ata: libata-eh: fix reset timeout type
+      ata: fix debounce timings type
+      ata: libata-scsi: fix timeout type in ata_scsi_park_store()
+      ata: libahci: fix parameter type of ahci_exec_polled_cmd()
+      ata: ahci_xgene: fix parameter types of xgene_ahci_poll_reg_val()
+      ata: sata_sil24: fix parameter type of sil24_exec_polled_cmd()
+
+Uwe Kleine-König (12):
+      ata: pata_arasan_cf: Convert to platform remove callback returning void
+      ata: pata_ep93xx: Convert to platform remove callback returning void
+      ata: pata_ftide010: Convert to platform remove callback returning void
+      ata: pata_imx: Convert to platform remove callback returning void
+      ata: pata_mpc52xx: Convert to platform remove callback returning void
+      ata: pata_pxa: Convert to platform remove callback returning void
+      ata: pata_rb532_cf: Convert to platform remove callback returning void
+      ata: sata_dwc_460ex: Convert to platform remove callback returning void
+      ata: sata_fsl: Convert to platform remove callback returning void
+      ata: sata_gemini: Convert to platform remove callback returning void
+      ata: sata_mv: Convert to platform remove callback returning void
+      ata: sata_rcar: Convert to platform remove callback returning void
+
+Werner Fischer (1):
+      ata: ahci: Add Elkhart Lake AHCI controller
+
+Yangtao Li (11):
+      ata: ahci_octeon: Convert to devm_platform_ioremap_resource()
+      ata: ahci_seattle: Convert to devm_platform_ioremap_resource()
+      ata: ahci_xgene: Convert to devm_platform_ioremap_resource()
+      ata: ahci_tegra: Convert to devm_platform_ioremap_resource()
+      ata: sata_rcar: drop useless initializer
+      ata: sata_rcar: Remove unnecessary return value check
+      ata: sata_rcar: Convert to devm_platform_ioremap_resource()
+      ata: pata_ixp4xx: Use devm_platform_get_and_ioremap_resource()
+      ata: pata_ixp4xx: Remove unnecessary return value check
+      ata: pata_ftide010: Use devm_platform_get_and_ioremap_resource()
+      ata: pata_imx: Use devm_platform_get_and_ioremap_resource()
+
+ Documentation/driver-api/libata.rst   |  38 +---
+ arch/arm/include/asm/ide.h            |  24 ---
+ arch/m68k/include/asm/ide.h           |  67 -------
+ arch/parisc/include/asm/ide.h         |  54 -----
+ arch/powerpc/include/asm/ide.h        |  18 --
+ arch/sparc/include/asm/ide.h          |  97 ---------
+ drivers/ata/ahci.c                    |   4 +-
+ drivers/ata/ahci_ceva.c               |   2 +-
+ drivers/ata/ahci_dwc.c                |   2 +-
+ drivers/ata/ahci_mtk.c                |   1 +
+ drivers/ata/ahci_mvebu.c              |   2 +-
+ drivers/ata/ahci_octeon.c             |   4 +-
+ drivers/ata/ahci_qoriq.c              |   4 +-
+ drivers/ata/ahci_seattle.c            |   4 +-
+ drivers/ata/ahci_sunxi.c              |   2 +-
+ drivers/ata/ahci_tegra.c              |   5 +-
+ drivers/ata/ahci_xgene.c              |  16 +-
+ drivers/ata/libahci.c                 |   7 +-
+ drivers/ata/libahci_platform.c        |   1 +
+ drivers/ata/libata-core.c             | 367 +++++++++-------------------------
+ drivers/ata/libata-eh.c               | 158 ++++++---------
+ drivers/ata/libata-sata.c             | 112 +----------
+ drivers/ata/libata-scsi.c             | 165 ++-------------
+ drivers/ata/libata-sff.c              |  32 +--
+ drivers/ata/libata.h                  |   3 -
+ drivers/ata/pata_arasan_cf.c          |   6 +-
+ drivers/ata/pata_buddha.c             |   1 -
+ drivers/ata/pata_ep93xx.c             |  25 ++-
+ drivers/ata/pata_falcon.c             |  63 +++---
+ drivers/ata/pata_ftide010.c           |  16 +-
+ drivers/ata/pata_gayle.c              |   1 -
+ drivers/ata/pata_imx.c                |  37 +---
+ drivers/ata/pata_ixp4xx_cf.c          |  24 +--
+ drivers/ata/pata_mpc52xx.c            |  10 +-
+ drivers/ata/pata_pxa.c                |   6 +-
+ drivers/ata/pata_rb532_cf.c           |   6 +-
+ drivers/ata/pata_sl82c105.c           |   3 +-
+ drivers/ata/sata_dwc_460ex.c          |   8 +-
+ drivers/ata/sata_fsl.c                |  12 +-
+ drivers/ata/sata_gemini.c             |  10 +-
+ drivers/ata/sata_highbank.c           |   4 +-
+ drivers/ata/sata_inic162x.c           |   2 +-
+ drivers/ata/sata_mv.c                 |   7 +-
+ drivers/ata/sata_nv.c                 |   2 +-
+ drivers/ata/sata_rcar.c               |  17 +-
+ drivers/ata/sata_sil24.c              |   4 +-
+ drivers/ata/sata_sx4.c                |   1 -
+ drivers/scsi/hisi_sas/hisi_sas_main.c |   2 +-
+ drivers/scsi/libsas/sas_ata.c         |   9 +-
+ drivers/scsi/libsas/sas_discover.c    |   2 +-
+ include/asm-generic/ide_iops.h        |  39 ----
+ include/linux/libata.h                |  40 ++--
+ 52 files changed, 355 insertions(+), 1191 deletions(-)
+ delete mode 100644 arch/arm/include/asm/ide.h
+ delete mode 100644 arch/m68k/include/asm/ide.h
+ delete mode 100644 arch/parisc/include/asm/ide.h
+ delete mode 100644 arch/powerpc/include/asm/ide.h
+ delete mode 100644 arch/sparc/include/asm/ide.h
+ delete mode 100644 include/asm-generic/ide_iops.h

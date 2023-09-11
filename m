@@ -2,49 +2,50 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A71079A226
-	for <lists+linux-ide@lfdr.de>; Mon, 11 Sep 2023 06:03:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34C6879A357
+	for <lists+linux-ide@lfdr.de>; Mon, 11 Sep 2023 08:12:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233700AbjIKEDa (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 11 Sep 2023 00:03:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58164 "EHLO
+        id S230430AbjIKGMl (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 11 Sep 2023 02:12:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233682AbjIKEDG (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Sep 2023 00:03:06 -0400
+        with ESMTP id S234356AbjIKGMk (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Sep 2023 02:12:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE685CD1;
-        Sun, 10 Sep 2023 21:02:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46CDBC433CB;
-        Mon, 11 Sep 2023 04:02:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F2411F
+        for <linux-ide@vger.kernel.org>; Sun, 10 Sep 2023 23:12:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 677A1C433C7;
+        Mon, 11 Sep 2023 06:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694404976;
-        bh=PglKl+2cZKAn6/abU6Om/fmPGDXe+6D9MEqoWlkSk90=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m9+O1ivdMSnKT/uMvaVBeIxdKK8pGsUlmEhaegmd75+rH8JaeJlc4C0Iwq8ac1qSv
-         PDng6Rlr+f3ZNz8kJApaXTdHcsGU8Zn3TaZT/beQ0QuQfAa6FC4s4/gVl1ZYhePERq
-         SXnUcSFV1m2TkVSOdukmkVN4/pqeOQtrgPgmb8KLhFuG6ydMFj5zpDMH0O3Wnw9f1i
-         TTPCDhZibpvoaXShMUHrq5JoNhIQ5u6UaGCPVU1Xbc95tRIT/WTomS7IrrSIyVF1mv
-         XGS1aliYFvIN3ClDNUfGwNQYtA0EPC+PhymCzf4bZKqcnDBll5WI+dS9DV+M5v0+wu
-         ab/wpF0Dqr/Xw==
-From:   Damien Le Moal <dlemoal@kernel.org>
-To:     linux-ide@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Paul Ausbeck <paula@soe.ucsc.edu>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joe Breuer <linux-kernel@jmbreuer.net>
-Subject: [PATCH 19/19] ata: libata: Cleanup inline DMA helper functions
-Date:   Mon, 11 Sep 2023 13:02:17 +0900
-Message-ID: <20230911040217.253905-20-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230911040217.253905-1-dlemoal@kernel.org>
-References: <20230911040217.253905-1-dlemoal@kernel.org>
+        s=k20201202; t=1694412754;
+        bh=d0bX68z5EeOGvgA8sIRuK6ti+F6IWeOcQ4nWR8wVUyA=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=jlVJk5JVUQZ5N0/YW/tB4aFo26K99zkYtOG7XWecBNGqtd8HdX+XhnhhOgDX4Ubqx
+         X/oAubzIw6S/rzzRXtw3QDW0AbMb5f8L3f/FgS5aWGc0uaYyEk+SRwtKgsmSRQClDT
+         3wth9eVzULMqB2PVYT5RA+T1PBzNTjzmR7ZwRqHE7m1Lyw4Nj7QGCtI1m5GnMDouxy
+         dLk410I/CaB2iJIqKrz26yH6wgi5UmgvC0AvPJ6m89W6RfdPu7XXkVxQPSHrAur7DB
+         kJ5Ijg5TFnhdD6tCOJN5kG5dXA3ehNc0MCJzKN/dMztZ+LZOEceS1oAYYJveHw+NZd
+         XGklY9aHPikUg==
+Message-ID: <f4b2b1e2-5148-169a-0581-bb1a0d56f896@kernel.org>
+Date:   Mon, 11 Sep 2023 15:12:32 +0900
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ata: libata: disallow dev-initiated LPM transitions to
+ unsupported states
+To:     Niklas Cassel <nks@flawful.org>
+Cc:     Runa Guo-oc <RunaGuo-oc@zhaoxin.com>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        linux-ide@vger.kernel.org
+References: <20230904204257.3296685-1-nks@flawful.org>
+Content-Language: en-US
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20230904204257.3296685-1-nks@flawful.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,51 +54,44 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Simplify the inline DMA helper functions ata_using_mwdma(),
-ata_using_udma() and ata_dma_enabled() to directly return as a boolean
-the result of their test condition.
+On 9/5/23 05:42, Niklas Cassel wrote:
+> From: Niklas Cassel <niklas.cassel@wdc.com>
+> 
+> In AHCI 1.3.1, the register description for CAP.SSC:
+> "When cleared to ‘0’, software must not allow the HBA to initiate
+> transitions to the Slumber state via agressive link power management nor
+> the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+> must be programmed to disallow device initiated Slumber requests."
+> 
+> In AHCI 1.3.1, the register description for CAP.PSC:
+> "When cleared to ‘0’, software must not allow the HBA to initiate
+> transitions to the Partial state via agressive link power management nor
+> the PxCMD.ICC field in each port, and the PxSCTL.IPM field in each port
+> must be programmed to disallow device initiated Partial requests."
+> 
+> Ensure that we always set the corresponding bits in PxSCTL.IPM, such that
+> a device is not allowed to initiate transitions to power states which are
+> unsupported by the HBA.
+> 
+> DevSleep is always initiated by the HBA, however, for completeness, set the
+> corresponding bit in PxSCTL.IPM such that agressive link power management
+> cannot transition to DevSleep if DevSleep is not supported.
+> 
+> sata_link_scr_lpm() is used by libahci, ata_piix and libata-pmp.
+> However, only libahci has the ability to read the CAP/CAP2 register to see
+> if these features are supported. Therefore, in order to not introduce any
+> regressions on ata_piix or libata-pmp, create flags that indicate that the
+> respective feature is NOT supported. This way, the behavior for ata_piix
+> and libata-pmp should remain unchanged.
+> 
+> This change is based on a patch originally submitted by Runa Guo-oc.
+> 
+> Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
----
- include/linux/libata.h | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+Applied to for-6.6-fixes. Thanks !
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 6593c79b7290..f48fe27dae94 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1878,23 +1878,21 @@ static inline unsigned long ata_deadline(unsigned long from_jiffies,
-    change in future hardware and specs, secondly 0xFF means 'no DMA' but is
-    > UDMA_0. Dyma ddreigiau */
- 
--static inline int ata_using_mwdma(struct ata_device *adev)
-+static inline bool ata_using_mwdma(struct ata_device *adev)
- {
--	if (adev->dma_mode >= XFER_MW_DMA_0 && adev->dma_mode <= XFER_MW_DMA_4)
--		return 1;
--	return 0;
-+	return adev->dma_mode >= XFER_MW_DMA_0 &&
-+		adev->dma_mode <= XFER_MW_DMA_4;
- }
- 
--static inline int ata_using_udma(struct ata_device *adev)
-+static inline bool ata_using_udma(struct ata_device *adev)
- {
--	if (adev->dma_mode >= XFER_UDMA_0 && adev->dma_mode <= XFER_UDMA_7)
--		return 1;
--	return 0;
-+	return adev->dma_mode >= XFER_UDMA_0 &&
-+		adev->dma_mode <= XFER_UDMA_7;
- }
- 
--static inline int ata_dma_enabled(struct ata_device *adev)
-+static inline bool ata_dma_enabled(struct ata_device *adev)
- {
--	return (adev->dma_mode == 0xFF ? 0 : 1);
-+	return adev->dma_mode != 0xFF;
- }
- 
- /**************************************************************************
+
 -- 
-2.41.0
+Damien Le Moal
+Western Digital Research
 

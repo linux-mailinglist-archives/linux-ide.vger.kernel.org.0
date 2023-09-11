@@ -2,100 +2,123 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB5379BBD5
-	for <lists+linux-ide@lfdr.de>; Tue, 12 Sep 2023 02:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A142279B7A4
+	for <lists+linux-ide@lfdr.de>; Tue, 12 Sep 2023 02:07:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237342AbjIKWJQ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41838 "EHLO
+        id S239327AbjIKWJT (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236316AbjIKKPF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Sep 2023 06:15:05 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 078DCE5F;
-        Mon, 11 Sep 2023 03:15:01 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-502a4f33440so3805175e87.1;
-        Mon, 11 Sep 2023 03:15:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694427299; x=1695032099; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UHCnoccZNiz4HQ8Bo9b1jZ414TiCPpgUdOpHpw/rPXw=;
-        b=c1Sq9ZgjSYTJXSXnjb/fXBWFdtviDwrR/xxzraHb5Qe3mkeVZ4y6gqiugdFn2DmrfK
-         3hXeC4A0Gv9jVyIh1AVqFhQ5LPLvTbQ940omt9msE7CXyJx9gRXS7vyBqWA6UbnbDl0N
-         rLHZ/J+TpzIBUs5IAfVML3N4SI2YdcdFHUeZboEJ2Cu0POOzV7HgweiitgZ9DzX8J/5m
-         0izqa9YWkHL8rCBz7/KY1ZKvDJFdO14deqziDGdJmxPoAhLU+lwOJNe7DEsFWXgR+Opn
-         jeMNblwWtYVdAn+7dblPH1O789ul+ZXSw+9gPjUDD8Cja5V9vbQyFpsO2LV22oPhitLa
-         GQOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694427299; x=1695032099;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UHCnoccZNiz4HQ8Bo9b1jZ414TiCPpgUdOpHpw/rPXw=;
-        b=TfWn3VyQVF6fuL61Fp6w4HBL0+FDuBwYSroTIAzLXSD/1OBlXrzJKnA/Do41MY9YQD
-         T2fXJ0B7bcxjdX+pFOwZwphFdoxIGzvssDGo9T6OywZSDoHB1Yc6tTYitr8AEIjt5sky
-         SOkAvzrxa9wXJ4hmHYqH02YERjduGxW0oD3F1KhwIWckHqaaheTTljxqN5/LN7LPngrc
-         Kjv9GkAg6HmK9HAF3sNLbG+sBRUpgGm/H/FGqRDL2qAh6Je8nQKE9Z70SyZPaXMJ+GcE
-         Cg+FEnWhF73y+tfOmcXKVKIaERwy83AGsxbqEiqvhCyO7h3qU+ZFBFlvSOiUvRJYCE01
-         pndA==
-X-Gm-Message-State: AOJu0YxmSl+MIaRlQdJAcL7Ul+7oIXs7e/bQTxGCmQIXRrnggq5Geff3
-        9IZ9ITrfcCO5JsjA5MDfaE0=
-X-Google-Smtp-Source: AGHT+IEBzImGafYSjy+sKGHiF/inpe78xQ3N0eED9tvnQyipiObNqw+8hKQHd3OOq3uiMbbz8quuUQ==
-X-Received: by 2002:a19:ca18:0:b0:4f8:62a6:8b2 with SMTP id a24-20020a19ca18000000b004f862a608b2mr6380933lfg.46.1694427298875;
-        Mon, 11 Sep 2023 03:14:58 -0700 (PDT)
-Received: from [192.168.1.103] ([178.176.75.0])
-        by smtp.gmail.com with ESMTPSA id q1-20020a19a401000000b005009c4ba3f0sm1291041lfc.72.2023.09.11.03.14.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 03:14:58 -0700 (PDT)
-Subject: Re: [PATCH 18/19] ata: libata-eh: Reduce "disable device" message
- verbosity
-To:     Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org
+        with ESMTP id S236982AbjIKLsW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Sep 2023 07:48:22 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 564EDCDD;
+        Mon, 11 Sep 2023 04:48:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7BCC433CB;
+        Mon, 11 Sep 2023 11:48:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694432897;
+        bh=Ka8kxyqihersE36rdzLjT/pV65yW2aDcxlKjtq+pLA0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=MtAtZOrGGcZUa38EeLQZ1SAz27ziuqGgb5GAYyV1SdPhDiihIQbhPoiT9HLvPcJZT
+         Y0IJ6cUuwaW0yoCfH3GiYOmG1KvLKQhyDT8La6ZHciZaaH1s/aAuaGbCZbcR8e9TZa
+         RIY09wf9CQeiY76W1iZzlqbBykGP/YLeRKNxplI1vgN3bebwbkCET9NHTb+UOtczgo
+         lI7zRH3qANlVODl7j5TfNeHsQrkh0FxP99m/3NdJ214/JBTbiYj9BUzYZEE5MdGeVY
+         JjFJ/7gKbjgptCWyzN3txkvZJ2IGyujxxD3+V6N9T8M3P40gP7l0I3xH0dTASiL3Aq
+         U0NIZgwg9pWug==
+Message-ID: <f56e4e80-1905-0dcd-fb59-aaba7a9f8adb@kernel.org>
+Date:   Mon, 11 Sep 2023 20:48:14 +0900
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 03/19] ata: libata-scsi: link ata port and scsi device
+To:     John Garry <john.g.garry@oracle.com>,
+        Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org
 Cc:     linux-scsi@vger.kernel.org,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         Paul Ausbeck <paula@soe.ucsc.edu>,
         Kai-Heng Feng <kai.heng.feng@canonical.com>,
         Joe Breuer <linux-kernel@jmbreuer.net>
 References: <20230911040217.253905-1-dlemoal@kernel.org>
- <20230911040217.253905-19-dlemoal@kernel.org>
-From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Message-ID: <3df11a20-bd80-304b-0a78-9875fa1a9e9b@gmail.com>
-Date:   Mon, 11 Sep 2023 13:14:56 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
-MIME-Version: 1.0
-In-Reply-To: <20230911040217.253905-19-dlemoal@kernel.org>
-Content-Type: text/plain; charset=utf-8
+ <20230911040217.253905-4-dlemoal@kernel.org>
+ <e8ca70d1-9c88-4a80-83e4-a65f4bbe6b72@suse.de>
+ <8874a3d5-355e-c354-fd85-0dfa7ab77b54@kernel.org>
+ <5825b4b9-0bc8-4c27-d576-070c7113e1f8@oracle.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <5825b4b9-0bc8-4c27-d576-070c7113e1f8@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Hello!
-
-On 9/11/23 7:02 AM, Damien Le Moal wrote:
-
-> There is no point in warning about a device being diabled when we expect
-
-   Disabled. :-)
-
-> it to be, that is, on suspend, shutdown or when detaching a device.
-> Suppress this message for these cases by introducing the EH static
-> function ata_eh_dev_disable() and by using it in ata_eh_unload() and
-> ata_eh_detach_dev(). ata_dev_disable() code is modified to call this new
-> function after printing the "disable device" message.
+On 9/11/23 19:38, John Garry wrote:
+> On 11/09/2023 07:48, Damien Le Moal wrote:
+>>>>   #define ATA_BASE_SHT(drv_name)                    \
+>>> I do understand the rationale here, as the relationship between ata port and
+>>> scsi devices are blurred. Question is: blurred by what?
+>>> Is it the libata/SAS duality where SCSI devices will have a different
+>>> ancestry for libata and libsas?
+>>> If so, why don't we need the 'link' mechanism for SAS?
+>>> Or is it something else?
+>> On scsi, ancestry from Scsi_Host is clear: host->target->device->disk.
+>> For ATA, it is also clear: port->link->device
+>>
+>> The relationship is that ata port has its own Scsi_Host, but no "family"
+>> relationship here. They are just "friends", so scsi disk and ata_port have no
+>> direct ancestry. Adding the link creates that.
+>>
+>> libsas does not need the link because it does its own PM management of the
+>> ports, not relying on PM to order things.
+>>
 > 
-> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-[...]
+> For hisi_sas v3, RPM is supported and a link was required to be added in 
+> that driver between the sdev and those host controller device - see 
+> 16fd4a7c59. And that is for a similar reason here. I see that we already 
+> have an ancestry for libata between ata_dev -> ata_link -> ata_port -> 
+> ata_host dev, so it seems reasonable to add ata_dev  <-> sdev dependency 
+> here.
 
-MBR, Sergey
+libata creates a link between ata_port and sdev. This is not very natural, but
+as I said in the cover letter, the power management model is weird as everything
+is per port, even if a port has multiple devices. Nevertheless, I tried to apply
+the same for libsas but failed: if I add the link creation in the slave_alloc
+method, I fail to get the scsi disks to show up (no /dev/sdX device files). Not
+sure why. That was with my pm8001 adapter, which is the only libsas one I have.
+
+Side note: having an ata_debug (ata equivalent of scsi_debug) driver that could
+act as a pure libata driver or as a libsas adapter would really be awesome for
+this kind of tests :)
+
+> I think that this should really be added for all libsas drivers which 
+> support RPM - pm8001 is missing, IIRC.
+
+Will try again tomorrow looking at hisi driver for inspiration. The other thing
+I need to better understand is how the suspend & resume operations of libsas get
+triggered. For suspend, it is easy-ish, but for resume, it seems to be tightly
+coupled with discovery, so the the adapter resume (scsi host class resume ?).
+If that is the case, then that is done *before* the scsi_dev resume because of
+the existing device link dependencies. So I am not yet entirely convinced that
+adding a link between ata_port and sdev will serve any purpose now that the
+asynchronous libata resume is fixed and synchronized with the scsi disk
+resume... Will dig further.
+
+That said, it may be good to move libsas suspend/resume fixes to another patch
+series. There is an outstanding regression/problem for pure libata devices that
+this series fixes. So would like to get the fixes patches in Linus tree ASAP.
+
+Cheers.
+
+-- 
+Damien Le Moal
+Western Digital Research
+

@@ -2,30 +2,30 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13FC479C177
-	for <lists+linux-ide@lfdr.de>; Tue, 12 Sep 2023 03:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C9779C386
+	for <lists+linux-ide@lfdr.de>; Tue, 12 Sep 2023 05:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233499AbjILBOc (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 11 Sep 2023 21:14:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57578 "EHLO
+        id S241513AbjILDBe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 11 Sep 2023 23:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230150AbjILBOX (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Sep 2023 21:14:23 -0400
+        with ESMTP id S241754AbjILDBW (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 11 Sep 2023 23:01:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354953E1D1;
-        Mon, 11 Sep 2023 18:03:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A6C3279B;
-        Tue, 12 Sep 2023 00:57:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2126F1A39B0;
+        Mon, 11 Sep 2023 18:32:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0E3C116AA;
+        Tue, 12 Sep 2023 00:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694480240;
-        bh=C1HsbQi2la2V04e3k2OPKNpxNTVhh2TIOvP0cEy8ins=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VpLbuKagvZ3AkwNRlktIq1NCOjuLC/2HjnjIs/hPLTSyVHNYLuBTYpwd6phXEIz87
-         lL9lO6pe48HetnHtLemT2RBtJqTrn8Hr1EHWSuJW7/iv5D4TbvsUH3DtyOoFgXDzJX
-         gB6Bl+jYsIoqLB8CLjEcN0dqKPoP+nvdmbIKUVBCZY98XLf8g/bsz4p8wg5xSRKYNe
-         K6jyyHwLt9W9ULTHuhyPMPTPgtLjinzJmAV/dJFZEajiFCvv8/S2xIMJ6NzwN/JmLT
-         gQ1YOvTB17ozllQ+rl55/raULXDjsOuEAAZ/xngIOoFaXtyLGTrDP3l963voLPrZ3+
-         G9KlrLCGRGA1Q==
+        s=k20201202; t=1694480218;
+        bh=M5RkzXlhvBv3Xf+/vakadnx17akUJYymOOi25bEzTgQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ox+UGQSRSp3NMNzcwXdN6d0bMTRuL4/NSl8J6/GssPwJwCA6DmOZpm5GWeayVY0pi
+         IuZrsGoufTRxrb+zfK0Doi70rBRSGExyCm3cDfSYL1Vzy+JstF0VY8gVrojKhsvdmn
+         k3o0psOYw38QcqRj2gTKnEhMEP6e3jpsNnsGNzKqhNGWaHKO/nNijYrM3WWo+xSvfz
+         eUVipXVWVNdpMVShSquu14WcU8e3L5hOUXww5IjYx3zQr4sfGC1KhSvDa7vQam+BW7
+         0zR1v7XqmAQyr/QTQS6/7fV3qY/fIpssTg5S+IwszlklqM/PbW87XF/ayU4KeSJ5kI
+         oWIuoklaSDkFQ==
 From:   Damien Le Moal <dlemoal@kernel.org>
 To:     linux-ide@vger.kernel.org
 Cc:     linux-scsi@vger.kernel.org,
@@ -35,87 +35,83 @@ Cc:     linux-scsi@vger.kernel.org,
         Paul Ausbeck <paula@soe.ucsc.edu>,
         Kai-Heng Feng <kai.heng.feng@canonical.com>,
         Joe Breuer <linux-kernel@jmbreuer.net>
-Subject: [PATCH v2 15/21] ata: libata-core: Remove ata_port_resume_async()
-Date:   Tue, 12 Sep 2023 09:56:49 +0900
-Message-ID: <20230912005655.368075-16-dlemoal@kernel.org>
+Subject: [PATCH v2 00/21] Fix libata suspend/resume handling and code cleanup
+Date:   Tue, 12 Sep 2023 09:56:34 +0900
+Message-ID: <20230912005655.368075-1-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230912005655.368075-1-dlemoal@kernel.org>
-References: <20230912005655.368075-1-dlemoal@kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Remove ata_port_resume_async() and replace it with a modified
-ata_port_resume() taking an additional bool argument indicating if
-ata EH resume operation should be executed synchronously or
-asynchronously. With this change, the variable ata_port_resume_ehi is
-not longer necessary and its value (ATA_EHI_XXX flags) passed directly
-to ata_port_request_pm().
+The first 7 patch of this series fix several issues with suspend/resume
+power management operations in libata. The most important change
+introduced is in patch 4, where the manage_start_stop of scsi devices
+associated with ata devices is disabled and this functionality replaced
+by a direct handling within libata EH of device suspend/resume (i.e.
+spin down for suspend and spin up for resume).
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
----
- drivers/ata/libata-core.c | 21 ++++++++-------------
- 1 file changed, 8 insertions(+), 13 deletions(-)
+The remaining patches are code cleanup that do not introduce any
+significant functional change.
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index cdfe71ae6a6c..a4389dd807e5 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5223,22 +5223,17 @@ static int ata_port_pm_poweroff(struct device *dev)
- 	return 0;
- }
- 
--static const unsigned int ata_port_resume_ehi = ATA_EHI_NO_AUTOPSY
--						| ATA_EHI_QUIET;
--
--static void ata_port_resume(struct ata_port *ap, pm_message_t mesg)
-+static void ata_port_resume(struct ata_port *ap, pm_message_t mesg,
-+			    bool async)
- {
--	ata_port_request_pm(ap, mesg, ATA_EH_RESET, ata_port_resume_ehi, false);
--}
--
--static void ata_port_resume_async(struct ata_port *ap, pm_message_t mesg)
--{
--	ata_port_request_pm(ap, mesg, ATA_EH_RESET, ata_port_resume_ehi, true);
-+	ata_port_request_pm(ap, mesg, ATA_EH_RESET,
-+			    ATA_EHI_NO_AUTOPSY | ATA_EHI_QUIET,
-+			    async);
- }
- 
- static int ata_port_pm_resume(struct device *dev)
- {
--	ata_port_resume_async(to_ata_port(dev), PMSG_RESUME);
-+	ata_port_resume(to_ata_port(dev), PMSG_RESUME, true);
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
-@@ -5277,7 +5272,7 @@ static int ata_port_runtime_suspend(struct device *dev)
- 
- static int ata_port_runtime_resume(struct device *dev)
- {
--	ata_port_resume(to_ata_port(dev), PMSG_AUTO_RESUME);
-+	ata_port_resume(to_ata_port(dev), PMSG_AUTO_RESUME, false);
- 	return 0;
- }
- 
-@@ -5307,7 +5302,7 @@ EXPORT_SYMBOL_GPL(ata_sas_port_suspend);
- 
- void ata_sas_port_resume(struct ata_port *ap)
- {
--	ata_port_resume_async(ap, PMSG_RESUME);
-+	ata_port_resume(ap, PMSG_RESUME, true);
- }
- EXPORT_SYMBOL_GPL(ata_sas_port_resume);
- 
+This series was tested on qemu and on various PCs and servers. I am
+CC-ing people who recently reported issues with suspend/resume.
+Additional testing would be much appreciated.
+
+Of note is that there is no change to the overall suspend/resume model
+of libata where suspend and resume operations are tied to the ata port.
+This is somewhat broken as a port may have multiple devices (e.g. pata
+and port multiplier cases). Fixing this model (to be more similar to
+what libsas does) will be the next step.
+
+Changes from v1:
+ * Added patch 8 and 9 to fix compilation warnings with W=1
+ * Addressed John comment in patch 19
+ * Fixed patch 20 commit message (Sergei)
+ * Added Hannes Review tag
+
+Damien Le Moal (21):
+  ata: libata-core: Fix ata_port_request_pm() locking
+  ata: libata-core: Fix port and device removal
+  ata: libata-scsi: link ata port and scsi device
+  ata: libata-scsi: Disable scsi device manage_start_stop
+  ata: libata-scsi: Fix delayed scsi_rescan_device() execution
+  ata: libata-core: Do not register PM operations for SAS ports
+  scsi: sd: Do not issue commands to suspended disks on remove
+  ata: libata-core: Fix compilation warning in ata_dev_config_ncq()
+  ata: libata-eh: Fix compilation warning in ata_eh_link_report()
+  scsi: Remove scsi device no_start_on_resume flag
+  ata: libata-scsi: Cleanup ata_scsi_start_stop_xlat()
+  ata: libata-core: Synchronize ata_port_detach() with hotplug
+  ata: libata-core: Detach a port devices on shutdown
+  ata: libata-core: Remove ata_port_suspend_async()
+  ata: libata-core: Remove ata_port_resume_async()
+  ata: libata-core: skip poweroff for devices that are runtime suspended
+  ata: libata-core: Do not resume ports that have been runtime suspended
+  ata: libata-sata: Improve ata_sas_slave_configure()
+  ata: libata-eh: Improve reset error messages
+  ata: libata-eh: Reduce "disable device" message verbosity
+  ata: libata: Cleanup inline DMA helper functions
+
+ drivers/ata/libata-core.c      | 241 +++++++++++++++++++++++++--------
+ drivers/ata/libata-eh.c        |  76 +++++++++--
+ drivers/ata/libata-sata.c      |   5 +-
+ drivers/ata/libata-scsi.c      | 143 ++++++++++---------
+ drivers/ata/libata-transport.c |   9 +-
+ drivers/ata/libata.h           |   7 +
+ drivers/ata/pata_macio.c       |   1 +
+ drivers/ata/sata_mv.c          |   1 +
+ drivers/ata/sata_nv.c          |   2 +
+ drivers/ata/sata_sil24.c       |   1 +
+ drivers/scsi/scsi_scan.c       |  12 +-
+ drivers/scsi/sd.c              |  10 +-
+ include/linux/libata.h         |  27 ++--
+ include/scsi/scsi_device.h     |   1 -
+ include/scsi/scsi_host.h       |   2 +-
+ 15 files changed, 372 insertions(+), 166 deletions(-)
+
 -- 
 2.41.0
 

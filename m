@@ -2,51 +2,50 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B88D37A1894
-	for <lists+linux-ide@lfdr.de>; Fri, 15 Sep 2023 10:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE4F67A18CA
+	for <lists+linux-ide@lfdr.de>; Fri, 15 Sep 2023 10:28:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232859AbjIOIYC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Fri, 15 Sep 2023 04:24:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49302 "EHLO
+        id S233112AbjIOI20 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Fri, 15 Sep 2023 04:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233049AbjIOIYA (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Fri, 15 Sep 2023 04:24:00 -0400
+        with ESMTP id S233291AbjIOI2J (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Fri, 15 Sep 2023 04:28:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9414499;
-        Fri, 15 Sep 2023 01:22:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5484C433BD;
-        Fri, 15 Sep 2023 08:15:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57B0F3C22;
+        Fri, 15 Sep 2023 01:27:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040FCC43142;
+        Fri, 15 Sep 2023 08:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694765752;
-        bh=Ny5m9BSnjoocQpihQVcwfWavMkW7NZYngxvodx+Ozj8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N0HleOmVsHL0jDai/dBS98DJr9mI6+qZZ686NrsePnipY0EflQnXqcwrqSlh9FrMC
-         S55tB7KxeT1M6za8JlJeABwUpSfm3Y2gdIYMBfvyajKfZR0N9aCXgzdHv6uzUayncD
-         7PDAHxW7YmECVdZDzc7sG2uRuW1YExcxJ90X28gfMLnFa9BYSytSlgrgAjjdaLxM2S
-         xBorVCzuyrrqV1C7W+TG6ljBIn4IiS/Az/NxWLzN1k7Nx8C6taZbnxmxDitRnZmALx
-         bymlJWFBJH1EBbhZnTKHzfdyQ1AxxTF+kQIpUtJejriyvsTDApmXvU756sm3L5NwAS
-         qq54DOWgiJ1Jw==
-From:   Damien Le Moal <dlemoal@kernel.org>
-To:     linux-ide@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Paul Ausbeck <paula@soe.ucsc.edu>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joe Breuer <linux-kernel@jmbreuer.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Chia-Lin Kao <acelan.kao@canonical.com>
-Subject: [PATCH v3 23/23] ata: libata: Cleanup inline DMA helper functions
-Date:   Fri, 15 Sep 2023 17:15:07 +0900
-Message-ID: <20230915081507.761711-24-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230915081507.761711-1-dlemoal@kernel.org>
-References: <20230915081507.761711-1-dlemoal@kernel.org>
+        s=k20201202; t=1694765857;
+        bh=fFC1jw61OTix2DWS7/ncGs4xq27X8yWSfDU5VGasx5k=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=uVB6fr/cpGQpb81G4sPLflS+dAFm6jZwTvI9r14VWp13+hfCf/0WaN0uC98iS08kc
+         0uP4Cy4OLNjDY5ulOCtSsWM36TusiU4o6QkziN2Rvq1cqK91ytkPCbRHyuuN5ScPAq
+         tZjbVSwETcB0KmurCgvtfJVxu/ZDvR9XP2RU1+S1ZrIHrgvd4APgb8x+Yx/Zf0+1Xj
+         19V5ZeLzRYuqrbqPLtMRYHjQe+QTHwTYOkBhuOwfn87djP96Kw+R0c8Sgzbhq9ILdv
+         FqaiWKKj2Ia7OLc4DsHm6AjaaYSxggXJ5ewVeml/8tn1bqWQNlpHveWIe08VxEV254
+         s+Dd0A88qy8qg==
+Message-ID: <b3093f17-9329-dae7-0aae-df9e056d2564@kernel.org>
+Date:   Fri, 15 Sep 2023 17:17:35 +0900
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v4 28/42] ata: pata_ep93xx: add device tree support
+Content-Language: en-US
+To:     nikita.shubin@maquefel.me, Sergey Shtylyov <s.shtylyov@omp.ru>
+Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>
+References: <20230915-ep93xx-v4-0-a1d779dcec10@maquefel.me>
+ <20230915-ep93xx-v4-28-a1d779dcec10@maquefel.me>
+From:   Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20230915-ep93xx-v4-28-a1d779dcec10@maquefel.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -55,53 +54,17 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Simplify the inline DMA helper functions ata_using_mwdma(),
-ata_using_udma() and ata_dma_enabled() to directly return as a boolean
-the result of their test condition.
+On 9/15/23 17:11, Nikita Shubin via B4 Relay wrote:
+> From: Nikita Shubin <nikita.shubin@maquefel.me>
+> 
+> Add OF ID match table.
+> 
+> Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
----
- include/linux/libata.h | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+Acked-by: Damien Le Moal <dlemoal@kernel.org>
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 6593c79b7290..f48fe27dae94 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1878,23 +1878,21 @@ static inline unsigned long ata_deadline(unsigned long from_jiffies,
-    change in future hardware and specs, secondly 0xFF means 'no DMA' but is
-    > UDMA_0. Dyma ddreigiau */
- 
--static inline int ata_using_mwdma(struct ata_device *adev)
-+static inline bool ata_using_mwdma(struct ata_device *adev)
- {
--	if (adev->dma_mode >= XFER_MW_DMA_0 && adev->dma_mode <= XFER_MW_DMA_4)
--		return 1;
--	return 0;
-+	return adev->dma_mode >= XFER_MW_DMA_0 &&
-+		adev->dma_mode <= XFER_MW_DMA_4;
- }
- 
--static inline int ata_using_udma(struct ata_device *adev)
-+static inline bool ata_using_udma(struct ata_device *adev)
- {
--	if (adev->dma_mode >= XFER_UDMA_0 && adev->dma_mode <= XFER_UDMA_7)
--		return 1;
--	return 0;
-+	return adev->dma_mode >= XFER_UDMA_0 &&
-+		adev->dma_mode <= XFER_UDMA_7;
- }
- 
--static inline int ata_dma_enabled(struct ata_device *adev)
-+static inline bool ata_dma_enabled(struct ata_device *adev)
- {
--	return (adev->dma_mode == 0xFF ? 0 : 1);
-+	return adev->dma_mode != 0xFF;
- }
- 
- /**************************************************************************
+
 -- 
-2.41.0
+Damien Le Moal
+Western Digital Research
 

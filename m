@@ -2,117 +2,97 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E01B67A9665
-	for <lists+linux-ide@lfdr.de>; Thu, 21 Sep 2023 19:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F89E7A98AD
+	for <lists+linux-ide@lfdr.de>; Thu, 21 Sep 2023 19:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbjIURBW convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ide@lfdr.de>); Thu, 21 Sep 2023 13:01:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40416 "EHLO
+        id S229675AbjIURv1 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 21 Sep 2023 13:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229870AbjIURBF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 21 Sep 2023 13:01:05 -0400
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF98FCFC;
-        Thu, 21 Sep 2023 10:00:31 -0700 (PDT)
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1c1e3a4a06fso9671505ad.3;
-        Thu, 21 Sep 2023 10:00:31 -0700 (PDT)
+        with ESMTP id S229660AbjIURvN (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 21 Sep 2023 13:51:13 -0400
+Received: from mail-qv1-xf35.google.com (mail-qv1-xf35.google.com [IPv6:2607:f8b0:4864:20::f35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74276E58
+        for <linux-ide@vger.kernel.org>; Thu, 21 Sep 2023 09:57:44 -0700 (PDT)
+Received: by mail-qv1-xf35.google.com with SMTP id 6a1803df08f44-65636207df5so6089326d6.2
+        for <linux-ide@vger.kernel.org>; Thu, 21 Sep 2023 09:57:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695315452; x=1695920252; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=InjavFcfZn5dRVSB9YmW8wKkCMSRPil5AEMl1AlEhHs=;
+        b=NjDxI5PzIHqJ5sZrQcfYDK378uB7d6EkUEufcPo81V9MqptQK4uwk7TTSS6tJOUoqD
+         fKhdJA6M2lebVwLuBm6iWaZcLREZsGfnUkPwNmHHckgg6ho2pbZkkehTyBTaJyj9IKM+
+         Blsj7A5a4Lz96DKioZlj21Wx173GglkzSugDoQ666gThlpk8I/dDuy0aO9Otw6xskNTf
+         MxjVi+RqqQAdTbKaWCirVUGFAaPuvdUfMKOuxnC97ocNihKnJlb0Czl/YooQlvec0ZGr
+         C9m7qKcLQCO785osd8TeYDQJk6s19sAuOaxW9h+dFArW3d/RV3+6vmFnW850PbpF6xdD
+         tblg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695315510; x=1695920310;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=idFDQKNDkzP5RSqt/nkSyZRNM7uFs093DSH/JN+PAAU=;
-        b=fFTvydo4h1rhHMSkuOsaU5d86+b6eIFARZ0Msf8qKg6gcPKeNpiGggU4mw2y577Tkn
-         CXCoDADizXKU8O4IYhUrbqE0cI0NJp0F6D2+X6e7Zl/7u13hIuDwo0uSh6Ot7OsNtJ7/
-         CiLF9+nQax0U9bpa+WTt80G8o7LaipzfhE9KDx/XtfIA7p7rPr4JHqKBOcrf9gl2P/8E
-         6bajL0LNKsbttu4j+xti70fwazDlyPjV6msd5UK8vy596KQvlkGl/VU4KQL56vX8YL5n
-         sX7OgZ+YwMfHwmyzGJGbAxSIGkVptjOfD4Zomitiik0sU6UoOtMsOAZhHVz8DAwQzeYS
-         /nQQ==
-X-Gm-Message-State: AOJu0YwPdTMzzJQXtPnJUswQNN11fUB1WWidrKBLYNRIGihuXgsTmK+O
-        LzMw7PEabOis5DmtZ/UHHn2xtr9DrjYHgUaF
-X-Google-Smtp-Source: AGHT+IG9TawMETPzBfgvTvEik3uLo+46CYkwSSW145R4ndL8xfUPnjLov+cYq7MQY9IKWRebCjtByg==
-X-Received: by 2002:a81:4f4a:0:b0:576:7dfc:e73e with SMTP id d71-20020a814f4a000000b005767dfce73emr5263457ywb.32.1695288144779;
-        Thu, 21 Sep 2023 02:22:24 -0700 (PDT)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id x202-20020a81a0d3000000b0057399b3bd26sm232511ywg.33.2023.09.21.02.22.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Sep 2023 02:22:24 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-59c0442a359so9002237b3.0;
-        Thu, 21 Sep 2023 02:22:24 -0700 (PDT)
-X-Received: by 2002:a0d:ea15:0:b0:59b:c11:ad7c with SMTP id
- t21-20020a0dea15000000b0059b0c11ad7cmr4927105ywe.18.1695288143988; Thu, 21
- Sep 2023 02:22:23 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695315452; x=1695920252;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=InjavFcfZn5dRVSB9YmW8wKkCMSRPil5AEMl1AlEhHs=;
+        b=AY8oGejnlkI/oBpNtKogUdksXfK/HnXKZEtoGVDNBbIS4YEwTva6pdJ0ezwdJsl/dG
+         clCnPdxLMG0sxh7nwvnjPCVJgjCp1e5XTE98cvZ/Iyh0ku7tl4ze+erzDls6X7Z+QE5K
+         e3lMAAvP5bg2Ncl4pJo/wQgVPIRGHgE6S5hVek0mCgPrMJyTtj46rTpeQBxrMVJ9mbnt
+         ZDtNc9qa+09wE16Xp2ccU7RvDgcoobqqRQRx/C+4N2RMxzlbZRShnhdyB11FRDKDA90y
+         ZkRN7KqD30fgjljSImTd7cssgFSXMiVECxda6qKD13rhjGSzAPeytrt7G2CaDtHf3IoZ
+         7XKA==
+X-Gm-Message-State: AOJu0YxWzFGuirOxeRO5KKUq5zLJQ1kpgv0UPVKgVE+W4+LRa5/ihnI2
+        c5A2aaSkOejn2sjjnC8977xrolyQLrc=
+X-Google-Smtp-Source: AGHT+IG9s5soowfseCQkgXtC7RJn/RjY8MWkxMrnT0TIWQQk6RlLd7Zi3ItzbY1pmwKh4JECEb0Lgg==
+X-Received: by 2002:a17:902:82c4:b0:1b9:e8a5:3699 with SMTP id u4-20020a17090282c400b001b9e8a53699mr3823879plz.21.1695288837488;
+        Thu, 21 Sep 2023 02:33:57 -0700 (PDT)
+Received: from sw.. (220-128-98-63.hinet-ip.hinet.net. [220.128.98.63])
+        by smtp.gmail.com with ESMTPSA id u2-20020a17090282c200b001bc445e2497sm992820plz.79.2023.09.21.02.33.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Sep 2023 02:33:57 -0700 (PDT)
+From:   Szuying Chen <chensiying21@gmail.com>
+X-Google-Original-From: Szuying Chen <Chloe_Chen@asmedia.com.tw>
+To:     dlemoal@kernel.org, linux-ide@vger.kernel.org
+Cc:     Jesse1_Chang@asmedia.com.tw, Richard_Hsu@asmedia.com.tw,
+        Chloe_Chen@asmedia.com.tw
+Subject: [PATCH] ahci: add identifiers for ASM2116 series devices.
+Date:   Thu, 21 Sep 2023 17:33:51 +0800
+Message-Id: <20230921093351.14403-1-Chloe_Chen@asmedia.com.tw>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20230920135439.929695-1-dlemoal@kernel.org> <CAMuHMdWHXC=qPTcLS9VeqfFy7Js84pd84oZqqWdd7E+bAHrcqw@mail.gmail.com>
-In-Reply-To: <CAMuHMdWHXC=qPTcLS9VeqfFy7Js84pd84oZqqWdd7E+bAHrcqw@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 21 Sep 2023 11:22:13 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXeeDNjwErH7HfCtnxSYF2o-6ZnkDuOe8u_mX14WKqqBQ@mail.gmail.com>
-Message-ID: <CAMuHMdXeeDNjwErH7HfCtnxSYF2o-6ZnkDuOe8u_mX14WKqqBQ@mail.gmail.com>
-Subject: Re: [PATCH v4 00/23] Fix libata suspend/resume handling and code cleanup
-To:     Damien Le Moal <dlemoal@kernel.org>
-Cc:     linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Paul Ausbeck <paula@soe.ucsc.edu>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joe Breuer <linux-kernel@jmbreuer.net>,
-        Chia-Lin Kao <acelan.kao@canonical.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On Thu, Sep 21, 2023 at 11:21 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> On Wed, Sep 20, 2023 at 3:54 PM Damien Le Moal <dlemoal@kernel.org> wrote:
-> > The first 9 patches of this series fix several issues with suspend/resume
-> > power management operations in scsi and libata. The most significant
-> > changes introduced are in patch 4 and 5, where the manage_start_stop
-> > flag of scsi devices is split into the manage_system_start_stop and
-> > manage_runtime_start_stop flags to allow keeping scsi runtime power
-> > operations for spining up/down ATA devices but have libata do its own
-> > system suspend/resume device power state management using EH.
-> >
-> > The remaining patches are code cleanup that do not introduce any
-> > significant functional change.
-> >
-> > This series was tested on qemu and on various PCs and servers. I am
-> > CC-ing people who recently reported issues with suspend/resume.
-> > Additional testing would be much appreciated.
-> >
-> > Changes from v3:
-> >  * Corrected pathc 1 (typo in commit message and WARN_ON() removal)
-> >  * Changed path 3 as suggested by Niklas (moved definition of
-> >    ->slave_alloc)
-> >  * Rebased on rc2
-> >  * Added review tags
->
-> Thanks for the update!
->
-> I gave this a try on Renesas Salvator-XS with R-Car H3 ES2.0 and
-> a SATA hard drive:
->   - The drive is spun up during system resume,
->   - Accessing the drive after the system was resumed is instantaneous.
+Add support for PCIe SATA expander cards based on Asmedia 2116 controllers.
+These cards can provide up to 10 or more SATA port on PCIe card
 
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Szuying Chen <Chloe_Chen@asmedia.com.tw>
+---
+ drivers/ata/ahci.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Gr{oetje,eeting}s,
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 08745e7db820..99b3d3e60774 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -604,6 +604,11 @@ static const struct pci_device_id ahci_pci_tbl[] = {
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0621), board_ahci },   /* ASM1061R */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0622), board_ahci },   /* ASM1062R */
+ 	{ PCI_VDEVICE(ASMEDIA, 0x0624), board_ahci },   /* ASM1062+JMB575 */
++	{ PCI_VDEVICE(ASMEDIA, 0x1062), board_ahci },	/* ASM1062A */
++	{ PCI_VDEVICE(ASMEDIA, 0x1064), board_ahci },	/* ASM1064 */
++	{ PCI_VDEVICE(ASMEDIA, 0x1164), board_ahci },   /* ASM1164 */
++	{ PCI_VDEVICE(ASMEDIA, 0x1165), board_ahci },   /* ASM1165 */
++	{ PCI_VDEVICE(ASMEDIA, 0x1166), board_ahci },   /* ASM1166 */
 
-                        Geert
+ 	/*
+ 	 * Samsung SSDs found on some macbooks.  NCQ times out if MSI is
+--
+2.39.2
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

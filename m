@@ -2,49 +2,32 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 255407AA386
-	for <lists+linux-ide@lfdr.de>; Thu, 21 Sep 2023 23:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCA727AA491
+	for <lists+linux-ide@lfdr.de>; Fri, 22 Sep 2023 00:12:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232800AbjIUVwC (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 21 Sep 2023 17:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46062 "EHLO
+        id S231758AbjIUWMU (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 21 Sep 2023 18:12:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232285AbjIUVvj (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 21 Sep 2023 17:51:39 -0400
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05C2AEA9B;
-        Thu, 21 Sep 2023 14:45:41 -0700 (PDT)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1bf6ea270b2so12399675ad.0;
-        Thu, 21 Sep 2023 14:45:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695332740; x=1695937540;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1LPrsNGq5boi9mTTl9FBwqXIkZb8sPgUWflUeQRr3Ok=;
-        b=W6XnAANUCZZPDRKVYXrOvRouHpqrtUYaKN/rPKdyWW/qddHm8mgKdaQOqt3rGL7XGd
-         62+YjRP4q+K5SuAc0WkE7Kx0RprIkr+f74XY9BTo+0HYG+P1lYMsgiqcLy6uIZu5yo62
-         ZMmT5g9sxBhsp2D97diqOJX3MBASUvyG8Gi85DzxTtujAJGA/nT7/kBkhMw3GPGxAkl+
-         5eYdJEYzzvlZKfmdtr7CVt4G9/vJbxlTVsYfNLYZAxWunR/NpGg1QEMjTh/2Mbknd6eM
-         XEvmxoxqpSQmQjDDbbXtNsD0cW6Nr1nm6VW0OZzt+O7Au6dq5pCIpB+LFv+FHVwW2OqA
-         SQRg==
-X-Gm-Message-State: AOJu0YyqUNJn9CSXHrswWvzLkfWZd1stri3XzTC7PYUHIxtX0wtU9Iuh
-        hfzZXRbGm6Lully24ctegMQ=
-X-Google-Smtp-Source: AGHT+IHcny4NbNWJJDSxqpc/G4dbD6t73q0FM4Zb41m46Rdpjj6k8yQlsSrvlgoB6ZgJZ0dPH2UUMg==
-X-Received: by 2002:a17:902:7202:b0:1c4:588f:5971 with SMTP id ba2-20020a170902720200b001c4588f5971mr4772696plb.29.1695332740302;
-        Thu, 21 Sep 2023 14:45:40 -0700 (PDT)
-Received: from ?IPV6:2620:15c:211:201:6903:9a1f:51f3:593e? ([2620:15c:211:201:6903:9a1f:51f3:593e])
-        by smtp.gmail.com with ESMTPSA id f9-20020a170902ce8900b001b86492d724sm2015994plg.223.2023.09.21.14.45.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Sep 2023 14:45:39 -0700 (PDT)
-Message-ID: <3cfe137b-59f5-434f-a40b-2ed14b4aa408@acm.org>
-Date:   Thu, 21 Sep 2023 14:45:38 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/23] scsi: sd: Differentiate system and runtime
- start/stop management
-Content-Language: en-US
-To:     Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org
+        with ESMTP id S233003AbjIUWL5 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 21 Sep 2023 18:11:57 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5F0AB0138;
+        Thu, 21 Sep 2023 11:08:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC05C433C8;
+        Thu, 21 Sep 2023 18:08:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1695319697;
+        bh=O7oF0hNk00rZAS4qiKFR+aE3J/ZVsOyz8wvJQD0MWAo=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OQ3bcOz5jQb5XhY57ROY9l6yu0YImQhMZ76XS87mFLmjXHDmz0XS/LvYu7r2Ta/7D
+         7yE5Z6vMWD/qz13kJn6y5d0HbDcUKCecJBXIFvyPWESPIT5OLpuy9TMUAdVwiVhkAh
+         7Y5OHAVnUVHToPVSEk3k5o9JZLyGH/S758xPmyYzCNszfK00tPY6YrDedy4wAMkdjd
+         duda1i7/HcfaLv3UdVBwmqkrRXsvJ3H04P3+zLhXYPir2Du9rWe02QD8VFxX8vFGwL
+         I3KnlMNkOIZI/y6ODzRXDUIqRMG5C2FFzffe6c30uk3JJtXBmc9RYxQk4ydbGfeFUU
+         DV1hn1hb8+vbw==
+From:   Damien Le Moal <dlemoal@kernel.org>
+To:     linux-ide@vger.kernel.org
 Cc:     linux-scsi@vger.kernel.org,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         John Garry <john.g.garry@oracle.com>,
@@ -54,68 +37,61 @@ Cc:     linux-scsi@vger.kernel.org,
         Joe Breuer <linux-kernel@jmbreuer.net>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Chia-Lin Kao <acelan.kao@canonical.com>
-References: <20230920135439.929695-1-dlemoal@kernel.org>
- <20230920135439.929695-5-dlemoal@kernel.org>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20230920135439.929695-5-dlemoal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Subject: [PATCH v5 09/23] scsi: sd: Do not issue commands to suspended disks on shutdown
+Date:   Fri, 22 Sep 2023 03:07:44 +0900
+Message-ID: <20230921180758.955317-10-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230921180758.955317-1-dlemoal@kernel.org>
+References: <20230921180758.955317-1-dlemoal@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 9/20/23 06:54, Damien Le Moal wrote:
-> The underlying device and driver of a scsi disk may have different
-> system and runtime power mode control requirements. This is because
-> runtime power management affects only the scsi disk, while sustem level
-> power management affects all devices, including the controller for the
-> scsi disk.
-> 
-> For instance, issuing a START STOP UNIT command when a scsi disk is
-> runtime suspended and resumed is fine: the command is translated to a
-> STANDBY IMMEDIATE command to spin down the ATA disk and to a VERIFY
-> command to wake it up. The scsi disk runtime operations have no effect
-> on the ata port device used to connect the ATA disk. However, for
-> system suspend/resume operations, the ATA port used to connect the
-> device will also be suspended and resumed, with the resum operation
+If an error occurs when resuming a host adapter before the devices
+attached to the adapter are resumed, the adapter low level driver may
+remove the scsi host, resulting in a call to sd_remove() for the
+disks of the host. This in turn results in a call to sd_shutdown() which
+will issue a synchronize cache command and a start stop unit command to
+spindown the disk. sd_shutdown() issues the commands only if the device
+is not already suspended but does not check the power state for
+system-wide suspend/resume. That is, the commands may be issued with the
+device in a suspended state, which causes PM resume to hang, forcing a
+reset of the machine to recover.
 
-resum -> resume
+Fix this by not calling sd_shutdown() in sd_remove() if the device
+is not running.
 
-> requiring re-validating the device link and the device itseld. In this
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ drivers/scsi/sd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-itseld -> itself
-
-> -static int sd_suspend_common(struct device *dev, bool ignore_stop_errors)
-> +static inline bool sd_do_start_stop(struct scsi_device *sdev, bool runtime)
-> +{
-> +	return (sdev->manage_system_start_stop && !runtime) ||
-> +		(sdev->manage_runtime_start_stop && runtime);
-> +}
-
-This function wouldn't be necessary if the sd_suspend_common() callers 
-would pass sdev->manage_system_start_stop / 
-sdev->manage_runtime_start_stop as an additional argument to 
-sd_suspend_common().
-
-> -		if (ignore_stop_errors)
-> +		if (!runtime)
->   			ret = 0;
->   	}
-
-The old code was self-documenting. If the name of the "runtime" argument 
-is retained, a comment above this if-statement that explains why stop 
-errors are ignored during a system suspend would be welcome.
-
-Otherwise this patch looks good to me.
-
-Thanks,
-
-Bart.
-
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 1d106c8ad5af..d86306d42445 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3727,7 +3727,8 @@ static int sd_remove(struct device *dev)
+ 
+ 	device_del(&sdkp->disk_dev);
+ 	del_gendisk(sdkp->disk);
+-	sd_shutdown(dev);
++	if (sdkp->device->sdev_state == SDEV_RUNNING)
++		sd_shutdown(dev);
+ 
+ 	put_disk(sdkp->disk);
+ 	return 0;
+-- 
+2.41.0
 

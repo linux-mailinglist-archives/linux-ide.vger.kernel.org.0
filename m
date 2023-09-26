@@ -2,32 +2,49 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8362F7AE7DB
-	for <lists+linux-ide@lfdr.de>; Tue, 26 Sep 2023 10:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316447AEEC4
+	for <lists+linux-ide@lfdr.de>; Tue, 26 Sep 2023 16:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233975AbjIZIQZ (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Tue, 26 Sep 2023 04:16:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34188 "EHLO
+        id S234846AbjIZOvf (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Tue, 26 Sep 2023 10:51:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234000AbjIZIQR (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Tue, 26 Sep 2023 04:16:17 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B756FC;
-        Tue, 26 Sep 2023 01:15:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A019C433C7;
-        Tue, 26 Sep 2023 08:15:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1695716155;
-        bh=53d3ZPKvrChRMkkJyJG5wwgMC5g/WRn51TobyMswQos=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P/t4D4x4aQL3TGfsVxwobIbQ/KeArNbDiZozUqDhQVYOmNYOuoxr4CXyr91v9MijR
-         Wr449OMWkfgUteChMdHZ/O+DCaj40SZ12loPtCdFk6J+1bt/LIsnWGlaJjAISqLvCS
-         voRGNw3JpL/+5hHfwpzP91Ix6fYFOD+yN9RWiAZYI4cvpP5uoUSYB1DNsOx8X+XE44
-         rHeOq2mqHp1EWZ5Scjb0FVZJtIO7VDpqN7qTVc0rZ1x4aE43pCJWnHfvrUEzyuTg62
-         hGjuAC6F8FWw4yszs58kLvbwgynZz0ULa6ADx+2Zrikla4MVd+N6pTi0/+KIqXMPRd
-         h6jG13I6aHYKw==
-From:   Damien Le Moal <dlemoal@kernel.org>
-To:     linux-ide@vger.kernel.org
+        with ESMTP id S229726AbjIZOve (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Tue, 26 Sep 2023 10:51:34 -0400
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7ADA10E;
+        Tue, 26 Sep 2023 07:51:27 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-690bd8f89baso6902453b3a.2;
+        Tue, 26 Sep 2023 07:51:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695739887; x=1696344687;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3BwbRp2F/tb5cUm85OuYg9OjMFBfBS+G/rpfZCqPJh0=;
+        b=umVOsSCGenv9SanSqt5Vn1jtsWglGdYT92cAg4RkK4XdO8rK19cqb302CXUv0Dum3/
+         lfdlhJoAtdPpKChqk0xbz0nKP90GNzU4YPoMKNyaViYoxMWhzy431qn5u/CzZ66YL1Fy
+         yfUspkdfvsSlrOJZRemQutqTVHNnXmz3huGoR9PquDdONWzu5XhI2hwD2xTewYf2QwxY
+         jMdYh0ozqMMvkfYvjF3sV7r8xH9KjnHs5J8U5EU6xnHDKRN1Q36u6Ppj93xqATapO+bx
+         EONutcSVYgM4CAbDp/QY2EAkomas1Q06hE3nOg7QNef0Bsj1FTsRjAPEs5XdzklmBnIY
+         YYDw==
+X-Gm-Message-State: AOJu0Yz8mQG+w3npXl06RQIq6SG7oDM+lndSn8jYPWpXnFJ2HnlpAOrQ
+        /S7TBbihdyv18xwJdlnzxqU=
+X-Google-Smtp-Source: AGHT+IHPiZlm81hL02gpKTxE1NWNnr0uPiUccnw7pTgT6eRWpvETqTVHqKx9A/QBSzcx9VbsIZDhsw==
+X-Received: by 2002:a05:6a20:2583:b0:14c:c393:6af with SMTP id k3-20020a056a20258300b0014cc39306afmr8524674pzd.0.1695739886948;
+        Tue, 26 Sep 2023 07:51:26 -0700 (PDT)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net. [73.231.117.72])
+        by smtp.gmail.com with ESMTPSA id g23-20020aa78197000000b00684ca1b45b9sm10310701pfi.149.2023.09.26.07.51.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Sep 2023 07:51:26 -0700 (PDT)
+Message-ID: <8acc0983-79f2-4704-9963-e8e7f2dc03ed@acm.org>
+Date:   Tue, 26 Sep 2023 07:51:24 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 09/23] scsi: sd: Do not issue commands to suspended
+ disks on shutdown
+Content-Language: en-US
+To:     Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org
 Cc:     linux-scsi@vger.kernel.org,
         "Martin K . Petersen" <martin.petersen@oracle.com>,
         John Garry <john.g.garry@oracle.com>,
@@ -37,72 +54,42 @@ Cc:     linux-scsi@vger.kernel.org,
         Joe Breuer <linux-kernel@jmbreuer.net>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Chia-Lin Kao <acelan.kao@canonical.com>
-Subject: [PATCH v7 23/23] ata: libata: Cleanup inline DMA helper functions
-Date:   Tue, 26 Sep 2023 17:15:07 +0900
-Message-ID: <20230926081507.69346-24-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230926081507.69346-1-dlemoal@kernel.org>
-References: <20230926081507.69346-1-dlemoal@kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230923002932.1082348-1-dlemoal@kernel.org>
+ <20230923002932.1082348-10-dlemoal@kernel.org>
+ <ca064bd3-2496-4d79-b68c-beff775228c3@acm.org>
+ <2b3ceca3-9e1c-7266-1f60-19e5f032c3e3@kernel.org>
+From:   Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <2b3ceca3-9e1c-7266-1f60-19e5f032c3e3@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Simplify the inline DMA helper functions ata_using_mwdma(),
-ata_using_udma() and ata_dma_enabled() to directly return as a boolean
-the result of their test condition.
+On 9/25/23 23:00, Damien Le Moal wrote:
+> It seems that you are suggesting that we should use some information 
+> from the scsi_device->power structure to detect the suspended 
+> state...
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
----
- include/linux/libata.h | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+Yes, that's indeed what I'm suggesting.
 
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 00b4a2b7819a..3c0fd04b0035 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1881,23 +1881,21 @@ static inline unsigned long ata_deadline(unsigned long from_jiffies,
-    change in future hardware and specs, secondly 0xFF means 'no DMA' but is
-    > UDMA_0. Dyma ddreigiau */
- 
--static inline int ata_using_mwdma(struct ata_device *adev)
-+static inline bool ata_using_mwdma(struct ata_device *adev)
- {
--	if (adev->dma_mode >= XFER_MW_DMA_0 && adev->dma_mode <= XFER_MW_DMA_4)
--		return 1;
--	return 0;
-+	return adev->dma_mode >= XFER_MW_DMA_0 &&
-+		adev->dma_mode <= XFER_MW_DMA_4;
- }
- 
--static inline int ata_using_udma(struct ata_device *adev)
-+static inline bool ata_using_udma(struct ata_device *adev)
- {
--	if (adev->dma_mode >= XFER_UDMA_0 && adev->dma_mode <= XFER_UDMA_7)
--		return 1;
--	return 0;
-+	return adev->dma_mode >= XFER_UDMA_0 &&
-+		adev->dma_mode <= XFER_UDMA_7;
- }
- 
--static inline int ata_dma_enabled(struct ata_device *adev)
-+static inline bool ata_dma_enabled(struct ata_device *adev)
- {
--	return (adev->dma_mode == 0xFF ? 0 : 1);
-+	return adev->dma_mode != 0xFF;
- }
- 
- /**************************************************************************
--- 
-2.41.0
+> But as mentioned before, these are PM internal and should not be 
+> touched without the device lock held. So the little "suspended" flag 
+> simplifies things a lot.
 
+Hmm ... I think there is plenty of code in the Linux kernel that reads
+variables that can be modified by another thread without using locking.
+Hasn't the READ_ONCE() macro been introduced for this purpose? Anyway, I
+don't have a strong opinion about whether to read directly from the
+scsi_device->power data structure or whether to introduce the new
+'suspended' member.
+
+Thanks,
+
+Bart.

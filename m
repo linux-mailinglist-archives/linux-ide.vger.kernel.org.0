@@ -2,49 +2,53 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E8177B5E48
-	for <lists+linux-ide@lfdr.de>; Tue,  3 Oct 2023 02:35:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5027A7B5E54
+	for <lists+linux-ide@lfdr.de>; Tue,  3 Oct 2023 02:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230071AbjJCAfL (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 2 Oct 2023 20:35:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
+        id S238836AbjJCAo4 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 2 Oct 2023 20:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238700AbjJCAfJ (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 2 Oct 2023 20:35:09 -0400
+        with ESMTP id S229846AbjJCAo4 (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 2 Oct 2023 20:44:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2548FD;
-        Mon,  2 Oct 2023 17:34:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F10C433AB;
-        Tue,  3 Oct 2023 00:34:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C22B7AD;
+        Mon,  2 Oct 2023 17:44:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FABC433C8;
+        Tue,  3 Oct 2023 00:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696293293;
-        bh=p6qznuAAZAoVYgv+yLDynMUW18PfarM3W+3DEN8LiZM=;
+        s=k20201202; t=1696293893;
+        bh=yMvLQikaqxzhaRvjTGNUrSsM5nPuW71ThbZtpcdJAZQ=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=tXd812b+8N7UHHGjNi5N9CJZSBsgKg98xPHAFvLv9vlFPZmA6ZU6Tae9+8d754m+L
-         BGcH+1CH4KcIleBHl1T6r/u5sCMb+ToJ9cL8GrfGlmsCmhaRA7+0OwK+0N/URh2W9V
-         D4h7b6wrNVH6riW78xxPo9QBzzlEj2mJvVoBv+g7Ydkad4MUil/9FfkN0bc4d75AfK
-         hAgFGSBScloRfzDSOEmzYInjO9C59dM+pC8+jfVDphRy7kU/ug6rOuws5JMSruHIZB
-         pEL7VUz/YbmmkKH22TEeEx6STJZai90ZSXP6iGB2VLTUWL/3X+xbWI3nm2M0oaT4ZW
-         Ys4O9gmTvPU+g==
-Message-ID: <3c9e7243-f95f-9796-7e73-5e7a9ca16db3@kernel.org>
-Date:   Tue, 3 Oct 2023 09:34:51 +0900
+        b=dCct7fa0qOzWwvNbH9z5woKHPKpUF9BoO6oxIY0xiIMWW1cJwWLVHsn1C4p+iRkr7
+         ms5rHPTID11ZamAuHhlQoLeTYljFZB5yHytk9l/1NbauBx5ERUXo6miqYtbVtoYyyp
+         fAFKzuWawVk3fNfWyI01Q97GqHhEG2qakRBDxKPwxn4i6lbUANFI7AYdy4XRGCAYSK
+         qAIeqvIQ0vLCgql+wWlKsFdJc1sM/XURNUhZS7TwptAtHNh/q7eS3wwutR8cHrLHKC
+         q9MHoIBKaRZyeUz8kTd+5EQcRhg5P+bScCPNTx2kkBBhsuQfzxBzYzQkI/aoGIv1t3
+         yP0S2qyGywmSQ==
+Message-ID: <269e2876-58fd-b73c-0c0d-1593c17c2809@kernel.org>
+Date:   Tue, 3 Oct 2023 09:44:50 +0900
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: [PATCH 0/4] pata_parport: fix EXP Computer CD-865 with MC-1285B
- EPP cable
+Subject: Re: [PATCH v8 00/23] Fix libata suspend/resume handling and code
+ cleanup
 Content-Language: en-US
-To:     Ondrej Zary <linux@zary.sk>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Jens Axboe <axboe@kernel.dk>, Tim Waugh <tim@cyberelk.net>,
-        linux-parport@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20230930191511.24994-1-linux@zary.sk>
+To:     Phillip Susi <phill@thesusis.net>
+Cc:     linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        John Garry <john.g.garry@oracle.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Paul Ausbeck <paula@soe.ucsc.edu>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Joe Breuer <linux-kernel@jmbreuer.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Chia-Lin Kao <acelan.kao@canonical.com>
+References: <20230927141828.90288-1-dlemoal@kernel.org>
+ <874jj8sia5.fsf@vps.thesusis.net> <87h6n87dac.fsf@vps.thesusis.net>
 From:   Damien Le Moal <dlemoal@kernel.org>
 Organization: Western Digital Research
-In-Reply-To: <20230930191511.24994-1-linux@zary.sk>
+In-Reply-To: <87h6n87dac.fsf@vps.thesusis.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -57,17 +61,33 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 10/1/23 04:15, Ondrej Zary wrote:
+On 10/3/23 09:27, Phillip Susi wrote:
 > 
-> Two bugfixes, one workaround and IDE command set registers support for fit3
-> driver. All needed for EXP Computer CD-865 drive with MC-1285B EPP cable to
-> work.
+> Phillip Susi <phill@thesusis.net> writes:
 > 
+>> I noticed though, that when entering system suspend, a disk that has
+>> already been runtime suspended is resumed only to immediately be
+>> suspended again before the system suspend.  That shouldn't happen should
+>> it?
+> 
+> It seems that it is /sys/power/sync_on_suspend.  The problem went away
+> when I unmounted the disk, or I could make the disk wake up by running
+> sync.  I thought that it used to be that as long as you mounted an ext4
+> filesystem with -o relatime, it wouldn't keep dirtying the cache as long
+> as you weren't actually writing to the filesystem.  Either I'm
+> misremembering something, or this is no longer the case.  Also if there
+> are dirty pages in the cache, I thought the default was for them to be
+> written out after 5 seconds, which would keep the disk awake, rather
+> than waiting until system suspend to sync.
+> 
+> I guess I could mount the filesystem readonly.  It's probably not a good
+> idea to disable sync_on_suspend for the whole system.
 
-Please use my email address listed by get_maintainer.pl: dlemoal@kernel.org
-
-And these patches do not involve linux-block and Jens, so no need to send there
-(that reduces noise on the block list).
+Hmmm... So this could be the fs suspend then, which issues a sync but the device
+is already suspended and was synced already. In that case, we should turn that
+sync into a nop to not wakeup the drive unnecessarily. The fix may be needed on
+scsi sd side rather than libata.
+Let me check.
 
 -- 
 Damien Le Moal

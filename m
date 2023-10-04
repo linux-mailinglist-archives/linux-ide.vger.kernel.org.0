@@ -2,40 +2,43 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E497B8C13
-	for <lists+linux-ide@lfdr.de>; Wed,  4 Oct 2023 20:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8CCB7B8E6B
+	for <lists+linux-ide@lfdr.de>; Wed,  4 Oct 2023 23:01:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244598AbjJDSxN (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 4 Oct 2023 14:53:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46896 "EHLO
+        id S233450AbjJDVBe (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 4 Oct 2023 17:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244550AbjJDSxM (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 4 Oct 2023 14:53:12 -0400
-Received: from hosting.gsystem.sk (hosting.gsystem.sk [212.5.213.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 27FF5EB;
-        Wed,  4 Oct 2023 11:52:46 -0700 (PDT)
-Received: from gsql.ggedos.sk (off-20.infotel.telecom.sk [212.5.213.20])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hosting.gsystem.sk (Postfix) with ESMTPSA id BCC0B7A073C;
-        Wed,  4 Oct 2023 20:52:45 +0200 (CEST)
-From:   Ondrej Zary <linux@zary.sk>
-To:     Damien Le Moal <dlemoal@kernel.org>,
-        Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Tim Waugh <tim@cyberelk.net>,
-        linux-parport@lists.infradead.org, linux-ide@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] ata: pata_parport: fit3: implement IDE command set registers
-Date:   Wed,  4 Oct 2023 20:52:35 +0200
-Message-Id: <20231004185235.27417-5-linux@zary.sk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20231004185235.27417-1-linux@zary.sk>
-References: <20231004185235.27417-1-linux@zary.sk>
+        with ESMTP id S233577AbjJDVBd (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 4 Oct 2023 17:01:33 -0400
+Received: from vps.thesusis.net (vps.thesusis.net [34.202.238.73])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB6990;
+        Wed,  4 Oct 2023 14:01:30 -0700 (PDT)
+Received: by vps.thesusis.net (Postfix, from userid 1000)
+        id 41DBC13E32B; Wed,  4 Oct 2023 17:01:29 -0400 (EDT)
+From:   Phillip Susi <phill@thesusis.net>
+To:     Damien Le Moal <dlemoal@kernel.org>
+Cc:     linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        John Garry <john.g.garry@oracle.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Paul Ausbeck <paula@soe.ucsc.edu>,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Joe Breuer <linux-kernel@jmbreuer.net>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Chia-Lin Kao <acelan.kao@canonical.com>
+Subject: Re: [PATCH v8 00/23] Fix libata suspend/resume handling and code
+ cleanup
+In-Reply-To: <3aae2b14-ce32-261a-46a4-cc8d5f3adab4@kernel.org>
+References: <20230927141828.90288-1-dlemoal@kernel.org>
+ <874jj8sia5.fsf@vps.thesusis.net> <87h6n87dac.fsf@vps.thesusis.net>
+ <269e2876-58fd-b73c-0c0d-1593c17c2809@kernel.org>
+ <ZRyGIE+NpmtMu7XK@thesusis.net>
+ <3aae2b14-ce32-261a-46a4-cc8d5f3adab4@kernel.org>
+Date:   Wed, 04 Oct 2023 17:01:29 -0400
+Message-ID: <875y3mumom.fsf@vps.thesusis.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
@@ -45,65 +48,52 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-fit3 protocol driver does not support accessing IDE control registers
-(device control/altstatus). The DOS driver does not use these registers
-either (as observed from DOSEMU trace). But the HW seems to be capable
-of accessing these registers - I simply tried bit 3 and it works!
+Damien Le Moal <dlemoal@kernel.org> writes:
 
-The control register is required to properly reset ATAPI devices or
-they will be detected only once (after a power cycle).
+>> I did some tracing today on a test ext4 fs I created on a loopback device, and it
+>> seems that the superblocks are written every time you sync, even if no files on the
+>> filesystem have even been opened for read access.
+>
+> OK. So a fix would need to be on the FS side then if one wants to avoid that
+> useless resume. However, this may clash with the FS need to record stuff in its
+> sb and so we may not be able to avoid that.
 
-Tested with EXP Computer CD-865 with MC-1285B EPP cable and
-TransDisk 3000.
+Ok, this is very strange.  I went back to my distro kernel, without
+runtime pm, mounted the filesystems rw again, used hdparm -y to suspend
+the disk, verified with hdparm -C that they were in suspend, and and
+suspended the system.  In dmesg I see:
 
-Signed-off-by: Ondrej Zary <linux@zary.sk>
----
- drivers/ata/pata_parport/fit3.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+Filesystems sync: 0.007 seconds
 
-diff --git a/drivers/ata/pata_parport/fit3.c b/drivers/ata/pata_parport/fit3.c
-index bad7aa920cdc..86b39966755b 100644
---- a/drivers/ata/pata_parport/fit3.c
-+++ b/drivers/ata/pata_parport/fit3.c
-@@ -9,11 +9,6 @@
-  *
-  * The TD-2000 and certain older devices use a different protocol.
-  * Try the fit2 protocol module with them.
-- *
-- * NB:  The FIT adapters do not appear to support the control
-- * registers.  So, we map ALT_STATUS to STATUS and NO-OP writes
-- * to the device control register - this means that IDE reset
-- * will not work on these devices.
-  */
- 
- #include <linux/module.h>
-@@ -35,10 +30,11 @@
-  * cont = 1 - access the IDE command set
-  */
- 
-+static int cont_map[] = { 0x00, 0x08 };
-+
- static void fit3_write_regr(struct pi_adapter *pi, int cont, int regr, int val)
- {
--	if (cont == 1)
--		return;
-+	regr += cont_map[cont];
- 
- 	switch (pi->mode) {
- 	case 0:
-@@ -59,11 +55,7 @@ static int fit3_read_regr(struct pi_adapter *pi, int cont, int regr)
- {
- 	int  a, b;
- 
--	if (cont) {
--		if (regr != 6)
--			return 0xff;
--		regr = 7;
--	}
-+	regr += cont_map[cont];
- 
- 	switch (pi->mode) {
- 	case 0:
--- 
-Ondrej Zary
+Now, if it were writing the superblocks to the disk there, I would
+expect that to take more like 3 seconds while it woke the disks back up,
+like it did when I was testing the latest kernel with runtime pm.
 
+Another odd thing I noticed with the runtime pm was that sometimes the
+drives would randomly start up even though I was not accessing them.
+This never happens when I am normally using the debian kernel with no
+runtime pm and just running hdparm -y to put the drives to sleep.  I can
+check them hours later and they are still in standby.
+
+I just tried running sync and blktrace and it looks like it is writing
+the superblock to the drive, and yet, hdparm -C still says it is in
+standby.  This makes no sense.  Here is what blktrace said when I ran
+sync:
+
+  8,0    0        1     0.000000000 34004  Q FWS [sync]
+  8,0    0        2     0.000001335 34004  G FWS [sync]
+  8,0    0        3     0.000004327 31088  D  FN [kworker/0:2H]
+  8,0    0        4     0.000068945     0  C  FN 0 [0]
+  8,0    0        5     0.000069466     0  C  WS 0 [0]
+
+I just noticed that this trace doesn't show the 0+8 that I saw when I
+was testing running sync with a fresh, empty ext4 filesystem on a loop
+device.  That showed 0+8 indicating the first 4k block of the disk, as
+well as 1023+8, and one or two more offsets that I thought were the
+backup superblocks.
+
+What the heck is this sync actually writing, and why does it not cause
+the disk to take itself out of standby, but with runtime pm, it does?
+Could this just be a FLUSH of some sort, which when the disk is in
+standby, it ignores, but the kernel runtime pm decides it must wake the
+disk up before dispatching the command, even though it is useless?

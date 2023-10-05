@@ -2,86 +2,40 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B83E87BA031
-	for <lists+linux-ide@lfdr.de>; Thu,  5 Oct 2023 16:36:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1EF7BA84F
+	for <lists+linux-ide@lfdr.de>; Thu,  5 Oct 2023 19:44:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234149AbjJEOey (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 5 Oct 2023 10:34:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35820 "EHLO
+        id S230515AbjJERor (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 5 Oct 2023 13:44:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235569AbjJEOdO (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 5 Oct 2023 10:33:14 -0400
-X-Greylist: delayed 524 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 05 Oct 2023 05:47:41 PDT
-Received: from vps.thesusis.net (vps.thesusis.net [IPv6:2600:1f18:60b9:2f00:6f85:14c6:952:bad3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47BEA26A5E;
-        Thu,  5 Oct 2023 05:47:41 -0700 (PDT)
-Received: by vps.thesusis.net (Postfix, from userid 1000)
-        id BC7A613ED3A; Thu,  5 Oct 2023 08:38:55 -0400 (EDT)
-From:   Phillip Susi <phill@thesusis.net>
-To:     Damien Le Moal <dlemoal@kernel.org>
-Cc:     linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Paul Ausbeck <paula@soe.ucsc.edu>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joe Breuer <linux-kernel@jmbreuer.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Chia-Lin Kao <acelan.kao@canonical.com>
-Subject: Re: [PATCH v8 00/23] Fix libata suspend/resume handling and code
- cleanup
-In-Reply-To: <b8439234-8833-7fc5-e19f-ad8942b003ef@kernel.org>
-References: <20230927141828.90288-1-dlemoal@kernel.org>
- <874jj8sia5.fsf@vps.thesusis.net> <87h6n87dac.fsf@vps.thesusis.net>
- <269e2876-58fd-b73c-0c0d-1593c17c2809@kernel.org>
- <ZRyGIE+NpmtMu7XK@thesusis.net>
- <3aae2b14-ce32-261a-46a4-cc8d5f3adab4@kernel.org>
- <875y3mumom.fsf@vps.thesusis.net>
- <b8439234-8833-7fc5-e19f-ad8942b003ef@kernel.org>
-Date:   Thu, 05 Oct 2023 08:38:55 -0400
-Message-ID: <87sf6pckgw.fsf@vps.thesusis.net>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231175AbjJERoH (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 5 Oct 2023 13:44:07 -0400
+Received: from maputo.btgroup.co.mz (maputo.btgroup.co.mz [41.77.129.246])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DAFA3194
+        for <linux-ide@vger.kernel.org>; Thu,  5 Oct 2023 10:43:20 -0700 (PDT)
+Received: from [192.168.8.103] ([192.168.0.254])
+ by maputo.btgroup.co.mz (Sun Java System Messaging Server 6.2-3.04 (built Jul
+ 15 2005)) with ESMTPA id <0S2200D2KE1BR930@maputo.btgroup.co.mz> for
+ linux-ide@vger.kernel.org; Thu, 05 Oct 2023 18:35:03 +0200 (CAT)
+Date:   Thu, 05 Oct 2023 18:35:04 +0200
+From:   Metro Finance <admin@btgroup.co.mz>
+Subject: Apply For an Affordable Loan
+To:     Recipients <admin@btgroup.co.mz>
+Reply-to: metroloans@consultant.com
+Message-id: <0S2200D4DE2DR930@maputo.btgroup.co.mz>
+MIME-version: 1.0
+Content-type: text/plain; charset=iso-8859-1
+Content-transfer-encoding: 7BIT
+Content-description: Mail message body
+X-Spam-Status: No, score=3.0 required=5.0 tests=BAD_CREDIT,BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Damien Le Moal <dlemoal@kernel.org> writes:
-
->> This never happens when I am normally using the debian kernel with no
->> runtime pm and just running hdparm -y to put the drives to sleep.  I can
->> check them hours later and they are still in standby.
->
-> Same user space in that case ?
-
-Yes.  I'll try to leave a blktrace running to see what causes the
-spinup.  I suppose it could be another flush or other command that
-doesn't require media access, but triggers runtime pm to spin up the disk.
-
-> Given your description, that is my thinking exactly. The problem here for the
-> second part (spinning up the disk for "useless" commands) is that determining if
-> a command needs the drive to spinup or not is not an easy thing to do, and
-> potentially dangerous if mishandled. One possible micro optimization would be to
-> ignore flush commands to suspended disks. But not sure that is a high win change
-> beside *may be* avoiding a spinup on system suspend witha drive already runtime
-> suspended.
-
-One of the things my patch series from a decade ago did was to use the
-SLEEP flag in libata to decide to complete certain commands without
-sending them to the drive so it could remain asleep.  I'm not sure if
-it's even possible for the driver to evaluate the command before the pm
-core orders a resume though.
-
-I wonder if libata could leave the EH pending and return success from
-the runtime resume, and then actually run the EH and wake up the drive
-later, when actual IO is done.
-
-On another note, I've been looking over your patches, and I still do not
-understand why you added the VERIFY command.  The only effect it seems
-to have is moving the delay while the drive spins up from the first real
-IO to the resume path.  Why does that matter?
-
+Get a loan from Metro Finance @4% interest rate with no credit checks from R10,000-R10million, to apply Contact/whatsapp: 0838870574, Email; metroloans@consultant.com

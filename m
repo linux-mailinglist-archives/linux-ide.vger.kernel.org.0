@@ -2,41 +2,75 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1CE27BAA06
-	for <lists+linux-ide@lfdr.de>; Thu,  5 Oct 2023 21:25:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C827BAA5A
+	for <lists+linux-ide@lfdr.de>; Thu,  5 Oct 2023 21:41:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231224AbjJETY7 (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Thu, 5 Oct 2023 15:24:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33880 "EHLO
+        id S229601AbjJETlx (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Thu, 5 Oct 2023 15:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231272AbjJETY4 (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 5 Oct 2023 15:24:56 -0400
-Received: from hosting.gsystem.sk (hosting.gsystem.sk [212.5.213.30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2CD68DE;
-        Thu,  5 Oct 2023 12:24:50 -0700 (PDT)
-Received: from gsql.ggedos.sk (off-20.infotel.telecom.sk [212.5.213.20])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by hosting.gsystem.sk (Postfix) with ESMTPSA id 2D0C87A072E;
-        Thu,  5 Oct 2023 21:24:48 +0200 (CEST)
-From:   Ondrej Zary <linux@zary.sk>
-To:     Damien Le Moal <dlemoal@kernel.org>,
+        with ESMTP id S231357AbjJETlv (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 5 Oct 2023 15:41:51 -0400
+Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 563AAE7;
+        Thu,  5 Oct 2023 12:41:49 -0700 (PDT)
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-5056ca2b6d1so1702890e87.1;
+        Thu, 05 Oct 2023 12:41:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696534907; x=1697139707; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fPAvwi8YA99Xf45ZeLAPc7eM1W0BiMyMfMXa0USvgDQ=;
+        b=lusx4EFN4iL2qf6bW6HCd07yIeXTFBq+E3OYoIYue2uPXcDrSUKJaHF9IntA5+YbdV
+         Clxgx5/ExwHqwtpMo43dddtshAWq72pDE70qsVI6bsr4lMVr5ux519wYuJEAqax02YF4
+         kiPhuIrbHvtt3bs9B7qBHFRe7THQuh/4xpO4qGL9IDT1F706A2dkSTfcwe+v323TM/cS
+         +diIO8xTsQb8aXqpwHIo2jLPywgQ2izUGp3JuXah275Edzukb4aw2HitAGF8Hi6K9+Hv
+         GIDddKBs1SoF/TzvxM10rTOoSUizgY1MZO4an1mzYHTXXEnhh44ZWe+tWkCAZqY4yNSZ
+         7ZXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696534907; x=1697139707;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fPAvwi8YA99Xf45ZeLAPc7eM1W0BiMyMfMXa0USvgDQ=;
+        b=mr7ZTUbFf2fI3psCzPaIFfo/LKjyi5quPpM0Ek7xj9lYWuO+qPpFG21bKCBj8l6ZDM
+         eXu1hWOcvlP0QQP9kdzrIvwjXEYEo2H1Fpe+Y81Gk5TD4PY1bfeaCHaJI2k8b1ID+YbP
+         CTlxMH/QPgqFGUnNxEFxVSb7Iyf06dRK2UeUB2e+P+jHLVR6EgvYYgNbQ017OHv/AR68
+         9ZJlphtotkEoNgIrfHtM71lceaIevMoKJUwtRSArv6r3LbRWO0GmUnd+B5HZ+rd/MfDS
+         x1MRYF9ro3Uv7YkTor3SYWhPwoZh3KGf4Q1YexGwtvwHEqfUuwHLNxlj5eR72VabX2Eg
+         nUKw==
+X-Gm-Message-State: AOJu0Yy46cAvRpJybl+FN+q2FhBkxxJpRw9eW5BRYi9eIyLDcLjsyLMX
+        6P5wEdtlnHZt9Q7abofIlq2rJYFS1+Y=
+X-Google-Smtp-Source: AGHT+IHqTabc1IGY1RZWJdXcF/NPsCmiKxtiFcWUSfw/FqlkoLm3vuBxwkuA1AyoGcEYFp4v5tUjIQ==
+X-Received: by 2002:a05:6512:230c:b0:504:7d7e:78dd with SMTP id o12-20020a056512230c00b005047d7e78ddmr3442962lfu.23.1696534906926;
+        Thu, 05 Oct 2023 12:41:46 -0700 (PDT)
+Received: from [192.168.1.103] ([178.176.73.3])
+        by smtp.gmail.com with ESMTPSA id l29-20020ac2555d000000b004fdba93b92asm415325lfk.252.2023.10.05.12.41.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Oct 2023 12:41:46 -0700 (PDT)
+Subject: Re: [PATCH 1/4] ata: pata_parport: fix pata_parport_devchk
+To:     Ondrej Zary <linux@zary.sk>, Damien Le Moal <dlemoal@kernel.org>,
         Sudip Mukherjee <sudipm.mukherjee@gmail.com>
 Cc:     Christoph Hellwig <hch@lst.de>,
         Sergey Shtylyov <s.shtylyov@omp.ru>,
         Tim Waugh <tim@cyberelk.net>,
         linux-parport@lists.infradead.org, linux-ide@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] ata: pata_parport: fit3: implement IDE command set registers
-Date:   Thu,  5 Oct 2023 21:24:40 +0200
-Message-Id: <20231005192440.4047-5-linux@zary.sk>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20231005192440.4047-1-linux@zary.sk>
 References: <20231005192440.4047-1-linux@zary.sk>
+ <20231005192440.4047-2-linux@zary.sk>
+From:   Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Message-ID: <5ee61099-2868-864d-2d3b-e82404885787@gmail.com>
+Date:   Thu, 5 Oct 2023 22:41:43 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+In-Reply-To: <20231005192440.4047-2-linux@zary.sk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -45,61 +79,17 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-fit3 protocol driver does not support accessing IDE control registers
-(device control/altstatus). The DOS driver does not use these registers
-either (as observed from DOSEMU trace). But the HW seems to be capable
-of accessing these registers - I simply tried bit 3 and it works!
+On 10/5/23 10:24 PM, Ondrej Zary wrote:
 
-The control register is required to properly reset ATAPI devices or
-they will be detected only once (after a power cycle).
+> There's a 'x' missing in 0x55 in pata_parport_devchk(), causing the
+> detection to always fail. Fix it.
+> 
+> Fixes: 246a1c4c6b7f ("ata: pata_parport: add driver (PARIDE replacement)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ondrej Zary <linux@zary.sk>
 
-Tested with EXP Computer CD-865 with MC-1285B EPP cable and
-TransDisk 3000.
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-Signed-off-by: Ondrej Zary <linux@zary.sk>
----
- drivers/ata/pata_parport/fit3.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+[...]
 
-diff --git a/drivers/ata/pata_parport/fit3.c b/drivers/ata/pata_parport/fit3.c
-index bad7aa920cdc..d2b81cf2e16d 100644
---- a/drivers/ata/pata_parport/fit3.c
-+++ b/drivers/ata/pata_parport/fit3.c
-@@ -9,11 +9,6 @@
-  *
-  * The TD-2000 and certain older devices use a different protocol.
-  * Try the fit2 protocol module with them.
-- *
-- * NB:  The FIT adapters do not appear to support the control
-- * registers.  So, we map ALT_STATUS to STATUS and NO-OP writes
-- * to the device control register - this means that IDE reset
-- * will not work on these devices.
-  */
- 
- #include <linux/module.h>
-@@ -37,8 +32,7 @@
- 
- static void fit3_write_regr(struct pi_adapter *pi, int cont, int regr, int val)
- {
--	if (cont == 1)
--		return;
-+	regr += cont << 3;
- 
- 	switch (pi->mode) {
- 	case 0:
-@@ -59,11 +53,7 @@ static int fit3_read_regr(struct pi_adapter *pi, int cont, int regr)
- {
- 	int  a, b;
- 
--	if (cont) {
--		if (regr != 6)
--			return 0xff;
--		regr = 7;
--	}
-+	regr += cont << 3;
- 
- 	switch (pi->mode) {
- 	case 0:
--- 
-Ondrej Zary
-
+MBR, Sergey

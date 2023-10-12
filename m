@@ -2,37 +2,37 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB85B7C6639
-	for <lists+linux-ide@lfdr.de>; Thu, 12 Oct 2023 09:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3D07C6641
+	for <lists+linux-ide@lfdr.de>; Thu, 12 Oct 2023 09:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347100AbjJLHSG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        id S1377564AbjJLHSG (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
         Thu, 12 Oct 2023 03:18:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34658 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347098AbjJLHSF (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Thu, 12 Oct 2023 03:18:05 -0400
+        with ESMTP id S1343577AbjJLHSG (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Thu, 12 Oct 2023 03:18:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD066CF
-        for <linux-ide@vger.kernel.org>; Thu, 12 Oct 2023 00:18:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E351DC433C7;
-        Thu, 12 Oct 2023 07:18:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C0BD3
+        for <linux-ide@vger.kernel.org>; Thu, 12 Oct 2023 00:18:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C174DC433CA;
+        Thu, 12 Oct 2023 07:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697095083;
-        bh=MsLoOVEv/wxEK2vHrrsy6BnjG8FoUuX8k/1vA7fmr7U=;
+        s=k20201202; t=1697095084;
+        bh=baRw3d7pBpXpDjkPBCduOXDfcK3qJjsGwkU52cvIXkQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iAjclp0d3/yY2ZMPD8nFvrYa63SxIp+DrifGlNm1zOTwWp6iJGuaD1maMXOG1jYFe
-         t5Ytu/mePOsAMAebFsBIOsXuYqoteaGjURBkqvCu0TL3A6F6blEsMCntgxnr2A0/w4
-         Iyd9ivXKEu5XQjXoCjq3HZsba+CX5j0W+F2ORBmO67lY2jrXaFJ3PTSgUzlsd0R+GX
-         /s7QSEvYU319wmBhkj3BftnsGgnBRGN67cHwRwPmXmKDcl9o0foZuNqpyhYUmoC99Z
-         iBdZRsEaVXkOtkP8zWYYCVlBzzd3mATXTCilBVRZzbekgmabnopc6hd+dRETVH0xk9
-         3RuDgtorzMHIg==
+        b=cPLvJrkoSrqLVnLncxC5zSsMzgAKttmckSbf2I9+FXdYon6c3jirdw0H+0fbC/MYI
+         7GWX8NIlq/KcqIzruwmMD/Tp8FcOO6VeBexYPUYP4ywpOVKSR+ucGWlI2Snsi0OV0/
+         qb3x97sQZkzNVIbyCk820ypEnLyrejvtQqynvhCYIyUIhtwKdkvoWma7BJ8q5frZdr
+         6ANbQ/o5AoKTJ6FEn+WmgtFb2JjctDec8GURetqOb6cDFQRAObwFrjPN3iAkVgHtKV
+         09SbqXFWj2UqFYZ3i2VPBuDVIiw37Z+sjgpktPb8W/gusjYHhY1N18QtrZ/4jX3D0B
+         tpjMqfwu5OAhg==
 From:   Damien Le Moal <dlemoal@kernel.org>
 To:     linux-ide@vger.kernel.org
 Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
         Phillip Susi <phill@thesusis.net>
-Subject: [PATCH 1/2] ata: libata-eh: Spinup disk on resume after revalidation
-Date:   Thu, 12 Oct 2023 16:17:59 +0900
-Message-ID: <20231012071800.468868-2-dlemoal@kernel.org>
+Subject: [PATCH 2/2] ata: libata-core: Improve ata_dev_power_set_active()
+Date:   Thu, 12 Oct 2023 16:18:00 +0900
+Message-ID: <20231012071800.468868-3-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20231012071800.468868-1-dlemoal@kernel.org>
 References: <20231012071800.468868-1-dlemoal@kernel.org>
@@ -47,57 +47,80 @@ Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Move the call to ata_dev_power_set_active() to transition a disk in
-standby power mode to the active power mode from
-ata_eh_revalidate_and_attach() before doing revalidation to the end of
-ata_eh_recover(), after the link speed for the device is reconfigured
-(if that was necessary). This is safer as this ensure that the VERIFY
-command executed to spinup the disk is executed with the drive properly
-reconfigured first.
+Improve the function ata_dev_power_set_active() by having it do nothing
+for a disk that is already in the active power state. To do that,
+introduce the function ata_dev_power_is_active() to test the current
+power state of the disk and return true if the disk is in the PM0:
+active or PM1: idle state (0xff value for the count field of the CHECK
+POWER MODE command output).
+
+To preserve the existing behavior, if the CHECK POWER MODE command
+issued in ata_dev_power_is_active() fails, the drive is assumed to be in
+standby mode and false is returned.
+
+With this change, issuing the VERIFY command to access the disk media to
+spin it up becomes unnecessary most of the time during system resume as
+the port reset done by libata-eh on resume often result in the drive to
+spin-up (this behavior is not clearly defined by the ACS specifications
+and may thus vary between disk models).
 
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/ata/libata-core.c | 34 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 34 insertions(+)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 945675f6b822..b0d6e69c4a5b 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -3051,15 +3051,6 @@ static int ata_eh_revalidate_and_attach(struct ata_link *link,
- 		if (ehc->i.flags & ATA_EHI_DID_RESET)
- 			readid_flags |= ATA_READID_POSTRESET;
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 83613280928b..6fb4e8dc8c3c 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -2042,6 +2042,33 @@ void ata_dev_power_set_standby(struct ata_device *dev)
+ 			    err_mask);
+ }
  
--		/*
--		 * When resuming, before executing any command, make sure to
--		 * transition the device to the active power mode.
--		 */
--		if ((action & ATA_EH_SET_ACTIVE) && ata_dev_enabled(dev)) {
--			ata_dev_power_set_active(dev);
--			ata_eh_done(link, dev, ATA_EH_SET_ACTIVE);
--		}
--
- 		if ((action & ATA_EH_REVALIDATE) && ata_dev_enabled(dev)) {
- 			WARN_ON(dev->class == ATA_DEV_PMP);
- 
-@@ -3856,6 +3847,17 @@ int ata_eh_recover(struct ata_port *ap, ata_prereset_fn_t prereset,
- 			}
- 		}
- 
-+		/*
-+		 * Make sure to transition devices to the active power mode
-+		 * if needed (e.g. if we were scheduled on system resume).
-+		 */
-+		ata_for_each_dev(dev, link, ENABLED) {
-+			if (ehc->i.dev_action[dev->devno] & ATA_EH_SET_ACTIVE) {
-+				ata_dev_power_set_active(dev);
-+				ata_eh_done(link, dev, ATA_EH_SET_ACTIVE);
-+			}
-+		}
++static bool ata_dev_power_is_active(struct ata_device *dev)
++{
++	struct ata_taskfile tf;
++	unsigned int err_mask;
 +
- 		/* retry flush if necessary */
- 		ata_for_each_dev(dev, link, ALL) {
- 			if (dev->class != ATA_DEV_ATA &&
++	ata_tf_init(dev, &tf);
++	tf.flags |= ATA_TFLAG_DEVICE | ATA_TFLAG_ISADDR;
++	tf.protocol = ATA_PROT_NODATA;
++	tf.command = ATA_CMD_CHK_POWER;
++
++	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
++	if (err_mask) {
++		ata_dev_err(dev, "Check power mode failed (err_mask=0x%x)\n",
++			    err_mask);
++		/*
++		 * Assume we are in standby mode so that we always force a
++		 * spinup in ata_dev_power_set_active().
++		 */
++		return false;
++	}
++
++	ata_dev_dbg(dev, "Power mode: 0x%02x\n", tf.nsect);
++
++	/* Active or idle */
++	return tf.nsect == 0xff;
++}
++
+ /**
+  *	ata_dev_power_set_active -  Set a device power mode to active
+  *	@dev: target device
+@@ -2065,6 +2092,13 @@ void ata_dev_power_set_active(struct ata_device *dev)
+ 	if (!ata_dev_power_init_tf(dev, &tf, true))
+ 		return;
+ 
++	/*
++	 * Check the device power state & condition and force a spinup with
++	 * VERIFY command only if the drive is not already ACTIVE or IDLE.
++	 */
++	if (ata_dev_power_is_active(dev))
++		return;
++
+ 	ata_dev_notice(dev, "Entering active power mode\n");
+ 
+ 	err_mask = ata_exec_internal(dev, &tf, NULL, DMA_NONE, NULL, 0, 0);
 -- 
 2.41.0
 

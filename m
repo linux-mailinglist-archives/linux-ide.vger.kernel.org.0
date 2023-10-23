@@ -2,139 +2,107 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E60507D29CE
-	for <lists+linux-ide@lfdr.de>; Mon, 23 Oct 2023 07:52:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C8D87D2ACB
+	for <lists+linux-ide@lfdr.de>; Mon, 23 Oct 2023 08:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229469AbjJWFwD (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 23 Oct 2023 01:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38094 "EHLO
+        id S229459AbjJWG7b (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Mon, 23 Oct 2023 02:59:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjJWFwC (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 23 Oct 2023 01:52:02 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C46CFC;
-        Sun, 22 Oct 2023 22:52:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06779C433C7;
-        Mon, 23 Oct 2023 05:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698040320;
-        bh=zU26l5J4agqJvwwA/4S/W9QnAw3QKdkb9hstkYclUEA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=JmFwY3qnGVJ/dtc/FLa3aMXdDE04SK7hRYFtZvhQd4AsNHklEzPLoesjXAln827ve
-         0wY57i4u6NX1QiC2kNucKioro6+czxJ+c35BF12/N6Rp+OMeJOci3yV8IwWWm4Syam
-         80IlNC6YkGs4Pg1KZaUlkM7Gcf8rKHhKIf8N3/WJjSrY/80WWp+HkvvZjxfHxuJhHH
-         UOw+1Jed+tYJnirKbvHRRiwvlo1WwO6XbTXlh2jXzlkOg/ntwSzrrajx6/VvAg9OAK
-         ah5ZfxN41nkymHBZZo+3oSLKv62xjsXyhYJDsOgkG6wFGF+nwLeTYQLZthpTVQLvWL
-         m53G6MQvY6ORg==
-Message-ID: <52f44651-ce94-468f-a43b-02d512294fe4@kernel.org>
-Date:   Mon, 23 Oct 2023 14:51:58 +0900
+        with ESMTP id S229450AbjJWG7a (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Mon, 23 Oct 2023 02:59:30 -0400
+X-Greylist: delayed 91 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Oct 2023 23:59:28 PDT
+Received: from omta33.uswest2.a.cloudfilter.net (omta33.uswest2.a.cloudfilter.net [35.89.44.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A00DEE;
+        Sun, 22 Oct 2023 23:59:28 -0700 (PDT)
+Received: from eig-obgw-5009a.ext.cloudfilter.net ([10.0.29.176])
+        by cmsmtp with ESMTPS
+        id uPdGqIpfQ8HteuosvqJz9T; Mon, 23 Oct 2023 06:57:57 +0000
+Received: from 162-240-83-27.unifiedlayer.com ([137.59.148.200])
+        by cmsmtp with ESMTPS
+        id uostqqf19I9guuosuq5ahA; Mon, 23 Oct 2023 06:57:56 +0000
+X-Authority-Analysis: v=2.4 cv=Ds1FRUz+ c=1 sm=1 tr=0 ts=65361974
+ a=MgGYFET5X96nYrQ76toljg==:117 a=/5CYD1hNzocxg58dEBddTw==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=kj9zAlcOel0A:10 a=bhdUkHdE2iEA:10 a=lUDAUsI-kUQA:10
+ a=9m64_h_j2zU8ieQoq-sA:9 a=CjuIK1q_8ugA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=35686686.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=Dm1nus89JLbD/65ItGQLhdR/UwQLhddPM+BxEJ7yOwM=; b=JFP9PqkwSdBW/5BnZLvEh3O0/I
+        9HUaQ2GIBX2J845NgWsUkRRpIcgmqSVPqgla6YFZ1F0cG1RycxOdwmaZpTAVyO2oa0ETe7a+WeQu/
+        OxjycM40OWJyzZ7r7iWNXpNC/IOgpZ88wNjA4G47kjsy677Zvlv6RH2baPHhx/TRZL8Tu2gH4lOt2
+        BUT04Thnh9esPXppM4TpGoT+SvyH9UkZMwCtNemVJSS62p6FudVDPEjKYTZHUZr0bdqNao7EHzY4z
+        S+CpLgIxzeiqYarWPpZor3S7lFuV91Sx3v4OXFX7phX55Kf1uhg+5txphKV3R0/VtHYjBuVN9NakT
+        dIknl/Uw==;
+Received: from md-hk-12.webhostbox.net ([137.59.148.200]:54486)
+        by md-hk-12.webhostbox.net with esmtpa (Exim 4.96.2)
+        (envelope-from <jc@35686686.com>)
+        id 1qulIb-003ZCm-2a;
+        Mon, 23 Oct 2023 08:38:13 +0530
+Received: from [181.214.94.254]
+ by 35686686.com
+ with HTTP (HTTP/1.1 POST); Mon, 23 Oct 2023 08:38:08 +0530
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 04/23] scsi: sd: Differentiate system and runtime
- start/stop management
-Content-Language: en-US
-To:     Phillip Susi <phill@thesusis.net>, linux-ide@vger.kernel.org
-Cc:     linux-scsi@vger.kernel.org,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        John Garry <john.g.garry@oracle.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Paul Ausbeck <paula@soe.ucsc.edu>,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Joe Breuer <linux-kernel@jmbreuer.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Chia-Lin Kao <acelan.kao@canonical.com>
-References: <20230927141828.90288-1-dlemoal@kernel.org>
- <20230927141828.90288-5-dlemoal@kernel.org> <87v8b73lsh.fsf@vps.thesusis.net>
- <0177ab41-6a7b-42ff-bf84-97d173efb838@kernel.org>
- <87r0luspvx.fsf@vps.thesusis.net>
- <1a6f1768-fd48-42df-9f1a-4b203baf6ddf@kernel.org>
- <87y1g1unwg.fsf@vps.thesusis.net>
- <e5a256fa-f1f6-4474-8e9e-b9f4bd6dced7@kernel.org>
- <87lebxrnt7.fsf@vps.thesusis.net>
-From:   Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <87lebxrnt7.fsf@vps.thesusis.net>
-Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 23 Oct 2023 11:08:08 +0800
+From:   jc@35686686.com
+To:     undisclosed-recipients:;
+Subject: LOAN SCHEME
+Reply-To: info@kafurinvestment.com
+Mail-Reply-To: info@kafurinvestment.com
+User-Agent: Roundcube Webmail/1.6.0
+Message-ID: <d76e4ab48498742dd7c9d43057a84008@35686686.com>
+X-Sender: jc@35686686.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - md-hk-12.webhostbox.net
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - 35686686.com
+X-BWhitelist: no
+X-Source-IP: 137.59.148.200
+X-Source-L: No
+X-Exim-ID: 1qulIb-003ZCm-2a
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: md-hk-12.webhostbox.net [137.59.148.200]:54486
+X-Source-Auth: jc@35686686.com
+X-Email-Count: 0
+X-Org:  HG=dishared_whb_net_legacy;ORG=directi;
+X-Source-Cap: ZmJkZXN4amc7Ymx1ZWhvc3Q7bWQtaGstMTIud2ViaG9zdGJveC5uZXQ=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfN/VpKAd/dVnsdzNFOkvZFmKda0s9MH2LJ2Ga8PjsB/OW+OCgwqyT3iuYaHCBNzDmuu7BspmEkzlwT9UkPpPke5FbFWQUSqXQuwLwtNwmcrO/ZC7HsrJ
+ Jp8eC7AnHTNLUdFllw4KiNM9TUXqye+qOYUcLmEmaUzpCj0WE0jrr3alokDtUdnqR3R9+GJMpN7C+uXn+GbNKYt8gtMrqbPN+5aQx8bACAQjE8RPwZkzapmq
+ ZOeVZkap6bkHSF0d+XB261RM4esja8rCUHdp0kSdEEb0dh+DcfkYztpXvWnLAHgWM4zUTMovoSl+Pc/Nm+PsS5ISv6VRuAasb17FjrXM8SLG8SQtyxq7YQeI
+ cWqgrJJoWQCFO4t0Y4eYeUKQS9BUmsOs4nNs7HMeYZZ1iS0/hKkJqWL5GQOnNH7Kwzc3WFngPwNy24URG/ktULk4NxQIew==
+X-Spam-Status: No, score=1.5 required=5.0 tests=BAYES_50,DKIM_INVALID,
+        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_NONE,SUBJ_ALL_CAPS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-On 10/21/23 06:23, Phillip Susi wrote:
-> Damien Le Moal <dlemoal@kernel.org> writes:
-> 
->> On my system, I see:
->>
->> cat /sys/class/ata_port/ata1/power/runtime_active_kids
->> 0
-> 
-> I see a 1 there, which is the single scsi_host.  The scsi_host has 2
-> active kids; the two disks.  When I enabled runtime pm, only when the
-> second disk was suspended did that allow the scsi_host to suspend, which
-> then allowed the port to suspend.  Everything looked fine there so far.
-> Then I tried:
-> 
-> echo 1 > /sys/block/sdf/device/delete
-> 
-> And the SCSI EH appears to have tried to wake up the disk, and hung in
-> the process.
-> 
-> [  314.246282] sd 7:0:0:0: [sde] Synchronizing SCSI cache
-> [  314.246445] sd 7:0:0:0: [sde] Stopping disk
-> 
-> First disk suspends.
-> 
-> [  388.518295] sd 7:1:0:0: [sdf] Synchronizing SCSI cache
-> [  388.518519] sd 7:1:0:0: [sdf] Stopping disk
-> 
-> Second disk suspends some time later.
-> 
-> [  388.930428] ata8.00: Entering standby power mode
-> [  389.330651] ata8.01: Entering standby power mode
-> 
-> That allowed the port to suspend.  This is when I tried to detach the
-> disk driver, which I think tried to resume the disk before detaching,
-> which resumed the port.
-> 
-> [  467.511878] ata8.15: SATA link down (SStatus 0 SControl 310)
-> [  468.142726] ata8.15: failed to read PMP GSCR[0] (Emask=0x100)
-> [  468.142741] ata8.15: PMP revalidation failed (errno=-5)
-> 
-> I ran hdparm -C on the other disk at this point.  I just noticed that
-> the ata8.15 that represents the PMP itself was NOT suspended along with
-> the two drive links, and then maybe was not resumed before trying to
-> revalidate the PMP?  And that's why it failed?
-> 
-> [  473.172792] ata8.15: SATA link up 1.5 Gbps (SStatus 113 SControl 310)
-> [  473.486860] ata8.00: SATA link up 1.5 Gbps (SStatus 113 SControl 310)
-> [  473.802139] ata8.01: SATA link up 1.5 Gbps (SStatus 113 SControl 310)
-> 
-> It seems like it ended up recovering here though?  And yet the scsi_eh
-> remained hung, as did the hdparm -C:
-> 
-> [  605.566814] INFO: task scsi_eh_7:173 blocked for more than 120 seconds.
-> [  605.566829]       Not tainted 6.6.0-rc5+ #5
-> [  605.566834] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-> [  605.566838] task:scsi_eh_7       state:D stack:0     pid:173   ppid:2      flags:0x00004000
-> [  605.566850] Call Trace:
-> [  605.566853]  <TASK>
-> [  605.566860]  __schedule+0x37c/0xb70
-> [  605.566878]  schedule+0x61/0xd0
-> [  605.566888]  rpm_resume+0x156/0x760
+Greetings:
 
-Looks like a deadlock somewhere, likely with the device remove that you
-triggered with the "echo 1 > /sys/block/sdf/device/delete".
+I am Mr. Faheem Badawi, working as a project facilitator for (Kafur 
+Project Management Services) also, with numerous investors worldwide. As 
+a means of widening our global portfolio we would like to know if you 
+have any project(s) requiring funding. We also offer business, personal 
+and home loans to finance new projects as well as expansion capital.
 
-Can you send the exact list of commands & events you executed to get to that
-point ? Also please share your kernel config.
+For more updates on the mode of operation send a reply.
 
--- 
-Damien Le Moal
-Western Digital Research
+Waiting for your prompt response.
 
+Kind regards,
+Faheem Badawi.
+(Financial Advisory - KPMS)

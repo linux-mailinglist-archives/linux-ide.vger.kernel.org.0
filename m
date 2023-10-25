@@ -2,70 +2,137 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 227587D611C
-	for <lists+linux-ide@lfdr.de>; Wed, 25 Oct 2023 07:29:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03A87D6203
+	for <lists+linux-ide@lfdr.de>; Wed, 25 Oct 2023 09:01:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229498AbjJYF3F (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Wed, 25 Oct 2023 01:29:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53524 "EHLO
+        id S231254AbjJYHBY (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Wed, 25 Oct 2023 03:01:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjJYF3E (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Wed, 25 Oct 2023 01:29:04 -0400
-Received: from SOFTTRIXSOFTWAR.home (baafilatravels.com [103.154.184.127])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99BF4128;
-        Tue, 24 Oct 2023 22:29:01 -0700 (PDT)
-DKIM-Signature: v=1; c=relaxed/relaxed; h=content-type:mime-version:content-transfer-encoding:content-description:subject:to:from:date:reply-to:message-id;
- d=baafilatravels.com; s=default; a=rsa-sha256;
- bh=ycz7K7zeOOFCE/nJSM6XTY2zzAPFS0iHWd+msaDhQ0o=;
- b=ngD7znTOuLNViWZGTjyb9Nr/ZwvD+PzrCmeq6+M8qR9ToDWpeBOtWhLUdVfHehrlH
- HfxmyolWFcQra7SNsHJ0/wmhcg10z+z5sATLLdkd9jdk3kSh9Y1uoNniqE6w4OoiSaH
- t3tgjg91DN+jcRJlUw4izg3O2R0PxbuM/LSkAIM=;
-Received: from [172.81.129.43] ([172.81.129.43]) by home with
- MailEnable ESMTPSA (version=TLS1 cipher=TLS_RSA_WITH_AES_256_CBC_SHA); Wed, 25 Oct 2023 01:09:39 +0530
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S229498AbjJYHBX (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Wed, 25 Oct 2023 03:01:23 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06039E5;
+        Wed, 25 Oct 2023 00:01:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA710C433C7;
+        Wed, 25 Oct 2023 07:01:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698217279;
+        bh=OODyHkkGXKWL1r/C0vYVi24gXpxLo7+GLWxa7CSn0Vg=;
+        h=From:To:Subject:Date:From;
+        b=sfFFSYodLtDpYQT6FnsrZTMybqz4YAfrRfQeXF1Kac5P4YhrYZlX2SDWUEGlO6aVs
+         8ZQbbEis+DbGnZuJEv6UASaz++xtdxGY68DD6Ut60BTc0af6vwnCHEY7vfphk/uU9A
+         nLIH5ixPDhdnfkL1FkTU48IsmkX3vnmhkV/orjzj8JPR7bgvDJXvT8oWqYArt1Ho85
+         OgwhlnTzh3zoZnmoLHg5m2pdDWMdafeZ2AnvscRKeLrftPtbrc8rdbokG/3wCJUjj7
+         dsTnYwKjxM2tu3zgB1RSBoK2jn/7UA5HynDyRRwJRavrDOWLJbKRY3IhPBMuxzWKo5
+         P9aeYvx1jyDiA==
+From:   Damien Le Moal <dlemoal@kernel.org>
+To:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, linux-ide@vger.kernel.org
+Subject: [PATCH] scsi: sd: Introduce manage_shutdown device flag
+Date:   Wed, 25 Oct 2023 16:01:17 +0900
+Message-ID: <20231025070117.464903-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: RE:
-To:     Recipients <sales@baafilatravels.com>
-From:   ''Von Opel Foundation'' <sales@baafilatravels.com>
-Date:   Tue, 24 Oct 2023 12:39:26 -0700
-Reply-To: vonfoundation@secretary.net
-Message-ID: <95A6FC465A414A948000555C4A8DDADE.MAI@home>
-X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_SBL,SPF_HELO_NONE,SPF_PASS,
-        URIBL_DBL_SPAM,URIBL_SBL_A autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: baafilatravels.com]
-        *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?103.154.184.127>]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [103.154.184.127 listed in zen.spamhaus.org]
-        *  0.1 URIBL_SBL_A Contains URL's A record listed in the Spamhaus SBL
-        *      blocklist
-        *      [URIs: baafilatravels.com]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-The Georg And Emily Von Opel Foundation has selected your email to be
-among the beneficiaries of their donating a grant.
+Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
+manage_system_start_stop") change setting the manage_system_start_stop
+flag to false for libata managed disks to enable libata internal
+management of disk suspend/resume. However, a side effect of this change
+is that on system shutdown, disks are no longer being stopped (set to
+standby mode with the heads unloaded). While this is not a critical
+issue, this unclean shutdown is not recommended and shows up with
+increased smart counters (e.g. the unexpected power loss counter
+"Unexpect_Power_Loss_Ct").
+
+Instead of defining a shutdown driver method for all ATA adapter
+drivers (not all of them define that operation), this patch resolves
+this issue by further refining the sd driver start/stop control of disks
+using the new flag manage_shutdown. If set to true, the function
+sd_shutdown() will issue a START STOP UNIT command with the start
+argument set to 0 when a disk is shutdown on system power off
+(system_state == SYSTEM_POWER_OFF).
+
+Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218038
+Link: https://lore.kernel.org/all/cd397c88-bf53-4768-9ab8-9d107df9e613@gmail.com/
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+---
+ drivers/ata/libata-scsi.c  | 5 +++--
+ drivers/firewire/sbp2.c    | 1 +
+ drivers/scsi/sd.c          | 6 ++++--
+ include/scsi/scsi_device.h | 1 +
+ 4 files changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index a371b497035e..3a957c4da409 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1053,10 +1053,11 @@ int ata_scsi_dev_config(struct scsi_device *sdev, struct ata_device *dev)
+ 
+ 		/*
+ 		 * Ask the sd driver to issue START STOP UNIT on runtime suspend
+-		 * and resume only. For system level suspend/resume, devices
+-		 * power state is handled directly by libata EH.
++		 * and resume and shutdown only. For system level suspend/resume,
++		 * devices power state is handled directly by libata EH.
+ 		 */
+ 		sdev->manage_runtime_start_stop = true;
++		sdev->manage_shutdown = true;
+ 	}
+ 
+ 	/*
+diff --git a/drivers/firewire/sbp2.c b/drivers/firewire/sbp2.c
+index 749868b9e80d..7edf2c95282f 100644
+--- a/drivers/firewire/sbp2.c
++++ b/drivers/firewire/sbp2.c
+@@ -1521,6 +1521,7 @@ static int sbp2_scsi_slave_configure(struct scsi_device *sdev)
+ 	if (sbp2_param_exclusive_login) {
+ 		sdev->manage_system_start_stop = true;
+ 		sdev->manage_runtime_start_stop = true;
++		sdev->manage_shutdown = true;
+ 	}
+ 
+ 	if (sdev->type == TYPE_ROM)
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index 83b6a3f3863b..52fa266d976f 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3819,8 +3819,10 @@ static void sd_shutdown(struct device *dev)
+ 		sd_sync_cache(sdkp, NULL);
+ 	}
+ 
+-	if (system_state != SYSTEM_RESTART &&
+-	    sdkp->device->manage_system_start_stop) {
++	if ((system_state != SYSTEM_RESTART &&
++	     sdkp->device->manage_system_start_stop) ||
++	    (system_state == SYSTEM_POWER_OFF &&
++	     sdkp->device->manage_shutdown)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
+ 		sd_start_stop_device(sdkp, 0);
+ 	}
+diff --git a/include/scsi/scsi_device.h b/include/scsi/scsi_device.h
+index fd41fdac0a8e..7edefb73bf69 100644
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -164,6 +164,7 @@ struct scsi_device {
+ 
+ 	bool manage_system_start_stop; /* Let HLD (sd) manage system start/stop */
+ 	bool manage_runtime_start_stop; /* Let HLD (sd) manage runtime start/stop */
++	bool manage_shutdown;	/* Let HLD (sd) manage shutdown */
+ 
+ 	unsigned removable:1;
+ 	unsigned changed:1;	/* Data invalid due to media change */
+-- 
+2.41.0
+

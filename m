@@ -2,143 +2,94 @@ Return-Path: <linux-ide-owner@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFBE27DB39E
-	for <lists+linux-ide@lfdr.de>; Mon, 30 Oct 2023 07:40:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FF1B7E0DDD
+	for <lists+linux-ide@lfdr.de>; Sat,  4 Nov 2023 05:58:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231657AbjJ3Gky (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
-        Mon, 30 Oct 2023 02:40:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38080 "EHLO
+        id S233707AbjKDE6L (ORCPT <rfc822;lists+linux-ide@lfdr.de>);
+        Sat, 4 Nov 2023 00:58:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231725AbjJ3Gkw (ORCPT
-        <rfc822;linux-ide@vger.kernel.org>); Mon, 30 Oct 2023 02:40:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB0FA10CA
-        for <linux-ide@vger.kernel.org>; Sun, 29 Oct 2023 23:40:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58FCC433C7;
-        Mon, 30 Oct 2023 06:40:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698648039;
-        bh=HUrXK7qJRE3J/7hUkvMGZXdzQXDuT1coz5lNVosndV4=;
-        h=From:To:Subject:Date:From;
-        b=f9GVFu9IYeWFhzQUHKEHvoqCRBZ6TVJP9NWIsArZv1Qn1atEzxPedHQLqZroivmqy
-         efFVL+PnCoYqqSDxSJl0kWUQqvPz3KhU6DgmvTopx5g0iiLSXEL3QDCop/yw2WwPPF
-         Rj+gEhEdfXF7L2ZUxEPJQGycIHCkHy1rFefdeLu3x+cExkGc3Ts6f9yvICWysS8j4L
-         zFMv4gvzZ//ttx76RBkk12Nu+lI8G/dWOV4026DtRn+TSuL5XO3HtAIoglxG2NJVjT
-         zn/VvQ/j7wvNnVYokZ/g2DE3V7RXEgkyjhc9VEjEjeKFjRmAKr5o4FdOUnBTkwGWG5
-         RMpRLL8ROQQdg==
-From:   Damien Le Moal <dlemoal@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ide@vger.kernel.org
-Subject: [GIT PULL] ata changes for 6.7-rc1
-Date:   Mon, 30 Oct 2023 15:40:37 +0900
-Message-ID: <20231030064037.282268-1-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S229509AbjKDE6K (ORCPT
+        <rfc822;linux-ide@vger.kernel.org>); Sat, 4 Nov 2023 00:58:10 -0400
+X-Greylist: delayed 4270 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Nov 2023 21:58:08 PDT
+Received: from mail.profitpathwaygo.com (mail.profitpathwaygo.com [141.94.21.238])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E168112
+        for <linux-ide@vger.kernel.org>; Fri,  3 Nov 2023 21:58:08 -0700 (PDT)
+Received: by mail.profitpathwaygo.com (Postfix, from userid 1002)
+        id 80812518A9; Mon, 30 Oct 2023 08:30:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitpathwaygo.com;
+        s=mail; t=1698654824;
+        bh=qp3Ofokho6Ql+WtI8ZPVilyHYhskXL7fod7u9CWs8W4=;
+        h=Date:From:To:Subject:From;
+        b=k10pYOUamjyU+vzKX5JCJrGt5UD/5KPOTXftkNaOvSePoesBlXiWTxvaCEHhX+DIP
+         GHji0hwEDn7CYVwkv9AT2lB6LU7vGkRopy/n8y7vT+LBFf8bQmJTe/0P0lytkKUDOr
+         SerotL4aGzOJu31ihQxrx1ogRdfypdv6IGwsQuW9GYFE/zzgyM8cT+i5ssUZx5PbRz
+         KDjOBxa/YlCpTj31B0Wg/Rtvy00f2UbCLsAtD/Q7dHE9eABHiS0N7Yy3WY4AIdL/VM
+         wSLGhjbY7FlgLFf/ThI4vQd8Yi5adnccuIhpHBL3NKk1kbL1rBV/A2aFzbyu4k5AZ9
+         5aFLAJtsDzkCg==
+Received: by mail.profitpathwaygo.com for <linux-ide@vger.kernel.org>; Mon, 30 Oct 2023 08:30:28 GMT
+Message-ID: <20231030074500-0.1.2s.154gf.0.w78ranapp3@profitpathwaygo.com>
+Date:   Mon, 30 Oct 2023 08:30:28 GMT
+From:   "Adam Charachuta" <adam.charachuta@profitpathwaygo.com>
+To:     <linux-ide@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania_?=
+X-Mailer: mail.profitpathwaygo.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,
+        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: profitpathwaygo.com]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: profitpathwaygo.com]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.21.238 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: profitpathwaygo.com]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [141.94.21.238 listed in bl.score.senderscore.com]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0096]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ide.vger.kernel.org>
 X-Mailing-List: linux-ide@vger.kernel.org
 
-Linus,
+Dzie=C5=84 dobry,
 
-The following changes since commit 8a749fd1a8720d4619c91c8b6e7528c0a355c0aa:
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
 
-  Linux 6.6-rc4 (2023-10-01 14:15:13 -0700)
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
 
-are available in the Git repository at:
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
 
-  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/dlemoal/libata tags/ata-6.7-rc1
 
-for you to fetch changes up to 0e533cba38011457b51f13b3b5afd33c693bfcca:
-
-  dt-bindings: ata: tegra: Disallow undefined properties (2023-10-18 08:07:30 +0900)
-
-----------------------------------------------------------------
-ATA changes for 6.7-rc1
-
- - Modify the AHCI driver to print the link power management policy used
-   on scan, to help with debugging issues (Niklas).
-
- - Add support for the ASM2116 series adapters to the AHCI driver
-   (Szuying).
-
- - Prepare libata for the coming gcc and Clang __counted_by attribute
-   (Kees).
-
- - Following the recent estensive fixing of libata suspend/resume
-   handling, several patches further cleanup and improve disk power state
-   management (from me).
-
- - Reduce the verbosity of some error messages for non-fatal temporary
-   errors, e.g. slow response to device reset when scanning a port, and
-   warning messages that are in fact normal, e.g. disabling a device
-   on suspend or when removing it (from me).
-
- - Cleanup DMA helper functions (from me).
-
- - Fix sata_mv drive handling of potential errors durring probe (Ma).
-
- - Cleanup the xgene and imx drivers using the functions
-   of_device_get_match_data() and device_get_match_data() (Rob).
-
- - Improve the tegra driver device tree (Rob).
-
-----------------------------------------------------------------
-Damien Le Moal (14):
-      scsi: Remove scsi device no_start_on_resume flag
-      ata: libata-scsi: Cleanup ata_scsi_start_stop_xlat()
-      ata: libata-core: Synchronize ata_port_detach() with hotplug
-      ata: libata-core: Detach a port devices on shutdown
-      ata: libata-core: Remove ata_port_suspend_async()
-      ata: libata-core: Remove ata_port_resume_async()
-      ata: libata-core: Do not poweroff runtime suspended ports
-      ata: libata-core: Do not resume runtime suspended ports
-      ata: libata-sata: Improve ata_sas_slave_configure()
-      ata: libata-eh: Improve reset error messages
-      ata: libata-eh: Reduce "disable device" message verbosity
-      ata: libata: Cleanup inline DMA helper functions
-      ata: libata-eh: Spinup disk on resume after revalidation
-      ata: libata-core: Improve ata_dev_power_set_active()
-
-Kees Cook (1):
-      ata: libata: Annotate struct ata_cpr_log with __counted_by
-
-Ma Ke (1):
-      ata: sata_mv: aspeed: fix value check in mv_platform_probe()
-
-Mika Westerberg (1):
-      ata: ahci: Add Intel Alder Lake-P AHCI controller to low power chipsets list
-
-Niklas Cassel (1):
-      ata: ahci: print the lpm policy on boot
-
-Rob Herring (3):
-      ata: xgene: Use of_device_get_match_data()
-      ata: imx: Use device_get_match_data()
-      dt-bindings: ata: tegra: Disallow undefined properties
-
-Szuying Chen (1):
-      ata: ahci: add identifiers for ASM2116 series adapters
-
- .../devicetree/bindings/ata/nvidia,tegra-ahci.yaml |   2 +-
- drivers/ata/ahci.c                                 |   6 +
- drivers/ata/ahci_imx.c                             |  10 +-
- drivers/ata/ahci_xgene.c                           |  11 +-
- drivers/ata/libahci.c                              |   2 +-
- drivers/ata/libata-core.c                          | 185 +++++++++++++--------
- drivers/ata/libata-eh.c                            |  54 +++---
- drivers/ata/libata-sata.c                          |   5 +-
- drivers/ata/libata-scsi.c                          |  53 +-----
- drivers/ata/libata-sff.c                           |  10 +-
- drivers/ata/libata.h                               |   2 +
- drivers/ata/pata_cs5520.c                          |   2 +-
- drivers/ata/sata_mv.c                              |   9 +-
- drivers/scsi/sd.c                                  |   9 +-
- include/linux/libata.h                             |  25 +--
- include/scsi/scsi_device.h                         |   1 -
- 16 files changed, 201 insertions(+), 185 deletions(-)
+Pozdrawiam serdecznie
+Adam Charachuta

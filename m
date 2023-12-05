@@ -1,24 +1,24 @@
-Return-Path: <linux-ide+bounces-62-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-64-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0385D8050CF
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Dec 2023 11:41:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EABA8050D2
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Dec 2023 11:42:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79740B208A7
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Dec 2023 10:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3942B2815F2
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Dec 2023 10:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB33159E3B
-	for <lists+linux-ide@lfdr.de>; Tue,  5 Dec 2023 10:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F189559E45
+	for <lists+linux-ide@lfdr.de>; Tue,  5 Dec 2023 10:42:05 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
 Received: from sakura.ysato.name (ik1-413-38519.vs.sakura.ne.jp [153.127.30.23])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 88CB1C9;
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 97CC2D3;
 	Tue,  5 Dec 2023 01:55:34 -0800 (PST)
 Received: from SIOS1075.ysato.name (ZM005235.ppp.dion.ne.jp [222.8.5.235])
-	by sakura.ysato.name (Postfix) with ESMTPSA id 66F381C05DE;
-	Tue,  5 Dec 2023 18:46:52 +0900 (JST)
+	by sakura.ysato.name (Postfix) with ESMTPSA id 605131C069C;
+	Tue,  5 Dec 2023 18:46:54 +0900 (JST)
 From: Yoshinori Sato <ysato@users.sourceforge.jp>
 To: linux-sh@vger.kernel.org
 Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
@@ -85,9 +85,9 @@ Cc: Yoshinori Sato <ysato@users.sourceforge.jp>,
 	linux-pci@vger.kernel.org,
 	linux-serial@vger.kernel.org,
 	linux-fbdev@vger.kernel.org
-Subject: [DO NOT MERGE v5 25/37] dt-bindings: vendor-prefixes: Add iodata
-Date: Tue,  5 Dec 2023 18:45:44 +0900
-Message-Id: <3e216003a768e06981cfda842d8fcf185f4ea9b7.1701768028.git.ysato@users.sourceforge.jp>
+Subject: [DO NOT MERGE v5 26/37] dt-bindings: vendor-prefixes:  Add smi
+Date: Tue,  5 Dec 2023 18:45:45 +0900
+Message-Id: <2dc1fcd6596f78de4197aea04a26252f5f365595.1701768028.git.ysato@users.sourceforge.jp>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <cover.1701768028.git.ysato@users.sourceforge.jp>
 References: <cover.1701768028.git.ysato@users.sourceforge.jp>
@@ -99,8 +99,8 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add IO DATA DEVICE INC.
-https://www.iodata.com/
+Add Silicon Mortion Technology Corporation
+https://www.siliconmotion.com/
 
 Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
 ---
@@ -108,18 +108,18 @@ Signed-off-by: Yoshinori Sato <ysato@users.sourceforge.jp>
  1 file changed, 2 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-index 309b94c328c8..94ed63d9f7de 100644
+index 94ed63d9f7de..a338bdd743ab 100644
 --- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
 +++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
-@@ -671,6 +671,8 @@ patternProperties:
-     description: Inventec
-   "^inversepath,.*":
-     description: Inverse Path
-+  "^iodata,.*":
-+    description: IO DATA DEVICE Inc.
-   "^iom,.*":
-     description: Iomega Corporation
-   "^irondevice,.*":
+@@ -1283,6 +1283,8 @@ patternProperties:
+     description: Skyworks Solutions, Inc.
+   "^smartlabs,.*":
+     description: SmartLabs LLC
++  "^smi,.*":
++    description: Silicon Motion Technology Corporation
+   "^smsc,.*":
+     description: Standard Microsystems Corporation
+   "^snps,.*":
 -- 
 2.39.2
 

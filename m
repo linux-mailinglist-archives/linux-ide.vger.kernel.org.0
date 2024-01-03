@@ -1,83 +1,68 @@
-Return-Path: <linux-ide+bounces-132-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-133-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C16A822599
-	for <lists+linux-ide@lfdr.de>; Wed,  3 Jan 2024 00:39:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434328236DF
+	for <lists+linux-ide@lfdr.de>; Wed,  3 Jan 2024 22:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD90B1C22BD1
-	for <lists+linux-ide@lfdr.de>; Tue,  2 Jan 2024 23:39:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E54B51F24C53
+	for <lists+linux-ide@lfdr.de>; Wed,  3 Jan 2024 21:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61871774B;
-	Tue,  2 Jan 2024 23:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qKc8g0eE"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A0C1D558;
+	Wed,  3 Jan 2024 21:00:13 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps.thesusis.net (vps.thesusis.net [34.202.238.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB54179B0
-	for <linux-ide@vger.kernel.org>; Tue,  2 Jan 2024 23:39:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103D2C433C8;
-	Tue,  2 Jan 2024 23:38:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704238740;
-	bh=ik+0RROUX2+KNhYiqBRnzhAo+UQguWcvOKQxo9HBnf4=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qKc8g0eEPNdKHmeR9OndlUtJvxOCc97zfWS2TbBN2gUH4RT2h6TxVv6Rb3hIEd1zC
-	 /Xc1RaHlg1BY1tzi0kkOJn6jn/+AHPLiukW4F4gDp7dWxYhrqWVkXL5yJHYGv+KkPS
-	 U3WVuSdZKvvKzdYAYkTxNTBS6dvKXQQWB6ixO5Q6uJ9HRIpVKcIapulRRugT/MszVv
-	 b+TJc3MQBhNXV7fYQ7Nj9Nx/EI7cz43PBc17W7eHzzgniWM0O6ZtEF/v1IbGcYc48X
-	 xPUco66s0IqVgUnwf0JWXneXejTmJeE8dISpC+tFxGZ08fp49Z7r6txNM5T7qvt/HT
-	 KiipU//mZBppw==
-From: Damien Le Moal <dlemoal@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	linux-ide@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>
-Subject: [GIT PULL] ata changes for 6.8-rc1
-Date: Wed,  3 Jan 2024 08:38:58 +0900
-Message-ID: <20240102233858.150598-1-dlemoal@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43CC1D554
+	for <linux-ide@vger.kernel.org>; Wed,  3 Jan 2024 21:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=thesusis.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thesusis.net
+Received: by vps.thesusis.net (Postfix, from userid 1000)
+	id D37EC151A63; Wed,  3 Jan 2024 16:00:04 -0500 (EST)
+From: Phillip Susi <phill@thesusis.net>
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: linux-ide@vger.kernel.org
+Subject: Re: [PATCH 1/1] libata: only wake a drive once on system resume
+In-Reply-To: <decd3317-ed44-4ddc-b6b3-5b33bc72727c@kernel.org>
+References: <20231225151915.258816-1-phill@thesusis.net>
+ <20231230182128.296675-1-phill@thesusis.net>
+ <20231230182128.296675-2-phill@thesusis.net>
+ <decd3317-ed44-4ddc-b6b3-5b33bc72727c@kernel.org>
+Date: Wed, 03 Jan 2024 16:00:04 -0500
+Message-ID: <87il4am8tn.fsf@vps.thesusis.net>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Linus,
+Damien Le Moal <dlemoal@kernel.org> writes:
 
-The following changes since commit 98b1cc82c4affc16f5598d4fa14b1858671b2263:
+> This is not an improvement... What if the verify command that wakes-up the drive
+> fails to be issued, or EH does not reach the call to ata_dev_power_set_active()
+> on the first run ? You would want to retry it but your patch will prevent that.
 
-  Linux 6.7-rc2 (2023-11-19 15:02:14 -0800)
+Perhaps if it fails, then it should set the flag to request it be tried
+again?  As long as it succeeds, then there's no need to do it again?
 
-are available in the Git repository at:
+> I do not really see any fundamental issue here given that calling
+> ata_dev_power_set_active() is indeed useless if the drive is already active, but
+> that does not hurt either. The only overhead is issuing a check power mode
+> command (see the call to ata_dev_power_is_active() in ata_dev_power_set_active()).
+>
+> Are you seeing different behavior with your system ? Any error ?
 
-  ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/libata/linux tags/ata-6.8-rc1
-
-for you to fetch changes up to fa7280e5dd815363af147dc5358b25f5a06c9c68:
-
-  MAINTAINERS: Add Niklas Cassel as libata maintainer (2023-12-29 10:12:33 +0900)
-
-----------------------------------------------------------------
-ata changes for 6.8-rc1
-
- - Cleanup the pxa PATA driver to use dma_request_chan() instead of the
-   deprecated dma_request_slave_channel().
-
- - Add Niklas as co-maintainer of the ata subsystem.
-
-----------------------------------------------------------------
-Christophe JAILLET (1):
-      ata: pata_pxa: convert not to use dma_request_slave_channel()
-
-Damien Le Moal (1):
-      MAINTAINERS: Add Niklas Cassel as libata maintainer
-
- MAINTAINERS            | 3 ++-
- drivers/ata/pata_pxa.c | 7 +++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+My main issue with it was that it caused errors with my PuiS patch.  I
+tried canceling the SET_ACTIVE flag when PuiS was detected, but then the
+flag got turned back on for the second pass of EH, but not the flag for
+revalidate_and_attach, so it didn't detect the PuiS and clear the
+SET_ACTIVE flag the second time.  Since the SET FEATURES command was not
+issued, the VERIFY command failed, and after the 5th attempt, eh gave
+up.  Without PuiS, it would also be nice to not waste time with a second
+VERIFY command.
 

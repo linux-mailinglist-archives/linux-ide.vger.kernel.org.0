@@ -1,117 +1,124 @@
-Return-Path: <linux-ide+bounces-386-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-388-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ADE6843802
-	for <lists+linux-ide@lfdr.de>; Wed, 31 Jan 2024 08:38:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE87843924
+	for <lists+linux-ide@lfdr.de>; Wed, 31 Jan 2024 09:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24CB61C257F2
-	for <lists+linux-ide@lfdr.de>; Wed, 31 Jan 2024 07:38:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A041D1C28FBB
+	for <lists+linux-ide@lfdr.de>; Wed, 31 Jan 2024 08:34:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA519537F8;
-	Wed, 31 Jan 2024 07:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE7E536AFD;
+	Wed, 31 Jan 2024 08:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyiC5PI0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rblj7/+F"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2E1352F6F
-	for <linux-ide@vger.kernel.org>; Wed, 31 Jan 2024 07:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8DE33070;
+	Wed, 31 Jan 2024 08:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706686711; cv=none; b=hVQR0DP57w3lUTwuwCzunGfNI+Uf4dBqa839ZrY3RuOqp9DcP3pM6J/OSZ0Yf7CZeMaH66PWxHo/dMiRm5S/pSn4z/QpEusF9xo5UW2ldvvWEmCeKrfyqCKVfN6ULa9mMgMuPSXTUYpHAahrXeRX8rWI3DSwkSqZIU1HMbcuMpg=
+	t=1706690040; cv=none; b=ZCBOYjt5kRUaJTC/HE3PBHWg6Uobh/YmC2XcewE/ZktxdKtNQzNtoFK3eRtcrBySso+KFJc8yZpbZR58NdqD43BeFaVqfE15WF25lmRsCk0Qev1XzVWI+lSjaeJhsSEbGGsqws2S8XT5eUxmV7JK++HorVUXUw7bczHCeg7Qa9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706686711; c=relaxed/simple;
-	bh=f0Gu/cyfDSzPqnKlxnlRGsqamvy0PevxKq7skAXsbfU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=X4bqAiDw2hN27JbiV4CY9RFNSot6snd/AsZCYngsB0shdgzIgj94A/Y/6UGkw63n2lVXvBrxLNy7Uh6f8xkAxM4NgG9bY2MUXTMvya5Jk9lDpdwvJr79sqJQ1U1J/TJY0aGpVgjwdhT3gBgCeoMylhuFVxYjq6lSCr7K0nrnXik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyiC5PI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3525EC43390;
-	Wed, 31 Jan 2024 07:38:30 +0000 (UTC)
+	s=arc-20240116; t=1706690040; c=relaxed/simple;
+	bh=Ds+jo8rWFteG9lgQpLFq1+D6AtcbRKkjfB5jTBmecYA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UHDeeR6afrc/amdPvt8m0dmiIkhOhywwRqu4kvqIps3RplcLPrdGiycjnY3Sulm/mSS7wt1fFB5aX9q9L5Odc2DxVq4vLhbWZGJomfSyyc7HuIW/9cEYd6r/L41b3N/IRmglYYxPGSdMCfuWwBgq+dunyKFvKSF3CC9Hc6VSOo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rblj7/+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D8AC433F1;
+	Wed, 31 Jan 2024 08:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706686710;
-	bh=f0Gu/cyfDSzPqnKlxnlRGsqamvy0PevxKq7skAXsbfU=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=nyiC5PI0MnggnRMrNQZEcBH2HUqCoJDPE7DyFwB1kOhXlaRGr8lC8M+pzY7jeGl01
-	 EYgEXhAMSrkAqzjW12wIZi0qKQ9Lgx95OwQ1L0fLyBj72Uemmrrbu9NBtdR/XLdJCn
-	 sIQXI5rgMol0bKGXJTV52iWmUeCDQzP5PXhQakNiwdx3kXnwbajAbyINDwoB2g+vTX
-	 t1cikWdIJi+lV2tlnTT9MvoOYRFi3hoygnztIln56jnpm+skLwzojsZ5uSA0ZrTAPD
-	 A9k0WCJYKcIYODZP/yJ92ZqY67uxlagXfooKsu+RVPbdtZeH2ElcWFRjoTowMtEXEs
-	 SgLE4mm26P/fg==
-Message-ID: <3f7cef2a-5ba4-465b-a1f5-77e2bcc50ddb@kernel.org>
-Date: Wed, 31 Jan 2024 16:38:28 +0900
+	s=k20201202; t=1706690040;
+	bh=Ds+jo8rWFteG9lgQpLFq1+D6AtcbRKkjfB5jTBmecYA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rblj7/+FUa/03DuJmcd1Py8YT3dD5+x8qj6V7Uq2C5aoF5BZaa1UBDCFWLw/jAKbS
+	 N+NBdDL8B5r4ouWWMaA1wA1E2xYdeGGJM2bIOGBQdIBIKjM6JdQE2ku9byLwicSsGy
+	 cmILQowNm2FRc6hg+5IGMCYCrduFfeA0f2C7jA35IgC+nT9zVaiqCkoOe47MgkHnuu
+	 BMaRl6p9jZ8j6qFEhhzK9iL+EJP6PG4PCPHbvQxrc/g1pinpyJvlsoyM5OjlyHqGFK
+	 C2+XNd/2unMqQXE5xi8ssF65BHQ9j5CkvAkW8wLCWhfyJIL+9qB2A0PDoyEttU+lJ2
+	 rvMaEeZ/+Yatg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rV62g-000000004Rm-2Srz;
+	Wed, 31 Jan 2024 09:33:58 +0100
+Date: Wed, 31 Jan 2024 09:33:58 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Jian-Hong Pan <jhp@endlessos.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
+	David Box <david.e.box@linux.intel.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Nirmal Patel <nirmal.patel@linux.intel.com>,
+	Jonathan Derrick <jonathan.derrick@linux.dev>,
+	linux-ide@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux@endlessos.org
+Subject: Re: [PATCH 2/2] PCI: vmd: enable PCI PM's L1 substates of remapped
+ PCIe port and NVMe
+Message-ID: <ZboF9oSWi5OAV_NJ@hovoldconsulting.com>
+References: <20240130100050.14182-2-jhp@endlessos.org>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Aw: Re: Re: [PATCH 0/2] Power management fixes
-Content-Language: en-US
-To: Dieter Mummenschanz <dmummenschanz@web.de>, linux-ide@vger.kernel.org,
- Niklas Cassel <cassel@kernel.org>
-References: <20240111115123.1258422-1-dlemoal@kernel.org>
- <DU0P251MB082515FC8FE77424231B475CF4682@DU0P251MB0825.EURP251.PROD.OUTLOOK.COM>
- <345be856-8959-4148-bcae-00b3fbcd0d08@kernel.org>
- <trinity-0be6e8a8-e6d3-4d60-be0d-59592a9edd65-1706010022623@3c-app-webde-bap10>
- <a72daedd-48c4-4eaf-9a77-a34679636a8c@kernel.org>
- <trinity-0df92d73-be55-433c-bdb2-4387f7ea590b-1706686178879@3c-app-webde-bap43>
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <trinity-0df92d73-be55-433c-bdb2-4387f7ea590b-1706686178879@3c-app-webde-bap43>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240130100050.14182-2-jhp@endlessos.org>
 
-On 1/31/24 16:29, Dieter Mummenschanz wrote:
-> Damien,
-> so I've applied the patch to 6.8-rc2. Interesting thing is that the behaviour is 
-> exactly the same as before (w/o the patch). Besides not 
-> honoring CONFIG_SATA_MOBILE_LPM_POLICY=3 after boot my system refuses to 
-> transition into lower power states > pc2 after resume even after letting it sit 
-> idle for 10 minutes. Transition is only reached after issuing hdparm -Y. So if 
-> the patch restores the original behaviour then why did it stop working?!
-
-Interesting... hdparm -Y puts the drive to sleep while the revert puts the drive
-in standby state. Sleep is a near complete shutdown of the drive, while standby
-is not.
-
-In any case, I think something else is causing this. Probably PCI or ACPI
-related changes. So a bisect would be needed to understand this. But this is
-going to be very painful to do for this as each test take a while I guess ? How
-long do you need to wait to see the system going into low power state (when it
-is working that is) ?
-
-Also, which kernel version is the last one you know is OK ?
-
-> dmesg:
-> https://pastes.io/1vmmvhvfub
-> Regards
-> Dieter
-> *Gesendet:* Dienstag, 23. Januar 2024 um 12:52 Uhr
-> *Von:* "Damien Le Moal" <dlemoal@kernel.org>
-> *An:* "Dieter Mummenschanz" <dmummenschanz@web.de>, linux-ide@vger.kernel.org
-> *Betreff:* Re: Aw: Re: [PATCH 0/2] Power management fixes
-> On 1/23/24 20:40, Dieter Mummenschanz wrote:
->  > Damien,
->  > sorry for getting back to you so late. So is this patch series just a revert or
->  > is it something new? Can I patch and test against 6.8-rc or should I use 6.7?
->  > Anyway I need at least a couple of days since I'm very busy ATM.
+On Tue, Jan 30, 2024 at 06:00:51PM +0800, Jian-Hong Pan wrote:
+> The remmapped PCIe port and NVMe have PCI PM L1 substates capability on
+> ASUS B1400CEAE, but they are disabled originally:
 > 
-> Yes, the second patch is essentially a revert. If you can test with 6.8-rc1 it
-> would be great.
+> Capabilities: [900 v1] L1 PM Substates
+>         L1SubCap: PCI-PM_L1.2+ PCI-PM_L1.1- ASPM_L1.2+ ASPM_L1.1- L1_PM_Substates+
+>                   PortCommonModeRestoreTime=32us PortTPowerOnTime=10us
+>         L1SubCtl1: PCI-PM_L1.2- PCI-PM_L1.1- ASPM_L1.2+ ASPM_L1.1-
+>                    T_CommonMode=0us LTR1.2_Threshold=0ns
+>         L1SubCtl2: T_PwrOn=10us
 > 
-> Thanks.
-> 
-> --
-> Damien Le Moal
-> Western Digital Research
+> Power on all of the VMD remapped PCI devices before enable PCI-PM L1 PM
+> Substates by following "Section 5.5.4 of PCIe Base Spec Revision 5.0
+> Version 0.1". Then, PCI PM's L1 substates control are enabled
+> accordingly.
+ 
+> +static int vmd_power_on_pci_device(struct pci_dev *pdev, void *userdata)
+> +{
+> +	pci_set_power_state(pdev, PCI_D0);
 
--- 
-Damien Le Moal
-Western Digital Research
+As I believe Bjorn already hinted at, this should probably be done in
+vmd_pm_enable_quirk().
 
+Also, you need to use the new pci_set_power_state_locked() helper since
+these callbacks are called from pci_walk_bus() with the bus semaphore
+held:
+
+	https://lore.kernel.org/lkml/20240130100243.11011-1-johan+linaro@kernel.org/
+
+> +	return 0;
+> +}
+> +
+>  /*
+>   * Enable ASPM and LTR settings on devices that aren't configured by BIOS.
+>   */
+> @@ -928,6 +934,13 @@ static int vmd_enable_domain(struct vmd_dev *vmd, unsigned long features)
+>  	vmd_acpi_begin();
+>  
+>  	pci_scan_child_bus(vmd->bus);
+> +
+> +	/*
+> +	 * Make PCI devices at D0 when enable PCI-PM L1 PM Substates from
+> +	 * Section 5.5.4 of PCIe Base Spec Revision 5.0 Version 0.1
+> +	 */
+> +	pci_walk_bus(vmd->bus, vmd_power_on_pci_device, NULL);
+> +
+>  	vmd_domain_reset(vmd);
+>  
+>  	/* When Intel VMD is enabled, the OS does not discover the Root Ports
+
+Johan
 

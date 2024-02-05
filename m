@@ -1,43 +1,43 @@
-Return-Path: <linux-ide+bounces-450-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-457-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20AB084A52A
-	for <lists+linux-ide@lfdr.de>; Mon,  5 Feb 2024 21:12:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AEC84A536
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Feb 2024 21:13:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53CD51C23EC9
-	for <lists+linux-ide@lfdr.de>; Mon,  5 Feb 2024 20:12:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08D6D1F26356
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Feb 2024 20:13:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A8717479E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8E817567B;
 	Mon,  5 Feb 2024 19:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYStd+iK"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKiJoKcN"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6E8174764;
-	Mon,  5 Feb 2024 19:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76800174EAD;
+	Mon,  5 Feb 2024 19:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707159849; cv=none; b=H3/dXtdc8o7Iqg6jgkm38ATIrvOYe9K7gLVmbXxft70enRDQFI3zqFsMCWlP1YbGI9Gsg+yZ+/0TGBxgGOAU0C4LUBLVbufeZoOEA2Hp36yr8T81DbUUjlrPjHW1v6niQVBzTo3MVyPNfulgzt9PONY2VnVKfov33bcDf5G/1SE=
+	t=1707159850; cv=none; b=FPwJg9F2CTJwECFY/fW/zANm6Wib3mhYAzUGbTdKrlkxRbseY9+krnykfvNnSvH3jUU1TMgdIIugyvCguIt+ACrCg+Ulm656ohXTmgucbecM85hu30v04pSZU5V5NYvj01DZX24gatRRvWq7gq4YSJPCmZhFGnBy0Bbop5ou2Cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707159849; c=relaxed/simple;
+	s=arc-20240116; t=1707159850; c=relaxed/simple;
 	bh=2X0beJ3dmfA+cwC1iXbunu8iUPuukUKOrL3cq5ZA8ZU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jV3JHSbeH6oDeHg41h83l7A2+agLIvn4Kcg7FgxDN06KF0FyKJUkrVGnC9jOY1sdfCf3O65eFzff6Qbcepq8tPerEIFcv2YFrKCACTPu7fUvgq0kYUtVPr6aQQsy9GX23LUScVhU/uJ7Pb13Ny/0VXcCn9mypKGwHFFB5vJz5Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYStd+iK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A186C32785;
+	 Content-Type:Content-Disposition:In-Reply-To; b=LmZJVbu2MCL0+qbIFsWlAPnL+5ovmKKBKUMcBBVMN2mA69hJ3rt8ZGSZ70syH22cJ8AIYEEDW7TgYQu9X0PZP3KJBxkrEegvt2RCbmNeJo2iJ/+EVvQGc6MKZPBzUsaP0Zkw9VBAJOfccpJtCG0Z2vLSYfnqNewoMn1Dk6SlXAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=fail (0-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKiJoKcN reason="key not found in DNS"; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02182C3278D;
 	Mon,  5 Feb 2024 19:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707159849;
+	s=korg; t=1707159850;
 	bh=2X0beJ3dmfA+cwC1iXbunu8iUPuukUKOrL3cq5ZA8ZU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WYStd+iKd+2So2kDrSMMyTih3ROQAIUWkWpwxk17wXdTS6kx+hJSilmhUYJC3lCbe
-	 chWZGGaRCrJC4ZY+msoO5eFEOhYRYRkKGqoC7FoNcMkxUtb7wW4tEYIEL5QItuJ7l1
-	 wJ7NakcylCA9AdxLgYiPcIxBYlMhFSZ+DMShIWno=
+	b=KKiJoKcNSZNzeFU8frS2NzdZ6dX9p2Jr1fVNFKDL0ClEXMa2Da3IMQgGFdChq8Dcq
+	 rvvufbbCNYDt+EMGO3X6QHqXsL1eXQ2dAcNiB46GSqXrCEw1aLoRlgcXYupPVgSATl
+	 o9DN1RUgsP5fFhaqOo/Gbx5S5oQ7Fos+tZO5O2YE=
 Date: Mon, 5 Feb 2024 04:51:19 -0800
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: "Ricardo B. Marliere" <ricardo@marliere.net>

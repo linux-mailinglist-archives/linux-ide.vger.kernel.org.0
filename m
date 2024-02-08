@@ -1,131 +1,109 @@
-Return-Path: <linux-ide+bounces-506-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-508-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C7384E49F
-	for <lists+linux-ide@lfdr.de>; Thu,  8 Feb 2024 17:02:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE0E84E7C3
+	for <lists+linux-ide@lfdr.de>; Thu,  8 Feb 2024 19:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9111928476E
-	for <lists+linux-ide@lfdr.de>; Thu,  8 Feb 2024 16:02:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CBE21C234D7
+	for <lists+linux-ide@lfdr.de>; Thu,  8 Feb 2024 18:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1877D40D;
-	Thu,  8 Feb 2024 16:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033251CD2E;
+	Thu,  8 Feb 2024 18:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obJpFnU3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QinOxiS5"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA687BAE7;
-	Thu,  8 Feb 2024 16:02:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F49E1DA2F
+	for <linux-ide@vger.kernel.org>; Thu,  8 Feb 2024 18:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707408132; cv=none; b=tm73EUf2c7KKNmiiEjDpnJdgIbSkl3+4Ous3G0wxKuXobv7EWxUIZMuMufVf3BAYp6SbALHP9z0kzjkoyhyVAbYFI5fNV+818e6IXtQXyft18gKIo7IDh2ajSnDaeb4XeL8UM7s0dFO3CU7HAPDnnRRPOTaqcRV4UhaP5WPthWg=
+	t=1707417449; cv=none; b=OCSkb9uG5Rq0zatIjKjAeGz/LFrRVQu6VvFzN581gaRmKH+0PBD4kdTN5dZds4AnJUNgEaYiUY/BylXycOUUNwq6lNbLAC2aSijvCxFWwoEhHTBdYF7uq5UtfIkSphh4/4gOkqdbqZRZFHlTNudxvI2uSKHLUB3yMBV3fwXYaF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707408132; c=relaxed/simple;
-	bh=uTFe5CG7oWonbpeVbz5UaAiaJEjR9X1sZYLpZSCrroE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RpalCi3Iba9l+gDTQVQ3cBC1tUMXBk160Y1LAnXyH40zfhFpUWCpc8ji+oNx+4O1gknE2g4gk8wKste4qnzOATOhpTU/EgHMB1vf+nr0TU668cjzTKpKdUL9DdLen97lP2o8Dt4lFcKVJ/akmTIPH14w0C5G/V6D6u9exhV9VTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obJpFnU3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC76CC433C7;
-	Thu,  8 Feb 2024 16:02:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707408132;
-	bh=uTFe5CG7oWonbpeVbz5UaAiaJEjR9X1sZYLpZSCrroE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=obJpFnU3wW/7vWnQ2T7KbJTN1o0DhsaGAsrrj2BVE8zioOEqxNl2MiXnaak9whqbt
-	 OIDJi1LDw4Ob4TOyMXecgyYlB0ULe8cbKEYD18dH7iv2VOYpw90ipR40HRow6soWvg
-	 DkCTi37Z6twlWFr7xB9SDcp4WUYNmxbMlDbECEGxFl+2eUYoaRKZIyH7IwHvpQ9BQu
-	 nNUhloOm8p60q6R9WsjvEZT4tnO900WaEIv/prTxnu+YOB1xTOPKTTYP8o7TuhLlr2
-	 Ljl07+/LdqTtHEHadWQ3k0UZK64B9xF+oq5GtFxTc70ZUxMclN84FsAWvnJLmt4GnN
-	 Cj4n/P6UyVT+g==
-Message-ID: <3ba0dffa-beea-478f-bb6e-777b6304fb69@kernel.org>
-Date: Thu, 8 Feb 2024 17:02:07 +0100
+	s=arc-20240116; t=1707417449; c=relaxed/simple;
+	bh=TVM5yl0qA8js6hS+yKnK0nKrrOeE8hgR0HXZPV32EWs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jM9zghO2bKaE4nxcTlDjI/38GYAmWftmiKdpNOgm7k7AFanks95+iBEY2Z46RDi9TcS5wceQHgUvyPFz/AHtvKVlnfpg7ZlPE1VYQx7cyjAUxnKCw1ubH+aiHvWwUrAMNKtDwJhM1rR6xyjr9PMeod3AsNnwGA2qV1x8J8VIEuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QinOxiS5; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707417448; x=1738953448;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=TVM5yl0qA8js6hS+yKnK0nKrrOeE8hgR0HXZPV32EWs=;
+  b=QinOxiS5blJCZV0meD6Hf3VsS+lZ8T66tAjknTWyeC2SEsTlYw+cfYKu
+   Vuk8NHIkLP/g1Z5YhAMtCVyC4xEoTm/9juvodykx5CEIL3HYex7PfB6wQ
+   1ve+WuKx7vUncydlOA1FRNUeAEgVNDwSXLVE0QCWVuts0c/Tr9qvfIh/w
+   iHq2fHpqvU0b4QKyrKOoPi1IjyuySOhF78dP45F5vzkoDi5ANdmAFr+6G
+   /sRgEvnY4bmpMGkXMzrzeSu4pHisFo4VKF+dhBKHT+GV+wOrjRptcasMM
+   DvWrFfM/mFvVUMSsypVy6NUcgUV6AzVpXJaswA6NR+8DQwBFJaJfFGsi5
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1183801"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="1183801"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 10:37:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="934213122"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="934213122"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 08 Feb 2024 10:37:26 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id B3E9586; Thu,  8 Feb 2024 18:09:20 +0200 (EET)
+Date: Thu, 8 Feb 2024 18:09:20 +0200
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Niklas Cassel <cassel@kernel.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>, linux-ide@vger.kernel.org
+Subject: Re: [PATCH] ahci: document and clarify unconventional intel quirk
+Message-ID: <20240208160920.GT8454@black.fi.intel.com>
+References: <20240207091054.1697236-1-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LSF/MM/BPF TOPIC] Removing GFP_NOFS
-Content-Language: en-US
-To: Dave Chinner <david@fromorbit.com>, Matthew Wilcox <willy@infradead.org>
-Cc: lsf-pc@lists.linux-foundation.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-block@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-nvme@lists.infradead.org,
- Kent Overstreet <kent.overstreet@gmail.com>, Michal Hocko <mhocko@kernel.org>
-References: <ZZcgXI46AinlcBDP@casper.infradead.org>
- <ZZzP6731XwZQnz0o@dread.disaster.area>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-In-Reply-To: <ZZzP6731XwZQnz0o@dread.disaster.area>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240207091054.1697236-1-cassel@kernel.org>
 
-On 1/9/24 05:47, Dave Chinner wrote:
-> On Thu, Jan 04, 2024 at 09:17:16PM +0000, Matthew Wilcox wrote:
->> This is primarily a _FILESYSTEM_ track topic.  All the work has already
->> been done on the MM side; the FS people need to do their part.  It could
->> be a joint session, but I'm not sure there's much for the MM people
->> to say.
->> 
->> There are situations where we need to allocate memory, but cannot call
->> into the filesystem to free memory.  Generally this is because we're
->> holding a lock or we've started a transaction, and attempting to write
->> out dirty folios to reclaim memory would result in a deadlock.
->> 
->> The old way to solve this problem is to specify GFP_NOFS when allocating
->> memory.  This conveys little information about what is being protected
->> against, and so it is hard to know when it might be safe to remove.
->> It's also a reflex -- many filesystem authors use GFP_NOFS by default
->> even when they could use GFP_KERNEL because there's no risk of deadlock.
->> 
->> The new way is to use the scoped APIs -- memalloc_nofs_save() and
->> memalloc_nofs_restore().  These should be called when we start a
->> transaction or take a lock that would cause a GFP_KERNEL allocation to
->> deadlock.  Then just use GFP_KERNEL as normal.  The memory allocators
->> can see the nofs situation is in effect and will not call back into
->> the filesystem.
+On Wed, Feb 07, 2024 at 10:10:53AM +0100, Niklas Cassel wrote:
+> The ahci_intel_pcs_quirk is unconventional in several ways:
+> First of all because it has a board ID for which the quirk should NOT be
+> applied (board_ahci_pcs7), instead of the usual way where we have a board
+> ID for which the quirk should be applied.
 > 
-> So in rebasing the XFS kmem.[ch] removal patchset I've been working
-> on, there is a clear memory allocator function that we need to be
-> scoped: __GFP_NOFAIL.
+> The second reason is that other than only excluding board_ahci_pcs7 from
+> the quirk, PCI devices that make use of the generic entry in ahci_pci_tbl
+> (which matches on AHCI class code) are also excluded.
 > 
-> All of the allocations done through the existing XFS kmem.[ch]
-> interfaces (i.e just about everything) have __GFP_NOFAIL semantics
-> added except in the explicit cases where we add KM_MAYFAIL to
-> indicate that the allocation can fail.
+> This can of course lead to very subtle breakage, and did indeed do so in:
+> commit 104ff59af73a ("ata: ahci: Add Tiger Lake UP{3,4} AHCI controller"),
+> which added an explicit entry with board_ahci_low_power to ahci_pci_tbl.
 > 
-> The result of this conversion to remove GFP_NOFS is that I'm also
-> adding *dozens* of __GFP_NOFAIL annotations because we effectively
-> scope that behaviour.
+> This caused many users to complain that their SATA drives disappeared.
+> The logical assumption was of course that the issue was related to LPM,
+> and was therefore reverted in commit 6210038aeaf4 ("ata: ahci: Revert
+> "ata: ahci: Add Tiger Lake UP{3,4} AHCI controller"").
 > 
-> Hence I think this discussion needs to consider that __GFP_NOFAIL is
-> also widely used within critical filesystem code that cannot
-> gracefully recover from memory allocation failures, and that this
-> would also be useful to scope....
+> It took a lot of time to figure out that this was all completely unrelated
+> to LPM, and was instead caused by an unconventional Intel quirk.
 > 
-> Yeah, I know, mm developers hate __GFP_NOFAIL. We've been using
-> these semantics NOFAIL in XFS for over 2 decades and the sky hasn't
-> fallen. So can we get memalloc_nofail_{save,restore}() so that we
-> can change the default allocation behaviour in certain contexts
-> (e.g. the same contexts we need NOFS allocations) to be NOFAIL
-> unless __GFP_RETRY_MAYFAIL or __GFP_NORETRY are set?
+> While this quirk should definitely be cleaned up to be implemented like
+> all other quirks, for now, at least document the behavior of this quirk.
+> 
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=217114
+> Signed-off-by: Niklas Cassel <cassel@kernel.org>
 
-Your points and Kent's proposal of scoped GFP_NOWAIT [1] suggests to me this
-is no longer FS-only topic as this isn't just about converting to the scoped
-apis, but also how they should be improved.
+Thanks!
 
-[1] http://lkml.kernel.org/r/Zbu_yyChbCO6b2Lj@tiehlicka
-
-> We already have memalloc_noreclaim_{save/restore}() for turning off
-> direct memory reclaim for a given context (i.e. equivalent of
-> clearing __GFP_DIRECT_RECLAIM), so if we are going to embrace scoped
-> allocation contexts, then we should be going all in and providing
-> all the contexts that filesystems actually need....
-> 
-> -Dave.
-
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 

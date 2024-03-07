@@ -1,182 +1,202 @@
-Return-Path: <linux-ide+bounces-795-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-796-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BB587420A
-	for <lists+linux-ide@lfdr.de>; Wed,  6 Mar 2024 22:34:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4179C874A2F
+	for <lists+linux-ide@lfdr.de>; Thu,  7 Mar 2024 09:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB0EBB22DEB
-	for <lists+linux-ide@lfdr.de>; Wed,  6 Mar 2024 21:34:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED2EC285800
+	for <lists+linux-ide@lfdr.de>; Thu,  7 Mar 2024 08:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5409B1B7F7;
-	Wed,  6 Mar 2024 21:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A9F82D66;
+	Thu,  7 Mar 2024 08:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aBdgnM2F"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HOyp0kL7";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="M2/5ti/V"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52051B59C
-	for <linux-ide@vger.kernel.org>; Wed,  6 Mar 2024 21:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709760843; cv=none; b=mbZJ+477zZbTRz1MKnOOsRMWfscIj+fzt4pRD5VEI7+xeuCcb6TLgtcSHedkuhU+pW3iqaGpiuZsiv2/oDFRv24iBSUPC5WTCV4u9tq4D+tfQ3PpUs7IdnDHa1f7GGDaAUAarWSkvxqxQhgQ5nvIDeeeWVilyi36OSZBJo/T0rs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709760843; c=relaxed/simple;
-	bh=peAbg4zTIh+UTQtLUNXjdZERPwEBRspOqi/uvi47S5Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hIEhpbUgNKofjiEWzTRgefA3d1xNznU2F1Mueigc7QjXfBT2Ou4WD2553VUj1bUp0vbitzBfcXT7kyt0XjFZhbvGcUfwz0NB58X2PRMFeLzKqHTCa2cgjZi6xSuiNu2J8nJQl9qwm2pTUW11lEpEr8S6Hs6HsBdAfztcgPD7yLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aBdgnM2F; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1dc1ff3ba1aso1497415ad.3
-        for <linux-ide@vger.kernel.org>; Wed, 06 Mar 2024 13:34:01 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1726282D75;
+	Thu,  7 Mar 2024 08:56:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1709801815; cv=fail; b=WkoYnqQbxzaKlHs1zkuEIUgxDzLlat7jZVx3qLyJDcD0BpQubdVYurP+DnD/cq6uSFgmrLqZ5cIhRczOIS6JTwIFLo9dDn+UpP8kEh4d9d3n126CpSdMlylX62MK74+BnQtz6AA62R0CvQt+yVSvIYlJKZ7iulN/+AH36zzJnP4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1709801815; c=relaxed/simple;
+	bh=bXg1SpgiPzLTaYJmVzAtaPjUQn1tkqD2725VjBGMWZY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=lIF4hgN6Qh6IwRQiBefKcYXNhFbuskGVvGFr7Or2b36W3oNJmBzNQPp9jKRElZZ6WjrfnTKEa4Pve9sxngDiDrbusVs2NURWw4YMpGnltyaLZG7JZI4KJMLMKH7XPOIIczr3ObonlhRfddl0ISczaNVpefz/wtrdvxCmb701fc8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HOyp0kL7; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=M2/5ti/V; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4278aQBx003004;
+	Thu, 7 Mar 2024 08:55:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=FTG/HMwrsamiSsVXS5Kn/8rIyMVmLlXjexwSwBdi+x0=;
+ b=HOyp0kL7evI88f9qvPxmvnNPeX4BUOId1XKIIjBi4dbDE5OjuJ+jeDrkjTMvm1Wqzhol
+ 3o/exROUmRXNkgWIiWzowCSzj2pnFou5Mk/cKKt5i44h988C6hjvdT+5PNO02HET2GDK
+ tJPwsP2OUgF4oIdpbSU+uk9P8n7uYbHA4mG33w4GwTmW+GoSP8DAB9uM/ZVTM9Jlj4pw
+ 8nLtM/TUNcdYrcHsnUkLlt9ZmYfEep5Zk212yXs8ER+bN1v9y2H5HYEO233fPI+Ay15J
+ KOUTwg1V5tujvBc8gPxzkGVIjORBjfZzRuM2omG6hiaVk4YMKvKmDdRdX1I1WvZCHfkb GA== 
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3wkv5dkjkk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 07 Mar 2024 08:55:58 +0000
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 42789CAs040916;
+	Thu, 7 Mar 2024 08:55:58 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3wktjgpu9v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 07 Mar 2024 08:55:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TMA4j0aUKBuakp7Cp/HzcOhHNsREPA50+CCv0LW/qOUWXW9nn52Dudbhg//vqvpPNDqaFpg/APKYV7TPLVIrQa0u1H93OvwUG2s6pz/ISuO5IDZ6JOeyqJA/s7TiUbuUYHBhd9k2EWKJfgsAMZpzkXMPMRX87ahH/GcN7vc7LYRpuuRv8xPZXq6pB2UI8ZSJlZ6Suc7hPC+mVr5vyRqFFirx3tuVXj5eEcix983OhyMNg+WSxGcJ8LkgCZM9+7hWdAerHjrENQpiH2nm/0t/RwTxpOf7rypuM/nHSingzWjtT/22ZpD3gfMx+0IGU+ruwGoVzfoVFPuow867jKPtrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FTG/HMwrsamiSsVXS5Kn/8rIyMVmLlXjexwSwBdi+x0=;
+ b=WojANWwZGMh5CeTSvi4M+SBZJYx4Zc6K5fFboBCC+h7TtOSKKnUqkPZ2kcNlwSzLOOMyZAwVLBRhc08aLrzEpgDW1hBvbyCe0JlOoNLpcWKkMQ6ZeyUACO9hCdhJB3o/Arr0xI79roAGzfhw5q1hsCZaopTfRhXtB5rnp6UUYsJgVYBwfzhq1TQzOHt4lI4cFkynWWq3jC6TKDQ2KBIAvcTBk7llb+7wH+QaoQlPxseeRua7kp+lqYBlIPMdRoJwxGPPPdSPResr3cPea9RDm+Cf7/qym4NJS94Zxi4wV95fZTz8Zo++6frpDz1f3nuuytrr7p7zdrsWTpj6IGd39Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1709760841; x=1710365641; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=spCvMYknEOhSMD+gnBZqeFH7EvzN91XDO9RNAyR+qps=;
-        b=aBdgnM2FRSz5up/ufxvS4vnkA+O1A7l5yUQjsO2C0bddUGFfS/Sq+zkXazBIkLZZWw
-         69d34eiOYxGf2XyarkMRtnZLY8ObsKJstBHO9YESvXrcSBMOblYus1/6orrBL+OIHsiK
-         iWnWBBjoAZePkbeSPGVtXuVapbUFmcf/7g4WAPp61g/6pw8rpfkSGyI2viFyknPBfoqt
-         2+7IsAdp6HqQlbLADDh0C7X6AOsxfhuho+3wQVYzgzsz/D4p2Y3Slps+ptx8xTIZhzZE
-         imvOXb1H0QMQM4JJrFstYhsMPANO6R4GIfVgcdqZmRRbiXi3zkU1a14TuzGNfNuvo2ai
-         atIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709760841; x=1710365641;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=spCvMYknEOhSMD+gnBZqeFH7EvzN91XDO9RNAyR+qps=;
-        b=rTWG0osGG1VFzCmZavBGvk52kF0LGyD8xFSHy3LQamEQ3l+gcLzfN+ClXyf1CSUtBb
-         9Q3wymPPL46aDc5cjjv/bXwrSAAX3OFhvtr2Kr9YhZsljHBIc2dri1/SArkIX2QWrO+v
-         +UurWGrLrAQwZ32EF63HJr8FaG76N0f+TEkBsHGErqY6WQI3KQnGlqYvPOc/Q5gbaeOV
-         aje8BjV+7mDZ4++pjw85RmuqvLs87DmrIpkVJ6e8WFhCXYzqvGSD1siJcAMiBNmJW/Pw
-         3q2qV+zmYoSEifSq1iEbLOazrI9hJK311UmVEUeQIZbZ0ZcMVY71yWR5Rlty9z25VsU1
-         AgAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvGr+hZGpzzn6Lqm49d8d+2FlHjchdYg9bFwE0Xm5yJNlnoPa2pcpFpGukwMVKyl/CTWXSEioA0wFHxvupgfQXFAfPXBhYE47A
-X-Gm-Message-State: AOJu0Yy2tekp7JKTR6l0BlsYNUUF099850XwYfkPdFMZJaQaTrKrCk5W
-	PVfMM6dBh8p7R9te0cmlSEk5+nL3xLGga82sTqX4rulZTn8Eub2h72aHRUa6Xw==
-X-Google-Smtp-Source: AGHT+IFT59l4bms+SwWKG/vnM8EnnHFXormej4iFF9afmQhiVqbtqHArrM4el5GtDToqRrBwaMv3WQ==
-X-Received: by 2002:a17:903:41cc:b0:1dc:499b:8e80 with SMTP id u12-20020a17090341cc00b001dc499b8e80mr7742894ple.54.1709760840505;
-        Wed, 06 Mar 2024 13:34:00 -0800 (PST)
-Received: from google.com ([2620:15c:2c5:13:9a91:c17:53d9:d156])
-        by smtp.gmail.com with ESMTPSA id lc11-20020a170902fa8b00b001dc668e145asm13063705plb.200.2024.03.06.13.33.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Mar 2024 13:34:00 -0800 (PST)
-Date: Wed, 6 Mar 2024 13:33:55 -0800
-From: Igor Pylypiv <ipylypiv@google.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	"James E.J. Bottomley" <jejb@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jack Wang <jinpu.wang@cloud.ionos.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	TJ Adams <tadamsjr@google.com>, linux-ide@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/7] NCQ Priority sysfs sttributes for libsas
-Message-ID: <ZejhQ7PMFdYV_ktq@google.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FTG/HMwrsamiSsVXS5Kn/8rIyMVmLlXjexwSwBdi+x0=;
+ b=M2/5ti/VCcWpYMQZqfxxVndlUHNErWHY2SkukVHbzmcUxqTnGeDP3ya/PAJxh+C2g37L+N48Vm1Cl3U0EXUgVzPeKvvduncnZkgjE5914Ta7Kga0SsqCdrnTzC30Q1mYw3PbA3/ycP72lkNIsf0LUfeiBxgtAzkyvTj7a4FJ/kk=
+Received: from DM6PR10MB4313.namprd10.prod.outlook.com (2603:10b6:5:212::20)
+ by CY5PR10MB5961.namprd10.prod.outlook.com (2603:10b6:930:2e::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7362.24; Thu, 7 Mar
+ 2024 08:55:55 +0000
+Received: from DM6PR10MB4313.namprd10.prod.outlook.com
+ ([fe80::ae68:7d51:133f:324]) by DM6PR10MB4313.namprd10.prod.outlook.com
+ ([fe80::ae68:7d51:133f:324%4]) with mapi id 15.20.7362.019; Thu, 7 Mar 2024
+ 08:55:55 +0000
+Message-ID: <c3ebaa55-d05b-4f11-83a8-2a0fb85044cf@oracle.com>
+Date: Thu, 7 Mar 2024 08:55:51 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 5/7] scsi: hisi_sas: Add libsas SATA sysfs attributes
+ group
+To: Igor Pylypiv <ipylypiv@google.com>, Niklas Cassel <cassel@kernel.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Jason Yan <yanaijie@huawei.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Jack Wang <jinpu.wang@cloud.ionos.com>, Hannes Reinecke <hare@suse.de>,
+        Xiang Chen <chenxiang66@hisilicon.com>,
+        Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
+        Bart Van Assche <bvanassche@acm.org>, TJ Adams <tadamsjr@google.com>,
+        linux-ide@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 References: <20240306012226.3398927-1-ipylypiv@google.com>
- <ZehLXDoWQZiLzCTo@ryzen>
+ <20240306012226.3398927-6-ipylypiv@google.com> <ZehLpV06mpHxjecc@ryzen>
+ <ZejYb4ykeF7Qx5a5@google.com>
+Content-Language: en-US
+From: John Garry <john.g.garry@oracle.com>
+Organization: Oracle Corporation
+In-Reply-To: <ZejYb4ykeF7Qx5a5@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0331.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a4::31) To DM6PR10MB4313.namprd10.prod.outlook.com
+ (2603:10b6:5:212::20)
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZehLXDoWQZiLzCTo@ryzen>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR10MB4313:EE_|CY5PR10MB5961:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f5adb47-cca2-4cf3-ca2f-08dc3e84666d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	qDIDnBT18X2aEJbyXE3kVaFM1OkJUCsfWGJisfHWcl3Dhg+Bh6xloPq8XMySgxmOo1Og/lNG5+CvR2h/JccYOZht2/oqAA8ACt0EtNcJDFSJhu6WrR5C/NNOx7T6FwhEvXFE8begWU563F9GwOQikogLp+FrUTFZqtWgLLNqLFvkEQGVht4o7Pc8g5Gt23HvDmTjI8wKHGepq4rLLmhyo3xlbZAZOQ3QBmn/d0mPM3Im8p8dW//23dSARmQuy604TFL8z4ZkTZOTAsvuwYcTS2CUBuEVuzpYmSRTUY3jJGNYCo8lY/FnHDBEUdhvhZCZ6iiX/WjS0zn8t5svhG5TfGEeF5CMNWbTEUyHo9Y7OjsuCU0q1LqgDX+bRSGlV2gToz35nGHm3mKpxew8GttO2OSPA9uRRlWENOTFlzVv/OieXUlX2fEXJJrBn1e/ePgFKCocIivP4d2aBkWWny+rfWUfI58Fh6GzB00OdirpnXP4cXwvBzo9rb1Tnt5s0PfaBKUieUmUa8kp+INlkiDXZgQ2xFnbaKbyV4Lo+KGQuD0GOK3I+FO0KtVBzFOaw6sWTilQmkT/tCN2S+pSmklJv/j/eTieMbQ7pD+wmkjfJ+/AyLIyvhCFjbb5pLYZ0WFOeW8sQw5zwJ4lKqvKY1c+ez4mPy1zl+AHweJ+8zo0EE4=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR10MB4313.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?SlpLdGE0Y2FTZ1BYWXdFbDIwWkZ0Z1hUZjdKWTNyb2xGZGdpRnYzdlVoMVor?=
+ =?utf-8?B?R2N6Q2RsN0o0bXpOQ09rdGRubGRlb0FhcTlPWjJDS1I3K2JLUk8rWVlDWHpt?=
+ =?utf-8?B?TlIzUWkyeVJXWVpxMlBzc0VoQksxU1MybVN2ZXZ4SFU5Z0lCWUl0OTFUbzVj?=
+ =?utf-8?B?bUZtd3F1TThaakt5TXdrcDZER1phWVFIU0JuUDJTVVRYL2Uwd25UdFQ2YklT?=
+ =?utf-8?B?c2xtZUJsU2paU1BWWEgvQWxrOFZuRlIyS2x1cFVJdEtwbnZ2NEJzM1hwdEFN?=
+ =?utf-8?B?VjZ5VytySXFtaHBrNG4vMWVNcDBkTXVSTXI1dm8ybE1vZjJsRlNzeWdzemw4?=
+ =?utf-8?B?QlVmaXVSUGVqS2xtR2VpZVVUcFc5VitLL1NzYU1hOGhEZHBsRlJYRjFTam45?=
+ =?utf-8?B?N0hKOVZKVDRnK1JYYTE2Q2tDdTh6ZGZHaDdFYkcrWVEzSTRhd0NJaEpybk1u?=
+ =?utf-8?B?MlJKOVcxSmVORUJiY25sN212VFZpRkgycEM5Z2ZNbkdUVHMyZjJmRm1qUW5J?=
+ =?utf-8?B?RGdacWFZRS9YNU9RMUUzOHJGQ1lhWnd6Wk56UFhQM0lkOWZYc3NQU3F6Yzhi?=
+ =?utf-8?B?RDBqenBlU0ZhNjNYVzg0Z0g3RjgyOFJINGk1aWkxeEd1bHlIcEs3SHR4NTFy?=
+ =?utf-8?B?emFkUEVLYnh6UENlZllBVk1ITEhHanU5VXhIY3UwVkZ0STJMd3B5ZWNOcklr?=
+ =?utf-8?B?TUIwRnVRN2RqTFNDbTZ2V01qVmVIbUZsQ1hmVWRyY2tTVFB5MmFCZ2lQNHM2?=
+ =?utf-8?B?QkpHcHBOUno3N0srbktnZE1SeFdlZGdxLzZBUkt1c08zUDBmZnlwS2FLZTA0?=
+ =?utf-8?B?TlhzMUovSk1pWU9pdEo1N0Z1ZFRQWDN4azVMaW96TWQ3bXVmbEl0cnVDWTBN?=
+ =?utf-8?B?T1RHTUtTeCtyT3c3aU9DRzduUmlFN1lTZmt0N0pQQjVtTnRqRmhYMCs0NXJ5?=
+ =?utf-8?B?Z3krSkV0V0hTdFRwRGlnUURlc0w1Nmd6RU1KTWREa2l3WDdaWjhMdGZMcXBW?=
+ =?utf-8?B?cDVFMHlBQjNzZXNpbytObnBNMUZPQnVwMm8yQkUyU0Z6OVlyUjdpaXBwRFFI?=
+ =?utf-8?B?cVJ4dDU5TCs4TURHWlpMSzdWUUVocmQrVGlwbmRTb25ySDNDalNtdEIvSC96?=
+ =?utf-8?B?MkZtNHBsT3h3ZlpYQUZyVWVLcTgzdDcyeEJyN1VKT0lNZXBMa1F2eEF3cFVr?=
+ =?utf-8?B?Uzk5WmdlbTdZQUtZQ3gzUmo1YTRIUzduSURseElmSHFVMnRRVUx4cjJ5ZDZP?=
+ =?utf-8?B?R3VCTXYwd2Z3N3RoZmppd1dTQUtVZHRNSXR4bldZUDUybWZmSitYM3Q4TVlx?=
+ =?utf-8?B?SzZCczdBeCt5N0NLUzQ3eldrKzkrK3JSNTZnZ3FvclJrUHE2NjdURllNWWxj?=
+ =?utf-8?B?ektRM29CcmxDVE5tVG55WXJ4aG1FL1d5TWJmZy9iZXRyZlRiU2VLL1doN1Fv?=
+ =?utf-8?B?Rm1KM2ZBd1k2ZC9QbWJDcmlwUHNFVktWWVlMQU51bUt2WUV6OVlMMGhLUXZv?=
+ =?utf-8?B?MDI3dDJoQ3NsQmNxYzdWdklWVUxJaVVBeCtWSnZrODA0b1Q2VythMitOQ0Fk?=
+ =?utf-8?B?S2VSRTIzbE1FR2w5d0NIVmdvbVd5K3l0YzgwTHA5TDNBVjZ5YjlabGxuMG9o?=
+ =?utf-8?B?dWZMRlZkMmUycjljSFhNS2ZON1l5N09zT2dpeGVmVzdkWkdPTzM3cnFpdFNQ?=
+ =?utf-8?B?Q3JEM2VCL2JVZ1JVczhxRXZSWTN6K2NGMVhzaGpScDgycDBVR0V0UUI5WnNN?=
+ =?utf-8?B?YlIrQ0cxNGlXYmtlQysvUGIyeENxdUlyb2R3MTNKdDBhb0VrVzdHVG1lMzZk?=
+ =?utf-8?B?OEV0RHNIbW13SmFZZkRRWVVNb2hkaDFCZmlrUlpSdUphMktnMFkvVTEvTmg1?=
+ =?utf-8?B?WWFwOGRST1FpQjUzQTZNdVZMV2R3bGVKM3RsZFM3U0lmOTRjS21sYkhDakxR?=
+ =?utf-8?B?VnJNZ0lzdnVwYVFJVFBmN2dmVngzOHdYUWRBeDJ5V3ZMMDlrUUIxWlJjSEVQ?=
+ =?utf-8?B?b3FEdkZmdHRCS0Y0VHVVeW9naWFpVHE1UWhvSTdqeCtBQTlUNE9kWUw1eUxn?=
+ =?utf-8?B?c09Ga2xab3grOWc3YUFwV0p4OWp2Wk5meUd2eFR2akkwYlRZMlJueGY4dmRZ?=
+ =?utf-8?Q?86es4tEtBCweZvcinalLWqzld?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	75jmFI1cP0lSHS0SSMsgFI4iSkgf0vXhun8Xg6WShWiIeOCgzluAj++SERUBDlZapTy4PFjGsrbAIY6sV0rXo9HURS+f830b5J4IKujfkRGEG9ziA9RXOInpWApl/D3iHLcMI6gYtdf2aTPPnx2EnI/JdtSh6AiyKC1/VgcE88MxxTgGrIbj+wO236l4SFW5+miNac/zvCuGqhJ1d2QL+x4xbWSnQPeLDeD9tE168jH+8ZPgViJXuwkzsTYxATTfO72k585W1JEiavtwDAEjt0mbcjsqH538Ejl+zlu5HLw6CS9866vU7DvZDnG0k/QmBcdmGeRXhYizyBollZQADrPRmmlBeX/93qES01KFWw/9uWuZiRFQIWzcQvB64oOaqcJzX2RKoQ6Y73r4TcMLsNxl0mqnPrg/p0CsIh9DAr76FZ0yth24QTmJ3N/cQN9IavoV/HTYJYcXgbXamNH0oSaEbReE8XpI1MP22CzwJglR3J5XeMMydtocIWSxpNiiTRcSc56wznMhPas+rElmtrGv2ATGOmp4DmoFdrCjEpoEr78aqxJFXT5oDfUik8+vUX17qTVUIxO0m1OtRE/B86CZ0AKBUb+bQ9XJLUUif8I=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f5adb47-cca2-4cf3-ca2f-08dc3e84666d
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR10MB4313.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Mar 2024 08:55:55.6896
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sXUSAWexd6F5nIaIo14QcxRMJJQFbByTtmtBRi418ApqBNRufrBowDgwwdBWHDaAQ8Brw5H3pTaegcZcOsvg9A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB5961
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-03-07_05,2024-03-06_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ adultscore=0 phishscore=0 spamscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2403070064
+X-Proofpoint-GUID: C_mSmkwrNUqkNEjgx_QRlFFTHnYlEUKX
+X-Proofpoint-ORIG-GUID: C_mSmkwrNUqkNEjgx_QRlFFTHnYlEUKX
 
-On Wed, Mar 06, 2024 at 11:54:20AM +0100, Niklas Cassel wrote:
-> Hello Igor,
-> 
-> On Tue, Mar 05, 2024 at 05:22:19PM -0800, Igor Pylypiv wrote:
-> > This patch series adds sas_ncq_prio_supported and sas_ncq_prio_enable
-> > sysfs sttributes for libsas managed SATA devices. Existing libata sysfs
-> > attributes cannot be used directly because the ata_port location is
-> > different for libsas.
-> 
-> As far as I can tell, you don't add sas_ncq_prio_supported and
-> sas_ncq_prio_enable, but instead add ncq_prio_supported and
-> ncq_prio_enable, so perhaps update this sentence.
-> 
-Thank you for catching this, Niklas! I've updated the sysfs naming in
-the actual patch but forgot to update the cover letter.
+On 06/03/2024 20:56, Igor Pylypiv wrote:
+>>> ---
+>>>   drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 6 ++++++
+>>>   drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 6 ++++++
+>> Is there a reason why you didn't patch:
+>> drivers/scsi/hisi_sas/hisi_sas_v1_hw.c ?
+>>
+> I originally patched hisi_sas_v1_hw.c as well. John Garry pointed out
+> that v1 HW doesn't support SATA so I dropped the change.
+
+If you are going to do another spin, then maybe update the commit 
+message with this.
 
 Thanks,
-Igor
-> 
-> Kind regards,
-> Niklas
-> 
-> > 
-> > Changes since v6:
-> > - Replaced sas_ata_sdev_attr_group definition with a macro for
-> >   the "CONFIG_SCSI_SAS_ATA is not set" case. The macro defines
-> >   an empty rvalue struct eliminating the variable definition.
-> > 
-> > Changes since v5:
-> > - Added __maybe_unused attribute to sas_ata_sdev_attr_group to prevent
-> >   an unused-const-variable warning when CONFIG_SCSI_SAS_ATA is not set.
-> > 
-> > Changes since v4:
-> > - Updated sas_ncq_prio_* sysfs functions to use WARN_ON_ONCE() instead
-> >   of WARN_ON().
-> > 
-> > Changes since v3:
-> > - Changed ata_ncq_prio_supported() and ata_ncq_prio_enabled() to store
-> >   the result into a boolean variable passed by address.
-> > - Removed the "usable with both libsas and libata" wording from
-> >   ata_ncq_prio_* helper's function comments.
-> > - Removed the unlikely() in ata_ncq_prio_enable() because the function
-> >   is not in a fastpath.
-> > - Dropped hisi_sas v1 HW driver changes because it doesn't support SATA.
-> > 
-> > Changes since v2:
-> > - Added libsas SATA sysfs attributes to aic94xx and isci.
-> > 
-> > Changes since v1:
-> > - Dropped the "sas_" prefix to align sysfs sttributes naming with AHCI.
-> > - Dropped ternary operators to make the code more readable.
-> > - Corrected the formatting %u -> %d in sysfs_emit().
-> > - Changed kstrtol() to kstrtobool() in [ata|sas]_ncq_prio_enable_store().
-> > - Changed comments to use the "/* */" style instead of "//".
-> > - Added libsas SATA sysfs attributes to mvsas and hisi_sas.
-> > - Dropped the 'Reviewed-by' tags because they were not sent in-reply
-> >   to the patch emails.
-> > 
-> > Igor Pylypiv (7):
-> >   ata: libata-sata: Factor out NCQ Priority configuration helpers
-> >   scsi: libsas: Define NCQ Priority sysfs attributes for SATA devices
-> >   scsi: pm80xx: Add libsas SATA sysfs attributes group
-> >   scsi: mvsas: Add libsas SATA sysfs attributes group
-> >   scsi: hisi_sas: Add libsas SATA sysfs attributes group
-> >   scsi: aic94xx: Add libsas SATA sysfs attributes group
-> >   scsi: isci: Add libsas SATA sysfs attributes group
-> > 
-> >  drivers/ata/libata-sata.c              | 140 ++++++++++++++++++-------
-> >  drivers/scsi/aic94xx/aic94xx_init.c    |   8 ++
-> >  drivers/scsi/hisi_sas/hisi_sas_v2_hw.c |   6 ++
-> >  drivers/scsi/hisi_sas/hisi_sas_v3_hw.c |   6 ++
-> >  drivers/scsi/isci/init.c               |   6 ++
-> >  drivers/scsi/libsas/sas_ata.c          |  94 +++++++++++++++++
-> >  drivers/scsi/mvsas/mv_init.c           |   7 ++
-> >  drivers/scsi/pm8001/pm8001_ctl.c       |   5 +
-> >  drivers/scsi/pm8001/pm8001_init.c      |   1 +
-> >  drivers/scsi/pm8001/pm8001_sas.h       |   1 +
-> >  include/linux/libata.h                 |   6 ++
-> >  include/scsi/sas_ata.h                 |   6 ++
-> >  12 files changed, 247 insertions(+), 39 deletions(-)
-> > 
-> > -- 
-> > 2.44.0.278.ge034bb2e1d-goog
-> > 
+John
 

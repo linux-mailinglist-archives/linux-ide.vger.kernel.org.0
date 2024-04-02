@@ -1,96 +1,188 @@
-Return-Path: <linux-ide+bounces-1032-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-1035-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C071894CBF
-	for <lists+linux-ide@lfdr.de>; Tue,  2 Apr 2024 09:38:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFB089544D
+	for <lists+linux-ide@lfdr.de>; Tue,  2 Apr 2024 15:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B73E1C21AF4
-	for <lists+linux-ide@lfdr.de>; Tue,  2 Apr 2024 07:38:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19C911C22347
+	for <lists+linux-ide@lfdr.de>; Tue,  2 Apr 2024 13:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276B13B299;
-	Tue,  2 Apr 2024 07:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EA584A2C;
+	Tue,  2 Apr 2024 13:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lHRfOE9W"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="5AkjCBFQ"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2D018635;
-	Tue,  2 Apr 2024 07:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92018172E;
+	Tue,  2 Apr 2024 13:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712043492; cv=none; b=UIJVEhAf8XtGZlTb3oZmTIKjMmZg+hZOPm7/qU1ppM3nMsVzSSQUCJjb1BTUuhgqlVqMQgdpZYNZgtCLjaXIF/NvmIRcFDhD1L4z4ne5dYhmn7Pu+cKhXhT7jN9CcpIEEOCpMrp9iFa4FDuMskxhrdGGRlHYmafUcsSF1kNVwjY=
+	t=1712063228; cv=none; b=e1lM3SkQTOzG5zaweaAipWzg/MqyTuGUCQt8GndgbfQnhgG1n4SBYybPhvzH/Ze2TIZWzAQd5JV6wLgvczzYqi3fW6vvr/D4TUUmWs9FXGGR0yB5iqsdQw8d1UZP1bQOQMnxP+kH5Qfl/ESBaNue04nOrVVkPD+2wHHUWuhKQss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712043492; c=relaxed/simple;
-	bh=bkEud1DS4CmuqdIWJhXjEm5+cYQ8btjvsByQdn3Q/kw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DRpydU7zB7/1EZs6WAowa3aI1+vfeRalt/3mJOFXP6hZOVevU51zKOtMGWxiNEYgc2QExvG5AEjg8V3m4raYb/WpSBdCYxlots+/dYvJkYLRJloaij82P7YDT/DmKFC2fh+WwMrNkEc7SDo43FzsUq3y6lMwe6p9Rs1R2313bDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lHRfOE9W; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6e6db4dfd7aso3609592a34.2;
-        Tue, 02 Apr 2024 00:38:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712043489; x=1712648289; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bkEud1DS4CmuqdIWJhXjEm5+cYQ8btjvsByQdn3Q/kw=;
-        b=lHRfOE9WTB76EJl99JCYzWTeOcboRSL59u9vO7QpcfNB5TqntwXe8+W0sYnHz6Z9eN
-         CPxvc6AKxzHWotYqSqS7Xzio4FPS8YIHX7tRjP22AwjAQpCSL/f+aNGnkKETtg+oCkJA
-         r7wzTIxenFsvRl7T/TMidzVnxR/ZYBsg7VHVwWklsC+7viXCcUWfkNszQywRsu11fCWd
-         5R9C3+B/WkPJ5eQdtQdU2wcVHIVls842tr6ZBwnUc4rionlV1Itk6P5Zxe+o5kAacGSH
-         DPNJYbMvk8hmYctGiNrIORlrqbuFQE+9rwBA5MB3MzOCj6qDxAUeyxSLsCDGoB60APu+
-         QI2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712043489; x=1712648289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bkEud1DS4CmuqdIWJhXjEm5+cYQ8btjvsByQdn3Q/kw=;
-        b=LiVoOlyln+kM/4wNDvvYr248J918edZ+PhceVlYRYgN8p7JgyOFYou4XdjkAsnv6RO
-         y+J4tFKafJIKV0e2pB3Totj0gQR8OMvJOO3uY7BpBxPSLuWLSOQvdVndR096U5G3adKz
-         x5jrz8dpNfcW1A51AxC1qTbVDn12I3l/b0OLr9C5WQAPc0VJY0TWLS567zIqQRFjTw2r
-         1js+hdkfiUnfy+m8Fw5quIK3PprtCADN9eRY/WdfiN071ruK32TFDW8z8gOGGuxsv6sK
-         VcwgADHB1usd10x7ad/JVGHxv3V21WLemtpx4FH6mGDYOPDo57BUSJ1SySbrXFWVmJDV
-         zQIw==
-X-Forwarded-Encrypted: i=1; AJvYcCX76yBLszg8CKmWqh+lB9mHOVlLlLw6H8BubrR4IrZK2gEAYIdk3BzyoYbTqKe+4gzmOCDN75MUswsW1i+mxtY072d7Kr8DnZrQhtNjCH4YqbgRi8xdaaoq7lYLGds8PP+xT8lktKKNpb6oCWZZLXC9URoIHL4psJ8iGOcgHr8xLcAuKg==
-X-Gm-Message-State: AOJu0Ywv/hdFe0sTIiC30h9t1ailBkBrta4vUtSicGmtUTVlZRbSP0Au
-	Yu+Iy9ZYhmTfbHK1ZFj9qWXNDL37ZEgvHuLTbqt1UC+EczhEQ3G3yIR/wQrN7XuwjeePUWOeqpg
-	yA6ri9sZX77lWPtuczCBNpms6rlUm3pGi+Io=
-X-Google-Smtp-Source: AGHT+IHFLzeDLtGBIrYzgAQS6Hr7ee2/zi63uWsWiVsWTsp8sYSdFbDkTWxYLCjcmaUXCC9pMG2W4IDG6fh2rivYgz8=
-X-Received: by 2002:a05:6870:bb12:b0:229:e49f:8dbe with SMTP id
- nw18-20020a056870bb1200b00229e49f8dbemr12661006oab.4.1712043489569; Tue, 02
- Apr 2024 00:38:09 -0700 (PDT)
+	s=arc-20240116; t=1712063228; c=relaxed/simple;
+	bh=2G2qEquSvx52a0PIlUVbUSvg2J45WYjkbhYl2DUcWj4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QXjGgfghGv1bFWRGFW4zMXJkJhR3s4hZE0XCGb5Y4ejrqcz1szuvTGwMqq4GuILHCT1/9LhC7XXbeCK+n2Ta7keQFq46CLniyinEBv0GMMbuGFUx7m/R1lRMWVhpOIQoaX1Tnif1zk6617L5sKsfFLqSXe0ji4R6L8GIGNLsr24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=5AkjCBFQ; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+	Content-ID:Content-Description:In-Reply-To:References;
+	bh=WnMplBC7d5smH4h7cTd7I8II3Hw8mKB1V3xXI/Gj8Ow=; b=5AkjCBFQhxjVS5LWWNi/NcO0iV
+	++ife0rQkF5+K7pHBfNcw0qOjQ1Ni+NZziD4wUzw9LdougAsm7bg4SMKyHjQG6kpjQxdP2ABQpvrt
+	wrmtZQzz8hm/ZL9E8QXJY7jijlRSqnIlZDqSWqzkoreREb97xrGaoZ9ebTBgQ5p+VRwKCUamm/iWr
+	Oyr7FHydwy18VyBgTNoT+vm+eKGmgq2FrycG1sifTr9htnvkdJK7ZHMLnWHvOreWJG1KeGzpXqAQX
+	xyIuYdZiJzkwE7vUmttLZbVmVjWY/5d33qG+EloZo5g3jGbw7cpNFoA2s/dx9Asf4D+dTJvl0uJ+C
+	hNgI+mbg==;
+Received: from [2001:4bb8:199:60a5:c70:4a89:bc61:2] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rrdqh-0000000BFIS-12gL;
+	Tue, 02 Apr 2024 13:06:47 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Jens Axboe <axboe@kernel.dk>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+	Suganath Prabu Subramani <suganath-prabu.subramani@broadcom.com>,
+	"Juergen E. Fischer" <fischer@norbit.de>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	HighPoint Linux Team <linux@highpoint-tech.com>,
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	Brian King <brking@us.ibm.com>,
+	Lee Duncan <lduncan@suse.com>,
+	Chris Leech <cleech@redhat.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Nilesh Javali <njavali@marvell.com>,
+	GR-QLogic-Storage-Upstream@marvell.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	linux-block@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux1394-devel@lists.sourceforge.net,
+	MPT-FusionLinux.pdl@broadcom.com,
+	linux-scsi@vger.kernel.org,
+	megaraidlinux.pdl@broadcom.com,
+	mpi3mr-linuxdrv.pdl@broadcom.com,
+	linux-samsung-soc@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	usb-storage@lists.one-eyed-alien.net
+Subject: convert SCSI to atomic queue limits, part 1 (v2)
+Date: Tue,  2 Apr 2024 15:06:22 +0200
+Message-Id: <20240402130645.653507-1-hch@lst.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327064354.17384-1-animeshagarwal28@gmail.com> <24c917f6-9ff8-4bca-8cc2-5c14c64c2c9b@kernel.org>
-In-Reply-To: <24c917f6-9ff8-4bca-8cc2-5c14c64c2c9b@kernel.org>
-From: Animesh Agarwal <animeshagarwal28@gmail.com>
-Date: Tue, 2 Apr 2024 13:07:58 +0530
-Message-ID: <CAE3Oz82qNnUau5JeFBViGYgn4+n988NNFMwg3f8AczVcRVdj8w@mail.gmail.com>
-Subject: Re: [PATCH v3] dt-bindings: ata: ahci-da850: Convert to dtschema
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-ide@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, Apr 2, 2024 at 12:55=E2=80=AFPM Damien Le Moal <dlemoal@kernel.org>=
- wrote:
-> Applied to for-6.10. Thanks !
+Hi all,
 
-Thanks for your time Damien.
+this series converts the SCSI midlayer and LLDDs to use atomic queue limits
+API.  It is pretty straight forward, except for the mpt3mr driver which
+does really weird and probably already broken things by setting limits
+from unlocked device iteration callbacks.
 
----
-Animesh Agarwal
+I will probably defer the (more complicated) ULD changes to the next
+merge window as they would heavily conflict with Damien's zone write
+plugging series.  With that the series could go in through the SCSI
+tree if Jens' ACKs the core block layer bits.
+
+Changes since v1:
+ - print a different warning message for queue_limits_commit failure vs
+   ->device_configure failure
+ - cancel the queue limits update when ->device_configure fails
+ - spelling fixes
+ - improve comments
+
+Diffstat:
+ block/blk-settings.c                        |  245 ----------------------------
+ block/bsg-lib.c                             |    6 
+ drivers/ata/ahci.h                          |    2 
+ drivers/ata/libata-sata.c                   |   11 -
+ drivers/ata/libata-scsi.c                   |   19 +-
+ drivers/ata/libata.h                        |    3 
+ drivers/ata/pata_macio.c                    |   11 -
+ drivers/ata/sata_mv.c                       |    2 
+ drivers/ata/sata_nv.c                       |   24 +-
+ drivers/ata/sata_sil24.c                    |    2 
+ drivers/firewire/sbp2.c                     |   13 -
+ drivers/message/fusion/mptfc.c              |    1 
+ drivers/message/fusion/mptsas.c             |    1 
+ drivers/message/fusion/mptscsih.c           |    2 
+ drivers/message/fusion/mptspi.c             |    1 
+ drivers/s390/block/dasd_eckd.c              |    6 
+ drivers/scsi/aha152x.c                      |    8 
+ drivers/scsi/aic94xx/aic94xx_init.c         |    2 
+ drivers/scsi/hisi_sas/hisi_sas.h            |    3 
+ drivers/scsi/hisi_sas/hisi_sas_main.c       |    7 
+ drivers/scsi/hisi_sas/hisi_sas_v1_hw.c      |    2 
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c      |    2 
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c      |    7 
+ drivers/scsi/hosts.c                        |    6 
+ drivers/scsi/hptiop.c                       |    8 
+ drivers/scsi/ibmvscsi/ibmvfc.c              |    5 
+ drivers/scsi/imm.c                          |   12 -
+ drivers/scsi/ipr.c                          |   10 -
+ drivers/scsi/isci/init.c                    |    2 
+ drivers/scsi/iscsi_tcp.c                    |    2 
+ drivers/scsi/libsas/sas_scsi_host.c         |    7 
+ drivers/scsi/megaraid/megaraid_sas.h        |    2 
+ drivers/scsi/megaraid/megaraid_sas_base.c   |   29 +--
+ drivers/scsi/megaraid/megaraid_sas_fusion.c |    3 
+ drivers/scsi/mpi3mr/mpi3mr.h                |    1 
+ drivers/scsi/mpi3mr/mpi3mr_app.c            |   12 -
+ drivers/scsi/mpi3mr/mpi3mr_os.c             |   76 +++-----
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c        |   18 --
+ drivers/scsi/mvsas/mv_init.c                |    2 
+ drivers/scsi/pm8001/pm8001_init.c           |    2 
+ drivers/scsi/pmcraid.c                      |   11 -
+ drivers/scsi/ppa.c                          |    8 
+ drivers/scsi/qla2xxx/qla_os.c               |    6 
+ drivers/scsi/scsi_lib.c                     |   40 +---
+ drivers/scsi/scsi_scan.c                    |   74 ++++----
+ drivers/scsi/scsi_transport_fc.c            |   15 +
+ drivers/scsi/scsi_transport_iscsi.c         |    6 
+ drivers/scsi/scsi_transport_sas.c           |    4 
+ drivers/staging/rts5208/rtsx.c              |   24 +-
+ drivers/ufs/core/ufs_bsg.c                  |    3 
+ drivers/ufs/core/ufshcd.c                   |    3 
+ drivers/ufs/host/ufs-exynos.c               |    8 
+ drivers/usb/image/microtek.c                |    8 
+ drivers/usb/storage/scsiglue.c              |   57 ++----
+ drivers/usb/storage/uas.c                   |   29 +--
+ drivers/usb/storage/usb.c                   |   10 +
+ include/linux/blkdev.h                      |   26 +-
+ include/linux/bsg-lib.h                     |    3 
+ include/linux/libata.h                      |   10 -
+ include/linux/mmc/host.h                    |    4 
+ include/scsi/libsas.h                       |    3 
+ include/scsi/scsi_host.h                    |    9 +
+ include/scsi/scsi_transport.h               |    2 
+ include/scsi/scsi_transport_fc.h            |    1 
+ include/ufs/ufshcd.h                        |    1 
+ 65 files changed, 347 insertions(+), 595 deletions(-)
 

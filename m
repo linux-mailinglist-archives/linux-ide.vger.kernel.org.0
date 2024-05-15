@@ -1,113 +1,79 @@
-Return-Path: <linux-ide+bounces-1364-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-1366-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654628C4290
-	for <lists+linux-ide@lfdr.de>; Mon, 13 May 2024 15:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 960E28C5EFB
+	for <lists+linux-ide@lfdr.de>; Wed, 15 May 2024 03:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96B411C20BEB
-	for <lists+linux-ide@lfdr.de>; Mon, 13 May 2024 13:53:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61361C2145F
+	for <lists+linux-ide@lfdr.de>; Wed, 15 May 2024 01:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDD3152DFA;
-	Mon, 13 May 2024 13:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFCC25605;
+	Wed, 15 May 2024 01:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kayoway.com header.i=@kayoway.com header.b="a7o5lJcv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPHlPHlp"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0C314EC7A
-	for <linux-ide@vger.kernel.org>; Mon, 13 May 2024 13:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EDB38382
+	for <linux-ide@vger.kernel.org>; Wed, 15 May 2024 01:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715608395; cv=none; b=MwaxA2czOQU4U0TWr4KoInev0rW+Js8uaY3Q4Rs0CWozTuH/GF4nI92M5M2wr7hHj8ReQksV1IiZ0o4UgaYtmT78aV1Al8kfiZDTXgpx2e8Ts2Gdz+q4VvuEyBuLaI+pg+PtABI4mO9R/ONGq0CC3wlFbGCj9sA7sokBXsW1ydo=
+	t=1715737756; cv=none; b=Kjl03sfDoh17AutyTyq65CWrTa5QJ4v7X7/Ilu1v7+MpnDuWKci59pqpRTX9E7IQ6nJlUYF17G/6scaPKrKakwPMjutQ94uVZNiikhi2XqbdfoSbLmXAA7gCTHjecbzL75ZqktpSmqkcnOei1dJE+xXHDmn6dVMcS/HD7QAB1uY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715608395; c=relaxed/simple;
-	bh=nKCtgVqnuVwYGwE44693TwDYxtDt7TZTYPBAiMrDCxw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=srhFpyH33VbIiheTMZXMWI1UrJjnogFzv3pLWw5ePHiTHu4zkYnHhnDFCzONJBucKEpEqIrPDdx17xE1W2azDMruimE4ppgGFXk66pqzrE/uF34ESf1QCiZNfpH1Ppv3AMtyQkYa9Mig7MIa99j4RFYRC6wdpRfQ10IvedKDLRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kayoway.com; spf=pass smtp.mailfrom=kayoway.com; dkim=pass (1024-bit key) header.d=kayoway.com header.i=@kayoway.com header.b=a7o5lJcv; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kayoway.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kayoway.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6f490b5c23bso3656951b3a.3
-        for <linux-ide@vger.kernel.org>; Mon, 13 May 2024 06:53:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kayoway.com; s=google; t=1715608393; x=1716213193; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=udVn4LZw64M3seB+IwLN3PdqbZ+w/sTwgfjJfmGjScc=;
-        b=a7o5lJcvjvFNch3xfelL/B2pqGg4IOkUCqaNBlYbXKbOBvCu/QEU7SkAhVaqCXMjnS
-         F5+WbBr4osaaa16PR86zKQLzoAp2tNQ6+RZzP+oaBIch1U0XhcqjM/2j4YuQvWkmz+ex
-         qd2bMZRa+4BRbxvZRIWp/B14VNZXiaq/2intY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715608393; x=1716213193;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=udVn4LZw64M3seB+IwLN3PdqbZ+w/sTwgfjJfmGjScc=;
-        b=VGM/c78Cz1tkQ4OxJpPrsuhwsHGktYLQGJ9JqPqGiDWio7iGNtUZAZ1SMTwezwK5lF
-         7lZc6rsAUu3hPPT1R5ZI3Bnb8SQ/tEu1UIIecU9yxgtZw4G+eJZpS+RONID0h56OgT8U
-         42KnKNLxuOurvu1IzgAwW5SYkmp+O3GpQhAlWNwKRWQRBxHpAuQKophzMq3twmE2aB1B
-         bzL9P0mpVTiNcuUR5Ytq/gu/Zzdz/nbGHGb/glfVupMc/czJc3Ih/1+zNIyLxPRnxklo
-         B+099hESVeHX1BRT4AkfAGycron4iD0pT/fXm4YtNt/XXPLo9a5/5nIcqsLlJKl4kd1G
-         7i4g==
-X-Gm-Message-State: AOJu0YxYFZ52H8dGbmBzyPljd/qvuNbEy3tcXmgbm1PBY0+xra4RWwNK
-	9klZ7rtuq7Z7D6plEol3kubpzaiS0dSo0eEKiVYP/rKtC54WhSNeCDdTkxrdWkhrAQshhftdxe0
-	jPxw=
-X-Google-Smtp-Source: AGHT+IFyU7PCnj1fH8qDM7VMqA76E0sy5xErr1LCXa1BK52ZIqXfU9cxG6ectpxu+TT/zkTLoOJ1MA==
-X-Received: by 2002:a05:6a00:13a6:b0:6ed:5f64:2fef with SMTP id d2e1a72fcca58-6f4e02cec14mr11729614b3a.17.1715608393081;
-        Mon, 13 May 2024 06:53:13 -0700 (PDT)
-Received: from minidesk.. (101-142-33-202f1.hyg2.eonet.ne.jp. [101.142.33.202])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a66476sm7373778b3a.28.2024.05.13.06.53.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 May 2024 06:53:12 -0700 (PDT)
-From: dev@kayoway.com
-To: dlemoal@kernel.org,
-	cassel@kernel.org
-Cc: linux-ide@vger.kernel.org
-Subject: [PATCH 1/1] ata: ahci: Revert "ata: ahci: Add Intel Alder Lake-P AHCI controller to  low power chipsets list"
-Date: Mon, 13 May 2024 22:53:02 +0900
-Message-ID: <20240513135302.1869084-2-dev@kayoway.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240513135302.1869084-1-dev@kayoway.com>
-References: <20240513135302.1869084-1-dev@kayoway.com>
+	s=arc-20240116; t=1715737756; c=relaxed/simple;
+	bh=PsKOCv9iDT5uZzwZKbKGdx37MS5VBjk5Rm315NCnzpM=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=FSzcf3FJnPnPBiQFbJdo3byeUDRTgYk9q1NXzBu+Aap8M6T7+f4aZ577m3vyBbtFDzvEVm+qDLJemBWivSdef+919MsWYxyy5srVhbk1GDCc1QX1j5itye0flKSS773UbWiKrESFiPgNybsID/2nBgpn4t9jmIC2ZxTZAXYC008=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPHlPHlp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0BE42C32781;
+	Wed, 15 May 2024 01:49:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715737756;
+	bh=PsKOCv9iDT5uZzwZKbKGdx37MS5VBjk5Rm315NCnzpM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=gPHlPHlpieS9Rd91eOfjtr+C9rHLr9GS0XVrQ5yxv4IRzDpc3JrwQcMBtbnM12I5T
+	 VjQ8jqiwHRJc4c5o3RjRE7q7PU/s5AnTUSmD+UnfCLdkE7gS+N7FI6Oy2qtAJY2TVv
+	 BOhwCpi9kL3bHBfXq3Bn3ng4GkZgMqtim4SPcavWwuKS4Zp44LF8zRnJu5L/it9L8X
+	 XIcDCw8kXyw9hqX5KnHCSyV4pztzmjP85Xw/ut5HnxIJm/eJ7cyplSa2aSTYA/H9ae
+	 owifNdbumF/xtXxwwV3Lf8JcaLxLqww2HlY+Y4zMUpG2FmGbu2vEfP20ROF3lYRGko
+	 uz3TYAAPa/omA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id EF408C43339;
+	Wed, 15 May 2024 01:49:15 +0000 (UTC)
+Subject: Re: [GIT PULL] ata changes for 6.10-rc1
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20240513132512.159143-1-dlemoal@kernel.org>
+References: <20240513132512.159143-1-dlemoal@kernel.org>
+X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20240513132512.159143-1-dlemoal@kernel.org>
+X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/libata/linux tags/ata-6.10-rc1
+X-PR-Tracked-Commit-Id: d4a89339f17c87c4990070e9116462d16e75894f
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: b2665fe61d8a51ef70b27e1a830635a72dcc6ad8
+Message-Id: <171573775597.23667.3207652485745768188.pr-tracker-bot@kernel.org>
+Date: Wed, 15 May 2024 01:49:15 +0000
+To: Damien Le Moal <dlemoal@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-ide@vger.kernel.org, Niklas Cassel <cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Jason Nader <dev@kayoway.com>
+The pull request you sent on Mon, 13 May 2024 22:25:11 +0900:
 
-Commit b8b8b4e0c052b2c06e1c4820a8001f4e0f77900f ("ata: ahci: Add Intel
-Alder Lake-P AHCI controller to low power chipsets list") enabled low
-power mode for Alder Lake-P AHCI adaptors in order to reduce idle power
-consumption, however this introduced a regression on at least one system.
-Revert the patch until a better solution is found.
+> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/libata/linux tags/ata-6.10-rc1
 
-Signed-off-by: Jason Nader <dev@kayoway.com>
----
- drivers/ata/ahci.c | 1 -
- 1 file changed, 1 deletion(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/b2665fe61d8a51ef70b27e1a830635a72dcc6ad8
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 6548f10e61d9..07d66d2c5f0d 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -429,7 +429,6 @@ static const struct pci_device_id ahci_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, 0x02d7), board_ahci_pcs_quirk }, /* Comet Lake PCH RAID */
- 	/* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not tested yet */
- 	{ PCI_VDEVICE(INTEL, 0x4b63), board_ahci_pcs_quirk }, /* Elkhart Lake AHCI */
--	{ PCI_VDEVICE(INTEL, 0x7ae2), board_ahci_pcs_quirk }, /* Alder Lake-P AHCI */
- 
- 	/* JMicron 360/1/3/5/6, match class to avoid IDE function */
- 	{ PCI_VENDOR_ID_JMICRON, PCI_ANY_ID, PCI_ANY_ID, PCI_ANY_ID,
+Thank you!
+
 -- 
-2.45.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 

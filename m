@@ -1,54 +1,54 @@
-Return-Path: <linux-ide+bounces-1565-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-1567-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C98390D76D
-	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 17:35:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A45E590D773
+	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 17:36:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B69501F23F3C
-	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 15:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498E02841BD
+	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 15:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E2323777;
-	Tue, 18 Jun 2024 15:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0E112E6D;
+	Tue, 18 Jun 2024 15:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cNILCYMP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eqfuEmMG"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0457312E6D
-	for <linux-ide@vger.kernel.org>; Tue, 18 Jun 2024 15:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A701C4A35
+	for <linux-ide@vger.kernel.org>; Tue, 18 Jun 2024 15:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718724954; cv=none; b=TUZGgAL6nbIfTfGN+EikhQETMvQhIQNpOV4tIPPRxpzLk7T6qt8s/jtrEfvN8wuXMSe+cfmvxA2QP/haaaWmXglp2XPs2EZGrIPgyp4xGj2MxYYrw5QEm0jSPLRHMweBH1I8b2iQO3yIe/avoCHRaWwzSbOz1F/PeHQFFwht8j4=
+	t=1718724960; cv=none; b=CjdfG8EOWtOnQ7bPpOMEZfuGWrKhPcXFJ3zLhVysL55G1P7y7IZgRu6nYVtThY4k3iHFK5lGA7cxlCzqIBZ2KH77/G26unVpUj4jEXh/pjSW+S3BdSHkE3NqPmKmno2SiwE+f9uzfAtmiRaP4g9wRgRAtGOBYUXZdoVvaVJZWV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718724954; c=relaxed/simple;
-	bh=D7Y0iZ5CY3rPzIS9t8KyizS5G30+PdjdGwab0R/FRsA=;
+	s=arc-20240116; t=1718724960; c=relaxed/simple;
+	bh=EoHDznwl9xnbrsJAqRS+9II5WH9wikgnPGUR2W32mDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dUIXUuHwSkjwpB8+CPnjt1NOaprdv+TA5HWWR0vY46ltzIkcfCz3t51Qm3ywN4IgNIbzvR0mKuAWh7P8mOE+Vv3+B/Iqsd5wQAqZHZRnwnYR+qQCLFIVcZrwNRuq6O3WhqPHJgJcZqxlG3gnSdiCLYjPadmaGuTIyMqUeTdQ+S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cNILCYMP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CEC2C4AF1C;
-	Tue, 18 Jun 2024 15:35:50 +0000 (UTC)
+	 MIME-Version; b=airj++HQ5ws6eAIYmgUqYxHrKvEdbK5Y0lZ5vkBhODbIuupOdCs8i8oy1RCMpgGyWLQ/RPrGE+qfEwvq62r61nj1rkiIVgtA5GmB/UaCxqpk6M+A/vYvqy+XJ0cONmsPAp9T90X03QeeFzmXiVkoC4zkTA5JnYwzgEmPgwETSBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eqfuEmMG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D70EC3277B;
+	Tue, 18 Jun 2024 15:35:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718724953;
-	bh=D7Y0iZ5CY3rPzIS9t8KyizS5G30+PdjdGwab0R/FRsA=;
+	s=k20201202; t=1718724960;
+	bh=EoHDznwl9xnbrsJAqRS+9II5WH9wikgnPGUR2W32mDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cNILCYMPu7KrHwmCDwlcqUNiBuIDl81T0cPEwMFm3v41V3n1XWFKefaHMYaT6+3QB
-	 e3k0R2GSA5jEepjt6DZKaoQZtj0UepfC9HzAJL4RoFMA8xF78sLtoVZUNH3tGpiibP
-	 5PWXkafdE9jrUWmZdx6oukh7/R61o0n3PsOKm5OBtJpryzdiLUCmSKErDvefJSeQph
-	 x3E/4JBcfz/9DCPy4A+BMofEvUmuoj6QjpOBnz5ZhfPUtBwpdcUKwpHpJxbTGJ5k5Y
-	 5HWzw/8W49593HxKSmdKfQjLUNifDnLMt/txiGuSbtrLyASWC94RU2tGB5FkL7TXDp
-	 zrRObzxkjd6kA==
+	b=eqfuEmMGy2Q233hpmEBV0EJ9bP/0v6Bsh4Wn0SPz6T1vw+Q9vJEHKGYYx6q5ltpIJ
+	 LGze+g0y2usT10ja6A3fGT6SslpQd7mj0coC4JYN5eENXEfsUDVJSUxIcGKvYQwxVZ
+	 j1ueCOP6iQusB6e8cDFliCTeidWTXlUUL86IQ8xTiGFwga9B9gWJs1BW+j0xHLNzwh
+	 vtStgtG9uaz1uvSeePseqwU3Hn4JPU+EZsD8bzN6QnOtchUt4KMssOEiEF/F6Ug5Ru
+	 VQLACrZluguwroZpsdfzdtX5DZCyyEVRUHb5Vr8aIoJfNqtWMGTZBnSqWD9b1+AvaD
+	 vysVuTywyiPDA==
 From: Niklas Cassel <cassel@kernel.org>
 To: Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>
 Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
 	linux-ide@vger.kernel.org
-Subject: [PATCH 1/5] ata: libata-core: Remove support for decreasing the number of ports
-Date: Tue, 18 Jun 2024 17:35:39 +0200
-Message-ID: <20240618153537.2687621-8-cassel@kernel.org>
+Subject: [PATCH 3/5] ata: libata: Assign print_id at port allocation time
+Date: Tue, 18 Jun 2024 17:35:41 +0200
+Message-ID: <20240618153537.2687621-10-cassel@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240618153537.2687621-7-cassel@kernel.org>
 References: <20240618153537.2687621-7-cassel@kernel.org>
@@ -58,104 +58,65 @@ List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3750; i=cassel@kernel.org; h=from:subject; bh=D7Y0iZ5CY3rPzIS9t8KyizS5G30+PdjdGwab0R/FRsA=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIKV3rVeWa968w02ZxnvSbMca21xJrozz9OTd3a4bd+z dyHTwpDO0pZGMS4GGTFFFl8f7jsL+52n3Jc8Y4NzBxWJpAhDFycAjCRLk6Gv/KtOVziC/v9LWqY bl7mORxSe6nuaFLmQSXJWR/3B965n8bw36uiS+3i/Yy/MxgawtftLGMpXuZia8IdFpx+Y+uWN1f 4+AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2055; i=cassel@kernel.org; h=from:subject; bh=EoHDznwl9xnbrsJAqRS+9II5WH9wikgnPGUR2W32mDM=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIKV3qfOrhF54C82r2P8QnT/ZbqpaVvaVj15GzURP47O yuyk/sYOkpZGMS4GGTFFFl8f7jsL+52n3Jc8Y4NzBxWJpAhDFycAjCRNVqMDLdnvItq6XmhOOuX 4x2zKc2PViZym9kevLEhjW/S2mqVSayMDG/i3Uw0wnbK6jha94koX5P939ezK2KxYXhZnXPoBuf rrAA=
 X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
 Content-Transfer-Encoding: 8bit
 
-Commit f31871951b38 ("libata: separate out ata_host_alloc() and
-ata_host_register()") added ata_host_alloc(), where the API allowed
-a LLD to overallocate the number of ports supplied to ata_host_alloc(),
-as long as the LLD decreased host->n_ports before calling
-ata_host_register().
+While the assignment of ap->print_id could have been moved to
+ata_host_alloc(), let's simply move it to ata_port_alloc().
 
-However, this functionally has never ever been used by a single LLD.
+If you allocate a port, you want to give it a unique name that can be used
+for printing.
 
-Because of the current API design, the assignment of ap->print_id is
-deferred until registration time, which is bad, because that means that
-the ata_port_*() print functions cannot be used by a LLD until after
-registration time, which means that a LLD is forced to use a print
-function that is non-port specific, even for a port specific error.
+By moving the ap->print_id assignment to ata_port_alloc(), means that we
+can also remove the ap->print_id assignment from ata_sas_port_alloc().
 
-Remove the support for decreasing the number of ports, such that it will
-be possible to assign ap->print_id earlier.
+This will allow a LLD to use the ata_port_*() print functions before
+ata_host_register() has been called.
 
 Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- drivers/ata/libata-core.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ drivers/ata/libata-core.c | 6 ++----
+ drivers/ata/libata-sata.c | 1 -
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index e1bf8a19b3c8..0dc6e18bf492 100644
+index 0dc6e18bf492..fb4835c2ba2d 100644
 --- a/drivers/ata/libata-core.c
 +++ b/drivers/ata/libata-core.c
-@@ -5541,24 +5541,19 @@ EXPORT_SYMBOL_GPL(ata_host_put);
- /**
-  *	ata_host_alloc - allocate and init basic ATA host resources
-  *	@dev: generic device this host is associated with
-- *	@max_ports: maximum number of ATA ports associated with this host
-+ *	@n_ports: the number of ATA ports associated with this host
-  *
-  *	Allocate and initialize basic ATA host resources.  LLD calls
-  *	this function to allocate a host, initializes it fully and
-  *	attaches it using ata_host_register().
-  *
-- *	@max_ports ports are allocated and host->n_ports is
-- *	initialized to @max_ports.  The caller is allowed to decrease
-- *	host->n_ports before calling ata_host_register().  The unused
-- *	ports will be automatically freed on registration.
-- *
-  *	RETURNS:
-  *	Allocate ATA host on success, NULL on failure.
-  *
-  *	LOCKING:
-  *	Inherited from calling layer (may sleep).
-  */
--struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
-+struct ata_host *ata_host_alloc(struct device *dev, int n_ports)
- {
- 	struct ata_host *host;
- 	size_t sz;
-@@ -5566,7 +5561,7 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
- 	void *dr;
+@@ -5463,7 +5463,7 @@ struct ata_port *ata_port_alloc(struct ata_host *host)
  
- 	/* alloc a container for our list of ATA ports (buses) */
--	sz = sizeof(struct ata_host) + (max_ports + 1) * sizeof(void *);
-+	sz = sizeof(struct ata_host) + (n_ports + 1) * sizeof(void *);
- 	host = kzalloc(sz, GFP_KERNEL);
- 	if (!host)
- 		return NULL;
-@@ -5584,11 +5579,11 @@ struct ata_host *ata_host_alloc(struct device *dev, int max_ports)
- 	spin_lock_init(&host->lock);
- 	mutex_init(&host->eh_mutex);
- 	host->dev = dev;
--	host->n_ports = max_ports;
-+	host->n_ports = n_ports;
- 	kref_init(&host->kref);
- 
- 	/* allocate ports bound to this host */
--	for (i = 0; i < max_ports; i++) {
-+	for (i = 0; i < n_ports; i++) {
- 		struct ata_port *ap;
- 
- 		ap = ata_port_alloc(host);
-@@ -5899,12 +5894,13 @@ int ata_host_register(struct ata_host *host, const struct scsi_host_template *sh
- 		return -EINVAL;
- 	}
- 
--	/* Blow away unused ports.  This happens when LLD can't
--	 * determine the exact number of ports to allocate at
--	 * allocation time.
-+	/*
-+	 * For a driver using ata_host_register(), the ports are allocated by
-+	 * ata_host_alloc(), which also allocates the host->ports array.
-+	 * The number of array elements must match host->n_ports.
- 	 */
- 	for (i = host->n_ports; host->ports[i]; i++)
--		kfree(host->ports[i]);
-+		WARN_ON(host->ports[i]);
+ 	ap->pflags |= ATA_PFLAG_INITIALIZING | ATA_PFLAG_FROZEN;
+ 	ap->lock = &host->lock;
+-	ap->print_id = -1;
++	ap->print_id = atomic_inc_return(&ata_print_id);
+ 	ap->local_port_no = -1;
+ 	ap->host = host;
+ 	ap->dev = host->dev;
+@@ -5903,10 +5903,8 @@ int ata_host_register(struct ata_host *host, const struct scsi_host_template *sh
+ 		WARN_ON(host->ports[i]);
  
  	/* give ports names and add SCSI hosts */
+-	for (i = 0; i < host->n_ports; i++) {
+-		host->ports[i]->print_id = atomic_inc_return(&ata_print_id);
++	for (i = 0; i < host->n_ports; i++)
+ 		host->ports[i]->local_port_no = i + 1;
+-	}
+ 
+ 	/* Create associated sysfs transport objects  */
  	for (i = 0; i < host->n_ports; i++) {
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index c564eac9d430..def0026188f7 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -1234,7 +1234,6 @@ struct ata_port *ata_sas_port_alloc(struct ata_host *host,
+ 	ap->flags |= port_info->flags;
+ 	ap->ops = port_info->port_ops;
+ 	ap->cbl = ATA_CBL_SATA;
+-	ap->print_id = atomic_inc_return(&ata_print_id);
+ 
+ 	return ap;
+ }
 -- 
 2.45.2
 

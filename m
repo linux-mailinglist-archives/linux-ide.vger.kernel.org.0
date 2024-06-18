@@ -1,119 +1,88 @@
-Return-Path: <linux-ide+bounces-1571-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-1566-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB6490D7DF
-	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 17:55:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A4390D8A9
+	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 18:13:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AA2C281ABE
-	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 15:55:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004E8B2574F
+	for <lists+linux-ide@lfdr.de>; Tue, 18 Jun 2024 15:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF692139A4;
-	Tue, 18 Jun 2024 15:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6474312E6D;
+	Tue, 18 Jun 2024 15:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IXUf5W8v"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKmXY7cS"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C52F47781;
-	Tue, 18 Jun 2024 15:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418DB4A35
+	for <linux-ide@vger.kernel.org>; Tue, 18 Jun 2024 15:35:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718726103; cv=none; b=R+WvVP9ZXpPqziv0wHw0FOcZTgfhbC5pKzRNaUkIjqtioCm9SKtHHL4kOR1fSNjfoJ7IRzNezfP/gGjAEGlW7nPM4sSBOO15kR+6nIBrmqP/S/zvDFY+h5NxVrtScgb4yBNZ5SzdIEwDxINSyB8iFMPXRlAX4HSLuJQUTEdZP1I=
+	t=1718724956; cv=none; b=M6gnud3qRX0nAFyTpYBslgfqLgeacQEC6rC7KRtmV+sKl0+pjZbjqQpJ8F6om9fy3RWVTLUMzZdcWDrj6lJcZtg3ZGPSJa+WGoo7xRlpAG+kbFpeTnZe1CV0gA9PbOA9CtoL82MuKurtXKaeFMZ2ELpjKW5KWvE4bw/Gf0FXG94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718726103; c=relaxed/simple;
-	bh=AbYngC2y3FeyfIkgLIgqUDEVOaOEJS0txRykSm0DvXo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k6gXXhtjv0ljq8WbZ/3G5iAIpv8qiWcpU7D9NjwKd9ugVkY5ILW/9EMH1Qhgo0RiTzmZ9p9N84cwo/IVgnh1pLWVEcgXjUR/WHwZhqEB32fjDkYzb7ahowAPLXKtML1GzYdpvgB+3ppIh0hMKxMC2Y6rgmUkSCHG4w8vVSWu56E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IXUf5W8v; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718726101; x=1750262101;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=AbYngC2y3FeyfIkgLIgqUDEVOaOEJS0txRykSm0DvXo=;
-  b=IXUf5W8vpuly1Z8z8HQ6IohV7eDFx4aPjeVDO/DE7Of4QKPGSQTiSbn/
-   MJq68M7P7FB/oLm/tynMMqmio9uvaVczBn9XN0b7jgUBb8kzz/T/soZ4o
-   gWKN6GzpekBflJ8yqvrE5xza6JCi9rAfcskjNWdRwFGA6TRh7D2tjg5yY
-   K6xEBQe30J8S5LXydUpj307kv79P9xop+EFQhNCxTCpiMzGBbjgLQc76G
-   8ImNiNySJBLDVGOSoQ0/oplGFP/yszIcLmK+5fmv4pawbJtRWXukU+B8n
-   jzh6YRqYBeyAAk9SNJzW4PdCFCwRVQzywplQPMbDDlwEhsXoc0sObWEi5
-   Q==;
-X-CSE-ConnectionGUID: azf4dOl6SiqmdYsrI6qxzw==
-X-CSE-MsgGUID: FsfUOhLKRZS6mBQSbYQ1Iw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="15451351"
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="15451351"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 08:55:01 -0700
-X-CSE-ConnectionGUID: SNHLFOWRS2qBgu6SCAFesQ==
-X-CSE-MsgGUID: Ai0kH9RxRWaI53DyAszH2w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,247,1712646000"; 
-   d="scan'208";a="41699325"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa009.jf.intel.com with ESMTP; 18 Jun 2024 08:54:59 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1001)
-	id 8A7701CB; Tue, 18 Jun 2024 18:54:57 +0300 (EEST)
-Date: Tue, 18 Jun 2024 18:54:57 +0300
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Jian-Hong Pan <jhp@endlessos.org>, stable@vger.kernel.org,
+	s=arc-20240116; t=1718724956; c=relaxed/simple;
+	bh=Y44fEDGKN9vffWzBM+sgPUMpgI4qwXdkQx4LvHyvr24=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Yis0urr1D7DCvK/vicRTHJTm4B6pPHluWuzoQovEVfxc/uA5xdvm/fUHj9F0JqiIoPGdkpxpFmla2SGDkv5dINcRiVh2yzqDBeDJDI0eJMGvxGstBfbzQX/SkJBNyJlb9DJGhl2L51ktUtSYUB5fgGVdOhKJ8tCzYDk6lCpFQJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKmXY7cS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7E2C3277B;
+	Tue, 18 Jun 2024 15:35:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718724956;
+	bh=Y44fEDGKN9vffWzBM+sgPUMpgI4qwXdkQx4LvHyvr24=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=TKmXY7cSGshbW27TgXIdH89dliy4vy8ceHzGY/GREdPw69pNtya/wuu8PC0R4wRA4
+	 FSaam4ZnItPgKs01H6nPKIJnBEm1ZkLxs6PubKaVDVELqdez+TObRXZFpz5NMYpmdR
+	 sHKoZlxsln8GRvSzd4H2NQX71xUyyVq+1e1bPe1gxjb9+Dt7efo0Le9Hqc1+JTapbd
+	 wh8/MozYLvJRmfok++zhT0Fq1npBkXVfd+/vYnWs1Zvoic6tW5Qqxq4YPtgIKIckQn
+	 ZaFJrjNY/+743zGVD087376TdFSKjtJ3LgYw5gjoaFa9llQcz2C1hPFCNb0MLFfvg7
+	 58uD3dbPvhR0Q==
+From: Niklas Cassel <cassel@kernel.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>
+Cc: Mika Westerberg <mika.westerberg@linux.intel.com>,
 	linux-ide@vger.kernel.org
-Subject: Re: [PATCH v2] ata: ahci: Do not enable LPM if no LPM states are
- supported by the HBA
-Message-ID: <20240618155457.GD1532424@black.fi.intel.com>
-References: <20240618152828.2686771-2-cassel@kernel.org>
+Subject: [PATCH 2/5] ata: libata-scsi: Remove superfluous assignment in ata_sas_port_alloc()
+Date: Tue, 18 Jun 2024 17:35:40 +0200
+Message-ID: <20240618153537.2687621-9-cassel@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240618153537.2687621-7-cassel@kernel.org>
+References: <20240618153537.2687621-7-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240618152828.2686771-2-cassel@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=726; i=cassel@kernel.org; h=from:subject; bh=Y44fEDGKN9vffWzBM+sgPUMpgI4qwXdkQx4LvHyvr24=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGNIKV3r1GieHK2hpfMj+qXlmxesd798FrKp4vm7KAVep7 Ub6y7UqOkpZGMS4GGTFFFl8f7jsL+52n3Jc8Y4NzBxWJpAhDFycAjARy4eMDKdllq1NXqFQJ/NO 9Fzb0SstnK0tdjNi+G4c4Jrp8STm+hSG36y/fwVKr0z/L5rfVFT0OLf5Vkapi3WUi8+xhXtqdrw UZgYA
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 18, 2024 at 05:28:29PM +0200, Niklas Cassel wrote:
-> LPM consists of HIPM (host initiated power management) and DIPM
-> (device initiated power management).
-> 
-> ata_eh_set_lpm() will only enable HIPM if both the HBA and the device
-> supports it.
-> 
-> However, DIPM will be enabled as long as the device supports it.
-> The HBA will later reject the device's request to enter a power state
-> that it does not support (Slumber/Partial/DevSleep) (DevSleep is never
-> initiated by the device).
-> 
-> For a HBA that doesn't support any LPM states, simply don't set a LPM
-> policy such that all the HIPM/DIPM probing/enabling will be skipped.
-> 
-> Not enabling HIPM or DIPM in the first place is safer than relying on
-> the device following the AHCI specification and respecting the NAK.
-> (There are comments in the code that some devices misbehave when
-> receiving a NAK.)
-> 
-> Performing this check in ahci_update_initial_lpm_policy() also has the
-> advantage that a HBA that doesn't support any LPM states will take the
-> exact same code paths as a port that is external/hot plug capable.
-> 
-> Side note: the port in ata_port_dbg() has not been given a unique id yet,
-> but this is not overly important as the debug print is disabled unless
-> explicitly enabled using dynamic debug. A follow-up series will make sure
-> that the unique id assignment will be done earlier. For now, the important
-> thing is that the function returns before setting the LPM policy.
-> 
-> Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+ata_sas_port_alloc() calls ata_port_alloc() which already assigns ap->lock
+so there is no need to ata_sas_port_alloc() to assign it again.
 
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+ drivers/ata/libata-sata.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
+index 9e047bf912b1..c564eac9d430 100644
+--- a/drivers/ata/libata-sata.c
++++ b/drivers/ata/libata-sata.c
+@@ -1228,7 +1228,6 @@ struct ata_port *ata_sas_port_alloc(struct ata_host *host,
+ 		return NULL;
+ 
+ 	ap->port_no = 0;
+-	ap->lock = &host->lock;
+ 	ap->pio_mask = port_info->pio_mask;
+ 	ap->mwdma_mask = port_info->mwdma_mask;
+ 	ap->udma_mask = port_info->udma_mask;
+-- 
+2.45.2
+
 

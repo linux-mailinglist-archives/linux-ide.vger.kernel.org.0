@@ -1,70 +1,70 @@
-Return-Path: <linux-ide+bounces-1778-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-1780-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 311A291E903
-	for <lists+linux-ide@lfdr.de>; Mon,  1 Jul 2024 21:58:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE6EB91E907
+	for <lists+linux-ide@lfdr.de>; Mon,  1 Jul 2024 21:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62C551C220F2
-	for <lists+linux-ide@lfdr.de>; Mon,  1 Jul 2024 19:58:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8675F284732
+	for <lists+linux-ide@lfdr.de>; Mon,  1 Jul 2024 19:58:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4F117164F;
-	Mon,  1 Jul 2024 19:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7273C17167A;
+	Mon,  1 Jul 2024 19:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k7w3CaWh"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ksaHk4R2"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AFF17108B
-	for <linux-ide@vger.kernel.org>; Mon,  1 Jul 2024 19:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CD116FF45
+	for <linux-ide@vger.kernel.org>; Mon,  1 Jul 2024 19:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719863891; cv=none; b=a7DoFCGJljffcY0MRAfLaIpdYZaOZrxs10xkhgnrarhURGLD0wmhJE1KRwdrPKastcXWO9YdkHyTqg5PJmRPntRXBaggtPuob3ntUggUUu1eS4cUSHNKoG9I++FFVueBWOYiHuDTGXw4AFFe+aZ9ND8afXlHB+ed1q6h/lLkXGQ=
+	t=1719863893; cv=none; b=eqL/szkA2K14giRxlSYB6L27NvS0xw8L4/W115BucdqotxKcmk8HPBCHpC1TTdCsekStVc5XKOhRnjG7PY5k2238fLH/M8ZaTLtjPoucma5K44ZtPDtaK7qjPcwcQM/aKtCdr9zfMBK7w1n3YCAO5zBilH9MAjP3dTyG9A+Nqms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719863891; c=relaxed/simple;
-	bh=i1WM4kmIfmDHPI5dw7j2QdeDu+pN70xb5vkqTT4Klio=;
+	s=arc-20240116; t=1719863893; c=relaxed/simple;
+	bh=eNn85Fcj7KCcSuMYSdoEr0B/RTvkczi9hHJCBqhaPCs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IZ3wUxwd55tPnbjH/BAz5oDB7IREed496ngcRjbahUPnuMCzsTQRh+6OA6o1jeME4IX6gsCL8HZGzwysWtHLBLCIbOcCviBLqwFiBepNNTfqcbAqMZ98DxPqOLTIXhQHF6kgh2FenqRzTigaXwu1H55p35eSiS6LXaNhJEZx1H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k7w3CaWh; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=eBf50a1DyemIzRrVGFlVCMbt/1DQ2T4onXTCqCeZUIjkNZ4fq9u+48KdCOaPf6BD8aCCPc4sf9m7ekPmRBtppsPJr6C3mjZt+B1x8323LxnIXh/3sOz7p2ndbEX70s6/E/KGOXu3datr3askA4+zC+mH4na6Nr1bFrSwhmZZwgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ksaHk4R2; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ipylypiv.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-706698fe5b4so3164325b3a.2
-        for <linux-ide@vger.kernel.org>; Mon, 01 Jul 2024 12:58:10 -0700 (PDT)
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-64bacf9a659so51631297b3.2
+        for <linux-ide@vger.kernel.org>; Mon, 01 Jul 2024 12:58:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719863889; x=1720468689; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1719863891; x=1720468691; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MMO2KKUa8/8PW1hug4/vwJix22ScHjcmOPyPA73iWX4=;
-        b=k7w3CaWhvv+L8yZDE5/eQgrqkbG/rwjjPeOzvT6xVjTVUwXMqrCfT8wo6zMePw1RGK
-         Fou0imwoYIoZgTH0jE2PwkOozeWPuPp5Nf7DDqphbtirONKGA65Qmbe5tfgXVvHjIcuR
-         nfmtO+G8cw3z/dZMpRtMnjkJSwDnn7m7HFwMTix6LQ+vjbXj8MNcjYy9yvVyDqj3Hcn4
-         GYAbiZOu8fW2dA3eCOWusNlqKyl/a79kBeh9a09KJcEiAAnc1+rOL/fefWgLMIPauyiB
-         RX7V4jbcY9VJZwGov+I+k1XQPt7w5LHERBr3mBh/Sv1gnrB/aXOGextKURzu2n+laarX
-         WnmQ==
+        bh=NBOTiXxGTl6GNLs3EaV9yCivuLqQXgDZHBD5L6v/nwg=;
+        b=ksaHk4R2hDVkHs4kuLAngw7JwLvOM8v6LqbFd0ZYRRAoMC5CzjyyRjlgG5QgJSI8n/
+         eIxfgSh4vs344QomzRyv0wgnRtyaIfL7ndVk2bpVf2qgKHmhe3CLvXtSvJFqhKBdFj/6
+         ucbVPxUostz3i2YZdowxhRmwN0Zz8+RTChm+Z8yUa8TqOXZiXMx+FjAu9yoX8ngJnEp0
+         oi/aLxypOTPq8ycetHkZqZ16/1f8rRmDDH6z+OB7mHLH/kAhi93tsAWVyA2EVOtgMI2M
+         QUqMub9s4D0a6M6RQkvmPgjdBH/cb6CGbJ3ULTwyiyYNRBO3YNVd32kC6t4z+KEFxVYq
+         NJqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719863889; x=1720468689;
+        d=1e100.net; s=20230601; t=1719863891; x=1720468691;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MMO2KKUa8/8PW1hug4/vwJix22ScHjcmOPyPA73iWX4=;
-        b=EsrZHsqTXI+s00naW2iIzuQJ/hrRSrqfBcRKvV9ABnq/+fb9uCDyoj+jhAxdxHtrWX
-         Uz1P0QamOsD5nhs2WVIdF/YJS21GUzVGdmtZFPb+Gfc/d+cbhzFWqdicztRMgXwUF4Qa
-         R+JQRu8cCG07oav5fGV2ydTxKAChond69ABfoQ4qNdbRSDOy1IuTp8SNkTH+nnBa9tYK
-         YB2/5fTcrxXFFXLNr3w64niS5ehgKoTCwlQMEMiSFVyK3HY88UN9mI48ek/06OwdHNQb
-         mNSqoIKhQJO8NTOxfXpJnErE7WcBEEx95NDYndD88rgQHROKVhbxYjanIl21hiZBpFt6
-         cEcw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgZ/jeFleWQQBjLilYDsHzG4qIO2o6SMLp92dqH7juvytyzH6NmbW7XKOwVJvkb5Q4prcv37sukcotyZNfcJOXPSa36xysnY7/
-X-Gm-Message-State: AOJu0YzqEOucYgru1XoSkIwh8Lk8Ew44m9eZZf6vzQMifYYApJ+AQ5lI
-	QXw7QSufRgfEIUza5niv0u9y9lnzDXGonp/EQtNog/vb5bnxisBTaAbQdxX9d43pFwaohpNTlGZ
-	W60oFcZP7wQ==
-X-Google-Smtp-Source: AGHT+IHReH8MOWTtus6bvZ9IiV9dzMjmSS3I/s0f4LPu18gpADTm0fop6yxvqbOXiivfQbvbcjpBGN3Z6yyMCQ==
+        bh=NBOTiXxGTl6GNLs3EaV9yCivuLqQXgDZHBD5L6v/nwg=;
+        b=WcK4ZpCRF4YUfROH7Gl4B2iDgRx8MWPNQjJWIGRvkIeuESR6vy1473JEI6Wo8aXOam
+         wKBnOuwFxkyf+5xjDOog5SxtiOGi2j0BtvINL/Hh/TsfGTJIRKb/MuVPtjPBMIes72Is
+         ZHBKhZOHkmZIItW/l12l5lIqG5PQVX4R7gryc12Yckxte650CPzZpFh5DQA2lKDOM/ML
+         mr+U40E9Txl1SvQNndsT6BcJCyxY9tj4n1l2VRnzMo1Gxf2+e+14iqppsDgK3ZPmNbDK
+         x3r3CmhuNSKxXgN3vS+/r7W5vvZTqifqjwTnNuY8JeKIYmqeOOJ3DWr6rrrN48jaEA4Y
+         q9Ew==
+X-Forwarded-Encrypted: i=1; AJvYcCWnKjXMaiur2kpOrnoFlDpcuFS0KjIIdNqWxYDhVRnjuPjFjTnWaFRRS/hEOK3Q5OhP7meOPqbTVzQBChIdApP4AdXcmEtL9zoI
+X-Gm-Message-State: AOJu0YwgJjJZdKtPfnuJeSnUl7Zr12ZH1KurTVOSeJSoZFhkasPCbEKg
+	wbXGPnr0hc9yhI2AiFN1li9q0ZdE4DISVh9Gz1enCYdcIzl0XPtqC4zCYlFokMLO+jC+KLtYg21
+	uS9i3br+6Hg==
+X-Google-Smtp-Source: AGHT+IGGuHrEYXjyiMSFh+UBkKB6xRBF3G+mpXgTXcpxTLMS8PdCo5X5+gFF9R+5CNIc/yOizJi+4yBEmjtMng==
 X-Received: from ip.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:57f3])
- (user=ipylypiv job=sendgmr) by 2002:a05:6a00:1889:b0:706:2a35:66e3 with SMTP
- id d2e1a72fcca58-70aaaf9d74emr528990b3a.6.1719863889424; Mon, 01 Jul 2024
- 12:58:09 -0700 (PDT)
-Date: Mon,  1 Jul 2024 19:57:53 +0000
+ (user=ipylypiv job=sendgmr) by 2002:a05:6902:1889:b0:e03:39fb:5729 with SMTP
+ id 3f1490d57ef6-e036ec41ca6mr672429276.10.1719863890874; Mon, 01 Jul 2024
+ 12:58:10 -0700 (PDT)
+Date: Mon,  1 Jul 2024 19:57:54 +0000
 In-Reply-To: <20240701195758.1045917-1-ipylypiv@google.com>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
@@ -74,69 +74,49 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240701195758.1045917-1-ipylypiv@google.com>
 X-Mailer: git-send-email 2.45.2.803.g4e1b14247a-goog
-Message-ID: <20240701195758.1045917-4-ipylypiv@google.com>
-Subject: [PATCH v4 3/8] ata: libata-scsi: Honour the D_SENSE bit for CK_COND=1
- and no error
+Message-ID: <20240701195758.1045917-5-ipylypiv@google.com>
+Subject: [PATCH v4 4/8] ata: libata-scsi: Remove redundant sense_buffer memsets
 From: Igor Pylypiv <ipylypiv@google.com>
 To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
 Cc: Tejun Heo <tj@kernel.org>, Hannes Reinecke <hare@suse.de>, linux-ide@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Igor Pylypiv <ipylypiv@google.com>, stable@vger.kernel.org
+	linux-kernel@vger.kernel.org, Igor Pylypiv <ipylypiv@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-SAT-5 revision 8 specification removed the text about the ANSI INCITS
-431-2007 compliance which was requiring SCSI/ATA Translation (SAT) to
-return descriptor format sense data for the ATA PASS-THROUGH commands
-regardless of the setting of the D_SENSE bit.
+SCSI layer clears sense_buffer in scsi_queue_rq() so there is no need for
+libata to clear it again.
 
-Let's honour the D_SENSE bit for CK_COND=1 commands that had no error.
-Kernel already honours the D_SENSE bit when creating the sense buffer
-for commands that had an error.
-
-SAT-5 revision 7
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 212 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands. SATLs compliant with ANSI
-INCITS 431-2007, SCSI/ATA Translation (SAT) return descriptor format
-sense data for the ATA PASS-THROUGH commands regardless of the setting
-of the D_SENSE bit.
-
-SAT-5 revision 8
-================
-
-12.2.2.8 Fixed format sense data
-
-Table 211 shows the fields returned in the fixed format sense data
-(see SPC-5) for ATA PASS-THROUGH commands.
-
-Cc: stable@vger.kernel.org # 4.19+
-Reported-by: Niklas Cassel <cassel@kernel.org>
-Closes: https://lore.kernel.org/linux-ide/Zn1WUhmLglM4iais@ryzen.lan
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
 ---
- drivers/ata/libata-scsi.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/ata/libata-scsi.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 26b1263f5c7c..ace6b009e7ff 100644
+index ace6b009e7ff..c11ae77d3ca6 100644
 --- a/drivers/ata/libata-scsi.c
 +++ b/drivers/ata/libata-scsi.c
-@@ -941,11 +941,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
- 				   &sense_key, &asc, &ascq);
- 		ata_scsi_set_sense(qc->dev, cmd, sense_key, asc, ascq);
- 	} else {
--		/*
--		 * ATA PASS-THROUGH INFORMATION AVAILABLE
--		 * Always in descriptor format sense.
--		 */
--		scsi_build_sense(cmd, 1, RECOVERED_ERROR, 0, 0x1D);
-+		/* ATA PASS-THROUGH INFORMATION AVAILABLE */
-+		ata_scsi_set_sense(qc->dev, cmd, RECOVERED_ERROR, 0, 0x1D);
- 	}
- }
+@@ -926,11 +926,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ {
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	struct ata_taskfile *tf = &qc->result_tf;
+-	unsigned char *sb = cmd->sense_buffer;
+ 	u8 sense_key, asc, ascq;
  
+-	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+-
+ 	/*
+ 	 * Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
+@@ -965,8 +962,6 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
+ 	u64 block;
+ 	u8 sense_key, asc, ascq;
+ 
+-	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+-
+ 	if (ata_dev_disabled(dev)) {
+ 		/* Device disabled after error recovery */
+ 		/* LOGICAL UNIT NOT READY, HARD RESET REQUIRED */
 -- 
 2.45.2.803.g4e1b14247a-goog
 

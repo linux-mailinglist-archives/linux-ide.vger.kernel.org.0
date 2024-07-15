@@ -1,95 +1,84 @@
-Return-Path: <linux-ide+bounces-1872-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-1877-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C4E93017D
-	for <lists+linux-ide@lfdr.de>; Fri, 12 Jul 2024 23:16:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CD5930C92
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Jul 2024 04:18:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D21031C21317
-	for <lists+linux-ide@lfdr.de>; Fri, 12 Jul 2024 21:16:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B942811C4
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Jul 2024 02:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8402262A3;
-	Fri, 12 Jul 2024 21:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XYW1tYY7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854A579F4;
+	Mon, 15 Jul 2024 02:17:53 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70AD312E4D;
-	Fri, 12 Jul 2024 21:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0506A79F3;
+	Mon, 15 Jul 2024 02:17:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720818962; cv=none; b=IJv7eDzjlS3aHOMixnGEScx2afAd9zzRw0TuOIFTQvZ6Wa0kp+IGMZVkcyDohX6BxqsQmd370sdLU/sPdiLQo61M9WZWm7u7cEG2yai9P4D+StUgC3tbtxuuNo08pDG8ulV/sPkNavM5yJUECMlWPvfE/TApOdftLjIxwWU7KXI=
+	t=1721009873; cv=none; b=lyC4lBignFRT67pI81ACu+X3Y5HU5asfK6UyzcJODY0hj0gZi61uGMxw4QNEAT9I/lhR3ZqBeiXWv4NvnZh4A+nciHcvzQ3NTfZtEZmJwkzeDH0Bec76bg8PFsNHHPIPCAqJSf+d1/DkV6z2jydF8ZAwZKyFhO1iGLMdUJn1VsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720818962; c=relaxed/simple;
-	bh=0K/OuAnHb6QiF3qFrZxIfx6aj5rwCqwMKgDvfJ4duTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SHOHBwZYLmmJKidTvVwJ17NUfa2q139ZlH6b3sC0rx6jXIbfni0wNUKtIQO8YWkiax6vMe/Oy/OkIbFrX8MNI/Y5xqicxEN0KWHg6YLm2VQWvGnoBApc+wIhGEyNB2ciVVl3pTXrWL4g6y/uHS1whmkN1MDS8FpO7LvhPL5NlAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XYW1tYY7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E5DC32782;
-	Fri, 12 Jul 2024 21:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720818962;
-	bh=0K/OuAnHb6QiF3qFrZxIfx6aj5rwCqwMKgDvfJ4duTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XYW1tYY7vvgr8ACVIax6iBLHMV9UHYp1tReXUYiL1Ok+0TJdAoYTffJS7t55HNSw3
-	 XhrXfxR5fpSrc7dBlQFsdiRHxyNBbNiJjZx2mbWjH9AgbS/kcJ4ynjQ6dQcAXEGra+
-	 WnbvEIY2SPmFATmhBIU34ICXJO3ixSLscCq8CfWl8f9HpGzXGUeItNcbviDyvYknyJ
-	 /O+9UysxLG9b4LpW1gXvY7bsDutwlScl3QcwU3aJUX87kHDJqRiAFmpIRTsYtAgNII
-	 q/KLxwFyrhEuHd7wmnfeLUHWGDme7pzgZo6YzMCBphztSxYgSfQyZF5fCplMsFQRgU
-	 OtbBrQgaCNthg==
-Date: Fri, 12 Jul 2024 23:15:57 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Frank Li <Frank.li@nxp.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"open list:LIBATA SUBSYSTEM (Serial and Parallel ATA drivers)" <linux-ide@vger.kernel.org>,
-	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
-Subject: Re: [PATCH v3 1/1] dt-bindings: ata: ahci-fsl-qoriq: add
- fsl,ls1046a-ahci and fsl,ls1012a-ahci
-Message-ID: <ZpGdDcuKNcX-Bcir@ryzen.lan>
-References: <20240712185740.3819170-1-Frank.Li@nxp.com>
- <ZpGXl7W4h-sCjeGz@ryzen.lan>
- <ZpGZOtjjlcpPBp5d@lizhi-Precision-Tower-5810>
+	s=arc-20240116; t=1721009873; c=relaxed/simple;
+	bh=hYPspV38qTvoGjGj4HeITgm/lNpi9Xl7kdSX6Qx9HYA=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=B0qbuU8V8o5vnmm+BIF4GG0u2gWcXNQHMF32GBR71lenF0JmxwSrz1ya58CqkcFtK/qSIN639Pj7BR6DcQsZyV+hXYS2AR3McgSLjh0rJDCdc1uSy8kE3e72lRR3DfnclFfTiNi2GRErf9HERk2qqGIya6ZazPZifrFzgHQR5rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id BFBEB1A0391;
+	Mon, 15 Jul 2024 04:12:19 +0200 (CEST)
+Received: from aprdc01srsp001v.ap-rdc01.nxp.com (aprdc01srsp001v.ap-rdc01.nxp.com [165.114.16.16])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 873EB1A0118;
+	Mon, 15 Jul 2024 04:12:19 +0200 (CEST)
+Received: from localhost.localdomain (shlinux2.ap.freescale.net [10.192.224.44])
+	by aprdc01srsp001v.ap-rdc01.nxp.com (Postfix) with ESMTP id 9BAA11802183;
+	Mon, 15 Jul 2024 10:12:17 +0800 (+08)
+From: Richard Zhu <hongxing.zhu@nxp.com>
+To: tj@kernel.org,
+	dlemoal@kernel.org,
+	cassel@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com
+Cc: linux-ide@vger.kernel.org,
+	stable@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	imx@lists.linux.dev,
+	kernel@pengutronix.de
+Subject: [PATCH v2 0/4] Refine i.MX8QM SATA based on generic PHY callbacks
+Date: Mon, 15 Jul 2024 09:53:52 +0800
+Message-Id: <1721008436-24288-1-git-send-email-hongxing.zhu@nxp.com>
+X-Mailer: git-send-email 2.7.4
+X-Virus-Scanned: ClamAV using ClamSMTP
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZpGZOtjjlcpPBp5d@lizhi-Precision-Tower-5810>
 
-On Fri, Jul 12, 2024 at 04:59:38PM -0400, Frank Li wrote:
-> On Fri, Jul 12, 2024 at 10:52:39PM +0200, Niklas Cassel wrote:
-> > On Fri, Jul 12, 2024 at 02:57:40PM -0400, Frank Li wrote:
-> > > Add missing documented compatible strings 'fsl,ls1046a-ahci' and
-> > > 'fsl,ls1012a-ahci'. Allow 'fsl,ls1012a-ahci' to fallback to
-> > > 'fsl,ls1043a-ahci'.
-> > > 
-> > > Fix below CHECK_DTB warnings
-> > > arch/arm64/boot/dts/freescale/fsl-ls1012a-qds.dtb: sata@3200000: compatible:0: 'fsl,ls1012a-ahci' is not one of ['fsl,ls1021a-ahci', 'fsl,ls1043a-ahci', 'fsl,ls1028a-ahci', 'fsl,ls1088a-ahci', 'fsl,ls2080a-ahci', 'fsl,lx2160a-ahci']
-> > > arch/arm64/boot/dts/freescale/fsl-ls1012a-qds.dtb: sata@3200000: compatible: ['fsl,ls1012a-ahci', 'fsl,ls1043a-ahci'] is too long
-> > 
-> > These lines should have been wrapped to 75 lines IMO.
-> > I will fixup when applying.
-> 
-> Thanks, according to my knowledge, computer generate warning, error, log...
-> doesn't require wrap.
+V2 main changes:
+- Add Rob's reviewed-by in the binding patch.
+- Re-name the error out labels and new RXWM macro.
+- In #3 patch, add one fix tag, and CC stable kernel.
 
-Yes, that is correct, especially for critical things like a kernel oops etc.
+Based on i.MX8QM HSIO PHY driver, refine i.MX8QM SATA driver by using PHY
+interface.
 
-In this case, I don't think a simple CHECK_DTB warning is critical enough to
-warrant keeping a line length of 232 columns, but I agree that 'critical
-enough' is subjective.
+[PATCH v2 1/4] dt-bindings: ata: Add i.MX8QM AHCI compatible string
+[PATCH v2 2/4] ata: ahci_imx: Clean up code by using i.MX8Q HSIO PHY
+[PATCH v2 3/4] ata: ahci_imx: Enlarge RX water mark for i.MX8QM SATA
+[PATCH v2 4/4] ata: ahci_imx: Correct the email address
 
-
-Kind regards,
-Niklas
+Documentation/devicetree/bindings/ata/imx-sata.yaml |  47 +++++++++++
+drivers/ata/ahci_imx.c                              | 406 ++++++++++++++++++++++++-----------------------------------------------------------------
+2 files changed, 155 insertions(+), 298 deletions(-)
 

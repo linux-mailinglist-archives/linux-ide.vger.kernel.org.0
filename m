@@ -1,79 +1,197 @@
-Return-Path: <linux-ide+bounces-2031-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2033-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC7E594621C
-	for <lists+linux-ide@lfdr.de>; Fri,  2 Aug 2024 18:54:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2135A947690
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Aug 2024 10:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 197EC1C21630
-	for <lists+linux-ide@lfdr.de>; Fri,  2 Aug 2024 16:54:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 589D3B218D3
+	for <lists+linux-ide@lfdr.de>; Mon,  5 Aug 2024 08:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF121537C6;
-	Fri,  2 Aug 2024 16:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C30014F9F5;
+	Mon,  5 Aug 2024 08:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XoFuJQzl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GESzNNGK"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 157731537A1
-	for <linux-ide@vger.kernel.org>; Fri,  2 Aug 2024 16:53:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C580B14A636
+	for <linux-ide@vger.kernel.org>; Mon,  5 Aug 2024 08:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722617604; cv=none; b=Y0n5eaOpir52ZVgLFKh7/hR4D1PGQYJ345TUUo/6tixVo/TCO3TFCVfYpwvReziUHmC+1UmQYSo5bhH7hEwI4C5Kx5Am7nU/0roPi0hytJvGtcpvElmVcn7PhNeaKr0r4bgI38kj/DVDTqJQHl20JkEe93qjTV1r6UuDq7X0/1E=
+	t=1722844931; cv=none; b=ALKvgFOHExgYelfC1phIWYmzLnHdZPIhFORh5bZ4xQACz/3uAeZPIOlyl+pGYzygAAp0EDqeQnd9IezHxuEI5lW2pXjO2Ht7hHSYw6SybMbZndtom7WQuhzLddlx7jNITKolzD5jncioFECIOjazohQpaPmoZLcrvctrfnCfePs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722617604; c=relaxed/simple;
-	bh=IrSMNiS3eqreNTXIZYaqbuPiaQvSX/F1VDq5LE1ClPc=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=pJ0UArknj6fIIOFHmqQPxcKAtl/bs3VYwMtmcLRq2sI3OJDblYUHaW3MSBspJz+iG8Ja0Mo173IUiCcqNc/GZ9FTO9fSlYK0TsbbS7krbZsS9MLuJzNDlI8do0nab2JZ/4xsw3Asbgw3sop4fK/jyYBkBoPlCBmW+iZ/08BuxcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XoFuJQzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EC4CCC4AF09;
-	Fri,  2 Aug 2024 16:53:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722617604;
-	bh=IrSMNiS3eqreNTXIZYaqbuPiaQvSX/F1VDq5LE1ClPc=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=XoFuJQzlSLZQebZaj0jbRE0uWaf2j7W4LrxusXdTBYNlQ8AGvh0vztKO+wWGuhBY8
-	 l6Idi8Jx8ZmCzNTM3qCgoe2ydGGFKrhAdeFA7YaHeF5j9iC0WMldJU0wXqPOxynFDG
-	 s/+mRaCENjaO3PL08AeBq1/BTSoobmHdoZNjLw6j008+JGFR5RaXQN0SKZh4z8F+zY
-	 Ff9VRcgN3xj5p0aJHj8nzE9ywn5ekAU5FHBHPR2ytgxVRlTj3N/P+Jfpxc2fBDQbuK
-	 rRa/QFkj9c4vgrh6GTZjrVYKcR13r2ZP2kmU1oA8Qql5fb2e0oXcxOHPHqfve7pXjW
-	 3JK7O4lwURxTg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DD649D0C60C;
-	Fri,  2 Aug 2024 16:53:23 +0000 (UTC)
-Subject: Re: [GIT PULL] ata fixes for 6.11-rc2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20240802003825.19420-1-dlemoal@kernel.org>
-References: <20240802003825.19420-1-dlemoal@kernel.org>
-X-PR-Tracked-List-Id: <linux-ide.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20240802003825.19420-1-dlemoal@kernel.org>
-X-PR-Tracked-Remote: ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/libata/linux tags/ata-6.11-rc2
-X-PR-Tracked-Commit-Id: 89fb4dfacbb33750e0243848f4c54d73e558ba9a
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 454e2370b9851519a8f27d1965fe25a9a38b5ac5
-Message-Id: <172261760390.28369.6295017908691454264.pr-tracker-bot@kernel.org>
-Date: Fri, 02 Aug 2024 16:53:23 +0000
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-ide@vger.kernel.org, Niklas Cassel <cassel@kernel.org>
+	s=arc-20240116; t=1722844931; c=relaxed/simple;
+	bh=3SzrIAjNMfo/xyaY6qD0WMNLA83hhVRZkGTby43i1Yw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FqrvQljCh3qKwUlr5/Ghy7ZjppWRJULvPlSQGJX0Gov8MRdF5Fvv2JhhfgFxPXQTMdTJSWzhosJTp37FTeVtxztQZstmSjN29l6j0xX6sFkKAPRiDkeGobNyAsDXaRevu2df9VUxnXfvv9yhvyKaemf6xJ0kIybe8RISv+YP13A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GESzNNGK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722844927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FOOMdJZrThW/VVTNtW/8cjfUGb38v95FiRlM9skachc=;
+	b=GESzNNGKCs4opfiiXkfJAbcn3PviUQwQ5VGS2d8mFzV/4NDR7D6rft4S1x/bDfxDxIiHUi
+	O2t5V59rhZdBaNJenv/gpdIAi/TSd7UZmFbG7nhe2cldFFIBRFpMfS4jajTt5ane+MZC75
+	WavwjihBGDMrm7k/CB2KLgnpeAuvgao=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-FUdENggRPg672iEQq-NrvA-1; Mon, 05 Aug 2024 04:02:05 -0400
+X-MC-Unique: FUdENggRPg672iEQq-NrvA-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a7aa36a777eso95715366b.3
+        for <linux-ide@vger.kernel.org>; Mon, 05 Aug 2024 01:02:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722844924; x=1723449724;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FOOMdJZrThW/VVTNtW/8cjfUGb38v95FiRlM9skachc=;
+        b=qMTtaoBbt9GO+nSdVenLS6qPuq1Qt9tMgvnekBIfTq3dq2QLX3V0+TXauYeR2ITmy6
+         qk3I+65UjuyuS/C/pbN24uQ3d9Kdg/q9TEeHoeAqKWcupf62JJRn2FCoeN+I7xORAjua
+         90jaiWJWtNkO2LYPbpnf4nyAlaxXVIwNA7UhuvrensdV9/ze1rTRpT4z+dLnMfPGMxQj
+         83odFo0lleQwS8Xi6mYe8WbuFGY4VAAUfA8h+reUnXHyvw7o7jG+XWEOhISVcVkOBo27
+         lnVbg0YIjcySsoCKGcDao1VojbTUwu/DAiveVFtu7Y8fqkmYMnldDXPhkgqC5/kBARZl
+         eaGQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUedc1CJkV8TVtdphYutCmzrHkwTE52pTsLN1XwxXrm+tvs4fi53IYqUczWhAOWQEt712oRHWkmS60=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+NSys8qDe3lRyX9dd4NdcOxQYB9YUKtdOGajzFXbxHMgapb5T
+	Vp2EZIhzNl9Aq5jYKT1sqXNe1WqxWw3aQkaU2te1mi/ocUv8yBmRhKinZW+p1zjlu71OBd5qjec
+	79PBVfKNsQ+Hb1XgxnntWYB2QypnyAORzwgnGl1MxjqarJJ/IMnTYNktwmA==
+X-Received: by 2002:a17:906:6a0f:b0:a7a:aa35:409c with SMTP id a640c23a62f3a-a7dc512cdc8mr479720966b.9.1722844923715;
+        Mon, 05 Aug 2024 01:02:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHTS/SS1ApAhdkVa3Kv54fKJw0UKK+zRKzrvkYAaC1yWAeQnQdQA8voDIcJKUGPudzDl20u8A==
+X-Received: by 2002:a17:906:6a0f:b0:a7a:aa35:409c with SMTP id a640c23a62f3a-a7dc512cdc8mr479712266b.9.1722844922775;
+        Mon, 05 Aug 2024 01:02:02 -0700 (PDT)
+Received: from eisenberg.fritz.box (200116b82df07e000a5f4891a3b0b190.dip.versatel-1u1.de. [2001:16b8:2df0:7e00:a5f:4891:a3b0:b190])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7de8d0868bsm277958966b.143.2024.08.05.01.02.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 Aug 2024 01:02:02 -0700 (PDT)
+From: Philipp Stanner <pstanner@redhat.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Arnaud Ebalard <arno@natisbad.org>,
+	Srujana Challa <schalla@marvell.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Cernekee <cernekee@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Mark Brown <broonie@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Jie Wang <jie.wang@intel.com>,
+	Adam Guerin <adam.guerin@intel.com>,
+	Shashank Gupta <shashank.gupta@intel.com>,
+	Damian Muszynski <damian.muszynski@intel.com>,
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	qat-linux@intel.com,
+	linux-crypto@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH v2 00/10] Remove pcim_iomap_regions_request_all()
+Date: Mon,  5 Aug 2024 10:01:27 +0200
+Message-ID: <20240805080150.9739-2-pstanner@redhat.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The pull request you sent on Fri,  2 Aug 2024 09:38:25 +0900:
+Changes in v2:
+  - Fix a bug in patch №4 ("crypto: marvell ...") where an error code
+    was not set before printing it. (Me)
+  - Apply Damien's Reviewed- / Acked-by to patches 1, 2 and 10. (Damien)
+  - Apply Serge's Acked-by to patch №7. (Serge)
+  - Apply Jiri's Reviewed-by to patch №8. (Jiri)
+  - Apply Takashi Iwai's Reviewed-by to patch №9. (Takashi)
 
-> ssh://git@gitolite.kernel.org/pub/scm/linux/kernel/git/libata/linux tags/ata-6.11-rc2
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/454e2370b9851519a8f27d1965fe25a9a38b5ac5
+Hi all,
 
-Thank you!
+the PCI subsystem is currently working on cleaning up its devres API. To
+do so, a few functions will be replaced with better alternatives.
+
+This series removes pcim_iomap_regions_request_all(), which has been
+deprecated already, and accordingly replaces the calls to
+pcim_iomap_table() (which were only necessary because of
+pcim_iomap_regions_request_all() in the first place) with calls to
+pcim_iomap().
+
+Would be great if you can take a look whether this behaves as you
+intended for your respective component.
+
+Cheers,
+Philipp
+
+Philipp Stanner (10):
+  PCI: Make pcim_request_all_regions() a public function
+  ata: ahci: Replace deprecated PCI functions
+  crypto: qat - replace deprecated PCI functions
+  crypto: marvell - replace deprecated PCI functions
+  intel_th: pci: Replace deprecated PCI functions
+  wifi: iwlwifi: replace deprecated PCI functions
+  ntb: idt: Replace deprecated PCI functions
+  serial: rp2: Replace deprecated PCI functions
+  ALSA: korg1212: Replace deprecated PCI functions
+  PCI: Remove pcim_iomap_regions_request_all()
+
+ .../driver-api/driver-model/devres.rst        |  1 -
+ drivers/ata/acard-ahci.c                      |  6 +-
+ drivers/ata/ahci.c                            |  6 +-
+ drivers/crypto/intel/qat/qat_420xx/adf_drv.c  | 11 +++-
+ drivers/crypto/intel/qat/qat_4xxx/adf_drv.c   | 11 +++-
+ .../marvell/octeontx2/otx2_cptpf_main.c       | 14 +++--
+ .../marvell/octeontx2/otx2_cptvf_main.c       | 13 ++--
+ drivers/hwtracing/intel_th/pci.c              |  9 ++-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 16 ++---
+ drivers/ntb/hw/idt/ntb_hw_idt.c               | 13 ++--
+ drivers/pci/devres.c                          | 59 +------------------
+ drivers/tty/serial/rp2.c                      | 12 ++--
+ include/linux/pci.h                           |  3 +-
+ sound/pci/korg1212/korg1212.c                 |  6 +-
+ 14 files changed, 76 insertions(+), 104 deletions(-)
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+2.45.2
+
 

@@ -1,52 +1,52 @@
-Return-Path: <linux-ide+bounces-2142-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2144-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E683895EA75
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Aug 2024 09:31:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ADA495EA77
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Aug 2024 09:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D2828918A
-	for <lists+linux-ide@lfdr.de>; Mon, 26 Aug 2024 07:31:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1001D1F20F8E
+	for <lists+linux-ide@lfdr.de>; Mon, 26 Aug 2024 07:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8ED26F2F6;
-	Mon, 26 Aug 2024 07:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD85B339AB;
+	Mon, 26 Aug 2024 07:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+La4PQC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUgACtan"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6774131E4B
-	for <linux-ide@vger.kernel.org>; Mon, 26 Aug 2024 07:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E63136671
+	for <linux-ide@vger.kernel.org>; Mon, 26 Aug 2024 07:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724657470; cv=none; b=VD7o5wNprIEKqTAEZl+ogJZNYtUZ9UwMB2HzlNz7OlaHTDakVxy0NL14H7rfiDx3QCrkGALG4rsu91EfILCTrdCrj8tw/M1fmPKY4MI4Tnf7riEqodZmy69BBzbr6buGGQd4FdUTvDSfDiGSbqaMUTD9Gz0BY66rnj3yTcFVKpo=
+	t=1724657471; cv=none; b=rKRqSDhKUwdhVbIfI13H6AUxgHkZyNXYxl7hAV3O9NPOH63SgKb4qxHSzJ5cTFH9wAU476VEq6obri0vrTUYCb13CiVIkE9YKFZ4QNPnt/vogxfSky2ODYy34m9P4rKyzVaCZzki9pqnKvcppG6JdRBj8uKiQmAA/F8/TzMYWE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724657470; c=relaxed/simple;
-	bh=jU9nreu4bp9n9GnpJBAFSuPiWZ5fbi8Ds6kcMojZ1UQ=;
+	s=arc-20240116; t=1724657471; c=relaxed/simple;
+	bh=Je4YOLLz8VpI5+9LbwLXm0VwJcqvz+f3N875tXulX7k=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uchDu/OtgAuJ/bvEdnDlpjVGoG/VlRxqfzEdHMTNOm0ek6wvrNt0+TpDfYbHWvbvQ7ydr3IBffHkQIX9f3QrnFwbTjOQGne8sK7+SyNSe8tHBAWWUB0BWI+EDe45PmvEG3+YROTukm0/WXX5A73EUaHqjvu9swp9LqghRJ2lKbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+La4PQC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D87DC8CDC1;
+	 MIME-Version; b=L/q52v1OYEQPlgAu59+yeqNeaWipxXyiI3YjBOhBeIQAvdD+o9xjYWLUD1i1fxXOrdEZhCmQER5+WXEW9qtDVPVPfGOkbn7tk9ulXNiFuwoLVmP6M8c/3dof1kV1Ll6tD99lFvEq5mZROziSG6Onsc8L+8lJZeewG86YFQJREM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUgACtan; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D33A8C8CDC5;
 	Mon, 26 Aug 2024 07:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724657470;
-	bh=jU9nreu4bp9n9GnpJBAFSuPiWZ5fbi8Ds6kcMojZ1UQ=;
+	s=k20201202; t=1724657471;
+	bh=Je4YOLLz8VpI5+9LbwLXm0VwJcqvz+f3N875tXulX7k=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=o+La4PQC3J2Y+ThG+1s/WQTeYse1lKy/Xa0Y1gv3YJV7goNSLeUGWZxj8yT2H6C3R
-	 VvJiIGsL/YviC4CIan6ESSpK3hHLYnhoE0QkviOAkMgQxzympbEyVxB8zEJ3Tr3y2a
-	 Ku9YkIwokG7tzOTAg+W6DYWtbRPXlr6rbKJWhN7K2lcv9OP5TGnUYCSTGCNbZII9ib
-	 2z/jBARHgLpwELnlykk8ByPU1MRHDGJUYbEeAMoSXz1jzJOPbVRxlgODUMOvANzGUL
-	 n+k0X+woff2M10GWYtkc4AvueRrCX1NPsH2y6R2+HerK4oM83QRTB3bg0C+NrYjsWK
-	 n0/DPBiDLMecQ==
+	b=rUgACtanuXEqso35hRkBtlCZEm70eCXDpttrVQ/zXdbny6NDvvbpPGx3Gz32wh8a1
+	 JwPKm5bk9cKXFA4YzrXLTlcmFyCLoNHJc8Ic+qSAiF8VuBMq8wrSXpq3IxF9lSVDWG
+	 VsO3aiSw72BLOjk7+rMFpVyUNu5BmpzN5RtnQyLuEwgh5LYFTx3MI4Pwox95qdx2O3
+	 HKr2BoE2sa5RuriV8BPcUCf4AnPsuRs666p5AYCpzfS+9NRkjYWEklJVjbkVsQfDpH
+	 AziYhjIg3oYpBu1io7VDotuYbNJnTukqWp0dXqi5VZhfVp3EXheV0yKikY+8izrgX6
+	 aikfXtBkl2D/w==
 From: Damien Le Moal <dlemoal@kernel.org>
 To: linux-ide@vger.kernel.org,
 	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 4/7] ata: libata: Move sata_std_hardreset() definition to libata-sata.c
-Date: Mon, 26 Aug 2024 16:31:03 +0900
-Message-ID: <20240826073106.56918-5-dlemoal@kernel.org>
+Subject: [PATCH 5/7] ata: libata: Rename ata_eh_read_sense_success_ncq_log()
+Date: Mon, 26 Aug 2024 16:31:04 +0900
+Message-ID: <20240826073106.56918-6-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240826073106.56918-1-dlemoal@kernel.org>
 References: <20240826073106.56918-1-dlemoal@kernel.org>
@@ -58,158 +58,129 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Unlike ata_std_prereset() and ata_std_postreset(), the function
-sata_std_hardreset() applies only to SATA devices, as its name implies.
-So move its definition to libata-sata.c.
+The function ata_eh_read_sense_success_ncq_log() does more that just
+reading the sense data for successful NCQ commands log page as it also
+sets the sense data for all commands listed in the log page.
 
-Together with this, also move the definition of sata_port_ops to
-libata-sata.c, where it belongs.
+Rename this function to ata_eh_get_ncq_success_sense() to better
+describe what the function does. Furthermore, since this function is
+only called from ata_eh_get_success_sense() in libata-eh.c, there is no
+need to export it and its declaration can be moved to
+drivers/ata/libata.h.
+
+To be consistent with this change, the function
+ata_eh_read_sense_success_non_ncq() is also renamed to
+ata_eh_get_non_ncq_success_sense().
 
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 ---
- drivers/ata/libata-core.c | 35 -----------------------------------
- drivers/ata/libata-sata.c | 36 ++++++++++++++++++++++++++++++++++++
- include/linux/libata.h    |  9 +++++++--
- 3 files changed, 43 insertions(+), 37 deletions(-)
+ drivers/ata/libata-eh.c   | 6 +++---
+ drivers/ata/libata-sata.c | 7 +++----
+ drivers/ata/libata.h      | 5 +++++
+ include/linux/libata.h    | 5 -----
+ 4 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index b957eb900a00..b5a051bbb01f 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -72,14 +72,6 @@ const struct ata_port_operations ata_base_port_ops = {
- 	.end_eh			= ata_std_end_eh,
- };
- 
--const struct ata_port_operations sata_port_ops = {
--	.inherits		= &ata_base_port_ops,
--
--	.qc_defer		= ata_std_qc_defer,
--	.hardreset		= sata_std_hardreset,
--};
--EXPORT_SYMBOL_GPL(sata_port_ops);
--
- static unsigned int ata_dev_init_params(struct ata_device *dev,
- 					u16 heads, u16 sectors);
- static unsigned int ata_dev_set_xfermode(struct ata_device *dev);
-@@ -3676,33 +3668,6 @@ int ata_std_prereset(struct ata_link *link, unsigned long deadline)
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 214b935c2ced..107aad2a1af5 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -1924,7 +1924,7 @@ static inline bool ata_eh_quiet(struct ata_queued_cmd *qc)
+ 	return qc->flags & ATA_QCFLAG_QUIET;
  }
- EXPORT_SYMBOL_GPL(ata_std_prereset);
  
--/**
-- *	sata_std_hardreset - COMRESET w/o waiting or classification
-- *	@link: link to reset
-- *	@class: resulting class of attached device
-- *	@deadline: deadline jiffies for the operation
-- *
-- *	Standard SATA COMRESET w/o waiting or classification.
-- *
-- *	LOCKING:
-- *	Kernel thread context (may sleep)
-- *
-- *	RETURNS:
-- *	0 if link offline, -EAGAIN if link online, -errno on errors.
-- */
--int sata_std_hardreset(struct ata_link *link, unsigned int *class,
--		       unsigned long deadline)
--{
--	const unsigned int *timing = sata_ehc_deb_timing(&link->eh_context);
--	bool online;
--	int rc;
--
--	/* do hardreset */
--	rc = sata_link_hardreset(link, timing, deadline, &online, NULL);
--	return online ? -EAGAIN : rc;
--}
--EXPORT_SYMBOL_GPL(sata_std_hardreset);
--
- /**
-  *	ata_std_postreset - standard postreset callback
-  *	@link: the target ata_link
+-static int ata_eh_read_sense_success_non_ncq(struct ata_link *link)
++static int ata_eh_get_non_ncq_success_sense(struct ata_link *link)
+ {
+ 	struct ata_port *ap = link->ap;
+ 	struct ata_queued_cmd *qc;
+@@ -1976,9 +1976,9 @@ static void ata_eh_get_success_sense(struct ata_link *link)
+ 	 * request sense ext command to retrieve the sense data.
+ 	 */
+ 	if (link->sactive)
+-		ret = ata_eh_read_sense_success_ncq_log(link);
++		ret = ata_eh_get_ncq_success_sense(link);
+ 	else
+-		ret = ata_eh_read_sense_success_non_ncq(link);
++		ret = ata_eh_get_non_ncq_success_sense(link);
+ 	if (ret)
+ 		goto out;
+ 
 diff --git a/drivers/ata/libata-sata.c b/drivers/ata/libata-sata.c
-index 549377b82670..286b5699dafd 100644
+index 286b5699dafd..020893da900d 100644
 --- a/drivers/ata/libata-sata.c
 +++ b/drivers/ata/libata-sata.c
-@@ -706,6 +706,34 @@ int sata_link_hardreset(struct ata_link *link, const unsigned int *timing,
+@@ -1487,8 +1487,8 @@ static int ata_eh_read_log_10h(struct ata_device *dev,
  }
- EXPORT_SYMBOL_GPL(sata_link_hardreset);
  
-+/**
-+ *	sata_std_hardreset - COMRESET w/o waiting or classification
-+ *	@link: link to reset
-+ *	@class: resulting class of attached device
-+ *	@deadline: deadline jiffies for the operation
-+ *
-+ *	Standard SATA COMRESET w/o waiting or classification.
-+ *
-+ *	LOCKING:
-+ *	Kernel thread context (may sleep)
-+ *
-+ *	RETURNS:
-+ *	0 if link offline, -EAGAIN if link online, -errno on errors.
-+ */
-+int sata_std_hardreset(struct ata_link *link, unsigned int *class,
-+		       unsigned long deadline)
-+{
-+	const unsigned int *timing = sata_ehc_deb_timing(&link->eh_context);
-+	bool online;
-+	int rc;
-+
-+	rc = sata_link_hardreset(link, timing, deadline, &online, NULL);
-+	if (online)
-+		return -EAGAIN;
-+	return rc;
-+}
-+EXPORT_SYMBOL_GPL(sata_std_hardreset);
-+
  /**
-  *	ata_qc_complete_multiple - Complete multiple qcs successfully
-  *	@ap: port in question
-@@ -1656,3 +1684,11 @@ void ata_eh_analyze_ncq_error(struct ata_link *link)
- 	ehc->i.err_mask &= ~AC_ERR_DEV;
- }
- EXPORT_SYMBOL_GPL(ata_eh_analyze_ncq_error);
-+
-+const struct ata_port_operations sata_port_ops = {
-+	.inherits		= &ata_base_port_ops,
-+
-+	.qc_defer		= ata_std_qc_defer,
-+	.hardreset		= sata_std_hardreset,
-+};
-+EXPORT_SYMBOL_GPL(sata_port_ops);
-diff --git a/include/linux/libata.h b/include/linux/libata.h
-index 0279c0a6302f..46e35acc611c 100644
---- a/include/linux/libata.h
-+++ b/include/linux/libata.h
-@@ -1104,8 +1104,6 @@ static inline bool ata_port_is_frozen(const struct ata_port *ap)
- extern int ata_std_prereset(struct ata_link *link, unsigned long deadline);
- extern int ata_wait_after_reset(struct ata_link *link, unsigned long deadline,
- 				int (*check_ready)(struct ata_link *link));
--extern int sata_std_hardreset(struct ata_link *link, unsigned int *class,
--			      unsigned long deadline);
- extern void ata_std_postreset(struct ata_link *link, unsigned int *classes);
+- *	ata_eh_read_sense_success_ncq_log - Read the sense data for successful
+- *					    NCQ commands log
++ *	ata_eh_get_ncq_success_sense - Read and process the sense data for
++ *				       successful NCQ commands log page
+  *	@link: ATA link to get sense data for
+  *
+  *	Read the sense data for successful NCQ commands log page to obtain
+@@ -1501,7 +1501,7 @@ static int ata_eh_read_log_10h(struct ata_device *dev,
+  *	RETURNS:
+  *	0 on success, -errno otherwise.
+  */
+-int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
++int ata_eh_get_ncq_success_sense(struct ata_link *link)
+ {
+ 	struct ata_device *dev = link->device;
+ 	struct ata_port *ap = dev->link->ap;
+@@ -1573,7 +1573,6 @@ int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
  
- extern struct ata_host *ata_host_alloc(struct device *dev, int n_ports);
-@@ -1229,6 +1227,8 @@ extern int sata_scr_read(struct ata_link *link, int reg, u32 *val);
- extern int sata_scr_write(struct ata_link *link, int reg, u32 val);
- extern int sata_scr_write_flush(struct ata_link *link, int reg, u32 val);
- extern int sata_set_spd(struct ata_link *link);
-+int sata_std_hardreset(struct ata_link *link, unsigned int *class,
-+		       unsigned long deadline);
- extern int sata_link_hardreset(struct ata_link *link,
- 			const unsigned int *timing, unsigned long deadline,
- 			bool *online, int (*check_ready)(struct ata_link *));
-@@ -1256,6 +1256,11 @@ static inline int sata_scr_write_flush(struct ata_link *link, int reg, u32 val)
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(ata_eh_read_sense_success_ncq_log);
+ 
+ /**
+  *	ata_eh_analyze_ncq_error - analyze NCQ error
+diff --git a/drivers/ata/libata.h b/drivers/ata/libata.h
+index eda2d5dfd234..5ca17784a350 100644
+--- a/drivers/ata/libata.h
++++ b/drivers/ata/libata.h
+@@ -95,11 +95,16 @@ extern unsigned int ata_read_log_page(struct ata_device *dev, u8 log,
+ /* libata-sata.c */
+ #ifdef CONFIG_SATA_HOST
+ int sata_down_spd_limit(struct ata_link *link, u32 spd_limit);
++int ata_eh_get_ncq_success_sense(struct ata_link *link);
+ #else
+ static inline int sata_down_spd_limit(struct ata_link *link, u32 spd_limit)
+ {
  	return -EOPNOTSUPP;
  }
- static inline int sata_set_spd(struct ata_link *link) { return -EOPNOTSUPP; }
-+static inline int sata_std_hardreset(struct ata_link *link, unsigned int *class,
-+				     unsigned long deadline)
++static inline int ata_eh_get_ncq_success_sense(struct ata_link *link)
 +{
 +	return -EOPNOTSUPP;
 +}
- static inline int sata_link_hardreset(struct ata_link *link,
- 				      const unsigned int *timing,
- 				      unsigned long deadline,
+ #endif
+ 
+ /* libata-acpi.c */
+diff --git a/include/linux/libata.h b/include/linux/libata.h
+index 46e35acc611c..e07a9b5d45df 100644
+--- a/include/linux/libata.h
++++ b/include/linux/libata.h
+@@ -1234,7 +1234,6 @@ extern int sata_link_hardreset(struct ata_link *link,
+ 			bool *online, int (*check_ready)(struct ata_link *));
+ extern int sata_link_resume(struct ata_link *link, const unsigned int *params,
+ 			    unsigned long deadline);
+-extern int ata_eh_read_sense_success_ncq_log(struct ata_link *link);
+ extern void ata_eh_analyze_ncq_error(struct ata_link *link);
+ #else
+ static inline const unsigned int *
+@@ -1277,10 +1276,6 @@ static inline int sata_link_resume(struct ata_link *link,
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int ata_eh_read_sense_success_ncq_log(struct ata_link *link)
+-{
+-	return -EOPNOTSUPP;
+-}
+ static inline void ata_eh_analyze_ncq_error(struct ata_link *link) { }
+ #endif
+ extern int sata_link_debounce(struct ata_link *link,
 -- 
 2.46.0
 

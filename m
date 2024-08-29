@@ -1,39 +1,39 @@
-Return-Path: <linux-ide+bounces-2171-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2173-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22AF29646CD
-	for <lists+linux-ide@lfdr.de>; Thu, 29 Aug 2024 15:37:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158009646E1
+	for <lists+linux-ide@lfdr.de>; Thu, 29 Aug 2024 15:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A5B9B2CB3B
-	for <lists+linux-ide@lfdr.de>; Thu, 29 Aug 2024 13:32:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E823B2CD67
+	for <lists+linux-ide@lfdr.de>; Thu, 29 Aug 2024 13:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52501AB512;
-	Thu, 29 Aug 2024 13:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6C61AD401;
+	Thu, 29 Aug 2024 13:27:30 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5261A76B7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028FC1A76A8;
 	Thu, 29 Aug 2024 13:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724938049; cv=none; b=YhCvSxh4bXzX0fT8GMKhzCpcpILpcVEYvYxqV0OmUAM10WUDinJ2eee472g2qevfXYoqO66a7TLSHUS9J1YD3ZaQ+IDM1gM7sTI5jPNlTugovkyVEWWJykBEuHwKpNEv4CA0UQT/TJgYtyMTbI9gDFXu5NKG/Brd/D/kAQCMckA=
+	t=1724938050; cv=none; b=Z4cm/VDrR1lahJr6yXKWstj7odhBNNofdObBR0HAsIFq0vZik1kJFIEnfKjbVJsnECfsTvo4uU1lff4YKc2VBQ9IY+/lsG656ED3nwY1BIdrmgxGNCBS5tkJkZ8xc9waB4uRA15dspwUMbAjbtKEm9xCd5bfqlOaxEGjybML4Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724938049; c=relaxed/simple;
-	bh=C+UvIVig5oBTlH4/D6JT9X+95t3qFuBC0b3nWcw824w=;
+	s=arc-20240116; t=1724938050; c=relaxed/simple;
+	bh=Yp/tN7CEqPIkgXcldULd7cSLCQTms+PybwmDb8efFdQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iqf2of9P62Ow8G+jwou+3L+Szs9TSKotHEBstPE+4Mu0Pr73QZiAOqAAbQjMTw269Hl7nRvZcW0oJerjtr04dlDTfy3YM/jPSJjtiNbnOrBHr9bW/QkpBXthLGoq2cbXZ7dYXb9skEJXDbWiazpkqp8snuvwIrgKvcUW5JPRY9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+	 MIME-Version:Content-Type; b=R6vV0DGGTOIrL6L1aNNJ7ozWuMTSebeL7PctSLWk2lxFsws8B/KUmvj8zQDztsS98QxZvJ+6pgJfPXFmBEwYeAk53RGx3VGaGQ1MkFHf1Gc9DB3GsfVlCD3BTcTLOKpPl0CxbaNs5/DYJISx1lQ/HuZYuY8HHYNVAOrZLFvSg0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Wvhrs0kT0zyR5w;
-	Thu, 29 Aug 2024 21:26:53 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.105])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WvhqT16ZVzpV0c;
+	Thu, 29 Aug 2024 21:25:41 +0800 (CST)
 Received: from dggpemm500020.china.huawei.com (unknown [7.185.36.49])
-	by mail.maildlp.com (Postfix) with ESMTPS id A68121402CA;
+	by mail.maildlp.com (Postfix) with ESMTPS id D6FB71401F2;
 	Thu, 29 Aug 2024 21:27:24 +0800 (CST)
 Received: from huawei.com (10.67.174.77) by dggpemm500020.china.huawei.com
  (7.185.36.49) with Microsoft SMTP Server (version=TLS1_2,
@@ -43,9 +43,9 @@ From: Liao Chen <liaochen4@huawei.com>
 To: <linux-ide@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <linus.walleij@linaro.org>, <s.shtylyov@omp.ru>, <dlemoal@kernel.org>,
 	<cassel@kernel.org>, <liaochen4@huawei.com>
-Subject: [PATCH -next 2/3] ata: pata_ixp4xx: Enable module autoloading
-Date: Thu, 29 Aug 2024 13:19:06 +0000
-Message-ID: <20240829131907.541466-3-liaochen4@huawei.com>
+Subject: [PATCH -next 3/3] ata: sata_gemini: Enable module autoloading
+Date: Thu, 29 Aug 2024 13:19:07 +0000
+Message-ID: <20240829131907.541466-4-liaochen4@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240829131907.541466-1-liaochen4@huawei.com>
 References: <20240829131907.541466-1-liaochen4@huawei.com>
@@ -65,21 +65,21 @@ on the alias from of_device_id table.
 
 Signed-off-by: Liao Chen <liaochen4@huawei.com>
 ---
- drivers/ata/pata_ixp4xx_cf.c | 1 +
+ drivers/ata/sata_gemini.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/pata_ixp4xx_cf.c b/drivers/ata/pata_ixp4xx_cf.c
-index 246bb4f8f1f7..8a9ee828478f 100644
---- a/drivers/ata/pata_ixp4xx_cf.c
-+++ b/drivers/ata/pata_ixp4xx_cf.c
-@@ -290,6 +290,7 @@ static const struct of_device_id ixp4xx_pata_of_match[] = {
- 	{ .compatible = "intel,ixp4xx-compact-flash", },
+diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
+index 4c270999ba3c..f574e3c3f5b4 100644
+--- a/drivers/ata/sata_gemini.c
++++ b/drivers/ata/sata_gemini.c
+@@ -417,6 +417,7 @@ static const struct of_device_id gemini_sata_of_match[] = {
+ 	{ .compatible = "cortina,gemini-sata-bridge", },
  	{ /* sentinel */ }
  };
-+MODULE_DEVICE_TABLE(of, ixp4xx_pata_of_match);
++MODULE_DEVICE_TABLE(of, gemini_sata_of_match);
  
- static struct platform_driver ixp4xx_pata_platform_driver = {
- 	.driver	 = {
+ static struct platform_driver gemini_sata_driver = {
+ 	.driver = {
 -- 
 2.34.1
 

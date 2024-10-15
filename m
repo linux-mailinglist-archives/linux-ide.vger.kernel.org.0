@@ -1,77 +1,77 @@
-Return-Path: <linux-ide+bounces-2414-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2416-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE0D99F62B
-	for <lists+linux-ide@lfdr.de>; Tue, 15 Oct 2024 20:52:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9550799F63B
+	for <lists+linux-ide@lfdr.de>; Tue, 15 Oct 2024 20:53:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0DEF282624
-	for <lists+linux-ide@lfdr.de>; Tue, 15 Oct 2024 18:52:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A5062815EF
+	for <lists+linux-ide@lfdr.de>; Tue, 15 Oct 2024 18:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1081F818A;
-	Tue, 15 Oct 2024 18:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC941FAEFA;
+	Tue, 15 Oct 2024 18:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gIhh/qmg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SbUailGu"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEC01F76C1
-	for <linux-ide@vger.kernel.org>; Tue, 15 Oct 2024 18:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0669B1FBF40
+	for <linux-ide@vger.kernel.org>; Tue, 15 Oct 2024 18:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729018312; cv=none; b=NPQ+N4lsICceAHRW6F5dZwCUHXop1GTZmfunkZQ5wsSL/6gpkB4/7CykKyCmTFuWGnxwFhs3ixO44LMJv6q7vmt4B+akSC2DNZbXwkfvyPnp5Ys3fT1VQTsCi+guD61+bqfETdDnA4tTtEoJNM+HF5yN9bJ6NQg9LllcjoSz91g=
+	t=1729018318; cv=none; b=tKETatsiwo78lH4m7oOuZon1uv1E6boLo3/MTQ+YaZ9BQ3JqjHUwALTBl75TyDsvf2wm0sNG45ZVsPmb123pntex97ZcB4cn/VnlupOypSrwUsMPMGe6OonXL8iCWW7//V8LoebnEE5s7vShsIHgY673kOIP2OUdIihca/j8VUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729018312; c=relaxed/simple;
-	bh=KHLKi60pv4gLVTsiuJyXLJXAzGodCYBvpuQkjf82Rd8=;
+	s=arc-20240116; t=1729018318; c=relaxed/simple;
+	bh=dO0Bt5S9xKcwhKAQUQyexaV6kggyDnL6IVx7RfRRupg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=udpanVxZRo0HDpBtSG4jt0zU1mF2EhyZdwyJmFyXtXqMXFdLW3cRFPSbB7leQTACUZPzDcXKhH1ieR9qzKjjXilqRUskadDE29EW2IRFDyAJczxkrD9zZqMuf57ZzZFABf9/ZTSHmD98IPjCICQraZGYdRK2vm3dB7bVixsukWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gIhh/qmg; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=UMpYJ0LWvXAoxH55L54ibQH3CYG5ccNtlepLcQgBXLYMA5viUXAAc4CIKRb7TqxcBbO/dzWT2UHuPbTRxhrQ87EvV58zcYCwgW/HuBUAFgnPiMcUOrrUccINjpoyV1MgKDdcA/RBZZpE49scsStfb7Et54dg9UcuNm2L4XdW76M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SbUailGu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729018309;
+	s=mimecast20190719; t=1729018315;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3bl3QB30NLAEEM3JzJm3v9Fl/AaPLWrckmhbzUoxAcY=;
-	b=gIhh/qmgxQ2pPvvPJXjiSGpFhRQDI+Gs5k86wb6DxozkgIdYOV+o07b/lq3rOjlym0us5x
-	aAvfst7M+iBJzquqEeHZ6oNfUOBmbE+ScLH8JmLx8EF2ZXi1TwQR+AU8Yl4eaaOR6w3VZ6
-	puJat6inyEktFLT1fH/wA/BLUv24U8s=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=2UdUsG2Ce2FuhD+Vr0J1b3PhjfLKCU3S+xUJ9DfCqJQ=;
+	b=SbUailGuw1iIlfv10pdc0EG88plaj3CMjiN5KCrV0R9zHFNHs2DerKCR02t3tAeXox/smO
+	jhqQ5fe2jDz/mybDfMc2CgjM1BxiYY0xUq8vOtuuVQ39LJoRZOsJ3PXBphaaNQM8GzZ0gn
+	ALnEigsevLEaJvfcP9QDxPpaDsMxf0U=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-144-XbB8J2EKOGW2BTDzEG-V_g-1; Tue, 15 Oct 2024 14:51:48 -0400
-X-MC-Unique: XbB8J2EKOGW2BTDzEG-V_g-1
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5c92e8b8101so4217295a12.2
-        for <linux-ide@vger.kernel.org>; Tue, 15 Oct 2024 11:51:48 -0700 (PDT)
+ us-mta-484-8Ui7MdiHPOeNnp9jrQL_7A-1; Tue, 15 Oct 2024 14:51:52 -0400
+X-MC-Unique: 8Ui7MdiHPOeNnp9jrQL_7A-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2fac504fb8cso40370451fa.1
+        for <linux-ide@vger.kernel.org>; Tue, 15 Oct 2024 11:51:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729018307; x=1729623107;
+        d=1e100.net; s=20230601; t=1729018311; x=1729623111;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3bl3QB30NLAEEM3JzJm3v9Fl/AaPLWrckmhbzUoxAcY=;
-        b=G25Ak4o8SjbTw6x2kLWS2kcMa15Q4dHThsrT+fGf/HQWvPIPhmLyYbzyBZnr5PHGsN
-         UPPVTg4gWoDRKRwzMLRPmbsUrqUUkpDkSmJ3iw4nfPEfq48RlFTJLeN1E5eItlfbuH2e
-         kEknPL2dz9EhM7Ho2gQZ/gqiZZejCO2gSuwL2J5nPwLniKjfNhO1kGcNN1PaQCINhzR2
-         KSLLc/BwPlUHEtb7xKlq99TZ3oqlR5RtnN5ZMQIaEetMuEps5CYy6F+o9dlis35yZzLS
-         y3sM4oPompZGYLiQzzXpDx+Z/+wQS8WI02YLudsZwbpnWKATchrkL2K3GDi1SKEc2CCE
-         VmXw==
-X-Gm-Message-State: AOJu0YxRnXQV20zpQ58uZz/Fbhm9fVQOZOxPN1x+d6H3iMgXvKlSlfpG
-	uoV6MJZon9ij3H5uTjHwvgkzCFGP12fby1x4vJNzAA4tDdh5OWiyDD+fRESxzAQYFk2E7dAw+yI
-	3nw/fqn5Ika5BHkl+r/pKFklFANgIqAcC1boyehcacVFZ41hvjVAZACfyjQ==
-X-Received: by 2002:a05:6402:274b:b0:5c9:758c:307d with SMTP id 4fb4d7f45d1cf-5c995123e65mr1042706a12.34.1729018307275;
-        Tue, 15 Oct 2024 11:51:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcpsVUn9n0QaeMUMW5c7DLX/r1R+cfZY7789CvnHFdFGuHG3lQrtgeZ9VzucvxMpAlT7QteA==
-X-Received: by 2002:a05:6402:274b:b0:5c9:758c:307d with SMTP id 4fb4d7f45d1cf-5c995123e65mr1042656a12.34.1729018306780;
-        Tue, 15 Oct 2024 11:51:46 -0700 (PDT)
+        bh=2UdUsG2Ce2FuhD+Vr0J1b3PhjfLKCU3S+xUJ9DfCqJQ=;
+        b=LhoOQZCFdHQAjfRFXkHsy6tbmIbbvn+9HMdiNGzT9pPVZbWruAaTRKW3nj5J0DGzY7
+         PVmiVdzlhDTRCxk+H0dtUZLpWOP3BIq/yYyNrq9rdRt2hqXhFDd8aC5EkWj6CnVKXq+U
+         EYAaGz/lGH09ylh3Mx526CJr7fpNpII6vq2/RBfHlQBRbIw6BmVgs+XjWw7lY1MS4Fn/
+         7ynMVqFofhzPygN0Cfl/fO9zbHlrV4bg7uSvdcp1GrEXWBCwDXzY+Lat+dSSgiIeEY3f
+         9dHq+18QEZJGPQFpVm/0Zr4CQgxYggbWZ+yhlYvTzwlm1gk/rYVSigzMYuleci2qxZ6C
+         lv/A==
+X-Gm-Message-State: AOJu0Yxp28Lyu7bMxB1Uy+Dgwmm0+ZKOMHIOIuzVpffudIvxDcO2o8nP
+	QC/KJMUUAVdWy4WW4DZ5bCVkH+NUej1wVj7VkxrTecFJ+jvgs9px9RaZ+99Xl2elpzGGBLTlR7Y
+	KmRp4z1DJhs2t7W4ILcdJBlXP53TpFE28T6z3MX2RqP3kfY5Rnt1eEAOaWg==
+X-Received: by 2002:a2e:be13:0:b0:2fa:c0fc:e3d6 with SMTP id 38308e7fff4ca-2fb326fc5a0mr82286291fa.7.1729018310978;
+        Tue, 15 Oct 2024 11:51:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGg0lXB9d95359mfSRgxCA4dveTgVHKUj5pW+Si5SQOi+coS4w/96kFO+qIGBhPz8zuJnYPgA==
+X-Received: by 2002:a2e:be13:0:b0:2fa:c0fc:e3d6 with SMTP id 38308e7fff4ca-2fb326fc5a0mr82285671fa.7.1729018310336;
+        Tue, 15 Oct 2024 11:51:50 -0700 (PDT)
 Received: from eisenberg.fritz.box (200116b82d5d5a0006e2615320d1d4db.dip.versatel-1u1.de. [2001:16b8:2d5d:5a00:6e2:6153:20d1:d4db])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c98d39a9a2sm974438a12.0.2024.10.15.11.51.43
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c98d39a9a2sm974438a12.0.2024.10.15.11.51.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2024 11:51:46 -0700 (PDT)
+        Tue, 15 Oct 2024 11:51:49 -0700 (PDT)
 From: Philipp Stanner <pstanner@redhat.com>
 To: Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
@@ -139,9 +139,9 @@ Cc: linux-ide@vger.kernel.org,
 	kvm@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of pcim_intx()
-Date: Tue, 15 Oct 2024 20:51:12 +0200
-Message-ID: <20241015185124.64726-3-pstanner@redhat.com>
+Subject: [PATCH 03/13] drivers/xen: Use never-managed version of pci_intx()
+Date: Tue, 15 Oct 2024 20:51:13 +0200
+Message-ID: <20241015185124.64726-4-pstanner@redhat.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241015185124.64726-1-pstanner@redhat.com>
 References: <20241015185124.64726-1-pstanner@redhat.com>
@@ -157,28 +157,29 @@ pci_intx() is a hybrid function which can sometimes be managed through
 devres. To remove this hybrid nature from pci_intx(), it is necessary to
 port users to either an always-managed or a never-managed version.
 
-hda_intel enables its PCI-Device with pcim_enable_device(). Thus, it needs
-the always-managed version.
+xen enables its PCI-Device with pci_enable_device(). Thus, it
+needs the never-managed version.
 
-Replace pci_intx() with pcim_intx().
+Replace pci_intx() with pci_intx_unmanaged().
 
 Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Acked-by: Juergen Gross <jgross@suse.com>
 ---
- sound/pci/hda/hda_intel.c | 2 +-
+ drivers/xen/xen-pciback/conf_space_header.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index b4540c5cd2a6..b44ca7b6e54f 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx *chip, int do_disconnect)
- 	}
- 	bus->irq = chip->pci->irq;
- 	chip->card->sync_irq = bus->irq;
--	pci_intx(chip->pci, !chip->msi);
-+	pcim_intx(chip->pci, !chip->msi);
- 	return 0;
- }
+diff --git a/drivers/xen/xen-pciback/conf_space_header.c b/drivers/xen/xen-pciback/conf_space_header.c
+index fc0332645966..8d26d64232e8 100644
+--- a/drivers/xen/xen-pciback/conf_space_header.c
++++ b/drivers/xen/xen-pciback/conf_space_header.c
+@@ -106,7 +106,7 @@ static int command_write(struct pci_dev *dev, int offset, u16 value, void *data)
+ 
+ 	if (dev_data && dev_data->allow_interrupt_control &&
+ 	    ((cmd->val ^ value) & PCI_COMMAND_INTX_DISABLE))
+-		pci_intx(dev, !(value & PCI_COMMAND_INTX_DISABLE));
++		pci_intx_unmanaged(dev, !(value & PCI_COMMAND_INTX_DISABLE));
+ 
+ 	cmd->val = value;
  
 -- 
 2.47.0

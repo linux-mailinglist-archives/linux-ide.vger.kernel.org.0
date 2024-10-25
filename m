@@ -1,321 +1,178 @@
-Return-Path: <linux-ide+bounces-2620-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2622-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BEA9AFCC5
-	for <lists+linux-ide@lfdr.de>; Fri, 25 Oct 2024 10:38:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40829AFCFC
+	for <lists+linux-ide@lfdr.de>; Fri, 25 Oct 2024 10:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A18B1F23021
-	for <lists+linux-ide@lfdr.de>; Fri, 25 Oct 2024 08:38:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DC7FB2300A
+	for <lists+linux-ide@lfdr.de>; Fri, 25 Oct 2024 08:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405941D2232;
-	Fri, 25 Oct 2024 08:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BCF1D223E;
+	Fri, 25 Oct 2024 08:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bTMd15cy"
+	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="ZYJ0YyU6"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from IND01-MAX-obe.outbound.protection.outlook.com (mail-maxind01olkn2021.outbound.protection.outlook.com [40.92.102.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA31A1D2F4A
-	for <linux-ide@vger.kernel.org>; Fri, 25 Oct 2024 08:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729845490; cv=none; b=K24/MZBGeqxkSGab7UhS2n5pEAgUOteDXaINZ3kxyGbcI8aXOKxUAmgxi49UNz86w8/IhMOnAalZGj5it2hqu0+Cjef41nRDPPvotoc5S/O87KRhYeMU9coS4CzuRDpR9pN72UwPeSl6lWxq9yyHrqYvXIUg70qyuYrvKnoDE1E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729845490; c=relaxed/simple;
-	bh=Kj+t7bUL5B0QKM5IwQHw3NNDOxblEb5Nefz9XwGv6eA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IL1WRmWE2/YutkXVdJ8kJ6xPCLhhM6gdULTGvy14fmedz8GATdKt1/HKlynanquaBumxJ93dxmDtfyQ2D6K+q4fxzBQmL9pO0E30/Cv2u/lAToMGUW7eqjPJ5F+rzyuitxPoRZpBaGtjmHhnq9b84OfQSL+SAaF9NBtjtlbYTRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bTMd15cy; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729845486;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t5SfsCaa6OQtbrocW2yvj8So2+UMhrgJURtFbTDl4+U=;
-	b=bTMd15cyaumcZs7yiqSSFssbLbFe3lwJbfb3swzHJFfThqpY/zjNVxlSWpP67iKvTxd2Ub
-	8goW/INV3g/KxxheIVctAKjzz3spRoJ9zDecZpvXCBfdN7Il6qgECkIe7DsdqAFNBcNZ3W
-	q8wTr9EOLOJ5ZZoK/w/ZuGdX+CKVaQs=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-70-0k2eUnjtNOi1MN_aoTT39w-1; Fri, 25 Oct 2024 04:38:02 -0400
-X-MC-Unique: 0k2eUnjtNOi1MN_aoTT39w-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d563a1af4so885848f8f.2
-        for <linux-ide@vger.kernel.org>; Fri, 25 Oct 2024 01:38:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729845481; x=1730450281;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t5SfsCaa6OQtbrocW2yvj8So2+UMhrgJURtFbTDl4+U=;
-        b=SPqwuIH0ErfBUG6eWtOvnU4xoucexuWtb0BtczmyiXeovLXHKEnWhUTa6sKz44yios
-         ydI8dUU0LoRNZt5F11B2UTdR8CN0UvsJi2rbdkCTB+Xy2YmJ8TBN9iNDU56ddVK29XpX
-         S0RzpYOHvTEpu0o9GTHZCGZmFSPLBTs4/tvtknWETItTgFhRQeVBxowvpicoq4x8kAwp
-         +9yRsMttOJYwDy+uMX2LMiN8vzFP01yeE4GZXIN+7sr3DeKtZlHAfhO14rNxRbnhwtto
-         fZ8vF4M+ByosGFXAtf3KxvFW+djhg0yT+NUqt9VCq9fISox7IF6af/C0v9Ns7MVJ/kUR
-         wopw==
-X-Forwarded-Encrypted: i=1; AJvYcCW33zNrNk9IEEAzpH8nbAIj8tW+peiDaoSuga/9mxT+LPN7JUY55LUXj4Nafl4ydXFD2W+MVKlUoQs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPZB2B4iTaRqLSyCqu9ea6tSKiFKOgkzc3VSpmckm62QpjT2VC
-	jPhOoVBDmu8IMnt7hbVlmr/TWqaSlvlk2kfAXdrYVWv2cmjNNPZRizds8wgjYmP+l4ue/7lCvP6
-	cR5qshk5f89nUjD8hYInO+NVUmtftBbxSAaixQU6xBBy7AE+ofKpCfbWsNQ==
-X-Received: by 2002:a5d:45d2:0:b0:37d:5103:8894 with SMTP id ffacd0b85a97d-37efcf78dadmr5976831f8f.42.1729845481111;
-        Fri, 25 Oct 2024 01:38:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGcYWpz+kQZdr3vU0ccyDv2e4lUiNEwepdTyBtEeS9wkTJkf/x/0hfBIa/kJv59+/PzqJJV1A==
-X-Received: by 2002:a5d:45d2:0:b0:37d:5103:8894 with SMTP id ffacd0b85a97d-37efcf78dadmr5976745f8f.42.1729845480512;
-        Fri, 25 Oct 2024 01:38:00 -0700 (PDT)
-Received: from ?IPv6:2001:16b8:2de5:ba00:738a:c8da:daac:7543? (200116b82de5ba00738ac8dadaac7543.dip.versatel-1u1.de. [2001:16b8:2de5:ba00:738a:c8da:daac:7543])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c44sm932452f8f.80.2024.10.25.01.37.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 01:38:00 -0700 (PDT)
-Message-ID: <ae081c36c49733b007a8946dceeec0af94fc449a.camel@redhat.com>
-Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
- pcim_intx()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
- Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
- GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
- <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
- Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
- <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
- <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
- <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
- <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
- <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
- Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
- Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
- =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
- linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-input@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
-Date: Fri, 25 Oct 2024 10:37:57 +0200
-In-Reply-To: <875xphzeun.wl-tiwai@suse.de>
-References: <20241015185124.64726-1-pstanner@redhat.com>
-	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
-	 <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
-	 <87ttd2276j.wl-tiwai@suse.de>
-	 <aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
-	 <875xphzeun.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B6918DF6E;
+	Fri, 25 Oct 2024 08:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.102.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729845991; cv=fail; b=M1XDVWLxie4wvewvoQ7Xrs+yZHaA/09hIQMjTSvVqQWHG3wo+GlMm+NbsS6XuUV33Rn/f4tvFKMoIjJWvHRni1SZ7IjWIGAU5ZJK2FguikXfULw41SR2+aKFWnMc9lSmDSs74ky/7VWzgZHiNU1hc5O3wYv72b8zR4q74HAgIIg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729845991; c=relaxed/simple;
+	bh=JKFPQmfZw1+qgzIKVcYl2RISQNf/So9eCTL264nq6H4=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=KHxa9rrjR219/nsHtSYMZPmGcut+fOs/+CImHBhC15+JUsEG2VYSTscFjZJQO2GoWpASsMH9q7TX8sZbOYrfF1Yasja8grFbzjSwOPkeQVCRufRrRmLDLktILt/tKT2ZQ8DWaLLYcRfhkv80AnARh5kt2dtoFNSXMpQjII8VQ9k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=ZYJ0YyU6; arc=fail smtp.client-ip=40.92.102.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BDAoMGyCgUZIwfGp1VVFQ8J7SFaP79hPXEmy9QmvHbIrQk3VuXIC/IFr5tw/aoO4YpbxpW7xuuk9bSmeewyBmToGjbC3sPEf1MkIhIrq2qYkbHl+ZV0ntKtUXPoel/Ak/4tkYTpn6Long61dK6vCL2i5GhfmQyrU+m4wzm5A/5zf/DusXXm57jtlVNQ2UB1GqCl2nFrqmTWdgyMSI8rG4IXUl4zDk4Q6qtUfR0ZWlvlsldoBIpdeGrIRpfJ+d5t43EXOdZs3KoySWjf4NCrdkcrQlvm1axwm1h6kKKezD8evEQ1MQlI1YVmhtBgt8++/BDng76puGeh8Kg2YCIZXCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JKFPQmfZw1+qgzIKVcYl2RISQNf/So9eCTL264nq6H4=;
+ b=WQgSnT5T0De1KhZ7K79pw+b7FE8nXJRY5PLrq+waFSX2qjO8cVHZ/EVXO+tEbs2YIO2LlAeeRu0XwNDv4AbJdQ4AXnEsgtBodnuWo+1f9QIV1cPxtF5sFsCKYEkSYyLUGw+jdhSs2SXm9nYVkwA45c4xiOX98z0g0x8Jbg01RXOPxl/stqPuBH47cJQVJ1CCS29ERdHrYNFXAjgGMphndj2bI5d93VBnFbW1Bn4cGo730aFxtwRBumSsy0EZLPe68xwjdGyzP/JOXAp0Jw32SOAI+akEmNEt/7nlGlsviSd/sssc7yNRxZea9PH7qIH+zXOEjMRc6EDuYLScQ66FEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JKFPQmfZw1+qgzIKVcYl2RISQNf/So9eCTL264nq6H4=;
+ b=ZYJ0YyU6g0k5Rhl/d5NmYEel5UDbFx9nQAeCD+qpVoypryFORYUXOF8pfYaqJP+i26LTMGUIukJUOC9tHoVXv2JfThTShSLNF8qYNfga0C0hkd726PwwA39I9esZ6KtIpfcVcEGDTmftVQGmRnrDkX547RGCbDmg5TL/AbgZVejHs+oAXD8pIKK5H99yFLO78ZnjEASAa/RAc+1X+ZyLFNHx/sruwdZevyE002ORYuUGh9iHv43WkLqaZl80aXxLuE7JQE2lNJAbBb8ke+/6SEWAXsiV8G9RoETCwsdwBXLIRLs0w2bJLoquin8dF2BK1JfGm7GKRlIlIIU89z/ncg==
+Received: from MA0P287MB0594.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:119::13)
+ by MAYP287MB3581.INDP287.PROD.OUTLOOK.COM (2603:1096:a01:149::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Fri, 25 Oct
+ 2024 08:46:11 +0000
+Received: from MA0P287MB0594.INDP287.PROD.OUTLOOK.COM
+ ([fe80::621d:8529:f377:8921]) by MA0P287MB0594.INDP287.PROD.OUTLOOK.COM
+ ([fe80::621d:8529:f377:8921%3]) with mapi id 15.20.8093.018; Fri, 25 Oct 2024
+ 08:46:09 +0000
+From: thomas superb <thomasdeutsch123@hotmail.com>
+To: "nikolay@oldum.net" <nikolay@oldum.net>
+CC: "aospan@netup.ru" <aospan@netup.ru>, "campaigns@fsf.org"
+	<campaigns@fsf.org>, "conor.dooley@microchip.com"
+	<conor.dooley@microchip.com>, "ddrokosov@sberdevices.ru"
+	<ddrokosov@sberdevices.ru>, "dmaengine@vger.kernel.org"
+	<dmaengine@vger.kernel.org>, "dushistov@mail.ru" <dushistov@mail.ru>,
+	"fancer.lancer@gmail.com" <fancer.lancer@gmail.com>, "geert@linux-m68k.org"
+	<geert@linux-m68k.org>, "gregkh@linuxfoundation.org"
+	<gregkh@linuxfoundation.org>, "hoan@os.amperecomputing.com"
+	<hoan@os.amperecomputing.com>, "ink@jurassic.park.msu.ru"
+	<ink@jurassic.park.msu.ru>, "jeffbai@aosc.io" <jeffbai@aosc.io>,
+	"kexybiscuit@aosc.io" <kexybiscuit@aosc.io>, "linux-alpha@vger.kernel.org"
+	<linux-alpha@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-fpga@vger.kernel.org"
+	<linux-fpga@vger.kernel.org>, "linux-gpio@vger.kernel.org"
+	<linux-gpio@vger.kernel.org>, "linux-hwmon@vger.kernel.org"
+	<linux-hwmon@vger.kernel.org>, "linux-ide@vger.kernel.org"
+	<linux-ide@vger.kernel.org>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, "linux-media@vger.kernel.org"
+	<linux-media@vger.kernel.org>, "linux-mips@vger.kernel.org"
+	<linux-mips@vger.kernel.org>, "linux-renesas-soc@vger.kernel.org"
+	<linux-renesas-soc@vger.kernel.org>, "linux-spi@vger.kernel.org"
+	<linux-spi@vger.kernel.org>, "m.novosyolov@rosalinux.ru"
+	<m.novosyolov@rosalinux.ru>, "manivannan.sadhasivam@linaro.org"
+	<manivannan.sadhasivam@linaro.org>, "mattst88@gmail.com"
+	<mattst88@gmail.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"nikita@trvn.ru" <nikita@trvn.ru>, "ntb@lists.linux.dev"
+	<ntb@lists.linux.dev>, "patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"peter@typeblog.net" <peter@typeblog.net>, "richard.henderson@linaro.org"
+	<richard.henderson@linaro.org>, "rms@gnu.org" <rms@gnu.org>,
+	"s.shtylyov@omp.ru" <s.shtylyov@omp.ru>, "serjk@netup.ru" <serjk@netup.ru>,
+	"shc_work@mail.ru" <shc_work@mail.ru>, "torvalds@linux-foundation.org"
+	<torvalds@linux-foundation.org>, "torvic9@mailbox.org" <torvic9@mailbox.org>,
+	"tsbogend@alpha.franken.de" <tsbogend@alpha.franken.de>,
+	"v.georgiev@metrotek.ru" <v.georgiev@metrotek.ru>, "wangyuli@uniontech.com"
+	<wangyuli@uniontech.com>, "wsa+renesas@sang-engineering.com"
+	<wsa+renesas@sang-engineering.com>, "xeb@mail.ru" <xeb@mail.ru>
+Subject: Re: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
+ compliance requirements."
+Thread-Topic: [PATCH] Revert "MAINTAINERS: Remove some entries due to various
+ compliance requirements."
+Thread-Index: AQHbJrmTO2m52qT8oUye+I/sF+SUew==
+Date: Fri, 25 Oct 2024 08:46:09 +0000
+Message-ID:
+ <MA0P287MB05942920747924ABB7B0365C8B4F2@MA0P287MB0594.INDP287.PROD.OUTLOOK.COM>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MA0P287MB0594:EE_|MAYP287MB3581:EE_
+x-ms-office365-filtering-correlation-id: 6d727a70-1eac-4a40-f14e-08dcf4d178b6
+x-microsoft-antispam:
+ BCL:0;ARA:14566002|7092599003|15080799006|461199028|15030799003|19110799003|8062599003|8060799006|3430499032|4295299021|102099032|440099028|3412199025;
+x-microsoft-antispam-message-info:
+ HDbMVXnnTopariHKmrNZ9Uw6miA/2ffBqzuKLZqtIQLj5TODNdaEmY9LIOQK+bcwEjX9j2aWB0fIeK3QkE4LYVLQZ7nP8dC1/iJy52Mk3Ea2SnTkcF9Z5Ai5QalgYrtjaeZoZ+FVsB6RX1i15qkwhrQHLjjOQwrXUIHTanFYq83umVI8XSxkYbOUEzY+7ryb74uHiHH57Ah7sRebjUNIjlQ6c4isWolr/ZHW5pLKbs0SuBCfBVeFtCZILUyt2Nk0cGZ4AGbD9YaixKVJrqA4ftJcLH6eJBxPo3bSGlRgBK0Itvf9qlHyZEuFK5NbrE/fF8WIXMZ88BMZ+PzJLlTSdl7Ebx6YYR9bD5NjtXPR2gkU0qYxjlG8r1FFzngEwZLGln9b0a4Bij7wWjHucDQjdqSPkcCZKOHm4oQIDQRXdQLdh+uiyT7yFmzgI7bwHrAeioDVGKYZPUAx3LCPlCVvW8+aDP69umbR9PnZBs2PG2FfGJkE+Km5JmkTYvvpUUTzMUDZ/7caKTOFIqbQbD5yjsXrwhzdP0jaypn7ZXssH0gsh8sbgq2xJOk5nRhwqu6zeL52JK4+73tbn9lR2xCOwffj+lyVvZVeWW/vrVf6qQUjRjgk3fyU3qOB3AlKaOWN7lcHy+dzhC3n2Ac4rpibuBA6/ewQk0ZClqb4G//eGeybOVc4epB7wY8AfPyDSDK2xeyPj7toH7qhqkMH2X37d/gZrwHXi0w9bTbdgOHwdWM6P5n5XJoiG89HqyFuHOjxl39w6rtSDh2Yud1tpDSoQw==
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?Windows-1252?Q?L9WFzDji0RbJrCBg+TK72DF+9CEeEys3VnbQZubdBF+A/gRFYLjTAFFS?=
+ =?Windows-1252?Q?OQvwc4DirfTw0aIR8rJay5GQUtDZOdmMHvrbuzwq7Y6VK0xLNfDc/rtV?=
+ =?Windows-1252?Q?IN5YKifb3GVCopS8Dj4tJSTUoB2mThQoDXNxORmFZ+YqUS9jYy+sNmD5?=
+ =?Windows-1252?Q?YcX7Qy3FWxiD7Fem851MZy5jM2kEVB048vm5OyEvOYsfZH+/l/MnzGXV?=
+ =?Windows-1252?Q?z4i/SfZWe122kFRxpete3xsTB+ke1Lo7vngXbKqfx/i1RAjLnvUwVTAT?=
+ =?Windows-1252?Q?5NW5VzFsd8+Qm4HElctYMDLeo61sKwm8BZF3ET57XJYB6+ua3GbVd47f?=
+ =?Windows-1252?Q?PUpuX3btSqYizZUHbg99WJYiWwjM+jDSKaedK9FiK4vcWo/PWsnrjq2Z?=
+ =?Windows-1252?Q?zgf4xt3Yx5nbB6dgCuh3jLMX15ZW1r8El+a6uHrFNbp7IDeSijV2Uuq+?=
+ =?Windows-1252?Q?PNZYRocScZsUamuo3TMenMxoi0HOjiscbcxumx/90+HCQh/680/dBXM3?=
+ =?Windows-1252?Q?UKqb4eavf8js7OT3o0qoHzlBXoE0Ark8Vmtkz2NLHTvlWRqPopddUyM0?=
+ =?Windows-1252?Q?QIq8gJKoWVYCCfgWVUpYzI/aOQEtQlDfGEWHH3oH3or04Nn33MiRn1oG?=
+ =?Windows-1252?Q?blWoaQmFkEf51iiox9VuzAnjxZjttNNryf5sRD+iOy5BPdUfXV5fTRan?=
+ =?Windows-1252?Q?g7AtrjIQPbsX/0aPZkHVx6DJzQ/Ie2shllpO4KylRTsFE/TLhJMsS9kY?=
+ =?Windows-1252?Q?F+kRx0j10AOJjeQ1UnSaWLCnEqI3FsbL9GyGpPx5V9y120mNZu0LKgLf?=
+ =?Windows-1252?Q?M5+J8RJIgKpgXKAEjT2RVtXtHASa1wuY6FIQDUV2oxhxr+ZLtJLRoH7k?=
+ =?Windows-1252?Q?phQffGTDH3cKZymdnOlgyK4PvBq9l/gFEWjj7VGzXTu65fmfxOv09OKC?=
+ =?Windows-1252?Q?K8LK6Cx2+nQe1EgOQLYTJnr0PSSOy/bmANLS6AY3fRDQuwmq0ZGgsIsg?=
+ =?Windows-1252?Q?4aPRm9hhZeW/WIv83fmMXRo1ME5V9dFD0NE5eTTQVPN3KkflTpxG+tln?=
+ =?Windows-1252?Q?Ho47Zz4p6FmFautLhT0cJJvgxJz+spTD+Tu7IoYAEdfpqad7X/O9mdn8?=
+ =?Windows-1252?Q?kslmXcDAokbAgEsNOg8PPuq6ROG+EcTRk6On9NHhzVIyM8X6ZxLbc8l3?=
+ =?Windows-1252?Q?KN3gj5jLMbVZjgBrfp96hX9oIYsD4NplJ6DYHnuHasfR/aq6RyyxFHOp?=
+ =?Windows-1252?Q?x3d4yJwVgnQik0BX7RDyiKAcVe9RBap6NLXOCqXMS3dzj7tmtc7xOWPX?=
+ =?Windows-1252?Q?/CBobQmf2GhMjH+0j8aQOLcFg14=3D?=
+Content-Type: text/plain; charset="Windows-1252"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-24072.templateTenant
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MA0P287MB0594.INDP287.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d727a70-1eac-4a40-f14e-08dcf4d178b6
+X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Oct 2024 08:46:09.0290
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MAYP287MB3581
 
-On Thu, 2024-10-24 at 17:43 +0200, Takashi Iwai wrote:
-> On Thu, 24 Oct 2024 10:02:59 +0200,
-> Philipp Stanner wrote:
-> >=20
-> > On Wed, 2024-10-23 at 17:03 +0200, Takashi Iwai wrote:
-> > > On Wed, 23 Oct 2024 15:50:09 +0200,
-> > > Philipp Stanner wrote:
-> > > >=20
-> > > > On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
-> > > > > On Tue, 15 Oct 2024 20:51:12 +0200,
-> > > > > Philipp Stanner wrote:
-> > > > > >=20
-> > > > > > pci_intx() is a hybrid function which can sometimes be
-> > > > > > managed
-> > > > > > through
-> > > > > > devres. To remove this hybrid nature from pci_intx(), it is
-> > > > > > necessary to
-> > > > > > port users to either an always-managed or a never-managed
-> > > > > > version.
-> > > > > >=20
-> > > > > > hda_intel enables its PCI-Device with pcim_enable_device().
-> > > > > > Thus,
-> > > > > > it needs
-> > > > > > the always-managed version.
-> > > > > >=20
-> > > > > > Replace pci_intx() with pcim_intx().
-> > > > > >=20
-> > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > > > > > ---
-> > > > > > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
-> > > > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >=20
-> > > > > > diff --git a/sound/pci/hda/hda_intel.c
-> > > > > > b/sound/pci/hda/hda_intel.c
-> > > > > > index b4540c5cd2a6..b44ca7b6e54f 100644
-> > > > > > --- a/sound/pci/hda/hda_intel.c
-> > > > > > +++ b/sound/pci/hda/hda_intel.c
-> > > > > > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx
-> > > > > > *chip,
-> > > > > > int do_disconnect)
-> > > > > > =C2=A0	}
-> > > > > > =C2=A0	bus->irq =3D chip->pci->irq;
-> > > > > > =C2=A0	chip->card->sync_irq =3D bus->irq;
-> > > > > > -	pci_intx(chip->pci, !chip->msi);
-> > > > > > +	pcim_intx(chip->pci, !chip->msi);
-> > > > > > =C2=A0	return 0;
-> > > > > > =C2=A0}
-> > > > > > =C2=A0
-> > > > >=20
-> > > > > Hm, it's OK-ish to do this as it's practically same as what
-> > > > > pci_intx()
-> > > > > currently does.=C2=A0 But, the current code can be a bit
-> > > > > inconsistent
-> > > > > about
-> > > > > the original intx value.=C2=A0 pcim_intx() always stores !enable
-> > > > > to
-> > > > > res->orig_intx unconditionally, and it means that the
-> > > > > orig_intx
-> > > > > value
-> > > > > gets overridden at each time pcim_intx() gets called.
-> > > >=20
-> > > > Yes.
-> > > >=20
-> > > > >=20
-> > > > > Meanwhile, HD-audio driver does release and re-acquire the
-> > > > > interrupt
-> > > > > after disabling MSI when something goes wrong, and pci_intx()
-> > > > > call
-> > > > > above is a part of that procedure.=C2=A0 So, it can rewrite the
-> > > > > res->orig_intx to another value by retry without MSI.=C2=A0 And
-> > > > > after
-> > > > > the
-> > > > > driver removal, it'll lead to another state.
-> > > >=20
-> > > > I'm not sure that I understand this paragraph completely.
-> > > > Still,
-> > > > could
-> > > > a solution for the driver on the long-term just be to use
-> > > > pci_intx()?
-> > >=20
-> > > pci_intx() misses the restore of the original value, so it's no
-> > > long-term solution, either.
-> >=20
-> > Sure that is missing =E2=80=93 I was basically asking whether the drive=
-r
-> > could
-> > live without that feature.
-> >=20
-> > Consider that point obsolete, see below
-> >=20
-> > >=20
-> > > What I meant is that pcim_intx() blindly assumes the negative of
-> > > the
-> > > passed argument as the original state, which isn't always true.=C2=A0
-> > > e.g.
-> > > when the driver calls it twice with different values, a wrong
-> > > value
-> > > may be remembered.
-> >=20
-> > Ah, I see =E2=80=93 thoguh the issue is when it's called several times =
-with
-> > the
-> > *same* value, isn't it?
-> >=20
-> > E.g.
-> >=20
-> > pcim_intx(pdev, 1); // 0 is remembered as the old value
-> > pcim_intx(pdev, 1); // 0 is falsely remembered as the old value
-> >=20
-> > Also, it would seem that calling the function for the first time
-> > like
-> > that:
-> >=20
-> > pcim_intx(pdev, 0); // old value: 1
-> >=20
-> > is at least incorrect, because INTx should be 0 per default,
-> > shouldn't
-> > it? Could then even be a 1st class bug, because INTx would end up
-> > being
-> > enabled despite having been disabled all the time.
->=20
-> Yeah, and the unexpected restore can happen even with a single call
-> of
-> pcim_intx(), if the driver calls it unnecessarily.
->=20
-> > > That said, I thought of something like below.
-> >=20
-> > At first glance that looks like a good idea to me, thanks for
-> > working
-> > this out!
-> >=20
-> > IMO you can submit that as a patch so we can discuss it separately.
->=20
-> Sure, I'm going to submit later.
-
-I just took a look into the old implementation of pci_intx() (there was
-no pcim_intx() back then), before I started cleaning up PCI's devres.
-This what it looked like before
-25216afc9db53d85dc648aba8fb7f6d31f2c8731:
-
-void pci_intx(struct pci_dev *pdev, int enable)
-{
-	u16 pci_command, new;
-
-	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
-
-	if (enable)
-		new =3D pci_command & ~PCI_COMMAND_INTX_DISABLE;
-	else
-		new =3D pci_command | PCI_COMMAND_INTX_DISABLE;
-
-	if (new !=3D pci_command) {
-		struct pci_devres *dr;
-
-		pci_write_config_word(pdev, PCI_COMMAND, new);
-
-		dr =3D find_pci_dr(pdev);
-		if (dr && !dr->restore_intx) {
-			dr->restore_intx =3D 1;
-			dr->orig_intx =3D !enable;
-		}
-	}
-}
-EXPORT_SYMBOL_GPL(pci_intx);
-
-If I'm not mistaken the old version did not have the problem because
-the value to be restored only changed if new !=3D pci_command.
-
-That should always be correct, what do you think?
-
-If so, only my commit 25216afc9db53d85dc648aba8fb7f6d31f2c8731 needs to
-be fixed.
-
-Thanks,
-P.
-
-
->=20
->=20
-> thanks,
->=20
-> Takashi
->=20
-
+=0A=
+Hi folks,=0A=
+it is very sad for me to see so many political nonsenses=A0here, therefore =
+I need to express my view as a newbie here and a long time Linux user.=0A=
+I understand the standing of Linus, but sanction against a certain group of=
+ people is unbeneficial for open-source projects: at one hand it is technic=
+ally impossible to stop them effectively from obtaining the new code and ke=
+eping =93hitchhiking=94 the ecosystem(think how North Korea develop their o=
+wn distribution and produce smartphones which probably also use Linux kerne=
+l), on the other hand the upstream repo and community will probably permane=
+ntly lost their contribution.=0A=
+I think Linus and Greg need to reestablish the trust that their own politic=
+al standing won=92t jeopardize the free essence of the Kernel, and the comm=
+unity need to start considering how to defend the critical elements like Ke=
+rnel of the digital world from political pressures (whoever do it) and keep=
+ them free as the air.=0A=
+Thanks,=0A=
+A Linux user=0A=
 

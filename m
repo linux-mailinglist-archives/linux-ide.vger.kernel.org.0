@@ -1,39 +1,40 @@
-Return-Path: <linux-ide+bounces-2705-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2698-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A392F9C269A
-	for <lists+linux-ide@lfdr.de>; Fri,  8 Nov 2024 21:30:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E30C9C265A
+	for <lists+linux-ide@lfdr.de>; Fri,  8 Nov 2024 21:16:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2811C20985
-	for <lists+linux-ide@lfdr.de>; Fri,  8 Nov 2024 20:30:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 367B1B211EF
+	for <lists+linux-ide@lfdr.de>; Fri,  8 Nov 2024 20:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6694A1C1F11;
-	Fri,  8 Nov 2024 20:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2555E199FBF;
+	Fri,  8 Nov 2024 20:16:36 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F811C1F3F
-	for <linux-ide@vger.kernel.org>; Fri,  8 Nov 2024 20:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AB5192D66
+	for <linux-ide@vger.kernel.org>; Fri,  8 Nov 2024 20:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731097796; cv=none; b=Uv28uw+2KoCNTVMakiCpsWxfQGmRdzhQ1dDJu+RRUqTEVJkwFvvAgvM313mU7e2Af0kmPCRnnhV4t6HyVmNF/JHXeVZEEHQo1NU2hwjps4TwH57zC9yxRqfp0O2V48o909ZbY03XOUTQMDXKLV/gXgdO6w3O8K+9mE/gkZ3oQD0=
+	t=1731096996; cv=none; b=Bt5Nt0+uD92kaTTiig6QWsXWMsNXiHIDMyfrCbO44KrvS4dguUwg6FljCT8sUP65dtRfa0bXgAqtGxaOG7+cT3s3ZyJXl8OVuxhpPtVkG7hgQfaScGMhnNeA3VJuFMoh8VNjzNIbR+5Mvk8wd6GyG/dEzhhZm3pL4Ar53Umfiso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731097796; c=relaxed/simple;
-	bh=HmUgIABVShy5StXbl9NFjuucLUBMflvdxzzuFzE9+Co=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:Content-Type; b=MIbKHNUYspIm1BzL6EKjUyw0YjlnT1h6EDtbwIl+0PDb8CddlffUrBIgtwU/4b4Wqr2/lygtedcy4RP5jsIYHrcOQuc7v9ffIDOa/J24Wivx3KFIgMcNUHU2JfKDdYdeVo1QAIAIrDWvBOhJfnmOUAtF9+f2RLKD9hv5pgh5Mzk=
+	s=arc-20240116; t=1731096996; c=relaxed/simple;
+	bh=mVDphxO+zyUtym2hKfPTvKbkaFDjaTbSLPOVsFtJawU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:CC:From:
+	 In-Reply-To:Content-Type; b=bfFH3kUjs/JavzE535ZHPXZ/OtyAq/tNpfX7NHVtXkLAA1vOMZSO2wXGBDRVt75Y371y8ofr7L9nJ8sg2IUmuJ4bjZVLwxlBEYRgN1J4m7SZUc1gCBGJvP0DTMKtfRJ+gN9uzuFRe5NjJjha8X9A1WsNoovZqxOxQH12vUbnVbM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
 Received: from [192.168.2.102] (213.87.154.171) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 8 Nov
- 2024 23:14:38 +0300
-Message-ID: <6cf8979c-c50d-4ef0-b1df-281d932d92b6@omp.ru>
-Date: Fri, 8 Nov 2024 23:14:37 +0300
+ 2024 23:16:18 +0300
+Message-ID: <ca23d30e-7444-4490-a7f2-7020e8cf6fb9@omp.ru>
+Date: Fri, 8 Nov 2024 23:16:17 +0300
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
@@ -41,13 +42,16 @@ List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH 0/6] libata: get rid of (almost) all printk() calls
+Subject: [PATCH 1/6] ata: acard-ahci: use dev_info() instead of,
+ printk(KERN_INFO)
 To: <linux-ide@vger.kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Niklas
  Cassel <cassel@kernel.org>
+References: <6cf8979c-c50d-4ef0-b1df-281d932d92b6@omp.ru>
 Content-Language: en-US
 CC: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 Organization: Open Mobile Platform
+In-Reply-To: <6cf8979c-c50d-4ef0-b1df-281d932d92b6@omp.ru>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
@@ -64,13 +68,14 @@ X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
 X-KSE-AntiSpam-Info: LuaCore: 41 0.3.41
  623e98d5198769c015c72f45fabbb9f77bdb702b
 X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
 X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
 X-KSE-AntiSpam-Info: {SMTP from is not routable}
 X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.154.171 in (user)
  b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 213.87.154.171 in (user)
+ dbl.spamhaus.org}
 X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;lore.kernel.org:7.1.1;127.0.0.199:7.1.2
+	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
 X-KSE-AntiSpam-Info: FromAlignment: s
 X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.154.171
 X-KSE-AntiSpam-Info: {DNS response errors}
@@ -89,31 +94,35 @@ X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-Here are 6 patches against the for-next branch of the LibATA Group's repo.
+The ACard AHCI PCI device driver still calls printk(KERN_INFO, ...) in its
+probe() method -- convert it to calling dev_info(), also somewhat rewording
+the message itself...
 
-Hannes Reinecke's large patch series [1] claimed to have moved libata to
-the structured logging, i.e. using dev_*() calls; however, some printk()
-calls were left as is.  Convert them to dev_*() calls where possible,
-otherwise convert to pr_*() calls -- this pleases checkpatch.pl at last.
+This helpfully fixes the following complaint from scripts/checkpatch.pl:
 
-[1] https://lore.kernel.org/all/20211221072131.46673-1-hare@suse.de/
+WARNING: Prefer [subsystem eg: netdev]_info([subsystem]dev, ... then
+dev_info(dev, ... then pr_info(...  to printk(KERN_INFO ...
 
-Sergey Shtylyov (6):
-  ata: acard-ahci: use dev_info() instead of printk(KERN_INFO)
-  ata: ahci: use dev_info() instead of printk(KERN_INFO)
-  ata: libata-core: use pr_warn() instead of printk(KERN_WARNING)
-  ata: pata_cs5530: use pr_*() instead of printk(KERN_*)
-  ata: pata_legacy: use pr_*() instead of printk(KERN_*)
-  ata: pata_optidma: use dev_warn() instead of printk(KERN_WARNING)
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
 
- drivers/ata/acard-ahci.c   |  2 +-
- drivers/ata/ahci.c         |  5 ++---
- drivers/ata/libata-core.c  |  8 +++-----
- drivers/ata/pata_cs5530.c  |  6 +++---
- drivers/ata/pata_legacy.c  | 11 ++++-------
- drivers/ata/pata_optidma.c |  2 +-
- 6 files changed, 14 insertions(+), 20 deletions(-)
+---
+ drivers/ata/acard-ahci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/ata/acard-ahci.c b/drivers/ata/acard-ahci.c
+index 547f56341705..0e16e64d1c5d 100644
+--- a/drivers/ata/acard-ahci.c
++++ b/drivers/ata/acard-ahci.c
+@@ -415,7 +415,7 @@ static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id
+ 	if (!(hpriv->cap & HOST_CAP_SSS) || ahci_ignore_sss)
+ 		host->flags |= ATA_HOST_PARALLEL_SCAN;
+ 	else
+-		printk(KERN_INFO "ahci: SSS flag set, parallel bus scan disabled\n");
++		dev_info(&pdev->dev, "AHCI SSS flag set, parallel bus scan disabled\n");
+ 
+ 	for (i = 0; i < host->n_ports; i++) {
+ 		struct ata_port *ap = host->ports[i];
 -- 
 2.47.0
+
 

@@ -1,34 +1,34 @@
-Return-Path: <linux-ide+bounces-2711-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2712-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B9B9C2EC9
-	for <lists+linux-ide@lfdr.de>; Sat,  9 Nov 2024 18:32:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2B9F9C2ED3
+	for <lists+linux-ide@lfdr.de>; Sat,  9 Nov 2024 18:36:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43CDC1F218BE
-	for <lists+linux-ide@lfdr.de>; Sat,  9 Nov 2024 17:32:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 927221F216CA
+	for <lists+linux-ide@lfdr.de>; Sat,  9 Nov 2024 17:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C299D13D502;
-	Sat,  9 Nov 2024 17:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B5E19D06E;
+	Sat,  9 Nov 2024 17:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="QcDGpvz+"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="vwQyx+gO"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FFF14EC60;
-	Sat,  9 Nov 2024 17:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995FE2556E;
+	Sat,  9 Nov 2024 17:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731173549; cv=none; b=LAdkrdk5BnSRSZTKbM89F12e3Kc4v3F2yhfoAwEWeUOumOLOrfbjRBJ+DXjtCD1X4NDEuYKjS/vwcV4rGJZ13mI+XnVj6OeJx/D+YokdhaQT87A5LjNdulRiS4h9QQ3D7Ca2GddYHsr8oxcfkeU/rXQDLCr++ShpefwSqNkaJ24=
+	t=1731173808; cv=none; b=H0fJoXsfFhzCQuebyk2FNz4LzEjkbMIDVXbqQNwhV5Mf1OYNB7JzSk5TSbegePrxyONslOsyb/GQ+vQV1lkmssV4x3/h2w4/kZ3NY1vducECkk8LfkzT+9nvZWZkl6f8YMng60Z5Uz9tKtzlu8cWV0iQ5wMGpt37S8X3TU6JkPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731173549; c=relaxed/simple;
-	bh=IzghMAwHf5em8i0l6+K+MjT4IQ93fHfwLQg+x7OBWH0=;
+	s=arc-20240116; t=1731173808; c=relaxed/simple;
+	bh=3yK5uP+l1xtcsFycTQzkX6L/0OY+HBh3mJB4rik6Ejg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ESCLx7ZEwkGcDUL/sypjdQvwvzuPoJEA5uXdl/vOrl6DN2U0Why8GOcied1pNy7/rcRbrpOBbQlYseAT0No9quJSHQgy5AUCWPtg4i4bzF+5i3dMFFrC/MEnlW8OwCDxEJ6yBK2KD7Oo10HIAVbzLWLXF828OjcQhLHTRDuo4+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=QcDGpvz+; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdxHiJfxT30pFzq1myj/cM4Dzng6E9K1Wkomn9RPpZn1abRHYl4ZIu6VuS5IEj9spOBXahVlgGOk7QPjtHfVbnKEGhz7RUcrcrXw2+r1queL7ziUJc+BLasq/HQFscluAChUx9WOzJabeUv6kq2T+jKIap6TJ0HBMec54Eqyt94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=vwQyx+gO; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
@@ -36,13 +36,13 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=3qqF74BTATSBYtiXjLbk2uFtyKcHYUi+s3TepMTAwwE=; b=QcDGpvz+grwY1kL4djQ13QwxdX
-	5TMc3GCCFKeT0gYO6Lcx+gUfdVNSjW7MkW1XyUqrbksrmEMEG0Gq08P6W09JWllkKuM5swdUqD/CQ
-	DrRs4w/uXOq46A+yENwGJtRjV5xahetVV8dYB5rlAAJ2FGtHNCMC23jB3sZDHZG5smO4=;
+	bh=5j6N2GfwM0DWuezOn15oAIWbQPAkiq52COZeaHaZpXY=; b=vwQyx+gO1Ctrky2nufryxOGbT5
+	8ejaygT8tjwhbbBOF/WGpsYVMC+ogN7C1iptHjs1PGJrab1xVqXhEfoXrlSaayiUO0QPkDFG2Y3Mc
+	TYqYHfZVbFTuIMl0BOURW5qX3jA8eAxIeo+2JwnAGE9mfnzlkqU0/vJca40wN9IY5tfo=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1t9pJs-00CioJ-9D; Sat, 09 Nov 2024 18:32:20 +0100
-Date: Sat, 9 Nov 2024 18:32:20 +0100
+	id 1t9pO2-00Cipg-HA; Sat, 09 Nov 2024 18:36:38 +0100
+Date: Sat, 9 Nov 2024 18:36:38 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Frank Wunderlich <linux@fw-web.de>
 Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
@@ -56,11 +56,11 @@ Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
 	Hans de Goede <hdegoede@redhat.com>, Jens Axboe <axboe@kernel.dk>,
 	linux-ide@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v1 2/3] arm64: dts: marvell: drop additional phy-names
- for sata
-Message-ID: <0eda1d9d-3241-4c1c-a6d2-56746410bcdc@lunn.ch>
+Subject: Re: [PATCH v1 3/3] dt-bindings: ata: ahci-platform: add missing
+ iommus property
+Message-ID: <be981cc0-58ec-44f2-9874-286960cf0e56@lunn.ch>
 References: <20241109094623.37518-1-linux@fw-web.de>
- <20241109094623.37518-3-linux@fw-web.de>
+ <20241109094623.37518-4-linux@fw-web.de>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
@@ -69,13 +69,19 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241109094623.37518-3-linux@fw-web.de>
+In-Reply-To: <20241109094623.37518-4-linux@fw-web.de>
 
-On Sat, Nov 09, 2024 at 10:46:20AM +0100, Frank Wunderlich wrote:
+On Sat, Nov 09, 2024 at 10:46:21AM +0100, Frank Wunderlich wrote:
 > From: Frank Wunderlich <frank-w@public-files.de>
 > 
-> Commit facbe7092f8a ("arm64: dts: marvell: Drop undocumented SATA phy names")
-> drops some phy-names from devicetrees but misses some. Drop them too.
+> fix dtbs_check errors in following files:
+> 
+> arch/arm64/boot/dts/marvell/armada-7040-db.dtb: sata@540000:
+> arch/arm64/boot/dts/marvell/armada-8040-clearfog-gt-8k.dtb: sata@540000:
+> arch/arm64/boot/dts/marvell/armada-8040-db.dtb: sata@540000:
+> arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtb: sata@540000:
+> arch/arm64/boot/dts/marvell/armada-8040-puzzle-m801.dtb: sata@540000:
+>   Unevaluated properties are not allowed ('iommus' was unexpected)
 > 
 > Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
 

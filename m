@@ -1,97 +1,107 @@
-Return-Path: <linux-ide+bounces-2704-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2708-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A7969C268E
-	for <lists+linux-ide@lfdr.de>; Fri,  8 Nov 2024 21:28:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2229C2B81
+	for <lists+linux-ide@lfdr.de>; Sat,  9 Nov 2024 10:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 025591F23608
-	for <lists+linux-ide@lfdr.de>; Fri,  8 Nov 2024 20:28:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A4E9B2198C
+	for <lists+linux-ide@lfdr.de>; Sat,  9 Nov 2024 09:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A39F192B6F;
-	Fri,  8 Nov 2024 20:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902CD1494AD;
+	Sat,  9 Nov 2024 09:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="AtfRjeoB"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mxout2.routing.net (mxout2.routing.net [134.0.28.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A4C1C1F15
-	for <linux-ide@vger.kernel.org>; Fri,  8 Nov 2024 20:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE3913C9A9;
+	Sat,  9 Nov 2024 09:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731097636; cv=none; b=itPTVOHFwWUCzl4b3C/uM7XCD5RsivgTTmN6rJpQe+RHbe1huFeeoCO6+IB1he5iPROvJqF0OdUTlauuVHv7rnevvO7JtMLxsuB85raWtM6tg0S94FrUDy6BqsKCaqZwcO8puck3NSswqixFOcTvrDSx+Iv3KCu2thDROjeA4CI=
+	t=1731145986; cv=none; b=pqkAjB6qoglEHzv0r2b5MJdo/x0KIFUFmFZxJyfc9QnTdk4tHKOQgtO2Yql8EbJU7HubCeBP/P5Ob4UDTzjb4WxzIBi0MHqThSxhMuBEU4ehHAifUB0Svbh6uUHBz1jXpXC4qs39OQ2Hv9tZ2uXGoLC0WImz0MFO4BkmzO4pqD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731097636; c=relaxed/simple;
-	bh=SekP8nxikPqtcWBPMHK2qYaLk6VkuHGawtteLhCQsTA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=sg01dJYfG//h67ncru+g7Ij3sQclfk5cwYzJ7kJpJIOeBz/gK2rffgZf1uKd3Ns9Hul26kSkQJCkYX+VmnQCxQejzsPZq42PJca7x8gLeAWyjDBsOUG3no3LaQ75dDQIE5FzjEsVREy5OFOmcuyLJNtx6xsdU/jHMsUHmMWTaaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.2.102] (213.87.154.171) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 8 Nov
- 2024 23:27:03 +0300
-Message-ID: <7121a72f-4094-4575-a313-9a1d849e7d19@omp.ru>
-Date: Fri, 8 Nov 2024 23:27:03 +0300
+	s=arc-20240116; t=1731145986; c=relaxed/simple;
+	bh=uetHf+iaauHsvvFyqaeBI8Pvow7MD+zXLMtwQwX88T8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ak+WD8hXaE8mE2jnurPBt2Wzd4vfgNymmQK5ETnmrXA8VP8eYcufqicXqBkegFtELQa6SCVzRTEH/pSW0sR7vNTd0fSLD5BmFcracqsZaS/RZjm35DIbPvaAOFaj0vDxkTy49bjWQifGdsFz1YwpRcab9a+NNT6NycBFv3dfB2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=AtfRjeoB; arc=none smtp.client-ip=134.0.28.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
+Received: from mxbox1.masterlogin.de (unknown [192.168.10.88])
+	by mxout2.routing.net (Postfix) with ESMTP id CD35F5FBA0;
+	Sat,  9 Nov 2024 09:46:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+	s=20200217; t=1731145600;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dsnVBnJzrSx3yR3uTwKq3fiPk27Oe3tF24NPbK3S3f0=;
+	b=AtfRjeoBXaxX0QVh6lNi7ebs5xVtIpkYALRoS7d9z2A4l0leJ+/RAQ5xT/2G5TjgtT9Var
+	867U9y7JVUkUdm2TCe3S4PDV8IbbSqt/VgCg8QvpSyHgP3y8pBuZiz7NZVhlZXPjfjjXyX
+	jm52nxek12xq5YkfaIVno+MkOVAWiYI=
+Received: from frank-u24.. (fttx-pool-157.180.226.68.bambit.de [157.180.226.68])
+	by mxbox1.masterlogin.de (Postfix) with ESMTPSA id AE44840044;
+	Sat,  9 Nov 2024 09:46:38 +0000 (UTC)
+From: Frank Wunderlich <linux@fw-web.de>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Russell King <linux@armlinux.org.uk>
+Cc: Frank Wunderlich <frank-w@public-files.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-ide@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v1 0/3] fix some binding check errors for marvell
+Date: Sat,  9 Nov 2024 10:46:18 +0100
+Message-ID: <20241109094623.37518-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] ata: acard-ahci: use dev_info() instead of,
- printk(KERN_INFO)
-To: <linux-ide@vger.kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Niklas
- Cassel <cassel@kernel.org>
-References: <6cf8979c-c50d-4ef0-b1df-281d932d92b6@omp.ru>
- <ca23d30e-7444-4490-a7f2-7020e8cf6fb9@omp.ru>
-Content-Language: en-US
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-In-Reply-To: <ca23d30e-7444-4490-a7f2-7020e8cf6fb9@omp.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 11/08/2024 19:59:55
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 189049 [Nov 08 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.1.7
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 41 0.3.41
- 623e98d5198769c015c72f45fabbb9f77bdb702b
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 213.87.154.171
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/08/2024 20:04:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/8/2024 6:16:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Transfer-Encoding: 8bit
+X-Mail-ID: 15871758-9287-4eb9-b486-392be61ec69a
 
-Hello!
+From: Frank Wunderlich <frank-w@public-files.de>
 
-   Oops, stray char after "of" in the subject... :-/
+Thies series fixes some Errors reported by dtbs_check. First part is taken
+from my old series [1] where i converted sata-platform txt binding to yaml
+because it wasn't picked up.
 
-MBR, Sergey
+[1] https://lore.kernel.org/linux-arm-kernel/20220311210357.222830-1-linux@fw-web.de/
+
+Frank Wunderlich (3):
+  arm64: dts: marvell: Fix anyOf conditional failed
+  arm64: dts: marvell: drop additional phy-names for sata
+  dt-bindings: ata: ahci-platform: add missing iommus property
+
+ Documentation/devicetree/bindings/ata/ahci-platform.yaml   | 3 +++
+ arch/arm64/boot/dts/marvell/armada-7040-db.dts             | 1 +
+ arch/arm64/boot/dts/marvell/armada-7040-mochabin.dts       | 2 ++
+ arch/arm64/boot/dts/marvell/armada-8040-clearfog-gt-8k.dts | 1 +
+ arch/arm64/boot/dts/marvell/armada-8040-db.dts             | 5 +++--
+ arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtsi         | 3 +--
+ arch/arm64/boot/dts/marvell/armada-8040-puzzle-m801.dts    | 2 ++
+ arch/arm64/boot/dts/marvell/armada-cp11x.dtsi              | 2 ++
+ arch/arm64/boot/dts/marvell/cn9130-crb-B.dts               | 1 +
+ arch/arm64/boot/dts/marvell/cn9131-db.dtsi                 | 1 +
+ arch/arm64/boot/dts/marvell/cn9132-db.dtsi                 | 1 +
+ 11 files changed, 18 insertions(+), 4 deletions(-)
+
+-- 
+2.43.0
 
 

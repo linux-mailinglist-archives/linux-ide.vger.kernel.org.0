@@ -1,96 +1,83 @@
-Return-Path: <linux-ide+bounces-2775-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2777-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 581179E41DC
-	for <lists+linux-ide@lfdr.de>; Wed,  4 Dec 2024 18:38:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8135E9E524A
+	for <lists+linux-ide@lfdr.de>; Thu,  5 Dec 2024 11:30:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3C08286ED8
-	for <lists+linux-ide@lfdr.de>; Wed,  4 Dec 2024 17:38:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 229661882241
+	for <lists+linux-ide@lfdr.de>; Thu,  5 Dec 2024 10:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C302F1F5419;
-	Wed,  4 Dec 2024 17:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7A012E5D;
+	Thu,  5 Dec 2024 10:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HHxdyize"
+	dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b="l5gFyTCb"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F171F03F1
-	for <linux-ide@vger.kernel.org>; Wed,  4 Dec 2024 17:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67947191F9B
+	for <linux-ide@vger.kernel.org>; Thu,  5 Dec 2024 10:30:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733332249; cv=none; b=lXzq7XxrHnjucnikiAathe8givepvMIO+E/vfmG0VwEsqJMamPVLGfchNj1deFc/+Jd9wLY5LfMeUmLq3Zfb0bAXZkWR7bHPMJk3RUpGRyhB4+S6PdKzppUiKBRa8TqoNCJ2AeKImUIUix5l2gSVFv/+gdTQXr3x/mWMO9RM1/Q=
+	t=1733394626; cv=none; b=oHqC3jNooygoaCCd849cyGYNeMQZNP3o/0ViG4ihXHzsN5gxRpOMTArdIiX4h7ahK7dcM406Vt1uE6Fa6VLTqOblLiW8NsHo2xnXadvzKUOVdOETtOLUPmNRLKQ0TxapXCJN/1/tI3HuILfxsoaKXopk89aFmdUSqahWhbjqE/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733332249; c=relaxed/simple;
-	bh=6TTwfGPFIWFczOWcfnDq+V9viCPV7/G6Js5yV44vQHc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hId+sKwvvmfG8U5JBchLmdtGDE+ovZLFFDVFuVRy0Ty8eN86R8CU+n0F8+Q+Ctrd/7bvvUyGFcoUgS6jmUI0uuL7JJr5HTkpOoPm3iWuowNMO7I5BEZ+TCB3R55JFsm+/ZiMEeVFfx/W44OUhQuW3tc6Oh9DBGU0Rzhm3sz8xG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HHxdyize; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733332247;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pG1/2+soXrCZJT+4aLn7BzvFulsaukH4/7W/e6kTCqA=;
-	b=HHxdyizeKfw17X/xZlmK7MQSUrcGCeQ7OXzcU/J1oc796t0gimy9B4WKiB5Qy3Hjl53pkZ
-	gn99TbIrZ222DWMz1YGGDsL8svr11b6AaulcEwosPoZr6an11DvhQnxMEMb2ZtVeL2u/Lt
-	TJP4TOmtnlZwtdaETJvdtRzskNBGLII=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-dl6JkEdiM7ecuylHX6kbMg-1; Wed, 04 Dec 2024 12:10:45 -0500
-X-MC-Unique: dl6JkEdiM7ecuylHX6kbMg-1
-X-Mimecast-MFC-AGG-ID: dl6JkEdiM7ecuylHX6kbMg
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385eb060d4fso605323f8f.1
-        for <linux-ide@vger.kernel.org>; Wed, 04 Dec 2024 09:10:45 -0800 (PST)
+	s=arc-20240116; t=1733394626; c=relaxed/simple;
+	bh=wS0Q19qMihHOOOE3pMGjswD56RvTc5cZkAfKL+jXeY4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ing3KjdjbqRD7sbZP96dV+nvlX97MDdHbbNgDi0wwskG+bS1OvP1YJb6jnaybaWBcNYZq98LU+t1JiqUJRZFUZwlUZDfaGSf1moYiB95xLTHMIOdp3GyBE9vRDSsGDAwXiY/17tPt6SecljSM6Wgg/aHU+KA68ZtjQhR5GQjxYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp; dkim=pass (2048-bit key) header.d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.i=@pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com header.b=l5gFyTCb; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=pf.is.s.u-tokyo.ac.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=pf.is.s.u-tokyo.ac.jp
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-21145812538so5667645ad.0
+        for <linux-ide@vger.kernel.org>; Thu, 05 Dec 2024 02:30:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pf-is-s-u-tokyo-ac-jp.20230601.gappssmtp.com; s=20230601; t=1733394623; x=1733999423; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7d4mBxLm3YD6mtg2na9c8RBlPogDI1edtX7H5lmoREU=;
+        b=l5gFyTCb7x7glWftbBEVfui9GBM+0/+72TkaFCWY+NQvH3eYY3Zkae5FJl+A1hKndf
+         o0jz7BYi+goPgl/VB9xZXqbyTJ0APmAQU8wq0UqKdDDvRK98Ac1wVA8+jXbAJKR6BMI3
+         ozheAn3S09yWxUo33SG2aRg7QAvReEu61rGaBzotX5W5gy1zLAlsfeuRQXnfkAmSf4dw
+         IzwWeIl/QpgvVeDD8Gymn2S47wtZN4esWfUiJ82qPOo8X2ZcSL3l5oDN92GJzEJvGuQP
+         E1ut7xcvoNp+MX52qRCH2onzpw7EXhKwcH7QcdFRTFaQVr+1/voJfRWgEumBIgAmClei
+         vZIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733332244; x=1733937044;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pG1/2+soXrCZJT+4aLn7BzvFulsaukH4/7W/e6kTCqA=;
-        b=LILaNTpTPPFaub52MLBVAdc6lcLUBA9WrVLS6MdU3Qd94p3l+eIFVtj+DdbxFsH9/9
-         xZuPWxyceoz0I2QO6FvslM/625NugwGNSkNeEvhdUKeTMcOIObGYZwVIBqkskrEcU49D
-         FYPaiuWDY1x2QqQ1EIOp896bmsODKCZnnDQ3QoTml+6QEOSdU1Z5rraRjqbGiNrRoxNJ
-         QUbMN4EnhTxobnh7Gll6wf1MKPT7KycmtrWpQvjhGoxifFvyVnsMozbavelsv3BV0wTL
-         85wZfT5Podd8nhWHhAlwaIPY69hj+SWmi7N899V2jH7Ty/6lCW4+7nmPZ/kxOiHKXekM
-         pjMA==
-X-Gm-Message-State: AOJu0YyClvZxT/hExTMTB6843yTHgM49GEjjdPb94e4NcV6M6+Cr+Mhe
-	Dz/sVmdnKC6iNd17+SFmPs7EF6QjT90JNaj0zYqGPRffLEIkZylg+7+0P4SQaTN9rysqF7GxHOF
-	Y0qF6t0Lt27TEMDMwmCxLWH8KE3xncKXeEa6NWsrWK33to24NCHJchSe4pw==
-X-Gm-Gg: ASbGncvBz/SMs5tgULW4IgIZsHdjSOo3JlGhsPzazryB/eHIfgRh6hxFa+lFYrzL3dn
-	i8nw3Uf9Gik9KvLBm6cHFTNBO0l93e+r8xHAY/4Y9jlvrBWLIQSHcowngaZyGFkG64QwfpxXtc2
-	pGi7aSnqGLr2RdcbfWXLx5LvHWtBorFB2ljve6UlVe9DhniHsltB9FJldr5iYyIUp+r37H6kSSv
-	I4aqox20HFUxTPnzCT3403BfkhngOvja13UcAXWd3Y5wPw5wbaNwq7vYVfz2IfyZ/G0s7e6IL56
-	I9KK/HDv
-X-Received: by 2002:a5d:6daf:0:b0:385:f79d:2196 with SMTP id ffacd0b85a97d-3861bb84f06mr161791f8f.13.1733332244557;
-        Wed, 04 Dec 2024 09:10:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IH8gqG0x5z6r+CpCNJZYk6IwXVAInAa+0ev2uqKnvVIxSzQStTv5+56YC+HQsvFIshU1b8iHg==
-X-Received: by 2002:a5d:6daf:0:b0:385:f79d:2196 with SMTP id ffacd0b85a97d-3861bb84f06mr161763f8f.13.1733332244246;
-        Wed, 04 Dec 2024 09:10:44 -0800 (PST)
-Received: from eisenberg.redhat.com (nat-pool-muc-u.redhat.com. [149.14.88.27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3860bbba038sm2179511f8f.24.2024.12.04.09.10.43
+        d=1e100.net; s=20230601; t=1733394623; x=1733999423;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7d4mBxLm3YD6mtg2na9c8RBlPogDI1edtX7H5lmoREU=;
+        b=WtpVwDfFa7vwcI6RM4ZG2RRZoL3zsBhHpL4CPiclBihDKTFll1oIFJNWFZ3rTSAAQ4
+         dmYPg+nr+mKBvmeSHC/l4XwI0fpqjlgdPnBADqVxmMp9lSp6CBTxqW8YNyuPs8vaXCUT
+         WoIHVfXznI5L3JLeDV1dMH9vAJXupbPxV69M4U+AwT9leKzCsrqO5XZCFEb1bMVtqmyL
+         jLscnYxKo2K9tLb+zI0fJb/AQ/nohMGr1YA6UhvF4XI5GmTggQ7rd59YjwVAQ23BeJCt
+         lZqmKQqH5dPzIuz++vAqn4ZPIJG7BJ7COD7HsMn5vQHAwh+5VtkrqPPfpV56yGEKYXVC
+         HMAw==
+X-Gm-Message-State: AOJu0YwlF4RXuwQD0+R945NVhXa27tGrQYrmm4Tj0bZtUSrFaeM6Djbw
+	cIW+E2aj9dGTPVV9S6AgI0ca5e5X9M6VAjLadCc3DukzBeSbxyW+qUowZpM/pz0=
+X-Gm-Gg: ASbGnctTouo38DPE5txi+s4xDqkwNP1y1x1M/Zkrg80GXF68wkLbR2OhzdySYJ9orGa
+	ZEbYg/Kagsqw7PGk8qTZhtj4GXggbb40Izl47CzaaPtNNrtXj2Rq0C2w8N5uxLNZB3EI+6Uo+YR
+	VMDxepaYkQNOLDhl95WxdC3qOCEg+QNuD2IJ0EnhRb3q13Mtr1lyu8ZKNOdVjoWismk48BUIF3p
+	32kwacsPcOcyUAQpjKqMCu93kWOrxizUajh9a1z1mziXFyZSwC4D2WSdKaaeDpC49V8/Tvxbd7b
+	H/FbXFfXtnBAcSfEci/5exHoDWFgpWigmGrL
+X-Google-Smtp-Source: AGHT+IFrDB7HWAhzg2vNZVN7HXetNvgisaN3voH8oYcpeUpBSzke9C4NZZ2ySguYywPfNCvf2hfsUA==
+X-Received: by 2002:a17:902:e810:b0:215:734f:ffe5 with SMTP id d9443c01a7336-215bd128365mr128131335ad.32.1733394623586;
+        Thu, 05 Dec 2024 02:30:23 -0800 (PST)
+Received: from localhost.localdomain (133-32-227-190.east.xps.vectant.ne.jp. [133.32.227.190])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8f0922fsm9341225ad.205.2024.12.05.02.30.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2024 09:10:43 -0800 (PST)
-From: Philipp Stanner <pstanner@redhat.com>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Mikael Pettersson <mikpelinux@gmail.com>
+        Thu, 05 Dec 2024 02:30:23 -0800 (PST)
+From: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+To: dlemoal@kernel.org,
+	cassel@kernel.org
 Cc: linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Philipp Stanner <pstanner@redhat.com>
-Subject: [RFC PATCH 3/3] libata-sff: Simplify request of PCI resources
-Date: Wed,  4 Dec 2024 18:10:34 +0100
-Message-ID: <20241204171033.86804-5-pstanner@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241204171033.86804-2-pstanner@redhat.com>
-References: <20241204171033.86804-2-pstanner@redhat.com>
+	Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
+Subject: [PATCH] ata: sata_highbank: fix OF node reference leak in highbank_initialize_phys()
+Date: Thu,  5 Dec 2024 19:30:14 +0900
+Message-Id: <20241205103014.1625375-1-joe@pf.is.s.u-tokyo.ac.jp>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
@@ -99,189 +86,28 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pcim_iomap_regions() has been deprecated by the PCI subsystem.
+The OF node reference obtained by of_parse_phandle_with_args() is not
+released on early return. Add a of_node_put() call before returning.
 
-Unfortunately, libata-sff uses quite complicated bit mask magic to
-obtain its PCI resources.
-
-Restructure and simplify the PCI resource request code.
-
-Replace pcim_iomap_regions() with pcim_iomap_region().
-
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Fixes: 8996b89d6bc9 ("ata: add platform driver for Calxeda AHCI controller")
+Signed-off-by: Joe Hattori <joe@pf.is.s.u-tokyo.ac.jp>
 ---
- drivers/ata/libata-sff.c | 130 +++++++++++++++++++++++++--------------
- 1 file changed, 84 insertions(+), 46 deletions(-)
+ drivers/ata/sata_highbank.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-index 67f277e1c3bf..1d2273c0f447 100644
---- a/drivers/ata/libata-sff.c
-+++ b/drivers/ata/libata-sff.c
-@@ -2127,6 +2127,73 @@ static bool ata_resources_present(struct pci_dev *pdev, int port)
- 	return true;
- }
- 
-+static void ata_pci_sff_set_ap_data(struct ata_port *ap, struct ata_host *host,
-+		struct pci_dev *pdev, unsigned short base)
-+{
-+	void __iomem *ctl_addr;
-+
-+	ctl_addr = host->iomap[base + 1];
-+	ctl_addr = (void __iomem *)((unsigned long)ctl_addr | ATA_PCI_CTL_OFS);
-+
-+	ap->ioaddr.cmd_addr = host->iomap[base];
-+	ap->ioaddr.altstatus_addr = ctl_addr;
-+	ap->ioaddr.ctl_addr = ctl_addr;
-+
-+	ata_sff_std_ports(&ap->ioaddr);
-+
-+	ata_port_desc(ap, "cmd 0x%llx ctl 0x%llx",
-+		(unsigned long long)pci_resource_start(pdev, base),
-+		(unsigned long long)pci_resource_start(pdev, base + 1));
-+}
-+
-+/*
-+ * ata_pci_sff_obtain_bars - obtain the PCI BARs associated with an ATA port
-+ * @pdev: the PCI device
-+ * @host: the ATA host
-+ * @ap: the ATA port
-+ * @port: @ap's port index in @host
-+ *
-+ * Returns: Number of successfully ioremaped BARs, a negative code on failure
-+ */
-+static int ata_pci_sff_obtain_bars(struct pci_dev *pdev, struct ata_host *host,
-+		struct ata_port *ap, unsigned short port)
-+{
-+	int ret = 0, bars_mapped = 0;
-+	unsigned short i, base;
-+	void __iomem *io_tmp;
-+	const char *name = dev_driver_string(&pdev->dev);
-+
-+	/*
-+	 * Port can be 0 or 1.
-+	 * Port 0 corresponds to PCI BARs 0 and 1, port 1 to BARs 2 and 3.
-+	 */
-+	base = port * 2;
-+
-+       /*
-+	* Discard disabled ports. Some controllers show their unused channels
-+	* this way. Disabled ports are made dummy.
-+	*/
-+	if (!ata_resources_present(pdev, port))
-+		goto try_next;
-+
-+	for (i = 0; i < 2; i++) {
-+		io_tmp = pcim_iomap_region(pdev, base + i, name);
-+		ret = PTR_ERR_OR_ZERO(io_tmp);
-+		if (ret != 0)
-+			goto try_next;
-+
-+		bars_mapped++;
-+	}
-+
-+	ata_pci_sff_set_ap_data(ap, host, pdev, base);
-+
-+	return bars_mapped;
-+
-+try_next:
-+	ap->ops = &ata_dummy_port_ops;
-+	return ret;
-+}
-+
- /**
-  *	ata_pci_sff_init_host - acquire native PCI ATA resources and init host
-  *	@host: target ATA host
-@@ -2148,59 +2215,31 @@ static bool ata_resources_present(struct pci_dev *pdev, int port)
-  */
- int ata_pci_sff_init_host(struct ata_host *host)
- {
--	struct device *gdev = host->dev;
--	struct pci_dev *pdev = to_pci_dev(gdev);
--	unsigned int mask = 0;
--	int i, rc;
--
--	/* request, iomap BARs and init port addresses accordingly */
--	for (i = 0; i < 2; i++) {
--		struct ata_port *ap = host->ports[i];
--		int base = i * 2;
--		void __iomem * const *iomap;
-+	int ret;
-+	unsigned short port_nr, operational_ports = 0;
-+	struct device *dev = host->dev;
-+	struct pci_dev *pdev = to_pci_dev(dev);
-+	struct ata_port *ap;
- 
-+	for (port_nr = 0; port_nr < 2; port_nr++) {
-+		ap = host->ports[port_nr];
- 		if (ata_port_is_dummy(ap))
- 			continue;
- 
--		/* Discard disabled ports.  Some controllers show
--		 * their unused channels this way.  Disabled ports are
--		 * made dummy.
--		 */
--		if (!ata_resources_present(pdev, i)) {
--			ap->ops = &ata_dummy_port_ops;
--			continue;
--		}
--
--		rc = pcim_iomap_regions(pdev, 0x3 << base,
--					dev_driver_string(gdev));
--		if (rc) {
--			dev_warn(gdev,
-+		ret = ata_pci_sff_obtain_bars(pdev, host, ap, port_nr);
-+		if (ret > 0) {
-+			operational_ports += ret;
-+		} else if (ret < 0) {
-+			dev_warn(dev,
- 				 "failed to request/iomap BARs for port %d (errno=%d)\n",
--				 i, rc);
--			if (rc == -EBUSY)
-+				 port_nr, ret);
-+			if (ret == -EBUSY)
- 				pcim_pin_device(pdev);
--			ap->ops = &ata_dummy_port_ops;
--			continue;
- 		}
--		host->iomap = iomap = pcim_iomap_table(pdev);
--
--		ap->ioaddr.cmd_addr = iomap[base];
--		ap->ioaddr.altstatus_addr =
--		ap->ioaddr.ctl_addr = (void __iomem *)
--			((unsigned long)iomap[base + 1] | ATA_PCI_CTL_OFS);
--		ata_sff_std_ports(&ap->ioaddr);
--
--		ata_port_desc(ap, "cmd 0x%llx ctl 0x%llx",
--			(unsigned long long)pci_resource_start(pdev, base),
--			(unsigned long long)pci_resource_start(pdev, base + 1));
--
--		mask |= 1 << i;
- 	}
- 
--	if (!mask) {
--		dev_err(gdev, "no available native port\n");
-+	if (operational_ports == 0)
- 		return -ENODEV;
--	}
- 
- 	return 0;
- }
-@@ -3094,12 +3133,11 @@ void ata_pci_bmdma_init(struct ata_host *host)
- 		ata_bmdma_nodma(host, "failed to set dma mask");
- 
- 	/* request and iomap DMA region */
--	rc = pcim_iomap_regions(pdev, 1 << 4, dev_driver_string(gdev));
--	if (rc) {
-+	host->iomap[4] = pcim_iomap_region(pdev, 4, dev_driver_string(gdev));
-+	if (IS_ERR(host->iomap[4])) {
- 		ata_bmdma_nodma(host, "failed to request/iomap BAR4");
- 		return;
- 	}
--	host->iomap = pcim_iomap_table(pdev);
- 
- 	for (i = 0; i < 2; i++) {
- 		struct ata_port *ap = host->ports[i];
+diff --git a/drivers/ata/sata_highbank.c b/drivers/ata/sata_highbank.c
+index b1b40e9551de..c8c817c51230 100644
+--- a/drivers/ata/sata_highbank.c
++++ b/drivers/ata/sata_highbank.c
+@@ -348,6 +348,7 @@ static int highbank_initialize_phys(struct device *dev, void __iomem *addr)
+ 			phy_nodes[phy] = phy_data.np;
+ 			cphy_base[phy] = of_iomap(phy_nodes[phy], 0);
+ 			if (cphy_base[phy] == NULL) {
++				of_node_put(phy_data.np);
+ 				return 0;
+ 			}
+ 			phy_count += 1;
 -- 
-2.47.0
+2.34.1
 
 

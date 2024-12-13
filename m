@@ -1,101 +1,87 @@
-Return-Path: <linux-ide+bounces-2810-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2812-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACBA9F00B2
-	for <lists+linux-ide@lfdr.de>; Fri, 13 Dec 2024 01:16:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D869F04FE
+	for <lists+linux-ide@lfdr.de>; Fri, 13 Dec 2024 07:44:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EAA7188D439
-	for <lists+linux-ide@lfdr.de>; Fri, 13 Dec 2024 00:16:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C07D7162417
+	for <lists+linux-ide@lfdr.de>; Fri, 13 Dec 2024 06:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A3D1854;
-	Fri, 13 Dec 2024 00:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Zvqpn9IH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D9C15383B;
+	Fri, 13 Dec 2024 06:44:00 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from arara2.ipen.br (arara2.ipen.br [200.136.52.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C8802
-	for <linux-ide@vger.kernel.org>; Fri, 13 Dec 2024 00:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E2618A931
+	for <linux-ide@vger.kernel.org>; Fri, 13 Dec 2024 06:43:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=200.136.52.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734049006; cv=none; b=bsV4vxiDvrF1xsMnz4LXOcMkDyGXqN7JZcgl4XwJXRUfhWXz6Z6QrgxhHsEMzSZSx375n9fDjR4uFDw+NDNrOcZqKYu3/KYPMiYMGzo8Ij0y1wk4vSe/Nq38d2boJ5omBz//DbgDb7buQ+LIUSiLvUWqdp9ATu4qF8TjKwbLOy4=
+	t=1734072240; cv=none; b=Hmx7cEZcLGxUmQourAaCdUdKt6oH4kcocU4J54KzpBjl9X3Sz/IXT0NQTxQlQ0zAYciKMfwpq+V0uGQYByo3QBTP2Dol8JQ4CzMQXokDJBeqi135uzzd0a0jHN9opGvRmNDd85jkr2Cbtp2NJfh3yGBYMb4Z6liHakaye9jAFJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734049006; c=relaxed/simple;
-	bh=f/AfbZ/Lcv4MV6u2NordctibWy0sKFCNN77jSaCoPD8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k4f3fPIxP0HtERIRprzQmqejZP/c6kfQDGDbfsfgJJxMoVmfWnWfYh/lOKdB9j98Ouo0uD7GzgC2OgezyL0L6DdVECR0c4nsQLOZX+sFW4LzI7sf1MzGDDla01wBNh6eB4oC1kpFTySQY+0QYTrJiMlblrazKjrH+W9yYYn4d60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Zvqpn9IH; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3022c61557cso11187681fa.0
-        for <linux-ide@vger.kernel.org>; Thu, 12 Dec 2024 16:16:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734049002; x=1734653802; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f/AfbZ/Lcv4MV6u2NordctibWy0sKFCNN77jSaCoPD8=;
-        b=Zvqpn9IH4+yjPyG4VwYwYfb9hNgN+OEn/u9/wOFMGvsn/4c2xC8QJ3okSBf4aJr8RW
-         xN0WEPL9et9KXnde18fLOuissXQKe2andnUUyZOsxwPAPEcjHhUbtRzh8zuTtLi8f09d
-         yfpGYbJd+16eKtkc9SSzFWwfDRdmokIBm7zZ6eo+KOgjMamB03IX6FUFr0uQictiZfu7
-         iDawbIT2gGfa4bzchSLV+uYEK4p6pUzmmB4napD6QaYsGKviHWpgy9jAk7HUBJngzj/0
-         ++Mvs9xwxbsv8WNCV/D+sKzdO3dT6uDHhp3X3UmzwjgzqRHraKci4KmlZ4K4vA18QriM
-         nDPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734049002; x=1734653802;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f/AfbZ/Lcv4MV6u2NordctibWy0sKFCNN77jSaCoPD8=;
-        b=sKDdO/0b8nqe96dK+GNbi+CIS3xEAQPdI1vTgN/VA96b6PIMbjrZb+12V+8eWDrn37
-         1nWLbyD9/+1SwcBXMcyXFe8aLebv7WLPmejIfjNOESUa8INO7He5megoDknPD86LzUjs
-         YYCe+BHAlsmErHl4S8maj1OBD2TaO+5sMcwqw90CJxh+t5csq+Y+nem9FSPmNLBtgS9T
-         MTx9S22qfmbsxi7zLMjHtue9dree8Edg6KSK1ODRZgtHQ9CnWtsIUjK74678o0HnLiuT
-         P44s2yNEUQqVaovQaUTrVGi8OEMgZel9vZxsKz9CNx+JO831PHBnDbgzGIv8/BHCumr/
-         TAig==
-X-Forwarded-Encrypted: i=1; AJvYcCU8wPcYfybgKObs8bQz+ANdSwWwvva6bAJSwMWaJIvfjFkQRl1XhKf4nyMkA5sX1MQRpmcUlyYKoJU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/qsy1SUv+mPjkdRqDzKe0p21Ov/NPkFgTESAai2wcy08SjuTF
-	ET6PQlp9BGVujBD9e/yaC8XLosCXuLLyU/TW48V+aGr96lXJQM9lAeQjEO3MGlz3zi32POOQTDP
-	l0UyzxZfrYs3av+LhQF+Dm375JKkc3EDyYrwdZzxSybEbUNHx
-X-Gm-Gg: ASbGncs+aUWOBfEc55t6Q8v6oQv7o6PrFKndD4Ip5Hybd8ede+PIDNJrcZ+jacSjjxl
-	QSkPOmPJ2DSS3JTO1S3mJVTQAn/WKPdvrxc8E
-X-Google-Smtp-Source: AGHT+IHi5gVwXNphSa9p28n7Muex507AwVByLNdIpXjj9BE+fLY6ChX+4Tt3eZWYhZJFsSxV2AGCweYvOxT65izvamI=
-X-Received: by 2002:a05:6512:3b89:b0:53e:24fa:ce2 with SMTP id
- 2adb3069b0e04-5409059508fmr88078e87.38.1734049002474; Thu, 12 Dec 2024
- 16:16:42 -0800 (PST)
+	s=arc-20240116; t=1734072240; c=relaxed/simple;
+	bh=Cgr97JBiSX1QIcd2ZZZsKVChGTY1ZlWJ/4AhaVFA7Wc=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=d2tUSl/voKSiGYoC07jsff9heE4dWFOqz/UN/bz/Kduwb5J0xDGurxfrXFsG6tBAeL0ZPLmE+CA5CTuTPRQGt4594vrHFXINl1Lsg2J7ehf4nkeD5GJPev9t5Jkv9y5tdBYJ3o2lgGFF/FssyDfDJEYsbrX7XKhT+gaxCEHP1gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ipen.br; spf=pass smtp.mailfrom=ipen.br; arc=none smtp.client-ip=200.136.52.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ipen.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ipen.br
+X-ASG-Debug-ID: 1734072212-055fc729eb148c220006-WJxGKN
+Received: from arara.ipen.br (webmail.ipen.br [10.0.10.11]) by arara2.ipen.br with ESMTP id spVf4GpdqBUbUQSb for <linux-ide@vger.kernel.org>; Fri, 13 Dec 2024 03:43:54 -0300 (BRT)
+X-Barracuda-Envelope-From: TCWM179518@ipen.br
+X-Barracuda-RBL-Trusted-Forwarder: 10.0.10.11
+Received: from ipen.br (unknown [102.129.145.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by arara.ipen.br (Postfix) with ESMTPSA id E6C59FBE630
+	for <linux-ide@vger.kernel.org>; Fri, 13 Dec 2024 01:25:42 -0300 (-03)
+Reply-To: t.mazowieckie@mazowieckie.org
+X-Barracuda-Effective-Source-IP: UNKNOWN[102.129.145.191]
+X-Barracuda-Apparent-Source-IP: 102.129.145.191
+X-Barracuda-RBL-IP: 102.129.145.191
+From: <TCWM179518@ipen.br>
+To: linux-ide@vger.kernel.org
+Subject:  I urge you to understand my viewpoint accurately.
+Date: 13 Dec 2024 12:25:42 +0800
+X-ASG-Orig-Subj: I urge you to understand my viewpoint accurately.
+Message-ID: <20241213122542.64861018E3A970A1@ipen.br>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241211235250.136985-1-linux@treblig.org>
-In-Reply-To: <20241211235250.136985-1-linux@treblig.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Fri, 13 Dec 2024 01:16:31 +0100
-Message-ID: <CACRpkdaAfRjF6rDB5u+-g3c53Cby0FO93z_iGuxNxXF-mMywGg@mail.gmail.com>
-Subject: Re: [PATCH] ata: sata_gemini: Remove remaining reset glue
-To: linux@treblig.org
-Cc: dlemoal@kernel.org, cassel@kernel.org, p.zabel@pengutronix.de, 
-	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+	charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
+X-Barracuda-Connect: webmail.ipen.br[10.0.10.11]
+X-Barracuda-Start-Time: 1734072234
+X-Barracuda-URL: https://10.40.40.18:443/cgi-mod/mark.cgi
+X-Barracuda-Scan-Msg-Size: 512
+X-Virus-Scanned: by bsmtpd at ipen.br
+X-Barracuda-BRTS-Status: 1
+X-Barracuda-BRTS-Evidence: 34fbb5788938ad5710ad28835fd12206-499-txt
+X-Barracuda-Spam-Score: 0.00
+X-Barracuda-Spam-Status: No, SCORE=0.00 using global scores of TAG_LEVEL=1000.0 QUARANTINE_LEVEL=1000.0 KILL_LEVEL=1000.0 tests=NO_REAL_NAME
+X-Barracuda-Spam-Report: Code version 3.2, rules version 3.2.3.45577
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------------------------
+	0.00 NO_REAL_NAME           From: does not include a real name
 
-On Thu, Dec 12, 2024 at 12:52=E2=80=AFAM <linux@treblig.org> wrote:
+I am Tomasz Chmielewski, a Portfolio Manager and Chartered=20
+Financial Analyst affiliated with Iwoca Poland Sp. Z OO in=20
+Poland. I have the privilege of working with distinguished=20
+investors who are eager to support your company's current=20
+initiatives, thereby broadening their investment portfolios. If=20
+this proposal aligns with your interests, I invite you to=20
+respond, and I will gladly share more information to assist you.
 
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
->
-> Now that gemini_sata_reset_bridge() is gone, we can remove
-> the sata0/1_reset members and the code that creates them.
->
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-
-Yours,
-Linus Walleij
+=20
+Yours sincerely,=20
+Tomasz Chmielewski Warsaw, Mazowieckie,
+=20
+Poland.
 

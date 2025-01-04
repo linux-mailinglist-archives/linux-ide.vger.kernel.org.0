@@ -1,131 +1,126 @@
-Return-Path: <linux-ide+bounces-2853-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2855-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AF1A00803
-	for <lists+linux-ide@lfdr.de>; Fri,  3 Jan 2025 11:44:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3C9A01349
+	for <lists+linux-ide@lfdr.de>; Sat,  4 Jan 2025 09:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EEF2163981
-	for <lists+linux-ide@lfdr.de>; Fri,  3 Jan 2025 10:44:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB1103A3DC7
+	for <lists+linux-ide@lfdr.de>; Sat,  4 Jan 2025 08:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4AF01F9411;
-	Fri,  3 Jan 2025 10:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9176914B07A;
+	Sat,  4 Jan 2025 08:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b="eHzB+yui"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WX8Pu+zv"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mxout3.routing.net (mxout3.routing.net [134.0.28.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5203187FE0;
-	Fri,  3 Jan 2025 10:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.0.28.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2851E507
+	for <linux-ide@vger.kernel.org>; Sat,  4 Jan 2025 08:32:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735901068; cv=none; b=tGIV7DqIuDIoDTAxrVwaj6BhB/13T7ovFiRyDUJDdZC2FTAoK2B/0fm5XSwLEjYLya3gjtpXzO2cNRP5/olezTiTznihQWXLAuaE0jEsbn5pRMRO60kd/1l3TYgiebdbcmjNuA87uMYc7hYVQU4ESlih+yYl/5quPpuL+uv5DVk=
+	t=1735979575; cv=none; b=WMDU7t+bUko2/wbL6fsLZ4H8TJJ3CCy5xnySFw80XUsWrgujFq39nvvJs7OUyyLztQzSIiRopDTj9NwVLxJk+qD+46bppBDg9kOwZqfb8yHg9V541agKa7nCaeG+J2avCdzxYiAufUx4uc3RB+EyBHzu3ybBiPuWsTBzXmOFd3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735901068; c=relaxed/simple;
-	bh=YHMNti+didoHgK68FhrbDg3mJKgl9PHm8/CyISacV2Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7McMu7LBpQRiL3pUWbpUNxojlQA/HXezCL3/G84S5BmMP/RQNYNEj0MVxPKbZPv1BWrJjglcmEK6SJKwe7NuOpAWotvLhDwAYnhYVRZfVSkfuJTbjnoEvpDM96WRpFOzmQhNeW7iZZBWGkfVCPH7kZRwyydT3yNYhJxBNWuaDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de; spf=pass smtp.mailfrom=fw-web.de; dkim=pass (1024-bit key) header.d=mailerdienst.de header.i=@mailerdienst.de header.b=eHzB+yui; arc=none smtp.client-ip=134.0.28.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fw-web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fw-web.de
-Received: from mxbox4.masterlogin.de (unknown [192.168.10.79])
-	by mxout3.routing.net (Postfix) with ESMTP id 51691605A2;
-	Fri,  3 Jan 2025 10:37:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-	s=20200217; t=1735900653;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=D2iahX1buMzs5p03vC9Zh7kp9EyqKjlKiO/Ae93S060=;
-	b=eHzB+yuiY9jr3y6dXPaAaDCDMM+2kVQQKJY44VZzx154UmOM6eQKF1ebC/7PntzMAvSL+8
-	pG68WgWOMQWMPlPzEPz59OxrOxp6vfQJS5Yn294w7EnWxnFj6Wt6hh3ZZnDAEE98P4mNTj
-	oSOnBuxOjVz84X3q7Ev6eu2gmmrnaRE=
-Received: from frank-u24.. (fttx-pool-80.245.72.216.bambit.de [80.245.72.216])
-	by mxbox4.masterlogin.de (Postfix) with ESMTPSA id 6474A8020A;
-	Fri,  3 Jan 2025 10:37:32 +0000 (UTC)
-From: Frank Wunderlich <linux@fw-web.de>
-To: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gregory Clement <gregory.clement@bootlin.com>,
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Frank Wunderlich <frank-w@public-files.de>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-ide@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v2 2/2] arm64: dts: marvell: drop additional phy-names for sata
-Date: Fri,  3 Jan 2025 11:37:22 +0100
-Message-ID: <20250103103724.6223-3-linux@fw-web.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250103103724.6223-1-linux@fw-web.de>
-References: <20250103103724.6223-1-linux@fw-web.de>
+	s=arc-20240116; t=1735979575; c=relaxed/simple;
+	bh=Mt6HRdzXNpGb9KkUxUL5n2IIJvuZoM0M+cDuu8ufMMI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=B6pm2wccgXMEtkOIzl2H7kuxktgYpxbNDnERnEH4ARc2OdRoXjaytSSbvSUl3EWf7TsU+Fj1GePsTxloLwJldPdcY8CTDEUE8N3Ek1MugrQRB2QrEOopce7Vy9WZZuUsG934CBI9Qh/H4tq3E+IkjieTEDatYE6kVa1Igkx82IA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WX8Pu+zv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AB5C4CED1;
+	Sat,  4 Jan 2025 08:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735979575;
+	bh=Mt6HRdzXNpGb9KkUxUL5n2IIJvuZoM0M+cDuu8ufMMI=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=WX8Pu+zve8ooCfloQLp80xldvWLQT7v8nhtiyFyxNBM6NxWkAf1OKlLFObbdfGodR
+	 w0F5J+teyXuy2ywTNt4ICjuTxpI5yE9joX8v/udWDgV2IuMxXjN4EOglb7cpy8trYi
+	 ddoI730seJmCsBjOb920BO7l4HA0G88AdLuQIZDgcR8i+uquBmQP0Ex1S6XJdDVfJ5
+	 3J0Go1V+9YdkepLsrKdNzy3aH/49Xk/4NTFkNw+OORbtVD9P/pYq6FV8Jk62gXPpab
+	 ppLB9EYkOqKTNfoS0934nE0os+nLHT6qqPr3ylszPltF8a2xQmLFFf9lWUdcHW/Aow
+	 WwVhT2uUzhCKw==
+Message-ID: <70664fc3-90ef-4d29-9efb-f1cf9e1a507e@kernel.org>
+Date: Sat, 4 Jan 2025 17:32:53 +0900
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mail-ID: 36ba5333-1016-4fad-b8ef-f646e7a56354
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ahci: simplify init function
+To: Tomas Henzl <thenzl@redhat.com>, linux-ide@vger.kernel.org,
+ Niklas Cassel <Niklas.Cassel@wdc.com>
+References: <20241230121548.11911-1-thenzl@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20241230121548.11911-1-thenzl@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Frank Wunderlich <frank-w@public-files.de>
+On 12/30/24 21:15, Tomas Henzl wrote:
+> by removing few lines. No functional change.
+> 
+> Signed-off-by: Tomas Henzl <thenzl@redhat.com>
 
-Commit facbe7092f8a ("arm64: dts: marvell: Drop undocumented SATA phy names")
-drops some phy-names from devicetrees but misses some. Drop them too.
+Please send patches to the maintainers as well.
 
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- arch/arm64/boot/dts/marvell/armada-8040-db.dts     | 2 --
- arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtsi | 2 --
- 2 files changed, 4 deletions(-)
+> ---
+>  drivers/ata/ahci.c | 12 +++++-------
+>  1 file changed, 5 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index 8d27c567be1c..66c19039449d 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -1665,7 +1665,7 @@ static int ahci_get_irq_vector(struct ata_host *host, int port)
+>  	return pci_irq_vector(to_pci_dev(host->dev), port);
+>  }
+>  
+> -static int ahci_init_msi(struct pci_dev *pdev, unsigned int n_ports,
+> +static int ahci_init_irq(struct pci_dev *pdev, unsigned int n_ports,
+>  			struct ahci_host_priv *hpriv)
+>  {
+>  	int nvec;
+> @@ -1700,12 +1700,13 @@ static int ahci_init_msi(struct pci_dev *pdev, unsigned int n_ports,
+>  
+>  	/*
+>  	 * If the host is not capable of supporting per-port vectors, fall
+> -	 * back to single MSI before finally attempting single MSI-X.
+> +	 * back to single MSI before finally attempting single MSI-X or
+> +	 * a legacy INTx.
+>  	 */
+>  	nvec = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSI);
+>  	if (nvec == 1)
+>  		return nvec;
+> -	return pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSIX);
+> +	return pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSIX | PCI_IRQ_INTX);
+>  }
+>  
+>  static void ahci_mark_external_port(struct ata_port *ap)
+> @@ -1985,10 +1986,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	}
+>  	host->private_data = hpriv;
+>  
+> -	if (ahci_init_msi(pdev, n_ports, hpriv) < 0) {
+> -		/* legacy intx interrupts */
+> -		pci_intx(pdev, 1);
+> -	}
+> +	ahci_init_irq(pdev, n_ports, hpriv);
 
-diff --git a/arch/arm64/boot/dts/marvell/armada-8040-db.dts b/arch/arm64/boot/dts/marvell/armada-8040-db.dts
-index fe5d6cb9d692..9d45e881a97d 100644
---- a/arch/arm64/boot/dts/marvell/armada-8040-db.dts
-+++ b/arch/arm64/boot/dts/marvell/armada-8040-db.dts
-@@ -307,11 +307,9 @@ &cp1_sata0 {
- 
- 	sata-port@0 {
- 		phys = <&cp1_comphy1 0>;
--		phy-names = "cp1-sata0-0-phy";
- 	};
- 	sata-port@1 {
- 		phys = <&cp1_comphy3 1>;
--		phy-names = "cp1-sata0-1-phy";
- 	};
- };
- 
-diff --git a/arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtsi b/arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtsi
-index 5043cf2eb33e..0d4a5fd9503f 100644
---- a/arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-8040-mcbin.dtsi
-@@ -345,13 +345,11 @@ &cp1_sata0 {
- 	/* CPS Lane 1 - U32 */
- 	sata-port@0 {
- 		phys = <&cp1_comphy1 0>;
--		phy-names = "cp1-sata0-0-phy";
- 	};
- 
- 	/* CPS Lane 3 - U31 */
- 	sata-port@1 {
- 		phys = <&cp1_comphy3 1>;
--		phy-names = "cp1-sata0-1-phy";
- 	};
- };
- 
+I think this needs error return check, unless we are guaranteed that
+pci_alloc_irq_vectors() always return success when PCI_IRQ_INTX is set. If that
+is the case, we can make ahci_init_irq() a void function. Please check.
+
+>  	hpriv->irq = pci_irq_vector(pdev, 0);
+>  
+>  	if (!(hpriv->cap & HOST_CAP_SSS) || ahci_ignore_sss)
+
+
 -- 
-2.43.0
-
+Damien Le Moal
+Western Digital Research
 

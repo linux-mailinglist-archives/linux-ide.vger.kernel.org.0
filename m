@@ -1,43 +1,43 @@
-Return-Path: <linux-ide+bounces-2923-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2924-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D246EA1212F
-	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 11:53:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D569A121EF
+	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 12:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44D0D7A2018
-	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 10:53:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07CB3169881
+	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 11:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF231E98E7;
-	Wed, 15 Jan 2025 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEB32139DB;
+	Wed, 15 Jan 2025 11:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORaX0jk2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vA25lrqd"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52627248BDE;
-	Wed, 15 Jan 2025 10:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECA1211278;
+	Wed, 15 Jan 2025 11:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736938420; cv=none; b=LpL5IWPvXvslUE8bepaVp9dPKq+E+895lOyPtF7OqPaRG+24QnRQdyiQazQFpjECVUIkrmLu8u2ZKS9XE2e6HLr57j8mokQ1wLgmtV5BeyHq6dIznpxPjszrJBpGty2i7JTEHhhvp/17FVKrTE9h3hInENR+tC5TIlEFprWNPRY=
+	t=1736938917; cv=none; b=I9lMhXABR9hbv6D4cI10h07t15qjvLrTDJE2NF7DQJQG8BT2zHrffdAmBqutVrBEfMMFoy8FZRLmnOUji08NIaptyz+LkL+y1Zgfah8a2fMNuU2SYvFzfO1/hcQtfhxJbbY6qLWYh4ueBb43KI4jj1czTDfzs88gcbm5cZnHsF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736938420; c=relaxed/simple;
-	bh=4oIQ1kQ1NO9eDY4xl/ICe73BR4smZPMqO3miLdPFAkQ=;
+	s=arc-20240116; t=1736938917; c=relaxed/simple;
+	bh=974TDXUHOBVFKY2F5tfLtJ0FCo3GXEgTurSFpXhqq6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfeJdWcKVElaZC3dhhLyVrfvNVHJaG7PmQ1xgAFk6/KaqNkwCOWqZMfmm95rPK6dzYB5Kd9Itgdph8EpiN7nBgiqSPrVPQVakMNrUi4yVJB1gb39wKmnfgysMmc+sGIPBqncKaPR5YnS4Hwkvs/gk4u1X84TYDDQ2txJe9uJ39g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORaX0jk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FA2C4CEDF;
-	Wed, 15 Jan 2025 10:53:39 +0000 (UTC)
+	 MIME-Version; b=lB1mu0B3VJCyLq8lT9QK7ezMjcIKm12J3HtCyOgCm9dQokKH72umpXiwxyZSHrtqjFl6Nug2XWKiqYfkHkm+Cg98/5B0JoJGb7NFnVHMTT2L0oq1s5PyMC17rhTwsxnWcetk9tW4whVgBF+YK7YhA7RmSPYivrxKa2tU1ODT6E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vA25lrqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC8DC4CEE4;
+	Wed, 15 Jan 2025 11:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736938420;
-	bh=4oIQ1kQ1NO9eDY4xl/ICe73BR4smZPMqO3miLdPFAkQ=;
+	s=korg; t=1736938917;
+	bh=974TDXUHOBVFKY2F5tfLtJ0FCo3GXEgTurSFpXhqq6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ORaX0jk2hXIpUI9Vvxa0Qng87GM63CfiIAwljSyQ18ou+1FQLHd135UShewwjUbpJ
-	 BYu3antOTeSLIyw3kVkBvzMgVnisgqPSSVJGvtt3ZIuI74jJUuOUsCUMdji7iaKOTv
-	 1jBZSEcXZnFRo62rUn2Z0mP1KhLXubSY/hEoaKzU=
+	b=vA25lrqd8tooHjD4e9PXQYKeKHL+cKizhZMJal7HXlq7BYJmWsb+TuVh7JgexjVZ0
+	 jdhTdDgQl/P41a8VWi7Un5oBPdhF04S/kv+EBHZMXh+VT+skiH1tj5dgWZbHERZD0/
+	 cUgqVtTX1ctQXLD+udC3udy26RUMguhtZFZWjcaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -53,12 +53,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	linux-ide@vger.kernel.org,
 	linux-hwmon@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 178/189] hwmon: (drivetemp) Fix driver producing garbage data when SCSI errors occur
-Date: Wed, 15 Jan 2025 11:37:54 +0100
-Message-ID: <20250115103613.511631208@linuxfoundation.org>
+Subject: [PATCH 6.6 116/129] hwmon: (drivetemp) Fix driver producing garbage data when SCSI errors occur
+Date: Wed, 15 Jan 2025 11:38:11 +0100
+Message-ID: <20250115103558.972203687@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.0
-In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
-References: <20250115103606.357764746@linuxfoundation.org>
+In-Reply-To: <20250115103554.357917208@linuxfoundation.org>
+References: <20250115103554.357917208@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 

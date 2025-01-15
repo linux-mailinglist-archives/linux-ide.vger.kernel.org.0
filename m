@@ -1,121 +1,143 @@
-Return-Path: <linux-ide+bounces-2921-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2923-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6CCAA11BFC
-	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 09:30:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D246EA1212F
+	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 11:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1C1E3A4DDC
-	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 08:30:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44D0D7A2018
+	for <lists+linux-ide@lfdr.de>; Wed, 15 Jan 2025 10:53:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0787D1E7C06;
-	Wed, 15 Jan 2025 08:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF231E98E7;
+	Wed, 15 Jan 2025 10:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0EP9A2R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORaX0jk2"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D8A28EC99;
-	Wed, 15 Jan 2025 08:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52627248BDE;
+	Wed, 15 Jan 2025 10:53:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736929692; cv=none; b=Rbj2f2dY/mlTAF2T9pxRSV5cV/bhntt7bLrPyD0kOq9qXVz2rPIlv9A/UM5epk0NciP9ltbIi+zn+jq2pQQeT1eDpd4dOecuKLOsORPmgOrX1jNgW37ODYrMZ3LngBYZJSGRz815ym9y6nFGXH6qMF+/jD3BAS0tuDBHXFRCzhY=
+	t=1736938420; cv=none; b=LpL5IWPvXvslUE8bepaVp9dPKq+E+895lOyPtF7OqPaRG+24QnRQdyiQazQFpjECVUIkrmLu8u2ZKS9XE2e6HLr57j8mokQ1wLgmtV5BeyHq6dIznpxPjszrJBpGty2i7JTEHhhvp/17FVKrTE9h3hInENR+tC5TIlEFprWNPRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736929692; c=relaxed/simple;
-	bh=11Zq8qmfVIZzrkTSMxpBb/L+l5LfIN8O7VN98/BT8II=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tdm0GubGIwYF9f8K4ljSbgDtANJvS7zuzPNDjteGdxfn5knim9bG3S1StM3Kk/n20pfaDqrkqC/9EQchaCUDGsWd7c5cSwAf782cSf63M8+rAwRrSkgnxCN8RTiIAETBuFhOltQHlbBgSs5C2vElLsX/9GyoxSostyb0+qOnaZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0EP9A2R; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-435f8f29f8aso45461225e9.2;
-        Wed, 15 Jan 2025 00:28:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736929689; x=1737534489; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7VsayfsbgUkjz33UWIbO/Za5YihWzgN9JEYCylKHiN4=;
-        b=I0EP9A2Rh7HBPEb3kwOdVVnHqAms+0s11p9OAZwEXzvhugWHYp5iw98bP8agqsbu/w
-         TOlxonzql1PsXcGRH6k7RdMJ3t2fR3TCzdpx3X1g8C/oeJBzUPKEeZsC0gGi8osSncS7
-         kzcyXk5zDhSSWFGELZ1lFPtZDowaAHolKbhxBbjqf9rImiNXvvbyM1Fg02m3D6VxhaoY
-         CKNUNAkejKP7WveuqdqOqrxz5SI9Qwbe3xvUnFts8e00IwWIZdn7yO6d4DUe8fqJ++4r
-         UyWduRRVAu6UuthMKRTYWg9/P2F/hBMfac7VXQvmE/tK+Q3EWqxyxJsRmM/2t0JrEgig
-         amIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736929689; x=1737534489;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7VsayfsbgUkjz33UWIbO/Za5YihWzgN9JEYCylKHiN4=;
-        b=OhIn71rF05cly134dZ0KhHYVeycQndDN0eXNRIfkxW4YlC3ZTJrLAwNiUXzo/PwZ8f
-         cae+XiyB+VeJWVU8zcUZIKO1k5rvtVleEGSbkcH1bdCkDdN+v4KfgJTpnVDCNi/5pk55
-         UV19+1VppZgIEnHbQbTFClsBdy9aGn2g4WI6jmwJgzAWF3ga45ECMAiZKqUVKBP/3OaT
-         yL5AF9v4aG+CYl0UzIs/wCetUCXJlAD5/TvIb/ef5dCfC3xApAaVtiwQYLkU5xB0UhYJ
-         f0lH5t7+Tn8/UrYbe61BH9rnrciorneJsPY+IhuAmn85WwWNrnvquNi0+3k3sePivqHJ
-         uLKg==
-X-Forwarded-Encrypted: i=1; AJvYcCVh/rnH7eynJivHkFzW3G/vpR5SZy/ZgEThH0Fx5y0wGoLAZCObIjeA0WGmzmbiDQqXh4584Ho6mRE=@vger.kernel.org, AJvYcCWsv23g2dz84cXAe5XFHK5kYA5w3ANlEkdpD4lzi1JPKBnMl5a0MMmLNUrdlJ9WwYrA4B/8l/YK5y88Wirx@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwzCyM+NTYG6gIuoYXOCitkgFX+olAbKsJ99E3f08j/VwTWExj
-	VE+YoXV95ylCgSZpfPfgzy8CmOwe8rX1iUbjunhrRFJrLceBNLjs
-X-Gm-Gg: ASbGncu3QyDNOSDeKb5cE6vB1nc0tQjsfr1ONAhW1IPWtydSwGcRDgmYIPPAys0+7Ky
-	YHBDcmz/PVSNzAZ3SecwXTMZ1s3RySxYap1cMhDXlPBCAQPCCH2t0Kp0RaFW88mk98XYsltNLFp
-	/BZCiVmfNiulM4KjLK4s8+a2wr9Dacy0aoKdtDynduzZX1qtuoiPFArVrz04BkmTRUWqcfVYq/w
-	+oUtSiAeZ/RhmkiT3WztiQ9ID+zHLIrADWlSn9QqfVQHwE9C+zbDV/8L8qqjW3GjU6auxX0YQKU
-	OVsxUZ+6h3/4Z5ppyB3LOi37lA==
-X-Google-Smtp-Source: AGHT+IGL3BMYFdeGwsOc+4hVyEkEjlFrsyaDEQrSgFINthPSQpTJR9k3ryox/oDYyXaXdiw8pZ9GLg==
-X-Received: by 2002:a05:600c:4f49:b0:435:194:3cdf with SMTP id 5b1f17b1804b1-436e26bd59bmr124095735e9.19.1736929689301;
-        Wed, 15 Jan 2025 00:28:09 -0800 (PST)
-Received: from ?IPV6:2001:861:3385:e20:6384:4cf:52c5:3194? ([2001:861:3385:e20:6384:4cf:52c5:3194])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c74c6179sm14967605e9.22.2025.01.15.00.28.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 15 Jan 2025 00:28:08 -0800 (PST)
-Message-ID: <a5608ccd-e427-404c-8eb7-f189591a57e8@gmail.com>
-Date: Wed, 15 Jan 2025 09:28:08 +0100
+	s=arc-20240116; t=1736938420; c=relaxed/simple;
+	bh=4oIQ1kQ1NO9eDY4xl/ICe73BR4smZPMqO3miLdPFAkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gfeJdWcKVElaZC3dhhLyVrfvNVHJaG7PmQ1xgAFk6/KaqNkwCOWqZMfmm95rPK6dzYB5Kd9Itgdph8EpiN7nBgiqSPrVPQVakMNrUi4yVJB1gb39wKmnfgysMmc+sGIPBqncKaPR5YnS4Hwkvs/gk4u1X84TYDDQ2txJe9uJ39g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORaX0jk2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FA2C4CEDF;
+	Wed, 15 Jan 2025 10:53:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1736938420;
+	bh=4oIQ1kQ1NO9eDY4xl/ICe73BR4smZPMqO3miLdPFAkQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ORaX0jk2hXIpUI9Vvxa0Qng87GM63CfiIAwljSyQ18ou+1FQLHd135UShewwjUbpJ
+	 BYu3antOTeSLIyw3kVkBvzMgVnisgqPSSVJGvtt3ZIuI74jJUuOUsCUMdji7iaKOTv
+	 1jBZSEcXZnFRo62rUn2Z0mP1KhLXubSY/hEoaKzU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Daniil Stas <daniil.stas@posteo.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Chris Healy <cphealy@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	linux-kernel@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 178/189] hwmon: (drivetemp) Fix driver producing garbage data when SCSI errors occur
+Date: Wed, 15 Jan 2025 11:37:54 +0100
+Message-ID: <20250115103613.511631208@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.0
+In-Reply-To: <20250115103606.357764746@linuxfoundation.org>
+References: <20250115103606.357764746@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ahci: st: Switch from CONFIG_PM_SLEEP guards to
- pm_sleep_ptr()
-To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>
-Cc: Patrice Chotard <patrice.chotard@foss.st.com>,
- linux-arm-kernel@lists.infradead.org, linux-ide@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20250109175427.64384-1-rgallaispou@gmail.com>
- <07a7177d-7705-4eb5-a11e-02a9429ffac2@kernel.org>
- <Z4EDKUb+hO0ovV2i@x1-carbon>
- <cfecaa65-f6bc-48c1-9295-9bfe18f13db3@kernel.org>
- <261f9fac-82de-4f39-bf5c-cdfcee917588@gmail.com>
- <88fb7ad5-e2b3-498d-82d0-cdba8cf50c1b@kernel.org>
-Content-Language: en-US, fr
-From: =?UTF-8?Q?Rapha=C3=ABl_Gallais-Pou?= <rgallaispou@gmail.com>
-In-Reply-To: <88fb7ad5-e2b3-498d-82d0-cdba8cf50c1b@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+6.12-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Daniil Stas <daniil.stas@posteo.net>
+
+[ Upstream commit 82163d63ae7a4c36142cd252388737205bb7e4b9 ]
+
+scsi_execute_cmd() function can return both negative (linux codes) and
+positive (scsi_cmnd result field) error codes.
+
+Currently the driver just passes error codes of scsi_execute_cmd() to
+hwmon core, which is incorrect because hwmon only checks for negative
+error codes. This leads to hwmon reporting uninitialized data to
+userspace in case of SCSI errors (for example if the disk drive was
+disconnected).
+
+This patch checks scsi_execute_cmd() output and returns -EIO if it's
+error code is positive.
+
+Fixes: 5b46903d8bf37 ("hwmon: Driver for disk and solid state drives with temperature sensors")
+Signed-off-by: Daniil Stas <daniil.stas@posteo.net>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: Chris Healy <cphealy@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-scsi@vger.kernel.org
+Cc: linux-ide@vger.kernel.org
+Cc: linux-hwmon@vger.kernel.org
+Link: https://lore.kernel.org/r/20250105213618.531691-1-daniil.stas@posteo.net
+[groeck: Avoid inline variable declaration for portability]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/hwmon/drivetemp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/hwmon/drivetemp.c b/drivers/hwmon/drivetemp.c
+index 6bdd21aa005a..2a4ec55ddb47 100644
+--- a/drivers/hwmon/drivetemp.c
++++ b/drivers/hwmon/drivetemp.c
+@@ -165,6 +165,7 @@ static int drivetemp_scsi_command(struct drivetemp_data *st,
+ {
+ 	u8 scsi_cmd[MAX_COMMAND_SIZE];
+ 	enum req_op op;
++	int err;
+ 
+ 	memset(scsi_cmd, 0, sizeof(scsi_cmd));
+ 	scsi_cmd[0] = ATA_16;
+@@ -192,8 +193,11 @@ static int drivetemp_scsi_command(struct drivetemp_data *st,
+ 	scsi_cmd[12] = lba_high;
+ 	scsi_cmd[14] = ata_command;
+ 
+-	return scsi_execute_cmd(st->sdev, scsi_cmd, op, st->smartdata,
+-				ATA_SECT_SIZE, HZ, 5, NULL);
++	err = scsi_execute_cmd(st->sdev, scsi_cmd, op, st->smartdata,
++			       ATA_SECT_SIZE, HZ, 5, NULL);
++	if (err > 0)
++		err = -EIO;
++	return err;
+ }
+ 
+ static int drivetemp_ata_command(struct drivetemp_data *st, u8 feature,
+-- 
+2.39.5
 
 
-Le 14/01/2025 à 01:59, Damien Le Moal a écrit :
-> On 1/14/25 05:28, Raphaël Gallais-Pou wrote:
->>> Do you want us to do that cleanup ? (fine with me).
->>
->> Regarding the other ata drivers, if you have the patience I can do this
->> in a few weeks.  There is other things on the stove I would like to do.
-> 
-> OK. We will work on this.
-
-Sorry to change my plans,  I actually started working on this.  Is this 
-okay to let me handle this ?  I will try to submit something promptly.
-
-Thanks,
-Raphaël
-> 
-> 
 
 

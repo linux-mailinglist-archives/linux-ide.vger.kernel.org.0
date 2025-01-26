@@ -1,147 +1,152 @@
-Return-Path: <linux-ide+bounces-2947-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2950-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384A2A1BEED
-	for <lists+linux-ide@lfdr.de>; Sat, 25 Jan 2025 00:13:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08315A1CD9D
+	for <lists+linux-ide@lfdr.de>; Sun, 26 Jan 2025 19:59:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80132160142
-	for <lists+linux-ide@lfdr.de>; Fri, 24 Jan 2025 23:12:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB7CB1884997
+	for <lists+linux-ide@lfdr.de>; Sun, 26 Jan 2025 18:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAC21EEA4C;
-	Fri, 24 Jan 2025 23:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95E14185B76;
+	Sun, 26 Jan 2025 18:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WxglAF9s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EyXFvuKm"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3231EEA48
-	for <linux-ide@vger.kernel.org>; Fri, 24 Jan 2025 23:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3377C8632B;
+	Sun, 26 Jan 2025 18:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737760360; cv=none; b=XJtuYqR0cG4u575sZyBa3ZlTApdWcdbnnlbK9NoA1DH4c4lX7tdsDJCRzJ0PAnyAU9RMtKFnKp/wTyXBblTEhz8xKh6Zk2pIvH+N4kkOe5umxfqE0MTTdAfDdmOGUQu6/EE4MA+Tay66ePd3AUvUXV2xsV9of6YWde1ZH7yaFgM=
+	t=1737917946; cv=none; b=Y0F4N2E1F1lsiu6Da0xXw8o2MO7z6pukvB2PHf0r/D4z28DNN5XTOCU9x5K3fGLkzo8/QlRV/AEcQUISgnQN+iLuq52a7M0iYt/YZvZu/hyXEBObSUiyxYncG6ECgn9fYnPAu0v/iT07rvq1t0KWS8JZDfAlQaYeZTmeCDg4P/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737760360; c=relaxed/simple;
-	bh=bhyzA5kmdeHBmDApfvYeoTJoA3zFyL7aqH0wr604cgw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UghZOSrAy1aiI+s9WL5uTVtbQYITA8Zo3CCAEZvpSOYsEhAJavWfkKFGQWMBKoYmBtM2je1z0qGMYkf3Wv251SpZ2QTUhaDppo2kNW05iajexkHd5IkMll90zD4ZDHuDwrL15XazWS+FLmz+zNoJ7kNXg5/dg8H7KfInseyUAJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WxglAF9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3C9C4CED2;
-	Fri, 24 Jan 2025 23:12:39 +0000 (UTC)
+	s=arc-20240116; t=1737917946; c=relaxed/simple;
+	bh=t7MiR81B+Iee46VXjw3fUJ5IYqT5cIbBOLroU8KM1fQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=TG0MY0JB3XjVa9jJFFiHMsJuv3olg35ya46/0AjeT/PBV/pM0qt+OOxGGb8h0f0a6GH71jTG6ohXUCwQsqGDIeqdTTk+InZAEz/zefywvbqej5lgVTS+KyxIWxhgmI+Fx909t8Ub+V1/Nc5bTJMI662SEA8pQkK9xXDfTm1ozHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EyXFvuKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7B03EC4CED3;
+	Sun, 26 Jan 2025 18:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737760360;
-	bh=bhyzA5kmdeHBmDApfvYeoTJoA3zFyL7aqH0wr604cgw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=WxglAF9saVagywwzvH9t/ASxPbgCEIiWgNpbfW/hY/KcMOM6OHtdkK81Udpr3JKq0
-	 SZ+avbho602Paa81v59UiCQRSpQvD9K/DY/aaaRgKrQbfLUTeG0e285T4QhfJEMZwO
-	 Jp6Rf+A/haZRzKqmxXbBv6DvYaEA+caKdUr/h+kB8LApv6koTZcY3Z6tGuJ+aVqYHl
-	 sDzEcP1oZYGuyeulmOjDccDYaDSDAR8PJSYp/cKF6SC2906GEEJMaiW2AxK0+GvOdd
-	 5votRCtYhLQbE4vbKw/xwbbJ/SpdgxrEBYuQWAwHUGYiCNPgruGc6BIrdYT6kOcok8
-	 BVcy6l9A6kzLA==
-Message-ID: <4dee6487-4b9a-408c-aa7c-834802781887@kernel.org>
-Date: Sat, 25 Jan 2025 08:12:38 +0900
+	s=k20201202; t=1737917945;
+	bh=t7MiR81B+Iee46VXjw3fUJ5IYqT5cIbBOLroU8KM1fQ=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=EyXFvuKmOEPqCcAclYtRc2Nf6D64xrAfFFHSZA0oJ5gamkDnb6Lx9KPgGTaKh2ZKh
+	 StvXwLWvB4AXxrvQfCNYMVQ+vpVzioxQMMB5QA+tePMantmyW6B9rN0BRQvG1/FvWU
+	 prHsgS/oe5U6OOHHZh5ZPSdmN7eKPsdtUb1nfbVEq0vPIx4qdqoqUXf6uZemN0OnPz
+	 K8suGTkXNhL0Xx0Ng2m6CJ3yVE19C8LvGkQWvvwWjtIzah0W0CKFmEx6/EnIToChCc
+	 AWYum0Cs2J7hzfAr6sBPp1fVniQybgbyId3cy5jTPg+VlAkwKGNgQLNyYIHuje6NCa
+	 rNybsHqvM8Eig==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66071C02181;
+	Sun, 26 Jan 2025 18:59:05 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Subject: [PATCH 0/9] YAML conversion of several Freescale/PowerPC DT
+ bindings
+Date: Sun, 26 Jan 2025 19:58:55 +0100
+Message-Id: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ata: libata-sff: Ensure that we cannot write outside the
- allocated buffer
-To: Niklas Cassel <cassel@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
- "Martin K . Petersen" <martin.petersen@oracle.com>,
- reveliofuzzing <reveliofuzzing@gmail.com>, linux-ide@vger.kernel.org
-References: <20250124141118.3722754-2-cassel@kernel.org>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20250124141118.3722754-2-cassel@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAO+FlmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDQyMz3YKC5MrE3BxdMwuD5OQUiyTjtGQjJaDqgqLUtMwKsEnRsbW1AIw
+ prb9ZAAAA
+X-Change-ID: 20250126-ppcyaml-680ccd8b3fc2
+To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Scott Wood <oss@buserror.net>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+ Niklas Cassel <cassel@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>, 
+ Vinod Koul <vkoul@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1737917943; l=2648;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=t7MiR81B+Iee46VXjw3fUJ5IYqT5cIbBOLroU8KM1fQ=;
+ b=rX4cEDadyqjKuA8yYkLZevdyfcRaUdz4BHeJl10YNn4xTsKCjeCD6OKBl3O1tpdL5puknSF0r
+ w3DGg25+T63CHz+RBokGYXZ8fMyOUHiLEo+aY9gwD/QBhE8TjlNwX8S
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
 
-On 1/24/25 23:11, Niklas Cassel wrote:
-> reveliofuzzing reported that a SCSI_IOCTL_SEND_COMMAND ioctl with out_len
-> set to 0xd42, SCSI command set to ATA_16 PASS-THROUGH, ATA command set to
-> ATA_NOP, and protocol set to ATA_PROT_PIO, can cause ata_pio_sector() to
-> write outside the allocated buffer, overwriting random memory.
-> 
-> While a ATA device is supposed to abort a ATA_NOP command, there does seem
-> to be a bug either in libata-sff or QEMU, where either this status is not
-> set, or the status is cleared before read by ata_sff_hsm_move().
-> Anyway, that is most likely a separate bug.
-> 
-> Looking at __atapi_pio_bytes(), it already has a safety check to ensure
-> that __atapi_pio_bytes() cannot write outside the allocated buffer.
-> 
-> Add a similar check to ata_pio_sector(), such that also ata_pio_sector()
-> cannot write outside the allocated buffer.
-> 
-> Reported-by: reveliofuzzing <reveliofuzzing@gmail.com>
-> Closes: https://lore.kernel.org/linux-ide/CA+-ZZ_jTgxh3bS7m+KX07_EWckSnW3N2adX3KV63y4g7M4CZ2A@mail.gmail.com/
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+This is a spin-off of the series titled
+"powerpc: MPC83xx cleanup and LANCOM NWAPP2 board".
 
-Looks good to me. But doesn't this need Fixes + Cc-stable tags ?
+During the development of that series, it became clear that many
+devicetree bindings for Freescale MPC8xxx platforms are still in the old
+plain-text format, or don't exist at all, and in any case don't mention
+all valid compatible strings.
 
-> ---
->  drivers/ata/libata-sff.c | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/ata/libata-sff.c b/drivers/ata/libata-sff.c
-> index 67f277e1c3bf..5a46c066abc3 100644
-> --- a/drivers/ata/libata-sff.c
-> +++ b/drivers/ata/libata-sff.c
-> @@ -601,7 +601,7 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
->  {
->  	struct ata_port *ap = qc->ap;
->  	struct page *page;
-> -	unsigned int offset;
-> +	unsigned int offset, count;
->  
->  	if (!qc->cursg) {
->  		qc->curbytes = qc->nbytes;
-> @@ -617,25 +617,27 @@ static void ata_pio_sector(struct ata_queued_cmd *qc)
->  	page = nth_page(page, (offset >> PAGE_SHIFT));
->  	offset %= PAGE_SIZE;
->  
-> -	trace_ata_sff_pio_transfer_data(qc, offset, qc->sect_size);
-> +	/* don't overrun current sg */
-> +	count = min(qc->cursg->length - qc->cursg_ofs, qc->sect_size);
-> +
-> +	trace_ata_sff_pio_transfer_data(qc, offset, count);
->  
->  	/*
->  	 * Split the transfer when it splits a page boundary.  Note that the
->  	 * split still has to be dword aligned like all ATA data transfers.
->  	 */
->  	WARN_ON_ONCE(offset % 4);
-> -	if (offset + qc->sect_size > PAGE_SIZE) {
-> +	if (offset + count > PAGE_SIZE) {
->  		unsigned int split_len = PAGE_SIZE - offset;
->  
->  		ata_pio_xfer(qc, page, offset, split_len);
-> -		ata_pio_xfer(qc, nth_page(page, 1), 0,
-> -			     qc->sect_size - split_len);
-> +		ata_pio_xfer(qc, nth_page(page, 1), 0, count - split_len);
->  	} else {
-> -		ata_pio_xfer(qc, page, offset, qc->sect_size);
-> +		ata_pio_xfer(qc, page, offset, count);
->  	}
->  
-> -	qc->curbytes += qc->sect_size;
-> -	qc->cursg_ofs += qc->sect_size;
-> +	qc->curbytes += count;
-> +	qc->cursg_ofs += count;
->  
->  	if (qc->cursg_ofs == qc->cursg->length) {
->  		qc->cursg = sg_next(qc->cursg);
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+---
+J. Neuschäfer (9):
+      dt-bindings: powerpc: Add binding for Freescale/NXP MPC83xx SoCs
+      dt-bindings: ata: Convert fsl,pq-sata binding to YAML
+      dt-bindings: crypto: Convert fsl,sec-2.0 binding to YAML
+      dt-bindings: mfd: Convert fsl,mcu-mpc8349emitx binding to YAML
+      dt-bindings: dma: Convert fsl,elo*-dma bindings to YAML
+      dt-bindings: pci: Add fsl,mpc83xx-pcie bindings
+      dt-bindings: watchdog: Convert mpc8xxx-wdt binding to YAML
+      dt-bindings: spi: Convert Freescale SPI bindings to YAML
+      [RFC] dt-bindings: nand: Convert fsl,elbc bindings to YAML
 
+ .../devicetree/bindings/ata/fsl,pq-sata.yaml       |  59 ++++++
+ Documentation/devicetree/bindings/ata/fsl-sata.txt |  28 ---
+ .../devicetree/bindings/crypto/fsl,sec2.0.yaml     | 139 ++++++++++++++
+ .../devicetree/bindings/crypto/fsl-sec2.txt        |  65 -------
+ .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 129 +++++++++++++
+ .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 105 +++++++++++
+ .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 120 ++++++++++++
+ .../bindings/mfd/fsl,mcu-mpc8349emitx.yaml         |  53 ++++++
+ .../devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml |  61 ++++++
+ .../devicetree/bindings/pci/fsl,mpc8xxx-pci.yaml   |  83 +++++++++
+ .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
+ .../bindings/powerpc/fsl/fsl,elbc-gpcm-uio.yaml    |  55 ++++++
+ .../devicetree/bindings/powerpc/fsl/fsl,elbc.yaml  | 150 +++++++++++++++
+ .../bindings/powerpc/fsl/fsl,mpc83xx.yaml          |  67 +++++++
+ .../devicetree/bindings/powerpc/fsl/lbc.txt        |  43 -----
+ .../bindings/powerpc/fsl/mcu-mpc8349emitx.txt      |  17 --
+ .../devicetree/bindings/spi/fsl,espi.yaml          |  56 ++++++
+ Documentation/devicetree/bindings/spi/fsl,spi.yaml |  71 +++++++
+ Documentation/devicetree/bindings/spi/fsl-spi.txt  |  62 -------
+ .../devicetree/bindings/watchdog/mpc8xxx-wdt.txt   |  25 ---
+ .../devicetree/bindings/watchdog/mpc8xxx-wdt.yaml  |  64 +++++++
+ 21 files changed, 1212 insertions(+), 444 deletions(-)
+---
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+change-id: 20250126-ppcyaml-680ccd8b3fc2
 
+Best regards,
 -- 
-Damien Le Moal
-Western Digital Research
+J. Neuschäfer <j.ne@posteo.net>
+
+
 

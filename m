@@ -1,294 +1,172 @@
-Return-Path: <linux-ide+bounces-2973-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-2975-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF28A1D271
-	for <lists+linux-ide@lfdr.de>; Mon, 27 Jan 2025 09:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771C2A1D606
+	for <lists+linux-ide@lfdr.de>; Mon, 27 Jan 2025 13:46:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5328D3A4EAA
-	for <lists+linux-ide@lfdr.de>; Mon, 27 Jan 2025 08:37:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC7183A5488
+	for <lists+linux-ide@lfdr.de>; Mon, 27 Jan 2025 12:46:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF221FC7DF;
-	Mon, 27 Jan 2025 08:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D121FF5E9;
+	Mon, 27 Jan 2025 12:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qIv8GsOT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nR3i/O2B"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D6818C11;
-	Mon, 27 Jan 2025 08:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D299818D;
+	Mon, 27 Jan 2025 12:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1737967056; cv=none; b=p3EEQB0uMpvaeeOPgCYt1TBoci4+PCyjmOQXymtELE1zBKyf945ZirGA9Aiz7Lg777GRDnNWbplG3riWMXhIVaiCWGql+t/vmKMWEWfUVAVOTlAkpiBp9fvuj8W//gJWTCimSAoJPQl6ahJO1DNiocr5/DpLdpNmCBQPOxpAsIE=
+	t=1737982003; cv=none; b=t5b98WhuhmyiQZkn9FVVkAq0P0MtXDSkREpqbueYK7W/G3pTBRO6jpKTBgon+M60ohjncP250mO7s6FoP5NN+jRLnpHZlf0jQ15noB4ytt2rFjRU2olG0KqxbMBWIrN3+m5RLeiCv3HvgdvxUylkdmSp60cdt80ddxqtIs9CFck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1737967056; c=relaxed/simple;
-	bh=lO9NymPFr6bhwMFfAllVvVLeDbAVw1xGh+GP1heN7js=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U3qheuOiNiqQWsiejrrguJv9UV2QrBHlwbiE3pJR3jA/vDYXC8N03ZJGQ+6Wf6fwylbFBvLVSs23PP6UlhV530MLa0QLexdGWT2IVIbjIUAf0HkVprv+Y2ZnjuL2mo0rLXhcqY9/btS3+zTcOT+tkC2iR6oP1TRI8CtgXJDppgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qIv8GsOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B5CC4CED2;
-	Mon, 27 Jan 2025 08:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737967055;
-	bh=lO9NymPFr6bhwMFfAllVvVLeDbAVw1xGh+GP1heN7js=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qIv8GsOTxD0MNBdcccL2gsR2GrsPOH7kYiWCdaqYHMQJl06quxNk06u372au5ecHh
-	 2Km7poxUCviWvnWyWTOZ2XsGaIdWVQ95eEQxqPt76q/lEMFBkasYlNeYPXT0k1/s5u
-	 mw2TCXDM4aOChO8w9BDR2JG1aT6fNADge7Ss9cZJlS5a3vzIg1SFxeuKR3unpvtQKp
-	 5EUGDJ/a2/K6EDh3hGmn5JXR7YdC39zqGsMjrUUUGw34bynf+MWBTNE9KVb2eth6CY
-	 DslXsJIm1PuK3EsUVpPhPjXU33U6TD2oYXqG8X2GLTSv/NG2/ufxjvVXHEYaaJzxMw
-	 Y5cb5He53K49Q==
-Date: Mon, 27 Jan 2025 09:37:32 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	Scott Wood <oss@buserror.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Lee Jones <lee@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, Wim Van Sebroeck <wim@linux-watchdog.org>, 
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>, 
-	Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
-Subject: Re: [PATCH RFC 9/9] dt-bindings: nand: Convert fsl,elbc bindings to
- YAML
-Message-ID: <20250127-cuddly-dalmatian-of-saturation-5f1ae2@krzk-bin>
-References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-9-50649f51c3dd@posteo.net>
+	s=arc-20240116; t=1737982003; c=relaxed/simple;
+	bh=RfFf9mqe7wnUpvIjSrHj6CQMvmZLwVEjIiP2MewLm8g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=m0Iv/f0mcDHUhZmFRGRar67voBZfssKMoyBjimvSzkGTa1KTpAZtIXstRLkQJjhZl6eqK6Pfbidv9FzEAiQYaoHsJi2Rz68SMjZu5mtdRwFNe9QuDJ9/KozJ+ac/TTIFKuuLdRSH/tscwh7s9Hm7Jn3wsrfVKkvR/6dsquKfLTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nR3i/O2B; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-436341f575fso47838325e9.1;
+        Mon, 27 Jan 2025 04:46:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1737981998; x=1738586798; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=z8eYln85d4V0XxkISkF3B47hIlXSQBbJiZ4zG36gYUY=;
+        b=nR3i/O2BEQxrScKBu0l9nQOifuyVhqT9C8TMzmncQ200b18rnknRa6MuffgX4DZ3GI
+         XuA3QAv/v80Kv9fQGjr09gcUgQ3EXFUMChsmYluW4v6CyUqXSxoZS0RC0sNYJjIbOfLv
+         PVEVg++rIPJmFszZRbz+fpdl7wrrozXvxglqY6ZmuAPveKcymp6TFsJSS9HVpvaOJ/m3
+         nVBT5zngPT8CJgqH5cA6X9xsGh03qZOSEuqa1AsNQr2cwelOn8Ll72ci//NwJoCOy1RA
+         luQgD/LR4x6f87MJcM64YumXrJpKClqHbP0ol0XjGtz/gwN5A3EQwXfwtZ+H0CJajWiQ
+         TW8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737981998; x=1738586798;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=z8eYln85d4V0XxkISkF3B47hIlXSQBbJiZ4zG36gYUY=;
+        b=cRQQIEU2bkRXffzuF+PhNj7Az3pDu2nLgWV8JAAhqtZ/Z857+nhxqEFUBsHCwfvBQS
+         5Pn7A2UKcgkm/3DbK9Bbs36i3XWFv3LqSMjAgv/TTq0P8d8aScmcOLG6dObNQVANFANv
+         o3fV6MYiuSKsJBhsYhMhsKybUCy+G5mmQ0Kpz1YF7JxDB028Icc5H/DhcYMGS6DeiZd3
+         eJtDqR8lEmUBvRmv+aWNCjEVYirPviH73+kqCYC1Z+A7cJvtEChKJDf34WovB6zVSvmM
+         YqL5nD1fdYZFavNLdO/oVgRYXE72GEpdJXfIZGXest3UAVcbYij8XRqIZDJpxpu+gLD0
+         tXzg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ8ilDXagVDJ65eWzxLvkUKZl3ANw3tejUl3+76A/TTM4foAEYRkNKoyCupIFTKhWTQgIJdsvaCjR4QCI=@vger.kernel.org, AJvYcCVn5mtDc3UT5revjaUOEu9rfSPdpEXtKvGGZFfXrSVhLqz+HtWBqQcn6CzNHRKZuDroUB7jTaGUIc5CfKP6akNdQkQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJQZ38n074+MBmvpOY18jxf7QAk5teELE13Q3vT+E5esGgaeZI
+	d3mhgrL+F/1gveDhoQV8+ZcJlQLTFqpgY9p3S0K0QLR06NUJIJCD
+X-Gm-Gg: ASbGncvJN9VKbKWdGLaDTK1bYEsLgxLFLfIutk8HdFf92rFqGRPI9/GnVDJC3/v+P5+
+	pGNyYuMhDNjTg8Ks9jBNNzgYH08vnPuweyJP+wdWwAcJIwkobCU8ybcDJ7+F7/simB9X6Ehp2p2
+	Oh02MAw+qxFE06V/7XBTgWzYeMKONMWM2ZZuMxsIFNAQYkOxRA7wBfpRwqjwciBn+EW6BLK7qXz
+	d5nhSYdAJ+4tYEeaAdxPVQuEXSlzl1ctM+9CW8WVWURSeVHdbseB+ILbOIZxLd+WSEvDoEuAsb3
+	g4qa
+X-Google-Smtp-Source: AGHT+IFfSd38Ri9jN8sfQ5L5B554TUZX0q25wsFyyX/2uMgyGS67py+XFULHlQy6v7HbU7SVRYe6KQ==
+X-Received: by 2002:a05:600c:3495:b0:431:5c3d:1700 with SMTP id 5b1f17b1804b1-4389143b450mr317083695e9.21.1737981997803;
+        Mon, 27 Jan 2025 04:46:37 -0800 (PST)
+Received: from localhost ([2001:861:3385:e20:6384:4cf:52c5:3194])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438bd4b9990sm135476565e9.29.2025.01.27.04.46.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Jan 2025 04:46:37 -0800 (PST)
+From: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Subject: [RFC PATCH 00/14] AHCI power management cleanup
+Date: Mon, 27 Jan 2025 13:45:55 +0100
+Message-Id: <20250127-pm_ata-v1-0-f8f50c821a2a@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250126-ppcyaml-v1-9-50649f51c3dd@posteo.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAOAl2cC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDQ0Nj3YLc+MSSRN2UpGQD8yTjJIOUNGMloOKCotS0zAqwQdGxtbUAIVP
+ XsFgAAAA=
+X-Change-ID: 20250113-pm_ata-dbc07b3b0df3
+To: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ Patrice Chotard <patrice.chotard@foss.st.com>, Chen-Yu Tsai <wens@csie.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Viresh Kumar <vireshk@kernel.org>, 
+ Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+ linux-mediatek@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+ linux-renesas-soc@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2376; i=rgallaispou@gmail.com;
+ h=from:subject:message-id; bh=RfFf9mqe7wnUpvIjSrHj6CQMvmZLwVEjIiP2MewLm8g=;
+ b=owEBbQKS/ZANAwAIAechimjUEsK1AcsmYgBnl4AqHXy802/pdPDCEw20R6+hBBw+dOLQVfY0K
+ QKOcufY0oGJAjMEAAEIAB0WIQQgmXv2E+fvbV/9ui/nIYpo1BLCtQUCZ5eAKgAKCRDnIYpo1BLC
+ te79EACIeSoH/vfRi6LCb3ARwUq4Q7HhYCKxv2xDX3f+4IFS6pryCyaXp3kgdqBqgNYaMdQ5ShF
+ VKytt+DR+0DGoHcn+C1yMz3KxmukzDBedfB8k+fdD5hjGgh795mkqmPw6E5AETkN6odr6wAyzIg
+ tWrhzoJpeY6SH+gkPflAR3Tc/PXkxWMQgV5zCrvWb3KmYDX/BrBPHX0A6LwyF7L8v6t4As3cIHH
+ QC+bBsP+G0uA4AFupeTs/LMOX+UkfCKthpVUYsspVDUpXv6ntLa/zQn8F2lhD4b3U9cP5OchTmz
+ g76Etrn5y2YHML03AKRXgtNpQNcpyedeIHMY7I4EcyKhK/dka5UTl/sM1W18Js+vQUbDo+OhEQo
+ uerK1Ke58MwavucFUFK+hmqJtJJXwhjOqUUzAFRoVSWNLuod0jGTTB1rGC6IasIdP3cSsOYxpF3
+ AJqZ0p8Vpad0JWvKza2mYOsdtAMvX4ym8T6iwt70ipD2TONcNxhaNuLJYc5Ae3zvTgE6kjd5Uph
+ hS0V69QysEsSK6BhUOHKlR5Y6G3/nhCSvV9iTjMhfMP+MToZO1ZCZrKN/J3FtuVHDDZHeNHTZ49
+ sMTOG3cHWP5kkCzdI0rnBPZAVzQlmyvrDmr+O298eFnNIKSWDq21+i7ubogmftWYSINmMsEQ2j5
+ VG38IVjlMtsqAIg==
+X-Developer-Key: i=rgallaispou@gmail.com; a=openpgp;
+ fpr=20997BF613E7EF6D5FFDBA2FE7218A68D412C2B5
 
-On Sun, Jan 26, 2025 at 07:59:04PM +0100, J. Neusch=C3=A4fer wrote:
-> Convert the Freescale localbus controller bindings from text form to
-> YAML. The list of compatible strings reflects current usage.
+Several AHCI drivers expose suspend/resume functions in a way that can
+be simplified.  Using pre-processor operation can lead to errors, while
+relying on automatic kernel configuration is safer.  It also shrinks the
+kernel size when CONFIG_PM_SLEEP is not used[1].
 
-simple-bus and 20 other compatibles you used were not present in the
-original binding. Does above "list of compatible strings" mean you just
-added them?
+This has been compile-tested on x86, arm and arm64.
 
->=20
-> Changes compared to the txt version:
->  - removed the board-control (fsl,mpc8272ads-bcsr) node because it only
->    appears in this example and nowhere else
->  - added a new example with NAND flash
->=20
-> Remaining issues:
->  - The localbus is not really a simple-bus: Unit addresses are not simply
->    addresses on a memory bus. Instead, they have a format: The first cell
->    is a chip select number, the remaining one or two cells are bus
->    addresses.
->=20
-> Signed-off-by: J. Neusch=C3=A4fer <j.ne@posteo.net>
-> ---
->  .../devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml |  61 +++++++++
->  .../bindings/powerpc/fsl/fsl,elbc-gpcm-uio.yaml    |  55 ++++++++
+[1] https://lore.kernel.org/lkml/261f9fac-82de-4f39-bf5c-cdfcee917588@gmail.com/
 
-Please split the conversion from adding new bindings. For example above
-file and its compatible fsl,elbc-gpcm-uio was not documented in original
-TXT.
+Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+---
+Raphael Gallais-Pou (14):
+      ahci: brcm: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: ceva: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: da850: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: dm816: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: imx: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: mtk: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: platform: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: qoriq: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: seattle: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: sunxi: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: pata_arasan_cf: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: pata_imx: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: sata_highbank: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
+      ahci: sata_rcar: Switch from CONFIG_PM_SLEEP guards to pm_sleep_ptr()
 
-=2E..
-
-> diff --git a/Documentation/devicetree/bindings/powerpc/fsl/fsl,elbc.yaml =
-b/Documentation/devicetree/bindings/powerpc/fsl/fsl,elbc.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..6bbceb82c77826499abe85879=
-e9189b18d396eea
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/powerpc/fsl/fsl,elbc.yaml
-> @@ -0,0 +1,150 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/powerpc/fsl/fsl,elbc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale Enhanced Local Bus Controller
-
-What sort of bus is it? Memory bus? Then place it with others, see
-memory directory.
-
-> +
-> +maintainers:
-> +  - J. Neusch=C3=A4fer <j.ne@posteo.net>
-> +
-> +properties:
-> +  $nodename:
-> +    pattern: "^localbus@[0-9a-f]+$"
-> +
-> +  compatible:
-> +    oneOf:
-> +      - items:
-> +          - enum:
-> +              - fsl,mpc8313-elbc
-> +              - fsl,mpc8315-elbc
-> +              - fsl,mpc8377-elbc
-> +              - fsl,mpc8378-elbc
-> +              - fsl,mpc8379-elbc
-> +              - fsl,mpc8536-elbc
-> +              - fsl,mpc8569-elbc
-> +              - fsl,mpc8572-elbc
-> +              - fsl,p1020-elbc
-> +              - fsl,p1021-elbc
-> +              - fsl,p1023-elbc
-> +              - fsl,p2020-elbc
-> +              - fsl,p2041-elbc
-> +              - fsl,p3041-elbc
-> +              - fsl,p4080-elbc
-> +              - fsl,p5020-elbc
-> +              - fsl,p5040-elbc
-> +          - const: fsl,elbc
-> +          - const: simple-bus
-> +
-> +      - items:
-> +          - const: fsl,mpc8272-localbus
-> +          - const: fsl,pq2-localbus
-> +
-> +      - items:
-> +          - enum:
-> +              - fsl,mpc8247-localbus
-> +              - fsl,mpc8248-localbus
-> +              - fsl,mpc8360-localbus
-> +          - const: fsl,pq2pro-localbus
-> +          - const: simple-bus
-> +
-> +      - items:
-> +          - enum:
-> +              - fsl,mpc8540-localbus
-> +              - fsl,mpc8544-lbc
-> +              - fsl,mpc8544-localbus
-> +              - fsl,mpc8548-lbc
-> +              - fsl,mpc8548-localbus
-> +              - fsl,mpc8560-localbus
-> +              - fsl,mpc8568-localbus
-> +          - const: fsl,pq3-localbus
-> +          - const: simple-bus
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  "#address-cells":
-> +    enum: [2, 3]
-> +    description: |
-> +      The first cell is the chipselect number, and the remaining cells a=
-re the
-> +      offset into the chipselect.
-> +
-> +  "#size-cells":
-> +    enum: [1, 2]
-> +    description: |
-> +      Either one or two, depending on how large each chipselect can be.
-> +
-> +  ranges:
-> +    description: |
-> +      Each range corresponds to a single chipselect, and covers the enti=
-re
-> +      access window as configured.
-> +
-> +patternProperties:
-> +  "^.*@.*$":
-> +    type: object
-
-And probably you need=20
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    localbus@f0010100 {
-> +        compatible =3D "fsl,mpc8272-localbus",
-> +                     "fsl,pq2-localbus";
-> +        #address-cells =3D <2>;
-> +        #size-cells =3D <1>;
-> +        reg =3D <0xf0010100 0x40>;
-
-compatible, then reg - see DTS coding style.
-
-> +
-> +        ranges =3D <0x0 0x0 0xfe000000 0x02000000
-> +                  0x1 0x0 0xf4500000 0x00008000
-> +                  0x2 0x0 0xfd810000 0x00010000>;
-> +
-> +        flash@0,0 {
-> +            compatible =3D "jedec-flash";
-> +            reg =3D <0x0 0x0 0x2000000>;
-
-Well, here it is correct
-
-> +            bank-width =3D <4>;
-> +            device-width =3D <1>;
-> +        };
-> +
-> +        simple-periph@2,0 {
-> +            compatible =3D "fsl,elbc-gpcm-uio";
-> +            reg =3D <0x2 0x0 0x10000>;
-> +            elbc-gpcm-br =3D <0xfd810800>;
-> +            elbc-gpcm-or =3D <0xffff09f7>;
-> +        };
-> +    };
-> +
-> +  - |
-> +    localbus@e0005000 {
-
-compatible, reg
-
-> +        #address-cells =3D <2>;
-> +        #size-cells =3D <1>;
-> +        compatible =3D "fsl,mpc8315-elbc", "fsl,elbc", "simple-bus";
-> +        reg =3D <0xe0005000 0x1000>;
-> +        interrupts =3D <77 0x8>;
-> +        interrupt-parent =3D <&ipic>;
-> +
-> +        ranges =3D <0x0 0x0 0xfe000000 0x00800000
-> +                  0x1 0x0 0xe0600000 0x00002000
-> +                  0x2 0x0 0xf0000000 0x00020000
-> +                  0x3 0x0 0xfa000000 0x00008000>;
-> +
-> +        flash@0,0 {
-
-compatible, reg
-
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <1>;
-> +            compatible =3D "cfi-flash";
-> +            reg =3D <0x0 0x0 0x800000>;
-> +            bank-width =3D <2>;
-> +            device-width =3D <1>;
-> +        };
-> +
-> +        nand@1,0 {
-
-compatible, reg
-
-> +            #address-cells =3D <1>;
-> +            #size-cells =3D <1>;
-> +            compatible =3D "fsl,mpc8315-fcm-nand",
-> +                         "fsl,elbc-fcm-nand";
-> +            reg =3D <0x1 0x0 0x2000>;
-> +        };
+ drivers/ata/ahci_brcm.c      | 6 +++---
+ drivers/ata/ahci_ceva.c      | 8 ++++----
+ drivers/ata/ahci_da850.c     | 7 ++++---
+ drivers/ata/ahci_dm816.c     | 8 ++++----
+ drivers/ata/ahci_imx.c       | 6 ++----
+ drivers/ata/ahci_mtk.c       | 7 ++++---
+ drivers/ata/ahci_platform.c  | 7 ++++---
+ drivers/ata/ahci_qoriq.c     | 9 ++++-----
+ drivers/ata/ahci_seattle.c   | 7 ++++---
+ drivers/ata/ahci_sunxi.c     | 9 ++++-----
+ drivers/ata/pata_arasan_cf.c | 6 ++----
+ drivers/ata/pata_imx.c       | 6 ++----
+ drivers/ata/sata_highbank.c  | 9 ++++-----
+ drivers/ata/sata_rcar.c      | 6 +-----
+ 14 files changed, 46 insertions(+), 55 deletions(-)
+---
+base-commit: 5ffa57f6eecefababb8cbe327222ef171943b183
+change-id: 20250113-pm_ata-dbc07b3b0df3
 
 Best regards,
-Krzysztof
+-- 
+Raphael Gallais-Pou <rgallaispou@gmail.com>
 
 

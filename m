@@ -1,201 +1,191 @@
-Return-Path: <linux-ide+bounces-3170-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-3172-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92968A442E7
-	for <lists+linux-ide@lfdr.de>; Tue, 25 Feb 2025 15:36:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F1CA44C8E
+	for <lists+linux-ide@lfdr.de>; Tue, 25 Feb 2025 21:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 569EF165826
-	for <lists+linux-ide@lfdr.de>; Tue, 25 Feb 2025 14:34:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55E5C7A3385
+	for <lists+linux-ide@lfdr.de>; Tue, 25 Feb 2025 20:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0802690EA;
-	Tue, 25 Feb 2025 14:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92944212D61;
+	Tue, 25 Feb 2025 20:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="QwFWpC26"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OJWfAvqA"
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56B4267B9D
-	for <linux-ide@vger.kernel.org>; Tue, 25 Feb 2025 14:34:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB4D20F094;
+	Tue, 25 Feb 2025 20:17:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740494085; cv=none; b=uacR1hjP9SHMyNW2Gx8tZXEmkni8TGgL65GLsZqaWUKEiJsfwdeENhOFOpaOL83PikrR8weuaAVi14jUcSD5/OTTacat8F+I+OFOYNStqiPya1cSVdY+6Lk0GGXtErYTgZzQpdyAj3Eai97eXq+E6Zhhz/WveZTnz2XcQ8ZG/Ug=
+	t=1740514642; cv=none; b=KK4jxZUkaiBLNJOls5BVl2G4A2EYBVPyqBMskkeJaESrT4CZxCXSv3EfdTDYEAmXx2UcSXmBgbD2moUwS81i2iq+n4bUeY5BtTE75RM+vawXlyAHLNIYeoOBNHU6b2HO8+0ZAw51av3qmoLzP/ORXgFP3riZgQxFClAOygiNz3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740494085; c=relaxed/simple;
-	bh=cp5n66VFOUypsal4qc0PnWudImT77kliY100rczEbc0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=DDYOEspgm0EGncue/3G5ldwszhkMx79Tz60u38ySwo8ZoYT2ayCJjeo9jYth32nu5KLEIbf+qxgw7CyclUMPV+KkaOqjtEhe+JqZ0mphB9Rawx9b92oxE5BK92Ec0U5u7aYNMvH67IX5c960lN8Gj92uSMH/8ywvb7FZen/l/0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=QwFWpC26; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250225143440euoutp010a1d9c1864656d21e3a1dbd9622df548~neiUkT-9R0890208902euoutp018
-	for <linux-ide@vger.kernel.org>; Tue, 25 Feb 2025 14:34:40 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250225143440euoutp010a1d9c1864656d21e3a1dbd9622df548~neiUkT-9R0890208902euoutp018
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1740494080;
-	bh=2RRagYtLQr8VkhKtVMnFvFXLXcUU68LYaOqDUSce4w0=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=QwFWpC26HK8Cxb02uGdw4i3C+7RIjGQD2VCy6YVl+I+QusfLxnQ4IKmqfi8tdB9pl
-	 Gf1eVTgiTqzf8s6Qkf5C0h+67gGBtFz5pi6GfApn3l6c8QnEEm9MkcqK9QxahnW947
-	 qxMQoKPwJ5JKCq1d6Mr61PqQlgF9vEfs7kL11Ci8=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20250225143440eucas1p28b304d3746a8da2bfcdc269aabe6385a~neiUQKR-C2265122651eucas1p2Z;
-	Tue, 25 Feb 2025 14:34:40 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-	eusmges1new.samsung.com (EUCPMTA) with SMTP id 6A.5E.20821.005DDB76; Tue, 25
-	Feb 2025 14:34:40 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250225143439eucas1p2554fab3d44e0ad0865a3ae4c3b361339~neiTozMHP2267722677eucas1p2X;
-	Tue, 25 Feb 2025 14:34:39 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20250225143439eusmtrp17fdc9a8e4ffd1d64393f5f5ec284e710~neiToK95B1641316413eusmtrp1t;
-	Tue, 25 Feb 2025 14:34:39 +0000 (GMT)
-X-AuditID: cbfec7f2-b09c370000005155-4e-67bdd500f646
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id EC.D1.19920.FF4DDB76; Tue, 25
-	Feb 2025 14:34:39 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250225143439eusmtip22083f0cd03274d6048b9ee1677ff105c~neiS3PO2c2671926719eusmtip2C;
-	Tue, 25 Feb 2025 14:34:39 +0000 (GMT)
-Message-ID: <1b6d71cd-9ec2-45c5-81ae-4ab69fa5b156@samsung.com>
-Date: Tue, 25 Feb 2025 15:34:38 +0100
+	s=arc-20240116; t=1740514642; c=relaxed/simple;
+	bh=QWXk938u1ZUtRQ0fT2TND4jKL/fO2qpP0R5WJKK3KXc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jZ0gu8yg+jKmKTVfiM6psDY6m4Q3K7OPUjzvmDy4zaz9C8ZaU8VwQpub6rEl2pNOPtkfMuxij+C8RNqFhSHizShePgbSApQwXr1iCAOWn0XsSE7Whfw13WsAiMPGSaLswLEOkZqsPSo3n6/dOIqBo5tyAllHvwlzUCKR6vEhLQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OJWfAvqA; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 920F4203CDFC;
+	Tue, 25 Feb 2025 12:17:19 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 920F4203CDFC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1740514639;
+	bh=pRPTMwC85c4lYLBd5/aEkvEtme0QilCw7nKJr8ytgmI=;
+	h=From:Subject:Date:To:Cc:From;
+	b=OJWfAvqAxjSS6nUkULU00Pa8nQ9u9kKy42lXSCjyZ4ZUUOElAuQC0IJLL8YdgMxy4
+	 fRHYXp6qo5lzLvyA3yVmWt3cKN1fewJPyBbSi8i8x+l37gp4hdCbMSActzutlKgtXo
+	 djKAYQpE3vAmx4Iwoj2HThNeFrxgkdmyOVA8YA+8=
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH v3 00/16] Converge on using secs_to_jiffies() part two
+Date: Tue, 25 Feb 2025 20:17:14 +0000
+Message-Id: <20250225-converge-secs-to-jiffies-part-two-v3-0-a43967e36c88@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ata: ahci: Make ahci_ignore_port() handle empty
- mask_port_map
-To: Niklas Cassel <cassel@kernel.org>, Damien Le Moal <dlemoal@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>, Josua Mayer <josua@solid-run.com>
-Cc: Klaus Kudielka <klaus.kudielka@gmail.com>, linux-ide@vger.kernel.org
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20250225141612.942170-2-cassel@kernel.org>
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprJKsWRmVeSWpSXmKPExsWy7djPc7oMV/emGzTPULA4NmEFs8WD/fYW
-	b45PZ7JYPnkBu8WmZxeYLY7teMTkwOaxc9Zddo9NqzrZPN7vu8rm8a/1MbPH501yAaxRXDYp
-	qTmZZalF+nYJXBl/W2cwF+wUr/j19S5LA+NU4S5GTg4JAROJKfc62LsYuTiEBFYwSsx594UJ
-	wvnCKPFuchuU85lRYs2pTSwwLRd2n2eFSCxnlFg17xZU/0dGies7XrCDVPEK2Eksb97MCmKz
-	CKhKPJhwjAUiLihxcuYTMFtUQF7i/q0ZYPXCAiES578cB5sqIjCFUWJR7yewImYBD4mF3b/Z
-	IGxxiVtP5jOB2GwChhJdb7vA4pwCFhLL/7czQ9TISzRvnc0MceoFDolzrUwQtovEyheXoeLC
-	Eq+Ob2GHsGUkTk/uYQFZLCHQziix4Pd9JghnAqNEw/NbjBBV1hJ3zv0C2sYBtEFTYv0ufYiw
-	o0T70e8sIGEJAT6JG28FIW7gk5i0bTozRJhXoqNNCKJaTWLW8XVwaw9euMQ8gVFpFlKwzELy
-	5Swk38xC2LuAkWUVo3hqaXFuemqxYV5quV5xYm5xaV66XnJ+7iZGYOo5/e/4px2Mc1991DvE
-	yMTBeIhRgoNZSYSXM3NPuhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHeRftb04UE0hNLUrNTUwtS
-	i2CyTBycUg1MPpIca/dwr2k7eGDiDGnTgF+MBbt7F5w5tW5+qtZdvxeaJybeTm7M+vbjAl+M
-	Z2nmj+sBMhcX1oo8VZt81vgm+4OL7rHhb03L29xUPgmlzuv/k+HC5n2x9QFPp93di5/tPeR3
-	azyalC8ot+CUr+Pt20mtyjdPNs3+PFnYIHfTNPcZHzg3vmq+drFRU9Vysr3d3bdPP2pvE926
-	baNXg9zPza0ZvJJHlPXdv5WpsVosfvW96B/bpwrGEzN+dZ+Mi/YvuTnx6RW3Z48f+t+4v37j
-	ucb5Bd3xhqaxxUy3I/sXCzBl9BnNnZM3UTtK+YBBxqb777cYpitHbV1zeL1nUVnfysfSWgFL
-	3vywTdn8/k9UkhJLcUaioRZzUXEiAP1rUQmsAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDIsWRmVeSWpSXmKPExsVy+t/xe7r/r+xNNzh43cDi2IQVzBYP9ttb
-	vDk+ncli+eQF7Babnl1gtji24xGTA5vHzll32T02repk83i/7yqbx7/Wx8wenzfJBbBG6dkU
-	5ZeWpCpk5BeX2CpFG1oY6RlaWugZmVjqGRqbx1oZmSrp29mkpOZklqUW6dsl6GX8bZ3BXLBT
-	vOLX17ssDYxThbsYOTkkBEwkLuw+z9rFyMUhJLCUUWJ+ywtmiISMxMlpDawQtrDEn2tdbBBF
-	7xklvvedBiviFbCTWN68GayIRUBV4sGEYywQcUGJkzOfgNmiAvIS92/NYAexhQVCJM5/OQ62
-	TURgCqNE09lLYM3MAh4SC7t/Q23oZpSY+uQtG0RCXOLWk/lMIDabgKFE19susDingIXE8v/t
-	zBA1ZhJdW7sYIWx5ieats5knMArNQnLILCSjZiFpmYWkZQEjyypGkdTS4tz03GJDveLE3OLS
-	vHS95PzcTYzAaNt27OfmHYzzXn3UO8TIxMF4iFGCg1lJhJczc0+6EG9KYmVValF+fFFpTmrx
-	IUZTYGhMZJYSTc4HxnteSbyhmYGpoYmZpYGppZmxkjiv2+XzaUIC6YklqdmpqQWpRTB9TByc
-	Ug1M6z3Ma31mTTkfepzZXGsOB+PDPScemi+968Ymr3DinoBG5GZrsVquLukKH721TnoMp/+v
-	nLriY03D2b++p047Vxx3ELh3ZmvK1aXt9X5fGez73By173zj32Qh+2CfjPec15einUwvBbA/
-	O3j1gc4qt8SM9mesAqE7NtRxGQRLnJygVhX+XybgXJDF8dn3J5+vkLx6dvoNJcdS8Y4FqurP
-	pfXeqRmmGVd/2hecdaL//OS3Bz5OCT4xWbxGaCHv43t3LLwbSt99mZX88PY88Zq39l+fl2X2
-	cXydWX2aPd3P1KKpbPW0XtWdsxJPb1Dd+ttXPskobNZaJgNvv3QpTuHA5NXFk1+1lcvM3xHw
-	VDRZiaU4I9FQi7moOBEAUTVS+j8DAAA=
-X-CMS-MailID: 20250225143439eucas1p2554fab3d44e0ad0865a3ae4c3b361339
-X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250225141631eucas1p27bbaae57a4c05ce7d71400dfadc9e94a
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20250225141631eucas1p27bbaae57a4c05ce7d71400dfadc9e94a
-References: <CGME20250225141631eucas1p27bbaae57a4c05ce7d71400dfadc9e94a@eucas1p2.samsung.com>
-	<20250225141612.942170-2-cassel@kernel.org>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEslvmcC/43NMRKCMBCF4aswqV1nExDQyns4FjFsZB0hThKjj
+ sPdDTY2FpT/K773FoE8UxC74i08JQ7sxhzlqhCm1+OZgLvcQqGqpJINGDcm8nkPZAJEBxe2Ngt
+ w0z5CfDiwVYWy0bq2dSOyc/Nk+fn9OBxz9xyi86/vZZLzOusblKpdoCcJCFtdk7F4UiW2+yuP9
+ +d6YONdcDaujRvE/JPUz1ZYLrFVtrsGN61GaTuk//Y0TR+h+4siOAEAAA==
+X-Change-ID: 20241217-converge-secs-to-jiffies-part-two-f44017aa6f67
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Yaron Avizrat <yaron.avizrat@intel.com>, Oded Gabbay <ogabbay@kernel.org>, 
+ Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
+ James Smart <james.smart@broadcom.com>, 
+ Dick Kennedy <dick.kennedy@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+ Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>, 
+ David Sterba <dsterba@suse.com>, Ilya Dryomov <idryomov@gmail.com>, 
+ Dongsheng Yang <dongsheng.yang@easystack.cn>, Jens Axboe <axboe@kernel.dk>, 
+ Xiubo Li <xiubli@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, 
+ Niklas Cassel <cassel@kernel.org>, Carlos Maiolino <cem@kernel.org>, 
+ "Darrick J. Wong" <djwong@kernel.org>, Sebastian Reichel <sre@kernel.org>, 
+ Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>, 
+ Sagi Grimberg <sagi@grimberg.me>, Frank Li <Frank.Li@nxp.com>, 
+ Mark Brown <broonie@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, 
+ Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Henrique de Moraes Holschuh <hmh@hmh.eng.br>, 
+ Selvin Xavier <selvin.xavier@broadcom.com>, 
+ Kalesh AP <kalesh-anakkur.purayil@broadcom.com>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>
+Cc: cocci@inria.fr, linux-kernel@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-sound@vger.kernel.org, linux-btrfs@vger.kernel.org, 
+ ceph-devel@vger.kernel.org, linux-block@vger.kernel.org, 
+ linux-ide@vger.kernel.org, linux-xfs@vger.kernel.org, 
+ linux-pm@vger.kernel.org, linux-nvme@lists.infradead.org, 
+ linux-spi@vger.kernel.org, imx@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, platform-driver-x86@vger.kernel.org, 
+ ibm-acpi-devel@lists.sourceforge.net, linux-rdma@vger.kernel.org, 
+ Easwar Hariharan <eahariha@linux.microsoft.com>, 
+ Takashi Iwai <tiwai@suse.de>, Carlos Maiolino <cmaiolino@redhat.com>
+X-Mailer: b4 0.14.2
 
-On 25.02.2025 15:16, Niklas Cassel wrote:
-> Commit 8c87215dd3a2 ("ata: libahci_platform: support non-consecutive port
-> numbers") added a skip to ahci_platform_enable_phys() for ports that are
-> not in mask_port_map.
->
-> The code in ahci_platform_get_resources(), will currently set mask_port_map
-> for each child "port" node it finds in the device tree.
->
-> However, device trees that do not have any child "port" nodes will not have
-> mask_port_map set, and for non-device tree platforms mask_port_map will
-> only exist as a quirk for specific PCI device + vendor IDs, or as a kernel
-> module parameter, but will not be set by default.
->
-> Therefore, the common thing is that mask_port_map is only set if you do not
-> want to use all ports (as defined by Offset 0Ch: PI – Ports Implemented
-> register), but instead only want to use the ports in mask_port_map. If
-> mask_port_map is not set, all ports are available.
->
-> Thus, ahci_ignore_port() must be able to handle an empty mask_port_map.
->
-> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> Closes: https://lore.kernel.org/linux-ide/10b31dd0-d0bb-4f76-9305-2195c3e17670@samsung.com/
-> Co-developed-by: Damien Le Moal <dlemoal@kernel.org>
-> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-> Fixes: 8c87215dd3a2 ("ata: libahci_platform: support non-consecutive port numbers")
-> Fixes: 2c202e6c4f4d ("ata: libahci_platform: Do not set mask_port_map when not needed")
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
+This is the second series (part 1*) that converts users of msecs_to_jiffies() that
+either use the multiply pattern of either of:
+- msecs_to_jiffies(N*1000) or
+- msecs_to_jiffies(N*MSEC_PER_SEC)
 
-This fixes the issue I've observed.
+where N is a constant or an expression, to avoid the multiplication.
 
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+The conversion is made with Coccinelle with the secs_to_jiffies() script
+in scripts/coccinelle/misc. Attention is paid to what the best change
+can be rather than restricting to what the tool provides.
 
-> ---
->   drivers/ata/ahci.h    | 8 ++++++--
->   drivers/ata/libahci.c | 1 +
->   2 files changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-> index aea30df50c58..b2e0ef4efbdc 100644
-> --- a/drivers/ata/ahci.h
-> +++ b/drivers/ata/ahci.h
-> @@ -386,8 +386,12 @@ struct ahci_host_priv {
->   static inline bool ahci_ignore_port(struct ahci_host_priv *hpriv,
->   				    unsigned int portid)
->   {
-> -	return portid >= hpriv->nports ||
-> -		!(hpriv->mask_port_map & (1 << portid));
-> +	if (portid >= hpriv->nports)
-> +		return true;
-> +	/* mask_port_map not set means that all ports are available */
-> +	if (!hpriv->mask_port_map)
-> +		return false;
-> +	return !(hpriv->mask_port_map & (1 << portid));
->   }
->   
->   extern int ahci_ignore_sss;
-> diff --git a/drivers/ata/libahci.c b/drivers/ata/libahci.c
-> index fdfa7b266218..e7ace4b10f15 100644
-> --- a/drivers/ata/libahci.c
-> +++ b/drivers/ata/libahci.c
-> @@ -541,6 +541,7 @@ void ahci_save_initial_config(struct device *dev, struct ahci_host_priv *hpriv)
->   		hpriv->saved_port_map = port_map;
->   	}
->   
-> +	/* mask_port_map not set means that all ports are available */
->   	if (hpriv->mask_port_map) {
->   		dev_warn(dev, "masking port_map 0x%lx -> 0x%lx\n",
->   			port_map,
+Andrew has kindly agreed to take the series through mm.git modulo the
+patches maintainers want to pick through their own trees.
 
-Best regards
+This series is based on next-20250225
+
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+
+* https://lore.kernel.org/all/20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com/
+
+---
+Changes in v3:
+- Change commit message prefix from libata: zpodd to ata: libata-zpodd: in patch 8 (Damien)
+- Split up overly long line in patch 9 (Christoph)
+- Fixup unnecessary line break in patch 14 (Ilpo)
+- Combine v1 and v2
+- Fix some additional hunks in patch 2 (scsi: lpfc) which the more concise script missed
+- msecs_to_jiffies -> msecs_to_jiffies() in commit messages throughout
+- Bug in secs_to_jiffies() uncovered by LKP merged in 6.14-rc2: bb2784d9ab4958 ("jiffies: Cast to unsigned long in secs_to_jiffies() conversion")
+- Link to v2: https://lore.kernel.org/r/20250203-converge-secs-to-jiffies-part-two-v2-0-d7058a01fd0e@linux.microsoft.com
+
+Changes in v2:
+- Remove unneeded range checks in rbd and libceph. While there, convert some timeouts that should have been fixed in part 1. (Ilya)
+- Fixup secs_to_jiffies.cocci to be a bit more verbose
+- Link to v1: https://lore.kernel.org/r/20250128-converge-secs-to-jiffies-part-two-v1-0-9a6ecf0b2308@linux.microsoft.com
+
+---
+Easwar Hariharan (16):
+      coccinelle: misc: secs_to_jiffies: Patch expressions too
+      scsi: lpfc: convert timeouts to secs_to_jiffies()
+      accel/habanalabs: convert timeouts to secs_to_jiffies()
+      ALSA: ac97: convert timeouts to secs_to_jiffies()
+      btrfs: convert timeouts to secs_to_jiffies()
+      rbd: convert timeouts to secs_to_jiffies()
+      libceph: convert timeouts to secs_to_jiffies()
+      ata: libata-zpodd: convert timeouts to secs_to_jiffies()
+      xfs: convert timeouts to secs_to_jiffies()
+      power: supply: da9030: convert timeouts to secs_to_jiffies()
+      nvme: convert timeouts to secs_to_jiffies()
+      spi: spi-fsl-lpspi: convert timeouts to secs_to_jiffies()
+      spi: spi-imx: convert timeouts to secs_to_jiffies()
+      platform/x86/amd/pmf: convert timeouts to secs_to_jiffies()
+      platform/x86: thinkpad_acpi: convert timeouts to secs_to_jiffies()
+      RDMA/bnxt_re: convert timeouts to secs_to_jiffies()
+
+ .../accel/habanalabs/common/command_submission.c   |  2 +-
+ drivers/accel/habanalabs/common/debugfs.c          |  2 +-
+ drivers/accel/habanalabs/common/device.c           |  2 +-
+ drivers/accel/habanalabs/common/habanalabs_drv.c   |  2 +-
+ drivers/ata/libata-zpodd.c                         |  3 +-
+ drivers/block/rbd.c                                |  8 ++---
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c         |  2 +-
+ drivers/nvme/host/core.c                           |  6 ++--
+ drivers/platform/x86/amd/pmf/acpi.c                |  2 +-
+ drivers/platform/x86/thinkpad_acpi.c               |  2 +-
+ drivers/power/supply/da9030_battery.c              |  3 +-
+ drivers/scsi/lpfc/lpfc.h                           |  3 +-
+ drivers/scsi/lpfc/lpfc_els.c                       | 11 +++---
+ drivers/scsi/lpfc/lpfc_hbadisc.c                   |  2 +-
+ drivers/scsi/lpfc/lpfc_init.c                      | 10 +++---
+ drivers/scsi/lpfc/lpfc_scsi.c                      | 12 +++----
+ drivers/scsi/lpfc/lpfc_sli.c                       | 41 +++++++++-------------
+ drivers/scsi/lpfc/lpfc_vport.c                     |  2 +-
+ drivers/spi/spi-fsl-lpspi.c                        |  2 +-
+ drivers/spi/spi-imx.c                              |  2 +-
+ fs/btrfs/disk-io.c                                 |  6 ++--
+ fs/xfs/xfs_icache.c                                |  2 +-
+ fs/xfs/xfs_sysfs.c                                 |  8 ++---
+ include/linux/ceph/libceph.h                       | 12 +++----
+ net/ceph/ceph_common.c                             | 18 ++++------
+ net/ceph/osd_client.c                              |  3 +-
+ scripts/coccinelle/misc/secs_to_jiffies.cocci      | 10 ++++++
+ sound/pci/ac97/ac97_codec.c                        |  3 +-
+ 28 files changed, 82 insertions(+), 99 deletions(-)
+---
+base-commit: 0226d0ce98a477937ed295fb7df4cc30b46fc304
+change-id: 20241217-converge-secs-to-jiffies-part-two-f44017aa6f67
+
+Best regards,
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Easwar Hariharan <eahariha@linux.microsoft.com>
 
 

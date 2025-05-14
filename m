@@ -1,53 +1,54 @@
-Return-Path: <linux-ide+bounces-3603-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-3604-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CA1CAB6161
-	for <lists+linux-ide@lfdr.de>; Wed, 14 May 2025 06:02:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968DCAB616C
+	for <lists+linux-ide@lfdr.de>; Wed, 14 May 2025 06:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C647A1B40054
-	for <lists+linux-ide@lfdr.de>; Wed, 14 May 2025 04:02:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8060A7AE6BA
+	for <lists+linux-ide@lfdr.de>; Wed, 14 May 2025 04:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5222A1E5716;
-	Wed, 14 May 2025 04:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C351B4132;
+	Wed, 14 May 2025 04:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7L69886"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9MCzSd9"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C7FA1BC07B
-	for <linux-ide@vger.kernel.org>; Wed, 14 May 2025 04:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7EAC2F2
+	for <linux-ide@vger.kernel.org>; Wed, 14 May 2025 04:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747195357; cv=none; b=eaS8kHjLD090gqvNCECZjzvGRJZWn2EldpLA0dLtJmOcS7qLJ53pyQNjcEMmjT6e3ajysUJt9JChr5ewmdjypFX2pXgpjFX3iWoadPRIJTT1JsMD58f7KUT6T37njYeJlLdejkXrVZfPemr+ZjighOh3S6FGLMUh4FIZZkqU0G8=
+	t=1747195546; cv=none; b=KkzkQz2BEyxEh4atEP0ul1hw4GuTZDRiRMb9vt8SNb5pRbxPB3pjOfTQ7W7brdpZY+mwoj1/HdxFekxWH7oBE5NYTwe+A0fM5iYuQ4ziDYbGpD9BVUkz2tzWVRATf5Pav0KIvFvVrf6ABkJNaK5ioL2y8KZJkBQCKpyt1t1+zJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747195357; c=relaxed/simple;
-	bh=pG0QZc/4tE9//2nJfrpiX5ILt9BagwEUEKwgz26pMRc=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=eDVc1UQIhM+THZhwLj2+ecEKpDqVmdAu7ReF6uQbhDTzyxGxpovGaoetBZeeXYvX2a2yU9hyhoa+S7h0eYWjtkE6S/sFVbeAHLr6aDnKSUhHFBp5N1nI+N2N8THTId/m1wg4+858JxSR8YaNZburczbW+Dc8kMIdeYAlXstkEqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7L69886; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id F2A82C4CEEF
-	for <linux-ide@vger.kernel.org>; Wed, 14 May 2025 04:02:36 +0000 (UTC)
+	s=arc-20240116; t=1747195546; c=relaxed/simple;
+	bh=7b1hQ08KirU6xDoqMbi9W39DDTI9xFBeql6/+Kg7/1Q=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ebxk8yitbgfsJIHT8360AcZGe+iyhawmBtRUOa0fjBgBXNs8pdUKWXQAIX2omVe7Vsh2oL4TZCFR03bJho0yb7dn/t2spDxYf8qNTQwkM9f0oh/RwRAZWeTKZCvuV7JjowOhzN2N7X9mMOeka2h52m3+gJ76enSe3JSG5fNE8OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9MCzSd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AB1D2C4CEEE
+	for <linux-ide@vger.kernel.org>; Wed, 14 May 2025 04:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747195357;
-	bh=pG0QZc/4tE9//2nJfrpiX5ILt9BagwEUEKwgz26pMRc=;
-	h=From:To:Subject:Date:From;
-	b=h7L698866MRaLeZ32s9v9RLUTR5eqaD3R3ykA/71Hi4+ogU0bBTu15bbUVLNfF1oG
-	 2DuYaL9fn+EUoVXsHwCJTGfnwBV1l6ZCgY7nG5AJud75Yo5vOtukBx1F42qkpsoR+E
-	 6KWYFvVQ5kA1zcaEpF1bXw9UZ53jc6wpoumjxK4B2tGOvXy4Ak+7LO4rLV1rBFIn5p
-	 sq20Flj6kg/l3AViDYuAe2yvdrvVLrtnZtIkeiGMUPwsG0KN6zl4UMSo9A+fd03A67
-	 Z9W+TqUh/j3bqeI1pjJU0DdGVb6ROHNy50i9XE15we/dXrBGdb4FEQTjNlM4s7Zt9W
-	 PN4zKWT4STY9w==
+	s=k20201202; t=1747195545;
+	bh=7b1hQ08KirU6xDoqMbi9W39DDTI9xFBeql6/+Kg7/1Q=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Z9MCzSd9DGddD1m3e1Wza9dC4q02fTzhqUd3HVcq7aR+yDJF7DJQUawmZHpdZ4M8M
+	 pOVzWzhDjqedbEL3NDNoxKXxJBVfEzOmnK3oiJq5KQ16XYAEFbOuz9NnS8l0X+P8ef
+	 zugjqK9xUtQKf2Uk9QaOMH4RS2rSthEZn6ozu6+WjckPvRLqy0TYR/2SI2aG7awbQ1
+	 mnIAnoweImHdxCGG+i5AkD4rfJIn1qU0MiXJGkC4FUlEIaBFzgB4XFHXul4sY3fZof
+	 oG5xoq21iYJyfL6GigVXPW89G8flSUR12fZOir9JioTRusdFIb9DGA6bXgQ49PZe4h
+	 dgzjw55nF9S/g==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id ECB8AC41612; Wed, 14 May 2025 04:02:36 +0000 (UTC)
+	id 9DF37C41613; Wed, 14 May 2025 04:05:45 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linux-ide@vger.kernel.org
-Subject: [Bug 220121] New: Not found
-Date: Wed, 14 May 2025 04:02:36 +0000
+Subject: [Bug 220121] Not found
+Date: Wed, 14 May 2025 04:05:45 +0000
 X-Bugzilla-Reason: None
-X-Bugzilla-Type: new
+X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo io_ide@kernel-bugs.osdl.org
 X-Bugzilla-Product: IO/Storage
 X-Bugzilla-Component: IDE
@@ -55,15 +56,15 @@ X-Bugzilla-Version: 2.5
 X-Bugzilla-Keywords: 
 X-Bugzilla-Severity: high
 X-Bugzilla-Who: tungdangthanh23032004@gmail.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: ANSWERED
 X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: io_ide@kernel-bugs.osdl.org
 X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: bug_id short_desc product version rep_platform
- op_sys bug_status bug_severity priority component assigned_to reporter
- cf_regression
-Message-ID: <bug-220121-11633@https.bugzilla.kernel.org/>
+X-Bugzilla-Changed-Fields: bug_status resolution
+Message-ID: <bug-220121-11633-vwkVNjayE7@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-220121-11633@https.bugzilla.kernel.org/>
+References: <bug-220121-11633@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Bugzilla-URL: https://bugzilla.kernel.org/
@@ -77,19 +78,12 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D220121
 
-            Bug ID: 220121
-           Summary: Not found
-           Product: IO/Storage
-           Version: 2.5
-          Hardware: Intel
-                OS: Linux
-            Status: NEW
-          Severity: high
-          Priority: P3
-         Component: IDE
-          Assignee: io_ide@kernel-bugs.osdl.org
-          Reporter: tungdangthanh23032004@gmail.com
-        Regression: No
+Tung (tungdangthanh23032004@gmail.com) changed:
+
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+             Status|NEW                         |RESOLVED
+         Resolution|---                         |ANSWERED
 
 --=20
 You may reply to this email to add a comment.

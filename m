@@ -1,136 +1,187 @@
-Return-Path: <linux-ide+bounces-3733-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-3735-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329A3AC3EF0
-	for <lists+linux-ide@lfdr.de>; Mon, 26 May 2025 13:51:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3AAAC40EA
+	for <lists+linux-ide@lfdr.de>; Mon, 26 May 2025 16:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B88B61887D81
-	for <lists+linux-ide@lfdr.de>; Mon, 26 May 2025 11:52:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B64F77AA0A1
+	for <lists+linux-ide@lfdr.de>; Mon, 26 May 2025 14:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BF091F9413;
-	Mon, 26 May 2025 11:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgL0wDew"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85FF3C465;
+	Mon, 26 May 2025 14:03:20 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA5A54739
-	for <linux-ide@vger.kernel.org>; Mon, 26 May 2025 11:51:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B901192D6B
+	for <linux-ide@vger.kernel.org>; Mon, 26 May 2025 14:03:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748260307; cv=none; b=Nt5JrsO74sJu3A9H8KySxkdextgCdh6fUIrkl66UPLeXqDh79+VRp0ApaFVmkgW5ofVHCYMelKwT16xsFDGsyCpoupoG/lflPWMkEK1WXLZrX68J9lp+IFWW/IXur9hMeSh+V4u32pkYuvaQ6vY2LJUjyF194H7tT3VdAaI+Jkg=
+	t=1748268200; cv=none; b=gB3fhd1qNV6hxMwMKLS4eOGipmZhtgJcRKLSV7YZXjVr7DIcDkE6Q1lA1yYxl1PH4ZwZ7+i0Bciwhxepwo+pRbq8cQOMLBhrtg6ZROO32oTNOQ65fsaWrl9UzgYXs8IEk7CL7xiKJ1v7WmX6jDAMsLLh0k4ALBazvcs64K96Xj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1748260307; c=relaxed/simple;
-	bh=eVe7gzDvYkF/v7+yXapTB41J01zj8EULcLXAJYEXPmM=;
+	s=arc-20240116; t=1748268200; c=relaxed/simple;
+	bh=4uwmKY8ceyp5QZIETjyzQVGHEV2zJROKskLaX8nRfK8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hZbgzfVkOJ8XOLamSKLmTS1h/ADtCXZfi73nqwlGLwxFe4/lzfRUU4othbZ8qvpC7fph4URYigyNkMMfv7KTBO6OdBz7q8RMn6qFNr7c1i8rs1FaiZYwDO8H5+R5ljkRqfF5BS4/eFfRTKQHN4EL8xycFxhM5pRr92ENKEXjywY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgL0wDew; arc=none smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=IbORrsx3Ott0wo/sUxPf0YeMlcZsanUK3sXhwy2Y/+Tp/wmfHtqh2Kyazv1B3uvIarI06YEESUv6YmquFyGnJft30UsOfK8nSJFguRLZBGyLTbJS0wb90uM050kbM9phwrEOu7PGkJONwbX0rv5biHufLgKwMZI+/KD/hsUPnyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-52dbcd398f9so1464580e0c.0
-        for <linux-ide@vger.kernel.org>; Mon, 26 May 2025 04:51:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748260305; x=1748865105; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vk7I/TjZus1WfjiLul9K4l43bV0WtVtb36G6wrfsiH4=;
-        b=ZgL0wDewzad+sjLGrTodrMbBrGDcwwQu2VhZPTiMRS8yp5S9jeQvWm/SNb8pUgT5FJ
-         OpaAPqBChVNI+Ymq2K/yJDU7SmIT966mZcTGxXsTZXqFriEyy43d/VK6K2E8xTxZjH3s
-         U62kL9CeeWYKdBw8etgqHHqwezA/Pr8uigxl/tG6hxtLZHfXhtt9Ji2LB+M0JIuIZJWo
-         XFK5zNwJjRzruel+tetDp0k6FLFWdhXcwqaNptz3ijurXSIEXwSnDyqyzPwbc0RWWmqU
-         VxY2CTCW5HjXfyBZMVp1U9qh+laOYur+MZ3prUVO5JS4IxljMPhbnoGh0U9jP3p6lA0H
-         /f4w==
+Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-400fa6b3012so1912697b6e.1
+        for <linux-ide@vger.kernel.org>; Mon, 26 May 2025 07:03:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748260305; x=1748865105;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vk7I/TjZus1WfjiLul9K4l43bV0WtVtb36G6wrfsiH4=;
-        b=Nqd5QX3xhJlZlZeuEp8DIlyco7nmVTdq4thxBysiVhdo/LoQ0OZCGssfkEB9qD1lz+
-         JFpFuL0agOG+2oGTwb+SVn68iTziDWuOip+Cx4oXVZ1B6p17YT6YtGPXzLWzGNL6c+Hw
-         W0laUtwDJkdYIWN/SFbUdE88oPgt2NGru/Ffo81107wHXXm57uX2biqsqE93yU121fTC
-         aAM6d9vabPC4i2V+Wp3bzlr0Ag6G6y4s/ybPW9QOzFmf5HMVK5ojgJ+9eqH05ry3opWB
-         e50whpHDmWmH+an65xf9zDVZFsTuh7M9kZH7BxVtO06NP5xavHynN6e9IZUI0BJfTFmb
-         A2Cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXaSyJfGg5/a32EIA3NRFtysU6QST3bvTrHbMaBBPXgTRAmIE1v/q9UkeF2rWVIdaBTW76i/rZQ+zY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1idFbWLfoCO8Us95dsQnhdJOiLgmxBcRAJe7AfGHXC4GMRyBa
-	4OEZIgtNUc2vJk4GvXzwG+hN/VRBHz3RcCN6cTm2jtG+uPQ0Pf8UinJw3nJZqscEk7GH8sgs6mC
-	7d6vRpJFJDtGhkUywuA9k7mtmAsAxVKw=
-X-Gm-Gg: ASbGncsVGcNvhjX1Yh1gNxa/mit06fecKAt4svhr2IBPSuSnF0H5mqgb45oHyucV/Ck
-	iBY+vGdaSx00cK4vH+0PeXtj78bva0KwTi8XWYryBahG0rIVuARwGH2VdJ7chCBNzmtIu5JiyB7
-	31q3kmy/SuYPhOsVRTifiydD0fXUNWxPdcwJReFaVmLH783z/cd698PwDR1Bga4txrPg==
-X-Google-Smtp-Source: AGHT+IEJff5k2A8k6P3iag0uEos2mJDRIGeS8NhKRZjyRef4636hA/5M4HMNpMmn3C4cZE82rze+xiVAJ/76kykfQIw=
-X-Received: by 2002:a05:6122:2007:b0:52d:bcd1:ab55 with SMTP id
- 71dfb90a1353d-52f1ed6fa19mr10025557e0c.2.1748260305247; Mon, 26 May 2025
- 04:51:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1748268197; x=1748872997;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vCDcsKvq+RIBVrcv2PcCRyfsJ/lOeLLPLluC6HPp9QY=;
+        b=RX85P2ovBCdYRs3/F25e+mOK7jMxQJwO+Av3H9T9nfAmsAmnyRatQwt9c3+XSSkESw
+         MvNOOfLi7uZVmzA/6QCVhxZRvRm/UIORuILUeaWfSo90ct2nn1Ex16iouxFSBm5aIpC1
+         B/nNeirFp5dhH+HdnpfBpW4PbaD83lXwRaVlKWPysyfkBPZZ3FolmCAQIiv4CvROaPzq
+         3cFuKqzM5z5b9mNUGOVMBdtV3iw3wsbArljPOD6CPUbP+FDG3newaFQO6BwyO5B9ZJ+j
+         p7P+akDbcik6xDgVDUPGMd6WYDgQT8DcQj/yZw/JfXkJ0JtsH7kpbABMmkbN8o4sPJdx
+         Qeig==
+X-Forwarded-Encrypted: i=1; AJvYcCWADWkwtIG9f7emEyS3asflFWDhNONHDpGY+/6SPiHKSolP6iMdk9bfTqWUwzBh5chIbwdqSq1b5Jg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxpGmt5LYxrHIJ93GAyEjNQ25J+flbefpjesfdf6nSi525hgEM5
+	oc02h/UkNerEocp1m1o+T+j//pwIKM21rp0fXNVcl2mvj5KuPdBhwuyZNGO9iWjj
+X-Gm-Gg: ASbGncsT8/OWD0uXldfHJ2e18sgQEDdmAmWN2m80ZrVyUZx65pIKh/8sBHPt/809tqG
+	25QN9LDjdWFBaRICQOr8cNqws/K6v8bJNkCoHZewFWTD0xiwveEMEfTIZXZ9xmRuO62lYdQW9fu
+	OEcDnIB5h4jVZaAHz0oYF5bIu3ElrwMafRry6ec9lFQ+VS21U3QQAm64qN4/k7l/UFXKkgS5HEl
+	zb9i6YW7NEUE4BGTsOHrG711GnxREN5vUnX4R3dKgeBenCQogGML4/Q9sHjKHDkF054gad/Za1u
+	7GOa91hJM8ayoTpU70RKn0oyRKS9AsmyUmu2lJ2GoU1PjzXe5oIxL+bTP+5sy4ezpNFQg2efbYq
+	QaT/Hox8YC33ua3qo5Q==
+X-Google-Smtp-Source: AGHT+IHQVvEWThsd1hWQ4L027sh7YyxjMAMyiiCYQzM/61WkZ9DrfdEi6T6v2KrRmCXOg3yAUjTvkg==
+X-Received: by 2002:a05:6808:384d:b0:3ec:bf55:e33f with SMTP id 5614622812f47-40645fb2aefmr5804810b6e.9.1748268197418;
+        Mon, 26 May 2025 07:03:17 -0700 (PDT)
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com. [209.85.167.180])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-404d98cef5bsm4207694b6e.44.2025.05.26.07.03.16
+        for <linux-ide@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 May 2025 07:03:17 -0700 (PDT)
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-400fa6b3012so1912659b6e.1
+        for <linux-ide@vger.kernel.org>; Mon, 26 May 2025 07:03:16 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV9tr1Ke70E9i0XJ4w2cHkAEV2il9W09agqn0twH/N3BBYvzdhzLDqJyFnG/mGUQMDKUqVdVINM730=@vger.kernel.org
+X-Received: by 2002:a05:6808:251a:b0:401:bb42:700c with SMTP id
+ 5614622812f47-4063d081bb6mr7483547b6e.19.1748268196551; Mon, 26 May 2025
+ 07:03:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250325155613.352680-1-p.pisati@gmail.com> <aCSBV_L-NcNX4n7G@akinoame>
- <30ba2e36-8957-4dc0-a5d7-85ba71ad0a59@kernel.org>
-In-Reply-To: <30ba2e36-8957-4dc0-a5d7-85ba71ad0a59@kernel.org>
-From: Paolo Pisati <p.pisati@gmail.com>
-Date: Mon, 26 May 2025 13:51:34 +0200
-X-Gm-Features: AX0GCFvO8Va9CeULMkFesSsZFw4wit0oh9MQ_2DCVFRYVjrkbWKkIl8KYMha6qQ
-Message-ID: <CAMmgNdZ0RT+GTrK_mmeG3d=Khtck80gE9itrjSQbOrtKB=_U2w@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] m68k: pata_cswarp: Add Amiga cslab ata support
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Niklas Cassel <cassel@kernel.org>, linux-ide@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, Damien Le Moal <dlemoal@kernel.org>
+References: <20250325155613.352680-1-p.pisati@gmail.com> <20250325155613.352680-2-p.pisati@gmail.com>
+In-Reply-To: <20250325155613.352680-2-p.pisati@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Mon, 26 May 2025 16:03:04 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXyEyPMfd4wcqY+zfaqP0HeYBaDys_Twr9CEUxoNmisJA@mail.gmail.com>
+X-Gm-Features: AX0GCFs7dpfswD8kmPFapTEn6ylOYXr6DaNHDFXbjxZW0U0ngEUN35FxjwqP30U
+Message-ID: <CAMuHMdXyEyPMfd4wcqY+zfaqP0HeYBaDys_Twr9CEUxoNmisJA@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] ata: pata_cswarp: Add Amiga cslab ata support
+To: Paolo Pisati <p.pisati@gmail.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, linux-ide@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Geert,
+Hi Paolo,
 
-any chance you could give us an update on this?
-
-On Wed, May 14, 2025 at 3:38=E2=80=AFPM Damien Le Moal <dlemoal@kernel.org>=
- wrote:
+On Tue, 25 Mar 2025 at 16:56, Paolo Pisati <p.pisati@gmail.com> wrote:
+> Driver for the on-board IDE interface on CS-Lab Warp Expansion Card
+> (NOTE that idemode=native has to be set in Warp Configuration)
 >
-> On 5/14/25 13:41, Paolo Pisati wrote:
-> > On Tue, Mar 25, 2025 at 04:56:11PM +0100, Paolo Pisati wrote:
-> >> Here is a driver (and the subsequent defconfig change) for the pata/CF=
- socket in
-> >> the CS-Lab Warp series of Amiga boards.
-> >>
-> >> Changes in v4:
-> >>  - refactor pata_cswarp_data_xfer()
-> >>  - ioremap WARP_OFFSET_ATA region
-> >>
-> >> Changes in v3:
-> >>  - suppress a comment
-> >>  - properly return ata_host_activate() error code
-> >>
-> >> Change in v2:
-> >>  - fix style, remove duplicate swap macro, driver version, etc
-> >>  - rework the zorro attach mechanism
-> >>  - remove the unnecessary zorro ids refactor
-> >
-> > Gentle ping about this one: can i get an ACK or a NACK?
->
-> Sorry, this fell through the cracks.
-> This looks OK to me.
->
-> Geert,
->
-> Any comment / ack ? Or do you prefer to take these through the m68k tree =
-?
->
-> --
-> Damien Le Moal
-> Western Digital Research
+> Signed-off-by: Paolo Pisati <p.pisati@gmail.com>
 
+Thanks for your patch!
 
+> --- a/drivers/ata/Kconfig
+> +++ b/drivers/ata/Kconfig
+> @@ -1025,6 +1025,17 @@ config PATA_GAYLE
+>
+>           If unsure, say N.
+>
+> +config PATA_CSWARP
+> +       tristate "Amiga CS Warp PATA support"
+> +       depends on M68K && AMIGA && ZORRO
+> +       help
+> +         This option enables support for the on-board IDE interface on
+> +         CS-Lab Warp Expansion Card (NOTE that idemode=native has to be
+> +         set in Warp Configuration)
+> +
+> +         If unsure, say N.
+> +
+> +
 
---=20
-bye,
-p.
+Please drop one blank line.
+
+>  config PATA_BUDDHA
+>         tristate "Buddha/Catweasel/X-Surf PATA support"
+>         depends on ZORRO
+
+> index 000000000000..e0a0db6f7cfd
+> --- /dev/null
+> +++ b/drivers/ata/pata_cswarp.c
+
+> +static unsigned int pata_cswarp_data_xfer(struct ata_queued_cmd *qc,
+> +                                        unsigned char *buf,
+> +                                        unsigned int buflen, int rw)
+> +{
+> +       struct ata_device *dev = qc->dev;
+> +       struct ata_port *ap = dev->link->ap;
+> +       volatile void __iomem *data_addr = ap->ioaddr.data_addr;
+> +       unsigned int words = buflen >> 1;
+> +       u16 *buf16 = (u16 *)buf;
+> +
+> +       /* Transfer multiple of 2 bytes */
+> +       if (rw == READ)
+> +               raw_insw(data_addr, buf16, words);
+> +       else
+> +               raw_outsw(data_addr, buf16, words);
+> +
+> +       /* Transfer trailing byte, if any. */
+> +       if (unlikely(buflen & 0x01)) {
+> +               unsigned char pad[2] = { };
+> +
+> +               /* Point buf to the tail of buffer */
+> +               buf16 += words;
+> +
+> +               if (rw == READ) {
+> +                       *pad = raw_inw(data_addr);
+> +                       *buf16 = pad[0];
+
+This looks wrong to me: as *pad is the same as pad[0], you could just
+eliminate the pad[] intermediate...
+Moreover, this writes one byte too much into the buffer.
+
+> +               } else {
+> +                       pad[0] = *buf16;
+> +                       raw_outw(*pad, data_addr);
+> +               }
+
+Comparing to what v3 did, I think you want:
+
+    if (rw == READ)
+            buf[buflen-1] = raw_inw(data_addr) >> 8;
+    else
+            raw_outw(buf[buflen-1] << 8, data_addr);
+
+As all Amigas are big-endian, I think there is no need to implement
+this using some endian conversion function.
+
+> +       }
+> +
+> +       return buflen;
+> +}
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 

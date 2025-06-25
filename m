@@ -1,33 +1,33 @@
-Return-Path: <linux-ide+bounces-3814-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-3815-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD364AE749A
-	for <lists+linux-ide@lfdr.de>; Wed, 25 Jun 2025 04:04:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02B77AE749F
+	for <lists+linux-ide@lfdr.de>; Wed, 25 Jun 2025 04:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A35B05A2196
-	for <lists+linux-ide@lfdr.de>; Wed, 25 Jun 2025 02:04:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 580F37A6FA9
+	for <lists+linux-ide@lfdr.de>; Wed, 25 Jun 2025 02:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A431189B8C;
-	Wed, 25 Jun 2025 02:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857E314AD2B;
+	Wed, 25 Jun 2025 02:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amountary.cfd header.i=@amountary.cfd header.b="qvdaHOlj"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=amountary.cfd header.i=@amountary.cfd header.b="fBYCxnJJ"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from amountary.cfd (ip44.ip-51-81-76.us [51.81.76.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0462E630
-	for <linux-ide@vger.kernel.org>; Wed, 25 Jun 2025 02:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B813074BD
+	for <linux-ide@vger.kernel.org>; Wed, 25 Jun 2025 02:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.76.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750817093; cv=none; b=J94EuvT+7kWIEM0JH5WQejysDpbYBzHc2JRCrKimGMhg/WKjp4qHUgfacOdQrCDnfJnDkaOeobVSLEBqJVxEBhCPMIcyVsxOLtrWTHCQzzmlpUFfnUh6jB0SMgADXbx6dyQQN55TFyEWCmDLNxS8PKpBm9pDclT3Q7tnvGYPEaU=
+	t=1750817185; cv=none; b=jo7Fma/gqyENFvfKJ/HtZngeoF6oGFcCFvLaVYJHRQyUpSAEh0tkE4bfxZuZeQ2yT78P+PlDP2+zAv2IuUvwJH78SID3ScMkElTgu0BWMnrWzTxFTkaVBhIaShwzECYh9EuG/wA8kQjQQk1EQyUHKBII8u9ufV+JK5OVUYKanTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750817093; c=relaxed/simple;
+	s=arc-20240116; t=1750817185; c=relaxed/simple;
 	bh=ystuPIb1z04584X5UNuypsWSat3RuK32bgjCEidIwVs=;
-	h=To:Subject:Date:From:Message-ID:MIME-Version:Content-Type; b=mhTVU6opt49WC9ZGg9HuUGb2l+6wZ+AoYVS61qx46y2+KDH15/79Ygqx/Qnr2ly4bPfTu3ojY4eLZbFnJHLHOBm44i1zXAagS9IQ1J2DUxKDLt5whe2OdfM8Lpb6/SEqlf39dVFRCxrn/0gHAPfZ+rJSlcnwxz5bGFX18W8ZczU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amountary.cfd; spf=pass smtp.mailfrom=amountary.cfd; dkim=pass (1024-bit key) header.d=amountary.cfd header.i=@amountary.cfd header.b=qvdaHOlj; arc=none smtp.client-ip=51.81.76.44
+	h=To:Subject:Date:From:Message-ID:MIME-Version:Content-Type; b=DkMFSbUN9rvPIarcgblwAkssoOCD5MXqBngwdcCoKL0Q+Z1V9Fzz7NcDFNoLa50F4FsmVGRGyq2mnXajoLYOEU5/0kpBz7Y/DcL3fYAdBIluO7cnlT4gH8Thw9h1nHHSVpkrWmj7tLYgeCuCy41lb/h+TZydM7JnAT9+IegSQVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amountary.cfd; spf=pass smtp.mailfrom=amountary.cfd; dkim=pass (1024-bit key) header.d=amountary.cfd header.i=@amountary.cfd header.b=fBYCxnJJ; arc=none smtp.client-ip=51.81.76.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=amountary.cfd
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amountary.cfd
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -36,19 +36,19 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=hduerycFrMHHmX7f0S56SdU5S5R+b6DZqD3AeW+URV0=; b=qvdaHOljiRcvEj/vQI5WdfJqBO
-	wOewOZL/RMRYmXXjSmknkNytZNqPHwzWJwC9IOOQd/P642A5OJuSQv4FtjGQbkhPb+BWIS+8vNQ5x
-	tHmXRBqX5nQet3B+UDiQKw7n4Wlr29f0Ps6UYcBlIOgZgq/F4rDF9ZgJLMwpBh1ZG6Jw=;
+	bh=hduerycFrMHHmX7f0S56SdU5S5R+b6DZqD3AeW+URV0=; b=fBYCxnJJdqDXjcUe4yJNIGfFLL
+	MO9BO0ml6Q6mfahdoISKekfEbtXomXh5xqVclXcGQ8NHYtHjgyi9eudDm0+wnKldPmW/CJ9KfdAHW
+	PY1J0IDQLbtla9Cufs0KTp7yDl0lFETpyYMMXNfE9WjEZX1ckdRRvalLUElwFv/pJZvI=;
 Received: from admin by amountary.cfd with local (Exim 4.90_1)
 	(envelope-from <support@amountary.cfd>)
-	id 1uUFVK-000N6D-Ut
-	for linux-ide@vger.kernel.org; Wed, 25 Jun 2025 09:04:50 +0700
+	id 1uUFWp-000PCE-5e
+	for linux-ide@vger.kernel.org; Wed, 25 Jun 2025 09:06:23 +0700
 To: linux-ide@vger.kernel.org
 Subject: For sale
-Date: Wed, 25 Jun 2025 02:04:50 +0000
+Date: Wed, 25 Jun 2025 02:06:23 +0000
 From: Exceptional One PC <support@amountary.cfd>
 Reply-To: info@exceptionalonepc.com
-Message-ID: <4e48681fba41d9e34d06cf9c00c70ca3@amountary.cfd>
+Message-ID: <f5d68e5ae3caa42ad640dc2f9a9a3e4a@amountary.cfd>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>

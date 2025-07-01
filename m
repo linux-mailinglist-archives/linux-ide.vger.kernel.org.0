@@ -1,52 +1,52 @@
-Return-Path: <linux-ide+bounces-3918-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-3919-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9309EAEF965
-	for <lists+linux-ide@lfdr.de>; Tue,  1 Jul 2025 14:56:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92CAEAEF966
+	for <lists+linux-ide@lfdr.de>; Tue,  1 Jul 2025 14:56:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1C3F1894ACB
-	for <lists+linux-ide@lfdr.de>; Tue,  1 Jul 2025 12:55:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5BFD1C0548D
+	for <lists+linux-ide@lfdr.de>; Tue,  1 Jul 2025 12:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B649A2741B0;
-	Tue,  1 Jul 2025 12:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991C821D5BC;
+	Tue,  1 Jul 2025 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZkKzsDC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Am99Guzu"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9285225B301
-	for <linux-ide@vger.kernel.org>; Tue,  1 Jul 2025 12:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5E63596B
+	for <linux-ide@vger.kernel.org>; Tue,  1 Jul 2025 12:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751374539; cv=none; b=Sz8rsgmaLbyWne86HKPv31eXPqzzncnm8aaZcMHkDHPKZqpwUOTVkSsjL1drPkIBfGmvWfOPEw30oEOt/b+scC522tHwgfeeg7c/Xc71HseV9/MuSbCPQxVeqyXEECd5MUl8+5SvOkU80Sif6RyMi3FfL2KdFKk0O0FC4UFXoO4=
+	t=1751374540; cv=none; b=RLv4/KmdEUFZkEoNSsSSZD5EBrBG6Iw4zncJJkev1++/YKqBZq6dJqHRwYKHax72TWxYrgK5kxUxT1Q6UqRgc9ODGxu6rdno2WNdTHOq6jGr2wjosDVqyt1FEYJpIvWghO7M0lDbBLfuNfWwM/RsIzniaqiGLNQR578sWCt7tkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751374539; c=relaxed/simple;
-	bh=8zaIL6Zb/FcWUhRht6tKfm9XXHB79CipYOsPnUexbXk=;
+	s=arc-20240116; t=1751374540; c=relaxed/simple;
+	bh=lE7poR0W3FbvXfof8L1+sSh0mMQo6rpTy9KLwLcwIzc=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DX39Ywu6u19zof2igUKW5W3mr73U1s13n9Nkk/U009up3PQMRrXVN6fPgGuPUL9QNU5VslJSOXcYu3ipmjNopRUWuHDbdifMl/RCiqtuVnaS5/axD5pu9+YuHrFc7kUkajHsF6VvFpp4sRoxMhE7pMkD0fy88XupbB1ZDYc8K+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZkKzsDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE03FC4CEED;
-	Tue,  1 Jul 2025 12:55:38 +0000 (UTC)
+	 MIME-Version; b=hDRLmUauXHxME5SoltYJe+t5ZhelVfC6wExdUsRffOUI2961esY7imtc1L04Xt39qDARB3hothfXz52M52ZdOIQggUr74djxGXUGacLyVi5IuU6c7psLgLqRIeZ0BW9J2bKj2Dzj2rXASZjvNxS7SeH94P1cDxutW2F5lY9R4Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Am99Guzu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9B2C4CEF2;
+	Tue,  1 Jul 2025 12:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1751374539;
-	bh=8zaIL6Zb/FcWUhRht6tKfm9XXHB79CipYOsPnUexbXk=;
+	bh=lE7poR0W3FbvXfof8L1+sSh0mMQo6rpTy9KLwLcwIzc=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=fZkKzsDCvHiHME3PHRgqhVahZ6tqGMclxV5OwulHDZ3g7mUnjvF9Y6zN1gnf/ma7J
-	 XOthmbNswiSKYEBD1YzTpqwjvzw5Ats9wSjlDBpuETKLg+SPR2iuLvwrpfHOkKSEeh
-	 wsBODTY0CuQa5tEOfRnLNO04Rdbwji9sG/1C5BtpSRt58b3gUZDJCXApAZBKr/7CxY
-	 fc0HW/0FHfOWMG31ItG5XS69B2vYIDvcy2IrA9RfFata+eDqSXU0g6eqJDa86TUOPC
-	 g6K/YNlHy8hTWbSaEBIU8K/r6A4nmHs/sqhBeJcndd43ymIGpfZEPYlrgbFES+ilmf
-	 DUpDt1ukwB2bg==
+	b=Am99GuzugEXEGKdYWpGTFUnad0juU6nu+26yvJnFVwNkXewOGrqZ9feyjK2lAL26o
+	 mnFu1LteFxEr5sX8u+yMpYrb21tdvlmPHIyIeq+Q1lQIyvcuQV4iIs9cBvRQ7exD3l
+	 5OvAJ1NCjIB2Ma9rXEJODkMc9TpZRcs3wWvAcrI5fQFfB9aZ6Qd5Rscj1IIbPZJjsk
+	 5HWe+f2RZnjhXsAyMHWEpK3j9HvWzYzTxMjMqfcdJGh9VXSSSYAYNJXBvlQYkhMla7
+	 97I+jb4fZCh/VYMc6WoqTNAhPxJnYzXJtBrWU309H8nCayl4UtXYBkts6mzaIpmn2R
+	 AoqrEye6Oo1mw==
 From: Damien Le Moal <dlemoal@kernel.org>
 To: linux-ide@vger.kernel.org,
 	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH v3 09/10] ata: libata-core: Reduce the number of messages signaling broken LPM
-Date: Tue,  1 Jul 2025 21:53:20 +0900
-Message-ID: <20250701125321.69496-10-dlemoal@kernel.org>
+Subject: [PATCH v3 10/10] ata: libata_eh: Add debug messages to ata_eh_link_set_lpm()
+Date: Tue,  1 Jul 2025 21:53:21 +0900
+Message-ID: <20250701125321.69496-11-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250701125321.69496-1-dlemoal@kernel.org>
 References: <20250701125321.69496-1-dlemoal@kernel.org>
@@ -58,45 +58,32 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ata_dev_config_lpm() prints the message "LPM support broken, forcing
-max_power" for devices that have the ATA_QUIRK_NOLPM quirk flag set.
-This messages is repeated for every device revalidation, which is not
-necessary, but also erroneously printed for devices without a broken LPM
-support when connected to a port that does not support LPM (e.g. because
-the port is an external one with hotplug capability).
-
-Since in all cases the device port target_lpm_policy is set to
-ATA_LPM_MAX_POWER, avoid the "LPM broken" message repetition and
-erroneous output by generating it only if the port target_lpm_policy is
-not already set to ATA_LPM_MAX_POWER.
-
-This change will suppress the "LPM broken" message for genuine cases of
-a device having broken LPM if the initial LPM policy is set to
-ATA_LPM_MAX_POWER through CONFIG_SATA_MOBILE_LPM_POLICY. This is not a
-problem as the ATA_LPM_MAX_POWER policy implies that LPM is disabled and
-unused, which is safe for devices with broken LPM.
+To facilitate field debugging of link power management related issues,
+add a debug message to ata_eh_link_set_lpm() to easily track LPM policy
+changes done from EH context, that is, during device scan and
+revalidation, error handling, and when a policy change is issued through
+a host sysfs link_power_management_policy attribute.
 
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Reviewed-by: Niklas Cassel <cassel@kernel.org>
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 ---
- drivers/ata/libata-core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ata/libata-eh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 4619e66ae100..7f6cebe61b33 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -2819,7 +2819,8 @@ static void ata_dev_config_lpm(struct ata_device *dev)
- 			dev->quirks |= ATA_QUIRK_NOLPM;
- 	}
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 7f5d13f9ca73..0f9c30f9bc1e 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -2140,6 +2140,8 @@ static int ata_eh_link_set_lpm(struct ata_link *link,
+ 	if (WARN_ON_ONCE(policy == ATA_LPM_UNKNOWN))
+ 		return 0;
  
--	if (dev->quirks & ATA_QUIRK_NOLPM) {
-+	if (dev->quirks & ATA_QUIRK_NOLPM &&
-+	    ap->target_lpm_policy != ATA_LPM_MAX_POWER) {
- 		ata_dev_warn(dev, "LPM support broken, forcing max_power\n");
- 		ap->target_lpm_policy = ATA_LPM_MAX_POWER;
- 	}
++	ata_link_dbg(link, "Set LPM policy: %d -> %d\n", old_policy, policy);
++
+ 	/*
+ 	 * DIPM is enabled only for ATA_LPM_MIN_POWER,
+ 	 * ATA_LPM_MIN_POWER_WITH_PARTIAL, and ATA_LPM_MED_POWER_WITH_DIPM, as
 -- 
 2.50.0
 

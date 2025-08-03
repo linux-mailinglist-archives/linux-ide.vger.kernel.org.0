@@ -1,46 +1,46 @@
-Return-Path: <linux-ide+bounces-4048-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-4049-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E432B19599
-	for <lists+linux-ide@lfdr.de>; Sun,  3 Aug 2025 23:19:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D60FB195BD
+	for <lists+linux-ide@lfdr.de>; Sun,  3 Aug 2025 23:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBF8B18938DF
-	for <lists+linux-ide@lfdr.de>; Sun,  3 Aug 2025 21:19:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF4AA173E2E
+	for <lists+linux-ide@lfdr.de>; Sun,  3 Aug 2025 21:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C4CA219A95;
-	Sun,  3 Aug 2025 21:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E115E20D4E9;
+	Sun,  3 Aug 2025 21:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tfogFSm9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B9njmo7A"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536A6219E93;
-	Sun,  3 Aug 2025 21:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B780C1F561D;
+	Sun,  3 Aug 2025 21:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1754255914; cv=none; b=mQMqk5SzZ8dhGp/Yvnj2aqu5qmAzA301WY2YEpgZX4M5trumayQrkMhtWUWmeyzMOSo/IN6F45PITrj35QizNG7RTwur/TMNstPOdxJzbnZoaaZu+ZFVJMPpKklByaip/S9m162MWiaRpWFX5ye6nYKpocAuJsS1+nZWeg0VkzY=
+	t=1754255972; cv=none; b=h7Xys+Eq4aPNw7Olrexwpw+oNh6Dmci+MBWq6Z8+KGypI4Abj7Yfjj2wqERbE5GBf1Zy41g+x4kPvl272Arqj6hYAQ6Xj2o9hqPhwZsiLT0cSCIGHHe04ldh5joftYSazojQuaA7Y3lO/fFcM7K6uc4n4NDlYSKvwkyUThtXOcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1754255914; c=relaxed/simple;
-	bh=6zBWg0sDxk6NYE+kNcKXUHKlBQAdQGpQDafHZln9pVE=;
+	s=arc-20240116; t=1754255972; c=relaxed/simple;
+	bh=b42m5Ul/FLuKinoGV47M1nAfVrS6Wlbi9ToaQXprdBk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YcPpqJZM/DMdeG2NoqJ8B+SiOIJxLPOhsZ1vUTOk/+6ax9BagiPPG3PHCWWC3xRWcju7Gnx3gvKOEbDIdsproIumj1zL+O+aoOBK33sWQgMCF5CzQ+TsJpZ3SidgTIQr7PSdL+CBh9oEFR29x/AeNaSjjUstUARjX++EBrWcMlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tfogFSm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFF2C4CEEB;
-	Sun,  3 Aug 2025 21:18:32 +0000 (UTC)
+	 MIME-Version; b=Uy+HVKFdXAEjmfd044x9/MPx9145VUuX2HWxCQIwc7YIYypE8RH5Tqq4W+m2qAEwKe3dNdgI+5JhhTRJYuzAjJRe4mpj4XStHQTI7WwJn7qRCSS4OyK5noA96a+ogig4dFf5lf3EgEI23C6q+gkaqwDcEVJX+f3TXEoxjQ2Kunw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B9njmo7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233A1C4CEFC;
+	Sun,  3 Aug 2025 21:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1754255914;
-	bh=6zBWg0sDxk6NYE+kNcKXUHKlBQAdQGpQDafHZln9pVE=;
+	s=k20201202; t=1754255972;
+	bh=b42m5Ul/FLuKinoGV47M1nAfVrS6Wlbi9ToaQXprdBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfogFSm94kN8ZYbTCJ3sKs8freztf3hmalVwNQlNkulvnLSCXPwK2+UKX7+uYlGNf
-	 RA7+n9ct2qNQ5kDj1YYpEhNBGsu6E8qrH7f+L+jiPHMTaoUDXNXNY5LCxbXpQU1HEJ
-	 lImDvO9xr3BGTZBicge8c8IciY/OkYZMlBthHZcWX0luNGFnVzoqe3Js4MMa1WAH5t
-	 a/wX/t3IYasewwWHgRGT0wPn2+ptnxbS55uxwo1cfZ7+2sbJlFKIkNyaV6zqefLbPG
-	 0EFwZb0wo3sub+ghERMJSoluBEwfqM1xO/OwMz+11ZL5tJgdRPJRyG5PPHY8S6xvks
-	 JtPA9nezQ8G6A==
+	b=B9njmo7Arbgdd6eHPqNYCNuy6cbTKIwbCBicPzpAPiOWQ3m5fp39XidoV1tE83oeS
+	 HTJRmmH809BJiSAUn+BO04jRUnb7XEPwhPWZbW4qcm9C3bCCw2X2qhVIGRlTd7yhSC
+	 cL5v0MG6/ol2X78sTOUh+AWQ9bcMsK1p3xgNkN8DNv3RwG3nqgVDo6+uRNYA1+QmrJ
+	 4Igiw3BH1r1ny9Cgz3DGi4Qr5isQAeeMHwRRSiJuXKoxAvqfAlOvo967tFrRRNTNqt
+	 AExd3+r8i40N/8sL1TQtBfW1VATP7Ndd4yR4P5qrs6shPFrc/hIBaell8ZRdwE4WDH
+	 26vPOPlUj2CQw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.16 24/35] ata: ahci: Disallow LPM policy control if not supported
-Date: Sun,  3 Aug 2025 17:17:24 -0400
-Message-Id: <20250803211736.3545028-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.15 23/34] ata: ahci: Disallow LPM policy control if not supported
+Date: Sun,  3 Aug 2025 17:18:25 -0400
+Message-Id: <20250803211836.3546094-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250803211736.3545028-1-sashal@kernel.org>
-References: <20250803211736.3545028-1-sashal@kernel.org>
+In-Reply-To: <20250803211836.3546094-1-sashal@kernel.org>
+References: <20250803211836.3546094-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.16
+X-stable-base: Linux 6.15.9
 Content-Transfer-Encoding: 8bit
 
 From: Damien Le Moal <dlemoal@kernel.org>
@@ -153,10 +153,10 @@ for stable backporting.
  1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index aa93b0ecbbc6..04c9b601cac1 100644
+index 931da4749e80..f52ae776d990 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
-@@ -1782,7 +1782,10 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
+@@ -1788,7 +1788,10 @@ static void ahci_update_initial_lpm_policy(struct ata_port *ap)
  	if ((ap->host->flags & ATA_HOST_NO_PART) &&
  	    (ap->host->flags & ATA_HOST_NO_SSC) &&
  	    (ap->host->flags & ATA_HOST_NO_DEVSLP)) {

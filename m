@@ -1,52 +1,52 @@
-Return-Path: <linux-ide+bounces-4081-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-4082-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421EAB2F088
-	for <lists+linux-ide@lfdr.de>; Thu, 21 Aug 2025 10:06:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB9EB2F0B0
+	for <lists+linux-ide@lfdr.de>; Thu, 21 Aug 2025 10:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C9253BF9CC
-	for <lists+linux-ide@lfdr.de>; Thu, 21 Aug 2025 08:04:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 660D1602812
+	for <lists+linux-ide@lfdr.de>; Thu, 21 Aug 2025 08:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261CD2E8B8B;
-	Thu, 21 Aug 2025 08:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCB72AE84;
+	Thu, 21 Aug 2025 08:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ox6Cfbuh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hJofikgj"
 X-Original-To: linux-ide@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0221824DCF9
-	for <linux-ide@vger.kernel.org>; Thu, 21 Aug 2025 08:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E4F24DCF9
+	for <linux-ide@vger.kernel.org>; Thu, 21 Aug 2025 08:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755763495; cv=none; b=ABcxj/IQ9ktPoPq/10nkEq1XEBHvX27cjjzta/0blpPJrzISl+WelSk/koqYYlVA6NF81dlUedY39G11lGl9nhGSycZklk0iQuG/Wsj00ABlUjmHFfVP2Mvcl9Tkd4QxdQabqTdYsZB/b7bkXMC0CWtJPUj1tOXh5pPWIo6Bsh0=
+	t=1755763780; cv=none; b=tzKWNsWo8iVRGh+8mJEaEyeH0CfQ3uG9k28OSndDHCOqzCDigFA2swU688HeJi3S9cKESwrscHDCOdpDXAWVhR+AgbjC/A6G8PnEygHrx5NZQT68SikgziDfrI3sY9H3HG29mpwfGIfx4+UbmsxvT27jwkLtqnPgsb4nN7FvxrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755763495; c=relaxed/simple;
-	bh=PfGOCFpTt3Z2xHneNdbAtQ3jo8QdVCZaRhRicKRg7x8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dgSLa+4G2PnPO5nDwdywVY3hSVdPzrvCeGNA+wnJNr83VUB86JZhfh7IDFXBrmQk0+2CoZ9Acqz/ZnGWggOEb029RbeSOT5qI6Vuy+VvO/s0UT9wyeQHnuOyea1ApW4ayYo7YJig6iPe1xA4m5d7YPU8AUa5bjmprgRKyyluysk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ox6Cfbuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18496C4CEED;
-	Thu, 21 Aug 2025 08:04:53 +0000 (UTC)
+	s=arc-20240116; t=1755763780; c=relaxed/simple;
+	bh=hMJyT22fKGvS96de6pVO9+vw7i6V7Fsx7ncgdIdXWYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Jg00jZYj26vUU9MdG6xPxUggBBPEO0CqYbyAYPopjYLbvDZOohgoNf1IqnuLktmuRMT8MkSVImjy9caPMG0qOQ1cVZNDciItxRyFg4dRlAe+xCeaoMtSWqc6VMjoDLxw8UvvMba8lqNEhu4O66IzkuFzR1JVvQPaKBlqeU2vb9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hJofikgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32452C4CEED;
+	Thu, 21 Aug 2025 08:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1755763494;
-	bh=PfGOCFpTt3Z2xHneNdbAtQ3jo8QdVCZaRhRicKRg7x8=;
+	s=k20201202; t=1755763779;
+	bh=hMJyT22fKGvS96de6pVO9+vw7i6V7Fsx7ncgdIdXWYY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=ox6CfbuhtLTcUYpdPDYWouXkLcuYtSwXSnZv+U/wzYSzAqWb1bUuohDHkXCJ7He3x
-	 L5mgLWf73tR3Cm7y+z+gAlY4DIrRjVV0hKyxI2WTn6Kzl3YiRGDWXBQS78oGvDDEbJ
-	 Wme07yJDD8cWxdbFEEZwsT5BCnNztUfjAly/2Nga7tQxvXiEF2EqAvBp0gc1JPL2sI
-	 jIo3L+41khb/4aod9bj6aLAMlEQrBWiX74CtZPz74Lyks6D+P8tQzaKLB0UZ0CbqLa
-	 ZCNks9dshWC4tFubW378IbKjYW7DNrrhWzz10U5QWwF6cGEVaytO4axmbTJzsBbjmf
-	 xYUJywSNi4dew==
+	b=hJofikgjMtCTu8j1dS+TlUNfReHkWulvs4R3KUIUaqgAqG1kCSnPEJPYC95tF/qE5
+	 HLQJAljJJNNI8AiGms0hCVdLN1ovP9UD0tYoaB1YJnMW/JZSrWE/X10hPWyhe9/TGU
+	 nF662HA4PaVJjhnbgSGPaslc94ceK8MbrIKKPu6bQ/Y5C0wi/CsIlEqYFm+RpiEUSn
+	 cuLRrh0GhqhRNbzVfK+n8iXFOZCr2+pO3hfbL+YTbEOf9XkOWRCdtIG6OJUDnDrSi9
+	 4xr3fm1PC1SLQlEZir7jcfqVjqKzaPz+S4Qr49UXs4y3z229MBr3B87d9Lmpm2YYgL
+	 GEoiGu0ga8NHA==
 From: Damien Le Moal <dlemoal@kernel.org>
 To: linux-ide@vger.kernel.org,
 	Niklas Cassel <cassel@kernel.org>
 Cc: Dieter Mummenschanz <dmummenschanz@web.de>
-Subject: [PATCH] ata: ahci: Allow ignoring the external/hotplug capability of ports
-Date: Thu, 21 Aug 2025 17:02:06 +0900
-Message-ID: <20250821080206.62412-1-dlemoal@kernel.org>
+Subject: [PATCH v2] ata: ahci: Allow ignoring the external/hotplug capability of ports
+Date: Thu, 21 Aug 2025 17:06:51 +0900
+Message-ID: <20250821080651.65800-1-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
@@ -70,7 +70,7 @@ may prefer to not use the port and to privilege instead enabling LPM
 to allow the laptop to transition to low power states.
 
 Since there is no easy method to automatically detect such choice,
-introduce the new mask_port_ext_map module parameter to allow a user to
+introduce the new mask_port_ext module parameter to allow a user to
 ignore the external/hotplug capability of a port. The format for this
 parameter value is identical to the format used for the mask_port_map
 parameter: a mask can be defined for all AHCI adapters of a system or
@@ -90,9 +90,9 @@ return a mask value.
 
 The mask for the external/hotplug capability for an adapter, if defined
 by the map_port_ext_mask parameter, is stored in the new field
-mask_port_ext_map of struct ahci_host_priv. ahci_mark_external_port() is
+mask_port_ext of struct ahci_host_priv. ahci_mark_external_port() is
 modified to not set the ATA_PFLAG_EXTERNAL flag for a port if
-hpriv->mask_port_ext_map includes the number of the port. In such case,
+hpriv->mask_port_ext includes the number of the port. In such case,
 an information message is printed to notify that the external/hotplug
 capability is being ignored.
 
@@ -101,12 +101,16 @@ Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220465
 Fixes: 4edf1505b76d ("ata: ahci: Disallow LPM policy control for external ports")
 Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 ---
+Changes from v1:
+ - v1 was the wrong patch... v2 uses the correct name "mask_port_ext"
+   instead of "mask_port_ext_map"
+
  drivers/ata/ahci.c | 57 ++++++++++++++++++++++++++++++++--------------
  drivers/ata/ahci.h |  1 +
  2 files changed, 41 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index e1c24bbacf64..f17325e9f914 100644
+index e1c24bbacf64..7a7f88b3fa2b 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
 @@ -689,40 +689,50 @@ MODULE_PARM_DESC(mask_port_map,
@@ -115,9 +119,9 @@ index e1c24bbacf64..f17325e9f914 100644
  
 -static void ahci_apply_port_map_mask(struct device *dev,
 -				     struct ahci_host_priv *hpriv, char *mask_s)
-+static char *ahci_mask_port_ext_map;
-+module_param_named(mask_port_ext_map, ahci_mask_port_ext_map, charp, 0444);
-+MODULE_PARM_DESC(mask_port_ext_map,
++static char *ahci_mask_port_ext;
++module_param_named(mask_port_ext, ahci_mask_port_ext, charp, 0444);
++MODULE_PARM_DESC(mask_port_ext,
 +		 "32-bits mask to ignore the external/hotplug capability of ports. "
 +		 "Valid values are: "
 +		 "\"<mask>\" to apply the same mask to all AHCI controller "
@@ -195,8 +199,8 @@ index e1c24bbacf64..f17325e9f914 100644
 -		ahci_get_port_map_mask(&pdev->dev, hpriv);
 +	hpriv->mask_port_map =
 +		ahci_get_port_mask(&pdev->dev, ahci_mask_port_map);
-+	hpriv->mask_port_ext_map =
-+		ahci_get_port_mask(&pdev->dev, ahci_mask_port_ext_map);
++	hpriv->mask_port_ext =
++		ahci_get_port_mask(&pdev->dev, ahci_mask_port_ext);
  
  	ahci_save_initial_config(&pdev->dev, hpriv);
  }
@@ -213,7 +217,7 @@ index e1c24bbacf64..f17325e9f914 100644
  	if (((tmp & PORT_CMD_ESP) && (hpriv->cap & HOST_CAP_SXS)) ||
 -	    (tmp & PORT_CMD_HPCP))
 +	    (tmp & PORT_CMD_HPCP)) {
-+		if (hpriv->mask_port_ext_map & (1U << ap->port_no)) {
++		if (hpriv->mask_port_ext & (1U << ap->port_no)) {
 +			ata_port_info(ap,
 +				"Ignoring external/hotplug capability\n");
 +			return;
@@ -224,14 +228,14 @@ index e1c24bbacf64..f17325e9f914 100644
  
  static void ahci_update_initial_lpm_policy(struct ata_port *ap)
 diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 2c10c8f440d1..267c144b7c60 100644
+index 2c10c8f440d1..293b7fb216b5 100644
 --- a/drivers/ata/ahci.h
 +++ b/drivers/ata/ahci.h
 @@ -330,6 +330,7 @@ struct ahci_host_priv {
  	/* Input fields */
  	unsigned int		flags;		/* AHCI_HFLAG_* */
  	u32			mask_port_map;	/* Mask of valid ports */
-+	u32			mask_port_ext_map; /* Mask of ports ext feature */
++	u32			mask_port_ext;	/* Mask of ports ext capability */
  
  	void __iomem *		mmio;		/* bus-independent mem map */
  	u32			cap;		/* cap to use */

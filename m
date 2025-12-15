@@ -1,193 +1,216 @@
-Return-Path: <linux-ide+bounces-4785-lists+linux-ide=lfdr.de@vger.kernel.org>
+Return-Path: <linux-ide+bounces-4787-lists+linux-ide=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-ide@lfdr.de
 Delivered-To: lists+linux-ide@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B6ECBC775
-	for <lists+linux-ide@lfdr.de>; Mon, 15 Dec 2025 05:28:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4244FCBC8BE
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Dec 2025 06:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7591D3005195
-	for <lists+linux-ide@lfdr.de>; Mon, 15 Dec 2025 04:28:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D3EC300A1C3
+	for <lists+linux-ide@lfdr.de>; Mon, 15 Dec 2025 05:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24E83126D8;
-	Mon, 15 Dec 2025 04:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=interia.pl header.i=@interia.pl header.b="nG5TQLXK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD26322B6F;
+	Mon, 15 Dec 2025 05:15:30 +0000 (UTC)
 X-Original-To: linux-ide@vger.kernel.org
-Received: from smtpo63.interia.pl (smtpo63.interia.pl [217.74.67.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CDF2C11CF
-	for <linux-ide@vger.kernel.org>; Mon, 15 Dec 2025 04:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.67.63
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75831322537;
+	Mon, 15 Dec 2025 05:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1765772923; cv=none; b=Doj0jtozGrvmj8Gr9m8SWun0UHzSzbPBPPXBOzqukJq9VukznbCj9euYmvrW94LST13YujXe5U4+0IdgnDSmgNq2QQYBm/jGnMl8L/W24aAyNJLX/Vec4sqxL9H0B+Iy31/pS8x+jUXWQCJ2vFYunga6FS1lpSZjO6YBcWy3Xd4=
+	t=1765775730; cv=none; b=mNSPL2LGqvKGjxTG4kpBJfjUtXklu0MPf9tbvEwMS3yhMqA4k8a3D6h66UBg1DYwyGI0NNmww6VXQKu6R9sDUdcQBGpRjS5156Gh8E0Fq+aK58UYaFJIQZGogF6EIKD1xd4lcNBRXhuvjXpGLbTMDsF66wXy0iMNqJEnK2682jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1765772923; c=relaxed/simple;
-	bh=MLmbGQPqkRVLEAQK8gc6EsBq1W4GEht4s4Axa4od9wQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oLD+kdQnBRWNg3yelqJJ7qZX/cQMo2dr11fL2EBfBmH37Qxdk9kf6SCPx8Kwzu7hSgCYK8rMoOckLf3LxCvgsfLnZhVa5jQFMztPwBnoj4eEIWNcPtrxK43S/fVPrj1etIufn6Fnazcq/uHiGqXq1431MY7wJ1H0BlATYTwQUx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=interia.pl; spf=pass smtp.mailfrom=interia.pl; dkim=pass (1024-bit key) header.d=interia.pl header.i=@interia.pl header.b=nG5TQLXK; arc=none smtp.client-ip=217.74.67.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=interia.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=interia.pl
-Received: from [10.10.11.15] (host-46-174-211-152.podkarpacki.net [46.174.211.152])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by poczta.interia.pl (INTERIA.PL) with ESMTPSA;
-	Mon, 15 Dec 2025 05:28:37 +0100 (CET)
-Message-ID: <cc94bc84-c5a0-4c29-a249-d0ab99abdc17@interia.pl>
-Date: Mon, 15 Dec 2025 05:28:36 +0100
+	s=arc-20240116; t=1765775730; c=relaxed/simple;
+	bh=axbVRlmpoqHXKy7D9DYTP2RH8Eh/CvptUY+r60J/TOg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=He6zUHzYCiKlaxCIrlTtOO7YsD6PqM2XRq4hDJkTx8Iisu2hGUN1PsE0B9A22AQWUXCXnmCkux1ut5t9EsRgHnaAwL8ajQQWGxHmSfMGIf7hptJzPJ6qzMTFFebRX7anPK4VZKNUNwsFCRkMO5/MStdP45aHiaEi8dReODr1Q/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-de-693f996afb50
+Date: Mon, 15 Dec 2025 14:15:17 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	torvalds@linux-foundation.org, damien.lemoal@opensource.wdc.com,
+	linux-ide@vger.kernel.org, adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org, mingo@redhat.com, peterz@infradead.org,
+	will@kernel.org, tglx@linutronix.de, rostedt@goodmis.org,
+	joel@joelfernandes.org, sashal@kernel.org, daniel.vetter@ffwll.ch,
+	duyuyang@gmail.com, johannes.berg@intel.com, tj@kernel.org,
+	tytso@mit.edu, willy@infradead.org, david@fromorbit.com,
+	amir73il@gmail.com, gregkh@linuxfoundation.org, kernel-team@lge.com,
+	linux-mm@kvack.org, akpm@linux-foundation.org, mhocko@kernel.org,
+	minchan@kernel.org, hannes@cmpxchg.org, vdavydov.dev@gmail.com,
+	sj@kernel.org, jglisse@redhat.com, dennis@kernel.org, cl@linux.com,
+	penberg@kernel.org, rientjes@google.com, vbabka@suse.cz,
+	ngupta@vflare.org, linux-block@vger.kernel.org,
+	josef@toxicpanda.com, linux-fsdevel@vger.kernel.org, jack@suse.cz,
+	dan.j.williams@intel.com, hch@infradead.org, djwong@kernel.org,
+	dri-devel@lists.freedesktop.org, rodrigosiqueiramelo@gmail.com,
+	melissa.srw@gmail.com, hamohammed.sa@gmail.com,
+	harry.yoo@oracle.com, chris.p.wilson@intel.com,
+	gwan-gyeong.mun@intel.com, max.byungchul.park@gmail.com,
+	boqun.feng@gmail.com, longman@redhat.com, yunseong.kim@ericsson.com,
+	ysk@kzalloc.com, yeoreum.yun@arm.com, netdev@vger.kernel.org,
+	matthew.brost@intel.com, her0gyugyu@gmail.com, corbet@lwn.net,
+	catalin.marinas@arm.com, bp@alien8.de, x86@kernel.org,
+	hpa@zytor.com, luto@kernel.org, sumit.semwal@linaro.org,
+	gustavo@padovan.org, christian.koenig@amd.com,
+	andi.shyti@kernel.org, arnd@arndb.de, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, rppt@kernel.org, surenb@google.com,
+	mcgrof@kernel.org, petr.pavlu@suse.com, da.gomez@kernel.org,
+	samitolvanen@google.com, paulmck@kernel.org, frederic@kernel.org,
+	neeraj.upadhyay@kernel.org, joelagnelf@nvidia.com,
+	josh@joshtriplett.org, urezki@gmail.com,
+	mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+	qiang.zhang@linux.dev, juri.lelli@redhat.com,
+	vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+	bsegall@google.com, mgorman@suse.de, vschneid@redhat.com,
+	chuck.lever@oracle.com, neil@brown.name, okorniev@redhat.com,
+	Dai.Ngo@oracle.com, tom@talpey.com, trondmy@kernel.org,
+	anna@kernel.org, kees@kernel.org, bigeasy@linutronix.de,
+	clrkwllms@kernel.org, mark.rutland@arm.com, ada.coupriediaz@arm.com,
+	kristina.martsenko@arm.com, wangkefeng.wang@huawei.com,
+	broonie@kernel.org, kevin.brodsky@arm.com, dwmw@amazon.co.uk,
+	shakeel.butt@linux.dev, ast@kernel.org, ziy@nvidia.com,
+	yuzhao@google.com, baolin.wang@linux.alibaba.com,
+	usamaarif642@gmail.com, joel.granados@kernel.org,
+	richard.weiyang@gmail.com, geert+renesas@glider.be,
+	tim.c.chen@linux.intel.com, linux@treblig.org,
+	alexander.shishkin@linux.intel.com, lillian@star-ark.net,
+	chenhuacai@kernel.org, francesco@valla.it,
+	guoweikang.kernel@gmail.com, link@vivo.com, jpoimboe@kernel.org,
+	masahiroy@kernel.org, brauner@kernel.org,
+	thomas.weissschuh@linutronix.de, oleg@redhat.com, mjguzik@gmail.com,
+	andrii@kernel.org, wangfushuai@baidu.com, linux-doc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org, linux-i2c@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-modules@vger.kernel.org,
+	rcu@vger.kernel.org, linux-nfs@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev, 2407018371@qq.com, dakr@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, neilb@ownmail.net,
+	bagasdotme@gmail.com, wsa+renesas@sang-engineering.com,
+	dave.hansen@intel.com, geert@linux-m68k.org, ojeda@kernel.org,
+	alex.gaynor@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	lossin@kernel.org, a.hindborg@kernel.org, aliceryhl@google.com,
+	tmgross@umich.edu, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v18 41/42] SUNRPC: relocate struct rcu_head to the first
+ field of struct rpc_xprt
+Message-ID: <20251215051517.GB49936@system.software.com>
+References: <20251205071855.72743-1-byungchul@sk.com>
+ <20251205071855.72743-42-byungchul@sk.com>
+ <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-ide@vger.kernel.org
 List-Id: <linux-ide.vger.kernel.org>
 List-Subscribe: <mailto:linux-ide+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-ide+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] libata: SATA LPM forcibly disabled on Intel Jasper
- Lake since Linux 6.13
-To: Damien Le Moal <dlemoal@kernel.org>, linux-ide@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Niklas Cassel <cassel@kernel.org>
-References: <635cb04f-eda3-49ec-b8bc-62f4e8c7926f@interia.pl>
- <37a2d604-6c20-4913-ad1a-15e727df8a3d@kernel.org>
-Content-Language: pl
-From: Bernard Drozd <bernid@interia.pl>
-In-Reply-To: <37a2d604-6c20-4913-ad1a-15e727df8a3d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-IPL-Priority-Group: 0-0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=interia.pl; s=dk;
-	t=1765772918; bh=a1AknbohvWJp6KipOnen/7k26wrUdV/bI3WCwlCOI3I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=nG5TQLXK52cT9suj/F5GEbvPMtJkxzAytE3ROTNr54IJSzPd6ukkqc4yMeT+I9l8h
-	 errs6U9H+1GyEdKPJkNtfAA0YShg2IRx60OssQcAKYAVu7ktIAZlH56gpCofRi07k+
-	 5vKf+lBj2kNBwCDRDBDMQpnZtIBeYgvfxkwJ4NII=
+In-Reply-To: <cd65b963dd4edade3afb2e7d27eb33af1c62682e.camel@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0yTZxiG837nFko+OpivsOhSJXMaRBe3PMmM29yPfdkfl+3Hkrlk68Y3
+	aTjVFtCaGMtJGauu0xRC67RF6JgrhnHY5NCIzBQZNC0QpTOwFsQKKbCNCKZIZf0gy/jz5M79
+	3M99vT9ejlS2M2mcpqBI1BWo81SMnJLPJzoyc+ve0uw7P/gSjAenabhf2kvB3bEyCoJLVQjW
+	3B4EAf8tElztpQTUzpZS8JfThMAatrEwH+ymIVaTC1fr2xiI1PzNwDOvj4Raix+BY3KChMXZ
+	EIJ2z58I3E1lDDwyd5AwOp0ECy0M2MvcNAwPRRB8b7uIIPzATUBnqIuF4cgqAUFnmIJBc70E
+	ZaDm5y1gqy0n4mOGAEtzNwFR53UWhq6NU+A0ZoDNO0rDVJOVhdXJ/bBmLwTPT49ZuDHvoyES
+	vshAsP8sDb8aQyy4TGESqrqWKGh9eJ+GHvcABVWxJwg8N6cIGO26zICppYMGo+0pDf7eQRoa
+	x4YJmAwFaGjzDpGwfCEdAuZHCC4thNHb2ULlSIwRXFdcSHjSWE4Klea4ahycY4SVpXuM4F62
+	U8Lv9Vho+HqFEL7zZgqd1glWsLcWCxV35mmhrWm3cK1nlhAci0v0B5mfyA9mi3maElGXdehz
+	ec5i+TirvfriyWj3diP6lq9GMg7zB3DFmoeuRty6dj/fJdkUn4HH7sUYSTP8KzgQiJJSJIXf
+	iR8YNdVIzpG8ZRuem1mhpMwL/DHc0mkhJa3gAbtnbpFSSMnbEXbUuNiNRTIeqJtePyDjpatX
+	RtZLST4d//Cc27C34/IO27ot4wU8+41BslP5Hbj3l35CqsT8ggw77/rIjedvxbebApQZJVs3
+	EaybCNb/CdZNBDuiriOlpqAkX63JO7A3x1CgObn3y8L8VhT/y87Tq0dvokX/R32I55AqUeFv
+	P6RR0uoSvSG/D2GOVKUoqgJxS5GtNpwSdYWf6YrzRH0fSuco1RbFa8snspX8MXWRmCuKWlH3
+	35bgZGlGtGeX1p/00PJ0YLL49X9efTfhi/7pZhe7w3TYPJZwPulc8puhUpt4JrIno/qr2+Ej
+	lcffSHy5Qryckko0RHs+ftw/fvTH0760DynXH+zUkRsOx05edkcbeC/fkDV3JrjNxDSMZA1/
+	OnNB8U7dYdbrS0htvjQR5bfqi96P/aaVTXSaM1SUPke9fzep06v/BfYi22nHAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxbZRTH89zn9t5LtcsFcTzZjDOdi2buReNMjlG3GZPxxDizxA/LFhOp
+	2824AwppkVGNSqnName2rqZF2rG1KJVAHW/bFEldAxOdE0YZSMPLgKwyCEwMFrYWCrYsRr6c
+	/M///M8v58MRcMaX3AZB1hZLOq0mX80pWeXbr5i2H6/cIz/fFdgKFvOnMDwaUcAfxiAL81EL
+	C+ca/Bwk3N/zYGmuVMCvA+Us9FysRzA6b0Fwf9GNwdy6wkLC3slDNDbEg8OIYCXQicAZsmMI
+	91zF4L9kZOCfxmUOpjvmEDjGIxxUTBlZmPV9gcA14eZh6udsuDfapoCVkbsMDCzMIPBFlhmI
+	BE8iSDjz4EJ1S3Ld+TcHi103MVQ4ehB4x0cwzE2NIbjUeRtBoLacgz9tlzHciqyDvvlZDq47
+	TnFwL3SOgb8aOfCUBxQQ+n0aQZXbjmBiMMCA6esGDpxVzSy0jv3IQ2h6iYFhp52B+ub9MOqb
+	YOGGrZpJnptMNWWBu8LEJMskA47v2hiI+er4vTWI3jefZmldyxWGmnsTHPWf9yO6GLcjGq0x
+	YWq2JduOmVlMP2s5QWtuzHA0Pt/P0cCCh6W/VRP6zedxhp7t2k5bXSP8gdcPK189KuXLJZJu
+	5+4cZe6caZgvurC+NNa2qQydEa1IEIi4iwSWn7WiNIEVt5CB/gSX0pz4DAmHYzgVyRSfJoNl
+	shUpBSw6niQzk3E2lXlMPEYaWx04pVUikMDkVZwKZYgeRLxOP/9wkE6uV0ZWF3ASunS+dxWK
+	xY3k22Xhob2JmC67V+00kZKpU4aU/bi4mQSv/MLY0DrXGpBrDcj1P8i1BuRBbB3KlLUlBRo5
+	/6Ud+rxcg1Yu3XGksKAZJV/V9/HS2R9Q9FZ2OxIFpH5UFW7bLWcoNCV6Q0E7IgJWZ6os4aSl
+	OqoxfCjpCt/TfZAv6dvRRoFVZ6nePCjlZIjHNMVSniQVSbr/poyQtqEMXfvkq13vW2ZdQWuY
+	dMefe6Ij54j13TdO9598ai5EFofEvvTgcPYd7519fnrxTJWye/Px2sOG17r3+uvWNyTe2jlo
+	Gw9n5WiMRfv3NDnQOx/x3n1jL9tevG3sS1uY8Dy4+WDbCm1K9/Qe3PbIoWis9NqQ8W7Em1Vf
+	LGsLa/UlP52wqVl9ruaFrVin1/wLMb4wZaYDAAA=
+X-CFilter-Loop: Reflected
 
-Hi Damien,
-Thank you for the explanation – I understand now that pre-6.13 behaviour 
-was relying on a bug allowing userspace to override unsupported LPM.
-I have collected full diagnostics comparing a *working* kernel (6.12) 
-and a *regressed* kernel (6.17), both tested with **no SATA devices 
-connected**.
+On Fri, Dec 05, 2025 at 04:27:52AM -0500, Jeff Layton wrote:
+> On Fri, 2025-12-05 at 16:18 +0900, Byungchul Park wrote:
+> > While compiling Linux kernel with DEPT on, the following error was
+> > observed:
+> >
+> >    ./include/linux/rcupdate.h:1084:17: note: in expansion of macro
+> >    ‘BUILD_BUG_ON’
+> >    1084 | BUILD_BUG_ON(offsetof(typeof(*(ptr)), rhf) >= 4096);        \
+> >         | ^~~~~~~~~~~~
+> >    ./include/linux/rcupdate.h:1047:29: note: in expansion of macro
+> >    'kvfree_rcu_arg_2'
+> >    1047 | #define kfree_rcu(ptr, rhf) kvfree_rcu_arg_2(ptr, rhf)
+> >         |                             ^~~~~~~~~~~~~~~~
+> >    net/sunrpc/xprt.c:1856:9: note: in expansion of macro 'kfree_rcu'
+> >    1856 | kfree_rcu(xprt, rcu);
+> >         | ^~~~~~~~~
+> >     CC net/kcm/kcmproc.o
+> >    make[4]: *** [scripts/Makefile.build:203: net/sunrpc/xprt.o] Error 1
+> >
+> > Since kfree_rcu() assumes 'offset of struct rcu_head in a rcu-managed
+> > struct < 4096', the offest of struct rcu_head in struct rpc_xprt should
+> > not exceed 4096 but does, due to the debug information added by DEPT.
+> >
+> > Relocate struct rcu_head to the first field of struct rpc_xprt from an
+> > arbitrary location to avoid the issue and meet the assumption.
+> >
+> > Reported-by: Yunseong Kim <ysk@kzalloc.com>
+> > Signed-off-by: Byungchul Park <byungchul@sk.com>
+> > ---
+> >  include/linux/sunrpc/xprt.h | 9 ++++++++-
+> >  1 file changed, 8 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/include/linux/sunrpc/xprt.h b/include/linux/sunrpc/xprt.h
+> > index f46d1fb8f71a..666e42a17a31 100644
+> > --- a/include/linux/sunrpc/xprt.h
+> > +++ b/include/linux/sunrpc/xprt.h
+> > @@ -211,6 +211,14 @@ enum xprt_transports {
+> >
+> >  struct rpc_sysfs_xprt;
+> >  struct rpc_xprt {
+> > +     /*
+> > +      * Place struct rcu_head within the first 4096 bytes of struct
+> > +      * rpc_xprt if sizeof(struct rpc_xprt) > 4096, so that
+> > +      * kfree_rcu() can simply work assuming that.  See the comment
+> > +      * in kfree_rcu().
+> > +      */
+> > +     struct rcu_head         rcu;
+> > +
+> >       struct kref             kref;           /* Reference count */
+> >       const struct rpc_xprt_ops *ops;         /* transport methods */
+> >       unsigned int            id;             /* transport id */
+> > @@ -317,7 +325,6 @@ struct rpc_xprt {
+> >  #if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
+> >       struct dentry           *debugfs;               /* debugfs directory */
+> >  #endif
+> > -     struct rcu_head         rcu;
+> >       const struct xprt_class *xprt_class;
+> >       struct rpc_sysfs_xprt   *xprt_sysfs;
+> >       bool                    main; /*mark if this is the 1st transport */
+> 
+> Seems fine to me.
+> 
+> Reviewed-by: Jeff Layton <jlayton@kernel.org>
 
-Important correction:
-The correct SATA controller PCI ID is:
-Intel Jasper Lake SATA AHCI Controller [8086:4dd3]
-This was mistakenly reported earlier as 4d03.
+Thank you, Jeff.
 
-Key observation:
-The LPM disable happens even with no SATA devices attached, so this 
-appears to be a **platform-level decision**, not device capability.
-
-Data provided:
-1) Full dmesg, Linux 6.12 (LPM works, CPU reaches PC10):
-https://www.dropbox.com/scl/fi/pwc0bfgoqgb607babczg9/dmesg-6.12-full.txt?rlkey=o8j88lzeq3rw3cbx2q65oyblv&st=u4dwqv0p&raw=1
-
-2) Full dmesg, Linux 6.17 (LPM forced to max_performance, CPU stuck in PC2):
-https://www.dropbox.com/scl/fi/twbyjm7h5ewgmllit02h8/dmesg-6.17-full.txt?rlkey=p3b97lli6ruo5ypg4c2d4jnc2&st=3o3xo47m&raw=1
-
-3) AHCI/SATA diagnostics, Linux 6.12 (no disks attached):
-https://www.dropbox.com/scl/fi/mve88utfnrzdilut364p1/6.12.txt?rlkey=zz7x8nqafdslvfjovinzbw26d&st=h0n95d75&raw=1
-
-4) AHCI/SATA diagnostics, Linux 6.17 (no disks attached):
-https://www.dropbox.com/scl/fi/viedk35gor5mry49qlkby/6.17.txt?rlkey=fmp4zaizbl22hd2fh6jg4rx8w&st=alwlux85&raw=1
-
-Summary of difference:
-- 6.12:
-     lpm-pol = 0
-     link_power_management_policy = med_power_with_dipm
-     ahci.mobile_lpm_policy=3 works
-- 6.17:
-     lpm-pol = 1 ext
-     link_power_management_policy = max_performance (write rejected)
-     ahci.mobile_lpm_policy ignored
-     CPU package cannot enter deep C-states
-
-This results in ~5W higher idle power on fanless Jasper Lake systems.
-
-Please let me know:
-- which capability/quirk check changed after 6.12
-- and whether a kernel parameter or quirk override could be used for testing
-
-Best regards,
-Bernard
-
-On 15/12/2025 02:44, Damien Le Moal wrote:
-> On 12/15/25 00:26, Bernard Drozd wrote:
->> Hello,
->>
->> I am reporting a power-management regression in libata affecting Intel
->> Jasper Lake platforms, introduced after Linux 6.12.
->>
->> Hardware:
->> - CPU / SoC: Intel Jasper Lake (Elkhart Lake class)
->> - SATA controller: Intel Jasper Lake SATA AHCI Controller (PCI ID 8086:4d03)
-> Byt the way, I see this:
->
-> ahci.c: /* Elkhart Lake IDs 0x4b60 & 0x4b62 https://sata-io.org/product/8803 not
-> tested yet */
-> ahci.c: { PCI_VDEVICE(INTEL, 0x4b63), board_ahci_pcs_quirk }, /* Elkhart Lake
-> AHCI */
->
-> So the same "Elkhart Lake", but different PCI ID. Looking at PCI IDs databases,
-> I do not find anything with ID 8086:4d03. Can you please check your PCI ID ?
->
-> Though board_ahci_pcs_quirk does not disable LPM...
->
->
->> - Drives tested: SATA SSD + SATA HDD (multiple vendors)
->> - Distribution: Debian 13 (Trixie)
->> - Kernel versions tested:
->>     - 6.12.x  → OK
->>     - 6.17.x  → REGRESSION
->>
->> Problem description:
->> Since kernel >= 6.13, SATA Link Power Management (LPM) is forcibly disabled.
->> The sysfs interface still exists but only reports:
->>
->>     /sys/class/scsi_host/host*/link_power_management_policy = max_performance
->>
->> Attempts to change it fail silently or are ignored:
->>
->> echo 'med_power_with_dipm' >
->> '/sys/class/scsi_host/host0/link_power_management_policy'
->> echo 'med_power_with_dipm' >
->> '/sys/class/scsi_host/host1/link_power_management_policy'
->>
->> This worked correctly on kernel 6.12.x and earlier.
->>
->> Observed effects:
->> - SATA devices never enter partial/slumber
->> - CPU package C-states are limited (system mostly stuck in PC2 (before
->> the change i had C10))
->> - Idle power consumption increases by ~5 W
->> - powertop shows SATA LPM tunables as permanently "Bad"
->>
->> Relevant dmesg output (6.17.x):
->>     ata1: SATA link power management disabled due to platform quirk
->>     ata2: SATA link power management disabled due to platform quirk
->>
->> This appears to be caused by the libata change disabling LPM on Intel
->> platforms
->> without a per-platform whitelist. Jasper Lake does not exhibit
->> instability with
->> LPM enabled and worked reliably on previous kernels.
->>
->> Expectation:
->> - Either re-enable LPM for Intel Jasper Lake
->> - Or provide a kernel parameter to override the forced LPM disable
->>     (e.g. libata.allow_lpm=1)
->>
->> This regression significantly impacts low-power systems and fanless mini-PCs
->> based on Jasper Lake.
->>
->> Please let me know if additional logs or testing are needed.
->>
->> Best regards,
->> bern
->>
->>
->
-
+	Byungchul
 
